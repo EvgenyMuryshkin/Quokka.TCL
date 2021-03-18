@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <Version>1.0.0.1</Version>
+    <Description>TCL tools for FPGA vendors</Description>
+    <PackageProjectUrl>https://github.com/EvgenyMuryshkin/Quokka.TCL</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/EvgenyMuryshkin/Quokka.TCL</RepositoryUrl>
+    <RepositoryType>Public</RepositoryType>
+    <PackageReleaseNotes>TCL, Xilinx, Vivado</PackageReleaseNotes>
+    <Copyright>Evgeny Muryshkin, 2021</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Company>Quokka Robotics</Company>
+    <Authors>Evgeny Muryshkin</Authors>
+  </PropertyGroup>
+
+</Project>

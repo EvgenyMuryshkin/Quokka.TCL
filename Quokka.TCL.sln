@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31112.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quokka.TCL", "Quokka.TCL\Quokka.TCL.csproj", "{DF73FA84-76B7-408D-9E33-0089B32E0BF4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "rollout", "Rollout\rollout.csproj", "{2939D777-BAE9-4D5A-978C-6B0837340A76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quokka.TCL.Tests", "Quokka.TCL.Tests\Quokka.TCL.Tests.csproj", "{56D57462-6C33-4C31-86D8-ECE7B953B207}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quokka.TCL.SourceGenerator", "Quokka.TCL.SourceGenerator\Quokka.TCL.SourceGenerator.csproj", "{07C07291-F3A8-438B-8623-CBFF25D84347}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DF73FA84-76B7-408D-9E33-0089B32E0BF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF73FA84-76B7-408D-9E33-0089B32E0BF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF73FA84-76B7-408D-9E33-0089B32E0BF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF73FA84-76B7-408D-9E33-0089B32E0BF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2939D777-BAE9-4D5A-978C-6B0837340A76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2939D777-BAE9-4D5A-978C-6B0837340A76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2939D777-BAE9-4D5A-978C-6B0837340A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2939D777-BAE9-4D5A-978C-6B0837340A76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56D57462-6C33-4C31-86D8-ECE7B953B207}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56D57462-6C33-4C31-86D8-ECE7B953B207}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56D57462-6C33-4C31-86D8-ECE7B953B207}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56D57462-6C33-4C31-86D8-ECE7B953B207}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07C07291-F3A8-438B-8623-CBFF25D84347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07C07291-F3A8-438B-8623-CBFF25D84347}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07C07291-F3A8-438B-8623-CBFF25D84347}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07C07291-F3A8-438B-8623-CBFF25D84347}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DB1E5558-108E-43C0-A3EA-D4FF3380C16F}
+	EndGlobalSection
+EndGlobal
