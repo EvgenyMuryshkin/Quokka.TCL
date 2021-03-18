@@ -51,7 +51,7 @@ namespace Quokka.TCL.SourceGenerator
                     var commands = between(commandLines, $"{category}:", $"{next}:");
 
                     var builder = new IndentedStringBuilder();
-                    builder.AppendLine($"using System;");
+                    Header(builder);
                     builder.AppendLine("namespace Quokka.TCL.Vivado");
                     using (builder.Block())
                     {
@@ -74,7 +74,7 @@ namespace Quokka.TCL.SourceGenerator
                 }
 
                 var vivadoTCL = new IndentedStringBuilder();
-                vivadoTCL.AppendLine($"using System;");
+                Header(vivadoTCL);
                 vivadoTCL.AppendLine("namespace Quokka.TCL.Vivado");
                 using (vivadoTCL.Block())
                 {

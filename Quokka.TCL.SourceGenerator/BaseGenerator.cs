@@ -24,5 +24,12 @@ namespace Quokka.TCL.SourceGenerator
 
             return between(lines, from, to);
         }
+
+        protected void Header(IndentedStringBuilder builder)
+        {
+            builder.AppendLine($"// Generated file, do not modify");
+            builder.AppendLine($"// See {GetType().Name} for implementation");
+            builder.AppendLine("using System;");
+        }
     }
 }

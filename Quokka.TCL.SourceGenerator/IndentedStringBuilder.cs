@@ -5,7 +5,7 @@ using System.Reactive.Disposables;
 
 namespace Quokka.TCL.SourceGenerator
 {
-    class IndentedStringBuilder
+    public class IndentedStringBuilder
     {
         StringBuilder _builder = new StringBuilder();
         int _indentCounter = 0;
