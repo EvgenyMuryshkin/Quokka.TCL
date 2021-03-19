@@ -2,8 +2,9 @@
 using System.Linq;
 using System.Text;
 using System.Reactive.Disposables;
+using System.Collections.Generic;
 
-namespace Quokka.TCL.SourceGenerator
+namespace Quokka.TCL.Tools
 {
     public class IndentedStringBuilder
     {
@@ -18,7 +19,7 @@ namespace Quokka.TCL.SourceGenerator
             return Disposable.Create(() => _indentCounter--);
         }
 
-        public IDisposable Block(string open = "{", string close = "}")
+        public IDisposable CodeBlock(string open = "{", string close = "}")
         {
             AppendLine(open);
 
@@ -44,6 +45,17 @@ namespace Quokka.TCL.SourceGenerator
                 }
 
                 _builder.AppendLine($"{IndentText}{l}");
+            }
+        }
+
+        public void AppendDocumentationLines(List<string> lines)
+        {
+            if (lines == null)
+                return;
+
+            foreach (var l in lines)
+            {
+                AppendLine($"/// {l}");
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Quokka.TCL.Tools;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Quokka.TCL.SourceGenerator
@@ -7,7 +8,7 @@ namespace Quokka.TCL.SourceGenerator
     {
         protected int page(int p) => p - 1;
 
-        protected List<string> between(List<string> lines, string from, string to)
+        public static List<string> between(List<string> lines, string from, string to)
         {
             var result = lines
                 .SkipWhile(l => from == null || !l.StartsWith(from))
@@ -18,7 +19,7 @@ namespace Quokka.TCL.SourceGenerator
             return result;
         }
 
-        protected List<string> between(string source, string from, string to)
+        public static List<string> between(string source, string from, string to)
         {
             var lines = source.Split('\n').Select(l => l.Trim()).ToList();
 
