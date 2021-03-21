@@ -13,24 +13,117 @@ namespace Quokka.TCL.Vivado
 		}
 		/// <summary>
 		/// Call IP Services to regenerate an IP, then stitch it into the current netlist
+		///
+		/// Implements the memory IP cores in the current project.
+		/// Memory IP included in the Xilinx® IP catalog are used to generate memory controllers and
+		/// interfaces for Xilinx devices. Memory IP includes different IP cores from the Xilinx IP catalog
+		/// depending on the device architecture and memory interface specified. Refer to Zynq-7000 SoC
+		/// and 7 Series Devices Memory Interface Solutions (UG586), or UltraScale Architecture-Based FPGAs
+		/// Memory Interface Solutions (PG150), for details of the available memory IP.
+		/// The implement_mig_cores command generates the RTL information for the physical
+		/// interface (PHY) of the memory controller, and integrates the synthesized netlist of the memory
+		/// controller into the top-level design.
+		/// A memory controller can be debug enabled when added into the design from the Xilinx IP
+		/// catalog. In the Vivado logic analyzer, or the Vivado Lab Edition, memory controllers implemented
+		/// into a design are associated with hw_mig objects, one hw_mig object per debug-enabled memory
+		/// controller. The hw_mig object will have all the properties needed to get the calibration status and
+		/// draw the per-bit eye margin views.
+		/// Implementation of the memory IP, and debug core, is automatic when you launch an
+		/// implementation run using the launch_runs command, or when you run opt_design.
+		/// However, you can also use the implement_mig_cores command to integrate the memory IP
+		/// without having to implement the whole design.
+		/// TIP: All pins of the memory controller must be assigned prior to running the implement_mig_cores
+		/// command, or an error will be returned. You can use report_drc to check the status of the memory controller.
+		/// This command returns a transcript of its process, or returns an error if it fails.
+		///
+		/// The following example implements the memory IP cores in the current design:
+		/// implement_mig_cores
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 959
 		/// </summary>
-		public void implement_mig_cores()
+		/// <param name="outputdir">
+		/// Optional
+		/// Target Output Directory for PHY IP Generated Files Default:
+		/// empty
+		/// </param>
+		/// <param name="rtlonly">
+		/// Optional
+		/// Run the complete process to generate the PHY RTL code but
+		/// do not replace the PHY core netlist
+		/// </param>
+		/// <param name="force">
+		/// Optional
+		/// Implement all non-optimized memory cores. When use with
+		/// -rtlonly, optimized cores will be included, as well.
+		/// </param>
+		/// <param name="debug_output">
+		/// Optional
+		/// Enable debugging output.
+		/// </param>
+		/// <param name="quiet">
+		/// Optional
+		/// Ignore command errors
+		/// </param>
+		/// <param name="verbose">
+		/// Optional
+		/// Suspend message limits during command execution
+		/// </param>
+		public void implement_mig_cores(string outputdir = null, bool? rtlonly = null, bool? force = null, bool? debug_output = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("implement_mig_cores");
 			_tcl.Add(command);
 		}
 		/// <summary>
 		/// Call IP Services to regenerate an IP, then stitch it into the current netlist
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 961
 		/// </summary>
-		public void implement_xphy_cores()
+		/// <param name="outputdir">
+		/// Optional
+		/// Target Output Directory for PHY IP Generated Files Default:
+		/// empty
+		/// </param>
+		/// <param name="rtlonly">
+		/// Optional
+		/// Run the complete process to generate the PHY RTL code but
+		/// do not replace the PHY core netlist
+		/// </param>
+		/// <param name="force">
+		/// Optional
+		/// Implement all non-optimized memory cores. When use with
+		/// -rtlonly, optimized cores will be included, as well.
+		/// </param>
+		/// <param name="debug_output">
+		/// Optional
+		/// Enable debugging output.
+		/// </param>
+		/// <param name="quiet">
+		/// Optional
+		/// Ignore command errors
+		/// </param>
+		/// <param name="verbose">
+		/// Optional
+		/// Suspend message limits during command execution
+		/// </param>
+		public void implement_xphy_cores(string outputdir = null, bool? rtlonly = null, bool? force = null, bool? debug_output = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("implement_xphy_cores");
 			_tcl.Add(command);
 		}
 		/// <summary>
 		/// Update and initialize the BRAM initialization strings with contents of elf files.
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 1199
 		/// </summary>
-		public void refresh_meminit()
+		/// <param name="quiet">
+		/// Optional
+		/// Ignore command errors
+		/// </param>
+		/// <param name="verbose">
+		/// Optional
+		/// Suspend message limits during command execution
+		/// </param>
+		public void refresh_meminit(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("refresh_meminit");
 			_tcl.Add(command);

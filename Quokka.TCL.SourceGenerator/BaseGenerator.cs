@@ -19,6 +19,17 @@ namespace Quokka.TCL.SourceGenerator
             return result;
         }
 
+        public static List<string> between(List<string> lines, string from, bool includeFrom, string to)
+        {
+            var result = lines
+                .SkipWhile(l => from == null || !l.StartsWith(from))
+                .Skip((includeFrom || from == null) ? 0 : 1)
+                .TakeWhile(l => to == null || !l.StartsWith(to))
+                .ToList();
+
+            return result;
+        }
+
         public static List<string> between(string source, string from, string to)
         {
             var lines = source.Split('\n').Select(l => l.Trim()).ToList();

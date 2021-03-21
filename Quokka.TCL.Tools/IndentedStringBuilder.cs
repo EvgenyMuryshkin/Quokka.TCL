@@ -48,6 +48,24 @@ namespace Quokka.TCL.Tools
             }
         }
 
+        public void AppendDocumentationSeparator()
+        {
+            AppendDocumentationLines("");
+        }
+
+        public void AppendDocumentationLines(params string[] lines)
+        {
+            AppendDocumentationLines(lines.ToList());
+        }
+
+        public void AppendDocumentationLinesIfAny(List<string> lines)
+        {
+            if (lines == null || !lines.Any())
+                return;
+            AppendDocumentationLines(lines);
+            AppendDocumentationSeparator();
+        }
+
         public void AppendDocumentationLines(List<string> lines)
         {
             if (lines == null)
@@ -56,6 +74,24 @@ namespace Quokka.TCL.Tools
             foreach (var l in lines)
             {
                 AppendLine($"/// {l}");
+            }
+        }
+
+        public void AppendDocumentationSection(string section, List<string> lines)
+        {
+            if (lines == null)
+                return;
+
+            switch (lines.Count)
+            {
+                case 0:
+                case 1:
+                    AppendLine($"/// <{section}>{lines.SingleOrDefault()}</{section}>");
+                    break;
+                default:
+                    AppendLine($"/// <{section}>");
+                    AppendLine($"/// </{section}>");
+                    break;
             }
         }
 

@@ -7,76 +7,47 @@ using System.Linq;
 using Quokka.Rollout;
 using System;
 using Quokka.TCL.Tools;
+using System.Diagnostics;
 
 namespace Quokka.TCL.SourceGenerator
 {
-    class VivadoCommandRecordSection
+    class VivdoCommandTextLines
     {
-        public string SectionName;
-        public Action<List<string>> Handler;
-
-        public VivadoCommandRecordSection(string sectionName, Action<List<string>> handler)
-        {
-            SectionName = sectionName;
-            Handler = handler;
-        }
+        public int Page;
+        public List<string> Lines = new List<string>();
     }
 
-    class VivadoCommandRecord
-    {
-        public List<string> ShortDescription = new List<string>();
-        public List<string> Description = new List<string>();
-
-        public VivadoCommandRecord(string name, List<string> lines)
-        {
-            var orderedSections = new VivadoCommandRecordSection[]
-            {
-                new VivadoCommandRecordSection(name, (content) => { ShortDescription = content; }),
-                new VivadoCommandRecordSection("Syntax", (content) => { }),
-                new VivadoCommandRecordSection("Returns", (content) => { }),
-                new VivadoCommandRecordSection("Usage", (content) => { }),
-                new VivadoCommandRecordSection("Categories", (content) => { }),
-                new VivadoCommandRecordSection("Description", (content) => { Description = content; }),
-                new VivadoCommandRecordSection("Arguments", (content) => { }),
-                new VivadoCommandRecordSection("Examples", (content) => { }),
-                new VivadoCommandRecordSection("See Also", (content) => { }),
-            };
-
-            // make sure that sections are in expected order
-            var indexes = orderedSections
-                .Select(s => new { name = s.SectionName, index = lines.IndexOf(s.SectionName) })
-                .Where(s => s.index != -1)
-                .ToList();
-
-            for (var idx = 0; idx < indexes.Count - 1; idx++)
-            {
-                var thisSection = indexes[idx];
-                var nextSection = indexes[idx + 1];
-                if (thisSection.index > nextSection.index)
-                {
-                    throw new Exception($"Command {name}: Section {thisSection.name} is expected to be before {nextSection.name}");
-                }
-            }
-
-            var existingSections = orderedSections.Where(s => indexes.Any(i => i.name == s.SectionName)).ToList();
-            for (var idx = 0; idx < existingSections.Count; idx++)
-            {
-                var thisSection = existingSections[idx];
-                var nextSection = existingSections.Skip(idx + 1).FirstOrDefault();
-
-                var text = BaseGenerator.between(lines, thisSection.SectionName, nextSection?.SectionName);
-                thisSection.Handler(text);
-            }
-        }
-    }
 
     [TestClass]
     public class VivadoGenerator : BaseGenerator
     {
         [TestMethod]
+        public void VivadoCommandRecordTest()
+        {
+            var paramTypes = new List<string>()
+            {
+                "[-optional_flag]",
+                "[<optional_name> <arg>]",
+                "<required_value>",
+                "[<patterns>...]",
+                "<required_name> <arg>",
+                "[<optional_value>]",
+            };
+
+            var lines = new List<string>()
+            {
+                "test_command",
+                "Syntax",
+            };
+
+            var record = new VivadoCommandRecord("test_command", lines);
+        }
+
+        [TestMethod]
         public void Generate()
         {
-            var path = Path.Combine(RolloutTools.SolutionLocation(), "docs", "ug835-vivado-tcl-commands.pdf");
+            var pdfName = "ug835-vivado-tcl-commands.pdf";
+            var path = Path.Combine(RolloutTools.SolutionLocation(), "docs", pdfName);
 
             using (var docReader = DocLib.Instance.GetDocReader(path, new PageDimensions()))
             {
@@ -117,27 +88,47 @@ namespace Quokka.TCL.SourceGenerator
                 }
 
                 var allCommandsSet = mapCategoryToCommands.SelectMany(p => p.Value).ToHashSet();
-                var commandsData = allCommandsSet.ToDictionary(p => p, p => new List<string>());
+                var commandsData = allCommandsSet.ToDictionary(p => p, p => new VivdoCommandTextLines());
 
                 // extract text for all commands
-                var ingoreCommandPageLines = new HashSet<string>()
+                var ignoreTextLines = new HashSet<string>()
                 {
                     "Chapter 3",
                     "Tcl Commands Listed Alphabetically",
+                    "Chapter 3 Tcl Commands Listed Alphabetically",
                     "This chapter contains all SDC and Tcl commands, arranged alphabetically.",
                     "UG835 (v2019.2) October 30, 2019 www.xilinx.com",
-                    "Tcl Command Reference Guide 31 Send Feedback"
+                    "Chapter 3: Tcl Commands Listed Alphabetically",
                 };
+
+                var breaks = new HashSet<int>() { };
 
                 string currentCommand = null;
                 for (var pageNumber = 31; pageNumber <= 1869; pageNumber++)
                 {
+                    if (breaks.Contains(pageNumber))
+                        Debugger.Break();
+
+                    var ignorePageTextLines = ignoreTextLines.ToHashSet();
+                    ignorePageTextLines.Add($"Tcl Command Reference Guide {pageNumber} Send Feedback");
+
                     var reader = docReader.GetPageReader(page(pageNumber));
                     var text = reader.GetText();
-                    var lines = text.Split('\n').Select(l => l.Trim()).Where(l => !ingoreCommandPageLines.Contains(l)).ToList();
+                    var lines = text
+                        .Split('\n')
+                        .Select(l => l.Trim())
+                        .Where(l => !ignorePageTextLines.Contains(l))
+                        .Select(l => l.Replace((char)8209, '-'))
+                        .ToList();
+
+                    // empty page
+                    if (!lines.Any())
+                        continue;
+
                     if (allCommandsSet.Contains(lines[0]))
                     {
                         currentCommand = lines[0];
+                        commandsData[currentCommand].Page = pageNumber;
                     }
 
                     if (!commandsData.ContainsKey(currentCommand))
@@ -146,10 +137,10 @@ namespace Quokka.TCL.SourceGenerator
 
                     }
 
-                    commandsData[currentCommand].AddRange(lines);
+                    commandsData[currentCommand].Lines.AddRange(lines);
                 }
 
-                var missingCommandsText = commandsData.Where(p => !p.Value.Any()).Select(p => p.Key).ToList();
+                var missingCommandsText = commandsData.Where(p => !p.Value.Lines.Any()).Select(p => p.Key).ToList();
                 if (missingCommandsText.Any())
                 {
                     throw new Exception($"No description found for commands: {string.Join(", ", missingCommandsText)}");
@@ -177,13 +168,50 @@ namespace Quokka.TCL.SourceGenerator
 
                             foreach (var command in commands)
                             {
-                                var record = new VivadoCommandRecord(command, commandsData[command]);
+                                var commandData = commandsData[command];
+                                var record = new VivadoCommandRecord(command, commandData.Lines);
 
                                 builder.AppendLine($"/// <summary>");
-                                builder.AppendDocumentationLines(record.ShortDescription);
+                                builder.AppendDocumentationLinesIfAny(record.ShortDescription);
+                                builder.AppendDocumentationLinesIfAny(record.Description);
+                                builder.AppendDocumentationLinesIfAny(record.Examples);
+                                builder.AppendDocumentationLines($"See {pdfName}, page {commandData.Page}");
                                 builder.AppendLine($"/// </summary>");
-                                //builder.AppendLine($"/// <param name=\"name\"></param>");
-                                builder.AppendLine($"public void {command}()");
+
+                                var orderedArguments = record.Arguments.Where(c => !c.IsOptional).Concat(record.Arguments.Where(c => c.IsOptional)).ToList();
+                                
+                                foreach (var arg in orderedArguments)
+                                {
+                                    builder.AppendLine($"/// <param name=\"{arg.Name}\">");
+                                    builder.AppendDocumentationLines(arg.IsOptional ? "Optional" : "Required");
+                                    builder.AppendDocumentationLines(arg.Description);
+                                    builder.AppendLine($"/// </param>");
+                                }
+
+                                if (record.Returns.Any())
+                                {
+                                    builder.AppendDocumentationSection("returns", record.Returns);
+                                }
+
+                                var args = orderedArguments.Select(a =>
+                                {
+                                    if (a.IsFlag)
+                                    {
+                                        if (a.IsOptional)
+                                        {
+                                            return $"bool? {a.Name} = null";
+                                        }
+                                        else
+                                        {
+                                            return $"bool {a.Name}";
+                                        }
+                                    }
+
+
+                                    return $"string {a.Name}{(a.IsOptional ? " = null" : "")}";
+                                });
+
+                                builder.AppendLine($"public void {command}({string.Join(", ", args)})");
                                 using (builder.CodeBlock())
                                 {
                                     builder.AppendLine($"var command = new SimpleTCLCommand(\"{command}\");");
@@ -199,6 +227,7 @@ namespace Quokka.TCL.SourceGenerator
 
                 var vivadoTCL = new IndentedStringBuilder();
                 Header(vivadoTCL);
+                vivadoTCL.AppendLine($"using Quokka.TCL.Tools;");
                 vivadoTCL.AppendLine("namespace Quokka.TCL.Vivado");
                 using (vivadoTCL.CodeBlock())
                 {
@@ -207,9 +236,9 @@ namespace Quokka.TCL.SourceGenerator
                     {
                         foreach (var category in categories)
                         {
-                            vivadoTCL.AppendLine($"public {category}Commands {category};");
+                            vivadoTCL.AppendLine($"public {category}Commands {category} => new {category}Commands(this);");
                         }
-
+/*
                         vivadoTCL.AppendLine($"public VivadoTCL()");
                         using (vivadoTCL.CodeBlock())
                         {
@@ -218,6 +247,7 @@ namespace Quokka.TCL.SourceGenerator
                                 vivadoTCL.AppendLine($"{category} = new {category}Commands(this);");
                             }
                         }
+*/
                     }
                 }
                 var vivadoTCLFilePath = Path.Combine(generatedPath, $"VivadoTCL.cs");

@@ -17,4 +17,8 @@
     <Authors>Evgeny Muryshkin</Authors>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Quokka.TCL.Tools\Quokka.TCL.Tools.csproj" />
+  </ItemGroup>
+
 </Project>
