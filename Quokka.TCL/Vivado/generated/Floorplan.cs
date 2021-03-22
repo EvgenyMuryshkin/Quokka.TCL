@@ -63,6 +63,13 @@ namespace Quokka.TCL.Vivado
 		public void add_cells_to_pblock(string pblock, bool? top = null, bool? add_primitives = null, bool? clear_locs = null, bool? quiet = null, bool? verbose = null, string cells = null)
 		{
 			var command = new SimpleTCLCommand("add_cells_to_pblock");
+			command.Flag("top", top);
+			command.Flag("add_primitives", add_primitives);
+			command.Flag("clear_locs", clear_locs);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("pblock", pblock);
+			command.OptionalString("cells", cells);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -106,6 +113,9 @@ namespace Quokka.TCL.Vivado
 		public void create_pblock(string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_pblock");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -138,6 +148,10 @@ namespace Quokka.TCL.Vivado
 		public void delete_pblocks(string pblocks, bool? hier = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_pblocks");
+			command.Flag("hier", hier);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("pblocks", pblocks);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -172,6 +186,9 @@ namespace Quokka.TCL.Vivado
 		public void delete_rpm(string rpm, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_rpm");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("rpm", rpm);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -195,10 +212,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 848
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get Pblocks of these cells
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -211,6 +224,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get Pblocks of these cells
 		/// </param>
 		/// <param name="include_nested_pblock">
 		/// Optional
@@ -229,9 +246,17 @@ namespace Quokka.TCL.Vivado
 		/// Match Pblock names against patterns Default: *
 		/// </param>
 		/// <returns>list of Pblock objects</returns>
-		public void get_pblocks(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? include_nested_pblock = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_pblocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_nested_pblock = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_pblocks");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("include_nested_pblock", include_nested_pblock);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -289,6 +314,9 @@ namespace Quokka.TCL.Vivado
 		public void place_cell(string cell_site_list, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("place_cell");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("cell_site_list", cell_site_list);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -330,6 +358,11 @@ namespace Quokka.TCL.Vivado
 		public void place_pblocks(string pblocks, string effort = null, string utilization = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("place_pblocks");
+			command.OptionalString("effort", effort);
+			command.OptionalString("utilization", utilization);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("pblocks", pblocks);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -364,6 +397,10 @@ namespace Quokka.TCL.Vivado
 		public void remove_cells_from_pblock(string pblock, string cells, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("remove_cells_from_pblock");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("pblock", pblock);
+			command.RequiredString("cells", cells);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -394,25 +431,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1494
 		/// </summary>
-		/// <param name="add">
-		/// Required
-		/// Add site ranges(s)
-		/// </param>
-		/// <param name="remove">
-		/// Required
-		/// Remove site ranges(s)
-		/// </param>
-		/// <param name="from">
-		/// Required
-		/// Site range(s) to move
-		/// </param>
-		/// <param name="to">
-		/// Required
-		/// Site range destination(s)
-		/// </param>
 		/// <param name="pblock">
 		/// Required
 		/// Pblock to resize
+		/// </param>
+		/// <param name="add">
+		/// Optional
+		/// Add site ranges(s)
+		/// </param>
+		/// <param name="remove">
+		/// Optional
+		/// Remove site ranges(s)
+		/// </param>
+		/// <param name="from">
+		/// Optional
+		/// Site range(s) to move
+		/// </param>
+		/// <param name="to">
+		/// Optional
+		/// Site range destination(s)
 		/// </param>
 		/// <param name="replace">
 		/// Optional
@@ -430,9 +467,18 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void resize_pblock(string add, string remove, string from, string to, string pblock, bool? replace = null, string locs = null, bool? quiet = null, bool? verbose = null)
+		public void resize_pblock(string pblock, string add = null, string remove = null, string from = null, string to = null, bool? replace = null, string locs = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("resize_pblock");
+			command.OptionalString("add", add);
+			command.OptionalString("remove", remove);
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.Flag("replace", replace);
+			command.OptionalString("locs", locs);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("pblock", pblock);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -471,6 +517,10 @@ namespace Quokka.TCL.Vivado
 		public void swap_locs(string aloc, string bloc, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("swap_locs");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("aloc", aloc);
+			command.RequiredString("bloc", bloc);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -502,6 +552,9 @@ namespace Quokka.TCL.Vivado
 		public void unplace_cell(string cell_list, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("unplace_cell");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("cell_list", cell_list);
 			_tcl.Add(command);
 		}
 	}

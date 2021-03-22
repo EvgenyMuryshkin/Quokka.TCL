@@ -46,6 +46,12 @@ namespace Quokka.TCL.Vivado
 		public void add_peripheral_interface(string interface_mode, string axi_type, string name, string peripheral, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("add_peripheral_interface");
+			command.RequiredString("interface_mode", interface_mode);
+			command.RequiredString("axi_type", axi_type);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("peripheral", peripheral);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -83,6 +89,10 @@ namespace Quokka.TCL.Vivado
 		public void compile_c(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("compile_c");
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -267,6 +277,34 @@ namespace Quokka.TCL.Vivado
 		public void config_ip_cache(string use_cache_location = null, bool? use_project_cache = null, bool? disable_cache = null, bool? clear_output_repo = null, bool? clear_local_cache = null, bool? cache_has_match = null, bool? cache_was_used = null, bool? get_id = null, bool? remove = null, string vlnv = null, bool? old_swvers = null, bool? unused = null, string swver = null, string num_days_old = null, string num_days_unused = null, bool? obs_synth_crc = null, bool? disk_usage_output_repo = null, bool? report = null, string rptfile = null, string csvfile = null, bool? import_from_project = null, string filter = null, bool? regexp = null, bool? nocase = null, bool? purge = null, bool? quiet = null, bool? verbose = null, string ip = null)
 		{
 			var command = new SimpleTCLCommand("config_ip_cache");
+			command.OptionalString("use_cache_location", use_cache_location);
+			command.Flag("use_project_cache", use_project_cache);
+			command.Flag("disable_cache", disable_cache);
+			command.Flag("clear_output_repo", clear_output_repo);
+			command.Flag("clear_local_cache", clear_local_cache);
+			command.Flag("cache_has_match", cache_has_match);
+			command.Flag("cache_was_used", cache_was_used);
+			command.Flag("get_id", get_id);
+			command.Flag("remove", remove);
+			command.OptionalString("vlnv", vlnv);
+			command.Flag("old_swvers", old_swvers);
+			command.Flag("unused", unused);
+			command.OptionalString("swver", swver);
+			command.OptionalString("num_days_old", num_days_old);
+			command.OptionalString("num_days_unused", num_days_unused);
+			command.Flag("obs_synth_crc", obs_synth_crc);
+			command.Flag("disk_usage_output_repo", disk_usage_output_repo);
+			command.Flag("report", report);
+			command.OptionalString("rptfile", rptfile);
+			command.OptionalString("csvfile", csvfile);
+			command.Flag("import_from_project", import_from_project);
+			command.OptionalString("filter", filter);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("purge", purge);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("ip", ip);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -330,6 +368,12 @@ namespace Quokka.TCL.Vivado
 		public void convert_ips(string objects, bool? force = null, bool? to_core_container = null, bool? from_core_container = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("convert_ips");
+			command.Flag("force", force);
+			command.Flag("to_core_container", to_core_container);
+			command.Flag("from_core_container", from_core_container);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -364,6 +408,11 @@ namespace Quokka.TCL.Vivado
 		public void copy_ip(string name, string objects, string dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("copy_ip");
+			command.RequiredString("name", name);
+			command.OptionalString("dir", dir);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -458,6 +507,18 @@ namespace Quokka.TCL.Vivado
 		public void create_ip(string module_name, string vlnv = null, string dir = null, bool? force = null, bool? allow_hidden = null, string vendor = null, string library = null, string name = null, string version = null, string revision = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_ip");
+			command.OptionalString("vlnv", vlnv);
+			command.RequiredString("module_name", module_name);
+			command.OptionalString("dir", dir);
+			command.Flag("force", force);
+			command.Flag("allow_hidden", allow_hidden);
+			command.OptionalString("vendor", vendor);
+			command.OptionalString("library", library);
+			command.OptionalString("name", name);
+			command.OptionalString("version", version);
+			command.OptionalString("revision", revision);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -498,6 +559,10 @@ namespace Quokka.TCL.Vivado
 		public void create_ip_run(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_ip_run");
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -542,6 +607,13 @@ namespace Quokka.TCL.Vivado
 		public void create_peripheral(string vendor, string library, string name, string version, string dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_peripheral");
+			command.OptionalString("dir", dir);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("vendor", vendor);
+			command.RequiredString("library", library);
+			command.RequiredString("name", name);
+			command.RequiredString("version", version);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -583,6 +655,10 @@ namespace Quokka.TCL.Vivado
 		public void delete_ip_run(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_ip_run");
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -632,6 +708,13 @@ namespace Quokka.TCL.Vivado
 		public void extract_files(string files, string base_dir = null, bool? force = null, bool? no_ip_dir = null, bool? no_paths = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("extract_files");
+			command.OptionalString("base_dir", base_dir);
+			command.Flag("force", force);
+			command.Flag("no_ip_dir", no_ip_dir);
+			command.Flag("no_paths", no_paths);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("files", files);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -682,6 +765,15 @@ namespace Quokka.TCL.Vivado
 		public void generate_peripheral(string peripheral, bool? driver = null, bool? example_design = null, bool? bfm_example_design = null, bool? debug_hw_example_design = null, bool? enable_interrupt = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("generate_peripheral");
+			command.Flag("driver", driver);
+			command.Flag("example_design", example_design);
+			command.Flag("bfm_example_design", bfm_example_design);
+			command.Flag("debug_hw_example_design", debug_hw_example_design);
+			command.Flag("enable_interrupt", enable_interrupt);
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("peripheral", peripheral);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -741,6 +833,11 @@ namespace Quokka.TCL.Vivado
 		public void generate_target(string name, string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("generate_target");
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -780,6 +877,10 @@ namespace Quokka.TCL.Vivado
 		public void get_ip_upgrade_results(string srcset = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			var command = new SimpleTCLCommand("get_ip_upgrade_results");
+			command.OptionalString("srcset", srcset);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -812,10 +913,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 788
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get the IPDefs of the objects specified: IP inst or XCI file.
-		/// </param>
 		/// <param name="name">
 		/// Optional
 		/// Match the pattern against IP display name instead of VLNV
@@ -831,6 +928,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get the IPDefs of the objects specified: IP inst or XCI file.
 		/// </param>
 		/// <param name="all">
 		/// Optional
@@ -851,9 +952,18 @@ namespace Quokka.TCL.Vivado
 		/// specified.
 		/// </param>
 		/// <returns>List of Catalog IP objects</returns>
-		public void get_ipdefs(string of_objects, bool? name = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? all = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_ipdefs(bool? name = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? all = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_ipdefs");
+			command.Flag("name", name);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("all", all);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -871,10 +981,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 792
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get 'ip' objects of these types: 'ip file'.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -895,6 +1001,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Exclude all IP owned by a block design.
 		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get 'ip' objects of these types: 'ip file'.
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -910,9 +1020,18 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>list of IP objects</returns>
-		public void get_ips(string of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? exclude_bd_ips = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_ips(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? exclude_bd_ips = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_ips");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("all", all);
+			command.OptionalString("filter", filter);
+			command.Flag("exclude_bd_ips", exclude_bd_ips);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -961,6 +1080,11 @@ namespace Quokka.TCL.Vivado
 		public void import_ip(string srcset = null, string name = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
 			var command = new SimpleTCLCommand("import_ip");
+			command.OptionalString("srcset", srcset);
+			command.OptionalString("name", name);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("files", files);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1003,6 +1127,12 @@ namespace Quokka.TCL.Vivado
 		public void open_example_project(string objects, string dir = null, bool? force = null, bool? in_process = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("open_example_project");
+			command.OptionalString("dir", dir);
+			command.Flag("force", force);
+			command.Flag("in_process", in_process);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1045,6 +1175,9 @@ namespace Quokka.TCL.Vivado
 		public void read_ip(string files, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("read_ip");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("files", files);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1116,6 +1249,14 @@ namespace Quokka.TCL.Vivado
 		public void report_ip_status(string name = null, string file = null, bool? append = null, bool? return_string = null, bool? license_status = null, bool? resource_data = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_ip_status");
+			command.OptionalString("name", name);
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("license_status", license_status);
+			command.Flag("resource_data", resource_data);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1150,6 +1291,10 @@ namespace Quokka.TCL.Vivado
 		public void reset_target(string name, string objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("reset_target");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1194,6 +1339,10 @@ namespace Quokka.TCL.Vivado
 		public void synth_ip(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("synth_ip");
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1226,12 +1375,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1738
 		/// </summary>
-		/// <param name="delete_mult_ip">
-		/// Required
-		/// Remove the specified IPs from the specified repository
-		/// Values: A list of IPs; either paths to the component.xml files
-		/// or their VLNVs
-		/// </param>
 		/// <param name="rebuild">
 		/// Optional
 		/// Trigger a rebuild of the specified repository's index file or
@@ -1247,6 +1390,12 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Remove the specified IP from the specified repository
 		/// Values: Either a path to the IP's component.xml or its VLNV
+		/// </param>
+		/// <param name="delete_mult_ip">
+		/// Optional
+		/// Remove the specified IPs from the specified repository
+		/// Values: A list of IPs; either paths to the component.xml files
+		/// or their VLNVs
 		/// </param>
 		/// <param name="disable_ip">
 		/// Optional
@@ -1288,9 +1437,21 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>True for success</returns>
-		public void update_ip_catalog(string delete_mult_ip, bool? rebuild = null, string add_ip = null, string delete_ip = null, string disable_ip = null, string enable_ip = null, string add_interface = null, bool? create_index = null, string repo_path = null, bool? update_module_ref = null, bool? quiet = null, bool? verbose = null)
+		public void update_ip_catalog(bool? rebuild = null, string add_ip = null, string delete_ip = null, string delete_mult_ip = null, string disable_ip = null, string enable_ip = null, string add_interface = null, bool? create_index = null, string repo_path = null, bool? update_module_ref = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("update_ip_catalog");
+			command.Flag("rebuild", rebuild);
+			command.OptionalString("add_ip", add_ip);
+			command.OptionalString("delete_ip", delete_ip);
+			command.OptionalString("delete_mult_ip", delete_mult_ip);
+			command.OptionalString("disable_ip", disable_ip);
+			command.OptionalString("enable_ip", enable_ip);
+			command.OptionalString("add_interface", add_interface);
+			command.Flag("create_index", create_index);
+			command.OptionalString("repo_path", repo_path);
+			command.Flag("update_module_ref", update_module_ref);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1325,6 +1486,9 @@ namespace Quokka.TCL.Vivado
 		public void update_module_reference(bool? quiet = null, bool? verbose = null, string ips = null)
 		{
 			var command = new SimpleTCLCommand("update_module_reference");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("ips", ips);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1384,6 +1548,12 @@ namespace Quokka.TCL.Vivado
 		public void upgrade_ip(string objects, string srcset = null, string vlnv = null, string log = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("upgrade_ip");
+			command.OptionalString("srcset", srcset);
+			command.OptionalString("vlnv", vlnv);
+			command.OptionalString("log", log);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1418,6 +1588,10 @@ namespace Quokka.TCL.Vivado
 		public void validate_ip(bool? save_ip = null, bool? quiet = null, bool? verbose = null, string ips = null)
 		{
 			var command = new SimpleTCLCommand("validate_ip");
+			command.Flag("save_ip", save_ip);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("ips", ips);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1472,6 +1646,15 @@ namespace Quokka.TCL.Vivado
 		public void write_ip_tcl(bool? force = null, bool? no_ip_version = null, string ip_name = null, bool? show_defaults = null, bool? multiple_files = null, bool? quiet = null, bool? verbose = null, string objects = null, string tcl_filename = null)
 		{
 			var command = new SimpleTCLCommand("write_ip_tcl");
+			command.Flag("force", force);
+			command.Flag("no_ip_version", no_ip_version);
+			command.OptionalString("ip_name", ip_name);
+			command.Flag("show_defaults", show_defaults);
+			command.Flag("multiple_files", multiple_files);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
+			command.OptionalString("tcl_filename", tcl_filename);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1498,6 +1681,9 @@ namespace Quokka.TCL.Vivado
 		public void write_peripheral(string peripheral, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("write_peripheral");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("peripheral", peripheral);
 			_tcl.Add(command);
 		}
 	}

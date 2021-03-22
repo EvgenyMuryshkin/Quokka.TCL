@@ -26,6 +26,10 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 458
 		/// </summary>
+		/// <param name="IDs">
+		/// Required
+		/// Match suggestion names against given names
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -34,13 +38,12 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="IDs">
-		/// Optional
-		/// Match suggestion names against given names
-		/// </param>
-		public void delete_qor_suggestions(bool? quiet = null, bool? verbose = null, string IDs = null)
+		public void delete_qor_suggestions(string IDs, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_qor_suggestions");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("IDs", IDs);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -86,6 +89,10 @@ namespace Quokka.TCL.Vivado
 		public void get_qor_suggestions(string filter = null, bool? quiet = null, bool? verbose = null, string IDs = null)
 		{
 			var command = new SimpleTCLCommand("get_qor_suggestions");
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("IDs", IDs);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -117,6 +124,9 @@ namespace Quokka.TCL.Vivado
 		public void read_qor_suggestions(string file, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("read_qor_suggestions");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -175,6 +185,11 @@ namespace Quokka.TCL.Vivado
 		public void report_qor_assessment(string file = null, string max_paths = null, bool? append = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_qor_assessment");
+			command.OptionalString("file", file);
+			command.OptionalString("max_paths", max_paths);
+			command.Flag("append", append);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -215,14 +230,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1395
 		/// </summary>
-		/// <param name="cell">
-		/// Required
-		/// Report QOR suggestions for a given cell
-		/// </param>
-		/// <param name="of_objects">
-		/// Required
-		/// List of QoR suggestion objects
-		/// </param>
 		/// <param name="file">
 		/// Optional
 		/// Filename to output results to. (send output to console if -file
@@ -263,6 +270,14 @@ namespace Quokka.TCL.Vivado
 		/// proj/rdi-xco/builds/HEAD/nightly/RUNNING_ BUILD/
 		/// packages/customer/vivado/data/deca/models_dir
 		/// </param>
+		/// <param name="cell">
+		/// Optional
+		/// Report QOR suggestions for a given cell
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// List of QoR suggestion objects
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -271,9 +286,22 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_qor_suggestions(string cell, string of_objects, string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? evaluate_pipelining = null, bool? no_split = null, string models_dir = null, bool? quiet = null, bool? verbose = null)
+		public void report_qor_suggestions(string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? evaluate_pipelining = null, bool? no_split = null, string models_dir = null, string cell = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_qor_suggestions");
+			command.OptionalString("file", file);
+			command.OptionalString("name", name);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.OptionalString("max_strategies", max_strategies);
+			command.OptionalString("max_paths", max_paths);
+			command.Flag("evaluate_pipelining", evaluate_pipelining);
+			command.Flag("no_split", no_split);
+			command.OptionalString("models_dir", models_dir);
+			command.OptionalString("cell", cell);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -307,10 +335,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1845
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// List of QoR suggestion objects
-		/// </param>
 		/// <param name="file">
 		/// Required
 		/// QoR suggestions file Values: A filename with alphanumeric
@@ -331,6 +355,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Overwrite existing suggestions file
 		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// List of QoR suggestion objects
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -339,9 +367,16 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void write_qor_suggestions(string of_objects, string file, string strategy_dir = null, string tcl_output_dir = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public void write_qor_suggestions(string file, string strategy_dir = null, string tcl_output_dir = null, bool? force = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("write_qor_suggestions");
+			command.OptionalString("strategy_dir", strategy_dir);
+			command.OptionalString("tcl_output_dir", tcl_output_dir);
+			command.Flag("force", force);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
 			_tcl.Add(command);
 		}
 	}

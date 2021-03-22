@@ -63,6 +63,13 @@ namespace Quokka.TCL.Vivado
 		public void convert_ngc(string files, string output_dir = null, string format = null, bool? add_to_project = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("convert_ngc");
+			command.OptionalString("output_dir", output_dir);
+			command.OptionalString("format", format);
+			command.Flag("add_to_project", add_to_project);
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("files", files);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -105,6 +112,11 @@ namespace Quokka.TCL.Vivado
 		public void copy_run(string name, string run, string parent_run = null, bool? verbose = null, bool? quiet = null)
 		{
 			var command = new SimpleTCLCommand("copy_run");
+			command.OptionalString("parent_run", parent_run);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.Flag("quiet", quiet);
+			command.RequiredString("run", run);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -182,6 +194,13 @@ namespace Quokka.TCL.Vivado
 		public void create_rqs_run(string dir, string new_name, string synth_name = null, string opt_more_options = null, string place_more_options = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_rqs_run");
+			command.RequiredString("dir", dir);
+			command.RequiredString("new_name", new_name);
+			command.OptionalString("synth_name", synth_name);
+			command.OptionalString("opt_more_options", opt_more_options);
+			command.OptionalString("place_more_options", place_more_options);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -223,6 +242,11 @@ namespace Quokka.TCL.Vivado
 		public void export_bd_synth(string file, bool? force = null, bool? keep = null, bool? verbose = null, bool? quiet = null)
 		{
 			var command = new SimpleTCLCommand("export_bd_synth");
+			command.Flag("force", force);
+			command.Flag("keep", keep);
+			command.Flag("verbose", verbose);
+			command.Flag("quiet", quiet);
+			command.RequiredString("file", file);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -354,6 +378,20 @@ namespace Quokka.TCL.Vivado
 		public void write_project_tcl(string file, string paths_relative_to = null, string origin_dir_override = null, string target_proj_dir = null, bool? force = null, bool? all_properties = null, bool? no_copy_sources = null, bool? no_ip_version = null, bool? absolute_path = null, bool? dump_project_info = null, bool? use_bd_files = null, bool? internal = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("write_project_tcl");
+			command.OptionalString("paths_relative_to", paths_relative_to);
+			command.OptionalString("origin_dir_override", origin_dir_override);
+			command.OptionalString("target_proj_dir", target_proj_dir);
+			command.Flag("force", force);
+			command.Flag("all_properties", all_properties);
+			command.Flag("no_copy_sources", no_copy_sources);
+			command.Flag("no_ip_version", no_ip_version);
+			command.Flag("absolute_path", absolute_path);
+			command.Flag("dump_project_info", dump_project_info);
+			command.Flag("use_bd_files", use_bd_files);
+			command.Flag("internal", internal);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
 			_tcl.Add(command);
 		}
 	}

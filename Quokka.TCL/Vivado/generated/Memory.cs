@@ -71,6 +71,12 @@ namespace Quokka.TCL.Vivado
 		public void implement_mig_cores(string outputdir = null, bool? rtlonly = null, bool? force = null, bool? debug_output = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("implement_mig_cores");
+			command.OptionalString("outputdir", outputdir);
+			command.Flag("rtlonly", rtlonly);
+			command.Flag("force", force);
+			command.Flag("debug_output", debug_output);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -108,6 +114,12 @@ namespace Quokka.TCL.Vivado
 		public void implement_xphy_cores(string outputdir = null, bool? rtlonly = null, bool? force = null, bool? debug_output = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("implement_xphy_cores");
+			command.OptionalString("outputdir", outputdir);
+			command.Flag("rtlonly", rtlonly);
+			command.Flag("force", force);
+			command.Flag("debug_output", debug_output);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -126,6 +138,8 @@ namespace Quokka.TCL.Vivado
 		public void refresh_meminit(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("refresh_meminit");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 	}

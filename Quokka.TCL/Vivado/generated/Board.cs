@@ -65,6 +65,11 @@ namespace Quokka.TCL.Vivado
 		public void apply_board_connection(string ip_intf, string diagram, string board_interface = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("apply_board_connection");
+			command.OptionalString("board_interface", board_interface);
+			command.RequiredString("ip_intf", ip_intf);
+			command.RequiredString("diagram", diagram);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -104,6 +109,8 @@ namespace Quokka.TCL.Vivado
 		public void current_board(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("current_board");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -144,6 +151,8 @@ namespace Quokka.TCL.Vivado
 		public void current_board_part(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("current_board_part");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -206,6 +215,14 @@ namespace Quokka.TCL.Vivado
 		public void get_board_bus_nets(string of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_board_bus_nets");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("all", all);
+			command.OptionalString("filter", filter);
+			command.RequiredString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -229,11 +246,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 590
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get 'board_bus' objects of these types: 'board
-		/// board_component board_bus_net'.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -250,6 +262,11 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Filter list with expression
 		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get 'board_bus' objects of these types: 'board
+		/// board_component board_bus_net'.
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -265,9 +282,17 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of buses in the board</returns>
-		public void get_board_buses(string of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_board_buses(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_board_buses");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("all", all);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -296,11 +321,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 593
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get 'board_component_interface' objects of these types:
-		/// 'board board_component'.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -317,6 +337,11 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Filter list with expression
 		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get 'board_component_interface' objects of these types:
+		/// 'board board_component'.
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -332,9 +357,17 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of bus interfaces</returns>
-		public void get_board_component_interfaces(string of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_board_component_interfaces(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_board_component_interfaces");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("all", all);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -397,6 +430,14 @@ namespace Quokka.TCL.Vivado
 		public void get_board_component_modes(string of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_board_component_modes");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("all", all);
+			command.OptionalString("filter", filter);
+			command.RequiredString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -455,6 +496,13 @@ namespace Quokka.TCL.Vivado
 		public void get_board_component_pins(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_board_component_pins");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.RequiredString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -475,11 +523,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 602
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get 'board_component' objects of these types: 'board
-		/// board_bus board_component_pin'.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -496,6 +539,11 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Filter list with expression
 		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get 'board_component' objects of these types: 'board
+		/// board_bus board_component_pin'.
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -511,9 +559,17 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of component objects</returns>
-		public void get_board_components(string of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_board_components(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_board_components");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("all", all);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -577,6 +633,13 @@ namespace Quokka.TCL.Vivado
 		public void get_board_interface_ports(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_board_interface_ports");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.RequiredString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -635,6 +698,13 @@ namespace Quokka.TCL.Vivado
 		public void get_board_ip_preferences(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_board_ip_preferences");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.RequiredString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -656,10 +726,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 611
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get 'board_jumper' objects of these types: 'board'.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -671,6 +737,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get 'board_jumper' objects of these types: 'board'.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -687,9 +757,16 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of jumpers in the board</returns>
-		public void get_board_jumpers(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_board_jumpers(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_board_jumpers");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -712,11 +789,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 614
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get 'board_parameter' objects of these types: 'board
-		/// board_component board_component_interface'.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -728,6 +800,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get 'board_parameter' objects of these types: 'board
+		/// board_component board_component_interface'.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -744,9 +821,16 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of parameters in the board</returns>
-		public void get_board_parameters(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_board_parameters(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_board_parameters");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -777,11 +861,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 617
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get 'board_component_interface' objects of these types:
-		/// 'board board_component'.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -793,6 +872,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get 'board_component_interface' objects of these types:
+		/// 'board board_component'.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -809,9 +893,16 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of bus interfaces</returns>
-		public void get_board_part_interfaces(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_board_part_interfaces(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_board_part_interfaces");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -861,11 +952,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 621
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get 'board_component_pin' objects of these types:
-		/// 'board_component_interface board_interface_port'.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -877,6 +963,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get 'board_component_pin' objects of these types:
+		/// 'board_component_interface board_interface_port'.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -893,9 +984,16 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of pins in the board_part</returns>
-		public void get_board_part_pins(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_board_part_pins(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_board_part_pins");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -961,6 +1059,14 @@ namespace Quokka.TCL.Vivado
 		public void get_board_parts(bool? regexp = null, bool? nocase = null, bool? latest_file_version = null, bool? latest_hw_revision = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_board_parts");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("latest_file_version", latest_file_version);
+			command.Flag("latest_hw_revision", latest_hw_revision);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -992,10 +1098,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 629
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get 'board' objects of these types: 'board_component'.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -1007,6 +1109,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get 'board' objects of these types: 'board_component'.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -1023,9 +1129,16 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>list of board objects</returns>
-		public void get_boards(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_boards(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_boards");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 	}

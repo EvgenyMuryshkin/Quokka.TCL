@@ -77,6 +77,16 @@ namespace Quokka.TCL.Vivado
 		public void create_gui_custom_command(string name, string menu_name = null, string description = null, bool? show_on_toolbar = null, string run_proc = null, string toolbar_icon = null, string command = null, string tcl_file = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_gui_custom_command");
+			command.RequiredString("name", name);
+			command.OptionalString("menu_name", menu_name);
+			command.OptionalString("description", description);
+			command.Flag("show_on_toolbar", show_on_toolbar);
+			command.OptionalString("run_proc", run_proc);
+			command.OptionalString("toolbar_icon", toolbar_icon);
+			command.OptionalString("command", command);
+			command.OptionalString("tcl_file", tcl_file);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -103,7 +113,7 @@ namespace Quokka.TCL.Vivado
 		/// Required
 		/// Unique name of the custom command argument to create.
 		/// </param>
-		/// <param name="default">
+		/// <param name="@default">
 		/// Optional
 		/// Default value of the custom command argument.
 		/// </param>
@@ -123,9 +133,16 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void create_gui_custom_command_arg(string command_name, string arg_name, string default = null, string comment = null, bool? optional = null, bool? quiet = null, bool? verbose = null)
+		public void create_gui_custom_command_arg(string command_name, string arg_name, string @default = null, string comment = null, bool? optional = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_gui_custom_command_arg");
+			command.RequiredString("command_name", command_name);
+			command.RequiredString("arg_name", arg_name);
+			command.OptionalString("default", @default);
+			command.OptionalString("comment", comment);
+			command.Flag("optional", optional);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -165,6 +182,8 @@ namespace Quokka.TCL.Vivado
 		public void endgroup(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("endgroup");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -210,6 +229,12 @@ namespace Quokka.TCL.Vivado
 		public void get_gui_custom_command_args(string command_name, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_gui_custom_command_args");
+			command.RequiredString("command_name", command_name);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -249,6 +274,11 @@ namespace Quokka.TCL.Vivado
 		public void get_gui_custom_commands(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_gui_custom_commands");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -268,13 +298,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 690
 		/// </summary>
-		/// <param name="rgb">
-		/// Required
-		/// RGB color index list
-		/// </param>
 		/// <param name="color_index">
 		/// Optional
 		/// Color index
+		/// </param>
+		/// <param name="rgb">
+		/// Optional
+		/// RGB color index list
 		/// </param>
 		/// <param name="color">
 		/// Optional
@@ -290,9 +320,14 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>list of highlighted objects</returns>
-		public void get_highlighted_objects(string rgb, string color_index = null, string color = null, bool? quiet = null, bool? verbose = null)
+		public void get_highlighted_objects(string color_index = null, string rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_highlighted_objects");
+			command.OptionalString("color_index", color_index);
+			command.OptionalString("rgb", rgb);
+			command.OptionalString("color", color);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -312,7 +347,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 807
 		/// </summary>
 		/// <param name="rgb">
-		/// Required
+		/// Optional
 		/// RGB color index list
 		/// </param>
 		/// <param name="color">
@@ -329,9 +364,13 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>list of marked objects</returns>
-		public void get_marked_objects(string rgb, string color = null, bool? quiet = null, bool? verbose = null)
+		public void get_marked_objects(string rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_marked_objects");
+			command.OptionalString("rgb", rgb);
+			command.OptionalString("color", color);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -372,6 +411,9 @@ namespace Quokka.TCL.Vivado
 		public void get_selected_objects(bool? primary = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_selected_objects");
+			command.Flag("primary", primary);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -391,10 +433,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 955
 		/// </summary>
-		/// <param name="rgb">
-		/// Required
-		/// RGB color index list
-		/// </param>
 		/// <param name="objects">
 		/// Required
 		/// Objects to highlight
@@ -402,6 +440,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="color_index">
 		/// Optional
 		/// Color index
+		/// </param>
+		/// <param name="rgb">
+		/// Optional
+		/// RGB color index list
 		/// </param>
 		/// <param name="color">
 		/// Optional
@@ -420,9 +462,16 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void highlight_objects(string rgb, string objects, string color_index = null, string color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null)
+		public void highlight_objects(string objects, string color_index = null, string rgb = null, string color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("highlight_objects");
+			command.OptionalString("color_index", color_index);
+			command.OptionalString("rgb", rgb);
+			command.OptionalString("color", color);
+			command.Flag("leaf_cells", leaf_cells);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -439,13 +488,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1039
 		/// </summary>
-		/// <param name="rgb">
-		/// Required
-		/// RGB color index list
-		/// </param>
 		/// <param name="objects">
 		/// Required
 		/// Objects to mark
+		/// </param>
+		/// <param name="rgb">
+		/// Optional
+		/// RGB color index list
 		/// </param>
 		/// <param name="color">
 		/// Optional
@@ -460,9 +509,14 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void mark_objects(string rgb, string objects, string color = null, bool? quiet = null, bool? verbose = null)
+		public void mark_objects(string objects, string rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("mark_objects");
+			command.OptionalString("rgb", rgb);
+			command.OptionalString("color", color);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -498,6 +552,9 @@ namespace Quokka.TCL.Vivado
 		public void redo(bool? list = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("redo");
+			command.Flag("list", list);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -535,6 +592,10 @@ namespace Quokka.TCL.Vivado
 		public void remove_gui_custom_command_args(string command_name, string names, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("remove_gui_custom_command_args");
+			command.RequiredString("command_name", command_name);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("names", names);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -564,6 +625,9 @@ namespace Quokka.TCL.Vivado
 		public void remove_gui_custom_commands(string names, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("remove_gui_custom_commands");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("names", names);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -602,6 +666,10 @@ namespace Quokka.TCL.Vivado
 		public void select_objects(string objects, bool? add = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("select_objects");
+			command.Flag("add", add);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -639,6 +707,10 @@ namespace Quokka.TCL.Vivado
 		public void show_objects(string objects, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("show_objects");
+			command.OptionalString("name", name);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -706,6 +778,14 @@ namespace Quokka.TCL.Vivado
 		public void show_schematic(string objects, bool? add = null, bool? remove = null, bool? regenerate = null, bool? pin_pairs = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("show_schematic");
+			command.Flag("add", add);
+			command.Flag("remove", remove);
+			command.Flag("regenerate", regenerate);
+			command.Flag("pin_pairs", pin_pairs);
+			command.OptionalString("name", name);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -727,6 +807,7 @@ namespace Quokka.TCL.Vivado
 		public void start_gui(bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("start_gui");
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -773,6 +854,9 @@ namespace Quokka.TCL.Vivado
 		public void startgroup(bool? try = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("startgroup");
+			command.Flag("try", try);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -793,6 +877,7 @@ namespace Quokka.TCL.Vivado
 		public void stop_gui(bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("stop_gui");
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -829,6 +914,9 @@ namespace Quokka.TCL.Vivado
 		public void undo(bool? list = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("undo");
+			command.Flag("list", list);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -846,13 +934,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1717
 		/// </summary>
-		/// <param name="rgb">
-		/// Required
-		/// RGB color index list
-		/// </param>
 		/// <param name="color_index">
 		/// Optional
 		/// Color index
+		/// </param>
+		/// <param name="rgb">
+		/// Optional
+		/// RGB color index list
 		/// </param>
 		/// <param name="color">
 		/// Optional
@@ -875,9 +963,16 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Objects to unhighlight
 		/// </param>
-		public void unhighlight_objects(string rgb, string color_index = null, string color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public void unhighlight_objects(string color_index = null, string rgb = null, string color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			var command = new SimpleTCLCommand("unhighlight_objects");
+			command.OptionalString("color_index", color_index);
+			command.OptionalString("rgb", rgb);
+			command.OptionalString("color", color);
+			command.Flag("leaf_cells", leaf_cells);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -897,7 +992,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1719
 		/// </summary>
 		/// <param name="rgb">
-		/// Required
+		/// Optional
 		/// RGB color index list
 		/// </param>
 		/// <param name="color">
@@ -917,9 +1012,14 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Objects to unmark
 		/// </param>
-		public void unmark_objects(string rgb, string color = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public void unmark_objects(string rgb = null, string color = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			var command = new SimpleTCLCommand("unmark_objects");
+			command.OptionalString("rgb", rgb);
+			command.OptionalString("color", color);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -954,6 +1054,9 @@ namespace Quokka.TCL.Vivado
 		public void unselect_objects(bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			var command = new SimpleTCLCommand("unselect_objects");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
 			_tcl.Add(command);
 		}
 	}

@@ -51,6 +51,12 @@ namespace Quokka.TCL.Vivado
 		public void get_simulators(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_simulators");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -95,6 +101,10 @@ namespace Quokka.TCL.Vivado
 		public void launch_chipscope_analyzer(string run = null, string csproject = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("launch_chipscope_analyzer");
+			command.OptionalString("run", run);
+			command.OptionalString("csproject", csproject);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -129,6 +139,10 @@ namespace Quokka.TCL.Vivado
 		public void launch_impact(string run = null, string ipf = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("launch_impact");
+			command.OptionalString("run", run);
+			command.OptionalString("ipf", ipf);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -190,11 +204,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 995
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Generate compile order file for this object (applicable with -
-		/// scripts_only option only)
-		/// </param>
 		/// <param name="step">
 		/// Optional
 		/// Launch a simulation step. Values: all, compile, elaborate,
@@ -217,6 +226,11 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Only generate scripts
 		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Generate compile order file for this object (applicable with -
+		/// scripts_only option only)
+		/// </param>
 		/// <param name="absolute_path">
 		/// Optional
 		/// Make design source file paths in 'absolute' format
@@ -237,9 +251,20 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void launch_simulation(string of_objects, string step = null, string simset = null, string mode = null, string type = null, bool? scripts_only = null, bool? absolute_path = null, string install_path = null, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
+		public void launch_simulation(string step = null, string simset = null, string mode = null, string type = null, bool? scripts_only = null, string of_objects = null, bool? absolute_path = null, string install_path = null, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("launch_simulation");
+			command.OptionalString("step", step);
+			command.OptionalString("simset", simset);
+			command.OptionalString("mode", mode);
+			command.OptionalString("type", type);
+			command.Flag("scripts_only", scripts_only);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("absolute_path", absolute_path);
+			command.OptionalString("install_path", install_path);
+			command.Flag("noclean_dir", noclean_dir);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 	}

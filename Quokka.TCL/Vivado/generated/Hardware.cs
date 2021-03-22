@@ -69,6 +69,11 @@ namespace Quokka.TCL.Vivado
 		public void add_hw_hbm_pc(string mc_num, string pc_num, string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("add_hw_hbm_pc");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("mc_num", mc_num);
+			command.RequiredString("pc_num", pc_num);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -122,10 +127,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 52
 		/// </summary>
-		/// <param name="dict">
-		/// Required
-		/// List of parameter name-value pairs.
-		/// </param>
 		/// <param name="name">
 		/// Required
 		/// Enumerated name.
@@ -142,6 +143,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Defer GUI update.
 		/// </param>
+		/// <param name="dict">
+		/// Optional
+		/// List of parameter name-value pairs.
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -150,9 +155,16 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void add_hw_probe_enum(string dict, string name, string value, string hw_probe, bool? no_gui_update = null, bool? quiet = null, bool? verbose = null)
+		public void add_hw_probe_enum(string name, string value, string hw_probe, bool? no_gui_update = null, string dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("add_hw_probe_enum");
+			command.Flag("no_gui_update", no_gui_update);
+			command.OptionalString("dict", dict);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("value", value);
+			command.RequiredString("hw_probe", hw_probe);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -193,6 +205,11 @@ namespace Quokka.TCL.Vivado
 		public void boot_hw_device(string hw_device, bool? disable_done_check = null, string timeout = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("boot_hw_device");
+			command.Flag("disable_done_check", disable_done_check);
+			command.OptionalString("timeout", timeout);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_device", hw_device);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -216,6 +233,8 @@ namespace Quokka.TCL.Vivado
 		public void close_hw_manager(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("close_hw_manager");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -248,6 +267,9 @@ namespace Quokka.TCL.Vivado
 		public void close_hw_target(bool? quiet = null, bool? verbose = null, string hw_target = null)
 		{
 			var command = new SimpleTCLCommand("close_hw_target");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_target", hw_target);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -284,6 +306,9 @@ namespace Quokka.TCL.Vivado
 		public void commit_hw_hbm(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("commit_hw_hbm");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -317,6 +342,9 @@ namespace Quokka.TCL.Vivado
 		public void commit_hw_mig(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("commit_hw_mig");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -352,6 +380,9 @@ namespace Quokka.TCL.Vivado
 		public void commit_hw_sio(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("commit_hw_sio");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -381,6 +412,9 @@ namespace Quokka.TCL.Vivado
 		public void commit_hw_sysmon(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("commit_hw_sysmon");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -415,6 +449,9 @@ namespace Quokka.TCL.Vivado
 		public void commit_hw_vio(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("commit_hw_vio");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -422,14 +459,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 171
 		/// </summary>
-		/// <param name="dict">
-		/// Required
-		/// list of name/value pairs of GT settings and values to use to
-		/// configure GTs
-		/// </param>
 		/// <param name="hw_device">
 		/// Required
 		/// hardware device object
+		/// </param>
+		/// <param name="dict">
+		/// Optional
+		/// list of name/value pairs of GT settings and values to use to
+		/// configure GTs
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -439,9 +476,13 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void config_hw_sio_gts(string dict, string hw_device, bool? quiet = null, bool? verbose = null)
+		public void config_hw_sio_gts(string hw_device, string dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("config_hw_sio_gts");
+			command.OptionalString("dict", dict);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_device", hw_device);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -495,6 +536,10 @@ namespace Quokka.TCL.Vivado
 		public void connect_hw_server(string url = null, string cs_url = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("connect_hw_server");
+			command.OptionalString("url", url);
+			command.OptionalString("cs_url", cs_url);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -574,6 +619,19 @@ namespace Quokka.TCL.Vivado
 		public void create_hw_axi_txn(string type, string name, string hw_axi, string address = null, string data = null, string size = null, string len = null, string burst = null, string cache = null, string id = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_hw_axi_txn");
+			command.OptionalString("address", address);
+			command.OptionalString("data", data);
+			command.OptionalString("size", size);
+			command.RequiredString("type", type);
+			command.OptionalString("len", len);
+			command.OptionalString("burst", burst);
+			command.OptionalString("cache", cache);
+			command.OptionalString("id", id);
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("hw_axi", hw_axi);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -602,6 +660,10 @@ namespace Quokka.TCL.Vivado
 		/// Required
 		/// Target hw_device connection
 		/// </param>
+		/// <param name="file">
+		/// Required
+		/// Bitstream filename
+		/// </param>
 		/// <param name="mask">
 		/// Optional
 		/// Mask file for hw device
@@ -622,13 +684,16 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// Bitstream filename
-		/// </param>
-		public void create_hw_bitstream(string hw_device, string mask = null, string nky = null, bool? detect_partial = null, bool? quiet = null, bool? verbose = null, string file = null)
+		public void create_hw_bitstream(string hw_device, string file, string mask = null, string nky = null, bool? detect_partial = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_hw_bitstream");
+			command.RequiredString("hw_device", hw_device);
+			command.OptionalString("mask", mask);
+			command.OptionalString("nky", nky);
+			command.Flag("detect_partial", detect_partial);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -675,6 +740,10 @@ namespace Quokka.TCL.Vivado
 		public void create_hw_cfgmem(string hw_device, string mem_device, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_hw_cfgmem");
+			command.RequiredString("hw_device", hw_device);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("mem_device", mem_device);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -768,6 +837,12 @@ namespace Quokka.TCL.Vivado
 		public void create_hw_device(string idcode = null, string irlength = null, string mask = null, string part = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_hw_device");
+			command.OptionalString("idcode", idcode);
+			command.OptionalString("irlength", irlength);
+			command.OptionalString("mask", mask);
+			command.OptionalString("part", part);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -826,6 +901,12 @@ namespace Quokka.TCL.Vivado
 		public void create_hw_probe(string name, string core, bool? no_gui_update = null, string map = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_hw_probe");
+			command.Flag("no_gui_update", no_gui_update);
+			command.OptionalString("map", map);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("core", core);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -869,6 +950,11 @@ namespace Quokka.TCL.Vivado
 		public void create_hw_sio_link(string description = null, bool? quiet = null, bool? verbose = null, string hw_sio_rx = null, string hw_sio_tx = null)
 		{
 			var command = new SimpleTCLCommand("create_hw_sio_link");
+			command.OptionalString("description", description);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_sio_rx", hw_sio_rx);
+			command.OptionalString("hw_sio_tx", hw_sio_tx);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -905,6 +991,10 @@ namespace Quokka.TCL.Vivado
 		public void create_hw_sio_linkgroup(string hw_sio_links, string description = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_hw_sio_linkgroup");
+			command.OptionalString("description", description);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_sio_links", hw_sio_links);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -952,6 +1042,12 @@ namespace Quokka.TCL.Vivado
 		public void create_hw_sio_scan(string scan_type, string hw_sio_object, string description = null, string link_settings = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_hw_sio_scan");
+			command.OptionalString("description", description);
+			command.OptionalString("link_settings", link_settings);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("scan_type", scan_type);
+			command.RequiredString("hw_sio_object", hw_sio_object);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1002,6 +1098,12 @@ namespace Quokka.TCL.Vivado
 		public void create_hw_sio_sweep(string scan_type, string description = null, string iteration_settings = null, bool? quiet = null, bool? verbose = null, string hw_sio_link = null)
 		{
 			var command = new SimpleTCLCommand("create_hw_sio_sweep");
+			command.OptionalString("description", description);
+			command.OptionalString("iteration_settings", iteration_settings);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("scan_type", scan_type);
+			command.OptionalString("hw_sio_link", hw_sio_link);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1071,6 +1173,10 @@ namespace Quokka.TCL.Vivado
 		public void create_hw_target(string target_name, string copy = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_hw_target");
+			command.OptionalString("copy", copy);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("target_name", target_name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1092,7 +1198,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 382
 		/// </summary>
 		/// <param name="hw_device">
-		/// Required
+		/// Optional
 		/// list of hardware devices
 		/// </param>
 		/// <param name="quiet">
@@ -1109,9 +1215,13 @@ namespace Quokka.TCL.Vivado
 		/// cfgmem
 		/// </param>
 		/// <returns>hardware cfgmem</returns>
-		public void current_hw_cfgmem(string hw_device, bool? quiet = null, bool? verbose = null, string hw_cfgmem = null)
+		public void current_hw_cfgmem(string hw_device = null, bool? quiet = null, bool? verbose = null, string hw_cfgmem = null)
 		{
 			var command = new SimpleTCLCommand("current_hw_cfgmem");
+			command.OptionalString("hw_device", hw_device);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_cfgmem", hw_cfgmem);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1163,6 +1273,9 @@ namespace Quokka.TCL.Vivado
 		public void current_hw_device(bool? quiet = null, bool? verbose = null, string hw_device = null)
 		{
 			var command = new SimpleTCLCommand("current_hw_device");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_device", hw_device);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1204,6 +1317,9 @@ namespace Quokka.TCL.Vivado
 		public void current_hw_ila(bool? quiet = null, bool? verbose = null, string hw_ila = null)
 		{
 			var command = new SimpleTCLCommand("current_hw_ila");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_ila", hw_ila);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1241,6 +1357,9 @@ namespace Quokka.TCL.Vivado
 		public void current_hw_ila_data(bool? quiet = null, bool? verbose = null, string hw_ila_data = null)
 		{
 			var command = new SimpleTCLCommand("current_hw_ila_data");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_ila_data", hw_ila_data);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1285,6 +1404,9 @@ namespace Quokka.TCL.Vivado
 		public void current_hw_server(bool? quiet = null, bool? verbose = null, string hw_server = null)
 		{
 			var command = new SimpleTCLCommand("current_hw_server");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_server", hw_server);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1333,6 +1455,9 @@ namespace Quokka.TCL.Vivado
 		public void current_hw_target(bool? quiet = null, bool? verbose = null, string hw_target = null)
 		{
 			var command = new SimpleTCLCommand("current_hw_target");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_target", hw_target);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1362,6 +1487,9 @@ namespace Quokka.TCL.Vivado
 		public void delete_hw_axi_txn(string hw_axi_txns, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_hw_axi_txn");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_axi_txns", hw_axi_txns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1374,7 +1502,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 436
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_bitstream' objects of these types: 'hw_device'.
 		/// </param>
 		/// <param name="quiet">
@@ -1386,9 +1514,12 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>hardware devices</returns>
-		public void delete_hw_bitstream(string of_objects, bool? quiet = null, bool? verbose = null)
+		public void delete_hw_bitstream(string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_hw_bitstream");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1413,6 +1544,9 @@ namespace Quokka.TCL.Vivado
 		public void delete_hw_cfgmem(string cfgmem, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_hw_cfgmem");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("cfgmem", cfgmem);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1442,6 +1576,9 @@ namespace Quokka.TCL.Vivado
 		public void delete_hw_probe(string hw_probes, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_hw_probe");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_probes", hw_probes);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1472,6 +1609,9 @@ namespace Quokka.TCL.Vivado
 		public void delete_hw_target(bool? quiet = null, bool? verbose = null, string target_object = null)
 		{
 			var command = new SimpleTCLCommand("delete_hw_target");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("target_object", target_object);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1510,6 +1650,9 @@ namespace Quokka.TCL.Vivado
 		public void detect_hw_sio_links(bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("detect_hw_sio_links");
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1539,6 +1682,9 @@ namespace Quokka.TCL.Vivado
 		public void disconnect_hw_server(bool? quiet = null, bool? verbose = null, string hw_server = null)
 		{
 			var command = new SimpleTCLCommand("disconnect_hw_server");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_server", hw_server);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1585,6 +1731,11 @@ namespace Quokka.TCL.Vivado
 		public void display_hw_ila_data(string wcfg = null, bool? reset = null, bool? quiet = null, bool? verbose = null, string hw_ila_data = null)
 		{
 			var command = new SimpleTCLCommand("display_hw_ila_data");
+			command.OptionalString("wcfg", wcfg);
+			command.Flag("reset", reset);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_ila_data", hw_ila_data);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1614,6 +1765,9 @@ namespace Quokka.TCL.Vivado
 		public void display_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("display_hw_sio_scan");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_sio_scans", hw_sio_scans);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1657,6 +1811,9 @@ namespace Quokka.TCL.Vivado
 		public void execute_hw_svf(string file_name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("execute_hw_svf");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file_name", file_name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1686,10 +1843,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 640
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get 'cfgmem_part' objects of these types: 'part hw_device'.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -1702,6 +1855,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get 'cfgmem_part' objects of these types: 'part hw_device'.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -1717,9 +1874,16 @@ namespace Quokka.TCL.Vivado
 		/// *
 		/// </param>
 		/// <returns>list of cfgmem_part objects</returns>
-		public void get_cfgmem_parts(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_cfgmem_parts(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_cfgmem_parts");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1745,7 +1909,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 692
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_axi_txn' objects of these types: 'hw_axi'.
 		/// </param>
 		/// <param name="regexp">
@@ -1774,9 +1938,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_axi_txn' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hw_axi_txns</returns>
-		public void get_hw_axi_txns(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_axi_txns(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_axi_txns");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1804,7 +1975,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 695
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_axi' objects of these types: 'hw_device'.
 		/// </param>
 		/// <param name="regexp">
@@ -1833,9 +2004,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_axi' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hw_axi</returns>
-		public void get_hw_axis(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_axis(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_axis");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1885,6 +2063,12 @@ namespace Quokka.TCL.Vivado
 		public void get_hw_cfgmems(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_cfgmems");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1907,7 +2091,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 701
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_ddrmc' objects of these types: 'hw_server
 		/// hw_target hw_device'.
 		/// </param>
@@ -1937,9 +2121,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_ddrmc' objects against patterns. Default: *
 		/// </param>
 		/// <returns>integrated and soft DDRMC cores</returns>
-		public void get_hw_ddrmcs(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_ddrmcs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_ddrmcs");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1953,7 +2144,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 704
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_device' objects of these types: 'hw_target'.
 		/// </param>
 		/// <param name="regexp">
@@ -1982,9 +2173,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_device' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hardware devices</returns>
-		public void get_hw_devices(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_devices(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_devices");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2009,7 +2207,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 707
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_hbm' objects of these types: 'hw_server hw_target
 		/// hw_device'.
 		/// </param>
@@ -2039,9 +2237,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_hbm' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hardware HBM cores</returns>
-		public void get_hw_hbms(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_hbms(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_hbms");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2060,7 +2265,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 710
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_ila_data' objects of these types: 'hw_ila hw_device'.
 		/// </param>
 		/// <param name="regexp">
@@ -2089,9 +2294,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_ila_data' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hardware ILA data</returns>
-		public void get_hw_ila_datas(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_ila_datas(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_ila_datas");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2134,7 +2346,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 713
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_ila' objects of these types: 'hw_device'.
 		/// </param>
 		/// <param name="regexp">
@@ -2163,9 +2375,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_ila' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hardware ILAs</returns>
-		public void get_hw_ilas(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_ilas(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_ilas");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2196,7 +2415,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 717
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_mig' objects of these types: 'hw_server hw_target
 		/// hw_device'.
 		/// </param>
@@ -2226,9 +2445,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_mig' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hardware migs cores</returns>
-		public void get_hw_migs(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_migs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_migs");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2255,7 +2481,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 721
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_probe' objects of these types: 'hw_interface hw_ila
 		/// hw_vio'.
 		/// </param>
@@ -2285,9 +2511,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_probe' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hardware probes</returns>
-		public void get_hw_probes(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_probes(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_probes");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2334,6 +2567,12 @@ namespace Quokka.TCL.Vivado
 		public void get_hw_servers(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_servers");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2353,7 +2592,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 728
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_sio_common' objects of these types: 'hw_server
 		/// hw_target hw_device hw_sio_ibert hw_sio_gtgroup
 		/// hw_sio_pll'.
@@ -2385,9 +2624,16 @@ namespace Quokka.TCL.Vivado
 		/// Default: *
 		/// </param>
 		/// <returns>hardware SIO GT commons</returns>
-		public void get_hw_sio_commons(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_sio_commons(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_sio_commons");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2410,7 +2656,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 731
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_sio_gtgroup' objects of these types: 'hw_server
 		/// hw_target hw_device hw_sio_ibert hw_sio_common
 		/// hw_sio_pll hw_sio_gt hw_sio_tx hw_sio_rx'.
@@ -2442,9 +2688,16 @@ namespace Quokka.TCL.Vivado
 		/// Default: *
 		/// </param>
 		/// <returns>hardware SIO GT groups.</returns>
-		public void get_hw_sio_gtgroups(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_sio_gtgroups(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_sio_gtgroups");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2467,7 +2720,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 735
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_sio_gt' objects of these types: 'hw_server hw_target
 		/// hw_device hw_sio_ibert hw_sio_gtgroup hw_sio_pll hw_sio_tx
 		/// hw_sio_rx hw_sio_link'.
@@ -2498,9 +2751,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_sio_gt' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hardware SIO GTs</returns>
-		public void get_hw_sio_gts(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_sio_gts(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_sio_gts");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2529,7 +2789,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 738
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_sio_ibert' objects of these types: 'hw_server
 		/// hw_target hw_device hw_sio_gtgroup hw_sio_gt
 		/// hw_sio_common hw_sio_pll hw_sio_tx hw_sio_rx hw_sio_link'.
@@ -2560,9 +2820,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_sio_ibert' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hardware SIO IBERT cores.</returns>
-		public void get_hw_sio_iberts(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_sio_iberts(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_sio_iberts");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2579,7 +2846,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 742
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_sio_linkgroup' objects of these types: 'hw_sio_link'.
 		/// </param>
 		/// <param name="regexp">
@@ -2609,9 +2876,16 @@ namespace Quokka.TCL.Vivado
 		/// Default: *
 		/// </param>
 		/// <returns>hardware SIO link groups</returns>
-		public void get_hw_sio_linkgroups(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_sio_linkgroups(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_sio_linkgroups");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2628,7 +2902,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 745
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_sio_link' objects of these types: 'hw_server
 		/// hw_target hw_device hw_sio_ibert hw_sio_gtgroup hw_sio_gt
 		/// hw_sio_tx hw_sio_rx hw_sio_linkgroup'.
@@ -2659,9 +2933,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_sio_link' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hardware SIO links</returns>
-		public void get_hw_sio_links(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_sio_links(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_sio_links");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2681,7 +2962,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 748
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_sio_pll' objects of these types: 'hw_server hw_target
 		/// hw_device hw_sio_ibert hw_sio_gtgroup hw_sio_gt
 		/// hw_sio_common'.
@@ -2712,9 +2993,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_sio_pll' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hardware SIO PLLs</returns>
-		public void get_hw_sio_plls(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_sio_plls(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_sio_plls");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2730,7 +3018,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 751
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_sio_rx' objects of these types: 'hw_server hw_target
 		/// hw_device hw_sio_ibert hw_sio_gtgroup hw_sio_gt
 		/// hw_sio_link'.
@@ -2761,9 +3049,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_sio_rx' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hardware SIO RXs</returns>
-		public void get_hw_sio_rxs(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_sio_rxs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_sio_rxs");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2778,7 +3073,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 754
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_sio_scan' objects of these types: 'hw_sio_rx
 		/// hw_sio_link hw_sio_sweep'.
 		/// </param>
@@ -2808,9 +3103,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_sio_scan' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hardware SIO scans</returns>
-		public void get_hw_sio_scans(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_sio_scans(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_sio_scans");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2832,7 +3134,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 757
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_sio_sweep' objects of these types: 'hw_sio_link
 		/// hw_sio_scan'.
 		/// </param>
@@ -2863,9 +3165,16 @@ namespace Quokka.TCL.Vivado
 		/// *
 		/// </param>
 		/// <returns>hardware SIO sweeps</returns>
-		public void get_hw_sio_sweeps(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_sio_sweeps(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_sio_sweeps");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2881,7 +3190,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 761
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_sio_tx' objects of these types: 'hw_server hw_target
 		/// hw_device hw_sio_ibert hw_sio_gtgroup hw_sio_gt
 		/// hw_sio_link'.
@@ -2912,9 +3221,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_sio_tx' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hardware SIO TXs</returns>
-		public void get_hw_sio_txs(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_sio_txs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_sio_txs");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2967,6 +3283,10 @@ namespace Quokka.TCL.Vivado
 		public void get_hw_sysmon_reg(string hw_sysmon, string hexaddress, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_sysmon_reg");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_sysmon", hw_sysmon);
+			command.RequiredString("hexaddress", hexaddress);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3000,7 +3320,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 767
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_sysmon' objects of these types: 'hw_server
 		/// hw_target hw_device'.
 		/// </param>
@@ -3030,9 +3350,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_sysmon' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hardware sysmons</returns>
-		public void get_hw_sysmons(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_sysmons(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_sysmons");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3056,7 +3383,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 771
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_target' objects of these types: 'hw_server'.
 		/// </param>
 		/// <param name="regexp">
@@ -3085,9 +3412,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_target' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hardware targets</returns>
-		public void get_hw_targets(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_targets(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_targets");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3112,7 +3446,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 774
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'hw_vio' objects of these types: 'hw_device'.
 		/// </param>
 		/// <param name="regexp">
@@ -3141,9 +3475,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'hw_vio' objects against patterns. Default: *
 		/// </param>
 		/// <returns>hardware VIOs</returns>
-		public void get_hw_vios(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_hw_vios(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_hw_vios");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3195,6 +3536,9 @@ namespace Quokka.TCL.Vivado
 		public void list_hw_samples(bool? quiet = null, bool? verbose = null, string hw_probe = null)
 		{
 			var command = new SimpleTCLCommand("list_hw_samples");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_probe", hw_probe);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3249,6 +3593,8 @@ namespace Quokka.TCL.Vivado
 		public void open_hw_manager(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("open_hw_manager");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3304,6 +3650,12 @@ namespace Quokka.TCL.Vivado
 		public void open_hw_target(string jtag_mode = null, string xvc_url = null, bool? auto_calibrate = null, bool? quiet = null, bool? verbose = null, string hw_target = null)
 		{
 			var command = new SimpleTCLCommand("open_hw_target");
+			command.OptionalString("jtag_mode", jtag_mode);
+			command.OptionalString("xvc_url", xvc_url);
+			command.Flag("auto_calibrate", auto_calibrate);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_target", hw_target);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3333,6 +3685,9 @@ namespace Quokka.TCL.Vivado
 		public void pause_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("pause_hw_hbm_amon");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3377,6 +3732,11 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1120
 		/// </summary>
+		/// <param name="hw_cfgmem">
+		/// Required
+		/// list of hardware cfgmems Default: current hardware
+		/// cfgmem
+		/// </param>
 		/// <param name="svf_file">
 		/// Optional
 		/// svf file to be generated
@@ -3397,14 +3757,15 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="hw_cfgmem">
-		/// Optional
-		/// list of hardware cfgmems Default: current hardware
-		/// cfgmem
-		/// </param>
-		public void program_hw_cfgmem(string svf_file = null, bool? force = null, bool? append = null, bool? quiet = null, bool? verbose = null, string hw_cfgmem = null)
+		public void program_hw_cfgmem(string hw_cfgmem, string svf_file = null, bool? force = null, bool? append = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("program_hw_cfgmem");
+			command.OptionalString("svf_file", svf_file);
+			command.Flag("force", force);
+			command.Flag("append", append);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_cfgmem", hw_cfgmem);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3535,6 +3896,25 @@ namespace Quokka.TCL.Vivado
 		public void program_hw_devices(string key = null, bool? clear = null, bool? skip_program_keys = null, bool? skip_program_rsa = null, string user_efuse = null, string user_efuse_128 = null, string control_efuse = null, string security_efuse = null, bool? only_export_efuse = null, string svf_file = null, string efuse_export_file = null, bool? disable_eos_check = null, bool? skip_reset = null, bool? force = null, bool? append = null, string type = null, bool? quiet = null, bool? verbose = null, string hw_device = null)
 		{
 			var command = new SimpleTCLCommand("program_hw_devices");
+			command.OptionalString("key", key);
+			command.Flag("clear", clear);
+			command.Flag("skip_program_keys", skip_program_keys);
+			command.Flag("skip_program_rsa", skip_program_rsa);
+			command.OptionalString("user_efuse", user_efuse);
+			command.OptionalString("user_efuse_128", user_efuse_128);
+			command.OptionalString("control_efuse", control_efuse);
+			command.OptionalString("security_efuse", security_efuse);
+			command.Flag("only_export_efuse", only_export_efuse);
+			command.OptionalString("svf_file", svf_file);
+			command.OptionalString("efuse_export_file", efuse_export_file);
+			command.Flag("disable_eos_check", disable_eos_check);
+			command.Flag("skip_reset", skip_reset);
+			command.Flag("force", force);
+			command.Flag("append", append);
+			command.OptionalString("type", type);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_device", hw_device);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3571,6 +3951,9 @@ namespace Quokka.TCL.Vivado
 		public void read_hw_ila_data(string file, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("read_hw_ila_data");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3609,6 +3992,10 @@ namespace Quokka.TCL.Vivado
 		public void read_hw_sio_scan(string file, bool? quiet = null, bool? verbose = null, string hw_sio_scan = null)
 		{
 			var command = new SimpleTCLCommand("read_hw_sio_scan");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
+			command.OptionalString("hw_sio_scan", hw_sio_scan);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3648,6 +4035,10 @@ namespace Quokka.TCL.Vivado
 		public void read_hw_sio_sweep(string directory, bool? quiet = null, bool? verbose = null, string hw_sio_sweep = null)
 		{
 			var command = new SimpleTCLCommand("read_hw_sio_sweep");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("directory", directory);
+			command.OptionalString("hw_sio_sweep", hw_sio_sweep);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3709,6 +4100,16 @@ namespace Quokka.TCL.Vivado
 		public void readback_hw_cfgmem(string file, bool? checksum = null, bool? force = null, bool? all = null, string offset = null, string format = null, string datacount = null, bool? quiet = null, bool? verbose = null, string hw_cfgmem = null)
 		{
 			var command = new SimpleTCLCommand("readback_hw_cfgmem");
+			command.Flag("checksum", checksum);
+			command.Flag("force", force);
+			command.Flag("all", all);
+			command.OptionalString("offset", offset);
+			command.RequiredString("file", file);
+			command.OptionalString("format", format);
+			command.OptionalString("datacount", datacount);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_cfgmem", hw_cfgmem);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3755,6 +4156,13 @@ namespace Quokka.TCL.Vivado
 		public void readback_hw_device(bool? force = null, bool? capture = null, string readback_file = null, string bin_file = null, bool? quiet = null, bool? verbose = null, string hw_device = null)
 		{
 			var command = new SimpleTCLCommand("readback_hw_device");
+			command.Flag("force", force);
+			command.Flag("capture", capture);
+			command.OptionalString("readback_file", readback_file);
+			command.OptionalString("bin_file", bin_file);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_device", hw_device);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3772,6 +4180,10 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1179
 		/// </summary>
+		/// <param name="hw_axis">
+		/// Required
+		/// List of hardware AXI objects.
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -3780,13 +4192,12 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="hw_axis">
-		/// Optional
-		/// List of hardware AXI objects.
-		/// </param>
-		public void refresh_hw_axi(bool? quiet = null, bool? verbose = null, string hw_axis = null)
+		public void refresh_hw_axi(string hw_axis, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("refresh_hw_axi");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_axis", hw_axis);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3812,10 +4223,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1181
 		/// </summary>
-		/// <param name="properties">
-		/// Required
-		/// List of properties to refresh Default: All properties in object
-		/// </param>
 		/// <param name="hw_objects">
 		/// Required
 		/// hardware DDRMC objects
@@ -3823,6 +4230,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="regexp">
 		/// Optional
 		/// Properties list contains full regular expressions
+		/// </param>
+		/// <param name="properties">
+		/// Optional
+		/// List of properties to refresh Default: All properties in object
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -3832,9 +4243,14 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void refresh_hw_ddrmc(string properties, string hw_objects, bool? regexp = null, bool? quiet = null, bool? verbose = null)
+		public void refresh_hw_ddrmc(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("refresh_hw_ddrmc");
+			command.Flag("regexp", regexp);
+			command.OptionalString("properties", properties);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3877,6 +4293,12 @@ namespace Quokka.TCL.Vivado
 		public void refresh_hw_device(string update_hw_probes = null, bool? disable_done_check = null, bool? force_poll = null, bool? quiet = null, bool? verbose = null, string hw_device = null)
 		{
 			var command = new SimpleTCLCommand("refresh_hw_device");
+			command.OptionalString("update_hw_probes", update_hw_probes);
+			command.Flag("disable_done_check", disable_done_check);
+			command.Flag("force_poll", force_poll);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_device", hw_device);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3904,10 +4326,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1185
 		/// </summary>
-		/// <param name="properties">
-		/// Required
-		/// List of properties to refresh Default: All properties in object
-		/// </param>
 		/// <param name="hw_objects">
 		/// Required
 		/// hardware objects
@@ -3915,6 +4333,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="regexp">
 		/// Optional
 		/// Properties list contains full regular expressions
+		/// </param>
+		/// <param name="properties">
+		/// Optional
+		/// List of properties to refresh Default: All properties in object
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -3924,9 +4346,14 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void refresh_hw_hbm(string properties, string hw_objects, bool? regexp = null, bool? quiet = null, bool? verbose = null)
+		public void refresh_hw_hbm(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("refresh_hw_hbm");
+			command.Flag("regexp", regexp);
+			command.OptionalString("properties", properties);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3946,10 +4373,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1187
 		/// </summary>
-		/// <param name="properties">
-		/// Required
-		/// List of properties to refresh Default: All properties in object
-		/// </param>
 		/// <param name="hw_objects">
 		/// Required
 		/// hardware objects
@@ -3957,6 +4380,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="regexp">
 		/// Optional
 		/// Properties list contains full regular expressions
+		/// </param>
+		/// <param name="properties">
+		/// Optional
+		/// List of properties to refresh Default: All properties in object
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -3966,9 +4393,14 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void refresh_hw_mig(string properties, string hw_objects, bool? regexp = null, bool? quiet = null, bool? verbose = null)
+		public void refresh_hw_mig(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("refresh_hw_mig");
+			command.Flag("regexp", regexp);
+			command.OptionalString("properties", properties);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3999,6 +4431,10 @@ namespace Quokka.TCL.Vivado
 		public void refresh_hw_server(bool? force_poll = null, bool? quiet = null, bool? verbose = null, string hw_server = null)
 		{
 			var command = new SimpleTCLCommand("refresh_hw_server");
+			command.Flag("force_poll", force_poll);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_server", hw_server);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4018,10 +4454,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1191
 		/// </summary>
-		/// <param name="properties">
-		/// Required
-		/// List of properties to refresh Default: All properties in object
-		/// </param>
 		/// <param name="hw_objects">
 		/// Required
 		/// hardware objects
@@ -4029,6 +4461,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="regexp">
 		/// Optional
 		/// Properties list contains full regular expressions
+		/// </param>
+		/// <param name="properties">
+		/// Optional
+		/// List of properties to refresh Default: All properties in object
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -4038,9 +4474,14 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void refresh_hw_sio(string properties, string hw_objects, bool? regexp = null, bool? quiet = null, bool? verbose = null)
+		public void refresh_hw_sio(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("refresh_hw_sio");
+			command.Flag("regexp", regexp);
+			command.OptionalString("properties", properties);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4060,10 +4501,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1193
 		/// </summary>
-		/// <param name="properties">
-		/// Required
-		/// List of properties to refresh Default: All properties in object
-		/// </param>
 		/// <param name="hw_objects">
 		/// Required
 		/// hardware objects
@@ -4071,6 +4508,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="regexp">
 		/// Optional
 		/// Properties list contains full regular expressions
+		/// </param>
+		/// <param name="properties">
+		/// Optional
+		/// List of properties to refresh Default: All properties in object
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -4080,9 +4521,14 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void refresh_hw_sysmon(string properties, string hw_objects, bool? regexp = null, bool? quiet = null, bool? verbose = null)
+		public void refresh_hw_sysmon(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("refresh_hw_sysmon");
+			command.Flag("regexp", regexp);
+			command.OptionalString("properties", properties);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4127,6 +4573,10 @@ namespace Quokka.TCL.Vivado
 		public void refresh_hw_target(bool? force_poll = null, bool? quiet = null, bool? verbose = null, string hw_target = null)
 		{
 			var command = new SimpleTCLCommand("refresh_hw_target");
+			command.Flag("force_poll", force_poll);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_target", hw_target);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4166,6 +4616,10 @@ namespace Quokka.TCL.Vivado
 		public void refresh_hw_vio(string hw_vios, bool? update_output_values = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("refresh_hw_vio");
+			command.Flag("update_output_values", update_output_values);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_vios", hw_vios);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4207,6 +4661,11 @@ namespace Quokka.TCL.Vivado
 		public void remove_hw_hbm_pc(string mc_num, string pc_num, string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("remove_hw_hbm_pc");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("mc_num", mc_num);
+			command.RequiredString("pc_num", pc_num);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4224,10 +4683,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1231
 		/// </summary>
-		/// <param name="list">
-		/// Required
-		/// List of enumerated names to remove.
-		/// </param>
 		/// <param name="hw_probe">
 		/// Required
 		/// ILA hardware probe object.
@@ -4235,6 +4690,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="no_gui_update">
 		/// Optional
 		/// Defer GUI update.
+		/// </param>
+		/// <param name="list">
+		/// Optional
+		/// List of enumerated names to remove.
 		/// </param>
 		/// <param name="remove_all">
 		/// Optional
@@ -4249,9 +4708,15 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void remove_hw_probe_enum(string list, string hw_probe, bool? no_gui_update = null, bool? remove_all = null, bool? quiet = null, bool? verbose = null)
+		public void remove_hw_probe_enum(string hw_probe, bool? no_gui_update = null, string list = null, bool? remove_all = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("remove_hw_probe_enum");
+			command.Flag("no_gui_update", no_gui_update);
+			command.OptionalString("list", list);
+			command.Flag("remove_all", remove_all);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_probe", hw_probe);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4282,6 +4747,9 @@ namespace Quokka.TCL.Vivado
 		public void remove_hw_sio_link(string hw_sio_links, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("remove_hw_sio_link");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_sio_links", hw_sio_links);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4314,6 +4782,9 @@ namespace Quokka.TCL.Vivado
 		public void remove_hw_sio_linkgroup(string hw_sio_linkgroups, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("remove_hw_sio_linkgroup");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_sio_linkgroups", hw_sio_linkgroups);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4339,6 +4810,9 @@ namespace Quokka.TCL.Vivado
 		public void remove_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("remove_hw_sio_scan");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_sio_scans", hw_sio_scans);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4364,6 +4838,9 @@ namespace Quokka.TCL.Vivado
 		public void remove_hw_sio_sweep(string hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("remove_hw_sio_sweep");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_sio_sweeps", hw_sio_sweeps);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4407,6 +4884,11 @@ namespace Quokka.TCL.Vivado
 		public void report_hw_axi_txn(string hw_axi_txns, string w = null, string t = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_hw_axi_txn");
+			command.OptionalString("w", w);
+			command.OptionalString("t", t);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_axi_txns", hw_axi_txns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4457,6 +4939,12 @@ namespace Quokka.TCL.Vivado
 		public void report_hw_ddrmc(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_hw_ddrmc");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4506,6 +4994,12 @@ namespace Quokka.TCL.Vivado
 		public void report_hw_mig(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_hw_mig");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4539,6 +5033,8 @@ namespace Quokka.TCL.Vivado
 		public void report_hw_targets(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_hw_targets");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4557,6 +5053,10 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1453
 		/// </summary>
+		/// <param name="hw_axis">
+		/// Required
+		/// List of hardware AXI objects.
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -4565,13 +5065,12 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="hw_axis">
-		/// Optional
-		/// List of hardware AXI objects.
-		/// </param>
-		public void reset_hw_axi(bool? quiet = null, bool? verbose = null, string hw_axis = null)
+		public void reset_hw_axi(string hw_axis, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("reset_hw_axi");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_axis", hw_axis);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4619,6 +5118,10 @@ namespace Quokka.TCL.Vivado
 		public void reset_hw_ila(string reset_compare_values = null, bool? quiet = null, bool? verbose = null, string hw_ilas = null)
 		{
 			var command = new SimpleTCLCommand("reset_hw_ila");
+			command.OptionalString("reset_compare_values", reset_compare_values);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_ilas", hw_ilas);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4651,6 +5154,9 @@ namespace Quokka.TCL.Vivado
 		public void reset_hw_vio_activity(string hw_vios, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("reset_hw_vio_activity");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_vios", hw_vios);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4685,6 +5191,9 @@ namespace Quokka.TCL.Vivado
 		public void reset_hw_vio_outputs(string hw_vios, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("reset_hw_vio_outputs");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_vios", hw_vios);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4714,6 +5223,9 @@ namespace Quokka.TCL.Vivado
 		public void resume_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("resume_hw_hbm_amon");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4745,6 +5257,10 @@ namespace Quokka.TCL.Vivado
 		public void run_hw_axi(string hw_axi_txns, bool? queue = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("run_hw_axi");
+			command.Flag("queue", queue);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_axi_txns", hw_axi_txns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4784,6 +5300,9 @@ namespace Quokka.TCL.Vivado
 		public void run_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("run_hw_hbm_amon");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4958,6 +5477,13 @@ namespace Quokka.TCL.Vivado
 		public void run_hw_ila(bool? trigger_now = null, bool? compile_only = null, string file = null, bool? force = null, bool? quiet = null, bool? verbose = null, string hw_ilas = null)
 		{
 			var command = new SimpleTCLCommand("run_hw_ila");
+			command.Flag("trigger_now", trigger_now);
+			command.Flag("compile_only", compile_only);
+			command.OptionalString("file", file);
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_ilas", hw_ilas);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4994,6 +5520,9 @@ namespace Quokka.TCL.Vivado
 		public void run_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("run_hw_sio_scan");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_sio_scans", hw_sio_scans);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5029,6 +5558,9 @@ namespace Quokka.TCL.Vivado
 		public void run_hw_sio_sweep(string hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("run_hw_sio_sweep");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_sio_sweeps", hw_sio_sweeps);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5077,14 +5609,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1528
 		/// </summary>
-		/// <param name="state">
-		/// Required
-		/// valid state path sequence to stable_state
-		/// </param>
 		/// <param name="stable_state">
 		/// Required
 		/// valid stable_state - valid stable states IDLE, RESET, IRPAUSE,
 		/// and DRPAUSE
+		/// </param>
+		/// <param name="state">
+		/// Optional
+		/// valid state path sequence to stable_state
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -5095,9 +5627,13 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>hardware JTAG</returns>
-		public void run_state_hw_jtag(string state, string stable_state, bool? quiet = null, bool? verbose = null)
+		public void run_state_hw_jtag(string stable_state, string state = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("run_state_hw_jtag");
+			command.OptionalString("state", state);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("stable_state", stable_state);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5157,6 +5693,13 @@ namespace Quokka.TCL.Vivado
 		public void runtest_hw_jtag(string wait_state = null, string end_state = null, string sec = null, string max_wait = null, string tck = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("runtest_hw_jtag");
+			command.OptionalString("wait_state", wait_state);
+			command.OptionalString("end_state", end_state);
+			command.OptionalString("sec", sec);
+			command.OptionalString("max_wait", max_wait);
+			command.OptionalString("tck", tck);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5231,6 +5774,13 @@ namespace Quokka.TCL.Vivado
 		public void scan_dr_hw_jtag(string length, string tdi = null, string tdo = null, string mask = null, string smask = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("scan_dr_hw_jtag");
+			command.OptionalString("tdi", tdi);
+			command.OptionalString("tdo", tdo);
+			command.OptionalString("mask", mask);
+			command.OptionalString("smask", smask);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("length", length);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5303,6 +5853,13 @@ namespace Quokka.TCL.Vivado
 		public void scan_ir_hw_jtag(string length, string tdi = null, string tdo = null, string mask = null, string smask = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("scan_ir_hw_jtag");
+			command.OptionalString("tdi", tdi);
+			command.OptionalString("tdo", tdo);
+			command.OptionalString("mask", mask);
+			command.OptionalString("smask", smask);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("length", length);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5355,6 +5912,11 @@ namespace Quokka.TCL.Vivado
 		public void set_hw_sysmon_reg(string hw_sysmon, string hexaddress, string hexdata, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_hw_sysmon_reg");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_sysmon", hw_sysmon);
+			command.RequiredString("hexaddress", hexaddress);
+			command.RequiredString("hexdata", hexdata);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5384,6 +5946,9 @@ namespace Quokka.TCL.Vivado
 		public void stop_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("stop_hw_hbm_amon");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5415,6 +5980,9 @@ namespace Quokka.TCL.Vivado
 		public void stop_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("stop_hw_sio_scan");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_sio_scans", hw_sio_scans);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5448,6 +6016,9 @@ namespace Quokka.TCL.Vivado
 		public void stop_hw_sio_sweep(string hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("stop_hw_sio_sweep");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_sio_sweeps", hw_sio_sweeps);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5498,6 +6069,15 @@ namespace Quokka.TCL.Vivado
 		public void update_hw_firmware(string file_path = null, string config_path = null, bool? skip_update = null, bool? reset = null, bool? format = null, bool? flash = null, bool? quiet = null, bool? verbose = null, string hw_server = null)
 		{
 			var command = new SimpleTCLCommand("update_hw_firmware");
+			command.OptionalString("file_path", file_path);
+			command.OptionalString("config_path", config_path);
+			command.Flag("skip_update", skip_update);
+			command.Flag("reset", reset);
+			command.Flag("format", format);
+			command.Flag("flash", flash);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_server", hw_server);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5531,6 +6111,11 @@ namespace Quokka.TCL.Vivado
 		public void update_hw_gpio(bool? quiet = null, bool? verbose = null, string output_enable_mask = null, string output_pin_values = null, string hw_server = null)
 		{
 			var command = new SimpleTCLCommand("update_hw_gpio");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("output_enable_mask", output_enable_mask);
+			command.OptionalString("output_pin_values", output_pin_values);
+			command.OptionalString("hw_server", hw_server);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5577,6 +6162,9 @@ namespace Quokka.TCL.Vivado
 		public void upload_hw_ila_data(bool? quiet = null, bool? verbose = null, string hw_ilas = null)
 		{
 			var command = new SimpleTCLCommand("upload_hw_ila_data");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_ilas", hw_ilas);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5629,6 +6217,13 @@ namespace Quokka.TCL.Vivado
 		public void verify_hw_devices(string key = null, string user_efuse = null, string control_efuse = null, string security_efuse = null, bool? verbose = null, bool? quiet = null, string hw_device = null)
 		{
 			var command = new SimpleTCLCommand("verify_hw_devices");
+			command.OptionalString("key", key);
+			command.OptionalString("user_efuse", user_efuse);
+			command.OptionalString("control_efuse", control_efuse);
+			command.OptionalString("security_efuse", security_efuse);
+			command.Flag("verbose", verbose);
+			command.Flag("quiet", quiet);
+			command.OptionalString("hw_device", hw_device);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5666,6 +6261,10 @@ namespace Quokka.TCL.Vivado
 		public void wait_on_hw_ila(string timeout = null, bool? quiet = null, bool? verbose = null, string hw_ilas = null)
 		{
 			var command = new SimpleTCLCommand("wait_on_hw_ila");
+			command.OptionalString("timeout", timeout);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hw_ilas", hw_ilas);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5700,6 +6299,10 @@ namespace Quokka.TCL.Vivado
 		public void wait_on_hw_sio_scan(string hw_sio_scans, string timeout = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("wait_on_hw_sio_scan");
+			command.OptionalString("timeout", timeout);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_sio_scans", hw_sio_scans);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5734,6 +6337,10 @@ namespace Quokka.TCL.Vivado
 		public void wait_on_hw_sio_sweep(string hw_sio_sweeps, string timeout = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("wait_on_hw_sio_sweep");
+			command.OptionalString("timeout", timeout);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_sio_sweeps", hw_sio_sweeps);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5788,6 +6395,14 @@ namespace Quokka.TCL.Vivado
 		public void write_hw_ila_data(string file, bool? force = null, bool? csv_file = null, bool? vcd_file = null, bool? legacy_csv_file = null, bool? quiet = null, bool? verbose = null, string hw_ila_data = null)
 		{
 			var command = new SimpleTCLCommand("write_hw_ila_data");
+			command.Flag("force", force);
+			command.Flag("csv_file", csv_file);
+			command.Flag("vcd_file", vcd_file);
+			command.Flag("legacy_csv_file", legacy_csv_file);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
+			command.OptionalString("hw_ila_data", hw_ila_data);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5827,6 +6442,11 @@ namespace Quokka.TCL.Vivado
 		public void write_hw_sio_scan(string file, string hw_sio_scan, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("write_hw_sio_scan");
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
+			command.RequiredString("hw_sio_scan", hw_sio_scan);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5869,6 +6489,11 @@ namespace Quokka.TCL.Vivado
 		public void write_hw_sio_sweep(string directory, string hw_sio_sweep, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("write_hw_sio_sweep");
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("directory", directory);
+			command.RequiredString("hw_sio_sweep", hw_sio_sweep);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5963,6 +6588,10 @@ namespace Quokka.TCL.Vivado
 		public void write_hw_svf(string file_name, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("write_hw_svf");
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file_name", file_name);
 			_tcl.Add(command);
 		}
 	}

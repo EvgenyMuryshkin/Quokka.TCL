@@ -63,6 +63,13 @@ namespace Quokka.TCL.Vivado
 		public void add_cells_to_pblock(string pblock, bool? top = null, bool? add_primitives = null, bool? clear_locs = null, bool? quiet = null, bool? verbose = null, string cells = null)
 		{
 			var command = new SimpleTCLCommand("add_cells_to_pblock");
+			command.Flag("top", top);
+			command.Flag("add_primitives", add_primitives);
+			command.Flag("clear_locs", clear_locs);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("pblock", pblock);
+			command.OptionalString("cells", cells);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -95,6 +102,8 @@ namespace Quokka.TCL.Vivado
 		public void all_clocks(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("all_clocks");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -129,6 +138,8 @@ namespace Quokka.TCL.Vivado
 		public void all_cpus(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("all_cpus");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -162,6 +173,8 @@ namespace Quokka.TCL.Vivado
 		public void all_dsps(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("all_dsps");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -227,6 +240,15 @@ namespace Quokka.TCL.Vivado
 		public void all_fanin(string to, bool? startpoints_only = null, bool? flat = null, bool? only_cells = null, string levels = null, string pin_levels = null, string trace_arcs = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("all_fanin");
+			command.Flag("startpoints_only", startpoints_only);
+			command.Flag("flat", flat);
+			command.Flag("only_cells", only_cells);
+			command.OptionalString("levels", levels);
+			command.OptionalString("pin_levels", pin_levels);
+			command.OptionalString("trace_arcs", trace_arcs);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("to", to);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -288,6 +310,15 @@ namespace Quokka.TCL.Vivado
 		public void all_fanout(string from, bool? endpoints_only = null, bool? flat = null, bool? only_cells = null, string levels = null, string pin_levels = null, string trace_arcs = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("all_fanout");
+			command.Flag("endpoints_only", endpoints_only);
+			command.Flag("flat", flat);
+			command.Flag("only_cells", only_cells);
+			command.OptionalString("levels", levels);
+			command.OptionalString("pin_levels", pin_levels);
+			command.OptionalString("trace_arcs", trace_arcs);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("from", from);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -329,6 +360,8 @@ namespace Quokka.TCL.Vivado
 		public void all_ffs(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("all_ffs");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -362,6 +395,8 @@ namespace Quokka.TCL.Vivado
 		public void all_hsios(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("all_hsios");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -397,6 +432,8 @@ namespace Quokka.TCL.Vivado
 		public void all_inputs(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("all_inputs");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -429,6 +466,8 @@ namespace Quokka.TCL.Vivado
 		public void all_latches(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("all_latches");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -460,6 +499,8 @@ namespace Quokka.TCL.Vivado
 		public void all_outputs(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("all_outputs");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -499,6 +540,8 @@ namespace Quokka.TCL.Vivado
 		public void all_rams(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("all_rams");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -526,15 +569,15 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 93
 		/// </summary>
 		/// <param name="clock">
-		/// Required
+		/// Optional
 		/// Consider registers of this clock
 		/// </param>
 		/// <param name="rise_clock">
-		/// Required
+		/// Optional
 		/// Consider registers triggered by clock rising edge
 		/// </param>
 		/// <param name="fall_clock">
-		/// Required
+		/// Optional
 		/// Consider registers triggered by clock falling edge
 		/// </param>
 		/// <param name="cells">
@@ -578,9 +621,22 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>list of cell or pin objects</returns>
-		public void all_registers(string clock, string rise_clock, string fall_clock, bool? cells = null, bool? data_pins = null, bool? clock_pins = null, bool? async_pins = null, bool? output_pins = null, bool? level_sensitive = null, bool? edge_triggered = null, bool? no_hierarchy = null, bool? quiet = null, bool? verbose = null)
+		public void all_registers(string clock = null, string rise_clock = null, string fall_clock = null, bool? cells = null, bool? data_pins = null, bool? clock_pins = null, bool? async_pins = null, bool? output_pins = null, bool? level_sensitive = null, bool? edge_triggered = null, bool? no_hierarchy = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("all_registers");
+			command.OptionalString("clock", clock);
+			command.OptionalString("rise_clock", rise_clock);
+			command.OptionalString("fall_clock", fall_clock);
+			command.Flag("cells", cells);
+			command.Flag("data_pins", data_pins);
+			command.Flag("clock_pins", clock_pins);
+			command.Flag("async_pins", async_pins);
+			command.Flag("output_pins", output_pins);
+			command.Flag("level_sensitive", level_sensitive);
+			command.Flag("edge_triggered", edge_triggered);
+			command.Flag("no_hierarchy", no_hierarchy);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -634,6 +690,10 @@ namespace Quokka.TCL.Vivado
 		public void connect_debug_cores(string master, string slaves, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("connect_debug_cores");
+			command.RequiredString("master", master);
+			command.RequiredString("slaves", slaves);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -687,6 +747,11 @@ namespace Quokka.TCL.Vivado
 		public void connect_debug_port(string port, string nets, string channel_start_index = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("connect_debug_port");
+			command.OptionalString("channel_start_index", channel_start_index);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("port", port);
+			command.RequiredString("nets", nets);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -731,13 +796,13 @@ namespace Quokka.TCL.Vivado
 		/// Required
 		/// Clock period: Value > 0
 		/// </param>
-		/// <param name="waveform">
-		/// Required
-		/// Clock edge specification
-		/// </param>
 		/// <param name="name">
 		/// Optional
 		/// Clock name
+		/// </param>
+		/// <param name="waveform">
+		/// Optional
+		/// Clock edge specification
 		/// </param>
 		/// <param name="add">
 		/// Optional
@@ -756,9 +821,16 @@ namespace Quokka.TCL.Vivado
 		/// List of clock source ports, pins or nets
 		/// </param>
 		/// <returns>new clock object</returns>
-		public void create_clock(string period, string waveform, string name = null, bool? add = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public void create_clock(string period, string name = null, string waveform = null, bool? add = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			var command = new SimpleTCLCommand("create_clock");
+			command.RequiredString("period", period);
+			command.OptionalString("name", name);
+			command.OptionalString("waveform", waveform);
+			command.Flag("add", add);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -847,6 +919,10 @@ namespace Quokka.TCL.Vivado
 		public void create_debug_core(string name, string type, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_debug_core");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("type", type);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -900,6 +976,10 @@ namespace Quokka.TCL.Vivado
 		public void create_debug_port(string name, string type, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_debug_port");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("type", type);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -958,22 +1038,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 267
 		/// </summary>
-		/// <param name="source">
-		/// Required
-		/// Master clock source object pin/port
-		/// </param>
-		/// <param name="edges">
-		/// Required
-		/// Edge Specification
-		/// </param>
-		/// <param name="edge_shift">
-		/// Required
-		/// Edge shift specification
-		/// </param>
-		/// <param name="master_clock">
-		/// Required
-		/// Use this clock if multiple clocks present at master pin
-		/// </param>
 		/// <param name="objects">
 		/// Required
 		/// List of clock source ports, pins, or nets
@@ -981,6 +1045,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="name">
 		/// Optional
 		/// Generated clock name
+		/// </param>
+		/// <param name="source">
+		/// Optional
+		/// Master clock source object pin/port
+		/// </param>
+		/// <param name="edges">
+		/// Optional
+		/// Edge Specification
 		/// </param>
 		/// <param name="divide_by">
 		/// Optional
@@ -1002,9 +1074,17 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Invert the signal
 		/// </param>
+		/// <param name="edge_shift">
+		/// Optional
+		/// Edge shift specification
+		/// </param>
 		/// <param name="add">
 		/// Optional
 		/// Add to the existing clock in source_objects
+		/// </param>
+		/// <param name="master_clock">
+		/// Optional
+		/// Use this clock if multiple clocks present at master pin
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -1015,9 +1095,23 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>new clock object</returns>
-		public void create_generated_clock(string source, string edges, string edge_shift, string master_clock, string objects, string name = null, string divide_by = null, string multiply_by = null, bool? combinational = null, string duty_cycle = null, bool? invert = null, bool? add = null, bool? quiet = null, bool? verbose = null)
+		public void create_generated_clock(string objects, string name = null, string source = null, string edges = null, string divide_by = null, string multiply_by = null, bool? combinational = null, string duty_cycle = null, bool? invert = null, string edge_shift = null, bool? add = null, string master_clock = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_generated_clock");
+			command.OptionalString("name", name);
+			command.OptionalString("source", source);
+			command.OptionalString("edges", edges);
+			command.OptionalString("divide_by", divide_by);
+			command.OptionalString("multiply_by", multiply_by);
+			command.Flag("combinational", combinational);
+			command.OptionalString("duty_cycle", duty_cycle);
+			command.Flag("invert", invert);
+			command.OptionalString("edge_shift", edge_shift);
+			command.Flag("add", add);
+			command.OptionalString("master_clock", master_clock);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1057,6 +1151,9 @@ namespace Quokka.TCL.Vivado
 		public void create_macro(string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_macro");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1100,6 +1197,9 @@ namespace Quokka.TCL.Vivado
 		public void create_pblock(string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_pblock");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1120,19 +1220,11 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 337
 		/// </summary>
-		/// <param name="enum_values">
-		/// Required
-		/// Enumeration values
-		/// </param>
-		/// <param name="file_types">
-		/// Required
-		/// File type extensions (without the dot)
-		/// </param>
 		/// <param name="name">
 		/// Required
 		/// Name of property to create
 		/// </param>
-		/// <param name="class">
+		/// <param name="@class">
 		/// Required
 		/// Object type to create property for; valid values are: design,
 		/// net, cell, pin, port, pblock, interface, fileset
@@ -1146,9 +1238,17 @@ namespace Quokka.TCL.Vivado
 		/// Type of property to create; valid values are: string, int, long,
 		/// double, bool, enum, file Default: string
 		/// </param>
+		/// <param name="enum_values">
+		/// Optional
+		/// Enumeration values
+		/// </param>
 		/// <param name="default_value">
 		/// Optional
 		/// Default value of type string
+		/// </param>
+		/// <param name="file_types">
+		/// Optional
+		/// File type extensions (without the dot)
 		/// </param>
 		/// <param name="display_text">
 		/// Optional
@@ -1163,9 +1263,19 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>The property that was created if success, "" if failure</returns>
-		public void create_property(string enum_values, string file_types, string name, string class, string description = null, string type = null, string default_value = null, string display_text = null, bool? quiet = null, bool? verbose = null)
+		public void create_property(string name, string @class, string description = null, string type = null, string enum_values = null, string default_value = null, string file_types = null, string display_text = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_property");
+			command.OptionalString("description", description);
+			command.OptionalString("type", type);
+			command.OptionalString("enum_values", enum_values);
+			command.OptionalString("default_value", default_value);
+			command.OptionalString("file_types", file_types);
+			command.OptionalString("display_text", display_text);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("class", @class);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1219,34 +1329,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 357
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// List of inserted message objects for which a DRC/
-		/// METHODOLOGY waiver will be set (i.e. %ELG, %SIG, etc. for
-		/// cells or nets, etc., sites, etc., or '*CELL', '*NET', '*SITE', etc.
-		/// as wildcards
-		/// </param>
-		/// <param name="from">
-		/// Required
-		/// List of source (driver) pins or ports (or '*PORT', '*PIN' as
-		/// wildcard) for which a CDC waiver will be set
-		/// </param>
-		/// <param name="to">
-		/// Required
-		/// List of target (load) pins or ports (or '*PORT', '*PIN' as
-		/// wildcard) for which a CDC waiver will be set
-		/// </param>
-		/// <param name="strings">
-		/// Required
-		/// List of inserted message string values for which a DRC/
-		/// METHODOLOGY waiver will be set (i.e. %STR for strings, or
-		/// '*' as wildcard)
-		/// </param>
-		/// <param name="of_objects">
-		/// Required
-		/// List of DRC/METHODOLOGY/CDC violation objects for which
-		/// waiver(s) will be set
-		/// </param>
 		/// <param name="description">
 		/// Required
 		/// Description string of the cause for the waiver
@@ -1259,6 +1341,34 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// ID of the DRC/METHODOLOGY/CDC message being waived,
 		/// not needed for -of_objects use
+		/// </param>
+		/// <param name="objects">
+		/// Optional
+		/// List of inserted message objects for which a DRC/
+		/// METHODOLOGY waiver will be set (i.e. %ELG, %SIG, etc. for
+		/// cells or nets, etc., sites, etc., or '*CELL', '*NET', '*SITE', etc.
+		/// as wildcards
+		/// </param>
+		/// <param name="from">
+		/// Optional
+		/// List of source (driver) pins or ports (or '*PORT', '*PIN' as
+		/// wildcard) for which a CDC waiver will be set
+		/// </param>
+		/// <param name="to">
+		/// Optional
+		/// List of target (load) pins or ports (or '*PORT', '*PIN' as
+		/// wildcard) for which a CDC waiver will be set
+		/// </param>
+		/// <param name="strings">
+		/// Optional
+		/// List of inserted message string values for which a DRC/
+		/// METHODOLOGY waiver will be set (i.e. %STR for strings, or
+		/// '*' as wildcard)
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// List of DRC/METHODOLOGY/CDC violation objects for which
+		/// waiver(s) will be set
 		/// </param>
 		/// <param name="user">
 		/// Optional
@@ -1290,9 +1400,23 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>waiver</returns>
-		public void create_waiver(string objects, string from, string to, string strings, string of_objects, string description, string type = null, string id = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
+		public void create_waiver(string description, string type = null, string id = null, string objects = null, string from = null, string to = null, string strings = null, string of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_waiver");
+			command.OptionalString("type", type);
+			command.OptionalString("id", id);
+			command.OptionalString("objects", objects);
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.OptionalString("strings", strings);
+			command.OptionalString("of_objects", of_objects);
+			command.OptionalString("user", user);
+			command.RequiredString("description", description);
+			command.OptionalString("tags", tags);
+			command.OptionalString("timestamp", timestamp);
+			command.Flag("scoped", scoped);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1326,6 +1450,9 @@ namespace Quokka.TCL.Vivado
 		public void current_design(bool? quiet = null, bool? verbose = null, string design = null)
 		{
 			var command = new SimpleTCLCommand("current_design");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("design", design);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1382,6 +1509,9 @@ namespace Quokka.TCL.Vivado
 		public void current_instance(bool? quiet = null, bool? verbose = null, string instance = null)
 		{
 			var command = new SimpleTCLCommand("current_instance");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("instance", instance);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1409,6 +1539,9 @@ namespace Quokka.TCL.Vivado
 		public void delete_macros(string macros, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_macros");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("macros", macros);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1441,6 +1574,10 @@ namespace Quokka.TCL.Vivado
 		public void delete_pblocks(string pblocks, bool? hier = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_pblocks");
+			command.Flag("hier", hier);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("pblocks", pblocks);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1490,6 +1627,12 @@ namespace Quokka.TCL.Vivado
 		public void filter(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string objects = null, string filter = null)
 		{
 			var command = new SimpleTCLCommand("filter");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
+			command.OptionalString("filter", filter);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1511,10 +1654,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 581
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get the bel_pin of these bels, sites, pins, or nets.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -1527,6 +1666,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get the bel_pin of these bels, sites, pins, or nets.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -1541,9 +1684,16 @@ namespace Quokka.TCL.Vivado
 		/// Match bel_pin against patterns Default: *
 		/// </param>
 		/// <returns>bel_pin</returns>
-		public void get_bel_pins(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_bel_pins(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_bel_pins");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1565,11 +1715,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 584
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get the bels of these slr, tiles, sites, cells, clock_regions or
-		/// nets.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -1582,6 +1727,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get the bels of these slr, tiles, sites, cells, clock_regions or
+		/// nets.
 		/// </param>
 		/// <param name="include_routing_bels">
 		/// Optional
@@ -1600,9 +1750,17 @@ namespace Quokka.TCL.Vivado
 		/// Match bels against patterns Default: *
 		/// </param>
 		/// <returns>bels</returns>
-		public void get_bels(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? include_routing_bels = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_bels(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_routing_bels = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_bels");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("include_routing_bels", include_routing_bels);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1660,11 +1818,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 635
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get cells of these pins, timing paths, nets, bels, clock
-		/// regions, sites, or drc violations
-		/// </param>
 		/// <param name="hsc">
 		/// Optional
 		/// Hierarchy separator Default: /
@@ -1685,6 +1838,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get cells of these pins, timing paths, nets, bels, clock
+		/// regions, sites, or drc violations
 		/// </param>
 		/// <param name="match_style">
 		/// Optional
@@ -1708,9 +1866,20 @@ namespace Quokka.TCL.Vivado
 		/// Match cell names against patterns Default: *
 		/// </param>
 		/// <returns>list of cell objects</returns>
-		public void get_cells(string of_objects, string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_cells(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_cells");
+			command.OptionalString("hsc", hsc);
+			command.Flag("hierarchical", hierarchical);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.OptionalString("match_style", match_style);
+			command.Flag("include_replicated_objects", include_replicated_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1737,10 +1906,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 647
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get clocks of these pins, nets, or cells
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -1753,6 +1918,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get clocks of these pins, nets, or cells
 		/// </param>
 		/// <param name="match_style">
 		/// Optional
@@ -1776,9 +1945,18 @@ namespace Quokka.TCL.Vivado
 		/// Match clock names against patterns Default: *
 		/// </param>
 		/// <returns>list of clocks</returns>
-		public void get_clocks(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, string match_style = null, bool? include_generated_clocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_clocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? include_generated_clocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_clocks");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.OptionalString("match_style", match_style);
+			command.Flag("include_generated_clocks", include_generated_clocks);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1804,13 +1982,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 653
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get cores of these debug ports or nets
-		/// </param>
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get cores of these debug ports or nets
 		/// </param>
 		/// <param name="regexp">
 		/// Optional
@@ -1834,9 +2012,16 @@ namespace Quokka.TCL.Vivado
 		/// Match debug cores against patterns Default: *
 		/// </param>
 		/// <returns>list of debug_core objects</returns>
-		public void get_debug_cores(string of_objects, string filter = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_debug_cores(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_debug_cores");
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1861,13 +2046,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 656
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get ports of these debug cores
-		/// </param>
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get ports of these debug cores
 		/// </param>
 		/// <param name="regexp">
 		/// Optional
@@ -1891,9 +2076,16 @@ namespace Quokka.TCL.Vivado
 		/// Match debug ports against patterns Default: *
 		/// </param>
 		/// <returns>list of debug_port objects</returns>
-		public void get_debug_ports(string of_objects, string filter = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_debug_ports(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_debug_ports");
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1914,10 +2106,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 682
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get generated clocks of these pins, ports or nets
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -1930,6 +2118,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get generated clocks of these pins, ports or nets
 		/// </param>
 		/// <param name="match_style">
 		/// Optional
@@ -1949,9 +2141,17 @@ namespace Quokka.TCL.Vivado
 		/// Match generated clock names against patterns Default: *
 		/// </param>
 		/// <returns>list of clocks</returns>
-		public void get_generated_clocks(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, string match_style = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_generated_clocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_generated_clocks");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.OptionalString("match_style", match_style);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1976,6 +2176,8 @@ namespace Quokka.TCL.Vivado
 		public void get_hierarchy_separator(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_hierarchy_separator");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1995,11 +2197,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 783
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get the iobanks of these package_pins, ports, clock regions,
-		/// slrs or sites.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -2012,6 +2209,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get the iobanks of these package_pins, ports, clock regions,
+		/// slrs or sites.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -2026,9 +2228,16 @@ namespace Quokka.TCL.Vivado
 		/// Match iobanks against patterns Default: *
 		/// </param>
 		/// <returns>iobanks</returns>
-		public void get_iobanks(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_iobanks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_iobanks");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2048,10 +2257,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 804
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get macros of these cells
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -2064,6 +2269,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get macros of these cells
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -2078,9 +2287,16 @@ namespace Quokka.TCL.Vivado
 		/// Match macro names against patterns Default: *
 		/// </param>
 		/// <returns>list of macro objects</returns>
-		public void get_macros(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_macros(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_macros");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2128,11 +2344,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 822
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get nets of these pins, ports, cells, timing paths or clocks,
-		/// drc violations
-		/// </param>
 		/// <param name="hsc">
 		/// Optional
 		/// Hierarchy separator Default: /
@@ -2153,6 +2364,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get nets of these pins, ports, cells, timing paths or clocks,
+		/// drc violations
 		/// </param>
 		/// <param name="match_style">
 		/// Optional
@@ -2188,9 +2404,22 @@ namespace Quokka.TCL.Vivado
 		/// Match net names against patterns Default: *
 		/// </param>
 		/// <returns>list of net objects</returns>
-		public void get_nets(string of_objects, string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, string match_style = null, bool? top_net_of_hierarchical_group = null, bool? segments = null, string boundary_type = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_nets(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? top_net_of_hierarchical_group = null, bool? segments = null, string boundary_type = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_nets");
+			command.OptionalString("hsc", hsc);
+			command.Flag("hierarchical", hierarchical);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.OptionalString("match_style", match_style);
+			command.Flag("top_net_of_hierarchical_group", top_net_of_hierarchical_group);
+			command.Flag("segments", segments);
+			command.OptionalString("boundary_type", boundary_type);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2211,21 +2440,9 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 827
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'node' objects of these types: 'net tile node bel_pin
 		/// site_pin wire pip speed_model'.
-		/// </param>
-		/// <param name="from">
-		/// Required
-		/// -from <pip/site pin> Return the nodes beginning at this pip
-		/// or site pin. May be used in combination with uphill. Default
-		/// is downhill. -all is implied.
-		/// </param>
-		/// <param name="to">
-		/// Required
-		/// -to <pip/site pin> Return the nodes ending at this wire or
-		/// site pin. May be used in combination with uphill. Default is
-		/// downhill. -all is implied.
 		/// </param>
 		/// <param name="regexp">
 		/// Optional
@@ -2254,6 +2471,18 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Get the nodes that fly over the given tile(s).
 		/// </param>
+		/// <param name="from">
+		/// Optional
+		/// -from <pip/site pin> Return the nodes beginning at this pip
+		/// or site pin. May be used in combination with uphill. Default
+		/// is downhill. -all is implied.
+		/// </param>
+		/// <param name="to">
+		/// Optional
+		/// -to <pip/site pin> Return the nodes ending at this wire or
+		/// site pin. May be used in combination with uphill. Default is
+		/// downhill. -all is implied.
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -2267,9 +2496,21 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'node' objects against patterns. Default: *
 		/// </param>
 		/// <returns>nodes</returns>
-		public void get_nodes(string of_objects, string from, string to, bool? regexp = null, bool? nocase = null, string filter = null, bool? uphill = null, bool? downhill = null, bool? flyover = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_nodes(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? uphill = null, bool? downhill = null, bool? flyover = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_nodes");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("uphill", uphill);
+			command.Flag("downhill", downhill);
+			command.Flag("flyover", flyover);
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2291,11 +2532,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 835
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get the list of package pin objects of these sites, bels,
-		/// iobanks, pkgpin_bytegroups, pkgpin_nibbles, or ports.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -2308,6 +2544,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get the list of package pin objects of these sites, bels,
+		/// iobanks, pkgpin_bytegroups, pkgpin_nibbles, or ports.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -2322,9 +2563,16 @@ namespace Quokka.TCL.Vivado
 		/// Match list of package pin objects against patterns Default: *
 		/// </param>
 		/// <returns>list of package pin objects</returns>
-		public void get_package_pins(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_package_pins(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_package_pins");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2373,6 +2621,11 @@ namespace Quokka.TCL.Vivado
 		public void get_path_groups(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_path_groups");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2396,10 +2649,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 848
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get Pblocks of these cells
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -2412,6 +2661,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get Pblocks of these cells
 		/// </param>
 		/// <param name="include_nested_pblock">
 		/// Optional
@@ -2430,9 +2683,17 @@ namespace Quokka.TCL.Vivado
 		/// Match Pblock names against patterns Default: *
 		/// </param>
 		/// <returns>list of Pblock objects</returns>
-		public void get_pblocks(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? include_nested_pblock = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_pblocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_nested_pblock = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_pblocks");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("include_nested_pblock", include_nested_pblock);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2484,11 +2745,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 851
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get pins of these cells, nets, timing paths, clocks, drc
-		/// violations
-		/// </param>
 		/// <param name="hsc">
 		/// Optional
 		/// Hierarchy separator Default: /
@@ -2514,6 +2770,11 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Filter list with expression
 		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get pins of these cells, nets, timing paths, clocks, drc
+		/// violations
+		/// </param>
 		/// <param name="match_style">
 		/// Optional
 		/// Style of pattern matching, valid values are ucf, sdc Default:
@@ -2537,9 +2798,21 @@ namespace Quokka.TCL.Vivado
 		/// Match pin names against patterns Default: *
 		/// </param>
 		/// <returns>list of pin objects</returns>
-		public void get_pins(string of_objects, string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, bool? leaf = null, string filter = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_pins(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, bool? leaf = null, string filter = null, string of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_pins");
+			command.OptionalString("hsc", hsc);
+			command.Flag("hierarchical", hierarchical);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("leaf", leaf);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.OptionalString("match_style", match_style);
+			command.Flag("include_replicated_objects", include_replicated_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2561,22 +2834,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 856
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get the pips of these sites, tiles, wires, nodes, pips, or nets.
-		/// </param>
-		/// <param name="from">
-		/// Required
-		/// -from <pip/site pin> Return the ordered list of pips
-		/// beginning at this pip or site pin. May be used in
-		/// combination with uphill. Default is downhill. -all is implied.
-		/// </param>
-		/// <param name="to">
-		/// Required
-		/// -to <pip/site pin> Return the ordered list of pips ending at
-		/// this wire or site pin. May be used in combination with uphill.
-		/// Default is downhill. -all is implied.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -2590,6 +2847,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Filter list with expression
 		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get the pips of these sites, tiles, wires, nodes, pips, or nets.
+		/// </param>
 		/// <param name="uphill">
 		/// Optional
 		/// Get the pips uphill from the provided wire or pip.
@@ -2597,6 +2858,18 @@ namespace Quokka.TCL.Vivado
 		/// <param name="downhill">
 		/// Optional
 		/// Get the pips downhill from the provided wire or pip.
+		/// </param>
+		/// <param name="from">
+		/// Optional
+		/// -from <pip/site pin> Return the ordered list of pips
+		/// beginning at this pip or site pin. May be used in
+		/// combination with uphill. Default is downhill. -all is implied.
+		/// </param>
+		/// <param name="to">
+		/// Optional
+		/// -to <pip/site pin> Return the ordered list of pips ending at
+		/// this wire or site pin. May be used in combination with uphill.
+		/// Default is downhill. -all is implied.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -2611,9 +2884,20 @@ namespace Quokka.TCL.Vivado
 		/// Match pips against patterns Default: *
 		/// </param>
 		/// <returns>pips</returns>
-		public void get_pips(string of_objects, string from, string to, bool? regexp = null, bool? nocase = null, string filter = null, bool? uphill = null, bool? downhill = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_pips(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? uphill = null, bool? downhill = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_pips");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("uphill", uphill);
+			command.Flag("downhill", downhill);
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2638,11 +2922,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 860
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get the pin_group of these package_pins, iobank, site, or
-		/// port.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -2655,6 +2934,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get the pin_group of these package_pins, iobank, site, or
+		/// port.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -2669,9 +2953,16 @@ namespace Quokka.TCL.Vivado
 		/// Match pin_group against patterns Default: *
 		/// </param>
 		/// <returns>pin_group</returns>
-		public void get_pkgpin_bytegroups(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_pkgpin_bytegroups(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_pkgpin_bytegroups");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2696,11 +2987,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 863
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get the pin_nibble of these package_pins, iobank, site, or
-		/// port.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -2713,6 +2999,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get the pin_nibble of these package_pins, iobank, site, or
+		/// port.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -2727,9 +3018,16 @@ namespace Quokka.TCL.Vivado
 		/// Match pin_nibble against patterns Default: *
 		/// </param>
 		/// <returns>pin_nibble</returns>
-		public void get_pkgpin_nibbles(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_pkgpin_nibbles(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_pkgpin_nibbles");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2759,11 +3057,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 866
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get ports of these nets, instances, sites, clocks, timing paths,
-		/// io standards, io banks, package pins, drc violations
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -2776,6 +3069,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get ports of these nets, instances, sites, clocks, timing paths,
+		/// io standards, io banks, package pins, drc violations
 		/// </param>
 		/// <param name="match_style">
 		/// Optional
@@ -2809,9 +3107,20 @@ namespace Quokka.TCL.Vivado
 		/// Match port names against patterns Default: *
 		/// </param>
 		/// <returns>list of port objects</returns>
-		public void get_ports(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, string match_style = null, bool? scoped_to_current_instance = null, bool? no_traverse = null, bool? prop_thru_buffers = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_ports(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? scoped_to_current_instance = null, bool? no_traverse = null, bool? prop_thru_buffers = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_ports");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.OptionalString("match_style", match_style);
+			command.Flag("scoped_to_current_instance", scoped_to_current_instance);
+			command.Flag("no_traverse", no_traverse);
+			command.Flag("prop_thru_buffers", prop_thru_buffers);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2850,7 +3159,7 @@ namespace Quokka.TCL.Vivado
 		/// Required
 		/// Name of property whose value is to be retrieved
 		/// </param>
-		/// <param name="object">
+		/// <param name="@object">
 		/// Required
 		/// Object to query for properties
 		/// </param>
@@ -2871,9 +3180,15 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>property value</returns>
-		public void get_property(string name, string object, bool? min = null, bool? max = null, bool? quiet = null, bool? verbose = null)
+		public void get_property(string name, string @object, bool? min = null, bool? max = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_property");
+			command.Flag("min", min);
+			command.Flag("max", max);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("object", @object);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2903,7 +3218,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 902
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'site_pin' objects of these types: 'site xdef_site node pin
 		/// net bel_pin'.
 		/// </param>
@@ -2933,9 +3248,16 @@ namespace Quokka.TCL.Vivado
 		/// Match the 'site_pin' objects against patterns. Default: *
 		/// </param>
 		/// <returns>site_pins</returns>
-		public void get_site_pins(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_site_pins(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_site_pins");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2957,10 +3279,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 905
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get the site_pips of these sites.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -2973,6 +3291,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get the site_pips of these sites.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -2987,9 +3309,16 @@ namespace Quokka.TCL.Vivado
 		/// Match site_pips against patterns Default: *
 		/// </param>
 		/// <returns>site_pips</returns>
-		public void get_site_pips(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_site_pips(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_site_pips");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3032,17 +3361,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 908
 		/// </summary>
-		/// <param name="range">
-		/// Required
-		/// Match site names which fall into the range. Range is defined
-		/// by exactly two site names.
-		/// </param>
-		/// <param name="of_objects">
-		/// Required
-		/// Get the sites of slrs, tiles, bels, pins, package_pins, ports,
-		/// pblocks, nets, site_types, io_banks, cells, clock_regions or
-		/// drc_violation
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -3055,6 +3373,17 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Perform case-insensitive matching. (valid only when -regexp
 		/// specified)
+		/// </param>
+		/// <param name="range">
+		/// Optional
+		/// Match site names which fall into the range. Range is defined
+		/// by exactly two site names.
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get the sites of slrs, tiles, bels, pins, package_pins, ports,
+		/// pblocks, nets, site_types, io_banks, cells, clock_regions or
+		/// drc_violation
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -3070,9 +3399,17 @@ namespace Quokka.TCL.Vivado
 		/// match on package pin names. Default: *
 		/// </param>
 		/// <returns>list of site objects</returns>
-		public void get_sites(string range, string of_objects, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_sites(bool? regexp = null, string filter = null, bool? nocase = null, string range = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_sites");
+			command.Flag("regexp", regexp);
+			command.OptionalString("filter", filter);
+			command.Flag("nocase", nocase);
+			command.OptionalString("range", range);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3097,11 +3434,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 912
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get the slr of these device, tiles, sites, bels, sitepins, belpins,
-		/// clock region, node, pip, pin, package pin, iobank, cell.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -3114,6 +3446,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get the slr of these device, tiles, sites, bels, sitepins, belpins,
+		/// clock region, node, pip, pin, package pin, iobank, cell.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -3128,9 +3465,16 @@ namespace Quokka.TCL.Vivado
 		/// Match slr against patterns Default: *
 		/// </param>
 		/// <returns>slr</returns>
-		public void get_slrs(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_slrs(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_slrs");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3177,7 +3521,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 915
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// Get 'speed_model' objects of these types: 'node bel pip
 		/// cell'.
 		/// </param>
@@ -3212,9 +3556,17 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>speed_models</returns>
-		public void get_speed_models(string of_objects, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, string speed_pattern = null, bool? quiet = null, bool? verbose = null)
+		public void get_speed_models(string of_objects = null, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, string speed_pattern = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_speed_models");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("patterns", patterns);
+			command.OptionalString("filter", filter);
+			command.OptionalString("speed_pattern", speed_pattern);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3236,11 +3588,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 922
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get the tiles of these slr, sites, bels, site_pins, bel_pins,
-		/// nodes, wires, pips, nets, clock_regions.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -3253,6 +3600,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get the tiles of these slr, sites, bels, site_pins, bel_pins,
+		/// nodes, wires, pips, nets, clock_regions.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -3267,9 +3619,16 @@ namespace Quokka.TCL.Vivado
 		/// Match tiles against patterns Default: *
 		/// </param>
 		/// <returns>tiles</returns>
-		public void get_tiles(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_tiles(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_tiles");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3301,20 +3660,20 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 925
 		/// </summary>
 		/// <param name="from">
-		/// Required
+		/// Optional
 		/// List of pin or ports
 		/// </param>
 		/// <param name="to">
-		/// Required
+		/// Optional
 		/// List of pin or ports
-		/// </param>
-		/// <param name="of_objects">
-		/// Required
-		/// Get timing arcs for these cells
 		/// </param>
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get timing arcs for these cells
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -3325,9 +3684,15 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>list of timing arc objects</returns>
-		public void get_timing_arcs(string from, string to, string of_objects, string filter = null, bool? quiet = null, bool? verbose = null)
+		public void get_timing_arcs(string from = null, string to = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_timing_arcs");
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3345,22 +3710,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 943
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get the wires of these tiles, nodes, pips, or nets.
-		/// </param>
-		/// <param name="from">
-		/// Required
-		/// -from <pip/site pin> Return the ordered list of wires
-		/// beginning at this pip or site pin. May be used in
-		/// combination with uphill. Default is downhill. -all is implied.
-		/// </param>
-		/// <param name="to">
-		/// Required
-		/// -to <pip/site pin> Return the ordered list of wires ending at
-		/// this wire or site pin. May be used in combination with uphill.
-		/// Default is downhill. -all is implied.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -3374,6 +3723,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Filter list with expression
 		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get the wires of these tiles, nodes, pips, or nets.
+		/// </param>
 		/// <param name="uphill">
 		/// Optional
 		/// Get the wires uphill from the provided pip.
@@ -3381,6 +3734,18 @@ namespace Quokka.TCL.Vivado
 		/// <param name="downhill">
 		/// Optional
 		/// Get the wires downhill from the provided pip.
+		/// </param>
+		/// <param name="from">
+		/// Optional
+		/// -from <pip/site pin> Return the ordered list of wires
+		/// beginning at this pip or site pin. May be used in
+		/// combination with uphill. Default is downhill. -all is implied.
+		/// </param>
+		/// <param name="to">
+		/// Optional
+		/// -to <pip/site pin> Return the ordered list of wires ending at
+		/// this wire or site pin. May be used in combination with uphill.
+		/// Default is downhill. -all is implied.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -3395,9 +3760,20 @@ namespace Quokka.TCL.Vivado
 		/// Match wires against patterns Default: *
 		/// </param>
 		/// <returns>wires</returns>
-		public void get_wires(string of_objects, string from, string to, bool? regexp = null, bool? nocase = null, string filter = null, bool? uphill = null, bool? downhill = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_wires(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? uphill = null, bool? downhill = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_wires");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("uphill", uphill);
+			command.Flag("downhill", downhill);
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3436,28 +3812,28 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 948
 		/// </summary>
 		/// <param name="name">
-		/// Required
+		/// Optional
 		/// The name of group, can be multiple names
-		/// </param>
-		/// <param name="from">
-		/// Required
-		/// Filter by paths starting at these path startpoints
-		/// </param>
-		/// <param name="to">
-		/// Required
-		/// Filter by paths terminating at these path endpoints
-		/// </param>
-		/// <param name="through">
-		/// Required
-		/// Consider paths through pins, cells or nets
 		/// </param>
 		/// <param name="weight">
 		/// Optional
 		/// Cost function Weight, Valid values are 1, 2 Default: 1.0
 		/// </param>
-		/// <param name="default">
+		/// <param name="@default">
 		/// Optional
 		/// Restore path to its default group
+		/// </param>
+		/// <param name="from">
+		/// Optional
+		/// Filter by paths starting at these path startpoints
+		/// </param>
+		/// <param name="to">
+		/// Optional
+		/// Filter by paths terminating at these path endpoints
+		/// </param>
+		/// <param name="through">
+		/// Optional
+		/// Consider paths through pins, cells or nets
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -3467,9 +3843,17 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void group_path(string name, string from, string to, string through, string weight = null, bool? default = null, bool? quiet = null, bool? verbose = null)
+		public void group_path(string name = null, string weight = null, bool? @default = null, string from = null, string to = null, string through = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("group_path");
+			command.OptionalString("name", name);
+			command.OptionalString("weight", weight);
+			command.Flag("default", @default);
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.OptionalString("through", through);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3501,6 +3885,9 @@ namespace Quokka.TCL.Vivado
 		public void make_diff_pair_ports(string ports, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("make_diff_pair_ports");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("ports", ports);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3535,6 +3922,10 @@ namespace Quokka.TCL.Vivado
 		public void remove_cells_from_pblock(string pblock, string cells, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("remove_cells_from_pblock");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("pblock", pblock);
+			command.RequiredString("cells", cells);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3559,7 +3950,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1471
 		/// </summary>
 		/// <param name="voltage">
-		/// Required
+		/// Optional
 		/// Resets voltage value. Supported voltage supplies vary by
 		/// family.
 		/// </param>
@@ -3623,9 +4014,25 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void reset_operating_conditions(string voltage, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, bool? quiet = null, bool? verbose = null)
+		public void reset_operating_conditions(string voltage = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("reset_operating_conditions");
+			command.OptionalString("voltage", voltage);
+			command.Flag("grade", grade);
+			command.Flag("process", process);
+			command.Flag("junction_temp", junction_temp);
+			command.Flag("ambient_temp", ambient_temp);
+			command.Flag("thetaja", thetaja);
+			command.Flag("thetasa", thetasa);
+			command.Flag("airflow", airflow);
+			command.Flag("heatsink", heatsink);
+			command.Flag("thetajb", thetajb);
+			command.Flag("board", board);
+			command.Flag("board_temp", board_temp);
+			command.Flag("board_layers", board_layers);
+			command.Flag("design_power_budget", design_power_budget);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3646,15 +4053,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1485
 		/// </summary>
+		/// <param name="@default">
+		/// Optional
+		/// Reset default static probability and default toggle rate
+		/// </param>
 		/// <param name="type">
-		/// Required
+		/// Optional
 		/// Specify nodes in a specific category. List of valid type values:
 		/// io_output, io_bidir_enable, register, lut_ram, lut, dsp,
 		/// bram_enable, bram_wr_enable, gt_txdata, gt_rxdata.
-		/// </param>
-		/// <param name="default">
-		/// Optional
-		/// Reset default static probability and default toggle rate
 		/// </param>
 		/// <param name="hier">
 		/// Optional
@@ -3682,9 +4089,17 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Objects to reset switching activity on
 		/// </param>
-		public void reset_switching_activity(string type, bool? default = null, bool? hier = null, bool? all = null, bool? no_deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public void reset_switching_activity(bool? @default = null, string type = null, bool? hier = null, bool? all = null, bool? no_deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			var command = new SimpleTCLCommand("reset_switching_activity");
+			command.Flag("default", @default);
+			command.OptionalString("type", type);
+			command.Flag("hier", hier);
+			command.Flag("all", all);
+			command.Flag("no_deassert_resets", no_deassert_resets);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3715,25 +4130,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1494
 		/// </summary>
-		/// <param name="add">
-		/// Required
-		/// Add site ranges(s)
-		/// </param>
-		/// <param name="remove">
-		/// Required
-		/// Remove site ranges(s)
-		/// </param>
-		/// <param name="from">
-		/// Required
-		/// Site range(s) to move
-		/// </param>
-		/// <param name="to">
-		/// Required
-		/// Site range destination(s)
-		/// </param>
 		/// <param name="pblock">
 		/// Required
 		/// Pblock to resize
+		/// </param>
+		/// <param name="add">
+		/// Optional
+		/// Add site ranges(s)
+		/// </param>
+		/// <param name="remove">
+		/// Optional
+		/// Remove site ranges(s)
+		/// </param>
+		/// <param name="from">
+		/// Optional
+		/// Site range(s) to move
+		/// </param>
+		/// <param name="to">
+		/// Optional
+		/// Site range destination(s)
 		/// </param>
 		/// <param name="replace">
 		/// Optional
@@ -3751,9 +4166,18 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void resize_pblock(string add, string remove, string from, string to, string pblock, bool? replace = null, string locs = null, bool? quiet = null, bool? verbose = null)
+		public void resize_pblock(string pblock, string add = null, string remove = null, string from = null, string to = null, bool? replace = null, string locs = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("resize_pblock");
+			command.OptionalString("add", add);
+			command.OptionalString("remove", remove);
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.Flag("replace", replace);
+			command.OptionalString("locs", locs);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("pblock", pblock);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3795,47 +4219,47 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1559
 		/// </summary>
-		/// <param name="from">
+		/// <param name="value">
 		/// Required
+		/// Constraint value
+		/// </param>
+		/// <param name="from">
+		/// Optional
 		/// List of path startpoints or clocks
 		/// </param>
 		/// <param name="rise_from">
-		/// Required
+		/// Optional
 		/// Apply to paths rising from the list of startpoints or clocks
 		/// </param>
 		/// <param name="fall_from">
-		/// Required
+		/// Optional
 		/// Apply to paths falling from the list of startpoints or clocks
 		/// </param>
 		/// <param name="to">
-		/// Required
+		/// Optional
 		/// List of path endpoints or clocks
 		/// </param>
 		/// <param name="rise_to">
-		/// Required
+		/// Optional
 		/// Apply to paths with rise transition at the list of endpoints or
 		/// clocks
 		/// </param>
 		/// <param name="fall_to">
-		/// Required
+		/// Optional
 		/// Apply to paths with fall transition at the list of endpoints or
 		/// clocks
 		/// </param>
 		/// <param name="through">
-		/// Required
+		/// Optional
 		/// List of through pins, cells or nets
 		/// </param>
 		/// <param name="rise_through">
-		/// Required
+		/// Optional
 		/// Apply to paths rising through pins, cells or nets
 		/// </param>
 		/// <param name="fall_through">
-		/// Required
+		/// Optional
 		/// Apply to paths falling through pins, cells or nets
-		/// </param>
-		/// <param name="value">
-		/// Required
-		/// Constraint value
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -3845,9 +4269,21 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_bus_skew(string from, string rise_from, string fall_from, string to, string rise_to, string fall_to, string through, string rise_through, string fall_through, string value, bool? quiet = null, bool? verbose = null)
+		public void set_bus_skew(string value, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_bus_skew");
+			command.OptionalString("from", from);
+			command.OptionalString("rise_from", rise_from);
+			command.OptionalString("fall_from", fall_from);
+			command.OptionalString("to", to);
+			command.OptionalString("rise_to", rise_to);
+			command.OptionalString("fall_to", fall_to);
+			command.OptionalString("through", through);
+			command.OptionalString("rise_through", rise_through);
+			command.OptionalString("fall_through", fall_through);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("value", value);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3891,6 +4327,10 @@ namespace Quokka.TCL.Vivado
 		public void set_case_analysis(string value, string objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_case_analysis");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("value", value);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3929,10 +4369,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1565
 		/// </summary>
-		/// <param name="group">
-		/// Required
-		/// Clocks List
-		/// </param>
 		/// <param name="name">
 		/// Optional
 		/// Name for clock grouping
@@ -3949,6 +4385,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Specify asynchronous clock groups
 		/// </param>
+		/// <param name="group">
+		/// Optional
+		/// Clocks List
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -3957,9 +4397,16 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_clock_groups(string group, string name = null, bool? logically_exclusive = null, bool? physically_exclusive = null, bool? asynchronous = null, bool? quiet = null, bool? verbose = null)
+		public void set_clock_groups(string name = null, bool? logically_exclusive = null, bool? physically_exclusive = null, bool? asynchronous = null, string group = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_clock_groups");
+			command.OptionalString("name", name);
+			command.Flag("logically_exclusive", logically_exclusive);
+			command.Flag("physically_exclusive", physically_exclusive);
+			command.Flag("asynchronous", asynchronous);
+			command.OptionalString("group", group);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3980,10 +4427,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1568
 		/// </summary>
-		/// <param name="clock">
-		/// Required
-		/// List of relative clocks
-		/// </param>
 		/// <param name="latency">
 		/// Required
 		/// Latency value
@@ -3991,6 +4434,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="objects">
 		/// Required
 		/// List of clocks, ports or pins
+		/// </param>
+		/// <param name="clock">
+		/// Optional
+		/// List of relative clocks
 		/// </param>
 		/// <param name="rise">
 		/// Optional
@@ -4028,9 +4475,21 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_clock_latency(string clock, string latency, string objects, bool? rise = null, bool? fall = null, bool? min = null, bool? max = null, bool? source = null, bool? late = null, bool? early = null, bool? quiet = null, bool? verbose = null)
+		public void set_clock_latency(string latency, string objects, string clock = null, bool? rise = null, bool? fall = null, bool? min = null, bool? max = null, bool? source = null, bool? late = null, bool? early = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_clock_latency");
+			command.OptionalString("clock", clock);
+			command.Flag("rise", rise);
+			command.Flag("fall", fall);
+			command.Flag("min", min);
+			command.Flag("max", max);
+			command.Flag("source", source);
+			command.Flag("late", late);
+			command.Flag("early", early);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("latency", latency);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4049,10 +4508,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1571
 		/// </summary>
-		/// <param name="clocks">
-		/// Required
-		/// List of clocks
-		/// </param>
 		/// <param name="pins">
 		/// Required
 		/// List of port and/or pins
@@ -4069,6 +4524,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Stop clock propagation from specified pins
 		/// </param>
+		/// <param name="clocks">
+		/// Optional
+		/// List of clocks
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -4077,9 +4536,16 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_clock_sense(string clocks, string pins, bool? positive = null, bool? negative = null, bool? stop_propagation = null, bool? quiet = null, bool? verbose = null)
+		public void set_clock_sense(string pins, bool? positive = null, bool? negative = null, bool? stop_propagation = null, string clocks = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_clock_sense");
+			command.Flag("positive", positive);
+			command.Flag("negative", negative);
+			command.Flag("stop_propagation", stop_propagation);
+			command.OptionalString("clocks", clocks);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("pins", pins);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4129,32 +4595,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1573
 		/// </summary>
-		/// <param name="from">
-		/// Required
-		/// Specify inter-clock uncertainty source clock
-		/// </param>
-		/// <param name="rise_from">
-		/// Required
-		/// Specify inter-clock uncertainty source clock with rising edge
-		/// </param>
-		/// <param name="fall_from">
-		/// Required
-		/// Specify inter-clock uncertainty source clock with falling edge
-		/// </param>
-		/// <param name="to">
-		/// Required
-		/// Specify inter-clock uncertainty destination clock
-		/// </param>
-		/// <param name="rise_to">
-		/// Required
-		/// Specify inter-clock uncertainty destination clock with rising
-		/// edge
-		/// </param>
-		/// <param name="fall_to">
-		/// Required
-		/// Specify inter-clock uncertainty destination clock with falling
-		/// edge
-		/// </param>
 		/// <param name="uncertainty">
 		/// Required
 		/// Uncertainty of clock network
@@ -4166,6 +4606,32 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hold">
 		/// Optional
 		/// Specify clock uncertainty for hold checks
+		/// </param>
+		/// <param name="from">
+		/// Optional
+		/// Specify inter-clock uncertainty source clock
+		/// </param>
+		/// <param name="rise_from">
+		/// Optional
+		/// Specify inter-clock uncertainty source clock with rising edge
+		/// </param>
+		/// <param name="fall_from">
+		/// Optional
+		/// Specify inter-clock uncertainty source clock with falling edge
+		/// </param>
+		/// <param name="to">
+		/// Optional
+		/// Specify inter-clock uncertainty destination clock
+		/// </param>
+		/// <param name="rise_to">
+		/// Optional
+		/// Specify inter-clock uncertainty destination clock with rising
+		/// edge
+		/// </param>
+		/// <param name="fall_to">
+		/// Optional
+		/// Specify inter-clock uncertainty destination clock with falling
+		/// edge
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -4179,9 +4645,21 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// List of clocks, ports or pins
 		/// </param>
-		public void set_clock_uncertainty(string from, string rise_from, string fall_from, string to, string rise_to, string fall_to, string uncertainty, bool? setup = null, bool? hold = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public void set_clock_uncertainty(string uncertainty, bool? setup = null, bool? hold = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			var command = new SimpleTCLCommand("set_clock_uncertainty");
+			command.Flag("setup", setup);
+			command.Flag("hold", hold);
+			command.OptionalString("from", from);
+			command.OptionalString("rise_from", rise_from);
+			command.OptionalString("fall_from", fall_from);
+			command.OptionalString("to", to);
+			command.OptionalString("rise_to", rise_to);
+			command.OptionalString("fall_to", fall_to);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("uncertainty", uncertainty);
+			command.OptionalString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4209,37 +4687,33 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1576
 		/// </summary>
-		/// <param name="from">
-		/// Required
-		/// From pin/port of data to data check
-		/// </param>
-		/// <param name="to">
-		/// Required
-		/// To pin/port of the data to data check
-		/// </param>
-		/// <param name="rise_from">
-		/// Required
-		/// Rise from pin/port of data to data check
-		/// </param>
-		/// <param name="fall_from">
-		/// Required
-		/// Fall from pin/port of data to data check
-		/// </param>
-		/// <param name="rise_to">
-		/// Required
-		/// Rise to pin/port of data to data check
-		/// </param>
-		/// <param name="fall_to">
-		/// Required
-		/// Fall to pin/port of data to data check
-		/// </param>
-		/// <param name="clock">
-		/// Required
-		/// Specify the clock domain at related pin/port of the checks
-		/// </param>
 		/// <param name="value">
 		/// Required
 		/// Setup or hold time of the defined checks
+		/// </param>
+		/// <param name="from">
+		/// Optional
+		/// From pin/port of data to data check
+		/// </param>
+		/// <param name="to">
+		/// Optional
+		/// To pin/port of the data to data check
+		/// </param>
+		/// <param name="rise_from">
+		/// Optional
+		/// Rise from pin/port of data to data check
+		/// </param>
+		/// <param name="fall_from">
+		/// Optional
+		/// Fall from pin/port of data to data check
+		/// </param>
+		/// <param name="rise_to">
+		/// Optional
+		/// Rise to pin/port of data to data check
+		/// </param>
+		/// <param name="fall_to">
+		/// Optional
+		/// Fall to pin/port of data to data check
 		/// </param>
 		/// <param name="setup">
 		/// Optional
@@ -4249,6 +4723,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Specify data check hold time
 		/// </param>
+		/// <param name="clock">
+		/// Optional
+		/// Specify the clock domain at related pin/port of the checks
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -4257,9 +4735,21 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_data_check(string from, string to, string rise_from, string fall_from, string rise_to, string fall_to, string clock, string value, bool? setup = null, bool? hold = null, bool? quiet = null, bool? verbose = null)
+		public void set_data_check(string value, string from = null, string to = null, string rise_from = null, string fall_from = null, string rise_to = null, string fall_to = null, bool? setup = null, bool? hold = null, string clock = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_data_check");
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.OptionalString("rise_from", rise_from);
+			command.OptionalString("fall_from", fall_from);
+			command.OptionalString("rise_to", rise_to);
+			command.OptionalString("fall_to", fall_to);
+			command.Flag("setup", setup);
+			command.Flag("hold", hold);
+			command.OptionalString("clock", clock);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("value", value);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4314,6 +4804,11 @@ namespace Quokka.TCL.Vivado
 		public void set_disable_timing(string objects, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_disable_timing");
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4370,6 +4865,14 @@ namespace Quokka.TCL.Vivado
 		public void set_external_delay(string from, string to, string delay_value, bool? min = null, bool? max = null, bool? add = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_external_delay");
+			command.RequiredString("from", from);
+			command.RequiredString("to", to);
+			command.Flag("min", min);
+			command.Flag("max", max);
+			command.Flag("add", add);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("delay_value", delay_value);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4389,44 +4892,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1585
 		/// </summary>
-		/// <param name="from">
-		/// Required
-		/// List of path startpoints or clocks
-		/// </param>
-		/// <param name="rise_from">
-		/// Required
-		/// Apply to paths rising from the list of startpoints or clocks
-		/// </param>
-		/// <param name="fall_from">
-		/// Required
-		/// Apply to paths falling from the list of startpoints or clocks
-		/// </param>
-		/// <param name="to">
-		/// Required
-		/// List of path endpoints or clocks
-		/// </param>
-		/// <param name="rise_to">
-		/// Required
-		/// Apply to paths with rise transition at the list of endpoints or
-		/// clocks
-		/// </param>
-		/// <param name="fall_to">
-		/// Required
-		/// Apply to paths with fall transition at the list of endpoints or
-		/// clocks
-		/// </param>
-		/// <param name="through">
-		/// Required
-		/// List of through pins, cells or nets
-		/// </param>
-		/// <param name="rise_through">
-		/// Required
-		/// Apply to paths rising through pins, cells or nets
-		/// </param>
-		/// <param name="fall_through">
-		/// Required
-		/// Apply to paths falling through pins, cells or nets
-		/// </param>
 		/// <param name="setup">
 		/// Optional
 		/// Eliminate setup timing analysis for paths
@@ -4447,6 +4912,44 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Reset this path before setting false path
 		/// </param>
+		/// <param name="from">
+		/// Optional
+		/// List of path startpoints or clocks
+		/// </param>
+		/// <param name="rise_from">
+		/// Optional
+		/// Apply to paths rising from the list of startpoints or clocks
+		/// </param>
+		/// <param name="fall_from">
+		/// Optional
+		/// Apply to paths falling from the list of startpoints or clocks
+		/// </param>
+		/// <param name="to">
+		/// Optional
+		/// List of path endpoints or clocks
+		/// </param>
+		/// <param name="rise_to">
+		/// Optional
+		/// Apply to paths with rise transition at the list of endpoints or
+		/// clocks
+		/// </param>
+		/// <param name="fall_to">
+		/// Optional
+		/// Apply to paths with fall transition at the list of endpoints or
+		/// clocks
+		/// </param>
+		/// <param name="through">
+		/// Optional
+		/// List of through pins, cells or nets
+		/// </param>
+		/// <param name="rise_through">
+		/// Optional
+		/// Apply to paths rising through pins, cells or nets
+		/// </param>
+		/// <param name="fall_through">
+		/// Optional
+		/// Apply to paths falling through pins, cells or nets
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -4455,9 +4958,25 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_false_path(string from, string rise_from, string fall_from, string to, string rise_to, string fall_to, string through, string rise_through, string fall_through, bool? setup = null, bool? hold = null, bool? rise = null, bool? fall = null, bool? reset_path = null, bool? quiet = null, bool? verbose = null)
+		public void set_false_path(bool? setup = null, bool? hold = null, bool? rise = null, bool? fall = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_false_path");
+			command.Flag("setup", setup);
+			command.Flag("hold", hold);
+			command.Flag("rise", rise);
+			command.Flag("fall", fall);
+			command.Flag("reset_path", reset_path);
+			command.OptionalString("from", from);
+			command.OptionalString("rise_from", rise_from);
+			command.OptionalString("fall_from", fall_from);
+			command.OptionalString("to", to);
+			command.OptionalString("rise_to", rise_to);
+			command.OptionalString("fall_to", fall_to);
+			command.OptionalString("through", through);
+			command.OptionalString("rise_through", rise_through);
+			command.OptionalString("fall_through", fall_through);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4488,6 +5007,9 @@ namespace Quokka.TCL.Vivado
 		public void set_hierarchy_separator(bool? quiet = null, bool? verbose = null, string separator = null)
 		{
 			var command = new SimpleTCLCommand("set_hierarchy_separator");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("separator", separator);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4542,14 +5064,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1593
 		/// </summary>
-		/// <param name="clock">
-		/// Required
-		/// Relative clock
-		/// </param>
-		/// <param name="reference_pin">
-		/// Required
-		/// Relative pin or port
-		/// </param>
 		/// <param name="delay">
 		/// Required
 		/// Delay value
@@ -4557,6 +5071,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="objects">
 		/// Required
 		/// List of ports
+		/// </param>
+		/// <param name="clock">
+		/// Optional
+		/// Relative clock
+		/// </param>
+		/// <param name="reference_pin">
+		/// Optional
+		/// Relative pin or port
 		/// </param>
 		/// <param name="clock_fall">
 		/// Optional
@@ -4598,9 +5120,23 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_input_delay(string clock, string reference_pin, string delay, string objects, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
+		public void set_input_delay(string delay, string objects, string clock = null, string reference_pin = null, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_input_delay");
+			command.OptionalString("clock", clock);
+			command.OptionalString("reference_pin", reference_pin);
+			command.Flag("clock_fall", clock_fall);
+			command.Flag("rise", rise);
+			command.Flag("fall", fall);
+			command.Flag("max", max);
+			command.Flag("min", min);
+			command.Flag("add_delay", add_delay);
+			command.Flag("network_latency_included", network_latency_included);
+			command.Flag("source_latency_included", source_latency_included);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("delay", delay);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4659,6 +5195,10 @@ namespace Quokka.TCL.Vivado
 		public void set_input_jitter(string clock, string input_jitter, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_input_jitter");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("clock", clock);
+			command.RequiredString("input_jitter", input_jitter);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4713,6 +5253,14 @@ namespace Quokka.TCL.Vivado
 		public void set_load(string capacitance, string objects, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_load");
+			command.Flag("rise", rise);
+			command.Flag("fall", fall);
+			command.Flag("max", max);
+			command.Flag("min", min);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("capacitance", capacitance);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4742,6 +5290,9 @@ namespace Quokka.TCL.Vivado
 		public void set_logic_dc(string objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_logic_dc");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4775,6 +5326,9 @@ namespace Quokka.TCL.Vivado
 		public void set_logic_one(string objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_logic_one");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4803,6 +5357,9 @@ namespace Quokka.TCL.Vivado
 		public void set_logic_unconnected(string objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_logic_unconnected");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4832,6 +5389,9 @@ namespace Quokka.TCL.Vivado
 		public void set_logic_zero(string objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_logic_zero");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4870,44 +5430,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1610
 		/// </summary>
-		/// <param name="from">
-		/// Required
-		/// List of path startpoints or clocks
-		/// </param>
-		/// <param name="rise_from">
-		/// Required
-		/// Apply to paths rising from the list of startpoints or clocks
-		/// </param>
-		/// <param name="fall_from">
-		/// Required
-		/// Apply to paths falling from the list of startpoints or clocks
-		/// </param>
-		/// <param name="to">
-		/// Required
-		/// List of path endpoints or clocks
-		/// </param>
-		/// <param name="rise_to">
-		/// Required
-		/// Apply to paths with rise transition at the list of endpoints or
-		/// clocks
-		/// </param>
-		/// <param name="fall_to">
-		/// Required
-		/// Apply to paths with fall transition at the list of endpoints or
-		/// clocks
-		/// </param>
-		/// <param name="through">
-		/// Required
-		/// List of through pins, cells or nets
-		/// </param>
-		/// <param name="rise_through">
-		/// Required
-		/// Apply to paths rising through pins, cells or nets
-		/// </param>
-		/// <param name="fall_through">
-		/// Required
-		/// Apply to paths falling through pins, cells or nets
-		/// </param>
 		/// <param name="delay">
 		/// Required
 		/// Delay value
@@ -4924,6 +5446,44 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Reset this path before setting max delay
 		/// </param>
+		/// <param name="from">
+		/// Optional
+		/// List of path startpoints or clocks
+		/// </param>
+		/// <param name="rise_from">
+		/// Optional
+		/// Apply to paths rising from the list of startpoints or clocks
+		/// </param>
+		/// <param name="fall_from">
+		/// Optional
+		/// Apply to paths falling from the list of startpoints or clocks
+		/// </param>
+		/// <param name="to">
+		/// Optional
+		/// List of path endpoints or clocks
+		/// </param>
+		/// <param name="rise_to">
+		/// Optional
+		/// Apply to paths with rise transition at the list of endpoints or
+		/// clocks
+		/// </param>
+		/// <param name="fall_to">
+		/// Optional
+		/// Apply to paths with fall transition at the list of endpoints or
+		/// clocks
+		/// </param>
+		/// <param name="through">
+		/// Optional
+		/// List of through pins, cells or nets
+		/// </param>
+		/// <param name="rise_through">
+		/// Optional
+		/// Apply to paths rising through pins, cells or nets
+		/// </param>
+		/// <param name="fall_through">
+		/// Optional
+		/// Apply to paths falling through pins, cells or nets
+		/// </param>
 		/// <param name="datapath_only">
 		/// Optional
 		/// Remove clock skew and jitter from calculation
@@ -4936,9 +5496,25 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_max_delay(string from, string rise_from, string fall_from, string to, string rise_to, string fall_to, string through, string rise_through, string fall_through, string delay, bool? rise = null, bool? fall = null, bool? reset_path = null, bool? datapath_only = null, bool? quiet = null, bool? verbose = null)
+		public void set_max_delay(string delay, bool? rise = null, bool? fall = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? datapath_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_max_delay");
+			command.Flag("rise", rise);
+			command.Flag("fall", fall);
+			command.Flag("reset_path", reset_path);
+			command.OptionalString("from", from);
+			command.OptionalString("rise_from", rise_from);
+			command.OptionalString("fall_from", fall_from);
+			command.OptionalString("to", to);
+			command.OptionalString("rise_to", rise_to);
+			command.OptionalString("fall_to", fall_to);
+			command.OptionalString("through", through);
+			command.OptionalString("rise_through", rise_through);
+			command.OptionalString("fall_through", fall_through);
+			command.Flag("datapath_only", datapath_only);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("delay", delay);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4976,6 +5552,10 @@ namespace Quokka.TCL.Vivado
 		public void set_max_time_borrow(string delay, string objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_max_time_borrow");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("delay", delay);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5001,44 +5581,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1616
 		/// </summary>
-		/// <param name="from">
-		/// Required
-		/// List of path startpoints or clocks
-		/// </param>
-		/// <param name="rise_from">
-		/// Required
-		/// Apply to paths rising from the list of startpoints or clocks
-		/// </param>
-		/// <param name="fall_from">
-		/// Required
-		/// Apply to paths falling from the list of startpoints or clocks
-		/// </param>
-		/// <param name="to">
-		/// Required
-		/// List of path endpoints or clocks
-		/// </param>
-		/// <param name="rise_to">
-		/// Required
-		/// Apply to paths with rise transition at the list of endpoints or
-		/// clocks
-		/// </param>
-		/// <param name="fall_to">
-		/// Required
-		/// Apply to paths with fall transition at the list of endpoints or
-		/// clocks
-		/// </param>
-		/// <param name="through">
-		/// Required
-		/// List of through pins, cells or nets
-		/// </param>
-		/// <param name="rise_through">
-		/// Required
-		/// Apply to paths rising through pins, cells or nets
-		/// </param>
-		/// <param name="fall_through">
-		/// Required
-		/// Apply to paths falling through pins, cells or nets
-		/// </param>
 		/// <param name="delay">
 		/// Required
 		/// Delay value
@@ -5055,6 +5597,44 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Reset this path before setting min delay
 		/// </param>
+		/// <param name="from">
+		/// Optional
+		/// List of path startpoints or clocks
+		/// </param>
+		/// <param name="rise_from">
+		/// Optional
+		/// Apply to paths rising from the list of startpoints or clocks
+		/// </param>
+		/// <param name="fall_from">
+		/// Optional
+		/// Apply to paths falling from the list of startpoints or clocks
+		/// </param>
+		/// <param name="to">
+		/// Optional
+		/// List of path endpoints or clocks
+		/// </param>
+		/// <param name="rise_to">
+		/// Optional
+		/// Apply to paths with rise transition at the list of endpoints or
+		/// clocks
+		/// </param>
+		/// <param name="fall_to">
+		/// Optional
+		/// Apply to paths with fall transition at the list of endpoints or
+		/// clocks
+		/// </param>
+		/// <param name="through">
+		/// Optional
+		/// List of through pins, cells or nets
+		/// </param>
+		/// <param name="rise_through">
+		/// Optional
+		/// Apply to paths rising through pins, cells or nets
+		/// </param>
+		/// <param name="fall_through">
+		/// Optional
+		/// Apply to paths falling through pins, cells or nets
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -5063,9 +5643,24 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_min_delay(string from, string rise_from, string fall_from, string to, string rise_to, string fall_to, string through, string rise_through, string fall_through, string delay, bool? rise = null, bool? fall = null, bool? reset_path = null, bool? quiet = null, bool? verbose = null)
+		public void set_min_delay(string delay, bool? rise = null, bool? fall = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_min_delay");
+			command.Flag("rise", rise);
+			command.Flag("fall", fall);
+			command.Flag("reset_path", reset_path);
+			command.OptionalString("from", from);
+			command.OptionalString("rise_from", rise_from);
+			command.OptionalString("fall_from", fall_from);
+			command.OptionalString("to", to);
+			command.OptionalString("rise_to", rise_to);
+			command.OptionalString("fall_to", fall_to);
+			command.OptionalString("through", through);
+			command.OptionalString("rise_through", rise_through);
+			command.OptionalString("fall_through", fall_through);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("delay", delay);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5118,44 +5713,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1625
 		/// </summary>
-		/// <param name="from">
-		/// Required
-		/// List of path startpoints or clocks
-		/// </param>
-		/// <param name="rise_from">
-		/// Required
-		/// Apply to paths rising from the list of startpoints or clocks
-		/// </param>
-		/// <param name="fall_from">
-		/// Required
-		/// Apply to paths falling from the list of startpoints or clocks
-		/// </param>
-		/// <param name="to">
-		/// Required
-		/// List of path endpoints or clocks
-		/// </param>
-		/// <param name="rise_to">
-		/// Required
-		/// Apply to paths with rise transition at the list of endpoints or
-		/// clocks
-		/// </param>
-		/// <param name="fall_to">
-		/// Required
-		/// Apply to paths with fall transition at the list of endpoints or
-		/// clocks
-		/// </param>
-		/// <param name="through">
-		/// Required
-		/// List of through pins, cells or nets
-		/// </param>
-		/// <param name="rise_through">
-		/// Required
-		/// Apply to paths rising through pins, cells or nets
-		/// </param>
-		/// <param name="fall_through">
-		/// Required
-		/// Apply to paths falling through pins, cells or nets
-		/// </param>
 		/// <param name="path_multiplier">
 		/// Required
 		/// Number of cycles
@@ -5188,6 +5745,44 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Reset this path before setting multicycle
 		/// </param>
+		/// <param name="from">
+		/// Optional
+		/// List of path startpoints or clocks
+		/// </param>
+		/// <param name="rise_from">
+		/// Optional
+		/// Apply to paths rising from the list of startpoints or clocks
+		/// </param>
+		/// <param name="fall_from">
+		/// Optional
+		/// Apply to paths falling from the list of startpoints or clocks
+		/// </param>
+		/// <param name="to">
+		/// Optional
+		/// List of path endpoints or clocks
+		/// </param>
+		/// <param name="rise_to">
+		/// Optional
+		/// Apply to paths with rise transition at the list of endpoints or
+		/// clocks
+		/// </param>
+		/// <param name="fall_to">
+		/// Optional
+		/// Apply to paths with fall transition at the list of endpoints or
+		/// clocks
+		/// </param>
+		/// <param name="through">
+		/// Optional
+		/// List of through pins, cells or nets
+		/// </param>
+		/// <param name="rise_through">
+		/// Optional
+		/// Apply to paths rising through pins, cells or nets
+		/// </param>
+		/// <param name="fall_through">
+		/// Optional
+		/// Apply to paths falling through pins, cells or nets
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -5196,9 +5791,28 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_multicycle_path(string from, string rise_from, string fall_from, string to, string rise_to, string fall_to, string through, string rise_through, string fall_through, string path_multiplier, bool? setup = null, bool? hold = null, bool? rise = null, bool? fall = null, bool? start = null, bool? end = null, bool? reset_path = null, bool? quiet = null, bool? verbose = null)
+		public void set_multicycle_path(string path_multiplier, bool? setup = null, bool? hold = null, bool? rise = null, bool? fall = null, bool? start = null, bool? end = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_multicycle_path");
+			command.Flag("setup", setup);
+			command.Flag("hold", hold);
+			command.Flag("rise", rise);
+			command.Flag("fall", fall);
+			command.Flag("start", start);
+			command.Flag("end", end);
+			command.Flag("reset_path", reset_path);
+			command.OptionalString("from", from);
+			command.OptionalString("rise_from", rise_from);
+			command.OptionalString("fall_from", fall_from);
+			command.OptionalString("to", to);
+			command.OptionalString("rise_to", rise_to);
+			command.OptionalString("fall_to", fall_to);
+			command.OptionalString("through", through);
+			command.OptionalString("rise_through", rise_through);
+			command.OptionalString("fall_through", fall_through);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("path_multiplier", path_multiplier);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5227,7 +5841,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1630
 		/// </summary>
 		/// <param name="voltage">
-		/// Required
+		/// Optional
 		/// List of voltage pairs, e.g., {name value}. Supported voltage
 		/// supplies vary by family.
 		/// </param>
@@ -5294,9 +5908,25 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_operating_conditions(string voltage, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, bool? quiet = null, bool? verbose = null)
+		public void set_operating_conditions(string voltage = null, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_operating_conditions");
+			command.OptionalString("voltage", voltage);
+			command.OptionalString("grade", grade);
+			command.OptionalString("process", process);
+			command.OptionalString("junction_temp", junction_temp);
+			command.OptionalString("ambient_temp", ambient_temp);
+			command.OptionalString("thetaja", thetaja);
+			command.OptionalString("thetasa", thetasa);
+			command.OptionalString("airflow", airflow);
+			command.OptionalString("heatsink", heatsink);
+			command.OptionalString("thetajb", thetajb);
+			command.OptionalString("board", board);
+			command.OptionalString("board_temp", board_temp);
+			command.OptionalString("board_layers", board_layers);
+			command.OptionalString("design_power_budget", design_power_budget);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5336,14 +5966,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1634
 		/// </summary>
-		/// <param name="clock">
-		/// Required
-		/// Relative clock
-		/// </param>
-		/// <param name="reference_pin">
-		/// Required
-		/// Relative pin or port
-		/// </param>
 		/// <param name="delay">
 		/// Required
 		/// Delay value
@@ -5351,6 +5973,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="objects">
 		/// Required
 		/// List of ports
+		/// </param>
+		/// <param name="clock">
+		/// Optional
+		/// Relative clock
+		/// </param>
+		/// <param name="reference_pin">
+		/// Optional
+		/// Relative pin or port
 		/// </param>
 		/// <param name="clock_fall">
 		/// Optional
@@ -5392,9 +6022,23 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_output_delay(string clock, string reference_pin, string delay, string objects, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
+		public void set_output_delay(string delay, string objects, string clock = null, string reference_pin = null, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_output_delay");
+			command.OptionalString("clock", clock);
+			command.OptionalString("reference_pin", reference_pin);
+			command.Flag("clock_fall", clock_fall);
+			command.Flag("rise", rise);
+			command.Flag("fall", fall);
+			command.Flag("max", max);
+			command.Flag("min", min);
+			command.Flag("add_delay", add_delay);
+			command.Flag("network_latency_included", network_latency_included);
+			command.Flag("source_latency_included", source_latency_included);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("delay", delay);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5440,6 +6084,11 @@ namespace Quokka.TCL.Vivado
 		public void set_package_pin_val(string column, string value, string package_pins, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_package_pin_val");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("column", column);
+			command.RequiredString("value", value);
+			command.RequiredString("package_pins", package_pins);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5479,20 +6128,20 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1644
 		/// </summary>
 		/// <param name="include_cells">
-		/// Required
+		/// Optional
 		/// Include only these instances for clock gating. Default: all
 		/// </param>
 		/// <param name="exclude_cells">
-		/// Required
+		/// Optional
 		/// Exclude these instances from clock gating. Default: none
 		/// </param>
 		/// <param name="clocks">
-		/// Required
+		/// Optional
 		/// Clock gate instances clocked by these clocks only. Default:
 		/// all clocks
 		/// </param>
 		/// <param name="cell_types">
-		/// Required
+		/// Optional
 		/// Clock gate these cell types only. Specify either [all|none], or
 		/// one or more of [bram|reg|srl]. Default: all
 		/// </param>
@@ -5504,9 +6153,15 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_power_opt(string include_cells, string exclude_cells, string clocks, string cell_types, bool? quiet = null, bool? verbose = null)
+		public void set_power_opt(string include_cells = null, string exclude_cells = null, string clocks = null, string cell_types = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_power_opt");
+			command.OptionalString("include_cells", include_cells);
+			command.OptionalString("exclude_cells", exclude_cells);
+			command.OptionalString("clocks", clocks);
+			command.OptionalString("cell_types", cell_types);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5538,6 +6193,9 @@ namespace Quokka.TCL.Vivado
 		public void set_propagated_clock(string objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_propagated_clock");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5607,10 +6265,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1649
 		/// </summary>
-		/// <param name="dict">
-		/// Required
-		/// list of name/value pairs of properties to set
-		/// </param>
 		/// <param name="name">
 		/// Required
 		/// Name of property to set. Not valid with -dict option
@@ -5623,6 +6277,10 @@ namespace Quokka.TCL.Vivado
 		/// Required
 		/// Objects to set properties on
 		/// </param>
+		/// <param name="dict">
+		/// Optional
+		/// list of name/value pairs of properties to set
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -5631,9 +6289,15 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_property(string dict, string name, string value, string objects, bool? quiet = null, bool? verbose = null)
+		public void set_property(string name, string value, string objects, string dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_property");
+			command.OptionalString("dict", dict);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("value", value);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5673,12 +6337,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1655
 		/// </summary>
-		/// <param name="type">
-		/// Required
-		/// Specify nodes in a specific category. List of valid type values:
-		/// io_output, io_bidir_enable, register, lut_ram, lut, dsp,
-		/// bram_enable, bram_wr_enable, gt_txdata, gt_rxdata.
-		/// </param>
 		/// <param name="toggle_rate">
 		/// Optional
 		/// Toggle rate (%) is the rate at which the output of
@@ -5698,6 +6356,12 @@ namespace Quokka.TCL.Vivado
 		/// specified by the user, simulation data or constraints of the
 		/// design. Valid values are: 0 <= value < 200. The default value
 		/// is 12.5. Default: 12.5
+		/// </param>
+		/// <param name="type">
+		/// Optional
+		/// Specify nodes in a specific category. List of valid type values:
+		/// io_output, io_bidir_enable, register, lut_ram, lut, dsp,
+		/// bram_enable, bram_wr_enable, gt_txdata, gt_rxdata.
 		/// </param>
 		/// <param name="all">
 		/// Optional
@@ -5746,9 +6410,21 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Objects to set switching activity on
 		/// </param>
-		public void set_switching_activity(string type, string toggle_rate = null, string default_toggle_rate = null, bool? all = null, string static_probability = null, string default_static_probability = null, string signal_rate = null, bool? hier = null, bool? deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public void set_switching_activity(string toggle_rate = null, string default_toggle_rate = null, string type = null, bool? all = null, string static_probability = null, string default_static_probability = null, string signal_rate = null, bool? hier = null, bool? deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			var command = new SimpleTCLCommand("set_switching_activity");
+			command.OptionalString("toggle_rate", toggle_rate);
+			command.OptionalString("default_toggle_rate", default_toggle_rate);
+			command.OptionalString("type", type);
+			command.Flag("all", all);
+			command.OptionalString("static_probability", static_probability);
+			command.OptionalString("default_static_probability", default_static_probability);
+			command.OptionalString("signal_rate", signal_rate);
+			command.Flag("hier", hier);
+			command.Flag("deassert_resets", deassert_resets);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5822,6 +6498,9 @@ namespace Quokka.TCL.Vivado
 		public void set_system_jitter(string system_jitter, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_system_jitter");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("system_jitter", system_jitter);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5883,6 +6562,14 @@ namespace Quokka.TCL.Vivado
 		public void set_units(string capacitance = null, string current = null, string voltage = null, string power = null, string resistance = null, string altitude = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_units");
+			command.OptionalString("capacitance", capacitance);
+			command.OptionalString("current", current);
+			command.OptionalString("voltage", voltage);
+			command.OptionalString("power", power);
+			command.OptionalString("resistance", resistance);
+			command.OptionalString("altitude", altitude);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -5954,6 +6641,11 @@ namespace Quokka.TCL.Vivado
 		public void update_macro(string macro, string rlocs, bool? absolute_grid = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("update_macro");
+			command.Flag("absolute_grid", absolute_grid);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("macro", macro);
+			command.RequiredString("rlocs", rlocs);
 			_tcl.Add(command);
 		}
 	}

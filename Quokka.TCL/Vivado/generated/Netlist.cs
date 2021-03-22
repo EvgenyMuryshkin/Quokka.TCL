@@ -32,29 +32,9 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 201
 		/// </summary>
-		/// <param name="net">
-		/// Required
-		/// Net to connect to given objects.
-		/// </param>
 		/// <param name="objects">
 		/// Required
 		/// List of pin and port objects to connect
-		/// </param>
-		/// <param name="net_object_list">
-		/// Required
-		/// optional, a list of net and pin/port list pairs, each pin or port
-		/// list element is connected to the corresponding net, e.g.
-		/// { net_a { pin_b port_c } net_d pin_e }. Cannot be used with -
-		/// net, -objects list is ignored when -net_object_list is used.
-		/// </param>
-		/// <param name="dict">
-		/// Required
-		/// alternative to -net_object_list, faster, but requires a list of
-		/// net and pin/port object pairs (must be a list of objects, not
-		/// names or other TCL objects), each pin or port list element is
-		/// connected to the corresponding net, e.g. { $net_1 $pin_1
-		/// $net_2 $pin_2 }. Cannot be used with -net, -objects list is
-		/// ignored when -dict is used.
 		/// </param>
 		/// <param name="hierarchical">
 		/// Optional
@@ -67,6 +47,26 @@ namespace Quokka.TCL.Vivado
 		/// hierarchical connection (see -hier). Default value is inferred
 		/// from the name of the net being connected (see -net).
 		/// </param>
+		/// <param name="net">
+		/// Optional
+		/// Net to connect to given objects.
+		/// </param>
+		/// <param name="net_object_list">
+		/// Optional
+		/// optional, a list of net and pin/port list pairs, each pin or port
+		/// list element is connected to the corresponding net, e.g.
+		/// { net_a { pin_b port_c } net_d pin_e }. Cannot be used with -
+		/// net, -objects list is ignored when -net_object_list is used.
+		/// </param>
+		/// <param name="dict">
+		/// Optional
+		/// alternative to -net_object_list, faster, but requires a list of
+		/// net and pin/port object pairs (must be a list of objects, not
+		/// names or other TCL objects), each pin or port list element is
+		/// connected to the corresponding net, e.g. { $net_1 $pin_1
+		/// $net_2 $pin_2 }. Cannot be used with -net, -objects list is
+		/// ignored when -dict is used.
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -75,9 +75,17 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void connect_net(string net, string objects, string net_object_list, string dict, bool? hierarchical = null, string basename = null, bool? quiet = null, bool? verbose = null)
+		public void connect_net(string objects, bool? hierarchical = null, string basename = null, string net = null, string net_object_list = null, string dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("connect_net");
+			command.Flag("hierarchical", hierarchical);
+			command.OptionalString("basename", basename);
+			command.OptionalString("net", net);
+			command.RequiredString("objects", objects);
+			command.OptionalString("net_object_list", net_object_list);
+			command.OptionalString("dict", dict);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -130,6 +138,11 @@ namespace Quokka.TCL.Vivado
 		public void create_cell(string reference, string cells, bool? black_box = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_cell");
+			command.RequiredString("reference", reference);
+			command.Flag("black_box", black_box);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("cells", cells);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -177,6 +190,11 @@ namespace Quokka.TCL.Vivado
 		public void create_net(string nets, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_net");
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("nets", nets);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -235,6 +253,12 @@ namespace Quokka.TCL.Vivado
 		public void create_pin(string direction, string pins, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_pin");
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.RequiredString("direction", direction);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("pins", pins);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -255,12 +279,6 @@ namespace Quokka.TCL.Vivado
 		/// Required
 		/// List of pins or ports to disconnect
 		/// </param>
-		/// <param name="pinlist">
-		/// Required
-		/// List of pin and port objects to disconnect (names of objects
-		/// supported, but not as flexibly as with -objects, faster than -
-		/// objects.
-		/// </param>
 		/// <param name="prune">
 		/// Optional
 		/// When performing disconnect, remove the net and any
@@ -272,6 +290,12 @@ namespace Quokka.TCL.Vivado
 		/// Net to disconnect - optional, net attached to first pin or port
 		/// object is used if not specified.
 		/// </param>
+		/// <param name="pinlist">
+		/// Optional
+		/// List of pin and port objects to disconnect (names of objects
+		/// supported, but not as flexibly as with -objects, faster than -
+		/// objects.
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -280,9 +304,15 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void disconnect_net(string objects, string pinlist, bool? prune = null, string net = null, bool? quiet = null, bool? verbose = null)
+		public void disconnect_net(string objects, bool? prune = null, string net = null, string pinlist = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("disconnect_net");
+			command.Flag("prune", prune);
+			command.OptionalString("net", net);
+			command.RequiredString("objects", objects);
+			command.OptionalString("pinlist", pinlist);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -319,10 +349,6 @@ namespace Quokka.TCL.Vivado
 		/// Required
 		/// Get 'net_delay' objects of these types: 'net'.
 		/// </param>
-		/// <param name="to">
-		/// Required
-		/// Get the delay of the net to the given terminal(s) or port(s).
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -340,6 +366,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Filter list with expression
 		/// </param>
+		/// <param name="to">
+		/// Optional
+		/// Get the delay of the net to the given terminal(s) or port(s).
+		/// </param>
 		/// <param name="interconnect_only">
 		/// Optional
 		/// Include only interconnect delays. The default is to include
@@ -354,9 +384,18 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>net_delays</returns>
-		public void get_net_delays(string of_objects, string to, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, bool? interconnect_only = null, bool? quiet = null, bool? verbose = null)
+		public void get_net_delays(string of_objects, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, string to = null, bool? interconnect_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_net_delays");
+			command.RequiredString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("patterns", patterns);
+			command.OptionalString("filter", filter);
+			command.OptionalString("to", to);
+			command.Flag("interconnect_only", interconnect_only);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -392,6 +431,9 @@ namespace Quokka.TCL.Vivado
 		public void remove_cell(string cells, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("remove_cell");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("cells", cells);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -432,6 +474,10 @@ namespace Quokka.TCL.Vivado
 		public void remove_net(string nets, bool? prune = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("remove_net");
+			command.Flag("prune", prune);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("nets", nets);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -470,6 +516,9 @@ namespace Quokka.TCL.Vivado
 		public void remove_pin(string pins, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("remove_pin");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("pins", pins);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -513,6 +562,10 @@ namespace Quokka.TCL.Vivado
 		public void rename_cell(string to, string cell, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("rename_cell");
+			command.RequiredString("to", to);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("cell", cell);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -558,6 +611,10 @@ namespace Quokka.TCL.Vivado
 		public void rename_net(string to, string net, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("rename_net");
+			command.RequiredString("to", to);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("net", net);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -611,6 +668,10 @@ namespace Quokka.TCL.Vivado
 		public void rename_pin(string to, string pin, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("rename_pin");
+			command.RequiredString("to", to);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("pin", pin);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -654,6 +715,10 @@ namespace Quokka.TCL.Vivado
 		public void rename_port(string to, string port, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("rename_port");
+			command.RequiredString("to", to);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("port", port);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -701,6 +766,11 @@ namespace Quokka.TCL.Vivado
 		public void rename_ref(string ref = null, string to = null, string prefix_all = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("rename_ref");
+			command.OptionalString("ref", ref);
+			command.OptionalString("to", to);
+			command.OptionalString("prefix_all", prefix_all);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -749,6 +819,11 @@ namespace Quokka.TCL.Vivado
 		public void resize_net_bus(string net_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("resize_net_bus");
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("net_bus_name", net_bus_name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -805,6 +880,11 @@ namespace Quokka.TCL.Vivado
 		public void resize_pin_bus(string pin_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("resize_pin_bus");
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("pin_bus_name", pin_bus_name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -818,7 +898,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1711
 		/// </summary>
 		/// <param name="of_objects">
-		/// Required
+		/// Optional
 		/// tie unused pins of specified cell(s)
 		/// </param>
 		/// <param name="quiet">
@@ -829,9 +909,12 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void tie_unused_pins(string of_objects, bool? quiet = null, bool? verbose = null)
+		public void tie_unused_pins(string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("tie_unused_pins");
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 	}

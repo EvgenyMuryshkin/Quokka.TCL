@@ -43,6 +43,10 @@ namespace Quokka.TCL.Vivado
 		public void create_interface(string name, string parent = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_interface");
+			command.OptionalString("parent", parent);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -121,6 +125,15 @@ namespace Quokka.TCL.Vivado
 		public void create_port(string direction, string name, string from = null, string to = null, bool? diff_pair = null, string interface = null, bool? quiet = null, bool? verbose = null, string negative_name = null)
 		{
 			var command = new SimpleTCLCommand("create_port");
+			command.RequiredString("direction", direction);
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.Flag("diff_pair", diff_pair);
+			command.OptionalString("interface", interface);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.OptionalString("negative_name", negative_name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -154,6 +167,10 @@ namespace Quokka.TCL.Vivado
 		public void delete_interface(string interfaces, bool? all = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_interface");
+			command.Flag("all", all);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("interfaces", interfaces);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -185,6 +202,9 @@ namespace Quokka.TCL.Vivado
 		public void make_diff_pair_ports(string ports, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("make_diff_pair_ports");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("ports", ports);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -207,10 +227,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1108
 		/// </summary>
-		/// <param name="iobank">
-		/// Required
-		/// Limit placement to the following banks
-		/// </param>
 		/// <param name="skip_unconnected_ports">
 		/// Optional
 		/// Do not place unconnected ports
@@ -218,6 +234,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="check_only">
 		/// Optional
 		/// Only check IO/Clock placement DRCs
+		/// </param>
+		/// <param name="iobank">
+		/// Optional
+		/// Limit placement to the following banks
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -233,9 +253,15 @@ namespace Quokka.TCL.Vivado
 		/// arguments are interleaved objects of ports and package
 		/// pins, then manual placement is performed
 		/// </param>
-		public void place_ports(string iobank, bool? skip_unconnected_ports = null, bool? check_only = null, bool? quiet = null, bool? verbose = null, string ports = null)
+		public void place_ports(bool? skip_unconnected_ports = null, bool? check_only = null, string iobank = null, bool? quiet = null, bool? verbose = null, string ports = null)
 		{
 			var command = new SimpleTCLCommand("place_ports");
+			command.Flag("skip_unconnected_ports", skip_unconnected_ports);
+			command.Flag("check_only", check_only);
+			command.OptionalString("iobank", iobank);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("ports", ports);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -279,6 +305,9 @@ namespace Quokka.TCL.Vivado
 		public void remove_port(string ports, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("remove_port");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("ports", ports);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -333,6 +362,11 @@ namespace Quokka.TCL.Vivado
 		public void resize_port_bus(string port_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("resize_port_bus");
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("port_bus_name", port_bus_name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -378,6 +412,11 @@ namespace Quokka.TCL.Vivado
 		public void set_package_pin_val(string column, string value, string package_pins, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_package_pin_val");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("column", column);
+			command.RequiredString("value", value);
+			command.RequiredString("package_pins", package_pins);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -406,6 +445,9 @@ namespace Quokka.TCL.Vivado
 		public void split_diff_pair_ports(string ports, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("split_diff_pair_ports");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("ports", ports);
 			_tcl.Add(command);
 		}
 	}

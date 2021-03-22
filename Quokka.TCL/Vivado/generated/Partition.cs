@@ -54,6 +54,11 @@ namespace Quokka.TCL.Vivado
 		public void create_partition_def(string name, string module, string library = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_partition_def");
+			command.RequiredString("name", name);
+			command.RequiredString("module", module);
+			command.OptionalString("library", library);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -83,11 +88,11 @@ namespace Quokka.TCL.Vivado
 		/// Name of the Configuration
 		/// </param>
 		/// <param name="partitions">
-		/// Required
+		/// Optional
 		/// List of partition instances and reconfig modules pairs
 		/// </param>
 		/// <param name="greyboxes">
-		/// Required
+		/// Optional
 		/// List of instances to which buffers need to be inserted for all
 		/// ports
 		/// </param>
@@ -104,9 +109,15 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void create_pr_configuration(string name, string partitions, string greyboxes, bool? use_netlist = null, bool? quiet = null, bool? verbose = null)
+		public void create_pr_configuration(string name, string partitions = null, string greyboxes = null, bool? use_netlist = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_pr_configuration");
+			command.RequiredString("name", name);
+			command.OptionalString("partitions", partitions);
+			command.OptionalString("greyboxes", greyboxes);
+			command.Flag("use_netlist", use_netlist);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -172,6 +183,14 @@ namespace Quokka.TCL.Vivado
 		public void create_reconfig_module(string name, string partition_def, string top = null, bool? gate_level = null, string define_from = null, string define_from_file = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_reconfig_module");
+			command.RequiredString("name", name);
+			command.OptionalString("top", top);
+			command.Flag("gate_level", gate_level);
+			command.RequiredString("partition_def", partition_def);
+			command.OptionalString("define_from", define_from);
+			command.OptionalString("define_from_file", define_from_file);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -209,6 +228,9 @@ namespace Quokka.TCL.Vivado
 		public void current_pr_configuration(bool? quiet = null, bool? verbose = null, string config = null)
 		{
 			var command = new SimpleTCLCommand("current_pr_configuration");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("config", config);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -240,6 +262,10 @@ namespace Quokka.TCL.Vivado
 		public void delete_partition_defs(string partition_defs, string merge = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_partition_defs");
+			command.OptionalString("merge", merge);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("partition_defs", partition_defs);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -265,6 +291,9 @@ namespace Quokka.TCL.Vivado
 		public void delete_pr_configurations(string configs, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_pr_configurations");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("configs", configs);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -294,6 +323,10 @@ namespace Quokka.TCL.Vivado
 		public void delete_reconfig_modules(string rms, string merge = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_reconfig_modules");
+			command.OptionalString("merge", merge);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("rms", rms);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -343,6 +376,12 @@ namespace Quokka.TCL.Vivado
 		public void get_partition_defs(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_partition_defs");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -390,6 +429,12 @@ namespace Quokka.TCL.Vivado
 		public void get_pr_configurations(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_pr_configurations");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -401,11 +446,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 885
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get 'reconfig_module' objects of these types:
-		/// 'partition_def'.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -418,6 +458,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get 'reconfig_module' objects of these types:
+		/// 'partition_def'.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -433,9 +478,16 @@ namespace Quokka.TCL.Vivado
 		/// Default: *
 		/// </param>
 		/// <returns>list of ReconfigModule objects</returns>
-		public void get_reconfig_modules(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_reconfig_modules(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_reconfig_modules");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -458,7 +510,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1671
 		/// </summary>
 		/// <param name="partitions">
-		/// Required
+		/// Optional
 		/// List of partition instances and reconfig modules pairs
 		/// </param>
 		/// <param name="use_netlist">
@@ -485,9 +537,15 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void setup_pr_configurations(string partitions, bool? use_netlist = null, bool? force = null, string run = null, bool? quiet = null, bool? verbose = null)
+		public void setup_pr_configurations(string partitions = null, bool? use_netlist = null, bool? force = null, string run = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("setup_pr_configurations");
+			command.OptionalString("partitions", partitions);
+			command.Flag("use_netlist", use_netlist);
+			command.Flag("force", force);
+			command.OptionalString("run", run);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 	}

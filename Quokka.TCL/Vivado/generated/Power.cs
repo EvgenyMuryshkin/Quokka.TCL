@@ -38,6 +38,9 @@ namespace Quokka.TCL.Vivado
 		public void delete_power_results(string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_power_results");
+			command.RequiredString("name", name);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -80,6 +83,8 @@ namespace Quokka.TCL.Vivado
 		public void power_opt_design(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("power_opt_design");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -126,6 +131,12 @@ namespace Quokka.TCL.Vivado
 		public void read_saif(string file, string strip_path = null, bool? no_strip = null, string out_file = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("read_saif");
+			command.OptionalString("strip_path", strip_path);
+			command.Flag("no_strip", no_strip);
+			command.OptionalString("out_file", out_file);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -216,6 +227,21 @@ namespace Quokka.TCL.Vivado
 		public void report_power(bool? no_propagation = null, string hier = null, string hierarchical_depth = null, bool? vid = null, bool? advisory = null, string file = null, string name = null, string format = null, string xpe = null, string l = null, bool? return_string = null, bool? append = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_power");
+			command.Flag("no_propagation", no_propagation);
+			command.OptionalString("hier", hier);
+			command.OptionalString("hierarchical_depth", hierarchical_depth);
+			command.Flag("vid", vid);
+			command.Flag("advisory", advisory);
+			command.OptionalString("file", file);
+			command.OptionalString("name", name);
+			command.OptionalString("format", format);
+			command.OptionalString("xpe", xpe);
+			command.OptionalString("l", l);
+			command.Flag("return_string", return_string);
+			command.Flag("append", append);
+			command.OptionalString("rpx", rpx);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -233,7 +259,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1379
 		/// </summary>
 		/// <param name="cell">
-		/// Required
+		/// Optional
 		/// list of instance names Default: empty
 		/// </param>
 		/// <param name="file">
@@ -266,9 +292,17 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_power_opt(string cell, string file = null, string format = null, string name = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public void report_power_opt(string cell = null, string file = null, string format = null, string name = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_power_opt");
+			command.OptionalString("cell", cell);
+			command.OptionalString("file", file);
+			command.OptionalString("format", format);
+			command.OptionalString("name", name);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -293,7 +327,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1471
 		/// </summary>
 		/// <param name="voltage">
-		/// Required
+		/// Optional
 		/// Resets voltage value. Supported voltage supplies vary by
 		/// family.
 		/// </param>
@@ -357,9 +391,25 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void reset_operating_conditions(string voltage, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, bool? quiet = null, bool? verbose = null)
+		public void reset_operating_conditions(string voltage = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("reset_operating_conditions");
+			command.OptionalString("voltage", voltage);
+			command.Flag("grade", grade);
+			command.Flag("process", process);
+			command.Flag("junction_temp", junction_temp);
+			command.Flag("ambient_temp", ambient_temp);
+			command.Flag("thetaja", thetaja);
+			command.Flag("thetasa", thetasa);
+			command.Flag("airflow", airflow);
+			command.Flag("heatsink", heatsink);
+			command.Flag("thetajb", thetajb);
+			command.Flag("board", board);
+			command.Flag("board_temp", board_temp);
+			command.Flag("board_layers", board_layers);
+			command.Flag("design_power_budget", design_power_budget);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -380,15 +430,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1485
 		/// </summary>
+		/// <param name="@default">
+		/// Optional
+		/// Reset default static probability and default toggle rate
+		/// </param>
 		/// <param name="type">
-		/// Required
+		/// Optional
 		/// Specify nodes in a specific category. List of valid type values:
 		/// io_output, io_bidir_enable, register, lut_ram, lut, dsp,
 		/// bram_enable, bram_wr_enable, gt_txdata, gt_rxdata.
-		/// </param>
-		/// <param name="default">
-		/// Optional
-		/// Reset default static probability and default toggle rate
 		/// </param>
 		/// <param name="hier">
 		/// Optional
@@ -416,9 +466,17 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Objects to reset switching activity on
 		/// </param>
-		public void reset_switching_activity(string type, bool? default = null, bool? hier = null, bool? all = null, bool? no_deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public void reset_switching_activity(bool? @default = null, string type = null, bool? hier = null, bool? all = null, bool? no_deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			var command = new SimpleTCLCommand("reset_switching_activity");
+			command.Flag("default", @default);
+			command.OptionalString("type", type);
+			command.Flag("hier", hier);
+			command.Flag("all", all);
+			command.Flag("no_deassert_resets", no_deassert_resets);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -447,7 +505,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1630
 		/// </summary>
 		/// <param name="voltage">
-		/// Required
+		/// Optional
 		/// List of voltage pairs, e.g., {name value}. Supported voltage
 		/// supplies vary by family.
 		/// </param>
@@ -514,9 +572,25 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_operating_conditions(string voltage, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, bool? quiet = null, bool? verbose = null)
+		public void set_operating_conditions(string voltage = null, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_operating_conditions");
+			command.OptionalString("voltage", voltage);
+			command.OptionalString("grade", grade);
+			command.OptionalString("process", process);
+			command.OptionalString("junction_temp", junction_temp);
+			command.OptionalString("ambient_temp", ambient_temp);
+			command.OptionalString("thetaja", thetaja);
+			command.OptionalString("thetasa", thetasa);
+			command.OptionalString("airflow", airflow);
+			command.OptionalString("heatsink", heatsink);
+			command.OptionalString("thetajb", thetajb);
+			command.OptionalString("board", board);
+			command.OptionalString("board_temp", board_temp);
+			command.OptionalString("board_layers", board_layers);
+			command.OptionalString("design_power_budget", design_power_budget);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -556,20 +630,20 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1644
 		/// </summary>
 		/// <param name="include_cells">
-		/// Required
+		/// Optional
 		/// Include only these instances for clock gating. Default: all
 		/// </param>
 		/// <param name="exclude_cells">
-		/// Required
+		/// Optional
 		/// Exclude these instances from clock gating. Default: none
 		/// </param>
 		/// <param name="clocks">
-		/// Required
+		/// Optional
 		/// Clock gate instances clocked by these clocks only. Default:
 		/// all clocks
 		/// </param>
 		/// <param name="cell_types">
-		/// Required
+		/// Optional
 		/// Clock gate these cell types only. Specify either [all|none], or
 		/// one or more of [bram|reg|srl]. Default: all
 		/// </param>
@@ -581,9 +655,15 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_power_opt(string include_cells, string exclude_cells, string clocks, string cell_types, bool? quiet = null, bool? verbose = null)
+		public void set_power_opt(string include_cells = null, string exclude_cells = null, string clocks = null, string cell_types = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_power_opt");
+			command.OptionalString("include_cells", include_cells);
+			command.OptionalString("exclude_cells", exclude_cells);
+			command.OptionalString("clocks", clocks);
+			command.OptionalString("cell_types", cell_types);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -623,12 +703,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1655
 		/// </summary>
-		/// <param name="type">
-		/// Required
-		/// Specify nodes in a specific category. List of valid type values:
-		/// io_output, io_bidir_enable, register, lut_ram, lut, dsp,
-		/// bram_enable, bram_wr_enable, gt_txdata, gt_rxdata.
-		/// </param>
 		/// <param name="toggle_rate">
 		/// Optional
 		/// Toggle rate (%) is the rate at which the output of
@@ -648,6 +722,12 @@ namespace Quokka.TCL.Vivado
 		/// specified by the user, simulation data or constraints of the
 		/// design. Valid values are: 0 <= value < 200. The default value
 		/// is 12.5. Default: 12.5
+		/// </param>
+		/// <param name="type">
+		/// Optional
+		/// Specify nodes in a specific category. List of valid type values:
+		/// io_output, io_bidir_enable, register, lut_ram, lut, dsp,
+		/// bram_enable, bram_wr_enable, gt_txdata, gt_rxdata.
 		/// </param>
 		/// <param name="all">
 		/// Optional
@@ -696,9 +776,21 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Objects to set switching activity on
 		/// </param>
-		public void set_switching_activity(string type, string toggle_rate = null, string default_toggle_rate = null, bool? all = null, string static_probability = null, string default_static_probability = null, string signal_rate = null, bool? hier = null, bool? deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public void set_switching_activity(string toggle_rate = null, string default_toggle_rate = null, string type = null, bool? all = null, string static_probability = null, string default_static_probability = null, string signal_rate = null, bool? hier = null, bool? deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			var command = new SimpleTCLCommand("set_switching_activity");
+			command.OptionalString("toggle_rate", toggle_rate);
+			command.OptionalString("default_toggle_rate", default_toggle_rate);
+			command.OptionalString("type", type);
+			command.Flag("all", all);
+			command.OptionalString("static_probability", static_probability);
+			command.OptionalString("default_static_probability", default_static_probability);
+			command.OptionalString("signal_rate", signal_rate);
+			command.Flag("hier", hier);
+			command.Flag("deassert_resets", deassert_resets);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
 			_tcl.Add(command);
 		}
 	}

@@ -62,6 +62,10 @@ namespace Quokka.TCL.Vivado
 		public void apply_hw_ila_trigger(string ila_cell = null, bool? quiet = null, bool? verbose = null, string file = null)
 		{
 			var command = new SimpleTCLCommand("apply_hw_ila_trigger");
+			command.OptionalString("ila_cell", ila_cell);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("file", file);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -115,6 +119,10 @@ namespace Quokka.TCL.Vivado
 		public void connect_debug_cores(string master, string slaves, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("connect_debug_cores");
+			command.RequiredString("master", master);
+			command.RequiredString("slaves", slaves);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -168,6 +176,11 @@ namespace Quokka.TCL.Vivado
 		public void connect_debug_port(string port, string nets, string channel_start_index = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("connect_debug_port");
+			command.OptionalString("channel_start_index", channel_start_index);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("port", port);
+			command.RequiredString("nets", nets);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -256,6 +269,10 @@ namespace Quokka.TCL.Vivado
 		public void create_debug_core(string name, string type, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_debug_core");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("type", type);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -309,6 +326,10 @@ namespace Quokka.TCL.Vivado
 		public void create_debug_port(string name, string type, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_debug_port");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("type", type);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -340,6 +361,9 @@ namespace Quokka.TCL.Vivado
 		public void delete_debug_core(string cores, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_debug_core");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("cores", cores);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -376,6 +400,9 @@ namespace Quokka.TCL.Vivado
 		public void delete_debug_port(string ports, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_debug_port");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("ports", ports);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -419,6 +446,10 @@ namespace Quokka.TCL.Vivado
 		public void disconnect_debug_port(string port, string channel_index = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("disconnect_debug_port");
+			command.OptionalString("channel_index", channel_index);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("port", port);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -444,13 +475,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 653
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get cores of these debug ports or nets
-		/// </param>
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get cores of these debug ports or nets
 		/// </param>
 		/// <param name="regexp">
 		/// Optional
@@ -474,9 +505,16 @@ namespace Quokka.TCL.Vivado
 		/// Match debug cores against patterns Default: *
 		/// </param>
 		/// <returns>list of debug_core objects</returns>
-		public void get_debug_cores(string of_objects, string filter = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_debug_cores(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_debug_cores");
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -501,13 +539,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 656
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get ports of these debug cores
-		/// </param>
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get ports of these debug cores
 		/// </param>
 		/// <param name="regexp">
 		/// Optional
@@ -531,9 +569,16 @@ namespace Quokka.TCL.Vivado
 		/// Match debug ports against patterns Default: *
 		/// </param>
 		/// <returns>list of debug_port objects</returns>
-		public void get_debug_ports(string of_objects, string filter = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_debug_ports(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_debug_ports");
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -574,6 +619,9 @@ namespace Quokka.TCL.Vivado
 		public void implement_debug_core(bool? quiet = null, bool? verbose = null, string cores = null)
 		{
 			var command = new SimpleTCLCommand("implement_debug_core");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("cores", cores);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -616,6 +664,9 @@ namespace Quokka.TCL.Vivado
 		public void modify_debug_ports(string probes, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("modify_debug_ports");
+			command.RequiredString("probes", probes);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -661,6 +712,12 @@ namespace Quokka.TCL.Vivado
 		public void report_debug_core(string file = null, bool? append = null, bool? return_string = null, bool? full_path = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_debug_core");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("full_path", full_path);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -708,6 +765,12 @@ namespace Quokka.TCL.Vivado
 		public void write_debug_probes(string file, string cell = null, bool? no_partial_ltxfile = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("write_debug_probes");
+			command.OptionalString("cell", cell);
+			command.Flag("no_partial_ltxfile", no_partial_ltxfile);
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
 			_tcl.Add(command);
 		}
 	}

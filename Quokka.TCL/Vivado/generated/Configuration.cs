@@ -25,6 +25,10 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 172
 		/// </summary>
+		/// <param name="list">
+		/// Required
+		/// list of config params which need to be configured
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -33,13 +37,12 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="list">
-		/// Optional
-		/// list of config params which need to be configured
-		/// </param>
-		public void config_implementation(bool? quiet = null, bool? verbose = null, string list = null)
+		public void config_implementation(string list, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("config_implementation");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("list", list);
 			_tcl.Add(command);
 		}
 	}

@@ -79,6 +79,15 @@ namespace Quokka.TCL.Vivado
 		public void calc_config_time(bool? verbose = null, bool? max = null, bool? min = null, bool? typical = null, bool? por_used = null, string por_ramp = null, string clk_freq = null, string bitstream_size = null, bool? quiet = null)
 		{
 			var command = new SimpleTCLCommand("calc_config_time");
+			command.Flag("verbose", verbose);
+			command.Flag("max", max);
+			command.Flag("min", min);
+			command.Flag("typical", typical);
+			command.Flag("por_used", por_used);
+			command.OptionalString("por_ramp", por_ramp);
+			command.OptionalString("clk_freq", clk_freq);
+			command.OptionalString("bitstream_size", bitstream_size);
+			command.Flag("quiet", quiet);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -152,25 +161,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 124
 		/// </summary>
-		/// <param name="override_defaults">
-		/// Required
-		/// Overrides the checks in the default timing checks listed
-		/// below
-		/// </param>
-		/// <param name="include">
-		/// Required
-		/// Add this list of checks to be performed along with default
-		/// timing checks listed below
-		/// </param>
-		/// <param name="exclude">
-		/// Required
-		/// Exclude this list of checks to be performed from the default
-		/// timing checks listed below
-		/// </param>
-		/// <param name="cells">
-		/// Required
-		/// run check_timing on the specified cell(s)
-		/// </param>
 		/// <param name="file">
 		/// Optional
 		/// Filename to output results to. (send output to console if -file
@@ -193,6 +183,21 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Output the results to GUI panel with this name
 		/// </param>
+		/// <param name="override_defaults">
+		/// Optional
+		/// Overrides the checks in the default timing checks listed
+		/// below
+		/// </param>
+		/// <param name="include">
+		/// Optional
+		/// Add this list of checks to be performed along with default
+		/// timing checks listed below
+		/// </param>
+		/// <param name="exclude">
+		/// Optional
+		/// Exclude this list of checks to be performed from the default
+		/// timing checks listed below
+		/// </param>
 		/// <param name="return_string">
 		/// Optional
 		/// return report as string
@@ -200,6 +205,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="rpx">
 		/// Optional
 		/// Filename to output interactive results to.
+		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// run check_timing on the specified cell(s)
 		/// </param>
 		/// <param name="verbose">
 		/// Optional
@@ -209,9 +218,22 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Ignore command errors
 		/// </param>
-		public void check_timing(string override_defaults, string include, string exclude, string cells, string file = null, bool? no_header = null, string loop_limit = null, bool? append = null, string name = null, bool? return_string = null, string rpx = null, bool? verbose = null, bool? quiet = null)
+		public void check_timing(string file = null, bool? no_header = null, string loop_limit = null, bool? append = null, string name = null, string override_defaults = null, string include = null, string exclude = null, bool? return_string = null, string rpx = null, string cells = null, bool? verbose = null, bool? quiet = null)
 		{
 			var command = new SimpleTCLCommand("check_timing");
+			command.OptionalString("file", file);
+			command.Flag("no_header", no_header);
+			command.OptionalString("loop_limit", loop_limit);
+			command.Flag("append", append);
+			command.OptionalString("name", name);
+			command.OptionalString("override_defaults", override_defaults);
+			command.OptionalString("include", include);
+			command.OptionalString("exclude", exclude);
+			command.Flag("return_string", return_string);
+			command.OptionalString("rpx", rpx);
+			command.OptionalString("cells", cells);
+			command.Flag("verbose", verbose);
+			command.Flag("quiet", quiet);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -315,6 +337,12 @@ namespace Quokka.TCL.Vivado
 		public void create_drc_violation(string name, string severity = null, string msg = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			var command = new SimpleTCLCommand("create_drc_violation");
+			command.RequiredString("name", name);
+			command.OptionalString("severity", severity);
+			command.OptionalString("msg", msg);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -361,10 +389,6 @@ namespace Quokka.TCL.Vivado
 		/// Required
 		/// List of run(s) for object(s) created
 		/// </param>
-		/// <param name="copy_of">
-		/// Required
-		/// configurable report object to be copied
-		/// </param>
 		/// <param name="report_name">
 		/// Optional
 		/// Name of configurable report object created. Can not be
@@ -380,6 +404,10 @@ namespace Quokka.TCL.Vivado
 		/// options for report command to be set at creation of
 		/// configurable report object, except with '-copy_of'
 		/// </param>
+		/// <param name="copy_of">
+		/// Optional
+		/// configurable report object to be copied
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -389,9 +417,17 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>List of configurable report objects</returns>
-		public void create_report_config(string steps, string runs, string copy_of, string report_name = null, string report_type = null, string options = null, bool? quiet = null, bool? verbose = null)
+		public void create_report_config(string steps, string runs, string report_name = null, string report_type = null, string options = null, string copy_of = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_report_config");
+			command.OptionalString("report_name", report_name);
+			command.OptionalString("report_type", report_type);
+			command.RequiredString("steps", steps);
+			command.RequiredString("runs", runs);
+			command.OptionalString("options", options);
+			command.OptionalString("copy_of", copy_of);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -407,16 +443,8 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 352
 		/// </summary>
 		/// <param name="to">
-		/// Required
+		/// Optional
 		/// To clock
-		/// </param>
-		/// <param name="group">
-		/// Required
-		/// Limit report to paths in this group(s)
-		/// </param>
-		/// <param name="cells">
-		/// Required
-		/// run create_slack_histogram on the specified cell(s)
 		/// </param>
 		/// <param name="delay_type">
 		/// Optional
@@ -433,6 +461,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="slack_greater_than">
 		/// Optional
 		/// Display paths with slack greater than this Default: -1e+30
+		/// </param>
+		/// <param name="group">
+		/// Optional
+		/// Limit report to paths in this group(s)
 		/// </param>
 		/// <param name="report_unconstrained">
 		/// Optional
@@ -451,6 +483,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Output the results to GUI panel with this name
 		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// run create_slack_histogram on the specified cell(s)
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -459,9 +495,22 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void create_slack_histogram(string to, string group, string cells, string delay_type = null, string num_bins = null, string slack_less_than = null, string slack_greater_than = null, bool? report_unconstrained = null, string significant_digits = null, string scale = null, string name = null, bool? quiet = null, bool? verbose = null)
+		public void create_slack_histogram(string to = null, string delay_type = null, string num_bins = null, string slack_less_than = null, string slack_greater_than = null, string group = null, bool? report_unconstrained = null, string significant_digits = null, string scale = null, string name = null, string cells = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_slack_histogram");
+			command.OptionalString("to", to);
+			command.OptionalString("delay_type", delay_type);
+			command.OptionalString("num_bins", num_bins);
+			command.OptionalString("slack_less_than", slack_less_than);
+			command.OptionalString("slack_greater_than", slack_greater_than);
+			command.OptionalString("group", group);
+			command.Flag("report_unconstrained", report_unconstrained);
+			command.OptionalString("significant_digits", significant_digits);
+			command.OptionalString("scale", scale);
+			command.OptionalString("name", name);
+			command.OptionalString("cells", cells);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -489,6 +538,9 @@ namespace Quokka.TCL.Vivado
 		public void delete_clock_networks_results(string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_clock_networks_results");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -518,6 +570,9 @@ namespace Quokka.TCL.Vivado
 		public void delete_report_configs(string report_configs, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_report_configs");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("report_configs", report_configs);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -553,6 +608,10 @@ namespace Quokka.TCL.Vivado
 		public void delete_timing_results(string name, string type = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_timing_results");
+			command.OptionalString("type", type);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -580,6 +639,9 @@ namespace Quokka.TCL.Vivado
 		public void delete_utilization_results(string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_utilization_results");
+			command.RequiredString("name", name);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -616,6 +678,10 @@ namespace Quokka.TCL.Vivado
 		public void generate_reports(string report_configs, string jobs = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("generate_reports");
+			command.OptionalString("jobs", jobs);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("report_configs", report_configs);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -699,6 +765,13 @@ namespace Quokka.TCL.Vivado
 		public void get_msg_config(string id = null, string severity = null, bool? rules = null, bool? limit = null, bool? count = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_msg_config");
+			command.OptionalString("id", id);
+			command.OptionalString("severity", severity);
+			command.Flag("rules", rules);
+			command.Flag("limit", limit);
+			command.Flag("count", count);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -745,6 +818,14 @@ namespace Quokka.TCL.Vivado
 		public void get_pplocs(string nets, string pins, bool? count = null, bool? unlocked = null, bool? locked = null, string level = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_pplocs");
+			command.RequiredString("nets", nets);
+			command.RequiredString("pins", pins);
+			command.Flag("count", count);
+			command.Flag("unlocked", unlocked);
+			command.Flag("locked", locked);
+			command.OptionalString("level", level);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -762,10 +843,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 888
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get 'report' objects of these types: 'run'.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -778,6 +855,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get 'report' objects of these types: 'run'.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -792,9 +873,16 @@ namespace Quokka.TCL.Vivado
 		/// Match report names against patterns Default: *
 		/// </param>
 		/// <returns>list of Configurable Report objects</returns>
-		public void get_report_configs(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_report_configs(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_report_configs");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -851,6 +939,14 @@ namespace Quokka.TCL.Vivado
 		public void open_report(string rpx, string file = null, bool? append = null, bool? console = null, string name = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("open_report");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("console", console);
+			command.OptionalString("name", name);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("rpx", rpx);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -873,10 +969,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1270
 		/// </summary>
-		/// <param name="cells">
-		/// Required
-		/// run report_bus_skew on the specified hierarchical cell(s)
-		/// </param>
 		/// <param name="delay_type">
 		/// Optional
 		/// Type of path delay: Values: max, min, min_max Default:
@@ -954,6 +1046,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Filename to output interactive results to.
 		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// run report_bus_skew on the specified hierarchical cell(s)
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -962,9 +1058,29 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_bus_skew(string cells, string delay_type = null, bool? setup = null, bool? hold = null, bool? no_detailed_paths = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? sort_by_slack = null, bool? input_pins = null, bool? no_header = null, string significant_digits = null, string file = null, bool? append = null, bool? return_string = null, bool? warn_on_violation = null, string rpx = null, bool? quiet = null, bool? verbose = null)
+		public void report_bus_skew(string delay_type = null, bool? setup = null, bool? hold = null, bool? no_detailed_paths = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? sort_by_slack = null, bool? input_pins = null, bool? no_header = null, string significant_digits = null, string file = null, bool? append = null, bool? return_string = null, bool? warn_on_violation = null, string rpx = null, string cells = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_bus_skew");
+			command.OptionalString("delay_type", delay_type);
+			command.Flag("setup", setup);
+			command.Flag("hold", hold);
+			command.Flag("no_detailed_paths", no_detailed_paths);
+			command.OptionalString("max_paths", max_paths);
+			command.OptionalString("nworst", nworst);
+			command.Flag("unique_pins", unique_pins);
+			command.OptionalString("path_type", path_type);
+			command.Flag("sort_by_slack", sort_by_slack);
+			command.Flag("input_pins", input_pins);
+			command.Flag("no_header", no_header);
+			command.OptionalString("significant_digits", significant_digits);
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("warn_on_violation", warn_on_violation);
+			command.OptionalString("rpx", rpx);
+			command.OptionalString("cells", cells);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -981,10 +1097,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1274
 		/// </summary>
-		/// <param name="cell">
-		/// Required
-		/// Report Carry Chains only for given cell
-		/// </param>
 		/// <param name="file">
 		/// Optional
 		/// Filename to output results to. (send output to console if -file
@@ -997,6 +1109,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">
 		/// Optional
 		/// return report as string
+		/// </param>
+		/// <param name="cell">
+		/// Optional
+		/// Report Carry Chains only for given cell
 		/// </param>
 		/// <param name="max_chains">
 		/// Optional
@@ -1012,9 +1128,16 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>Report</returns>
-		public void report_carry_chains(string cell, string file = null, bool? append = null, bool? return_string = null, string max_chains = null, bool? quiet = null, bool? verbose = null)
+		public void report_carry_chains(string file = null, bool? append = null, bool? return_string = null, string cell = null, string max_chains = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_carry_chains");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.OptionalString("cell", cell);
+			command.OptionalString("max_chains", max_chains);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1060,15 +1183,15 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1276
 		/// </summary>
 		/// <param name="from">
-		/// Required
+		/// Optional
 		/// From clocks
 		/// </param>
 		/// <param name="to">
-		/// Required
+		/// Optional
 		/// To clocks
 		/// </param>
 		/// <param name="cells">
-		/// Required
+		/// Optional
 		/// run report_cdc on the cells
 		/// </param>
 		/// <param name="details">
@@ -1128,9 +1251,26 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_cdc(string from, string to, string cells, bool? details = null, bool? summary = null, bool? all_checks_per_endpoint = null, string severity = null, bool? no_header = null, bool? show_waiver = null, bool? no_waiver = null, bool? waived = null, string file = null, bool? append = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
+		public void report_cdc(string from = null, string to = null, string cells = null, bool? details = null, bool? summary = null, bool? all_checks_per_endpoint = null, string severity = null, bool? no_header = null, bool? show_waiver = null, bool? no_waiver = null, bool? waived = null, string file = null, bool? append = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_cdc");
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.OptionalString("cells", cells);
+			command.Flag("details", details);
+			command.Flag("summary", summary);
+			command.Flag("all_checks_per_endpoint", all_checks_per_endpoint);
+			command.OptionalString("severity", severity);
+			command.Flag("no_header", no_header);
+			command.Flag("show_waiver", show_waiver);
+			command.Flag("no_waiver", no_waiver);
+			command.Flag("waived", waived);
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.OptionalString("name", name);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1155,10 +1295,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1280
 		/// </summary>
-		/// <param name="cells">
-		/// Required
-		/// run report_clock_interaction on the specified cell(s)
-		/// </param>
 		/// <param name="delay_type">
 		/// Optional
 		/// Type of path delay: Values: max, min, min_max Default: max
@@ -1198,6 +1334,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Return report as string
 		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// run report_clock_interaction on the specified cell(s)
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -1206,9 +1346,21 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_clock_interaction(string cells, string delay_type = null, bool? setup = null, bool? hold = null, string significant_digits = null, bool? no_header = null, string file = null, bool? append = null, string name = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public void report_clock_interaction(string delay_type = null, bool? setup = null, bool? hold = null, string significant_digits = null, bool? no_header = null, string file = null, bool? append = null, string name = null, bool? return_string = null, string cells = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_clock_interaction");
+			command.OptionalString("delay_type", delay_type);
+			command.Flag("setup", setup);
+			command.Flag("hold", hold);
+			command.OptionalString("significant_digits", significant_digits);
+			command.Flag("no_header", no_header);
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.OptionalString("name", name);
+			command.Flag("return_string", return_string);
+			command.OptionalString("cells", cells);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1229,17 +1381,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1283
 		/// </summary>
-		/// <param name="clocks">
-		/// Required
-		/// List of clocks for clock network dump; if not specified, all
-		/// clock networks are dumped
-		/// </param>
-		/// <param name="unconstrained_roots">
-		/// Required
-		/// List of unconstrained root pins/ports for clock network
-		/// dump; if not specified, all unconstrained clock roots are
-		/// dumped
-		/// </param>
 		/// <param name="file">
 		/// Optional
 		/// Filename to output results to. (send output to console if -file
@@ -1280,6 +1421,17 @@ namespace Quokka.TCL.Vivado
 		/// suppress paths to clock or nonclock endpoint pins; Values:
 		/// clock, nonclock
 		/// </param>
+		/// <param name="clocks">
+		/// Optional
+		/// List of clocks for clock network dump; if not specified, all
+		/// clock networks are dumped
+		/// </param>
+		/// <param name="unconstrained_roots">
+		/// Optional
+		/// List of unconstrained root pins/ports for clock network
+		/// dump; if not specified, all unconstrained clock roots are
+		/// dumped
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -1288,9 +1440,21 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_clock_networks(string clocks, string unconstrained_roots, string file = null, bool? append = null, string name = null, bool? return_string = null, bool? endpoints_only = null, string levels = null, bool? expand_buckets = null, string suppress_endpoints = null, bool? quiet = null, bool? verbose = null)
+		public void report_clock_networks(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? endpoints_only = null, string levels = null, bool? expand_buckets = null, string suppress_endpoints = null, string clocks = null, string unconstrained_roots = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_clock_networks");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.OptionalString("name", name);
+			command.Flag("return_string", return_string);
+			command.Flag("endpoints_only", endpoints_only);
+			command.OptionalString("levels", levels);
+			command.Flag("expand_buckets", expand_buckets);
+			command.OptionalString("suppress_endpoints", suppress_endpoints);
+			command.OptionalString("clocks", clocks);
+			command.OptionalString("unconstrained_roots", unconstrained_roots);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1319,10 +1483,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1286
 		/// </summary>
-		/// <param name="cells">
-		/// Required
-		/// Cells/bel_instances for which to report clock utilization
-		/// </param>
 		/// <param name="file">
 		/// Optional
 		/// Filename to output results to. (send output to console if -file
@@ -1335,6 +1495,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="write_xdc">
 		/// Optional
 		/// file to output clock constraint. File name must be given.
+		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// Cells/bel_instances for which to report clock utilization
 		/// </param>
 		/// <param name="clock_roots_only">
 		/// Optional
@@ -1357,9 +1521,18 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>Report</returns>
-		public void report_clock_utilization(string cells, string file = null, bool? append = null, string write_xdc = null, bool? clock_roots_only = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
+		public void report_clock_utilization(string file = null, bool? append = null, string write_xdc = null, string cells = null, bool? clock_roots_only = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_clock_utilization");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.OptionalString("write_xdc", write_xdc);
+			command.OptionalString("cells", cells);
+			command.Flag("clock_roots_only", clock_roots_only);
+			command.Flag("return_string", return_string);
+			command.OptionalString("name", name);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1408,6 +1581,12 @@ namespace Quokka.TCL.Vivado
 		public void report_clocks(string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, string clocks = null)
 		{
 			var command = new SimpleTCLCommand("report_clocks");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("clocks", clocks);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1453,6 +1632,12 @@ namespace Quokka.TCL.Vivado
 		public void report_config_implementation(string file = null, bool? force = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_config_implementation");
+			command.OptionalString("file", file);
+			command.Flag("force", force);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1509,6 +1694,15 @@ namespace Quokka.TCL.Vivado
 		public void report_config_timing(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? all = null, bool? no_header = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_config_timing");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.OptionalString("name", name);
+			command.Flag("return_string", return_string);
+			command.Flag("all", all);
+			command.Flag("no_header", no_header);
+			command.OptionalString("rpx", rpx);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1532,16 +1726,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1301
 		/// </summary>
-		/// <param name="sort_by">
-		/// Required
-		/// Sort criterion: can be used only when -verbose is used.
-		/// Options are clk, clkEn, set. Ex: report_control_sets -verbose -
-		/// sort_by {clk clkEn}
-		/// </param>
-		/// <param name="cells">
-		/// Required
-		/// Cells/bel_instances for which to report control sets
-		/// </param>
 		/// <param name="file">
 		/// Optional
 		/// Filename to output results to. (send output to console if -file
@@ -1560,6 +1744,16 @@ namespace Quokka.TCL.Vivado
 		/// Specifies the depth level for textual hierarchical report
 		/// Default: 0
 		/// </param>
+		/// <param name="sort_by">
+		/// Optional
+		/// Sort criterion: can be used only when -verbose is used.
+		/// Options are clk, clkEn, set. Ex: report_control_sets -verbose -
+		/// sort_by {clk clkEn}
+		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// Cells/bel_instances for which to report control sets
+		/// </param>
 		/// <param name="return_string">
 		/// Optional
 		/// return report as string
@@ -1573,9 +1767,18 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>Report</returns>
-		public void report_control_sets(string sort_by, string cells, string file = null, bool? append = null, bool? hierarchical = null, string hierarchical_depth = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public void report_control_sets(string file = null, bool? append = null, bool? hierarchical = null, string hierarchical_depth = null, string sort_by = null, string cells = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_control_sets");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("hierarchical", hierarchical);
+			command.OptionalString("hierarchical_depth", hierarchical_depth);
+			command.OptionalString("sort_by", sort_by);
+			command.OptionalString("cells", cells);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1605,10 +1808,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1304
 		/// </summary>
-		/// <param name="group">
-		/// Required
-		/// List of output ports for skew calculation
-		/// </param>
 		/// <param name="significant_digits">
 		/// Optional
 		/// Number of digits to display: Range: 0 to 3 Default: 3
@@ -1642,6 +1841,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// show output enable (tristate) timing
 		/// </param>
+		/// <param name="group">
+		/// Optional
+		/// List of output ports for skew calculation
+		/// </param>
 		/// <param name="rpx">
 		/// Optional
 		/// Filename to output interactive results to.
@@ -1654,9 +1857,21 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_datasheet(string group, string significant_digits = null, string file = null, bool? append = null, bool? return_string = null, string sort_by = null, string name = null, bool? show_all_corners = null, bool? show_oe_timing = null, string rpx = null, bool? quiet = null, bool? verbose = null)
+		public void report_datasheet(string significant_digits = null, string file = null, bool? append = null, bool? return_string = null, string sort_by = null, string name = null, bool? show_all_corners = null, bool? show_oe_timing = null, string group = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_datasheet");
+			command.OptionalString("significant_digits", significant_digits);
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.OptionalString("sort_by", sort_by);
+			command.OptionalString("name", name);
+			command.Flag("show_all_corners", show_all_corners);
+			command.Flag("show_oe_timing", show_oe_timing);
+			command.OptionalString("group", group);
+			command.OptionalString("rpx", rpx);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1702,6 +1917,12 @@ namespace Quokka.TCL.Vivado
 		public void report_debug_core(string file = null, bool? append = null, bool? return_string = null, bool? full_path = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_debug_core");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("full_path", full_path);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1848,19 +2069,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1309
 		/// </summary>
-		/// <param name="cells">
-		/// Required
-		/// Report analysis information for given list of cells
-		/// </param>
-		/// <param name="bounding_boxes">
-		/// Required
-		/// Report interconnection complexity (Rent) for given list of
-		/// bounding boxes Default: empty
-		/// </param>
-		/// <param name="of_timing_paths">
-		/// Required
-		/// Reports characteristics for these paths
-		/// </param>
 		/// <param name="file">
 		/// Optional
 		/// Filename to output results to. (send output to console if -file
@@ -1877,6 +2085,15 @@ namespace Quokka.TCL.Vivado
 		/// <param name="complexity">
 		/// Optional
 		/// Finds the interconnection complexity (Rent) of the design
+		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// Report analysis information for given list of cells
+		/// </param>
+		/// <param name="bounding_boxes">
+		/// Optional
+		/// Report interconnection complexity (Rent) for given list of
+		/// bounding boxes Default: empty
 		/// </param>
 		/// <param name="hierarchical_depth">
 		/// Optional
@@ -1944,6 +2161,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Returns timing path objects
 		/// </param>
+		/// <param name="of_timing_paths">
+		/// Optional
+		/// Reports characteristics for these paths
+		/// </param>
 		/// <param name="max_paths">
 		/// Optional
 		/// Number of paths to consider for -timing option Default: 1
@@ -1989,9 +2210,40 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_design_analysis(string cells, string bounding_boxes, string of_timing_paths, string file = null, bool? append = null, bool? return_string = null, bool? complexity = null, string hierarchical_depth = null, bool? congestion = null, string min_congestion_level = null, bool? timing = null, bool? setup = null, bool? hold = null, bool? show_all = null, bool? full_logical_pin = null, bool? routed_vs_estimated = null, bool? logic_level_distribution = null, string logic_level_dist_paths = null, string min_level = null, string max_level = null, bool? return_timing_paths = null, string max_paths = null, bool? extend = null, bool? routes = null, string end_point_clock = null, string logic_levels = null, bool? qor_summary = null, string name = null, bool? no_pr_attribute = null, bool? quiet = null, bool? verbose = null)
+		public void report_design_analysis(string file = null, bool? append = null, bool? return_string = null, bool? complexity = null, string cells = null, string bounding_boxes = null, string hierarchical_depth = null, bool? congestion = null, string min_congestion_level = null, bool? timing = null, bool? setup = null, bool? hold = null, bool? show_all = null, bool? full_logical_pin = null, bool? routed_vs_estimated = null, bool? logic_level_distribution = null, string logic_level_dist_paths = null, string min_level = null, string max_level = null, bool? return_timing_paths = null, string of_timing_paths = null, string max_paths = null, bool? extend = null, bool? routes = null, string end_point_clock = null, string logic_levels = null, bool? qor_summary = null, string name = null, bool? no_pr_attribute = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_design_analysis");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("complexity", complexity);
+			command.OptionalString("cells", cells);
+			command.OptionalString("bounding_boxes", bounding_boxes);
+			command.OptionalString("hierarchical_depth", hierarchical_depth);
+			command.Flag("congestion", congestion);
+			command.OptionalString("min_congestion_level", min_congestion_level);
+			command.Flag("timing", timing);
+			command.Flag("setup", setup);
+			command.Flag("hold", hold);
+			command.Flag("show_all", show_all);
+			command.Flag("full_logical_pin", full_logical_pin);
+			command.Flag("routed_vs_estimated", routed_vs_estimated);
+			command.Flag("logic_level_distribution", logic_level_distribution);
+			command.OptionalString("logic_level_dist_paths", logic_level_dist_paths);
+			command.OptionalString("min_level", min_level);
+			command.OptionalString("max_level", max_level);
+			command.Flag("return_timing_paths", return_timing_paths);
+			command.OptionalString("of_timing_paths", of_timing_paths);
+			command.OptionalString("max_paths", max_paths);
+			command.Flag("extend", extend);
+			command.Flag("routes", routes);
+			command.OptionalString("end_point_clock", end_point_clock);
+			command.OptionalString("logic_levels", logic_levels);
+			command.Flag("qor_summary", qor_summary);
+			command.OptionalString("name", name);
+			command.Flag("no_pr_attribute", no_pr_attribute);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2019,10 +2271,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1319
 		/// </summary>
-		/// <param name="cells">
-		/// Required
-		/// run report_disable_timing on the specified cell(s)
-		/// </param>
 		/// <param name="user_disabled">
 		/// Optional
 		/// report only user disabled arcs
@@ -2041,6 +2289,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Append the results to file, don't overwrite the results file
 		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// run report_disable_timing on the specified cell(s)
+		/// </param>
 		/// <param name="return_string">
 		/// Optional
 		/// return report as string
@@ -2053,9 +2305,17 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_disable_timing(string cells, bool? user_disabled = null, string column_style = null, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public void report_disable_timing(bool? user_disabled = null, string column_style = null, string file = null, bool? append = null, string cells = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_disable_timing");
+			command.Flag("user_disabled", user_disabled);
+			command.OptionalString("column_style", column_style);
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.OptionalString("cells", cells);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2105,14 +2365,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1322
 		/// </summary>
-		/// <param name="checks">
-		/// Required
-		/// DRC checks (see get_drc_checks for available checks)
-		/// </param>
-		/// <param name="ruledecks">
-		/// Required
-		/// Containers of DRC rule checks Default: default
-		/// </param>
 		/// <param name="name">
 		/// Optional
 		/// Output the results to GUI panel with this name
@@ -2121,6 +2373,14 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Specifies if report_drc should upgrade all
 		/// CRITICAL_WARNING violations to ERROR.
+		/// </param>
+		/// <param name="checks">
+		/// Optional
+		/// DRC checks (see get_drc_checks for available checks)
+		/// </param>
+		/// <param name="ruledecks">
+		/// Optional
+		/// Containers of DRC rule checks Default: default
 		/// </param>
 		/// <param name="file">
 		/// Optional
@@ -2155,9 +2415,21 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_drc(string checks, string ruledecks, string name = null, bool? upgrade_cw = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public void report_drc(string name = null, bool? upgrade_cw = null, string checks = null, string ruledecks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_drc");
+			command.OptionalString("name", name);
+			command.Flag("upgrade_cw", upgrade_cw);
+			command.OptionalString("checks", checks);
+			command.OptionalString("ruledecks", ruledecks);
+			command.OptionalString("file", file);
+			command.OptionalString("rpx", rpx);
+			command.Flag("append", append);
+			command.Flag("waived", waived);
+			command.Flag("no_waivers", no_waivers);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2203,6 +2475,12 @@ namespace Quokka.TCL.Vivado
 		public void report_environment(string file = null, string format = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_environment");
+			command.OptionalString("file", file);
+			command.OptionalString("format", format);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2223,39 +2501,39 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1331
 		/// </summary>
 		/// <param name="from">
-		/// Required
+		/// Optional
 		/// From pins, ports, cells or clocks
 		/// </param>
 		/// <param name="rise_from">
-		/// Required
+		/// Optional
 		/// Rising from pins, ports, cells or clocks
 		/// </param>
 		/// <param name="fall_from">
-		/// Required
+		/// Optional
 		/// Falling from pins, ports, cells or clocks
 		/// </param>
 		/// <param name="to">
-		/// Required
+		/// Optional
 		/// To pins, ports, cells or clocks
 		/// </param>
 		/// <param name="rise_to">
-		/// Required
+		/// Optional
 		/// Rising to pins, ports, cells or clocks
 		/// </param>
 		/// <param name="fall_to">
-		/// Required
+		/// Optional
 		/// Falling to pins, ports, cells or clocks
 		/// </param>
 		/// <param name="through">
-		/// Required
+		/// Optional
 		/// Through pins, ports, cells or nets
 		/// </param>
 		/// <param name="rise_through">
-		/// Required
+		/// Optional
 		/// Rising through pins, ports, cells or nets
 		/// </param>
 		/// <param name="fall_through">
-		/// Required
+		/// Optional
 		/// Falling through pins, ports, cells or nets
 		/// </param>
 		/// <param name="ignored">
@@ -2315,9 +2593,32 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_exceptions(string from, string rise_from, string fall_from, string to, string rise_to, string fall_to, string through, string rise_through, string fall_through, bool? ignored = null, bool? summary = null, bool? coverage = null, bool? ignored_objects = null, bool? count_objects = null, bool? write_merged_exceptions = null, bool? write_valid_exceptions = null, bool? no_header = null, string file = null, bool? append = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
+		public void report_exceptions(string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? ignored = null, bool? summary = null, bool? coverage = null, bool? ignored_objects = null, bool? count_objects = null, bool? write_merged_exceptions = null, bool? write_valid_exceptions = null, bool? no_header = null, string file = null, bool? append = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_exceptions");
+			command.OptionalString("from", from);
+			command.OptionalString("rise_from", rise_from);
+			command.OptionalString("fall_from", fall_from);
+			command.OptionalString("to", to);
+			command.OptionalString("rise_to", rise_to);
+			command.OptionalString("fall_to", fall_to);
+			command.OptionalString("through", through);
+			command.OptionalString("rise_through", rise_through);
+			command.OptionalString("fall_through", fall_through);
+			command.Flag("ignored", ignored);
+			command.Flag("summary", summary);
+			command.Flag("coverage", coverage);
+			command.Flag("ignored_objects", ignored_objects);
+			command.Flag("count_objects", count_objects);
+			command.Flag("write_merged_exceptions", write_merged_exceptions);
+			command.Flag("write_valid_exceptions", write_valid_exceptions);
+			command.Flag("no_header", no_header);
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.OptionalString("name", name);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2340,14 +2641,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1338
 		/// </summary>
-		/// <param name="cells">
-		/// Required
-		/// Report the nets of the specified cells
-		/// </param>
-		/// <param name="clocks">
-		/// Required
-		/// Report the nets of the specified clocks
-		/// </param>
 		/// <param name="file">
 		/// Optional
 		/// Filename to output results to. (send output to console if -file
@@ -2406,6 +2699,14 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Output the results to GUI panel with this name
 		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// Report the nets of the specified cells
+		/// </param>
+		/// <param name="clocks">
+		/// Optional
+		/// Report the nets of the specified clocks
+		/// </param>
 		/// <param name="return_string">
 		/// Optional
 		/// return report as string
@@ -2419,9 +2720,27 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>Report</returns>
-		public void report_high_fanout_nets(string cells, string clocks, string file = null, string format = null, bool? append = null, bool? ascending = null, bool? timing = null, bool? histogram = null, bool? load_types = null, bool? clock_regions = null, bool? slr = null, string max_nets = null, string fanout_greater_than = null, string fanout_lesser_than = null, string name = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public void report_high_fanout_nets(string file = null, string format = null, bool? append = null, bool? ascending = null, bool? timing = null, bool? histogram = null, bool? load_types = null, bool? clock_regions = null, bool? slr = null, string max_nets = null, string fanout_greater_than = null, string fanout_lesser_than = null, string name = null, string cells = null, string clocks = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_high_fanout_nets");
+			command.OptionalString("file", file);
+			command.OptionalString("format", format);
+			command.Flag("append", append);
+			command.Flag("ascending", ascending);
+			command.Flag("timing", timing);
+			command.Flag("histogram", histogram);
+			command.Flag("load_types", load_types);
+			command.Flag("clock_regions", clock_regions);
+			command.Flag("slr", slr);
+			command.OptionalString("max_nets", max_nets);
+			command.OptionalString("fanout_greater_than", fanout_greater_than);
+			command.OptionalString("fanout_lesser_than", fanout_lesser_than);
+			command.OptionalString("name", name);
+			command.OptionalString("cells", cells);
+			command.OptionalString("clocks", clocks);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2472,6 +2791,12 @@ namespace Quokka.TCL.Vivado
 		public void report_hw_ddrmc(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_hw_ddrmc");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2521,6 +2846,12 @@ namespace Quokka.TCL.Vivado
 		public void report_hw_mig(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_hw_mig");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hw_objects", hw_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2549,10 +2880,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1351
 		/// </summary>
-		/// <param name="cells">
-		/// Required
-		/// Report incremental reuse of given list of cells
-		/// </param>
 		/// <param name="file">
 		/// Optional
 		/// Filename to output results to. (send output to console if -file
@@ -2561,6 +2888,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="append">
 		/// Optional
 		/// Append to existing file
+		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// Report incremental reuse of given list of cells
 		/// </param>
 		/// <param name="hierarchical">
 		/// Optional
@@ -2583,9 +2914,17 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_incremental_reuse(string cells, string file = null, bool? append = null, bool? hierarchical = null, string hierarchical_depth = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public void report_incremental_reuse(string file = null, bool? append = null, string cells = null, bool? hierarchical = null, string hierarchical_depth = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_incremental_reuse");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.OptionalString("cells", cells);
+			command.Flag("hierarchical", hierarchical);
+			command.OptionalString("hierarchical_depth", hierarchical_depth);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2636,6 +2975,13 @@ namespace Quokka.TCL.Vivado
 		public void report_io(string file = null, string name = null, bool? append = null, string format = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_io");
+			command.OptionalString("file", file);
+			command.OptionalString("name", name);
+			command.Flag("append", append);
+			command.OptionalString("format", format);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2672,18 +3018,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1359
 		/// </summary>
-		/// <param name="cells">
-		/// Required
-		/// Run report_methodology on the specified cell(s).
-		/// </param>
-		/// <param name="checks">
-		/// Required
-		/// Report Methodology checks (see get_methodology_checks
-		/// for available checks)
-		/// </param>
 		/// <param name="name">
 		/// Optional
 		/// Output the results to GUI panel with this name
+		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// Run report_methodology on the specified cell(s).
+		/// </param>
+		/// <param name="checks">
+		/// Optional
+		/// Report Methodology checks (see get_methodology_checks
+		/// for available checks)
 		/// </param>
 		/// <param name="file">
 		/// Optional
@@ -2723,9 +3069,21 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_methodology(string cells, string checks, string name = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, string slack_lesser_than = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public void report_methodology(string name = null, string cells = null, string checks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, string slack_lesser_than = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_methodology");
+			command.OptionalString("name", name);
+			command.OptionalString("cells", cells);
+			command.OptionalString("checks", checks);
+			command.OptionalString("file", file);
+			command.OptionalString("rpx", rpx);
+			command.Flag("append", append);
+			command.Flag("waived", waived);
+			command.Flag("no_waivers", no_waivers);
+			command.OptionalString("slack_lesser_than", slack_lesser_than);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2748,7 +3106,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1365
 		/// </summary>
 		/// <param name="voltage">
-		/// Required
+		/// Optional
 		/// Gets voltage value. Supported voltage supplies vary by
 		/// family.
 		/// </param>
@@ -2829,9 +3187,29 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_operating_conditions(string voltage, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, bool? all = null, string file = null, bool? return_string = null, bool? append = null, bool? quiet = null, bool? verbose = null)
+		public void report_operating_conditions(string voltage = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, bool? all = null, string file = null, bool? return_string = null, bool? append = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_operating_conditions");
+			command.OptionalString("voltage", voltage);
+			command.Flag("grade", grade);
+			command.Flag("process", process);
+			command.Flag("junction_temp", junction_temp);
+			command.Flag("ambient_temp", ambient_temp);
+			command.Flag("thetaja", thetaja);
+			command.Flag("thetasa", thetasa);
+			command.Flag("airflow", airflow);
+			command.Flag("heatsink", heatsink);
+			command.Flag("thetajb", thetajb);
+			command.Flag("board", board);
+			command.Flag("board_temp", board_temp);
+			command.Flag("board_layers", board_layers);
+			command.Flag("design_power_budget", design_power_budget);
+			command.Flag("all", all);
+			command.OptionalString("file", file);
+			command.Flag("return_string", return_string);
+			command.Flag("append", append);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2881,6 +3259,13 @@ namespace Quokka.TCL.Vivado
 		public void report_param(string file = null, bool? append = null, bool? non_default = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, string pattern = null)
 		{
 			var command = new SimpleTCLCommand("report_param");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("non_default", non_default);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("pattern", pattern);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2918,6 +3303,11 @@ namespace Quokka.TCL.Vivado
 		public void report_phys_opt(string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_phys_opt");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3008,6 +3398,21 @@ namespace Quokka.TCL.Vivado
 		public void report_power(bool? no_propagation = null, string hier = null, string hierarchical_depth = null, bool? vid = null, bool? advisory = null, string file = null, string name = null, string format = null, string xpe = null, string l = null, bool? return_string = null, bool? append = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_power");
+			command.Flag("no_propagation", no_propagation);
+			command.OptionalString("hier", hier);
+			command.OptionalString("hierarchical_depth", hierarchical_depth);
+			command.Flag("vid", vid);
+			command.Flag("advisory", advisory);
+			command.OptionalString("file", file);
+			command.OptionalString("name", name);
+			command.OptionalString("format", format);
+			command.OptionalString("xpe", xpe);
+			command.OptionalString("l", l);
+			command.Flag("return_string", return_string);
+			command.Flag("append", append);
+			command.OptionalString("rpx", rpx);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3029,15 +3434,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1381
 		/// </summary>
-		/// <param name="cells">
-		/// Required
-		/// List of reconfigurable cell names
-		/// </param>
-		/// <param name="dcps">
-		/// Required
-		/// List of design checkpoints for each reconfigurable cell. The
-		/// order of dcps must match that of the -cells option.
-		/// </param>
 		/// <param name="complexity">
 		/// Optional
 		/// Run complexity analysis
@@ -3049,6 +3445,15 @@ namespace Quokka.TCL.Vivado
 		/// <param name="timing">
 		/// Optional
 		/// Run boundary net timing analysis
+		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// List of reconfigurable cell names
+		/// </param>
+		/// <param name="dcps">
+		/// Optional
+		/// List of design checkpoints for each reconfigurable cell. The
+		/// order of dcps must match that of the -cells option.
 		/// </param>
 		/// <param name="rent">
 		/// Optional
@@ -3072,9 +3477,19 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_pr_configuration_analysis(string cells, string dcps, bool? complexity = null, bool? clocking = null, bool? timing = null, bool? rent = null, string nworst = null, string file = null, bool? quiet = null, bool? verbose = null)
+		public void report_pr_configuration_analysis(bool? complexity = null, bool? clocking = null, bool? timing = null, string cells = null, string dcps = null, bool? rent = null, string nworst = null, string file = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_pr_configuration_analysis");
+			command.Flag("complexity", complexity);
+			command.Flag("clocking", clocking);
+			command.Flag("timing", timing);
+			command.OptionalString("cells", cells);
+			command.OptionalString("dcps", dcps);
+			command.Flag("rent", rent);
+			command.OptionalString("nworst", nworst);
+			command.OptionalString("file", file);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3114,7 +3529,7 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Report all properties of object even if not set
 		/// </param>
-		/// <param name="class">
+		/// <param name="@class">
 		/// Optional
 		/// Object type to query for properties. Not valid with <object>
 		/// </param>
@@ -3144,7 +3559,7 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="object">
+		/// <param name="@object">
 		/// Optional
 		/// Object to query for properties
 		/// </param>
@@ -3153,9 +3568,19 @@ namespace Quokka.TCL.Vivado
 		/// Pattern to match properties against Default: *
 		/// </param>
 		/// <returns>property report</returns>
-		public void report_property(bool? all = null, string class = null, bool? return_string = null, string file = null, bool? append = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, string object = null, string pattern = null)
+		public void report_property(bool? all = null, string @class = null, bool? return_string = null, string file = null, bool? append = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, string @object = null, string pattern = null)
 		{
 			var command = new SimpleTCLCommand("report_property");
+			command.Flag("all", all);
+			command.OptionalString("class", @class);
+			command.Flag("return_string", return_string);
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("regexp", regexp);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("object", @object);
+			command.OptionalString("pattern", pattern);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3181,15 +3606,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1388
 		/// </summary>
-		/// <param name="clocks">
-		/// Required
-		/// List of clocks for which to report min pulse width/min period
-		/// checks
-		/// </param>
-		/// <param name="cells">
-		/// Required
-		/// run report_pulse_width on the specified cell(s)
-		/// </param>
 		/// <param name="file">
 		/// Optional
 		/// Filename to output results to. (send output to console if -file
@@ -3245,9 +3661,18 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Only report max skew checks
 		/// </param>
+		/// <param name="clocks">
+		/// Optional
+		/// List of clocks for which to report min pulse width/min period
+		/// checks
+		/// </param>
 		/// <param name="no_header">
 		/// Optional
 		///
+		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// run report_pulse_width on the specified cell(s)
 		/// </param>
 		/// <param name="rpx">
 		/// Optional
@@ -3265,9 +3690,29 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// List of objects to check min pulse width with
 		/// </param>
-		public void report_pulse_width(string clocks, string cells, string file = null, bool? append = null, string name = null, bool? return_string = null, bool? warn_on_violation = null, bool? all_violators = null, string significant_digits = null, string limit = null, bool? min_period = null, bool? max_period = null, bool? low_pulse = null, bool? high_pulse = null, bool? max_skew = null, bool? no_header = null, string rpx = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public void report_pulse_width(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? warn_on_violation = null, bool? all_violators = null, string significant_digits = null, string limit = null, bool? min_period = null, bool? max_period = null, bool? low_pulse = null, bool? high_pulse = null, bool? max_skew = null, string clocks = null, bool? no_header = null, string cells = null, string rpx = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			var command = new SimpleTCLCommand("report_pulse_width");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.OptionalString("name", name);
+			command.Flag("return_string", return_string);
+			command.Flag("warn_on_violation", warn_on_violation);
+			command.Flag("all_violators", all_violators);
+			command.OptionalString("significant_digits", significant_digits);
+			command.OptionalString("limit", limit);
+			command.Flag("min_period", min_period);
+			command.Flag("max_period", max_period);
+			command.Flag("low_pulse", low_pulse);
+			command.Flag("high_pulse", high_pulse);
+			command.Flag("max_skew", max_skew);
+			command.OptionalString("clocks", clocks);
+			command.Flag("no_header", no_header);
+			command.OptionalString("cells", cells);
+			command.OptionalString("rpx", rpx);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3326,6 +3771,11 @@ namespace Quokka.TCL.Vivado
 		public void report_qor_assessment(string file = null, string max_paths = null, bool? append = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_qor_assessment");
+			command.OptionalString("file", file);
+			command.OptionalString("max_paths", max_paths);
+			command.Flag("append", append);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3366,14 +3816,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1395
 		/// </summary>
-		/// <param name="cell">
-		/// Required
-		/// Report QOR suggestions for a given cell
-		/// </param>
-		/// <param name="of_objects">
-		/// Required
-		/// List of QoR suggestion objects
-		/// </param>
 		/// <param name="file">
 		/// Optional
 		/// Filename to output results to. (send output to console if -file
@@ -3414,6 +3856,14 @@ namespace Quokka.TCL.Vivado
 		/// proj/rdi-xco/builds/HEAD/nightly/RUNNING_ BUILD/
 		/// packages/customer/vivado/data/deca/models_dir
 		/// </param>
+		/// <param name="cell">
+		/// Optional
+		/// Report QOR suggestions for a given cell
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// List of QoR suggestion objects
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -3422,9 +3872,22 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_qor_suggestions(string cell, string of_objects, string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? evaluate_pipelining = null, bool? no_split = null, string models_dir = null, bool? quiet = null, bool? verbose = null)
+		public void report_qor_suggestions(string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? evaluate_pipelining = null, bool? no_split = null, string models_dir = null, string cell = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_qor_suggestions");
+			command.OptionalString("file", file);
+			command.OptionalString("name", name);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.OptionalString("max_strategies", max_strategies);
+			command.OptionalString("max_paths", max_paths);
+			command.Flag("evaluate_pipelining", evaluate_pipelining);
+			command.Flag("no_split", no_split);
+			command.OptionalString("models_dir", models_dir);
+			command.OptionalString("cell", cell);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3483,11 +3946,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1399
 		/// </summary>
-		/// <param name="cells">
-		/// Required
-		/// Limits the reporting to only those memory arrays that are
-		/// contained within the specified cells.
-		/// </param>
 		/// <param name="append">
 		/// Optional
 		/// Append to existing file
@@ -3500,6 +3958,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">
 		/// Optional
 		/// return report as string
+		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// Limits the reporting to only those memory arrays that are
+		/// contained within the specified cells.
 		/// </param>
 		/// <param name="include_path_info">
 		/// Optional
@@ -3520,9 +3983,17 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>Report</returns>
-		public void report_ram_utilization(string cells, bool? append = null, string file = null, bool? return_string = null, bool? include_path_info = null, bool? detail = null, bool? quiet = null, bool? verbose = null)
+		public void report_ram_utilization(bool? append = null, string file = null, bool? return_string = null, string cells = null, bool? include_path_info = null, bool? detail = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_ram_utilization");
+			command.Flag("append", append);
+			command.OptionalString("file", file);
+			command.Flag("return_string", return_string);
+			command.OptionalString("cells", cells);
+			command.Flag("include_path_info", include_path_info);
+			command.Flag("detail", detail);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3537,10 +4008,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1402
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Report detailed routing for these routes
-		/// </param>
 		/// <param name="return_string">
 		/// Optional
 		/// Set the result of running the report in the Tcl interpreter's
@@ -3554,6 +4021,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="append">
 		/// Optional
 		/// Append the results to file, don't overwrite the results file
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Report detailed routing for these routes
 		/// </param>
 		/// <param name="route_type">
 		/// Optional
@@ -3605,9 +4076,22 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_route_status(string of_objects, bool? return_string = null, string file = null, bool? append = null, string route_type = null, bool? list_all_nets = null, bool? show_all = null, bool? dump_routes = null, bool? has_routing = null, string boolean_check = null, bool? ignore_cache = null, bool? quiet = null, bool? verbose = null)
+		public void report_route_status(bool? return_string = null, string file = null, bool? append = null, string of_objects = null, string route_type = null, bool? list_all_nets = null, bool? show_all = null, bool? dump_routes = null, bool? has_routing = null, string boolean_check = null, bool? ignore_cache = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_route_status");
+			command.Flag("return_string", return_string);
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.OptionalString("of_objects", of_objects);
+			command.OptionalString("route_type", route_type);
+			command.Flag("list_all_nets", list_all_nets);
+			command.Flag("show_all", show_all);
+			command.Flag("dump_routes", dump_routes);
+			command.Flag("has_routing", has_routing);
+			command.OptionalString("boolean_check", boolean_check);
+			command.Flag("ignore_cache", ignore_cache);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3643,6 +4127,12 @@ namespace Quokka.TCL.Vivado
 		public void report_sim_device(string part = null, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_sim_device");
+			command.OptionalString("part", part);
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3724,6 +4214,14 @@ namespace Quokka.TCL.Vivado
 		public void report_ssn(string name = null, bool? return_string = null, string format = null, string file = null, bool? append = null, bool? phase = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_ssn");
+			command.OptionalString("name", name);
+			command.Flag("return_string", return_string);
+			command.OptionalString("format", format);
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("phase", phase);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3745,12 +4243,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1416
 		/// </summary>
-		/// <param name="type">
-		/// Required
-		/// Specify nodes in a specific category. List of valid type values:
-		/// io_output, io_bidir_enable, register, lut_ram, lut, dsp,
-		/// bram_enable, bram_wr_enable, gt_txdata, gt_rxdata.
-		/// </param>
 		/// <param name="static_probability">
 		/// Optional
 		/// report static probability
@@ -3793,6 +4285,12 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Report switching activities for all nets for the design.
 		/// </param>
+		/// <param name="type">
+		/// Optional
+		/// Specify nodes in a specific category. List of valid type values:
+		/// io_output, io_bidir_enable, register, lut_ram, lut, dsp,
+		/// bram_enable, bram_wr_enable, gt_txdata, gt_rxdata.
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -3805,9 +4303,23 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// objects
 		/// </param>
-		public void report_switching_activity(string type, bool? static_probability = null, bool? signal_rate = null, bool? toggle_rate = null, bool? default_static_probability = null, bool? default_toggle_rate = null, string file = null, bool? return_string = null, bool? append = null, bool? hier = null, bool? all = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public void report_switching_activity(bool? static_probability = null, bool? signal_rate = null, bool? toggle_rate = null, bool? default_static_probability = null, bool? default_toggle_rate = null, string file = null, bool? return_string = null, bool? append = null, bool? hier = null, bool? all = null, string type = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			var command = new SimpleTCLCommand("report_switching_activity");
+			command.Flag("static_probability", static_probability);
+			command.Flag("signal_rate", signal_rate);
+			command.Flag("toggle_rate", toggle_rate);
+			command.Flag("default_static_probability", default_static_probability);
+			command.Flag("default_toggle_rate", default_toggle_rate);
+			command.OptionalString("file", file);
+			command.Flag("return_string", return_string);
+			command.Flag("append", append);
+			command.Flag("hier", hier);
+			command.Flag("all", all);
+			command.OptionalString("type", type);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3922,6 +4434,14 @@ namespace Quokka.TCL.Vivado
 		public void report_synchronizer_mtbf(string file = null, bool? append = null, bool? return_string = null, string warn_if_mtbf_below = null, bool? quiet = null, bool? no_header = null, bool? report_endpoints = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_synchronizer_mtbf");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.OptionalString("warn_if_mtbf_below", warn_if_mtbf_below);
+			command.Flag("quiet", quiet);
+			command.Flag("no_header", no_header);
+			command.Flag("report_endpoints", report_endpoints);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3956,52 +4476,40 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1424
 		/// </summary>
 		/// <param name="from">
-		/// Required
+		/// Optional
 		/// From pins, ports, cells or clocks
 		/// </param>
 		/// <param name="rise_from">
-		/// Required
+		/// Optional
 		/// Rising from pins, ports, cells or clocks
 		/// </param>
 		/// <param name="fall_from">
-		/// Required
+		/// Optional
 		/// Falling from pins, ports, cells or clocks
 		/// </param>
 		/// <param name="to">
-		/// Required
+		/// Optional
 		/// To pins, ports, cells or clocks
 		/// </param>
 		/// <param name="rise_to">
-		/// Required
+		/// Optional
 		/// Rising to pins, ports, cells or clocks
 		/// </param>
 		/// <param name="fall_to">
-		/// Required
+		/// Optional
 		/// Falling to pins, ports, cells or clocks
 		/// </param>
 		/// <param name="through">
-		/// Required
+		/// Optional
 		/// Through pins, ports, cells or nets
 		/// </param>
 		/// <param name="rise_through">
-		/// Required
+		/// Optional
 		/// Rising through pins, ports, cells or nets
 		/// </param>
 		/// <param name="fall_through">
-		/// Required
+		/// Optional
 		/// Falling through pins, ports, cells or nets
-		/// </param>
-		/// <param name="group">
-		/// Required
-		/// Limit report to paths in this group(s)
-		/// </param>
-		/// <param name="of_objects">
-		/// Required
-		/// Report timing for these paths
-		/// </param>
-		/// <param name="cells">
-		/// Required
-		/// run report_timing on the specified cell(s)
 		/// </param>
 		/// <param name="delay_type">
 		/// Optional
@@ -4059,6 +4567,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Display paths with slack greater than this Default: -1e+30
 		/// </param>
+		/// <param name="group">
+		/// Optional
+		/// Limit report to paths in this group(s)
+		/// </param>
 		/// <param name="sort_by">
 		/// Optional
 		/// Sorting order of paths: Values: group, slack Default: slack
@@ -4071,6 +4583,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Only report paths which have infinite slack because of
 		/// set_false_path or set_clock_groups timing constraints
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Report timing for these paths
 		/// </param>
 		/// <param name="significant_digits">
 		/// Optional
@@ -4113,6 +4629,10 @@ namespace Quokka.TCL.Vivado
 		/// issue a critical warning when the report contains a timing
 		/// violation
 		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// run report_timing on the specified cell(s)
+		/// </param>
 		/// <param name="rpx">
 		/// Optional
 		/// Filename to output interactive results to.
@@ -4125,9 +4645,48 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_timing(string from, string rise_from, string fall_from, string to, string rise_to, string fall_to, string through, string rise_through, string fall_through, string group, string of_objects, string cells, string delay_type = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? input_pins = null, bool? no_header = null, bool? no_reused_label = null, string slack_lesser_than = null, string slack_greater_than = null, string sort_by = null, bool? no_report_unconstrained = null, bool? user_ignored = null, string significant_digits = null, string column_style = null, string file = null, bool? append = null, string name = null, bool? no_pr_attribute = null, bool? routable_nets = null, bool? return_string = null, bool? warn_on_violation = null, string rpx = null, bool? quiet = null, bool? verbose = null)
+		public void report_timing(string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, string delay_type = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? input_pins = null, bool? no_header = null, bool? no_reused_label = null, string slack_lesser_than = null, string slack_greater_than = null, string group = null, string sort_by = null, bool? no_report_unconstrained = null, bool? user_ignored = null, string of_objects = null, string significant_digits = null, string column_style = null, string file = null, bool? append = null, string name = null, bool? no_pr_attribute = null, bool? routable_nets = null, bool? return_string = null, bool? warn_on_violation = null, string cells = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_timing");
+			command.OptionalString("from", from);
+			command.OptionalString("rise_from", rise_from);
+			command.OptionalString("fall_from", fall_from);
+			command.OptionalString("to", to);
+			command.OptionalString("rise_to", rise_to);
+			command.OptionalString("fall_to", fall_to);
+			command.OptionalString("through", through);
+			command.OptionalString("rise_through", rise_through);
+			command.OptionalString("fall_through", fall_through);
+			command.OptionalString("delay_type", delay_type);
+			command.Flag("setup", setup);
+			command.Flag("hold", hold);
+			command.OptionalString("max_paths", max_paths);
+			command.OptionalString("nworst", nworst);
+			command.Flag("unique_pins", unique_pins);
+			command.OptionalString("path_type", path_type);
+			command.Flag("input_pins", input_pins);
+			command.Flag("no_header", no_header);
+			command.Flag("no_reused_label", no_reused_label);
+			command.OptionalString("slack_lesser_than", slack_lesser_than);
+			command.OptionalString("slack_greater_than", slack_greater_than);
+			command.OptionalString("group", group);
+			command.OptionalString("sort_by", sort_by);
+			command.Flag("no_report_unconstrained", no_report_unconstrained);
+			command.Flag("user_ignored", user_ignored);
+			command.OptionalString("of_objects", of_objects);
+			command.OptionalString("significant_digits", significant_digits);
+			command.OptionalString("column_style", column_style);
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.OptionalString("name", name);
+			command.Flag("no_pr_attribute", no_pr_attribute);
+			command.Flag("routable_nets", routable_nets);
+			command.Flag("return_string", return_string);
+			command.Flag("warn_on_violation", warn_on_violation);
+			command.OptionalString("cells", cells);
+			command.OptionalString("rpx", rpx);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4172,10 +4731,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1431
 		/// </summary>
-		/// <param name="cells">
-		/// Required
-		/// run report_timing_summary on the specified cell(s)
-		/// </param>
 		/// <param name="check_timing_verbose">
 		/// Optional
 		/// produce a verbose report when checking the design for
@@ -4281,6 +4836,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Include data sheet report
 		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// run report_timing_summary on the specified cell(s)
+		/// </param>
 		/// <param name="rpx">
 		/// Optional
 		/// Filename to output interactive results to.
@@ -4293,9 +4852,36 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void report_timing_summary(string cells, bool? check_timing_verbose = null, string delay_type = null, bool? no_detailed_paths = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? no_reused_label = null, bool? input_pins = null, bool? no_pr_attribute = null, bool? routable_nets = null, string slack_lesser_than = null, bool? report_unconstrained = null, string significant_digits = null, bool? no_header = null, string file = null, bool? append = null, string name = null, bool? return_string = null, bool? warn_on_violation = null, bool? datasheet = null, string rpx = null, bool? quiet = null, bool? verbose = null)
+		public void report_timing_summary(bool? check_timing_verbose = null, string delay_type = null, bool? no_detailed_paths = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? no_reused_label = null, bool? input_pins = null, bool? no_pr_attribute = null, bool? routable_nets = null, string slack_lesser_than = null, bool? report_unconstrained = null, string significant_digits = null, bool? no_header = null, string file = null, bool? append = null, string name = null, bool? return_string = null, bool? warn_on_violation = null, bool? datasheet = null, string cells = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_timing_summary");
+			command.Flag("check_timing_verbose", check_timing_verbose);
+			command.OptionalString("delay_type", delay_type);
+			command.Flag("no_detailed_paths", no_detailed_paths);
+			command.Flag("setup", setup);
+			command.Flag("hold", hold);
+			command.OptionalString("max_paths", max_paths);
+			command.OptionalString("nworst", nworst);
+			command.Flag("unique_pins", unique_pins);
+			command.OptionalString("path_type", path_type);
+			command.Flag("no_reused_label", no_reused_label);
+			command.Flag("input_pins", input_pins);
+			command.Flag("no_pr_attribute", no_pr_attribute);
+			command.Flag("routable_nets", routable_nets);
+			command.OptionalString("slack_lesser_than", slack_lesser_than);
+			command.Flag("report_unconstrained", report_unconstrained);
+			command.OptionalString("significant_digits", significant_digits);
+			command.Flag("no_header", no_header);
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.OptionalString("name", name);
+			command.Flag("return_string", return_string);
+			command.Flag("warn_on_violation", warn_on_violation);
+			command.Flag("datasheet", datasheet);
+			command.OptionalString("cells", cells);
+			command.OptionalString("rpx", rpx);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4336,6 +4922,11 @@ namespace Quokka.TCL.Vivado
 		public void report_transformed_primitives(string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_transformed_primitives");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4364,14 +4955,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1439
 		/// </summary>
-		/// <param name="pblocks">
-		/// Required
-		/// Report utilization of given list of pblocks
-		/// </param>
-		/// <param name="cells">
-		/// Required
-		/// Report utilization of given list of cells
-		/// </param>
 		/// <param name="file">
 		/// Optional
 		/// Filename to output results to. (send output to console if -file
@@ -4380,6 +4963,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="append">
 		/// Optional
 		/// Append the results to file, don't overwrite the results file
+		/// </param>
+		/// <param name="pblocks">
+		/// Optional
+		/// Report utilization of given list of pblocks
 		/// </param>
 		/// <param name="evaluate_pblock">
 		/// Optional
@@ -4393,6 +4980,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="exclude_non_assigned">
 		/// Optional
 		/// Pblock utilization with out Non-assigned Cells
+		/// </param>
+		/// <param name="cells">
+		/// Optional
+		/// Report utilization of given list of cells
 		/// </param>
 		/// <param name="return_string">
 		/// Optional
@@ -4456,9 +5047,30 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>Report</returns>
-		public void report_utilization(string pblocks, string cells, string file = null, bool? append = null, bool? evaluate_pblock = null, bool? exclude_child_pblocks = null, bool? exclude_non_assigned = null, bool? return_string = null, bool? slr = null, bool? packthru = null, string name = null, bool? no_primitives = null, bool? omit_locs = null, bool? hierarchical = null, string spreadsheet_file = null, string spreadsheet_table = null, string spreadsheet_depth = null, string hierarchical_depth = null, bool? hierarchical_percentages = null, bool? quiet = null, bool? verbose = null)
+		public void report_utilization(string file = null, bool? append = null, string pblocks = null, bool? evaluate_pblock = null, bool? exclude_child_pblocks = null, bool? exclude_non_assigned = null, string cells = null, bool? return_string = null, bool? slr = null, bool? packthru = null, string name = null, bool? no_primitives = null, bool? omit_locs = null, bool? hierarchical = null, string spreadsheet_file = null, string spreadsheet_table = null, string spreadsheet_depth = null, string hierarchical_depth = null, bool? hierarchical_percentages = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_utilization");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.OptionalString("pblocks", pblocks);
+			command.Flag("evaluate_pblock", evaluate_pblock);
+			command.Flag("exclude_child_pblocks", exclude_child_pblocks);
+			command.Flag("exclude_non_assigned", exclude_non_assigned);
+			command.OptionalString("cells", cells);
+			command.Flag("return_string", return_string);
+			command.Flag("slr", slr);
+			command.Flag("packthru", packthru);
+			command.OptionalString("name", name);
+			command.Flag("no_primitives", no_primitives);
+			command.Flag("omit_locs", omit_locs);
+			command.Flag("hierarchical", hierarchical);
+			command.OptionalString("spreadsheet_file", spreadsheet_file);
+			command.OptionalString("spreadsheet_table", spreadsheet_table);
+			command.OptionalString("spreadsheet_depth", spreadsheet_depth);
+			command.OptionalString("hierarchical_depth", hierarchical_depth);
+			command.Flag("hierarchical_percentages", hierarchical_percentages);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4518,6 +5130,15 @@ namespace Quokka.TCL.Vivado
 		public void report_waivers(string file = null, string type = null, bool? write_valid_waivers = null, bool? write_ignored_waivers = null, bool? append = null, bool? return_string = null, bool? show_msgs_with_no_waivers = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_waivers");
+			command.OptionalString("file", file);
+			command.OptionalString("type", type);
+			command.Flag("write_valid_waivers", write_valid_waivers);
+			command.Flag("write_ignored_waivers", write_ignored_waivers);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("show_msgs_with_no_waivers", show_msgs_with_no_waivers);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4546,6 +5167,9 @@ namespace Quokka.TCL.Vivado
 		public void reset_drc(string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("reset_drc");
+			command.OptionalString("name", name);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4574,6 +5198,9 @@ namespace Quokka.TCL.Vivado
 		public void reset_methodology(string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("reset_methodology");
+			command.OptionalString("name", name);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4615,7 +5242,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1465
 		/// </summary>
 		/// <param name="string">
-		/// Required
+		/// Optional
 		/// A qualifier, only a rule created with a matching string
 		/// qualifier will be reset/removed Default: empty
 		/// </param>
@@ -4665,9 +5292,19 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void reset_msg_config(string string, string id = null, string severity = null, bool? limit = null, bool? suppress = null, bool? count = null, bool? default_severity = null, bool? regexp = null, bool? quiet = null, bool? verbose = null)
+		public void reset_msg_config(string string = null, string id = null, string severity = null, bool? limit = null, bool? suppress = null, bool? count = null, bool? default_severity = null, bool? regexp = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("reset_msg_config");
+			command.OptionalString("string", string);
+			command.OptionalString("id", id);
+			command.OptionalString("severity", severity);
+			command.Flag("limit", limit);
+			command.Flag("suppress", suppress);
+			command.Flag("count", count);
+			command.Flag("default_severity", default_severity);
+			command.Flag("regexp", regexp);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4707,6 +5344,9 @@ namespace Quokka.TCL.Vivado
 		public void reset_msg_count(string id, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("reset_msg_count");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("id", id);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4734,6 +5374,9 @@ namespace Quokka.TCL.Vivado
 		public void reset_ssn(string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("reset_ssn");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4775,6 +5418,10 @@ namespace Quokka.TCL.Vivado
 		public void reset_timing(bool? invalid = null, bool? clock_reservation = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("reset_timing");
+			command.Flag("invalid", invalid);
+			command.Flag("clock_reservation", clock_reservation);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4859,16 +5506,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1619
 		/// </summary>
-		/// <param name="string">
-		/// Required
-		/// A qualifier, apply the selected operation only to messages
-		/// that contain the given list of strings. Default: none
-		/// </param>
 		/// <param name="id">
 		/// Optional
 		/// A qualifier, apply the selected operation only to messages
 		/// that match given message id. Example: '-id {Common
 		/// 17-35}'. Default: match any id
+		/// </param>
+		/// <param name="string">
+		/// Optional
+		/// A qualifier, apply the selected operation only to messages
+		/// that contain the given list of strings. Default: none
 		/// </param>
 		/// <param name="severity">
 		/// Optional
@@ -4904,9 +5551,18 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_msg_config(string string, string id = null, string severity = null, string limit = null, string new_severity = null, bool? suppress = null, bool? regexp = null, bool? quiet = null, bool? verbose = null)
+		public void set_msg_config(string id = null, string string = null, string severity = null, string limit = null, string new_severity = null, bool? suppress = null, bool? regexp = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_msg_config");
+			command.OptionalString("id", id);
+			command.OptionalString("string", string);
+			command.OptionalString("severity", severity);
+			command.OptionalString("limit", limit);
+			command.OptionalString("new_severity", new_severity);
+			command.Flag("suppress", suppress);
+			command.Flag("regexp", regexp);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -4937,6 +5593,9 @@ namespace Quokka.TCL.Vivado
 		public void version(bool? short = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("version");
+			command.Flag("short", short);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 	}

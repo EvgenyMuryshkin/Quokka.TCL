@@ -25,6 +25,11 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1059
 		/// </summary>
+		/// <param name="file">
+		/// Required
+		/// Xilinx Shell Archive file Values: A filename with alphanumeric
+		/// characters and .dsa/.xsa extension.
+		/// </param>
 		/// <param name="auto_upgrade">
 		/// Optional
 		/// Automatically upgrade the BD
@@ -37,15 +42,14 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// Xilinx Shell Archive file Values: A filename with alphanumeric
-		/// characters and .dsa/.xsa extension.
-		/// </param>
 		/// <returns>The name of the shell file</returns>
-		public void open_hw_platform(bool? auto_upgrade = null, bool? quiet = null, bool? verbose = null, string file = null)
+		public void open_hw_platform(string file, bool? auto_upgrade = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("open_hw_platform");
+			command.Flag("auto_upgrade", auto_upgrade);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -77,6 +81,9 @@ namespace Quokka.TCL.Vivado
 		public void validate_hw_platform(bool? verbose = null, bool? quiet = null, string file = null)
 		{
 			var command = new SimpleTCLCommand("validate_hw_platform");
+			command.Flag("verbose", verbose);
+			command.Flag("quiet", quiet);
+			command.OptionalString("file", file);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -97,7 +104,12 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1813
 		/// </summary>
-		/// <param name="fixed">
+		/// <param name="file">
+		/// Required
+		/// Device Support Archive file Values: A filename with
+		/// alphanumeric characters and .xsa extension.
+		/// </param>
+		/// <param name="@fixed">
 		/// Optional
 		/// Write fixed Shell.
 		/// </param>
@@ -126,15 +138,18 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// Device Support Archive file Values: A filename with
-		/// alphanumeric characters and .xsa extension.
-		/// </param>
 		/// <returns>The name of the Shell file</returns>
-		public void write_hw_platform(bool? fixed = null, bool? force = null, bool? include_bit = null, bool? include_emulation = null, bool? minimal = null, bool? quiet = null, bool? verbose = null, string file = null)
+		public void write_hw_platform(string file, bool? @fixed = null, bool? force = null, bool? include_bit = null, bool? include_emulation = null, bool? minimal = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("write_hw_platform");
+			command.Flag("fixed", @fixed);
+			command.Flag("force", force);
+			command.Flag("include_bit", include_bit);
+			command.Flag("include_emulation", include_emulation);
+			command.Flag("minimal", minimal);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -148,6 +163,11 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1815
 		/// </summary>
+		/// <param name="file">
+		/// Required
+		/// Unified JSON metadata file Values: A filename with
+		/// alphanumeric characters and .json extension.
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -156,15 +176,13 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// Unified JSON metadata file Values: A filename with
-		/// alphanumeric characters and .json extension.
-		/// </param>
 		/// <returns>The name of the unified JSON metadata file</returns>
-		public void write_hw_platform_metadata(bool? quiet = null, bool? verbose = null, string file = null)
+		public void write_hw_platform_metadata(string file, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("write_hw_platform_metadata");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
 			_tcl.Add(command);
 		}
 	}

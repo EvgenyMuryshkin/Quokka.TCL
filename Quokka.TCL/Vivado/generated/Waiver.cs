@@ -62,34 +62,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 357
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// List of inserted message objects for which a DRC/
-		/// METHODOLOGY waiver will be set (i.e. %ELG, %SIG, etc. for
-		/// cells or nets, etc., sites, etc., or '*CELL', '*NET', '*SITE', etc.
-		/// as wildcards
-		/// </param>
-		/// <param name="from">
-		/// Required
-		/// List of source (driver) pins or ports (or '*PORT', '*PIN' as
-		/// wildcard) for which a CDC waiver will be set
-		/// </param>
-		/// <param name="to">
-		/// Required
-		/// List of target (load) pins or ports (or '*PORT', '*PIN' as
-		/// wildcard) for which a CDC waiver will be set
-		/// </param>
-		/// <param name="strings">
-		/// Required
-		/// List of inserted message string values for which a DRC/
-		/// METHODOLOGY waiver will be set (i.e. %STR for strings, or
-		/// '*' as wildcard)
-		/// </param>
-		/// <param name="of_objects">
-		/// Required
-		/// List of DRC/METHODOLOGY/CDC violation objects for which
-		/// waiver(s) will be set
-		/// </param>
 		/// <param name="description">
 		/// Required
 		/// Description string of the cause for the waiver
@@ -102,6 +74,34 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// ID of the DRC/METHODOLOGY/CDC message being waived,
 		/// not needed for -of_objects use
+		/// </param>
+		/// <param name="objects">
+		/// Optional
+		/// List of inserted message objects for which a DRC/
+		/// METHODOLOGY waiver will be set (i.e. %ELG, %SIG, etc. for
+		/// cells or nets, etc., sites, etc., or '*CELL', '*NET', '*SITE', etc.
+		/// as wildcards
+		/// </param>
+		/// <param name="from">
+		/// Optional
+		/// List of source (driver) pins or ports (or '*PORT', '*PIN' as
+		/// wildcard) for which a CDC waiver will be set
+		/// </param>
+		/// <param name="to">
+		/// Optional
+		/// List of target (load) pins or ports (or '*PORT', '*PIN' as
+		/// wildcard) for which a CDC waiver will be set
+		/// </param>
+		/// <param name="strings">
+		/// Optional
+		/// List of inserted message string values for which a DRC/
+		/// METHODOLOGY waiver will be set (i.e. %STR for strings, or
+		/// '*' as wildcard)
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// List of DRC/METHODOLOGY/CDC violation objects for which
+		/// waiver(s) will be set
 		/// </param>
 		/// <param name="user">
 		/// Optional
@@ -133,9 +133,23 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>waiver</returns>
-		public void create_waiver(string objects, string from, string to, string strings, string of_objects, string description, string type = null, string id = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
+		public void create_waiver(string description, string type = null, string id = null, string objects = null, string from = null, string to = null, string strings = null, string of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_waiver");
+			command.OptionalString("type", type);
+			command.OptionalString("id", id);
+			command.OptionalString("objects", objects);
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.OptionalString("strings", strings);
+			command.OptionalString("of_objects", of_objects);
+			command.OptionalString("user", user);
+			command.RequiredString("description", description);
+			command.OptionalString("tags", tags);
+			command.OptionalString("timestamp", timestamp);
+			command.Flag("scoped", scoped);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -175,6 +189,10 @@ namespace Quokka.TCL.Vivado
 		public void delete_waivers(bool? scoped = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			var command = new SimpleTCLCommand("delete_waivers");
+			command.Flag("scoped", scoped);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -200,11 +218,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 936
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// List of objects (cells, nets, pins, sites, etc.) for which DRC/
-		/// METHODLOGY/CDC waiver(s) were set
-		/// </param>
 		/// <param name="type">
 		/// Optional
 		/// Type of waiver - DRC, METHODOLOGY, CDC, ALL
@@ -212,6 +225,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="id">
 		/// Optional
 		/// ID of the DRC/METHODOLOGY/CDC message being waived
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// List of objects (cells, nets, pins, sites, etc.) for which DRC/
+		/// METHODLOGY/CDC waiver(s) were set
 		/// </param>
 		/// <param name="regexp">
 		/// Optional
@@ -241,9 +259,18 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>waivers</returns>
-		public void get_waivers(string of_objects, string type = null, string id = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_waivers(string type = null, string id = null, string of_objects = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_waivers");
+			command.OptionalString("type", type);
+			command.OptionalString("id", id);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("regexp", regexp);
+			command.OptionalString("filter", filter);
+			command.Flag("nocase", nocase);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -303,6 +330,15 @@ namespace Quokka.TCL.Vivado
 		public void report_waivers(string file = null, string type = null, bool? write_valid_waivers = null, bool? write_ignored_waivers = null, bool? append = null, bool? return_string = null, bool? show_msgs_with_no_waivers = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_waivers");
+			command.OptionalString("file", file);
+			command.OptionalString("type", type);
+			command.Flag("write_valid_waivers", write_valid_waivers);
+			command.Flag("write_ignored_waivers", write_ignored_waivers);
+			command.Flag("append", append);
+			command.Flag("return_string", return_string);
+			command.Flag("show_msgs_with_no_waivers", show_msgs_with_no_waivers);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -319,14 +355,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1860
 		/// </summary>
-		/// <param name="objects">
+		/// <param name="file">
 		/// Required
-		/// List of DRC/METHODOLOGY/CDC waiver objects to be
-		/// written
+		/// Name of file to write waivers
 		/// </param>
 		/// <param name="type">
 		/// Optional
 		/// Type of waiver(s) - ALL, DRC, METHODOLOGY, CDC to write
+		/// </param>
+		/// <param name="objects">
+		/// Optional
+		/// List of DRC/METHODOLOGY/CDC waiver objects to be
+		/// written
 		/// </param>
 		/// <param name="return_string">
 		/// Optional
@@ -344,13 +384,16 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// Name of file to write waivers
-		/// </param>
-		public void write_waivers(string objects, string type = null, bool? return_string = null, bool? force = null, bool? quiet = null, bool? verbose = null, string file = null)
+		public void write_waivers(string file, string type = null, string objects = null, bool? return_string = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("write_waivers");
+			command.OptionalString("type", type);
+			command.OptionalString("objects", objects);
+			command.Flag("return_string", return_string);
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
 			_tcl.Add(command);
 		}
 	}

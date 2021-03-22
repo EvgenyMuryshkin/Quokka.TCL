@@ -29,19 +29,11 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 337
 		/// </summary>
-		/// <param name="enum_values">
-		/// Required
-		/// Enumeration values
-		/// </param>
-		/// <param name="file_types">
-		/// Required
-		/// File type extensions (without the dot)
-		/// </param>
 		/// <param name="name">
 		/// Required
 		/// Name of property to create
 		/// </param>
-		/// <param name="class">
+		/// <param name="@class">
 		/// Required
 		/// Object type to create property for; valid values are: design,
 		/// net, cell, pin, port, pblock, interface, fileset
@@ -55,9 +47,17 @@ namespace Quokka.TCL.Vivado
 		/// Type of property to create; valid values are: string, int, long,
 		/// double, bool, enum, file Default: string
 		/// </param>
+		/// <param name="enum_values">
+		/// Optional
+		/// Enumeration values
+		/// </param>
 		/// <param name="default_value">
 		/// Optional
 		/// Default value of type string
+		/// </param>
+		/// <param name="file_types">
+		/// Optional
+		/// File type extensions (without the dot)
 		/// </param>
 		/// <param name="display_text">
 		/// Optional
@@ -72,9 +72,19 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>The property that was created if success, "" if failure</returns>
-		public void create_property(string enum_values, string file_types, string name, string class, string description = null, string type = null, string default_value = null, string display_text = null, bool? quiet = null, bool? verbose = null)
+		public void create_property(string name, string @class, string description = null, string type = null, string enum_values = null, string default_value = null, string file_types = null, string display_text = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_property");
+			command.OptionalString("description", description);
+			command.OptionalString("type", type);
+			command.OptionalString("enum_values", enum_values);
+			command.OptionalString("default_value", default_value);
+			command.OptionalString("file_types", file_types);
+			command.OptionalString("display_text", display_text);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("class", @class);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -124,6 +134,12 @@ namespace Quokka.TCL.Vivado
 		public void filter(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string objects = null, string filter = null)
 		{
 			var command = new SimpleTCLCommand("filter");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
+			command.OptionalString("filter", filter);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -154,6 +170,9 @@ namespace Quokka.TCL.Vivado
 		public void get_param(string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_param");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -192,7 +211,7 @@ namespace Quokka.TCL.Vivado
 		/// Required
 		/// Name of property whose value is to be retrieved
 		/// </param>
-		/// <param name="object">
+		/// <param name="@object">
 		/// Required
 		/// Object to query for properties
 		/// </param>
@@ -213,9 +232,15 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>property value</returns>
-		public void get_property(string name, string object, bool? min = null, bool? max = null, bool? quiet = null, bool? verbose = null)
+		public void get_property(string name, string @object, bool? min = null, bool? max = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_property");
+			command.Flag("min", min);
+			command.Flag("max", max);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("object", @object);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -243,6 +268,8 @@ namespace Quokka.TCL.Vivado
 		public void list_param(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("list_param");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -260,7 +287,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1011
 		/// </summary>
-		/// <param name="class">
+		/// <param name="@class">
 		/// Optional
 		/// Object type to query for properties. Ignored if object is
 		/// specified.
@@ -277,7 +304,7 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="object">
+		/// <param name="@object">
 		/// Optional
 		/// Object to query for properties
 		/// </param>
@@ -286,9 +313,15 @@ namespace Quokka.TCL.Vivado
 		/// Pattern to match properties against Default: *
 		/// </param>
 		/// <returns>list of property names</returns>
-		public void list_property(string class = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, string object = null, string pattern = null)
+		public void list_property(string @class = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, string @object = null, string pattern = null)
 		{
 			var command = new SimpleTCLCommand("list_property");
+			command.OptionalString("class", @class);
+			command.Flag("regexp", regexp);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("object", @object);
+			command.OptionalString("pattern", pattern);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -315,11 +348,11 @@ namespace Quokka.TCL.Vivado
 		/// Required
 		/// Name of property whose legal values is to be retrieved
 		/// </param>
-		/// <param name="default">
+		/// <param name="@default">
 		/// Optional
 		/// Show only the default value.
 		/// </param>
-		/// <param name="class">
+		/// <param name="@class">
 		/// Optional
 		/// Object type to query for legal property values. Ignored if
 		/// object is specified.
@@ -332,14 +365,20 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="object">
+		/// <param name="@object">
 		/// Optional
 		/// Object to query for legal properties values
 		/// </param>
 		/// <returns>list of property values</returns>
-		public void list_property_value(string name, bool? default = null, string class = null, bool? quiet = null, bool? verbose = null, string object = null)
+		public void list_property_value(string name, bool? @default = null, string @class = null, bool? quiet = null, bool? verbose = null, string @object = null)
 		{
 			var command = new SimpleTCLCommand("list_property_value");
+			command.Flag("default", @default);
+			command.OptionalString("class", @class);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.OptionalString("object", @object);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -389,6 +428,13 @@ namespace Quokka.TCL.Vivado
 		public void report_param(string file = null, bool? append = null, bool? non_default = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, string pattern = null)
 		{
 			var command = new SimpleTCLCommand("report_param");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("non_default", non_default);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("pattern", pattern);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -428,7 +474,7 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Report all properties of object even if not set
 		/// </param>
-		/// <param name="class">
+		/// <param name="@class">
 		/// Optional
 		/// Object type to query for properties. Not valid with <object>
 		/// </param>
@@ -458,7 +504,7 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="object">
+		/// <param name="@object">
 		/// Optional
 		/// Object to query for properties
 		/// </param>
@@ -467,9 +513,19 @@ namespace Quokka.TCL.Vivado
 		/// Pattern to match properties against Default: *
 		/// </param>
 		/// <returns>property report</returns>
-		public void report_property(bool? all = null, string class = null, bool? return_string = null, string file = null, bool? append = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, string object = null, string pattern = null)
+		public void report_property(bool? all = null, string @class = null, bool? return_string = null, string file = null, bool? append = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, string @object = null, string pattern = null)
 		{
 			var command = new SimpleTCLCommand("report_property");
+			command.Flag("all", all);
+			command.OptionalString("class", @class);
+			command.Flag("return_string", return_string);
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("regexp", regexp);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("object", @object);
+			command.OptionalString("pattern", pattern);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -500,6 +556,9 @@ namespace Quokka.TCL.Vivado
 		public void reset_param(string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("reset_param");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -537,6 +596,10 @@ namespace Quokka.TCL.Vivado
 		public void reset_property(string property_name, string objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("reset_property");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("property_name", property_name);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -594,6 +657,10 @@ namespace Quokka.TCL.Vivado
 		public void set_param(string name, string value, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_param");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("value", value);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -634,6 +701,9 @@ namespace Quokka.TCL.Vivado
 		public void set_part(string part, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_part");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("part", part);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -703,10 +773,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1649
 		/// </summary>
-		/// <param name="dict">
-		/// Required
-		/// list of name/value pairs of properties to set
-		/// </param>
 		/// <param name="name">
 		/// Required
 		/// Name of property to set. Not valid with -dict option
@@ -719,6 +785,10 @@ namespace Quokka.TCL.Vivado
 		/// Required
 		/// Objects to set properties on
 		/// </param>
+		/// <param name="dict">
+		/// Optional
+		/// list of name/value pairs of properties to set
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -727,9 +797,15 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void set_property(string dict, string name, string value, string objects, bool? quiet = null, bool? verbose = null)
+		public void set_property(string name, string value, string objects, string dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_property");
+			command.OptionalString("dict", dict);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("value", value);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 	}

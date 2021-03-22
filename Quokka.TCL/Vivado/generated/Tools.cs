@@ -154,6 +154,30 @@ namespace Quokka.TCL.Vivado
 		public void iphys_opt_design(string cluster, string place_cell, bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, string net = null, bool? place = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, string cell = null, bool? packing = null, bool? unpacking = null, string port = null, bool? critical_pin_opt = null, bool? skipped_optimization = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? auto_pipeline = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("iphys_opt_design");
+			command.Flag("fanout_opt", fanout_opt);
+			command.Flag("critical_cell_opt", critical_cell_opt);
+			command.Flag("placement_opt", placement_opt);
+			command.Flag("rewire", rewire);
+			command.OptionalString("net", net);
+			command.RequiredString("cluster", cluster);
+			command.RequiredString("place_cell", place_cell);
+			command.Flag("place", place);
+			command.Flag("dsp_register_opt", dsp_register_opt);
+			command.Flag("bram_register_opt", bram_register_opt);
+			command.Flag("uram_register_opt", uram_register_opt);
+			command.Flag("shift_register_opt", shift_register_opt);
+			command.OptionalString("cell", cell);
+			command.Flag("packing", packing);
+			command.Flag("unpacking", unpacking);
+			command.OptionalString("port", port);
+			command.Flag("critical_pin_opt", critical_pin_opt);
+			command.Flag("skipped_optimization", skipped_optimization);
+			command.Flag("insert_negative_edge_ffs", insert_negative_edge_ffs);
+			command.Flag("hold_fix", hold_fix);
+			command.Flag("slr_crossing_opt", slr_crossing_opt);
+			command.Flag("auto_pipeline", auto_pipeline);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -185,15 +209,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1001
 		/// </summary>
-		/// <param name="reconfig_partitions">
-		/// Required
-		/// List of reconfigurable partitions to load while opening the
-		/// design
-		/// </param>
-		/// <param name="partitions">
-		/// Required
-		/// List of partitions to load while opening the design
-		/// </param>
 		/// <param name="name">
 		/// Optional
 		/// Design name
@@ -220,6 +235,15 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// PR Configuration to apply while opening the design
 		/// </param>
+		/// <param name="reconfig_partitions">
+		/// Optional
+		/// List of reconfigurable partitions to load while opening the
+		/// design
+		/// </param>
+		/// <param name="partitions">
+		/// Optional
+		/// List of partitions to load while opening the design
+		/// </param>
 		/// <param name="ignore_timing">
 		/// Optional
 		/// open a netlist design without the timing constraints.
@@ -233,9 +257,20 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>design object</returns>
-		public void link_design(string reconfig_partitions, string partitions, string name = null, string part = null, string constrset = null, string top = null, string mode = null, string pr_config = null, bool? ignore_timing = null, bool? quiet = null, bool? verbose = null)
+		public void link_design(string name = null, string part = null, string constrset = null, string top = null, string mode = null, string pr_config = null, string reconfig_partitions = null, string partitions = null, bool? ignore_timing = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("link_design");
+			command.OptionalString("name", name);
+			command.OptionalString("part", part);
+			command.OptionalString("constrset", constrset);
+			command.OptionalString("top", top);
+			command.OptionalString("mode", mode);
+			command.OptionalString("pr_config", pr_config);
+			command.OptionalString("reconfig_partitions", reconfig_partitions);
+			command.OptionalString("partitions", partitions);
+			command.Flag("ignore_timing", ignore_timing);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -265,6 +300,8 @@ namespace Quokka.TCL.Vivado
 		public void list_features(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("list_features");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -306,6 +343,9 @@ namespace Quokka.TCL.Vivado
 		public void load_features(bool? quiet = null, bool? verbose = null, string features = null)
 		{
 			var command = new SimpleTCLCommand("load_features");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("features", features);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -467,6 +507,28 @@ namespace Quokka.TCL.Vivado
 		public void opt_design(bool? retarget = null, bool? propconst = null, bool? sweep = null, bool? bram_power_opt = null, bool? remap = null, bool? aggressive_remap = null, bool? resynth_area = null, bool? resynth_seq_area = null, string directive = null, bool? muxf_remap = null, string hier_fanout_limit = null, bool? bufg_opt = null, bool? shift_register_opt = null, bool? dsp_register_opt = null, string srl_remap_modes = null, bool? control_set_merge = null, bool? merge_equivalent_drivers = null, bool? carry_remap = null, bool? debug_log = null, bool? property_opt_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("opt_design");
+			command.Flag("retarget", retarget);
+			command.Flag("propconst", propconst);
+			command.Flag("sweep", sweep);
+			command.Flag("bram_power_opt", bram_power_opt);
+			command.Flag("remap", remap);
+			command.Flag("aggressive_remap", aggressive_remap);
+			command.Flag("resynth_area", resynth_area);
+			command.Flag("resynth_seq_area", resynth_seq_area);
+			command.OptionalString("directive", directive);
+			command.Flag("muxf_remap", muxf_remap);
+			command.OptionalString("hier_fanout_limit", hier_fanout_limit);
+			command.Flag("bufg_opt", bufg_opt);
+			command.Flag("shift_register_opt", shift_register_opt);
+			command.Flag("dsp_register_opt", dsp_register_opt);
+			command.OptionalString("srl_remap_modes", srl_remap_modes);
+			command.Flag("control_set_merge", control_set_merge);
+			command.Flag("merge_equivalent_drivers", merge_equivalent_drivers);
+			command.Flag("carry_remap", carry_remap);
+			command.Flag("debug_log", debug_log);
+			command.Flag("property_opt_only", property_opt_only);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -531,14 +593,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1091
 		/// </summary>
-		/// <param name="force_replication_on_nets">
-		/// Required
-		/// Force replication optimization on nets
-		/// </param>
-		/// <param name="path_groups">
-		/// Required
-		/// Work only on specified path groups
-		/// </param>
 		/// <param name="fanout_opt">
 		/// Optional
 		/// Do cell-duplication based optimization on high-fanout
@@ -602,6 +656,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Do retiming optimization
 		/// </param>
+		/// <param name="force_replication_on_nets">
+		/// Optional
+		/// Force replication optimization on nets
+		/// </param>
 		/// <param name="directive">
 		/// Optional
 		/// Mode of behavior (directive) for this command. Please refer
@@ -615,6 +673,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="clock_opt">
 		/// Optional
 		/// Do clock skew optimization in post-route optimization
+		/// </param>
+		/// <param name="path_groups">
+		/// Optional
+		/// Work only on specified path groups
 		/// </param>
 		/// <param name="tns_cleanup">
 		/// Optional
@@ -634,9 +696,33 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void phys_opt_design(string force_replication_on_nets, string path_groups, bool? fanout_opt = null, bool? placement_opt = null, bool? routing_opt = null, bool? slr_crossing_opt = null, bool? rewire = null, bool? insert_negative_edge_ffs = null, bool? critical_cell_opt = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? bram_enable_opt = null, bool? shift_register_opt = null, bool? hold_fix = null, bool? aggressive_hold_fix = null, bool? retime = null, string directive = null, bool? critical_pin_opt = null, bool? clock_opt = null, bool? tns_cleanup = null, bool? sll_reg_hold_fix = null, bool? quiet = null, bool? verbose = null)
+		public void phys_opt_design(bool? fanout_opt = null, bool? placement_opt = null, bool? routing_opt = null, bool? slr_crossing_opt = null, bool? rewire = null, bool? insert_negative_edge_ffs = null, bool? critical_cell_opt = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? bram_enable_opt = null, bool? shift_register_opt = null, bool? hold_fix = null, bool? aggressive_hold_fix = null, bool? retime = null, string force_replication_on_nets = null, string directive = null, bool? critical_pin_opt = null, bool? clock_opt = null, string path_groups = null, bool? tns_cleanup = null, bool? sll_reg_hold_fix = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("phys_opt_design");
+			command.Flag("fanout_opt", fanout_opt);
+			command.Flag("placement_opt", placement_opt);
+			command.Flag("routing_opt", routing_opt);
+			command.Flag("slr_crossing_opt", slr_crossing_opt);
+			command.Flag("rewire", rewire);
+			command.Flag("insert_negative_edge_ffs", insert_negative_edge_ffs);
+			command.Flag("critical_cell_opt", critical_cell_opt);
+			command.Flag("dsp_register_opt", dsp_register_opt);
+			command.Flag("bram_register_opt", bram_register_opt);
+			command.Flag("uram_register_opt", uram_register_opt);
+			command.Flag("bram_enable_opt", bram_enable_opt);
+			command.Flag("shift_register_opt", shift_register_opt);
+			command.Flag("hold_fix", hold_fix);
+			command.Flag("aggressive_hold_fix", aggressive_hold_fix);
+			command.Flag("retime", retime);
+			command.OptionalString("force_replication_on_nets", force_replication_on_nets);
+			command.OptionalString("directive", directive);
+			command.Flag("critical_pin_opt", critical_pin_opt);
+			command.Flag("clock_opt", clock_opt);
+			command.OptionalString("path_groups", path_groups);
+			command.Flag("tns_cleanup", tns_cleanup);
+			command.Flag("sll_reg_hold_fix", sll_reg_hold_fix);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -725,6 +811,15 @@ namespace Quokka.TCL.Vivado
 		public void place_design(string directive = null, bool? no_timing_driven = null, bool? timing_summary = null, bool? unplace = null, bool? post_place_opt = null, bool? no_psip = null, bool? no_bufg_opt = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("place_design");
+			command.OptionalString("directive", directive);
+			command.Flag("no_timing_driven", no_timing_driven);
+			command.Flag("timing_summary", timing_summary);
+			command.Flag("unplace", unplace);
+			command.Flag("post_place_opt", post_place_opt);
+			command.Flag("no_psip", no_psip);
+			command.Flag("no_bufg_opt", no_bufg_opt);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -757,6 +852,10 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1148
 		/// </summary>
+		/// <param name="input">
+		/// Required
+		/// iPhysOpt.tcl file
+		/// </param>
 		/// <param name="fanout_opt">
 		/// Optional
 		/// Fanout optimization including very high fanout
@@ -828,13 +927,27 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="input">
-		/// Optional
-		/// iPhysOpt.tcl file
-		/// </param>
-		public void read_iphys_opt_tcl(bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, bool? auto_pipeline = null, bool? critical_pin_opt = null, bool? include_skipped_optimizations = null, bool? place = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? quiet = null, bool? verbose = null, string input = null)
+		public void read_iphys_opt_tcl(string input, bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, bool? auto_pipeline = null, bool? critical_pin_opt = null, bool? include_skipped_optimizations = null, bool? place = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("read_iphys_opt_tcl");
+			command.Flag("fanout_opt", fanout_opt);
+			command.Flag("critical_cell_opt", critical_cell_opt);
+			command.Flag("placement_opt", placement_opt);
+			command.Flag("rewire", rewire);
+			command.Flag("dsp_register_opt", dsp_register_opt);
+			command.Flag("bram_register_opt", bram_register_opt);
+			command.Flag("uram_register_opt", uram_register_opt);
+			command.Flag("shift_register_opt", shift_register_opt);
+			command.Flag("auto_pipeline", auto_pipeline);
+			command.Flag("critical_pin_opt", critical_pin_opt);
+			command.Flag("include_skipped_optimizations", include_skipped_optimizations);
+			command.Flag("place", place);
+			command.Flag("insert_negative_edge_ffs", insert_negative_edge_ffs);
+			command.Flag("hold_fix", hold_fix);
+			command.Flag("slr_crossing_opt", slr_crossing_opt);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("input", input);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -898,6 +1011,10 @@ namespace Quokka.TCL.Vivado
 		public void register_proc(string proc, bool? quiet = null, bool? verbose = null, string tasknm = null)
 		{
 			var command = new SimpleTCLCommand("register_proc");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("proc", proc);
+			command.OptionalString("tasknm", tasknm);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -924,17 +1041,17 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1372
 		/// </summary>
 		/// <param name="cells">
-		/// Required
+		/// Optional
 		/// Analyze each of the specified hierarchical cells separately
 		/// and ignore feedback loops external to the cells.
-		/// </param>
-		/// <param name="clocks">
-		/// Required
-		/// Filter report output to show only the specified clocks
 		/// </param>
 		/// <param name="verbose">
 		/// Optional
 		/// Suspend message limits during command execution
+		/// </param>
+		/// <param name="clocks">
+		/// Optional
+		/// Filter report output to show only the specified clocks
 		/// </param>
 		/// <param name="file">
 		/// Optional
@@ -966,9 +1083,19 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Ignore command errors
 		/// </param>
-		public void report_pipeline_analysis(string cells, string clocks, bool? verbose = null, string file = null, bool? include_paths_to_pipeline = null, bool? append = null, string max_added_latency = null, bool? report_loops = null, bool? return_string = null, bool? quiet = null)
+		public void report_pipeline_analysis(string cells = null, bool? verbose = null, string clocks = null, string file = null, bool? include_paths_to_pipeline = null, bool? append = null, string max_added_latency = null, bool? report_loops = null, bool? return_string = null, bool? quiet = null)
 		{
 			var command = new SimpleTCLCommand("report_pipeline_analysis");
+			command.OptionalString("cells", cells);
+			command.Flag("verbose", verbose);
+			command.OptionalString("clocks", clocks);
+			command.OptionalString("file", file);
+			command.Flag("include_paths_to_pipeline", include_paths_to_pipeline);
+			command.Flag("append", append);
+			command.OptionalString("max_added_latency", max_added_latency);
+			command.Flag("report_loops", report_loops);
+			command.Flag("return_string", return_string);
+			command.Flag("quiet", quiet);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1020,10 +1147,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1506
 		/// </summary>
-		/// <param name="nets">
-		/// Required
-		/// Operate on the given nets.
-		/// </param>
 		/// <param name="max_delay">
 		/// Required
 		/// Use with -pins option to specify the max_delay constraint on
@@ -1043,6 +1166,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Release Router memory. Not compatible with any other
 		/// options.
+		/// </param>
+		/// <param name="nets">
+		/// Optional
+		/// Operate on the given nets.
 		/// </param>
 		/// <param name="physical_nets">
 		/// Optional
@@ -1099,9 +1226,27 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void route_design(string nets, string max_delay, string min_delay, bool? unroute = null, bool? release_memory = null, bool? physical_nets = null, string pins = null, string directive = null, bool? tns_cleanup = null, bool? no_timing_driven = null, bool? preserve = null, bool? delay = null, bool? auto_delay = null, bool? timing_summary = null, bool? finalize = null, bool? ultrathreads = null, bool? quiet = null, bool? verbose = null)
+		public void route_design(string max_delay, string min_delay, bool? unroute = null, bool? release_memory = null, string nets = null, bool? physical_nets = null, string pins = null, string directive = null, bool? tns_cleanup = null, bool? no_timing_driven = null, bool? preserve = null, bool? delay = null, bool? auto_delay = null, bool? timing_summary = null, bool? finalize = null, bool? ultrathreads = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("route_design");
+			command.Flag("unroute", unroute);
+			command.Flag("release_memory", release_memory);
+			command.OptionalString("nets", nets);
+			command.Flag("physical_nets", physical_nets);
+			command.OptionalString("pins", pins);
+			command.OptionalString("directive", directive);
+			command.Flag("tns_cleanup", tns_cleanup);
+			command.Flag("no_timing_driven", no_timing_driven);
+			command.Flag("preserve", preserve);
+			command.Flag("delay", delay);
+			command.Flag("auto_delay", auto_delay);
+			command.RequiredString("max_delay", max_delay);
+			command.RequiredString("min_delay", min_delay);
+			command.Flag("timing_summary", timing_summary);
+			command.Flag("finalize", finalize);
+			command.Flag("ultrathreads", ultrathreads);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1139,21 +1284,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1700
 		/// </summary>
-		/// <param name="include_dirs">
-		/// Required
-		/// Specify verilog search directories
-		/// </param>
-		/// <param name="generic">
-		/// Required
-		/// Specify generic parameters. Syntax: -generic
-		/// <name>=<value> -generic <name>=<value> ...
-		/// </param>
-		/// <param name="verilog_define">
-		/// Required
-		/// Specify verilog defines. Syntax: -verilog_define
-		/// <macro_name>[=<macro_text>] -verilog_define
-		/// <macro_name>[=<macro_text>] ...
-		/// </param>
 		/// <param name="name">
 		/// Optional
 		/// Design name
@@ -1169,6 +1299,21 @@ namespace Quokka.TCL.Vivado
 		/// <param name="top">
 		/// Optional
 		/// Specify the top module name
+		/// </param>
+		/// <param name="include_dirs">
+		/// Optional
+		/// Specify verilog search directories
+		/// </param>
+		/// <param name="generic">
+		/// Optional
+		/// Specify generic parameters. Syntax: -generic
+		/// <name>=<value> -generic <name>=<value> ...
+		/// </param>
+		/// <param name="verilog_define">
+		/// Optional
+		/// Specify verilog defines. Syntax: -verilog_define
+		/// <macro_name>[=<macro_text>] -verilog_define
+		/// <macro_name>[=<macro_text>] ...
 		/// </param>
 		/// <param name="flatten_hierarchy">
 		/// Optional
@@ -1331,9 +1476,45 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>design object</returns>
-		public void synth_design(string include_dirs, string generic, string verilog_define, string name = null, string part = null, string constrset = null, string top = null, string flatten_hierarchy = null, string gated_clock_conversion = null, string directive = null, bool? rtl = null, string bufg = null, bool? no_lc = null, string fanout_limit = null, string shreg_min_size = null, string mode = null, string fsm_extraction = null, bool? rtl_skip_ip = null, bool? rtl_skip_constraints = null, bool? keep_equivalent_registers = null, string resource_sharing = null, string cascade_dsp = null, string control_set_opt_threshold = null, string incremental = null, string max_bram = null, string max_uram = null, string max_dsp = null, string max_bram_cascade_height = null, string max_uram_cascade_height = null, bool? retiming = null, bool? no_srlextract = null, bool? assert = null, bool? no_timing_driven = null, bool? sfcu = null, bool? quiet = null, bool? verbose = null)
+		public void synth_design(string name = null, string part = null, string constrset = null, string top = null, string include_dirs = null, string generic = null, string verilog_define = null, string flatten_hierarchy = null, string gated_clock_conversion = null, string directive = null, bool? rtl = null, string bufg = null, bool? no_lc = null, string fanout_limit = null, string shreg_min_size = null, string mode = null, string fsm_extraction = null, bool? rtl_skip_ip = null, bool? rtl_skip_constraints = null, bool? keep_equivalent_registers = null, string resource_sharing = null, string cascade_dsp = null, string control_set_opt_threshold = null, string incremental = null, string max_bram = null, string max_uram = null, string max_dsp = null, string max_bram_cascade_height = null, string max_uram_cascade_height = null, bool? retiming = null, bool? no_srlextract = null, bool? assert = null, bool? no_timing_driven = null, bool? sfcu = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("synth_design");
+			command.OptionalString("name", name);
+			command.OptionalString("part", part);
+			command.OptionalString("constrset", constrset);
+			command.OptionalString("top", top);
+			command.OptionalString("include_dirs", include_dirs);
+			command.OptionalString("generic", generic);
+			command.OptionalString("verilog_define", verilog_define);
+			command.OptionalString("flatten_hierarchy", flatten_hierarchy);
+			command.OptionalString("gated_clock_conversion", gated_clock_conversion);
+			command.OptionalString("directive", directive);
+			command.Flag("rtl", rtl);
+			command.OptionalString("bufg", bufg);
+			command.Flag("no_lc", no_lc);
+			command.OptionalString("fanout_limit", fanout_limit);
+			command.OptionalString("shreg_min_size", shreg_min_size);
+			command.OptionalString("mode", mode);
+			command.OptionalString("fsm_extraction", fsm_extraction);
+			command.Flag("rtl_skip_ip", rtl_skip_ip);
+			command.Flag("rtl_skip_constraints", rtl_skip_constraints);
+			command.Flag("keep_equivalent_registers", keep_equivalent_registers);
+			command.OptionalString("resource_sharing", resource_sharing);
+			command.OptionalString("cascade_dsp", cascade_dsp);
+			command.OptionalString("control_set_opt_threshold", control_set_opt_threshold);
+			command.OptionalString("incremental", incremental);
+			command.OptionalString("max_bram", max_bram);
+			command.OptionalString("max_uram", max_uram);
+			command.OptionalString("max_dsp", max_dsp);
+			command.OptionalString("max_bram_cascade_height", max_bram_cascade_height);
+			command.OptionalString("max_uram_cascade_height", max_uram_cascade_height);
+			command.Flag("retiming", retiming);
+			command.Flag("no_srlextract", no_srlextract);
+			command.Flag("assert", assert);
+			command.Flag("no_timing_driven", no_timing_driven);
+			command.Flag("sfcu", sfcu);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1360,6 +1541,9 @@ namespace Quokka.TCL.Vivado
 		public void unregister_proc(string tasknm, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("unregister_proc");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("tasknm", tasknm);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1418,6 +1602,8 @@ namespace Quokka.TCL.Vivado
 		public void update_clock_routing(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("update_clock_routing");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1440,6 +1626,9 @@ namespace Quokka.TCL.Vivado
 		public void update_noc_qos(bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("update_noc_qos");
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1474,6 +1663,10 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1834
 		/// </summary>
+		/// <param name="output">
+		/// Required
+		/// tcl file containing iPhysOpt script
+		/// </param>
 		/// <param name="place">
 		/// Optional
 		/// write out placement information
@@ -1490,13 +1683,14 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="output">
-		/// Optional
-		/// tcl file containing iPhysOpt script
-		/// </param>
-		public void write_iphys_opt_tcl(bool? place = null, bool? binary = null, bool? quiet = null, bool? verbose = null, string output = null)
+		public void write_iphys_opt_tcl(string output, bool? place = null, bool? binary = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("write_iphys_opt_tcl");
+			command.Flag("place", place);
+			command.Flag("binary", binary);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("output", output);
 			_tcl.Add(command);
 		}
 	}

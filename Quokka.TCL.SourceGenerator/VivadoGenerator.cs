@@ -24,6 +24,8 @@ namespace Quokka.TCL.SourceGenerator
         [TestMethod]
         public void VivadoCommandRecordTest()
         {
+            var log = new VivadoCommandLog();
+
             var paramTypes = new List<string>()
             {
                 "[-optional_flag]",
@@ -40,7 +42,7 @@ namespace Quokka.TCL.SourceGenerator
                 "Syntax",
             };
 
-            var record = new VivadoCommandRecord("test_command", lines);
+            var record = new VivadoCommandRecord(log, "test_command", lines);
         }
 
         [TestMethod]
@@ -146,6 +148,8 @@ namespace Quokka.TCL.SourceGenerator
                     throw new Exception($"No description found for commands: {string.Join(", ", missingCommandsText)}");
                 }
 
+                var log = new VivadoCommandLog();
+
                 foreach (var pair in mapCategoryToCommands)
                 {
                     var (category, commands) = pair;
@@ -169,7 +173,7 @@ namespace Quokka.TCL.SourceGenerator
                             foreach (var command in commands)
                             {
                                 var commandData = commandsData[command];
-                                var record = new VivadoCommandRecord(command, commandData.Lines);
+                                var record = new VivadoCommandRecord(log, command, commandData.Lines);
 
                                 builder.AppendLine($"/// <summary>");
                                 builder.AppendDocumentationLinesIfAny(record.ShortDescription);
@@ -178,12 +182,21 @@ namespace Quokka.TCL.SourceGenerator
                                 builder.AppendDocumentationLines($"See {pdfName}, page {commandData.Page}");
                                 builder.AppendLine($"/// </summary>");
 
-                                var orderedArguments = record.Arguments.Where(c => !c.IsOptional).Concat(record.Arguments.Where(c => c.IsOptional)).ToList();
+                                var orderedArguments = record.Parameters.Where(c => c is VivadoCommandRequiredParameter).Concat(record.Parameters.Where(c => c is VivadoCommandOptionalParameter)).ToList();
                                 
                                 foreach (var arg in orderedArguments)
                                 {
-                                    builder.AppendLine($"/// <param name=\"{arg.Name}\">");
-                                    builder.AppendDocumentationLines(arg.IsOptional ? "Optional" : "Required");
+                                    builder.AppendLine($"/// <param name=\"{arg.CSName}\">");
+                                    switch (arg)
+                                    {
+                                        case VivadoCommandOptionalParameter _:
+                                            builder.AppendDocumentationLines("Optional");
+                                            break;
+                                        case VivadoCommandRequiredParameter _:
+                                            builder.AppendDocumentationLines("Required");
+                                            break;
+                                    }
+
                                     builder.AppendDocumentationLines(arg.Description);
                                     builder.AppendLine($"/// </param>");
                                 }
@@ -195,26 +208,42 @@ namespace Quokka.TCL.SourceGenerator
 
                                 var args = orderedArguments.Select(a =>
                                 {
-                                    if (a.IsFlag)
+                                    switch (a)
                                     {
-                                        if (a.IsOptional)
-                                        {
-                                            return $"bool? {a.Name} = null";
-                                        }
-                                        else
-                                        {
-                                            return $"bool {a.Name}";
-                                        }
+                                        case VivadoCommandOptionalFlagParameter _:
+                                            return $"bool? {a.CSName} = null";
+                                        case VivadoCommandOptionalParameter _:
+                                            return $"string {a.CSName} = null";
+                                        case VivadoCommandRequiredParameter _:
+                                            return $"string {a.CSName}";
+                                        default:
+                                            throw new Exception($"Unsupported parameter type: {a.GetType()}");
                                     }
-
-
-                                    return $"string {a.Name}{(a.IsOptional ? " = null" : "")}";
                                 });
 
                                 builder.AppendLine($"public void {command}({string.Join(", ", args)})");
                                 using (builder.CodeBlock())
                                 {
                                     builder.AppendLine($"var command = new SimpleTCLCommand(\"{command}\");");
+
+                                    foreach (var arg in record.Parameters)
+                                    {
+                                        switch (arg)
+                                        {
+                                            case VivadoCommandOptionalFlagParameter _:
+                                                builder.AppendLine($"command.Flag(\"{arg.Name}\", {arg.CSName});");
+                                                break;
+                                            case VivadoCommandOptionalParameter _:
+                                                builder.AppendLine($"command.OptionalString(\"{arg.Name}\", {arg.CSName});");
+                                                break;
+                                            case VivadoCommandRequiredParameter _:
+                                                builder.AppendLine($"command.RequiredString(\"{arg.Name}\", {arg.CSName});");
+                                                break;
+                                            default:
+                                                throw new Exception($"Unsupported parameter type: {arg.GetType()}");
+                                        }
+                                    }
+
                                     builder.AppendLine($"_tcl.Add(command);");
                                 }
                             }
@@ -252,6 +281,9 @@ namespace Quokka.TCL.SourceGenerator
                 }
                 var vivadoTCLFilePath = Path.Combine(generatedPath, $"VivadoTCL.cs");
                 File.WriteAllText(vivadoTCLFilePath, vivadoTCL.ToString());
+
+                var logPath = Path.Combine(generatedPath, "log.md");
+                File.WriteAllText(logPath, log.ToString());
             }
         }
     }

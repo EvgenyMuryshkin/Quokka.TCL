@@ -47,6 +47,9 @@ namespace Quokka.TCL.Vivado
 		public void create_sysgen(string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_sysgen");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -112,6 +115,15 @@ namespace Quokka.TCL.Vivado
 		public void make_wrapper(string files, bool? top = null, bool? testbench = null, bool? inst_template = null, string fileset = null, bool? import = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("make_wrapper");
+			command.Flag("top", top);
+			command.Flag("testbench", testbench);
+			command.Flag("inst_template", inst_template);
+			command.OptionalString("fileset", fileset);
+			command.Flag("import", import);
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("files", files);
 			_tcl.Add(command);
 		}
 	}

@@ -53,6 +53,10 @@ namespace Quokka.TCL.Vivado
 		public void add_bp(string file_name, string line_number, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("add_bp");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file_name", file_name);
+			command.RequiredString("line_number", line_number);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -123,6 +127,13 @@ namespace Quokka.TCL.Vivado
 		public void add_condition(string condition_expression, string commands, string name = null, string radix = null, bool? notrace = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("add_condition");
+			command.OptionalString("name", name);
+			command.OptionalString("radix", radix);
+			command.Flag("notrace", notrace);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("condition_expression", condition_expression);
+			command.RequiredString("commands", commands);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -188,13 +199,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 42
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Filesets or sub-designs or RMs to add the files to
-		/// </param>
 		/// <param name="fileset">
 		/// Optional
 		/// Fileset name
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Filesets or sub-designs or RMs to add the files to
 		/// </param>
 		/// <param name="norecurse">
 		/// Optional
@@ -228,9 +239,18 @@ namespace Quokka.TCL.Vivado
 		/// specified if -scan_for_includes is not used.
 		/// </param>
 		/// <returns>list of file objects that were added</returns>
-		public void add_files(string of_objects, string fileset = null, bool? norecurse = null, string copy_to = null, bool? force = null, bool? scan_for_includes = null, bool? quiet = null, bool? verbose = null, string files = null)
+		public void add_files(string fileset = null, string of_objects = null, bool? norecurse = null, string copy_to = null, bool? force = null, bool? scan_for_includes = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
 			var command = new SimpleTCLCommand("add_files");
+			command.OptionalString("fileset", fileset);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("norecurse", norecurse);
+			command.OptionalString("copy_to", copy_to);
+			command.Flag("force", force);
+			command.Flag("scan_for_includes", scan_for_includes);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("files", files);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -296,6 +316,13 @@ namespace Quokka.TCL.Vivado
 		public void add_force(string hdl_object, string values, string radix = null, string repeat_every = null, string cancel_after = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("add_force");
+			command.OptionalString("radix", radix);
+			command.OptionalString("repeat_every", repeat_every);
+			command.OptionalString("cancel_after", cancel_after);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hdl_object", hdl_object);
+			command.RequiredString("values", values);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -329,6 +356,8 @@ namespace Quokka.TCL.Vivado
 		public void checkpoint_vcd(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("checkpoint_vcd");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -355,6 +384,8 @@ namespace Quokka.TCL.Vivado
 		public void close_saif(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("close_saif");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -386,6 +417,9 @@ namespace Quokka.TCL.Vivado
 		public void close_sim(bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("close_sim");
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -411,6 +445,8 @@ namespace Quokka.TCL.Vivado
 		public void close_vcd(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("close_vcd");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -483,7 +519,7 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Do not compile IP static files from repository
 		/// </param>
-		/// <param name="32bit">
+		/// <param name="_32bit">
 		/// Optional
 		/// Perform the 32-bit compilation
 		/// </param>
@@ -495,9 +531,22 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void compile_simlib(string simulator, string directory = null, string family = null, bool? force = null, string language = null, string library = null, string print_library_info = null, string simulator_exec_path = null, string source_library_path = null, bool? no_ip_compile = null, bool? 32bit = null, bool? quiet = null, bool? verbose = null)
+		public void compile_simlib(string simulator, string directory = null, string family = null, bool? force = null, string language = null, string library = null, string print_library_info = null, string simulator_exec_path = null, string source_library_path = null, bool? no_ip_compile = null, bool? _32bit = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("compile_simlib");
+			command.OptionalString("directory", directory);
+			command.OptionalString("family", family);
+			command.Flag("force", force);
+			command.OptionalString("language", language);
+			command.OptionalString("library", library);
+			command.OptionalString("print_library_info", print_library_info);
+			command.RequiredString("simulator", simulator);
+			command.OptionalString("simulator_exec_path", simulator_exec_path);
+			command.OptionalString("source_library_path", source_library_path);
+			command.Flag("no_ip_compile", no_ip_compile);
+			command.Flag("32bit", _32bit);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -544,6 +593,11 @@ namespace Quokka.TCL.Vivado
 		public void config_compile_simlib(string cfgopt = null, string simulator = null, bool? reset = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("config_compile_simlib");
+			command.OptionalString("cfgopt", cfgopt);
+			command.OptionalString("simulator", simulator);
+			command.Flag("reset", reset);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -620,6 +674,14 @@ namespace Quokka.TCL.Vivado
 		public void create_fileset(string define_from, string name, bool? constrset = null, bool? simset = null, bool? blockset = null, string clone_properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_fileset");
+			command.Flag("constrset", constrset);
+			command.Flag("simset", simset);
+			command.Flag("blockset", blockset);
+			command.OptionalString("clone_properties", clone_properties);
+			command.RequiredString("define_from", define_from);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -727,6 +789,11 @@ namespace Quokka.TCL.Vivado
 		public void current_frame(bool? up = null, bool? down = null, string set = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("current_frame");
+			command.Flag("up", up);
+			command.Flag("down", down);
+			command.OptionalString("set", set);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -760,6 +827,9 @@ namespace Quokka.TCL.Vivado
 		public void current_scope(bool? quiet = null, bool? verbose = null, string hdl_scope = null)
 		{
 			var command = new SimpleTCLCommand("current_scope");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hdl_scope", hdl_scope);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -791,6 +861,9 @@ namespace Quokka.TCL.Vivado
 		public void current_sim(bool? quiet = null, bool? verbose = null, string simulationObject = null)
 		{
 			var command = new SimpleTCLCommand("current_sim");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("simulationObject", simulationObject);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -820,6 +893,9 @@ namespace Quokka.TCL.Vivado
 		public void current_time(bool? s = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("current_time");
+			command.Flag("s", s);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -851,6 +927,9 @@ namespace Quokka.TCL.Vivado
 		public void current_vcd(bool? quiet = null, bool? verbose = null, string VCDObject = null)
 		{
 			var command = new SimpleTCLCommand("current_vcd");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("VCDObject", VCDObject);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -885,6 +964,10 @@ namespace Quokka.TCL.Vivado
 		public void delete_fileset(string fileset, string merge = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_fileset");
+			command.OptionalString("merge", merge);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("fileset", fileset);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -947,6 +1030,9 @@ namespace Quokka.TCL.Vivado
 		public void describe(string hdl_object, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("describe");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hdl_object", hdl_object);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1014,6 +1100,16 @@ namespace Quokka.TCL.Vivado
 		public void export_ip_user_files(string of_objects = null, string ip_user_files_dir = null, string ipstatic_source_dir = null, string lib_map_path = null, bool? no_script = null, bool? sync = null, bool? reset = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("export_ip_user_files");
+			command.OptionalString("of_objects", of_objects);
+			command.OptionalString("ip_user_files_dir", ip_user_files_dir);
+			command.OptionalString("ipstatic_source_dir", ipstatic_source_dir);
+			command.OptionalString("lib_map_path", lib_map_path);
+			command.Flag("no_script", no_script);
+			command.Flag("sync", sync);
+			command.Flag("reset", reset);
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1174,7 +1270,7 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Copy IP/BD design files to output directory
 		/// </param>
-		/// <param name="32bit">
+		/// <param name="_32bit">
 		/// Optional
 		/// Perform 32bit compilation
 		/// </param>
@@ -1191,9 +1287,27 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>None</returns>
-		public void export_simulation(string simulator = null, string of_objects = null, string ip_user_files_dir = null, string ipstatic_source_dir = null, string lib_map_path = null, string script_name = null, string directory = null, string runtime = null, string define = null, string generic = null, string include = null, bool? use_ip_compiled_libs = null, bool? absolute_path = null, bool? export_source_files = null, bool? 32bit = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public void export_simulation(string simulator = null, string of_objects = null, string ip_user_files_dir = null, string ipstatic_source_dir = null, string lib_map_path = null, string script_name = null, string directory = null, string runtime = null, string define = null, string generic = null, string include = null, bool? use_ip_compiled_libs = null, bool? absolute_path = null, bool? export_source_files = null, bool? _32bit = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("export_simulation");
+			command.OptionalString("simulator", simulator);
+			command.OptionalString("of_objects", of_objects);
+			command.OptionalString("ip_user_files_dir", ip_user_files_dir);
+			command.OptionalString("ipstatic_source_dir", ipstatic_source_dir);
+			command.OptionalString("lib_map_path", lib_map_path);
+			command.OptionalString("script_name", script_name);
+			command.OptionalString("directory", directory);
+			command.OptionalString("runtime", runtime);
+			command.OptionalString("define", define);
+			command.OptionalString("generic", generic);
+			command.OptionalString("include", include);
+			command.Flag("use_ip_compiled_libs", use_ip_compiled_libs);
+			command.Flag("absolute_path", absolute_path);
+			command.Flag("export_source_files", export_source_files);
+			command.Flag("32bit", _32bit);
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1224,6 +1338,8 @@ namespace Quokka.TCL.Vivado
 		public void flush_vcd(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("flush_vcd");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1264,6 +1380,10 @@ namespace Quokka.TCL.Vivado
 		public void generate_mem_files(string directory, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("generate_mem_files");
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("directory", directory);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1398,6 +1518,14 @@ namespace Quokka.TCL.Vivado
 		public void get_objects(string filter = null, bool? r = null, bool? local = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_objects");
+			command.OptionalString("filter", filter);
+			command.Flag("r", r);
+			command.Flag("local", local);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1447,6 +1575,13 @@ namespace Quokka.TCL.Vivado
 		public void get_scopes(string filter = null, bool? regexp = null, bool? nocase = null, bool? r = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_scopes");
+			command.OptionalString("filter", filter);
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.Flag("r", r);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1489,6 +1624,12 @@ namespace Quokka.TCL.Vivado
 		public void get_simulators(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_simulators");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1552,6 +1693,9 @@ namespace Quokka.TCL.Vivado
 		public void get_stacks(string of_instance = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_stacks");
+			command.OptionalString("of_instance", of_instance);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1622,6 +1766,10 @@ namespace Quokka.TCL.Vivado
 		public void get_value(string hdl_object, string radix = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_value");
+			command.OptionalString("radix", radix);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hdl_object", hdl_object);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1661,10 +1809,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 962
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// RMs to import the files to
-		/// </param>
 		/// <param name="fileset">
 		/// Optional
 		/// Fileset name
@@ -1672,6 +1816,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="force">
 		/// Optional
 		/// Overwrite files of the same name in project directory
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// RMs to import the files to
 		/// </param>
 		/// <param name="norecurse">
 		/// Optional
@@ -1698,9 +1846,18 @@ namespace Quokka.TCL.Vivado
 		/// Name of the files to import into fileset
 		/// </param>
 		/// <returns>A list of file objects that were imported</returns>
-		public void import_files(string of_objects, string fileset = null, bool? force = null, bool? norecurse = null, bool? flat = null, string relative_to = null, bool? quiet = null, bool? verbose = null, string files = null)
+		public void import_files(string fileset = null, bool? force = null, string of_objects = null, bool? norecurse = null, bool? flat = null, string relative_to = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
 			var command = new SimpleTCLCommand("import_files");
+			command.OptionalString("fileset", fileset);
+			command.Flag("force", force);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("norecurse", norecurse);
+			command.Flag("flat", flat);
+			command.OptionalString("relative_to", relative_to);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("files", files);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1762,11 +1919,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 995
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Generate compile order file for this object (applicable with -
-		/// scripts_only option only)
-		/// </param>
 		/// <param name="step">
 		/// Optional
 		/// Launch a simulation step. Values: all, compile, elaborate,
@@ -1789,6 +1941,11 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Only generate scripts
 		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Generate compile order file for this object (applicable with -
+		/// scripts_only option only)
+		/// </param>
 		/// <param name="absolute_path">
 		/// Optional
 		/// Make design source file paths in 'absolute' format
@@ -1809,9 +1966,20 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void launch_simulation(string of_objects, string step = null, string simset = null, string mode = null, string type = null, bool? scripts_only = null, bool? absolute_path = null, string install_path = null, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
+		public void launch_simulation(string step = null, string simset = null, string mode = null, string type = null, bool? scripts_only = null, string of_objects = null, bool? absolute_path = null, string install_path = null, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("launch_simulation");
+			command.OptionalString("step", step);
+			command.OptionalString("simset", simset);
+			command.OptionalString("mode", mode);
+			command.OptionalString("type", type);
+			command.Flag("scripts_only", scripts_only);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("absolute_path", absolute_path);
+			command.OptionalString("install_path", install_path);
+			command.Flag("noclean_dir", noclean_dir);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1843,6 +2011,9 @@ namespace Quokka.TCL.Vivado
 		public void limit_vcd(string filesize, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("limit_vcd");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("filesize", filesize);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1878,6 +2049,9 @@ namespace Quokka.TCL.Vivado
 		public void log_saif(string hdl_objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("log_saif");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hdl_objects", hdl_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1951,6 +2125,10 @@ namespace Quokka.TCL.Vivado
 		public void log_vcd(string level = null, bool? quiet = null, bool? verbose = null, string hdl_objects = null)
 		{
 			var command = new SimpleTCLCommand("log_vcd");
+			command.OptionalString("level", level);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hdl_objects", hdl_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2000,6 +2178,12 @@ namespace Quokka.TCL.Vivado
 		public void log_wave(string hdl_objects, bool? recursive = null, bool? r = null, bool? verbose = null, bool? v = null, bool? quiet = null)
 		{
 			var command = new SimpleTCLCommand("log_wave");
+			command.Flag("recursive", recursive);
+			command.Flag("r", r);
+			command.Flag("verbose", verbose);
+			command.Flag("v", v);
+			command.Flag("quiet", quiet);
+			command.RequiredString("hdl_objects", hdl_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2032,6 +2216,9 @@ namespace Quokka.TCL.Vivado
 		public void ltrace(string value, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("ltrace");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("value", value);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2046,13 +2233,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1047
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Reconfig Modules to move the files to
-		/// </param>
 		/// <param name="fileset">
 		/// Optional
 		/// Destination fileset name
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Reconfig Modules to move the files to
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -2067,9 +2254,14 @@ namespace Quokka.TCL.Vivado
 		/// Name of the files to be moved
 		/// </param>
 		/// <returns>list of files that were moved</returns>
-		public void move_files(string of_objects, string fileset = null, bool? quiet = null, bool? verbose = null, string files = null)
+		public void move_files(string fileset = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
 			var command = new SimpleTCLCommand("move_files");
+			command.OptionalString("fileset", fileset);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("files", files);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2111,6 +2303,9 @@ namespace Quokka.TCL.Vivado
 		public void open_saif(string file_name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("open_saif");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file_name", file_name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2161,6 +2356,9 @@ namespace Quokka.TCL.Vivado
 		public void open_vcd(bool? quiet = null, bool? verbose = null, string file_name = null)
 		{
 			var command = new SimpleTCLCommand("open_vcd");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("file_name", file_name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2201,10 +2399,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1079
 		/// </summary>
-		/// <param name="protoinst">
-		/// Required
-		/// Specify a .protoinst file for protocol analysis
-		/// </param>
 		/// <param name="wdb">
 		/// Required
 		/// file name
@@ -2212,6 +2406,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="noautoloadwcfg">
 		/// Optional
 		/// Do not automatically open associated WCFG files
+		/// </param>
+		/// <param name="protoinst">
+		/// Optional
+		/// Specify a .protoinst file for protocol analysis
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -2221,9 +2419,14 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void open_wave_database(string protoinst, string wdb, bool? noautoloadwcfg = null, bool? quiet = null, bool? verbose = null)
+		public void open_wave_database(string wdb, bool? noautoloadwcfg = null, string protoinst = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("open_wave_database");
+			command.Flag("noautoloadwcfg", noautoloadwcfg);
+			command.OptionalString("protoinst", protoinst);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("wdb", wdb);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2256,6 +2459,9 @@ namespace Quokka.TCL.Vivado
 		public void ptrace(string value, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("ptrace");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("value", value);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2302,6 +2508,12 @@ namespace Quokka.TCL.Vivado
 		public void read_saif(string file, string strip_path = null, bool? no_strip = null, string out_file = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("read_saif");
+			command.OptionalString("strip_path", strip_path);
+			command.Flag("no_strip", no_strip);
+			command.OptionalString("out_file", out_file);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2340,6 +2552,8 @@ namespace Quokka.TCL.Vivado
 		public void relaunch_sim(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("relaunch_sim");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2388,6 +2602,12 @@ namespace Quokka.TCL.Vivado
 		public void remove_bps(bool? all = null, string file = null, string line = null, bool? quiet = null, bool? verbose = null, string BreakPointObjsOrIds = null)
 		{
 			var command = new SimpleTCLCommand("remove_bps");
+			command.Flag("all", all);
+			command.OptionalString("file", file);
+			command.OptionalString("line", line);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("BreakPointObjsOrIds", BreakPointObjsOrIds);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2426,6 +2646,10 @@ namespace Quokka.TCL.Vivado
 		public void remove_conditions(bool? all = null, bool? quiet = null, bool? verbose = null, string ConditionObjs = null)
 		{
 			var command = new SimpleTCLCommand("remove_conditions");
+			command.Flag("all", all);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("ConditionObjs", ConditionObjs);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2471,6 +2695,10 @@ namespace Quokka.TCL.Vivado
 		public void remove_files(string files, string fileset = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("remove_files");
+			command.OptionalString("fileset", fileset);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("files", files);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2512,6 +2740,10 @@ namespace Quokka.TCL.Vivado
 		public void remove_forces(bool? all = null, bool? quiet = null, bool? verbose = null, string ForceObj = null)
 		{
 			var command = new SimpleTCLCommand("remove_forces");
+			command.Flag("all", all);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("ForceObj", ForceObj);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2548,6 +2780,9 @@ namespace Quokka.TCL.Vivado
 		public void report_bps(bool? quiet = null, bool? verbose = null, string BreakPointObjs = null)
 		{
 			var command = new SimpleTCLCommand("report_bps");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("BreakPointObjs", BreakPointObjs);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2597,6 +2832,9 @@ namespace Quokka.TCL.Vivado
 		public void report_conditions(bool? quiet = null, bool? verbose = null, string ConditionObjs = null)
 		{
 			var command = new SimpleTCLCommand("report_conditions");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("ConditionObjs", ConditionObjs);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2700,6 +2938,9 @@ namespace Quokka.TCL.Vivado
 		public void report_drivers(string hdl_object, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_drivers");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hdl_object", hdl_object);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2774,6 +3015,8 @@ namespace Quokka.TCL.Vivado
 		public void report_frames(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_frames");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2837,6 +3080,9 @@ namespace Quokka.TCL.Vivado
 		public void report_objects(bool? quiet = null, bool? verbose = null, string hdl_objects = null)
 		{
 			var command = new SimpleTCLCommand("report_objects");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hdl_objects", hdl_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2884,6 +3130,9 @@ namespace Quokka.TCL.Vivado
 		public void report_scopes(bool? quiet = null, bool? verbose = null, string hdl_scopes = null)
 		{
 			var command = new SimpleTCLCommand("report_scopes");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("hdl_scopes", hdl_scopes);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2920,6 +3169,11 @@ namespace Quokka.TCL.Vivado
 		public void report_simlib_info(string path, string file = null, bool? append = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_simlib_info");
+			command.OptionalString("file", file);
+			command.Flag("append", append);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("path", path);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2981,6 +3235,9 @@ namespace Quokka.TCL.Vivado
 		public void report_stacks(string of_instance = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_stacks");
+			command.OptionalString("of_instance", of_instance);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3027,6 +3284,11 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1444
 		/// </summary>
+		/// <param name="hdl_objects">
+		/// Required
+		/// The hdl_objects to report. Default is report_objects
+		/// [get_objects *]
+		/// </param>
 		/// <param name="radix">
 		/// Optional
 		/// The radix specifies the radix to use for printing the values of
@@ -3041,15 +3303,14 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="hdl_objects">
-		/// Optional
-		/// The hdl_objects to report. Default is report_objects
-		/// [get_objects *]
-		/// </param>
 		/// <returns>Print name and value of HDL objects on the console in textual format</returns>
-		public void report_values(string radix = null, bool? quiet = null, bool? verbose = null, string hdl_objects = null)
+		public void report_values(string hdl_objects, string radix = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_values");
+			command.OptionalString("radix", radix);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hdl_objects", hdl_objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3093,6 +3354,11 @@ namespace Quokka.TCL.Vivado
 		public void reset_simulation(string mode = null, string type = null, bool? quiet = null, bool? verbose = null, string simset = null)
 		{
 			var command = new SimpleTCLCommand("reset_simulation");
+			command.OptionalString("mode", mode);
+			command.OptionalString("type", type);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("simset", simset);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3121,6 +3387,8 @@ namespace Quokka.TCL.Vivado
 		public void restart(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("restart");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3171,6 +3439,11 @@ namespace Quokka.TCL.Vivado
 		public void run(bool? all = null, bool? quiet = null, bool? verbose = null, string time = null, string unit = null)
 		{
 			var command = new SimpleTCLCommand("run");
+			command.Flag("all", all);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("time", time);
+			command.OptionalString("unit", unit);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3271,6 +3544,11 @@ namespace Quokka.TCL.Vivado
 		public void set_value(string hdl_object, string value, string radix = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("set_value");
+			command.OptionalString("radix", radix);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("hdl_object", hdl_object);
+			command.RequiredString("value", value);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3340,6 +3618,16 @@ namespace Quokka.TCL.Vivado
 		public void setup_ip_static_library(string directory = null, string ip_repo_path = null, string ips = null, string library = null, bool? project = null, bool? install = null, bool? no_update_catalog = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("setup_ip_static_library");
+			command.OptionalString("directory", directory);
+			command.OptionalString("ip_repo_path", ip_repo_path);
+			command.OptionalString("ips", ips);
+			command.OptionalString("library", library);
+			command.Flag("project", project);
+			command.Flag("install", install);
+			command.Flag("no_update_catalog", no_update_catalog);
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3368,6 +3656,8 @@ namespace Quokka.TCL.Vivado
 		public void start_vcd(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("start_vcd");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3397,6 +3687,8 @@ namespace Quokka.TCL.Vivado
 		public void step(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("step");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3426,6 +3718,8 @@ namespace Quokka.TCL.Vivado
 		public void stop(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("stop");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3455,6 +3749,8 @@ namespace Quokka.TCL.Vivado
 		public void stop_vcd(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("stop_vcd");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3512,6 +3808,15 @@ namespace Quokka.TCL.Vivado
 		public void write_sdf(string file, string process_corner = null, string cell = null, string rename_top = null, bool? force = null, string mode = null, bool? gzip = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("write_sdf");
+			command.OptionalString("process_corner", process_corner);
+			command.OptionalString("cell", cell);
+			command.OptionalString("rename_top", rename_top);
+			command.Flag("force", force);
+			command.OptionalString("mode", mode);
+			command.Flag("gzip", gzip);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3609,6 +3914,21 @@ namespace Quokka.TCL.Vivado
 		public void write_verilog(string file, string cell = null, string mode = null, bool? lib = null, bool? port_diff_buffers = null, bool? write_all_overrides = null, bool? keep_vcc_gnd = null, string rename_top = null, string sdf_anno = null, string sdf_file = null, bool? force = null, bool? include_xilinx_libs = null, bool? logic_function_stripped = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("write_verilog");
+			command.OptionalString("cell", cell);
+			command.OptionalString("mode", mode);
+			command.Flag("lib", lib);
+			command.Flag("port_diff_buffers", port_diff_buffers);
+			command.Flag("write_all_overrides", write_all_overrides);
+			command.Flag("keep_vcc_gnd", keep_vcc_gnd);
+			command.OptionalString("rename_top", rename_top);
+			command.OptionalString("sdf_anno", sdf_anno);
+			command.OptionalString("sdf_file", sdf_file);
+			command.Flag("force", force);
+			command.Flag("include_xilinx_libs", include_xilinx_libs);
+			command.Flag("logic_function_stripped", logic_function_stripped);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3692,6 +4012,19 @@ namespace Quokka.TCL.Vivado
 		public void write_vhdl(string file, string cell = null, string mode = null, bool? lib = null, bool? port_diff_buffers = null, bool? write_all_overrides = null, bool? keep_vcc_gnd = null, string rename_top = null, bool? arch_only = null, bool? force = null, bool? include_xilinx_libs = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("write_vhdl");
+			command.OptionalString("cell", cell);
+			command.OptionalString("mode", mode);
+			command.Flag("lib", lib);
+			command.Flag("port_diff_buffers", port_diff_buffers);
+			command.Flag("write_all_overrides", write_all_overrides);
+			command.Flag("keep_vcc_gnd", keep_vcc_gnd);
+			command.OptionalString("rename_top", rename_top);
+			command.Flag("arch_only", arch_only);
+			command.Flag("force", force);
+			command.Flag("include_xilinx_libs", include_xilinx_libs);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("file", file);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -3706,42 +4039,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1865
 		/// </summary>
-		/// <param name="view">
-		/// Required
-		/// Open a wave configuration file. This switch may be repeated
-		/// to open multiple files.
-		/// </param>
-		/// <param name="tclbatch">
-		/// Required
-		/// Specify the TCL file for batch mode execution
-		/// </param>
-		/// <param name="t">
-		/// Required
-		/// Specify the TCL file for batch mode execution
-		/// </param>
-		/// <param name="testplusarg">
-		/// Required
-		/// Specify plusargs to be used by $test$plusargs and $value
-		/// $plusargs system functions
-		/// </param>
-		/// <param name="protoinst">
-		/// Required
-		/// Specify a .protoinst file for protocol analysis
-		/// </param>
-		/// <param name="ignore_feature">
-		/// Required
-		/// Specify System Verilog feature to be ignored at runtime.
-		/// Choices are: assertion : Ignore concurrent assertions.
-		/// </param>
-		/// <param name="downgrade_severity">
-		/// Required
-		/// Downgrade severity level of System Verilog HDL
-		/// messages.Choices are: error2warning|error2info|
-		/// fatal2warning|fatal2info.
-		/// </param>
 		/// <param name="snapshot">
 		/// Required
 		/// The name of design snapshot or WDB file
+		/// </param>
+		/// <param name="view">
+		/// Optional
+		/// Open a wave configuration file. This switch may be repeated
+		/// to open multiple files.
 		/// </param>
 		/// <param name="autoloadwcfg">
 		/// Optional
@@ -3783,6 +4088,19 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Specify behavior upon simulation run-time error: quit|stop
 		/// Default: stop
+		/// </param>
+		/// <param name="tclbatch">
+		/// Optional
+		/// Specify the TCL file for batch mode execution
+		/// </param>
+		/// <param name="t">
+		/// Optional
+		/// Specify the TCL file for batch mode execution
+		/// </param>
+		/// <param name="testplusarg">
+		/// Optional
+		/// Specify plusargs to be used by $test$plusargs and $value
+		/// $plusargs system functions
 		/// </param>
 		/// <param name="vcdfile">
 		/// Optional
@@ -3829,6 +4147,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Seed for constraint random stimulus Default: 1
 		/// </param>
+		/// <param name="protoinst">
+		/// Optional
+		/// Specify a .protoinst file for protocol analysis
+		/// </param>
 		/// <param name="cov_db_dir">
 		/// Optional
 		/// System Verilog Coverage Run Directory. The coverage data
@@ -3872,6 +4194,17 @@ namespace Quokka.TCL.Vivado
 		/// Downgrade System verilog message severity from fatal to
 		/// warning level.
 		/// </param>
+		/// <param name="ignore_feature">
+		/// Optional
+		/// Specify System Verilog feature to be ignored at runtime.
+		/// Choices are: assertion : Ignore concurrent assertions.
+		/// </param>
+		/// <param name="downgrade_severity">
+		/// Optional
+		/// Downgrade severity level of System Verilog HDL
+		/// messages.Choices are: error2warning|error2info|
+		/// fatal2warning|fatal2info.
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -3881,9 +4214,45 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>Current simulation object</returns>
-		public void xsim(string view, string tclbatch, string t, string testplusarg, string protoinst, string ignore_feature, string downgrade_severity, string snapshot, bool? autoloadwcfg = null, bool? runall = null, bool? R = null, string maxdeltaid = null, bool? nolog = null, string maxlogsize = null, string onfinish = null, string onerror = null, string vcdfile = null, string vcdunit = null, string wdb = null, bool? tp = null, bool? tl = null, bool? nosignalhandlers = null, bool? ieeewarnings = null, bool? stats = null, bool? scNoLogFile = null, string sv_seed = null, string cov_db_dir = null, string cov_db_name = null, bool? ignore_assertions = null, bool? ignore_coverage = null, bool? downgrade_error2info = null, bool? downgrade_error2warning = null, bool? downgrade_fatal2info = null, bool? downgrade_fatal2warning = null, bool? quiet = null, bool? verbose = null)
+		public void xsim(string snapshot, string view = null, bool? autoloadwcfg = null, bool? runall = null, bool? R = null, string maxdeltaid = null, bool? nolog = null, string maxlogsize = null, string onfinish = null, string onerror = null, string tclbatch = null, string t = null, string testplusarg = null, string vcdfile = null, string vcdunit = null, string wdb = null, bool? tp = null, bool? tl = null, bool? nosignalhandlers = null, bool? ieeewarnings = null, bool? stats = null, bool? scNoLogFile = null, string sv_seed = null, string protoinst = null, string cov_db_dir = null, string cov_db_name = null, bool? ignore_assertions = null, bool? ignore_coverage = null, bool? downgrade_error2info = null, bool? downgrade_error2warning = null, bool? downgrade_fatal2info = null, bool? downgrade_fatal2warning = null, string ignore_feature = null, string downgrade_severity = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("xsim");
+			command.OptionalString("view", view);
+			command.Flag("autoloadwcfg", autoloadwcfg);
+			command.Flag("runall", runall);
+			command.Flag("R", R);
+			command.OptionalString("maxdeltaid", maxdeltaid);
+			command.Flag("nolog", nolog);
+			command.OptionalString("maxlogsize", maxlogsize);
+			command.OptionalString("onfinish", onfinish);
+			command.OptionalString("onerror", onerror);
+			command.OptionalString("tclbatch", tclbatch);
+			command.OptionalString("t", t);
+			command.OptionalString("testplusarg", testplusarg);
+			command.OptionalString("vcdfile", vcdfile);
+			command.OptionalString("vcdunit", vcdunit);
+			command.OptionalString("wdb", wdb);
+			command.Flag("tp", tp);
+			command.Flag("tl", tl);
+			command.Flag("nosignalhandlers", nosignalhandlers);
+			command.Flag("ieeewarnings", ieeewarnings);
+			command.Flag("stats", stats);
+			command.Flag("scNoLogFile", scNoLogFile);
+			command.OptionalString("sv_seed", sv_seed);
+			command.OptionalString("protoinst", protoinst);
+			command.OptionalString("cov_db_dir", cov_db_dir);
+			command.OptionalString("cov_db_name", cov_db_name);
+			command.Flag("ignore_assertions", ignore_assertions);
+			command.Flag("ignore_coverage", ignore_coverage);
+			command.Flag("downgrade_error2info", downgrade_error2info);
+			command.Flag("downgrade_error2warning", downgrade_error2warning);
+			command.Flag("downgrade_fatal2info", downgrade_fatal2info);
+			command.Flag("downgrade_fatal2warning", downgrade_fatal2warning);
+			command.OptionalString("ignore_feature", ignore_feature);
+			command.OptionalString("downgrade_severity", downgrade_severity);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("snapshot", snapshot);
 			_tcl.Add(command);
 		}
 	}

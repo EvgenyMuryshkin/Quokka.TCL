@@ -38,10 +38,6 @@ namespace Quokka.TCL.Vivado
 		/// Required
 		/// Rule ID string
 		/// </param>
-		/// <param name="config">
-		/// Required
-		/// List of parameter value pairs
-		/// </param>
 		/// <param name="dict">
 		/// Required
 		/// List of objects and corresponding parameter name-value
@@ -55,6 +51,10 @@ namespace Quokka.TCL.Vivado
 		/// Required
 		/// The objects to run the automation rule on
 		/// </param>
+		/// <param name="config">
+		/// Optional
+		/// List of parameter value pairs
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -64,9 +64,16 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>Returns success or failure</returns>
-		public void apply_bd_automation(string rule, string config, string dict, string opts, string objects, bool? quiet = null, bool? verbose = null)
+		public void apply_bd_automation(string rule, string dict, string opts, string objects, string config = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("apply_bd_automation");
+			command.RequiredString("rule", rule);
+			command.OptionalString("config", config);
+			command.RequiredString("dict", dict);
+			command.RequiredString("opts", opts);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -123,6 +130,11 @@ namespace Quokka.TCL.Vivado
 		public void apply_board_connection(string ip_intf, string diagram, string board_interface = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("apply_board_connection");
+			command.OptionalString("board_interface", board_interface);
+			command.RequiredString("ip_intf", ip_intf);
+			command.RequiredString("diagram", diagram);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -211,6 +223,21 @@ namespace Quokka.TCL.Vivado
 		public void assign_bd_address(string dict, string target_address_space = null, bool? boundary = null, bool? master_boundary = null, bool? external = null, string import_from_file = null, string export_to_file = null, string export_gui_to_file = null, string offset = null, string range = null, string base_high = null, bool? force = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			var command = new SimpleTCLCommand("assign_bd_address");
+			command.OptionalString("target_address_space", target_address_space);
+			command.Flag("boundary", boundary);
+			command.Flag("master_boundary", master_boundary);
+			command.Flag("external", external);
+			command.RequiredString("dict", dict);
+			command.OptionalString("import_from_file", import_from_file);
+			command.OptionalString("export_to_file", export_to_file);
+			command.OptionalString("export_gui_to_file", export_gui_to_file);
+			command.OptionalString("offset", offset);
+			command.OptionalString("range", range);
+			command.OptionalString("base_high", base_high);
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -239,6 +266,9 @@ namespace Quokka.TCL.Vivado
 		public void close_bd_design(string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("close_bd_design");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -276,6 +306,10 @@ namespace Quokka.TCL.Vivado
 		public void compile_c(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("compile_c");
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -326,6 +360,13 @@ namespace Quokka.TCL.Vivado
 		public void connect_bd_intf_net(string object1, string object2, string intf_net = null, string boundary_type = null, bool? quiet = null, bool? verbose = null, string auto = null)
 		{
 			var command = new SimpleTCLCommand("connect_bd_intf_net");
+			command.OptionalString("intf_net", intf_net);
+			command.OptionalString("boundary_type", boundary_type);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("object1", object1);
+			command.RequiredString("object2", object2);
+			command.OptionalString("auto", auto);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -380,6 +421,11 @@ namespace Quokka.TCL.Vivado
 		public void connect_bd_net(string objects, string net = null, string boundary_type = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("connect_bd_net");
+			command.OptionalString("net", net);
+			command.OptionalString("boundary_type", boundary_type);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -428,6 +474,12 @@ namespace Quokka.TCL.Vivado
 		public void copy_bd_objs(string parent_cell, string objects, string prefix = null, string from_design = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("copy_bd_objs");
+			command.OptionalString("prefix", prefix);
+			command.OptionalString("from_design", from_design);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("parent_cell", parent_cell);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -448,6 +500,14 @@ namespace Quokka.TCL.Vivado
 		/// Required
 		/// Offset of segment. e.g. 0x00000000
 		/// </param>
+		/// <param name="parent_addr_space">
+		/// Required
+		/// Parent address space of segment
+		/// </param>
+		/// <param name="slave_segment">
+		/// Required
+		/// Slave segment of the created segment
+		/// </param>
 		/// <param name="name">
 		/// Required
 		/// Name of segment to create
@@ -460,18 +520,17 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="parent_addr_space">
-		/// Optional
-		/// Parent address space of segment
-		/// </param>
-		/// <param name="slave_segment">
-		/// Optional
-		/// Slave segment of the created segment
-		/// </param>
 		/// <returns>The newly created segment object, "" if failed.</returns>
-		public void create_bd_addr_seg(string range, string offset, string name, bool? quiet = null, bool? verbose = null, string parent_addr_space = null, string slave_segment = null)
+		public void create_bd_addr_seg(string range, string offset, string parent_addr_space, string slave_segment, string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_bd_addr_seg");
+			command.RequiredString("range", range);
+			command.RequiredString("offset", offset);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("parent_addr_space", parent_addr_space);
+			command.RequiredString("slave_segment", slave_segment);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -493,14 +552,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 219
 		/// </summary>
+		/// <param name="vlnv">
+		/// Required
+		/// Vendor:Library:Name:Version of the IP cell to add from the
+		/// IP catalog.
+		/// </param>
 		/// <param name="name">
 		/// Required
 		/// Name of cell to create
-		/// </param>
-		/// <param name="vlnv">
-		/// Optional
-		/// Vendor:Library:Name:Version of the IP cell to add from the
-		/// IP catalog.
 		/// </param>
 		/// <param name="type">
 		/// Optional
@@ -525,9 +584,16 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>The newly created cell object. Returns nothing if the command fails.</returns>
-		public void create_bd_cell(string name, string vlnv = null, string type = null, string reference = null, string revision = null, bool? quiet = null, bool? verbose = null)
+		public void create_bd_cell(string vlnv, string name, string type = null, string reference = null, string revision = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_bd_cell");
+			command.RequiredString("vlnv", vlnv);
+			command.OptionalString("type", type);
+			command.OptionalString("reference", reference);
+			command.OptionalString("revision", revision);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -569,6 +635,11 @@ namespace Quokka.TCL.Vivado
 		public void create_bd_design(string name, string dir = null, string cell = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_bd_design");
+			command.OptionalString("dir", dir);
+			command.OptionalString("cell", cell);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -596,6 +667,9 @@ namespace Quokka.TCL.Vivado
 		public void create_bd_intf_net(string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_bd_intf_net");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -641,6 +715,11 @@ namespace Quokka.TCL.Vivado
 		public void create_bd_intf_pin(string vlnv, string mode, string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_bd_intf_pin");
+			command.RequiredString("vlnv", vlnv);
+			command.RequiredString("mode", mode);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -685,6 +764,12 @@ namespace Quokka.TCL.Vivado
 		public void create_bd_intf_port(string vlnv, string mode, string name, string board_intf = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_bd_intf_port");
+			command.RequiredString("vlnv", vlnv);
+			command.RequiredString("mode", mode);
+			command.OptionalString("board_intf", board_intf);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -716,6 +801,11 @@ namespace Quokka.TCL.Vivado
 		public void create_bd_intf_tlm_port(string vlnv, string mode, string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_bd_intf_tlm_port");
+			command.RequiredString("vlnv", vlnv);
+			command.RequiredString("mode", mode);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -742,6 +832,9 @@ namespace Quokka.TCL.Vivado
 		public void create_bd_net(string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_bd_net");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -790,6 +883,13 @@ namespace Quokka.TCL.Vivado
 		public void create_bd_pin(string dir, string name, string from = null, string to = null, string type = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_bd_pin");
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.RequiredString("dir", dir);
+			command.OptionalString("type", type);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -845,6 +945,14 @@ namespace Quokka.TCL.Vivado
 		public void create_bd_port(string dir, string name, string from = null, string to = null, string type = null, string freq_hz = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_bd_port");
+			command.OptionalString("from", from);
+			command.OptionalString("to", to);
+			command.RequiredString("dir", dir);
+			command.OptionalString("type", type);
+			command.OptionalString("freq_hz", freq_hz);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -868,6 +976,9 @@ namespace Quokka.TCL.Vivado
 		public void create_bd_tlm_port(string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_bd_tlm_port");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -908,6 +1019,9 @@ namespace Quokka.TCL.Vivado
 		public void current_bd_design(bool? quiet = null, bool? verbose = null, string design = null)
 		{
 			var command = new SimpleTCLCommand("current_bd_design");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("design", design);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -945,6 +1059,9 @@ namespace Quokka.TCL.Vivado
 		public void current_bd_instance(bool? quiet = null, bool? verbose = null, string instance = null)
 		{
 			var command = new SimpleTCLCommand("current_bd_instance");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("instance", instance);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -974,6 +1091,9 @@ namespace Quokka.TCL.Vivado
 		public void delete_bd_objs(string objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("delete_bd_objs");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1009,6 +1129,10 @@ namespace Quokka.TCL.Vivado
 		public void disconnect_bd_intf_net(string intf_net, string objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("disconnect_bd_intf_net");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("intf_net", intf_net);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1042,6 +1166,10 @@ namespace Quokka.TCL.Vivado
 		public void disconnect_bd_net(string net, string objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("disconnect_bd_net");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("net", net);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1103,6 +1231,10 @@ namespace Quokka.TCL.Vivado
 		public void exclude_bd_addr_seg(string target_address_space = null, bool? quiet = null, bool? verbose = null, string segment_to_exclude = null)
 		{
 			var command = new SimpleTCLCommand("exclude_bd_addr_seg");
+			command.OptionalString("target_address_space", target_address_space);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("segment_to_exclude", segment_to_exclude);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1139,6 +1271,12 @@ namespace Quokka.TCL.Vivado
 		public void export_as_example_design(string vlnv, string directory, bool? no_ip_version = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("export_as_example_design");
+			command.RequiredString("vlnv", vlnv);
+			command.Flag("no_ip_version", no_ip_version);
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("directory", directory);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1206,6 +1344,14 @@ namespace Quokka.TCL.Vivado
 		public void find_bd_objs(string relation, string objects, string boundary_type = null, bool? thru_hier = null, bool? stop_at_interconnect = null, string end_type = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("find_bd_objs");
+			command.RequiredString("relation", relation);
+			command.OptionalString("boundary_type", boundary_type);
+			command.Flag("thru_hier", thru_hier);
+			command.Flag("stop_at_interconnect", stop_at_interconnect);
+			command.OptionalString("end_type", end_type);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1265,6 +1411,11 @@ namespace Quokka.TCL.Vivado
 		public void generate_target(string name, string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("generate_target");
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1286,10 +1437,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 542
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get segments of these segments, interfaces, or registers
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -1301,6 +1448,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get segments of these segments, interfaces, or registers
 		/// </param>
 		/// <param name="excluded">
 		/// Optional
@@ -1335,9 +1486,21 @@ namespace Quokka.TCL.Vivado
 		/// Match engine names against patterns Default: *
 		/// </param>
 		/// <returns>List of segment objects, "" if failed.</returns>
-		public void get_bd_addr_segs(string of_objects, bool? regexp = null, bool? hierarchical = null, string filter = null, bool? excluded = null, bool? addressed = null, bool? unaddressed = null, bool? addressing = null, bool? addressables = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_bd_addr_segs(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? excluded = null, bool? addressed = null, bool? unaddressed = null, bool? addressing = null, bool? addressables = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_bd_addr_segs");
+			command.Flag("regexp", regexp);
+			command.Flag("hierarchical", hierarchical);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("excluded", excluded);
+			command.Flag("addressed", addressed);
+			command.Flag("unaddressed", unaddressed);
+			command.Flag("addressing", addressing);
+			command.Flag("addressables", addressables);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1381,10 +1544,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 546
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get addr_spaces of these segments or interfaces
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -1396,6 +1555,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get addr_spaces of these segments or interfaces
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -1410,9 +1573,16 @@ namespace Quokka.TCL.Vivado
 		/// Match engine names against patterns Default: *
 		/// </param>
 		/// <returns>List of addr_space objects, "" if failed.</returns>
-		public void get_bd_addr_spaces(string of_objects, bool? regexp = null, bool? hierarchical = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_bd_addr_spaces(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_bd_addr_spaces");
+			command.Flag("regexp", regexp);
+			command.Flag("hierarchical", hierarchical);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1437,10 +1607,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 550
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get cells of these pins or nets
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -1452,6 +1618,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get cells of these pins or nets
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -1466,9 +1636,16 @@ namespace Quokka.TCL.Vivado
 		/// Match engine names against patterns Default: *
 		/// </param>
 		/// <returns>List of block diagram cell objects, "" if failed.</returns>
-		public void get_bd_cells(string of_objects, bool? regexp = null, bool? hierarchical = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_bd_cells(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_bd_cells");
+			command.Flag("regexp", regexp);
+			command.Flag("hierarchical", hierarchical);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1486,10 +1663,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 554
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get diagrams of these bd-cells or pins or nets
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -1497,6 +1670,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// Get diagrams of these bd-cells or pins or nets
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -1511,9 +1688,15 @@ namespace Quokka.TCL.Vivado
 		/// Match engine names against patterns Default: *
 		/// </param>
 		/// <returns>List of design objects, "" if failed.</returns>
-		public void get_bd_designs(string of_objects, bool? regexp = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_bd_designs(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_bd_designs");
+			command.Flag("regexp", regexp);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1538,11 +1721,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 557
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// One or a list of cells or interface pins/ports objects. List
-		/// must be of one object type.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -1563,6 +1741,11 @@ namespace Quokka.TCL.Vivado
 		/// onwards. This option is only valid for connected_to relations.
 		/// Default: upper
 		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// One or a list of cells or interface pins/ports objects. List
+		/// must be of one object type.
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -1576,9 +1759,17 @@ namespace Quokka.TCL.Vivado
 		/// Match engine names against patterns Default: *
 		/// </param>
 		/// <returns>List of pin objects, "" if failed.</returns>
-		public void get_bd_intf_nets(string of_objects, bool? regexp = null, bool? hierarchical = null, string filter = null, string boundary_type = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_bd_intf_nets(bool? regexp = null, bool? hierarchical = null, string filter = null, string boundary_type = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_bd_intf_nets");
+			command.Flag("regexp", regexp);
+			command.Flag("hierarchical", hierarchical);
+			command.OptionalString("filter", filter);
+			command.OptionalString("boundary_type", boundary_type);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1605,11 +1796,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 561
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// One or a list of cells, interface nets or pins objects. List must
-		/// be of one object type.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -1621,6 +1807,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// One or a list of cells, interface nets or pins objects. List must
+		/// be of one object type.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -1635,9 +1826,16 @@ namespace Quokka.TCL.Vivado
 		/// Match engine names against patterns Default: *
 		/// </param>
 		/// <returns>List of pin objects, "" if failed.</returns>
-		public void get_bd_intf_pins(string of_objects, bool? regexp = null, bool? hierarchical = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_bd_intf_pins(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_bd_intf_pins");
+			command.Flag("regexp", regexp);
+			command.Flag("hierarchical", hierarchical);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1663,10 +1861,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 565
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// One or a list of interface nets or ports objects.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -1674,6 +1868,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// One or a list of interface nets or ports objects.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -1688,9 +1886,15 @@ namespace Quokka.TCL.Vivado
 		/// Match engine names against patterns Default: *
 		/// </param>
 		/// <returns>List of port objects, "" if failed.</returns>
-		public void get_bd_intf_ports(string of_objects, bool? regexp = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_bd_intf_ports(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_bd_intf_ports");
+			command.Flag("regexp", regexp);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1714,11 +1918,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 568
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// One or a list of cells or pins/ports objects. List must be of
-		/// one object type.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -1739,6 +1938,11 @@ namespace Quokka.TCL.Vivado
 		/// onwards. This option is only valid for connected_to relations.
 		/// Default: upper
 		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// One or a list of cells or pins/ports objects. List must be of
+		/// one object type.
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -1752,9 +1956,17 @@ namespace Quokka.TCL.Vivado
 		/// Match engine names against patterns Default: *
 		/// </param>
 		/// <returns>List of pin objects, "" if failed.</returns>
-		public void get_bd_nets(string of_objects, bool? regexp = null, bool? hierarchical = null, string filter = null, string boundary_type = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_bd_nets(bool? regexp = null, bool? hierarchical = null, string filter = null, string boundary_type = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_bd_nets");
+			command.Flag("regexp", regexp);
+			command.Flag("hierarchical", hierarchical);
+			command.OptionalString("filter", filter);
+			command.OptionalString("boundary_type", boundary_type);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1781,11 +1993,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 572
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// One or a list of cells, nets or interface pins objects. List must
-		/// be of one object type.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -1797,6 +2004,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// One or a list of cells, nets or interface pins objects. List must
+		/// be of one object type.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -1811,9 +2023,16 @@ namespace Quokka.TCL.Vivado
 		/// Match engine names against patterns Default: *
 		/// </param>
 		/// <returns>List of pin objects, "" if failed.</returns>
-		public void get_bd_pins(string of_objects, bool? regexp = null, bool? hierarchical = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_bd_pins(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_bd_pins");
+			command.Flag("regexp", regexp);
+			command.Flag("hierarchical", hierarchical);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1835,10 +2054,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 576
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// One or a list of nets or interface ports objects.
-		/// </param>
 		/// <param name="regexp">
 		/// Optional
 		/// Patterns are full regular expressions
@@ -1846,6 +2061,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">
 		/// Optional
 		/// Filter list with expression
+		/// </param>
+		/// <param name="of_objects">
+		/// Optional
+		/// One or a list of nets or interface ports objects.
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -1860,9 +2079,15 @@ namespace Quokka.TCL.Vivado
 		/// Match engine names against patterns Default: *
 		/// </param>
 		/// <returns>List of port objects, "" if failed.</returns>
-		public void get_bd_ports(string of_objects, bool? regexp = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public void get_bd_ports(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_bd_ports");
+			command.Flag("regexp", regexp);
+			command.OptionalString("filter", filter);
+			command.OptionalString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1916,6 +2141,9 @@ namespace Quokka.TCL.Vivado
 		public void get_bd_regs(string of_objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_bd_regs");
+			command.RequiredString("of_objects", of_objects);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1966,6 +2194,12 @@ namespace Quokka.TCL.Vivado
 		public void get_example_designs(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			var command = new SimpleTCLCommand("get_example_designs");
+			command.Flag("regexp", regexp);
+			command.Flag("nocase", nocase);
+			command.OptionalString("filter", filter);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("patterns", patterns);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -1991,6 +2225,8 @@ namespace Quokka.TCL.Vivado
 		public void get_template_bd_designs(bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("get_template_bd_designs");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2012,6 +2248,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 946
 		/// </summary>
+		/// <param name="target_cell_name">
+		/// Required
+		/// Target cell
+		/// </param>
+		/// <param name="cells">
+		/// Required
+		/// Match engine names against cell names Default: *
+		/// </param>
 		/// <param name="prefix">
 		/// Optional
 		/// Prefix name to add to cells
@@ -2024,18 +2268,15 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="target_cell_name">
-		/// Optional
-		/// Target cell
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// Match engine names against cell names Default: *
-		/// </param>
 		/// <returns>0 if success.</returns>
-		public void group_bd_cells(string prefix = null, bool? quiet = null, bool? verbose = null, string target_cell_name = null, string cells = null)
+		public void group_bd_cells(string target_cell_name, string cells, string prefix = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("group_bd_cells");
+			command.OptionalString("prefix", prefix);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("target_cell_name", target_cell_name);
+			command.RequiredString("cells", cells);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2075,6 +2316,9 @@ namespace Quokka.TCL.Vivado
 		public void include_bd_addr_seg(bool? quiet = null, bool? verbose = null, string segment_to_include = null)
 		{
 			var command = new SimpleTCLCommand("include_bd_addr_seg");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("segment_to_include", segment_to_include);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2114,10 +2358,6 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 977
 		/// </summary>
-		/// <param name="options">
-		/// Required
-		/// Configurable options
-		/// </param>
 		/// <param name="template">
 		/// Required
 		/// Configurable Design Name
@@ -2138,6 +2378,10 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Project location Default: .
 		/// </param>
+		/// <param name="options">
+		/// Optional
+		/// Configurable options
+		/// </param>
 		/// <param name="quiet">
 		/// Optional
 		/// Ignore command errors
@@ -2147,9 +2391,17 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>Returns the name of the template applied.</returns>
-		public void instantiate_example_design(string options, string template, string design = null, string hier = null, string project = null, string project_location = null, bool? quiet = null, bool? verbose = null)
+		public void instantiate_example_design(string template, string design = null, string hier = null, string project = null, string project_location = null, string options = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("instantiate_example_design");
+			command.OptionalString("design", design);
+			command.OptionalString("hier", hier);
+			command.OptionalString("project", project);
+			command.OptionalString("project_location", project_location);
+			command.OptionalString("options", options);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("template", template);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2172,10 +2424,6 @@ namespace Quokka.TCL.Vivado
 		/// Required
 		/// Block Design Name
 		/// </param>
-		/// <param name="options">
-		/// Required
-		/// Configurable options
-		/// </param>
 		/// <param name="template">
 		/// Required
 		/// Configurable Design Name
@@ -2183,6 +2431,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hier">
 		/// Optional
 		/// Hierarchy Block
+		/// </param>
+		/// <param name="options">
+		/// Optional
+		/// Configurable options
 		/// </param>
 		/// <param name="quiet">
 		/// Optional
@@ -2193,9 +2445,15 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>Returns the name of the template applied.</returns>
-		public void instantiate_template_bd_design(string design, string options, string template, string hier = null, bool? quiet = null, bool? verbose = null)
+		public void instantiate_template_bd_design(string design, string template, string hier = null, string options = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("instantiate_template_bd_design");
+			command.RequiredString("design", design);
+			command.OptionalString("hier", hier);
+			command.OptionalString("options", options);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("template", template);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2236,6 +2494,9 @@ namespace Quokka.TCL.Vivado
 		public void make_bd_intf_pins_external(string objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("make_bd_intf_pins_external");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2275,6 +2536,9 @@ namespace Quokka.TCL.Vivado
 		public void make_bd_pins_external(string objects, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("make_bd_pins_external");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2317,6 +2581,11 @@ namespace Quokka.TCL.Vivado
 		public void move_bd_cells(string prefix = null, bool? quiet = null, bool? verbose = null, string parent_cell = null, string cells = null)
 		{
 			var command = new SimpleTCLCommand("move_bd_cells");
+			command.OptionalString("prefix", prefix);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("parent_cell", parent_cell);
+			command.OptionalString("cells", cells);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2349,6 +2618,9 @@ namespace Quokka.TCL.Vivado
 		public void open_bd_design(string name, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("open_bd_design");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2386,6 +2658,9 @@ namespace Quokka.TCL.Vivado
 		public void read_bd(string files, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("read_bd");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("files", files);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2421,6 +2696,11 @@ namespace Quokka.TCL.Vivado
 		public void regenerate_bd_layout(string hierarchy = null, string layout_file = null, bool? routing = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("regenerate_bd_layout");
+			command.OptionalString("hierarchy", hierarchy);
+			command.OptionalString("layout_file", layout_file);
+			command.Flag("routing", routing);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2439,6 +2719,10 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1261
 		/// </summary>
+		/// <param name="cell1">
+		/// Required
+		/// Cell with connections that are to be disconnected.
+		/// </param>
 		/// <param name="preserve_name">
 		/// Optional
 		/// cell2 will rename as cell1's name, cell1 rename as
@@ -2456,19 +2740,21 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="cell1">
-		/// Optional
-		/// Cell with connections that are to be disconnected.
-		/// </param>
 		/// <param name="cell2">
 		/// Optional
 		/// Cell to be connected to connections that were disconnected
 		/// from cell1.
 		/// </param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public void replace_bd_cell(bool? preserve_name = null, bool? preserve_configuration = null, bool? quiet = null, bool? verbose = null, string cell1 = null, string cell2 = null)
+		public void replace_bd_cell(string cell1, bool? preserve_name = null, bool? preserve_configuration = null, bool? quiet = null, bool? verbose = null, string cell2 = null)
 		{
 			var command = new SimpleTCLCommand("replace_bd_cell");
+			command.Flag("preserve_name", preserve_name);
+			command.Flag("preserve_configuration", preserve_configuration);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("cell1", cell1);
+			command.OptionalString("cell2", cell2);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2572,6 +2858,22 @@ namespace Quokka.TCL.Vivado
 		public void report_bd_diffs(string design1, string design2, string format = null, string file = null, bool? open_html = null, bool? brief = null, bool? strict = null, bool? fast = null, bool? return_string = null, string depth = null, bool? crossprobe = null, string repository = null, bool? take_snapshot = null, bool? diff_snapshot = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("report_bd_diffs");
+			command.OptionalString("format", format);
+			command.OptionalString("file", file);
+			command.Flag("open_html", open_html);
+			command.Flag("brief", brief);
+			command.Flag("strict", strict);
+			command.Flag("fast", fast);
+			command.Flag("return_string", return_string);
+			command.OptionalString("depth", depth);
+			command.Flag("crossprobe", crossprobe);
+			command.OptionalString("repository", repository);
+			command.Flag("take_snapshot", take_snapshot);
+			command.Flag("diff_snapshot", diff_snapshot);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("design1", design1);
+			command.RequiredString("design2", design2);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2602,6 +2904,9 @@ namespace Quokka.TCL.Vivado
 		public void save_bd_design(bool? quiet = null, bool? verbose = null, string name = null)
 		{
 			var command = new SimpleTCLCommand("save_bd_design");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2650,6 +2955,12 @@ namespace Quokka.TCL.Vivado
 		public void save_bd_design_as(string dir = null, bool? ignore_comments = null, bool? force = null, bool? quiet = null, bool? verbose = null, string name = null)
 		{
 			var command = new SimpleTCLCommand("save_bd_design_as");
+			command.OptionalString("dir", dir);
+			command.Flag("ignore_comments", ignore_comments);
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.OptionalString("name", name);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2667,6 +2978,10 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1715
 		/// </summary>
+		/// <param name="cells">
+		/// Required
+		/// Match engine names against cell names Default: *
+		/// </param>
 		/// <param name="prefix">
 		/// Optional
 		/// Prefix name to add to cells
@@ -2679,14 +2994,14 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// Match engine names against cell names Default: *
-		/// </param>
 		/// <returns>0 if success.</returns>
-		public void ungroup_bd_cells(string prefix = null, bool? quiet = null, bool? verbose = null, string cells = null)
+		public void ungroup_bd_cells(string cells, string prefix = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("ungroup_bd_cells");
+			command.OptionalString("prefix", prefix);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("cells", cells);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2720,6 +3035,10 @@ namespace Quokka.TCL.Vivado
 		public void upgrade_bd_cells(string objects, string latest = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("upgrade_bd_cells");
+			command.OptionalString("latest", latest);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("objects", objects);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2758,6 +3077,11 @@ namespace Quokka.TCL.Vivado
 		public void validate_bd_design(bool? force = null, string design = null, bool? include_pfm = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("validate_bd_design");
+			command.Flag("force", force);
+			command.OptionalString("design", design);
+			command.Flag("include_pfm", include_pfm);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -2870,6 +3194,22 @@ namespace Quokka.TCL.Vivado
 		public void write_bd_tcl(string tcl_filename, bool? force = null, string bd_name = null, bool? no_mig_contents = null, bool? no_ip_version = null, bool? ignore_minor_versions = null, string bd_folder = null, string check_ips = null, string hier_blks = null, bool? include_layout = null, bool? exclude_layout = null, bool? make_local = null, bool? no_project_wrapper = null, bool? exclude_pfm = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("write_bd_tcl");
+			command.Flag("force", force);
+			command.OptionalString("bd_name", bd_name);
+			command.Flag("no_mig_contents", no_mig_contents);
+			command.Flag("no_ip_version", no_ip_version);
+			command.Flag("ignore_minor_versions", ignore_minor_versions);
+			command.OptionalString("bd_folder", bd_folder);
+			command.OptionalString("check_ips", check_ips);
+			command.OptionalString("hier_blks", hier_blks);
+			command.Flag("include_layout", include_layout);
+			command.Flag("exclude_layout", exclude_layout);
+			command.Flag("make_local", make_local);
+			command.Flag("no_project_wrapper", no_project_wrapper);
+			command.Flag("exclude_pfm", exclude_pfm);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("tcl_filename", tcl_filename);
 			_tcl.Add(command);
 		}
 	}

@@ -46,6 +46,12 @@ namespace Quokka.TCL.Vivado
 		public void add_peripheral_interface(string interface_mode, string axi_type, string name, string peripheral, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("add_peripheral_interface");
+			command.RequiredString("interface_mode", interface_mode);
+			command.RequiredString("axi_type", axi_type);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("name", name);
+			command.RequiredString("peripheral", peripheral);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -90,6 +96,13 @@ namespace Quokka.TCL.Vivado
 		public void create_peripheral(string vendor, string library, string name, string version, string dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("create_peripheral");
+			command.OptionalString("dir", dir);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("vendor", vendor);
+			command.RequiredString("library", library);
+			command.RequiredString("name", name);
+			command.RequiredString("version", version);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -140,6 +153,15 @@ namespace Quokka.TCL.Vivado
 		public void generate_peripheral(string peripheral, bool? driver = null, bool? example_design = null, bool? bfm_example_design = null, bool? debug_hw_example_design = null, bool? enable_interrupt = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("generate_peripheral");
+			command.Flag("driver", driver);
+			command.Flag("example_design", example_design);
+			command.Flag("bfm_example_design", bfm_example_design);
+			command.Flag("debug_hw_example_design", debug_hw_example_design);
+			command.Flag("enable_interrupt", enable_interrupt);
+			command.Flag("force", force);
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("peripheral", peripheral);
 			_tcl.Add(command);
 		}
 		/// <summary>
@@ -166,6 +188,9 @@ namespace Quokka.TCL.Vivado
 		public void write_peripheral(string peripheral, bool? quiet = null, bool? verbose = null)
 		{
 			var command = new SimpleTCLCommand("write_peripheral");
+			command.Flag("quiet", quiet);
+			command.Flag("verbose", verbose);
+			command.RequiredString("peripheral", peripheral);
 			_tcl.Add(command);
 		}
 	}
