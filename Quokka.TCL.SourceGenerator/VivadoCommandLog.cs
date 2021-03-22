@@ -37,26 +37,14 @@ namespace Quokka.TCL.SourceGenerator
                     builder.AppendLine($"## Command: {record.Name}");
                     if (record.DuplicateParams.Any())
                     {
-                        using (builder.Indent())
-                        {
-                            builder.AppendLine($"### Duplicate parameters:");
-                            using (builder.Indent())
-                            {
-                                record.DuplicateParams.OrderBy(c => c).ToList().ForEach(l => builder.AppendLine(l));
-                            }
-                        }
+                        builder.AppendLine($"### Duplicate parameters:");
+                        record.DuplicateParams.OrderBy(c => c).ToList().ForEach(l => builder.AppendLine("* " + l));
                     }
 
                     if (record.InconsistentUsage.Any())
                     {
-                        using (builder.Indent())
-                        {
-                            builder.AppendLine($"### Inconsistent Usage:");
-                            using (builder.Indent())
-                            {
-                                record.InconsistentUsage.OrderBy(c => c).ToList().ForEach(l => builder.AppendLine(l));
-                            }
-                        }
+                        builder.AppendLine($"### Inconsistent Usage:");
+                        record.InconsistentUsage.OrderBy(c => c).ToList().ForEach(l => builder.AppendLine("* " + l));
                     }
                 }
             }
