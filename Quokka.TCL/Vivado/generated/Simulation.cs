@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class SimulationCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public SimulationCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public SimulationCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Add breakpoint at a line of a HDL source
+		///
+		///
+		/// TCL Syntax: add_bp [-quiet] [-verbose] <file_name> <line_number>
 		///
 		/// The add_bp command lets you add breakpoints to an HDL source file to pause the current
 		/// simulation.
@@ -52,15 +55,20 @@ namespace Quokka.TCL.Vivado
 		/// </returns>
 		public void add_bp(string file_name, string line_number, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("add_bp");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file_name", file_name);
-			command.RequiredString("line_number", line_number);
-			_tcl.Add(command);
+			// TCL Syntax: add_bp [-quiet] [-verbose] <file_name> <line_number>
+			_tcl.Add(
+				new SimpleTCLCommand("add_bp")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file_name)
+					.RequiredString(line_number)
+			);
 		}
 		/// <summary>
 		/// Conditionally execute Tcl commands
+		///
+		///
+		/// TCL Syntax: add_condition [-name <arg>] [-radix <arg>] [-notrace] [-quiet] [-verbose] <condition_expression> <commands>
 		///
 		/// Add a condition that is evaluated by a specified condition, <condition_expression>, and runs a
 		/// series of simulation Tcl commands when the condition is TRUE.
@@ -126,18 +134,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The condition object created</returns>
 		public void add_condition(string condition_expression, string commands, string name = null, string radix = null, bool? notrace = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("add_condition");
-			command.OptionalString("name", name);
-			command.OptionalString("radix", radix);
-			command.Flag("notrace", notrace);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("condition_expression", condition_expression);
-			command.RequiredString("commands", commands);
-			_tcl.Add(command);
+			// TCL Syntax: add_condition [-name <arg>] [-radix <arg>] [-notrace] [-quiet] [-verbose] <condition_expression> <commands>
+			_tcl.Add(
+				new SimpleTCLCommand("add_condition")
+					.OptionalNamedString("name", name)
+					.OptionalNamedString("radix", radix)
+					.Flag("notrace", notrace)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(condition_expression)
+					.RequiredString(commands)
+			);
 		}
 		/// <summary>
 		/// Add sources to the active fileset
+		///
+		///
+		/// TCL Syntax: add_files [-fileset <arg>] [-of_objects <args>] [-norecurse] [-copy_to <arg>] [-force] [-scan_for_includes] [-quiet] [-verbose] [<files>...]
 		///
 		/// Adds one or more source files, or the source file contents of one or more directories, to the
 		/// specified fileset in the current project. Valid source files include HDL sources (VHDL, Verilog,
@@ -241,20 +254,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of file objects that were added</returns>
 		public void add_files(string fileset = null, string of_objects = null, bool? norecurse = null, string copy_to = null, bool? force = null, bool? scan_for_includes = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
-			var command = new SimpleTCLCommand("add_files");
-			command.OptionalString("fileset", fileset);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("norecurse", norecurse);
-			command.OptionalString("copy_to", copy_to);
-			command.Flag("force", force);
-			command.Flag("scan_for_includes", scan_for_includes);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: add_files [-fileset <arg>] [-of_objects <args>] [-norecurse] [-copy_to <arg>] [-force] [-scan_for_includes] [-quiet] [-verbose] [<files>...]
+			_tcl.Add(
+				new SimpleTCLCommand("add_files")
+					.OptionalNamedString("fileset", fileset)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("norecurse", norecurse)
+					.OptionalNamedString("copy_to", copy_to)
+					.Flag("force", force)
+					.Flag("scan_for_includes", scan_for_includes)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(files)
+			);
 		}
 		/// <summary>
 		/// Force value of signal, wire, or reg to a specified value
+		///
+		///
+		/// TCL Syntax: add_force [-radix <arg>] [-repeat_every <arg>] [-cancel_after <arg>] [-quiet] [-verbose] <hdl_object> <values>...
 		///
 		/// Force the value of a signal, wire, or reg to a certain value during simulation.
 		/// The add_force command has the same effect as the Verilog force/release commands in
@@ -315,18 +333,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The force objects added</returns>
 		public void add_force(string hdl_object, string values, string radix = null, string repeat_every = null, string cancel_after = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("add_force");
-			command.OptionalString("radix", radix);
-			command.OptionalString("repeat_every", repeat_every);
-			command.OptionalString("cancel_after", cancel_after);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hdl_object", hdl_object);
-			command.RequiredString("values", values);
-			_tcl.Add(command);
+			// TCL Syntax: add_force [-radix <arg>] [-repeat_every <arg>] [-cancel_after <arg>] [-quiet] [-verbose] <hdl_object> <values>...
+			_tcl.Add(
+				new SimpleTCLCommand("add_force")
+					.OptionalNamedString("radix", radix)
+					.OptionalNamedString("repeat_every", repeat_every)
+					.OptionalNamedString("cancel_after", cancel_after)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hdl_object)
+					.RequiredString(values)
+			);
 		}
 		/// <summary>
 		/// Create a VCD checkpoint (equivalent of Verilog $dumpall system task)
+		///
+		///
+		/// TCL Syntax: checkpoint_vcd [-quiet] [-verbose]
 		///
 		/// The checkpoint_vcd command inserts current HDL object signal values into the Value Change
 		/// Dump (VCD) file. Nothing is returned. This Tcl command is the equivalent of the Verilog
@@ -355,13 +378,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void checkpoint_vcd(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("checkpoint_vcd");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: checkpoint_vcd [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("checkpoint_vcd")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Flush SAIF toggle information to the SAIF output file and close the file
+		///
+		///
+		/// TCL Syntax: close_saif [-quiet] [-verbose]
 		///
 		/// Closes the open SAIF file.
 		/// Only one SAIF file can be open in the Vivado simulator at one time, using open_saif. You must
@@ -383,13 +411,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void close_saif(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("close_saif");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: close_saif [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("close_saif")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Unload the current simulation without exiting Vivado
+		///
+		///
+		/// TCL Syntax: close_sim [-force] [-quiet] [-verbose]
 		///
 		/// Close the current Vivado simulation.
 		/// Note: This command does not support third party simulators.
@@ -416,14 +449,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void close_sim(bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("close_sim");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: close_sim [-force] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("close_sim")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Flush VCD information to the VCD output file and close the file
+		///
+		///
+		/// TCL Syntax: close_vcd [-quiet] [-verbose]
 		///
 		/// Closes the open Value Change Dump (VCD) file.
 		/// Only one VCD file can be open in the Vivado simulator at one time. You must close the currently
@@ -444,13 +482,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void close_vcd(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("close_vcd");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: close_vcd [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("close_vcd")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Compile simulation libraries
+		///
+		///
+		/// TCL Syntax: compile_simlib [-directory <arg>] [-family <arg>] [-force] [-language <arg>] [-library <arg>] [-print_library_info <arg>] -simulator <arg> [-simulator_exec_path <arg>] [-source_library_path <arg>] [-no_ip_compile] [-32bit] [-quiet] [-verbose]
 		///
 		/// Compile Xilinx® simulation libraries for the cells and IP used in the current project, or from a
 		/// specified directory for use in multiple design projects.
@@ -533,24 +576,29 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void compile_simlib(string simulator, string directory = null, string family = null, bool? force = null, string language = null, string library = null, string print_library_info = null, string simulator_exec_path = null, string source_library_path = null, bool? no_ip_compile = null, bool? _32bit = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("compile_simlib");
-			command.OptionalString("directory", directory);
-			command.OptionalString("family", family);
-			command.Flag("force", force);
-			command.OptionalString("language", language);
-			command.OptionalString("library", library);
-			command.OptionalString("print_library_info", print_library_info);
-			command.RequiredString("simulator", simulator);
-			command.OptionalString("simulator_exec_path", simulator_exec_path);
-			command.OptionalString("source_library_path", source_library_path);
-			command.Flag("no_ip_compile", no_ip_compile);
-			command.Flag("32bit", _32bit);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: compile_simlib [-directory <arg>] [-family <arg>] [-force] [-language <arg>] [-library <arg>] [-print_library_info <arg>] -simulator <arg> [-simulator_exec_path <arg>] [-source_library_path <arg>] [-no_ip_compile] [-32bit] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("compile_simlib")
+					.OptionalNamedString("directory", directory)
+					.OptionalNamedString("family", family)
+					.Flag("force", force)
+					.OptionalNamedString("language", language)
+					.OptionalNamedString("library", library)
+					.OptionalNamedString("print_library_info", print_library_info)
+					.RequiredNamedString("simulator", simulator)
+					.OptionalNamedString("simulator_exec_path", simulator_exec_path)
+					.OptionalNamedString("source_library_path", source_library_path)
+					.Flag("no_ip_compile", no_ip_compile)
+					.Flag("32bit", _32bit)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Configure settings for compile_simlib
+		///
+		///
+		/// TCL Syntax: config_compile_simlib [-cfgopt <arg>] [-simulator <arg>] [-reset] [-quiet] [-verbose]
 		///
 		/// Configure third party simulator options for use by the compile_simlib command.
 		/// The Vivado Design Suite has a pre-defined configuration file for the compile_simlib
@@ -592,16 +640,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void config_compile_simlib(string cfgopt = null, string simulator = null, bool? reset = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("config_compile_simlib");
-			command.OptionalString("cfgopt", cfgopt);
-			command.OptionalString("simulator", simulator);
-			command.Flag("reset", reset);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: config_compile_simlib [-cfgopt <arg>] [-simulator <arg>] [-reset] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("config_compile_simlib")
+					.OptionalNamedString("cfgopt", cfgopt)
+					.OptionalNamedString("simulator", simulator)
+					.Flag("reset", reset)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Create a new fileset
+		///
+		///
+		/// TCL Syntax: create_fileset [-constrset] [-simset] [-blockset] [-clone_properties <arg>] -define_from <arg> [-quiet] [-verbose] <name>
 		///
 		/// Defines a new fileset within a design project. Files can be added to a newly created fileset using
 		/// the add_files command.
@@ -673,21 +726,26 @@ namespace Quokka.TCL.Vivado
 		/// <returns>new fileset object</returns>
 		public void create_fileset(string define_from, string name, bool? constrset = null, bool? simset = null, bool? blockset = null, string clone_properties = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_fileset");
-			command.Flag("constrset", constrset);
-			command.Flag("simset", simset);
-			command.Flag("blockset", blockset);
-			command.OptionalString("clone_properties", clone_properties);
-			command.RequiredString("define_from", define_from);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_fileset [-constrset] [-simset] [-blockset] [-clone_properties <arg>] -define_from <arg> [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_fileset")
+					.Flag("constrset", constrset)
+					.Flag("simset", simset)
+					.Flag("blockset", blockset)
+					.OptionalNamedString("clone_properties", clone_properties)
+					.RequiredNamedString("define_from", define_from)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Get index of the selected subprogram frame (default, top i.e. most recent subprogram call) in the
 		/// call-stack of the HDL process scope (current_scope). Sets current stack frame for the subprogram
 		/// call-stack of the current_scope.
+		///
+		///
+		/// TCL Syntax: current_frame [-up] [-down] [-set <arg>] [-quiet] [-verbose]
 		///
 		/// Returns the index of the frame which is selected as the "current" frame in sub-program call-stack
 		/// of the current HDL process-scope, or current_scope. By default, the most recently called
@@ -788,16 +846,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Returns index of the selected subprogram frame in the call stack of the current_scope.</returns>
 		public void current_frame(bool? up = null, bool? down = null, string set = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("current_frame");
-			command.Flag("up", up);
-			command.Flag("down", down);
-			command.OptionalString("set", set);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: current_frame [-up] [-down] [-set <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("current_frame")
+					.Flag("up", up)
+					.Flag("down", down)
+					.OptionalNamedString("set", set)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get the current scope or set the current scope
+		///
+		///
+		/// TCL Syntax: current_scope [-quiet] [-verbose] [<hdl_scope>]
 		///
 		/// Return the current scope in the current simulation, or set the current scope to the specified HDL
 		/// scope.
@@ -826,14 +889,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The current scope</returns>
 		public void current_scope(bool? quiet = null, bool? verbose = null, string hdl_scope = null)
 		{
-			var command = new SimpleTCLCommand("current_scope");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hdl_scope", hdl_scope);
-			_tcl.Add(command);
+			// TCL Syntax: current_scope [-quiet] [-verbose] [<hdl_scope>]
+			_tcl.Add(
+				new SimpleTCLCommand("current_scope")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hdl_scope)
+			);
 		}
 		/// <summary>
 		/// Set the current simulation object or get the current simulation object
+		///
+		///
+		/// TCL Syntax: current_sim [-quiet] [-verbose] [<simulationObject>]
 		///
 		/// Get or set the current Vivado simulation object.
 		/// This command can be used after the Vivado simulator has been launched to return or set the
@@ -860,14 +928,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Returns the current simulation object</returns>
 		public void current_sim(bool? quiet = null, bool? verbose = null, string simulationObject = null)
 		{
-			var command = new SimpleTCLCommand("current_sim");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("simulationObject", simulationObject);
-			_tcl.Add(command);
+			// TCL Syntax: current_sim [-quiet] [-verbose] [<simulationObject>]
+			_tcl.Add(
+				new SimpleTCLCommand("current_sim")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(simulationObject)
+			);
 		}
 		/// <summary>
 		/// Report current simulation time
+		///
+		///
+		/// TCL Syntax: current_time [-s] [-quiet] [-verbose]
 		///
 		/// Returns the current simulation time to the Tcl Console or Vivado Design Suite Tcl shell.
 		///
@@ -892,14 +965,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Prints the current simulation time on the console in textual format</returns>
 		public void current_time(bool? s = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("current_time");
-			command.Flag("s", s);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: current_time [-s] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("current_time")
+					.Flag("s", s)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Return the current VCD object or make VCDObject the current VCD object
+		///
+		///
+		/// TCL Syntax: current_vcd [-quiet] [-verbose] [<VCDObject>]
 		///
 		/// Defines the current Value Change Dump (VCD) object, or returns the name of the current VCD
 		/// object in the current simulation.
@@ -926,14 +1004,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void current_vcd(bool? quiet = null, bool? verbose = null, string VCDObject = null)
 		{
-			var command = new SimpleTCLCommand("current_vcd");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("VCDObject", VCDObject);
-			_tcl.Add(command);
+			// TCL Syntax: current_vcd [-quiet] [-verbose] [<VCDObject>]
+			_tcl.Add(
+				new SimpleTCLCommand("current_vcd")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(VCDObject)
+			);
 		}
 		/// <summary>
 		/// Delete a fileset
+		///
+		///
+		/// TCL Syntax: delete_fileset [-merge <arg>] [-quiet] [-verbose] <fileset>
 		///
 		/// Deletes the specified fileset. However, if the fileset cannot be deleted, then no message is
 		/// returned.
@@ -963,16 +1046,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_fileset(string fileset, string merge = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_fileset");
-			command.OptionalString("merge", merge);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("fileset", fileset);
-			_tcl.Add(command);
+			// TCL Syntax: delete_fileset [-merge <arg>] [-quiet] [-verbose] <fileset>
+			_tcl.Add(
+				new SimpleTCLCommand("delete_fileset")
+					.OptionalNamedString("merge", merge)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(fileset)
+			);
 		}
 		/// <summary>
 		/// Describe an HDL object (variable, signal, wire, or reg) by printing type and declaration
 		/// information
+		///
+		///
+		/// TCL Syntax: describe [-quiet] [-verbose] <hdl_object>
 		///
 		/// Describe an HDL object (variable, signal, wire, or reg) by printing type and declaration
 		/// information, as well as path, and file information for the HDL source of the specified objects.
@@ -1029,11 +1117,13 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The description of the selected objects</returns>
 		public void describe(string hdl_object, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("describe");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hdl_object", hdl_object);
-			_tcl.Add(command);
+			// TCL Syntax: describe [-quiet] [-verbose] <hdl_object>
+			_tcl.Add(
+				new SimpleTCLCommand("describe")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hdl_object)
+			);
 		}
 		/// <summary>
 		/// (User-written application) Generate and export IP/IPI user files from a project. This can be
@@ -1043,6 +1133,9 @@ namespace Quokka.TCL.Vivado
 		/// files [-lib_map_path <arg> = Empty]: Compiled simulation library directory path [-no_script]: Do
 		/// not export simulation scripts [-sync]: Delete IP/IPI dynamic and simulation script files [-reset]:
 		/// Delete all IP/IPI static, dynamic and simulation script files [-force]: Overwrite files
+		///
+		///
+		/// TCL Syntax: export_ip_user_files [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-no_script] [-sync] [-reset] [-force] [-quiet] [-verbose]
 		///
 		/// Export IP user files repository with static, dynamic, netlist, verilog/vhdl stubs and memory
 		/// initializaton files.
@@ -1099,22 +1192,27 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of files that were exported</returns>
 		public void export_ip_user_files(string of_objects = null, string ip_user_files_dir = null, string ipstatic_source_dir = null, string lib_map_path = null, bool? no_script = null, bool? sync = null, bool? reset = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("export_ip_user_files");
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("ip_user_files_dir", ip_user_files_dir);
-			command.OptionalString("ipstatic_source_dir", ipstatic_source_dir);
-			command.OptionalString("lib_map_path", lib_map_path);
-			command.Flag("no_script", no_script);
-			command.Flag("sync", sync);
-			command.Flag("reset", reset);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: export_ip_user_files [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-no_script] [-sync] [-reset] [-force] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("export_ip_user_files")
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("ip_user_files_dir", ip_user_files_dir)
+					.OptionalNamedString("ipstatic_source_dir", ipstatic_source_dir)
+					.OptionalNamedString("lib_map_path", lib_map_path)
+					.Flag("no_script", no_script)
+					.Flag("sync", sync)
+					.Flag("reset", reset)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// (User-written application) Export a script and associated data files (if any) for driving standalone
 		/// simulation using the specified simulator.
+		///
+		///
+		/// TCL Syntax: export_simulation [-simulator <arg>] [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-script_name <arg>] [-directory <arg>] [-runtime <arg>] [-define <arg>] [-generic <arg>] [-include <arg>] [-use_ip_compiled_libs] [-absolute_path] [-export_source_files] [-32bit] [-force] [-quiet] [-verbose]
 		///
 		/// Export a simulation script file for the target simulator. Currently the Cadence Incisive Enterprise
 		/// Simulator (ies) and the Synopsys VCS MX simulator (vcs_mx) are supported. The generated
@@ -1289,30 +1387,35 @@ namespace Quokka.TCL.Vivado
 		/// <returns>None</returns>
 		public void export_simulation(string simulator = null, string of_objects = null, string ip_user_files_dir = null, string ipstatic_source_dir = null, string lib_map_path = null, string script_name = null, string directory = null, string runtime = null, string define = null, string generic = null, string include = null, bool? use_ip_compiled_libs = null, bool? absolute_path = null, bool? export_source_files = null, bool? _32bit = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("export_simulation");
-			command.OptionalString("simulator", simulator);
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("ip_user_files_dir", ip_user_files_dir);
-			command.OptionalString("ipstatic_source_dir", ipstatic_source_dir);
-			command.OptionalString("lib_map_path", lib_map_path);
-			command.OptionalString("script_name", script_name);
-			command.OptionalString("directory", directory);
-			command.OptionalString("runtime", runtime);
-			command.OptionalString("define", define);
-			command.OptionalString("generic", generic);
-			command.OptionalString("include", include);
-			command.Flag("use_ip_compiled_libs", use_ip_compiled_libs);
-			command.Flag("absolute_path", absolute_path);
-			command.Flag("export_source_files", export_source_files);
-			command.Flag("32bit", _32bit);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: export_simulation [-simulator <arg>] [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-script_name <arg>] [-directory <arg>] [-runtime <arg>] [-define <arg>] [-generic <arg>] [-include <arg>] [-use_ip_compiled_libs] [-absolute_path] [-export_source_files] [-32bit] [-force] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("export_simulation")
+					.OptionalNamedString("simulator", simulator)
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("ip_user_files_dir", ip_user_files_dir)
+					.OptionalNamedString("ipstatic_source_dir", ipstatic_source_dir)
+					.OptionalNamedString("lib_map_path", lib_map_path)
+					.OptionalNamedString("script_name", script_name)
+					.OptionalNamedString("directory", directory)
+					.OptionalNamedString("runtime", runtime)
+					.OptionalNamedString("define", define)
+					.OptionalNamedString("generic", generic)
+					.OptionalNamedString("include", include)
+					.Flag("use_ip_compiled_libs", use_ip_compiled_libs)
+					.Flag("absolute_path", absolute_path)
+					.Flag("export_source_files", export_source_files)
+					.Flag("32bit", _32bit)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Flush VCD simulation output to the VCD output file (equivalent of $dumpflush verilog system
 		/// task)
+		///
+		///
+		/// TCL Syntax: flush_vcd [-quiet] [-verbose]
 		///
 		/// Flush HDL signal information currently in memory into the specified Value Change Dump (VCD)
 		/// file.
@@ -1337,13 +1440,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void flush_vcd(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("flush_vcd");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: flush_vcd [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("flush_vcd")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Write all the simulation .mem files.
+		///
+		///
+		/// TCL Syntax: generate_mem_files [-force] [-quiet] [-verbose] <directory>
 		///
 		/// For embedded processor based designs, with associated Executable Linkable Files (ELF) from the
 		/// Software Development Kit (SDK), this command merges the Block Memory Map (BMM) for the
@@ -1379,15 +1487,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The name of the directory</returns>
 		public void generate_mem_files(string directory, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("generate_mem_files");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("directory", directory);
-			_tcl.Add(command);
+			// TCL Syntax: generate_mem_files [-force] [-quiet] [-verbose] <directory>
+			_tcl.Add(
+				new SimpleTCLCommand("generate_mem_files")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(directory)
+			);
 		}
 		/// <summary>
 		/// Get a list of HDL objects in one or more HDL scopes as per the specified pattern
+		///
+		///
+		/// TCL Syntax: get_objects [-filter <arg>] [-r] [-local] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Returns a list of HDL objects matching the specified search pattern in one or more HDL scopes.
 		/// HDL objects include HDL signals, variables, or constants as defined in the Verilog or VHDL test
@@ -1517,19 +1630,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Returns all the objects found given the specified pattern</returns>
 		public void get_objects(string filter = null, bool? r = null, bool? local = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_objects");
-			command.OptionalString("filter", filter);
-			command.Flag("r", r);
-			command.Flag("local", local);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_objects [-filter <arg>] [-r] [-local] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_objects")
+					.OptionalNamedString("filter", filter)
+					.Flag("r", r)
+					.Flag("local", local)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of children HDL scopes of a scope
+		///
+		///
+		/// TCL Syntax: get_scopes [-filter <arg>] [-regexp] [-nocase] [-r] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Get a list of children HDL scopes of the current or specified scope
 		/// This command returns a list of scope objects, or returns an error.
@@ -1574,18 +1692,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Returns HDL scope objects from the given arguments</returns>
 		public void get_scopes(string filter = null, bool? regexp = null, bool? nocase = null, bool? r = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_scopes");
-			command.OptionalString("filter", filter);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("r", r);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_scopes [-filter <arg>] [-regexp] [-nocase] [-r] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_scopes")
+					.OptionalNamedString("filter", filter)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("r", r)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get registered simulators
+		///
+		///
+		/// TCL Syntax: get_simulators [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Get the list of simulators registered for use with the Vivado Design Suite unified simulation
 		/// environment.
@@ -1623,17 +1746,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void get_simulators(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_simulators");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_simulators [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_simulators")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of processes in a design, which are waiting inside a subprogram
+		///
+		///
+		/// TCL Syntax: get_stacks [-of_instance <arg>] [-quiet] [-verbose]
 		///
 		/// Returns list of HDL scopes for all the processes in a design which are waiting inside a
 		/// subprogram. With -of_instance switch, the output can be limited to such processes of the
@@ -1692,14 +1820,19 @@ namespace Quokka.TCL.Vivado
 		/// </returns>
 		public void get_stacks(string of_instance = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_stacks");
-			command.OptionalString("of_instance", of_instance);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: get_stacks [-of_instance <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("get_stacks")
+					.OptionalNamedString("of_instance", of_instance)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get current value of the selected HDL object (variable, signal, wire, reg)
+		///
+		///
+		/// TCL Syntax: get_value [-radix <arg>] [-quiet] [-verbose] <hdl_object>
 		///
 		/// Get the value of a single HDL object at the current simulation run time.
 		/// TIP: Use the report_values command to return the values of more than one HDL objects.
@@ -1765,15 +1898,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Returns a string representation of value of a hdl_object</returns>
 		public void get_value(string hdl_object, string radix = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_value");
-			command.OptionalString("radix", radix);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hdl_object", hdl_object);
-			_tcl.Add(command);
+			// TCL Syntax: get_value [-radix <arg>] [-quiet] [-verbose] <hdl_object>
+			_tcl.Add(
+				new SimpleTCLCommand("get_value")
+					.OptionalNamedString("radix", radix)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hdl_object)
+			);
 		}
 		/// <summary>
 		/// Import files and/or directories into the active fileset
+		///
+		///
+		/// TCL Syntax: import_files [-fileset <arg>] [-force] [-of_objects <args>] [-norecurse] [-flat] [-relative_to <arg>] [-quiet] [-verbose] [<files>...]
 		///
 		/// Imports one or more files or the source file contents of one or more directories to the specified
 		/// fileset.
@@ -1848,20 +1986,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>A list of file objects that were imported</returns>
 		public void import_files(string fileset = null, bool? force = null, string of_objects = null, bool? norecurse = null, bool? flat = null, string relative_to = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
-			var command = new SimpleTCLCommand("import_files");
-			command.OptionalString("fileset", fileset);
-			command.Flag("force", force);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("norecurse", norecurse);
-			command.Flag("flat", flat);
-			command.OptionalString("relative_to", relative_to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: import_files [-fileset <arg>] [-force] [-of_objects <args>] [-norecurse] [-flat] [-relative_to <arg>] [-quiet] [-verbose] [<files>...]
+			_tcl.Add(
+				new SimpleTCLCommand("import_files")
+					.OptionalNamedString("fileset", fileset)
+					.Flag("force", force)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("norecurse", norecurse)
+					.Flag("flat", flat)
+					.OptionalNamedString("relative_to", relative_to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(files)
+			);
 		}
 		/// <summary>
 		/// Launch simulation
+		///
+		///
+		/// TCL Syntax: launch_simulation [-step <arg>] [-simset <arg>] [-mode <arg>] [-type <arg>] [-scripts_only] [-of_objects <args>] [-absolute_path] [-install_path <arg>] [-noclean_dir] [-quiet] [-verbose]
 		///
 		/// Launch a simulator to perform analysis and verification of a design.
 		/// The launch_simulation command creates a script file for the target simulator and then
@@ -1968,22 +2111,27 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void launch_simulation(string step = null, string simset = null, string mode = null, string type = null, bool? scripts_only = null, string of_objects = null, bool? absolute_path = null, string install_path = null, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("launch_simulation");
-			command.OptionalString("step", step);
-			command.OptionalString("simset", simset);
-			command.OptionalString("mode", mode);
-			command.OptionalString("type", type);
-			command.Flag("scripts_only", scripts_only);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("absolute_path", absolute_path);
-			command.OptionalString("install_path", install_path);
-			command.Flag("noclean_dir", noclean_dir);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: launch_simulation [-step <arg>] [-simset <arg>] [-mode <arg>] [-type <arg>] [-scripts_only] [-of_objects <args>] [-absolute_path] [-install_path <arg>] [-noclean_dir] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("launch_simulation")
+					.OptionalNamedString("step", step)
+					.OptionalNamedString("simset", simset)
+					.OptionalNamedString("mode", mode)
+					.OptionalNamedString("type", type)
+					.Flag("scripts_only", scripts_only)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("absolute_path", absolute_path)
+					.OptionalNamedString("install_path", install_path)
+					.Flag("noclean_dir", noclean_dir)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Limit the maximum size of the VCD file on disk (equivalent of $dumplimit verilog task)
+		///
+		///
+		/// TCL Syntax: limit_vcd [-quiet] [-verbose] <filesize>
 		///
 		/// Specify the size limit, in bytes, of the Value Change Dump (VCD) file. This command operates like
 		/// the Verilog $dumplimit simulator directive.
@@ -2010,14 +2158,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void limit_vcd(string filesize, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("limit_vcd");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("filesize", filesize);
-			_tcl.Add(command);
+			// TCL Syntax: limit_vcd [-quiet] [-verbose] <filesize>
+			_tcl.Add(
+				new SimpleTCLCommand("limit_vcd")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(filesize)
+			);
 		}
 		/// <summary>
 		/// Log Switching Activity Interchange Format (SAIF) toggle for specified wire, signal, or reg
+		///
+		///
+		/// TCL Syntax: log_saif [-quiet] [-verbose] <hdl_objects>...
 		///
 		/// Writes the switching activity rates for the specified HDL signals during the current simulation.
 		/// The Switching Activity Interchange format (SAIF) file is an ASCII file containing header
@@ -2048,14 +2201,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Does not return any object</returns>
 		public void log_saif(string hdl_objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("log_saif");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hdl_objects", hdl_objects);
-			_tcl.Add(command);
+			// TCL Syntax: log_saif [-quiet] [-verbose] <hdl_objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("log_saif")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hdl_objects)
+			);
 		}
 		/// <summary>
 		/// Log Value Change Dump (VCD) simulation output for specified wire, signal, or reg
+		///
+		///
+		/// TCL Syntax: log_vcd [-level <arg>] [-quiet] [-verbose] [<hdl_objects>...]
 		///
 		/// Indicates which HDL objects to write into the Value Change Dump (VCD) file. In some designs
 		/// the simulation results can become quite large; the log_vcd command lets you define the
@@ -2124,18 +2282,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Does not return any object</returns>
 		public void log_vcd(string level = null, bool? quiet = null, bool? verbose = null, string hdl_objects = null)
 		{
-			var command = new SimpleTCLCommand("log_vcd");
-			command.OptionalString("level", level);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hdl_objects", hdl_objects);
-			_tcl.Add(command);
+			// TCL Syntax: log_vcd [-level <arg>] [-quiet] [-verbose] [<hdl_objects>...]
+			_tcl.Add(
+				new SimpleTCLCommand("log_vcd")
+					.OptionalNamedString("level", level)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hdl_objects)
+			);
 		}
 		/// <summary>
 		/// Log simulation output for specified wire, signal, or reg for viewing using Vivado Simulators
 		/// waveform viewer. Unlike add_wave, this command does not add the waveform object to
 		/// waveform viewer (i.e. Waveform Configuration). It simply enables logging of output to the Vivado
 		/// Simulators Waveform Database (WDB).
+		///
+		///
+		/// TCL Syntax: log_wave [-recursive] [-r] [-verbose] [-v] [-quiet] <hdl_objects>...
 		///
 		/// Log simulation activity for the specified HDL objects into the waveform database file (.wdb) for
 		/// viewing using Vivado simulator waveform viewer.
@@ -2177,17 +2340,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void log_wave(string hdl_objects, bool? recursive = null, bool? r = null, bool? verbose = null, bool? v = null, bool? quiet = null)
 		{
-			var command = new SimpleTCLCommand("log_wave");
-			command.Flag("recursive", recursive);
-			command.Flag("r", r);
-			command.Flag("verbose", verbose);
-			command.Flag("v", v);
-			command.Flag("quiet", quiet);
-			command.RequiredString("hdl_objects", hdl_objects);
-			_tcl.Add(command);
+			// TCL Syntax: log_wave [-recursive] [-r] [-verbose] [-v] [-quiet] <hdl_objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("log_wave")
+					.Flag("recursive", recursive)
+					.Flag("r", r)
+					.Flag("verbose", verbose)
+					.Flag("v", v)
+					.Flag("quiet", quiet)
+					.RequiredString(hdl_objects)
+			);
 		}
 		/// <summary>
 		/// Turns on or off printing of file name and line number of the hdl statement being simulated
+		///
+		///
+		/// TCL Syntax: ltrace [-quiet] [-verbose] <value>
 		///
 		/// Enables line-level tracing for simulation debugging purposes.
 		/// During simulation the simulation source file and line number being evaluated is returned to the
@@ -2215,14 +2383,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void ltrace(string value, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("ltrace");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("value", value);
-			_tcl.Add(command);
+			// TCL Syntax: ltrace [-quiet] [-verbose] <value>
+			_tcl.Add(
+				new SimpleTCLCommand("ltrace")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(value)
+			);
 		}
 		/// <summary>
 		/// Moves the files from one fileset to another while maintaining all of their original properties.
+		///
+		///
+		/// TCL Syntax: move_files [-fileset <arg>] [-of_objects <args>] [-quiet] [-verbose] [<files>...]
 		///
 		/// Moves files returned by the get_files command from one fileset to another while maintaining
 		/// the properties on the files.
@@ -2256,18 +2429,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of files that were moved</returns>
 		public void move_files(string fileset = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
-			var command = new SimpleTCLCommand("move_files");
-			command.OptionalString("fileset", fileset);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: move_files [-fileset <arg>] [-of_objects <args>] [-quiet] [-verbose] [<files>...]
+			_tcl.Add(
+				new SimpleTCLCommand("move_files")
+					.OptionalNamedString("fileset", fileset)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(files)
+			);
 		}
 		/// <summary>
 		/// Open file for storing signal switching rate for power estimation. The switching rate is written out
 		/// in Switching Activity Interchange Format (SAIF) Only one SAIF is allowed to be open per
 		/// simulation run.
+		///
+		///
+		/// TCL Syntax: open_saif [-quiet] [-verbose] <file_name>
 		///
 		/// Create or open a Switching Activity Interchange Format (SAIF) file for storing signal switching
 		/// rates in the current simulation for later use by the report_power command.
@@ -2302,15 +2480,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The SAIF object that was opened</returns>
 		public void open_saif(string file_name, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("open_saif");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file_name", file_name);
-			_tcl.Add(command);
+			// TCL Syntax: open_saif [-quiet] [-verbose] <file_name>
+			_tcl.Add(
+				new SimpleTCLCommand("open_saif")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file_name)
+			);
 		}
 		/// <summary>
 		/// Open a Value Change Dump (VCD) file for capturing simulation output. This Tcl command models
 		/// behavior of $dumpfile Verilog system task
+		///
+		///
+		/// TCL Syntax: open_vcd [-quiet] [-verbose] [<file_name>]
 		///
 		/// Create or open a Value Change Dump (VCD) file to capture simulation output. This command
 		/// operates like the Verilog $dumpfile simulator directive.
@@ -2355,15 +2538,20 @@ namespace Quokka.TCL.Vivado
 		/// </returns>
 		public void open_vcd(bool? quiet = null, bool? verbose = null, string file_name = null)
 		{
-			var command = new SimpleTCLCommand("open_vcd");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("file_name", file_name);
-			_tcl.Add(command);
+			// TCL Syntax: open_vcd [-quiet] [-verbose] [<file_name>]
+			_tcl.Add(
+				new SimpleTCLCommand("open_vcd")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(file_name)
+			);
 		}
 		/// <summary>
 		/// Open Waveform Database (WDB) file produced by a prior simulation run and return a simulation
 		/// object
+		///
+		///
+		/// TCL Syntax: open_wave_database [-noautoloadwcfg] [-protoinst <args>] [-quiet] [-verbose] <wdb>
 		///
 		/// The open_wave_database command opens an existing static simulator database file (WDB)
 		/// and associated wave config file (WCFG). This simulation is a static simulation, not live, and can
@@ -2421,16 +2609,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void open_wave_database(string wdb, bool? noautoloadwcfg = null, string protoinst = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("open_wave_database");
-			command.Flag("noautoloadwcfg", noautoloadwcfg);
-			command.OptionalString("protoinst", protoinst);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("wdb", wdb);
-			_tcl.Add(command);
+			// TCL Syntax: open_wave_database [-noautoloadwcfg] [-protoinst <args>] [-quiet] [-verbose] <wdb>
+			_tcl.Add(
+				new SimpleTCLCommand("open_wave_database")
+					.Flag("noautoloadwcfg", noautoloadwcfg)
+					.OptionalNamedString("protoinst", protoinst)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(wdb)
+			);
 		}
 		/// <summary>
 		/// Turns on or off printing of name of the hdl process being simulated
+		///
+		///
+		/// TCL Syntax: ptrace [-quiet] [-verbose] <value>
 		///
 		/// Enables process tracing for simulation debugging purposes.
 		/// During simulation the name of the HDL process that is evaluated will be written to the Tcl
@@ -2458,14 +2651,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void ptrace(string value, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("ptrace");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("value", value);
-			_tcl.Add(command);
+			// TCL Syntax: ptrace [-quiet] [-verbose] <value>
+			_tcl.Add(
+				new SimpleTCLCommand("ptrace")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(value)
+			);
 		}
 		/// <summary>
 		/// Import simulation data in saif format
+		///
+		///
+		/// TCL Syntax: read_saif [-strip_path <arg>] [-no_strip] [-out_file <arg>] [-quiet] [-verbose] <file>
 		///
 		/// Reads a Switching Activity Interchange Format (SAIF) file for use during power analysis by the
 		/// report_power command, or power optimization by power_opt_design. The read_saif
@@ -2507,17 +2705,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void read_saif(string file, string strip_path = null, bool? no_strip = null, string out_file = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_saif");
-			command.OptionalString("strip_path", strip_path);
-			command.Flag("no_strip", no_strip);
-			command.OptionalString("out_file", out_file);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: read_saif [-strip_path <arg>] [-no_strip] [-out_file <arg>] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("read_saif")
+					.OptionalNamedString("strip_path", strip_path)
+					.Flag("no_strip", no_strip)
+					.OptionalNamedString("out_file", out_file)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Recompile the design without changing compilation options and restart the current simulation
+		///
+		///
+		/// TCL Syntax: relaunch_sim [-quiet] [-verbose]
 		///
 		/// Relaunch the simulator to perform analysis and verification of an updated design.
 		/// The relaunch_sim command suspends the current simulation, recompiles the current design
@@ -2551,13 +2754,18 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Current simulation object</returns>
 		public void relaunch_sim(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("relaunch_sim");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: relaunch_sim [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("relaunch_sim")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Remove breakpoints from a simulation
+		///
+		///
+		/// TCL Syntax: remove_bps [-all] [-file <arg>] [-line <arg>] [-quiet] [-verbose] [<BreakPointObjsOrIds>...]
 		///
 		/// Remove specified breakpoints from the current simulation. You must have an open simulation to
 		/// use this command.
@@ -2601,17 +2809,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_bps(bool? all = null, string file = null, string line = null, bool? quiet = null, bool? verbose = null, string BreakPointObjsOrIds = null)
 		{
-			var command = new SimpleTCLCommand("remove_bps");
-			command.Flag("all", all);
-			command.OptionalString("file", file);
-			command.OptionalString("line", line);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("BreakPointObjsOrIds", BreakPointObjsOrIds);
-			_tcl.Add(command);
+			// TCL Syntax: remove_bps [-all] [-file <arg>] [-line <arg>] [-quiet] [-verbose] [<BreakPointObjsOrIds>...]
+			_tcl.Add(
+				new SimpleTCLCommand("remove_bps")
+					.Flag("all", all)
+					.OptionalNamedString("file", file)
+					.OptionalNamedString("line", line)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(BreakPointObjsOrIds)
+			);
 		}
 		/// <summary>
 		/// Remove conditions from a simulation. The names can be specified as Tcl glob pattern
+		///
+		///
+		/// TCL Syntax: remove_conditions [-all] [-quiet] [-verbose] [<ConditionObjs>]
 		///
 		/// Remove specified conditions from the current simulation. You must have an open simulation to
 		/// use this command.
@@ -2645,15 +2858,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_conditions(bool? all = null, bool? quiet = null, bool? verbose = null, string ConditionObjs = null)
 		{
-			var command = new SimpleTCLCommand("remove_conditions");
-			command.Flag("all", all);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("ConditionObjs", ConditionObjs);
-			_tcl.Add(command);
+			// TCL Syntax: remove_conditions [-all] [-quiet] [-verbose] [<ConditionObjs>]
+			_tcl.Add(
+				new SimpleTCLCommand("remove_conditions")
+					.Flag("all", all)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(ConditionObjs)
+			);
 		}
 		/// <summary>
 		/// Remove files or directories from a fileset
+		///
+		///
+		/// TCL Syntax: remove_files [-fileset <arg>] [-quiet] [-verbose] <files>...
 		///
 		/// Removes the specified file objects from the current or specified fileset. The file is removed from
 		/// the current project, but is not removed from the disk.
@@ -2694,15 +2912,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of files that were removed</returns>
 		public void remove_files(string files, string fileset = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("remove_files");
-			command.OptionalString("fileset", fileset);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: remove_files [-fileset <arg>] [-quiet] [-verbose] <files>...
+			_tcl.Add(
+				new SimpleTCLCommand("remove_files")
+					.OptionalNamedString("fileset", fileset)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// Release force on signal, wire, or reg applied using 'add_force' command
+		///
+		///
+		/// TCL Syntax: remove_forces [-all] [-quiet] [-verbose] [<ForceObj>...]
 		///
 		/// Remove the specified force objects, or force IDs from the current simulation.
 		/// Forces are applied to specific HDL objects using the add_forces command. This command
@@ -2739,15 +2962,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_forces(bool? all = null, bool? quiet = null, bool? verbose = null, string ForceObj = null)
 		{
-			var command = new SimpleTCLCommand("remove_forces");
-			command.Flag("all", all);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("ForceObj", ForceObj);
-			_tcl.Add(command);
+			// TCL Syntax: remove_forces [-all] [-quiet] [-verbose] [<ForceObj>...]
+			_tcl.Add(
+				new SimpleTCLCommand("remove_forces")
+					.Flag("all", all)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(ForceObj)
+			);
 		}
 		/// <summary>
 		/// Print details of the given breakpoint objects
+		///
+		///
+		/// TCL Syntax: report_bps [-quiet] [-verbose] [<BreakPointObjs>...]
 		///
 		/// Report a specific breakpoint object, or report all breakpoints in the current simulation. You must
 		/// have an open simulation for this command to return anything.
@@ -2779,14 +3007,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Print the breakpoints id, file_name and line_number to the console in textual format</returns>
 		public void report_bps(bool? quiet = null, bool? verbose = null, string BreakPointObjs = null)
 		{
-			var command = new SimpleTCLCommand("report_bps");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("BreakPointObjs", BreakPointObjs);
-			_tcl.Add(command);
+			// TCL Syntax: report_bps [-quiet] [-verbose] [<BreakPointObjs>...]
+			_tcl.Add(
+				new SimpleTCLCommand("report_bps")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(BreakPointObjs)
+			);
 		}
 		/// <summary>
 		/// Print details of the given condition objects
+		///
+		///
+		/// TCL Syntax: report_conditions [-quiet] [-verbose] [<ConditionObjs>...]
 		///
 		/// Report a specific simulation condition, or report all conditions in the current simulation. You must
 		/// have an open simulation for this command to return anything.
@@ -2831,14 +3064,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Prints name, id, condition_expression and commands of each condition object on the console</returns>
 		public void report_conditions(bool? quiet = null, bool? verbose = null, string ConditionObjs = null)
 		{
-			var command = new SimpleTCLCommand("report_conditions");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("ConditionObjs", ConditionObjs);
-			_tcl.Add(command);
+			// TCL Syntax: report_conditions [-quiet] [-verbose] [<ConditionObjs>...]
+			_tcl.Add(
+				new SimpleTCLCommand("report_conditions")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(ConditionObjs)
+			);
 		}
 		/// <summary>
 		/// Print drivers along with current driving values for an HDL wire or signal object
+		///
+		///
+		/// TCL Syntax: report_drivers [-quiet] [-verbose] <hdl_object>
 		///
 		/// The report_drivers command prints the name and value of the driving signal, as well as the
 		/// current value of a signal type HDL object.
@@ -2937,14 +3175,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void report_drivers(string hdl_object, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_drivers");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hdl_object", hdl_object);
-			_tcl.Add(command);
+			// TCL Syntax: report_drivers [-quiet] [-verbose] <hdl_object>
+			_tcl.Add(
+				new SimpleTCLCommand("report_drivers")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hdl_object)
+			);
 		}
 		/// <summary>
 		/// Print, in textual format, stack frames when current_scope is a process waiting inside subprogram
+		///
+		///
+		/// TCL Syntax: report_frames [-quiet] [-verbose]
 		///
 		/// Returns a list of strings of sub-program names, and the calling HDL process in the sub-program
 		/// call hierarchy for the current HDL process scope, or current_scope. The list starts with the
@@ -3014,13 +3257,18 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Returns string</returns>
 		public void report_frames(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_frames");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: report_frames [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("report_frames")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Print details of the given hdl objects (variable, signal, wire, or reg)
+		///
+		///
+		/// TCL Syntax: report_objects [-quiet] [-verbose] [<hdl_objects>...]
 		///
 		/// The report_objects command reports the type, name, and language of the specified HDL
 		/// objects to the Tcl Console or Tcl shell. You must have an open simulation to use this command.
@@ -3079,14 +3327,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Print name, type, data_type of the HDL objects on console in textual format</returns>
 		public void report_objects(bool? quiet = null, bool? verbose = null, string hdl_objects = null)
 		{
-			var command = new SimpleTCLCommand("report_objects");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hdl_objects", hdl_objects);
-			_tcl.Add(command);
+			// TCL Syntax: report_objects [-quiet] [-verbose] [<hdl_objects>...]
+			_tcl.Add(
+				new SimpleTCLCommand("report_objects")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hdl_objects)
+			);
 		}
 		/// <summary>
 		/// Print names of the children scopes (declarative regions) of given scope(s) or the current scope
+		///
+		///
+		/// TCL Syntax: report_scopes [-quiet] [-verbose] [<hdl_scopes>...]
 		///
 		/// Reports the names and types of HDL Scopes in the current scope of the current simulation, or of
 		/// specified scopes.
@@ -3129,14 +3382,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>report_scopes prints a subset of properties of the HDL scope on console in textual format</returns>
 		public void report_scopes(bool? quiet = null, bool? verbose = null, string hdl_scopes = null)
 		{
-			var command = new SimpleTCLCommand("report_scopes");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hdl_scopes", hdl_scopes);
-			_tcl.Add(command);
+			// TCL Syntax: report_scopes [-quiet] [-verbose] [<hdl_scopes>...]
+			_tcl.Add(
+				new SimpleTCLCommand("report_scopes")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hdl_scopes)
+			);
 		}
 		/// <summary>
 		/// Report info of simulation libraries
+		///
+		///
+		/// TCL Syntax: report_simlib_info [-file <arg>] [-append] [-quiet] [-verbose] <path>
 		///
 		/// Report information on libraries compiled by the compile_simlib command.
 		///
@@ -3168,16 +3426,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void report_simlib_info(string path, string file = null, bool? append = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_simlib_info");
-			command.OptionalString("file", file);
-			command.Flag("append", append);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("path", path);
-			_tcl.Add(command);
+			// TCL Syntax: report_simlib_info [-file <arg>] [-append] [-quiet] [-verbose] <path>
+			_tcl.Add(
+				new SimpleTCLCommand("report_simlib_info")
+					.OptionalNamedString("file", file)
+					.Flag("append", append)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(path)
+			);
 		}
 		/// <summary>
 		/// Print names of processes in a design, which are waiting inside a subprogram, in textual format
+		///
+		///
+		/// TCL Syntax: report_stacks [-of_instance <arg>] [-quiet] [-verbose]
 		///
 		/// Print name of the HDL process scopes waiting inside a subprogram in textual format.
 		///
@@ -3234,14 +3497,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Returns string</returns>
 		public void report_stacks(string of_instance = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_stacks");
-			command.OptionalString("of_instance", of_instance);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: report_stacks [-of_instance <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("report_stacks")
+					.OptionalNamedString("of_instance", of_instance)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Print current simulated value of given HDL objects (variable, signal, wire, or reg)
+		///
+		///
+		/// TCL Syntax: report_values [-radix <arg>] [-quiet] [-verbose] [<hdl_objects>...]
 		///
 		/// Report the values of the specified HDL objects at the current simulation run time.
 		/// HDL objects include HDL signals, variables, or constants as defined in the Verilog or VHDL test
@@ -3306,15 +3574,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Print name and value of HDL objects on the console in textual format</returns>
 		public void report_values(string hdl_objects, string radix = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_values");
-			command.OptionalString("radix", radix);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hdl_objects", hdl_objects);
-			_tcl.Add(command);
+			// TCL Syntax: report_values [-radix <arg>] [-quiet] [-verbose] [<hdl_objects>...]
+			_tcl.Add(
+				new SimpleTCLCommand("report_values")
+					.OptionalNamedString("radix", radix)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hdl_objects)
+			);
 		}
 		/// <summary>
 		/// Reset an existing simulation run
+		///
+		///
+		/// TCL Syntax: reset_simulation [-mode <arg>] [-type <arg>] [-quiet] [-verbose] [<simset>]
 		///
 		/// Reset the current simulation to its starting condition, by cleaning out the various output files
 		/// created during compilation and simulation for the specified simulation fileset.
@@ -3353,16 +3626,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void reset_simulation(string mode = null, string type = null, bool? quiet = null, bool? verbose = null, string simset = null)
 		{
-			var command = new SimpleTCLCommand("reset_simulation");
-			command.OptionalString("mode", mode);
-			command.OptionalString("type", type);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("simset", simset);
-			_tcl.Add(command);
+			// TCL Syntax: reset_simulation [-mode <arg>] [-type <arg>] [-quiet] [-verbose] [<simset>]
+			_tcl.Add(
+				new SimpleTCLCommand("reset_simulation")
+					.OptionalNamedString("mode", mode)
+					.OptionalNamedString("type", type)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(simset)
+			);
 		}
 		/// <summary>
 		/// Rewind simulation to post loading state (as if design was reloaded), time is set to 0
+		///
+		///
+		/// TCL Syntax: restart [-quiet] [-verbose]
 		///
 		/// Return the current simulation to its initial state, as if the design was reloaded, resetting the
 		/// current simulation time to 0.
@@ -3386,13 +3664,18 @@ namespace Quokka.TCL.Vivado
 		/// </returns>
 		public void restart(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("restart");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: restart [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("restart")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Run the simulation for the specified time
+		///
+		///
+		/// TCL Syntax: run [-all] [-quiet] [-verbose] [<time>] [<unit>]
 		///
 		/// Run the current simulation from the current time to the specified time, or until the simulation
 		/// stops.
@@ -3438,16 +3721,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void run(bool? all = null, bool? quiet = null, bool? verbose = null, string time = null, string unit = null)
 		{
-			var command = new SimpleTCLCommand("run");
-			command.Flag("all", all);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("time", time);
-			command.OptionalString("unit", unit);
-			_tcl.Add(command);
+			// TCL Syntax: run [-all] [-quiet] [-verbose] [<time>] [<unit>]
+			_tcl.Add(
+				new SimpleTCLCommand("run")
+					.Flag("all", all)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(time)
+					.OptionalString(unit)
+			);
 		}
 		/// <summary>
 		/// Set the current value of an HDL object (variable, signal, wire, or reg) to a specified value
+		///
+		///
+		/// TCL Syntax: set_value [-radix <arg>] [-quiet] [-verbose] <hdl_object> <value>
 		///
 		/// Specify the value of a single HDL object at the current simulation run time.
 		/// HDL objects include HDL signals, variables, or constants as defined in the Verilog or VHDL test
@@ -3543,13 +3831,15 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_value(string hdl_object, string value, string radix = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_value");
-			command.OptionalString("radix", radix);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hdl_object", hdl_object);
-			command.RequiredString("value", value);
-			_tcl.Add(command);
+			// TCL Syntax: set_value [-radix <arg>] [-quiet] [-verbose] <hdl_object> <value>
+			_tcl.Add(
+				new SimpleTCLCommand("set_value")
+					.OptionalNamedString("radix", radix)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hdl_object)
+					.RequiredString(value)
+			);
 		}
 		/// <summary>
 		/// (User-written application) Extract IP static files from the project or repository and prepare it for
@@ -3559,6 +3849,9 @@ namespace Quokka.TCL.Vivado
 		/// for the specified IP library [-project]: Extract static files for the current project [-install]: Extract
 		/// static files for the IP catalog [-no_update_catalog]: Do no update IP catalog [-force]: Overwrite
 		/// static files
+		///
+		///
+		/// TCL Syntax: setup_ip_static_library [-directory <arg>] [-ip_repo_path <arg>] [-ips <arg>] [-library <arg>] [-project] [-install] [-no_update_catalog] [-force] [-quiet] [-verbose]
 		///
 		/// Retrieve static simulation files for IP cores used in the current project, or from the Xilinx IP
 		/// catalog, and create a source library for the compile_simlib command to use for compiling the
@@ -3617,22 +3910,27 @@ namespace Quokka.TCL.Vivado
 		/// <returns>None</returns>
 		public void setup_ip_static_library(string directory = null, string ip_repo_path = null, string ips = null, string library = null, bool? project = null, bool? install = null, bool? no_update_catalog = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("setup_ip_static_library");
-			command.OptionalString("directory", directory);
-			command.OptionalString("ip_repo_path", ip_repo_path);
-			command.OptionalString("ips", ips);
-			command.OptionalString("library", library);
-			command.Flag("project", project);
-			command.Flag("install", install);
-			command.Flag("no_update_catalog", no_update_catalog);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: setup_ip_static_library [-directory <arg>] [-ip_repo_path <arg>] [-ips <arg>] [-library <arg>] [-project] [-install] [-no_update_catalog] [-force] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("setup_ip_static_library")
+					.OptionalNamedString("directory", directory)
+					.OptionalNamedString("ip_repo_path", ip_repo_path)
+					.OptionalNamedString("ips", ips)
+					.OptionalNamedString("library", library)
+					.Flag("project", project)
+					.Flag("install", install)
+					.Flag("no_update_catalog", no_update_catalog)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Start capturing VCD output (equivalent of $dumpon verilog system task). This can be used after a
 		/// stop_vcd TCL command has stopped VCD generation started by open_vcd
+		///
+		///
+		/// TCL Syntax: start_vcd [-quiet] [-verbose]
 		///
 		/// The start_vcd command specifies that the tool start writing Value Change Dump (VCD)
 		/// information into the specified VCD object. This Tcl command models the behavior of the Verilog
@@ -3655,13 +3953,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void start_vcd(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("start_vcd");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: start_vcd [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("start_vcd")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Step simulation to the next statement
+		///
+		///
+		/// TCL Syntax: step [-quiet] [-verbose]
 		///
 		/// Step the current simulation to the next executable statement in the HDL source files.
 		/// The line stepping feature lets you run the simulator stepping through the source code line-by￾line. This is helpful if you are interested in observing how each line or feature of your HDL source
@@ -3686,13 +3989,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void step(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("step");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: step [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("step")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Use within a condition to tell simulation to stop when a condition is true
+		///
+		///
+		/// TCL Syntax: stop [-quiet] [-verbose]
 		///
 		/// The stop command pauses the current simulation. This command can be used within a
 		/// condition, defined by add_condition, to pause the simulation when the condition is true.
@@ -3717,14 +4025,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>A "stop" in simulation is a pause and not a quit</returns>
 		public void stop(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("stop");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: stop [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("stop")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Stop capturing VCD output (equivalent of $dumpoff verilog system task). The start_vcd TCL
 		/// command can be used to resume capturing VCD
+		///
+		///
+		/// TCL Syntax: stop_vcd [-quiet] [-verbose]
 		///
 		/// Stop writing the simulation values to the current Value Change Dump (VCD) file. This suspends
 		/// the output of simulation information to the file until the process is resumed using the
@@ -3748,13 +4061,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void stop_vcd(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("stop_vcd");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: stop_vcd [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("stop_vcd")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// write_sdf command generates flat sdf delay files for event simulation
+		///
+		///
+		/// TCL Syntax: write_sdf [-process_corner <arg>] [-cell <arg>] [-rename_top <arg>] [-force] [-mode <arg>] [-gzip] [-quiet] [-verbose] <file>
 		///
 		/// Writes the timing delays for cells in the design to a Standard Delay Format (SDF) file.
 		/// The output SDF file can be used by the write_verilog command to create Verilog netlists for
@@ -3807,20 +4125,25 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void write_sdf(string file, string process_corner = null, string cell = null, string rename_top = null, bool? force = null, string mode = null, bool? gzip = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_sdf");
-			command.OptionalString("process_corner", process_corner);
-			command.OptionalString("cell", cell);
-			command.OptionalString("rename_top", rename_top);
-			command.Flag("force", force);
-			command.OptionalString("mode", mode);
-			command.Flag("gzip", gzip);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_sdf [-process_corner <arg>] [-cell <arg>] [-rename_top <arg>] [-force] [-mode <arg>] [-gzip] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_sdf")
+					.OptionalNamedString("process_corner", process_corner)
+					.OptionalNamedString("cell", cell)
+					.OptionalNamedString("rename_top", rename_top)
+					.Flag("force", force)
+					.OptionalNamedString("mode", mode)
+					.Flag("gzip", gzip)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Export the current netlist in Verilog format
+		///
+		///
+		/// TCL Syntax: write_verilog [-cell <arg>] [-mode <arg>] [-lib] [-port_diff_buffers] [-write_all_overrides] [-keep_vcc_gnd] [-rename_top <arg>] [-sdf_anno <arg>] [-sdf_file <arg>] [-force] [-include_xilinx_libs] [-logic_function_stripped] [-quiet] [-verbose] <file>
 		///
 		/// Write a Verilog netlist of the current design or from a specific cell of the design to the specified
 		/// file or directory. The output is a IEEE 1364-2001 compliant Verilog HDL file that contains netlist
@@ -3913,26 +4236,31 @@ namespace Quokka.TCL.Vivado
 		/// <returns>the name of the output file or directory</returns>
 		public void write_verilog(string file, string cell = null, string mode = null, bool? lib = null, bool? port_diff_buffers = null, bool? write_all_overrides = null, bool? keep_vcc_gnd = null, string rename_top = null, string sdf_anno = null, string sdf_file = null, bool? force = null, bool? include_xilinx_libs = null, bool? logic_function_stripped = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_verilog");
-			command.OptionalString("cell", cell);
-			command.OptionalString("mode", mode);
-			command.Flag("lib", lib);
-			command.Flag("port_diff_buffers", port_diff_buffers);
-			command.Flag("write_all_overrides", write_all_overrides);
-			command.Flag("keep_vcc_gnd", keep_vcc_gnd);
-			command.OptionalString("rename_top", rename_top);
-			command.OptionalString("sdf_anno", sdf_anno);
-			command.OptionalString("sdf_file", sdf_file);
-			command.Flag("force", force);
-			command.Flag("include_xilinx_libs", include_xilinx_libs);
-			command.Flag("logic_function_stripped", logic_function_stripped);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_verilog [-cell <arg>] [-mode <arg>] [-lib] [-port_diff_buffers] [-write_all_overrides] [-keep_vcc_gnd] [-rename_top <arg>] [-sdf_anno <arg>] [-sdf_file <arg>] [-force] [-include_xilinx_libs] [-logic_function_stripped] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_verilog")
+					.OptionalNamedString("cell", cell)
+					.OptionalNamedString("mode", mode)
+					.Flag("lib", lib)
+					.Flag("port_diff_buffers", port_diff_buffers)
+					.Flag("write_all_overrides", write_all_overrides)
+					.Flag("keep_vcc_gnd", keep_vcc_gnd)
+					.OptionalNamedString("rename_top", rename_top)
+					.OptionalNamedString("sdf_anno", sdf_anno)
+					.OptionalNamedString("sdf_file", sdf_file)
+					.Flag("force", force)
+					.Flag("include_xilinx_libs", include_xilinx_libs)
+					.Flag("logic_function_stripped", logic_function_stripped)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Export the current netlist in VHDL format
+		///
+		///
+		/// TCL Syntax: write_vhdl [-cell <arg>] [-mode <arg>] [-lib] [-port_diff_buffers] [-write_all_overrides] [-keep_vcc_gnd] [-rename_top <arg>] [-arch_only] [-force] [-include_xilinx_libs] [-quiet] [-verbose] <file>
 		///
 		/// Write a VHDL netlist of the current design or from a specific cell of the design to the specified
 		/// file or directory.
@@ -4011,24 +4339,29 @@ namespace Quokka.TCL.Vivado
 		/// <returns>the name of the output file or directory</returns>
 		public void write_vhdl(string file, string cell = null, string mode = null, bool? lib = null, bool? port_diff_buffers = null, bool? write_all_overrides = null, bool? keep_vcc_gnd = null, string rename_top = null, bool? arch_only = null, bool? force = null, bool? include_xilinx_libs = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_vhdl");
-			command.OptionalString("cell", cell);
-			command.OptionalString("mode", mode);
-			command.Flag("lib", lib);
-			command.Flag("port_diff_buffers", port_diff_buffers);
-			command.Flag("write_all_overrides", write_all_overrides);
-			command.Flag("keep_vcc_gnd", keep_vcc_gnd);
-			command.OptionalString("rename_top", rename_top);
-			command.Flag("arch_only", arch_only);
-			command.Flag("force", force);
-			command.Flag("include_xilinx_libs", include_xilinx_libs);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_vhdl [-cell <arg>] [-mode <arg>] [-lib] [-port_diff_buffers] [-write_all_overrides] [-keep_vcc_gnd] [-rename_top <arg>] [-arch_only] [-force] [-include_xilinx_libs] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_vhdl")
+					.OptionalNamedString("cell", cell)
+					.OptionalNamedString("mode", mode)
+					.Flag("lib", lib)
+					.Flag("port_diff_buffers", port_diff_buffers)
+					.Flag("write_all_overrides", write_all_overrides)
+					.Flag("keep_vcc_gnd", keep_vcc_gnd)
+					.OptionalNamedString("rename_top", rename_top)
+					.Flag("arch_only", arch_only)
+					.Flag("force", force)
+					.Flag("include_xilinx_libs", include_xilinx_libs)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Load a simulation snapshot for simulation and return a simulation object
+		///
+		///
+		/// TCL Syntax: xsim [-view <args>] [-autoloadwcfg] [-runall] [-R] [-maxdeltaid <arg>] [-nolog] [-maxlogsize <arg>] [-onfinish <arg>] [-onerror <arg>] [-tclbatch <args>] [-t <args>] [-testplusarg <args>] [-vcdfile <arg>] [-vcdunit <arg>] [-wdb <arg>] [-tp] [-tl] [-nosignalhandlers] [-ieeewarnings] [-stats] [-scNoLogFile] [-sv_seed <arg>] [-protoinst <args>] [-cov_db_dir <arg>] [-cov_db_name <arg>] [-ignore_assertions] [-ignore_coverage] [-downgrade_error2info] [-downgrade_error2warning] [-downgrade_fatal2info] [-downgrade_fatal2warning] [-ignore_feature <args>] [-downgrade_severity <args>] [-quiet] [-verbose] <snapshot>
 		///
 		/// The xsim command loads a simulation snapshot to run a batch mode simulation, or to provide a
 		/// GUI and/or Tcl-based interactive simulation environment. The snapshot must be generated using
@@ -4216,44 +4549,46 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Current simulation object</returns>
 		public void xsim(string snapshot, string view = null, bool? autoloadwcfg = null, bool? runall = null, bool? R = null, string maxdeltaid = null, bool? nolog = null, string maxlogsize = null, string onfinish = null, string onerror = null, string tclbatch = null, string t = null, string testplusarg = null, string vcdfile = null, string vcdunit = null, string wdb = null, bool? tp = null, bool? tl = null, bool? nosignalhandlers = null, bool? ieeewarnings = null, bool? stats = null, bool? scNoLogFile = null, string sv_seed = null, string protoinst = null, string cov_db_dir = null, string cov_db_name = null, bool? ignore_assertions = null, bool? ignore_coverage = null, bool? downgrade_error2info = null, bool? downgrade_error2warning = null, bool? downgrade_fatal2info = null, bool? downgrade_fatal2warning = null, string ignore_feature = null, string downgrade_severity = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("xsim");
-			command.OptionalString("view", view);
-			command.Flag("autoloadwcfg", autoloadwcfg);
-			command.Flag("runall", runall);
-			command.Flag("R", R);
-			command.OptionalString("maxdeltaid", maxdeltaid);
-			command.Flag("nolog", nolog);
-			command.OptionalString("maxlogsize", maxlogsize);
-			command.OptionalString("onfinish", onfinish);
-			command.OptionalString("onerror", onerror);
-			command.OptionalString("tclbatch", tclbatch);
-			command.OptionalString("t", t);
-			command.OptionalString("testplusarg", testplusarg);
-			command.OptionalString("vcdfile", vcdfile);
-			command.OptionalString("vcdunit", vcdunit);
-			command.OptionalString("wdb", wdb);
-			command.Flag("tp", tp);
-			command.Flag("tl", tl);
-			command.Flag("nosignalhandlers", nosignalhandlers);
-			command.Flag("ieeewarnings", ieeewarnings);
-			command.Flag("stats", stats);
-			command.Flag("scNoLogFile", scNoLogFile);
-			command.OptionalString("sv_seed", sv_seed);
-			command.OptionalString("protoinst", protoinst);
-			command.OptionalString("cov_db_dir", cov_db_dir);
-			command.OptionalString("cov_db_name", cov_db_name);
-			command.Flag("ignore_assertions", ignore_assertions);
-			command.Flag("ignore_coverage", ignore_coverage);
-			command.Flag("downgrade_error2info", downgrade_error2info);
-			command.Flag("downgrade_error2warning", downgrade_error2warning);
-			command.Flag("downgrade_fatal2info", downgrade_fatal2info);
-			command.Flag("downgrade_fatal2warning", downgrade_fatal2warning);
-			command.OptionalString("ignore_feature", ignore_feature);
-			command.OptionalString("downgrade_severity", downgrade_severity);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("snapshot", snapshot);
-			_tcl.Add(command);
+			// TCL Syntax: xsim [-view <args>] [-autoloadwcfg] [-runall] [-R] [-maxdeltaid <arg>] [-nolog] [-maxlogsize <arg>] [-onfinish <arg>] [-onerror <arg>] [-tclbatch <args>] [-t <args>] [-testplusarg <args>] [-vcdfile <arg>] [-vcdunit <arg>] [-wdb <arg>] [-tp] [-tl] [-nosignalhandlers] [-ieeewarnings] [-stats] [-scNoLogFile] [-sv_seed <arg>] [-protoinst <args>] [-cov_db_dir <arg>] [-cov_db_name <arg>] [-ignore_assertions] [-ignore_coverage] [-downgrade_error2info] [-downgrade_error2warning] [-downgrade_fatal2info] [-downgrade_fatal2warning] [-ignore_feature <args>] [-downgrade_severity <args>] [-quiet] [-verbose] <snapshot>
+			_tcl.Add(
+				new SimpleTCLCommand("xsim")
+					.OptionalNamedString("view", view)
+					.Flag("autoloadwcfg", autoloadwcfg)
+					.Flag("runall", runall)
+					.Flag("R", R)
+					.OptionalNamedString("maxdeltaid", maxdeltaid)
+					.Flag("nolog", nolog)
+					.OptionalNamedString("maxlogsize", maxlogsize)
+					.OptionalNamedString("onfinish", onfinish)
+					.OptionalNamedString("onerror", onerror)
+					.OptionalNamedString("tclbatch", tclbatch)
+					.OptionalNamedString("t", t)
+					.OptionalNamedString("testplusarg", testplusarg)
+					.OptionalNamedString("vcdfile", vcdfile)
+					.OptionalNamedString("vcdunit", vcdunit)
+					.OptionalNamedString("wdb", wdb)
+					.Flag("tp", tp)
+					.Flag("tl", tl)
+					.Flag("nosignalhandlers", nosignalhandlers)
+					.Flag("ieeewarnings", ieeewarnings)
+					.Flag("stats", stats)
+					.Flag("scNoLogFile", scNoLogFile)
+					.OptionalNamedString("sv_seed", sv_seed)
+					.OptionalNamedString("protoinst", protoinst)
+					.OptionalNamedString("cov_db_dir", cov_db_dir)
+					.OptionalNamedString("cov_db_name", cov_db_name)
+					.Flag("ignore_assertions", ignore_assertions)
+					.Flag("ignore_coverage", ignore_coverage)
+					.Flag("downgrade_error2info", downgrade_error2info)
+					.Flag("downgrade_error2warning", downgrade_error2warning)
+					.Flag("downgrade_fatal2info", downgrade_fatal2info)
+					.Flag("downgrade_fatal2warning", downgrade_fatal2warning)
+					.OptionalNamedString("ignore_feature", ignore_feature)
+					.OptionalNamedString("downgrade_severity", downgrade_severity)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(snapshot)
+			);
 		}
 	}
 }

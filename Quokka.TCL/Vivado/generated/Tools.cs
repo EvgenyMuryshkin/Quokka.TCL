@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class ToolsCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public ToolsCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public ToolsCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Interactive phys_opt_design.
+		///
+		///
+		/// TCL Syntax: iphys_opt_design [-fanout_opt] [-critical_cell_opt] [-placement_opt] [-rewire] [-net <arg>] -cluster <args> -place_cell <args> [-place] [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-shift_register_opt] [-cell <arg>] [-packing] [-unpacking] [-port <arg>] [-critical_pin_opt] [-skipped_optimization] [-insert_negative_edge_ffs] [-hold_fix] [-slr_crossing_opt] [-auto_pipeline] [-quiet] [-verbose]
 		///
 		/// The iphys_opt_design command describes a specific optimization that was performed by the
 		/// phys_opt_design command, such as replicating a critical cell or pulling registers from a block
@@ -153,35 +156,40 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void iphys_opt_design(string cluster, string place_cell, bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, string net = null, bool? place = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, string cell = null, bool? packing = null, bool? unpacking = null, string port = null, bool? critical_pin_opt = null, bool? skipped_optimization = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? auto_pipeline = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("iphys_opt_design");
-			command.Flag("fanout_opt", fanout_opt);
-			command.Flag("critical_cell_opt", critical_cell_opt);
-			command.Flag("placement_opt", placement_opt);
-			command.Flag("rewire", rewire);
-			command.OptionalString("net", net);
-			command.RequiredString("cluster", cluster);
-			command.RequiredString("place_cell", place_cell);
-			command.Flag("place", place);
-			command.Flag("dsp_register_opt", dsp_register_opt);
-			command.Flag("bram_register_opt", bram_register_opt);
-			command.Flag("uram_register_opt", uram_register_opt);
-			command.Flag("shift_register_opt", shift_register_opt);
-			command.OptionalString("cell", cell);
-			command.Flag("packing", packing);
-			command.Flag("unpacking", unpacking);
-			command.OptionalString("port", port);
-			command.Flag("critical_pin_opt", critical_pin_opt);
-			command.Flag("skipped_optimization", skipped_optimization);
-			command.Flag("insert_negative_edge_ffs", insert_negative_edge_ffs);
-			command.Flag("hold_fix", hold_fix);
-			command.Flag("slr_crossing_opt", slr_crossing_opt);
-			command.Flag("auto_pipeline", auto_pipeline);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: iphys_opt_design [-fanout_opt] [-critical_cell_opt] [-placement_opt] [-rewire] [-net <arg>] -cluster <args> -place_cell <args> [-place] [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-shift_register_opt] [-cell <arg>] [-packing] [-unpacking] [-port <arg>] [-critical_pin_opt] [-skipped_optimization] [-insert_negative_edge_ffs] [-hold_fix] [-slr_crossing_opt] [-auto_pipeline] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("iphys_opt_design")
+					.Flag("fanout_opt", fanout_opt)
+					.Flag("critical_cell_opt", critical_cell_opt)
+					.Flag("placement_opt", placement_opt)
+					.Flag("rewire", rewire)
+					.OptionalNamedString("net", net)
+					.RequiredNamedString("cluster", cluster)
+					.RequiredNamedString("place_cell", place_cell)
+					.Flag("place", place)
+					.Flag("dsp_register_opt", dsp_register_opt)
+					.Flag("bram_register_opt", bram_register_opt)
+					.Flag("uram_register_opt", uram_register_opt)
+					.Flag("shift_register_opt", shift_register_opt)
+					.OptionalNamedString("cell", cell)
+					.Flag("packing", packing)
+					.Flag("unpacking", unpacking)
+					.OptionalNamedString("port", port)
+					.Flag("critical_pin_opt", critical_pin_opt)
+					.Flag("skipped_optimization", skipped_optimization)
+					.Flag("insert_negative_edge_ffs", insert_negative_edge_ffs)
+					.Flag("hold_fix", hold_fix)
+					.Flag("slr_crossing_opt", slr_crossing_opt)
+					.Flag("auto_pipeline", auto_pipeline)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Open a netlist design
+		///
+		///
+		/// TCL Syntax: link_design [-name <arg>] [-part <arg>] [-constrset <arg>] [-top <arg>] [-mode <arg>] [-pr_config <arg>] [-reconfig_partitions <args>] [-partitions <args>] [-ignore_timing] [-quiet] [-verbose]
 		///
 		/// Opens a new or existing netlist design, linking the netlist files and constraints with the target part
 		/// to create the design. This command is intended for use with netlist source files, such as files
@@ -259,22 +267,27 @@ namespace Quokka.TCL.Vivado
 		/// <returns>design object</returns>
 		public void link_design(string name = null, string part = null, string constrset = null, string top = null, string mode = null, string pr_config = null, string reconfig_partitions = null, string partitions = null, bool? ignore_timing = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("link_design");
-			command.OptionalString("name", name);
-			command.OptionalString("part", part);
-			command.OptionalString("constrset", constrset);
-			command.OptionalString("top", top);
-			command.OptionalString("mode", mode);
-			command.OptionalString("pr_config", pr_config);
-			command.OptionalString("reconfig_partitions", reconfig_partitions);
-			command.OptionalString("partitions", partitions);
-			command.Flag("ignore_timing", ignore_timing);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: link_design [-name <arg>] [-part <arg>] [-constrset <arg>] [-top <arg>] [-mode <arg>] [-pr_config <arg>] [-reconfig_partitions <args>] [-partitions <args>] [-ignore_timing] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("link_design")
+					.OptionalNamedString("name", name)
+					.OptionalNamedString("part", part)
+					.OptionalNamedString("constrset", constrset)
+					.OptionalNamedString("top", top)
+					.OptionalNamedString("mode", mode)
+					.OptionalNamedString("pr_config", pr_config)
+					.OptionalNamedString("reconfig_partitions", reconfig_partitions)
+					.OptionalNamedString("partitions", partitions)
+					.Flag("ignore_timing", ignore_timing)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// List available features.
+		///
+		///
+		/// TCL Syntax: list_features [-quiet] [-verbose]
 		///
 		/// In order to reduce the memory footprint of the Vivado Design Suite, there are groups of Tcl
 		/// commands called "features" which are unavailable for use until you run a command from that
@@ -299,13 +312,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void list_features(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("list_features");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: list_features [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("list_features")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Load Tcl commands for a specified feature.
+		///
+		///
+		/// TCL Syntax: load_features [-quiet] [-verbose] [<features>...]
 		///
 		/// Load the specified features of the Vivado Design Suite into memory.
 		/// In order to reduce the memory footprint of the Vivado Design Suite, there are groups of Tcl
@@ -342,15 +360,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void load_features(bool? quiet = null, bool? verbose = null, string features = null)
 		{
-			var command = new SimpleTCLCommand("load_features");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("features", features);
-			_tcl.Add(command);
+			// TCL Syntax: load_features [-quiet] [-verbose] [<features>...]
+			_tcl.Add(
+				new SimpleTCLCommand("load_features")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(features)
+			);
 		}
 		/// <summary>
 		/// Optimize the current netlist. This will perform the retarget, propconst, sweep and
 		/// bram_power_opt optimizations by default.
+		///
+		///
+		/// TCL Syntax: opt_design [-retarget] [-propconst] [-sweep] [-bram_power_opt] [-remap] [-aggressive_remap] [-resynth_area] [-resynth_seq_area] [-directive <arg>] [-muxf_remap] [-hier_fanout_limit <arg>] [-bufg_opt] [-shift_register_opt] [-dsp_register_opt] [-srl_remap_modes <arg>] [-control_set_merge] [-merge_equivalent_drivers] [-carry_remap] [-debug_log] [-property_opt_only] [-quiet] [-verbose]
 		///
 		/// Optimizes a design netlist for the target part. Optimization can provide improvements to
 		/// synthesized netlists from third-party tools, or for netlists that may not have been optimized
@@ -506,33 +529,38 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void opt_design(bool? retarget = null, bool? propconst = null, bool? sweep = null, bool? bram_power_opt = null, bool? remap = null, bool? aggressive_remap = null, bool? resynth_area = null, bool? resynth_seq_area = null, string directive = null, bool? muxf_remap = null, string hier_fanout_limit = null, bool? bufg_opt = null, bool? shift_register_opt = null, bool? dsp_register_opt = null, string srl_remap_modes = null, bool? control_set_merge = null, bool? merge_equivalent_drivers = null, bool? carry_remap = null, bool? debug_log = null, bool? property_opt_only = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("opt_design");
-			command.Flag("retarget", retarget);
-			command.Flag("propconst", propconst);
-			command.Flag("sweep", sweep);
-			command.Flag("bram_power_opt", bram_power_opt);
-			command.Flag("remap", remap);
-			command.Flag("aggressive_remap", aggressive_remap);
-			command.Flag("resynth_area", resynth_area);
-			command.Flag("resynth_seq_area", resynth_seq_area);
-			command.OptionalString("directive", directive);
-			command.Flag("muxf_remap", muxf_remap);
-			command.OptionalString("hier_fanout_limit", hier_fanout_limit);
-			command.Flag("bufg_opt", bufg_opt);
-			command.Flag("shift_register_opt", shift_register_opt);
-			command.Flag("dsp_register_opt", dsp_register_opt);
-			command.OptionalString("srl_remap_modes", srl_remap_modes);
-			command.Flag("control_set_merge", control_set_merge);
-			command.Flag("merge_equivalent_drivers", merge_equivalent_drivers);
-			command.Flag("carry_remap", carry_remap);
-			command.Flag("debug_log", debug_log);
-			command.Flag("property_opt_only", property_opt_only);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: opt_design [-retarget] [-propconst] [-sweep] [-bram_power_opt] [-remap] [-aggressive_remap] [-resynth_area] [-resynth_seq_area] [-directive <arg>] [-muxf_remap] [-hier_fanout_limit <arg>] [-bufg_opt] [-shift_register_opt] [-dsp_register_opt] [-srl_remap_modes <arg>] [-control_set_merge] [-merge_equivalent_drivers] [-carry_remap] [-debug_log] [-property_opt_only] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("opt_design")
+					.Flag("retarget", retarget)
+					.Flag("propconst", propconst)
+					.Flag("sweep", sweep)
+					.Flag("bram_power_opt", bram_power_opt)
+					.Flag("remap", remap)
+					.Flag("aggressive_remap", aggressive_remap)
+					.Flag("resynth_area", resynth_area)
+					.Flag("resynth_seq_area", resynth_seq_area)
+					.OptionalNamedString("directive", directive)
+					.Flag("muxf_remap", muxf_remap)
+					.OptionalNamedString("hier_fanout_limit", hier_fanout_limit)
+					.Flag("bufg_opt", bufg_opt)
+					.Flag("shift_register_opt", shift_register_opt)
+					.Flag("dsp_register_opt", dsp_register_opt)
+					.OptionalNamedString("srl_remap_modes", srl_remap_modes)
+					.Flag("control_set_merge", control_set_merge)
+					.Flag("merge_equivalent_drivers", merge_equivalent_drivers)
+					.Flag("carry_remap", carry_remap)
+					.Flag("debug_log", debug_log)
+					.Flag("property_opt_only", property_opt_only)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Optimize the current placed netlist.
+		///
+		///
+		/// TCL Syntax: phys_opt_design [-fanout_opt] [-placement_opt] [-routing_opt] [-slr_crossing_opt] [-rewire] [-insert_negative_edge_ffs] [-critical_cell_opt] [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-bram_enable_opt] [-shift_register_opt] [-hold_fix] [-aggressive_hold_fix] [-retime] [-force_replication_on_nets <args>] [-directive <arg>] [-critical_pin_opt] [-clock_opt] [-path_groups <args>] [-tns_cleanup] [-sll_reg_hold_fix] [-quiet] [-verbose]
 		///
 		/// Performs timing-driven optimization on the negative-slack paths of a design. A path should have
 		/// negative slack near the worst negative slack (WNS) to be considered for optimization.
@@ -698,35 +726,40 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void phys_opt_design(bool? fanout_opt = null, bool? placement_opt = null, bool? routing_opt = null, bool? slr_crossing_opt = null, bool? rewire = null, bool? insert_negative_edge_ffs = null, bool? critical_cell_opt = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? bram_enable_opt = null, bool? shift_register_opt = null, bool? hold_fix = null, bool? aggressive_hold_fix = null, bool? retime = null, string force_replication_on_nets = null, string directive = null, bool? critical_pin_opt = null, bool? clock_opt = null, string path_groups = null, bool? tns_cleanup = null, bool? sll_reg_hold_fix = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("phys_opt_design");
-			command.Flag("fanout_opt", fanout_opt);
-			command.Flag("placement_opt", placement_opt);
-			command.Flag("routing_opt", routing_opt);
-			command.Flag("slr_crossing_opt", slr_crossing_opt);
-			command.Flag("rewire", rewire);
-			command.Flag("insert_negative_edge_ffs", insert_negative_edge_ffs);
-			command.Flag("critical_cell_opt", critical_cell_opt);
-			command.Flag("dsp_register_opt", dsp_register_opt);
-			command.Flag("bram_register_opt", bram_register_opt);
-			command.Flag("uram_register_opt", uram_register_opt);
-			command.Flag("bram_enable_opt", bram_enable_opt);
-			command.Flag("shift_register_opt", shift_register_opt);
-			command.Flag("hold_fix", hold_fix);
-			command.Flag("aggressive_hold_fix", aggressive_hold_fix);
-			command.Flag("retime", retime);
-			command.OptionalString("force_replication_on_nets", force_replication_on_nets);
-			command.OptionalString("directive", directive);
-			command.Flag("critical_pin_opt", critical_pin_opt);
-			command.Flag("clock_opt", clock_opt);
-			command.OptionalString("path_groups", path_groups);
-			command.Flag("tns_cleanup", tns_cleanup);
-			command.Flag("sll_reg_hold_fix", sll_reg_hold_fix);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: phys_opt_design [-fanout_opt] [-placement_opt] [-routing_opt] [-slr_crossing_opt] [-rewire] [-insert_negative_edge_ffs] [-critical_cell_opt] [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-bram_enable_opt] [-shift_register_opt] [-hold_fix] [-aggressive_hold_fix] [-retime] [-force_replication_on_nets <args>] [-directive <arg>] [-critical_pin_opt] [-clock_opt] [-path_groups <args>] [-tns_cleanup] [-sll_reg_hold_fix] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("phys_opt_design")
+					.Flag("fanout_opt", fanout_opt)
+					.Flag("placement_opt", placement_opt)
+					.Flag("routing_opt", routing_opt)
+					.Flag("slr_crossing_opt", slr_crossing_opt)
+					.Flag("rewire", rewire)
+					.Flag("insert_negative_edge_ffs", insert_negative_edge_ffs)
+					.Flag("critical_cell_opt", critical_cell_opt)
+					.Flag("dsp_register_opt", dsp_register_opt)
+					.Flag("bram_register_opt", bram_register_opt)
+					.Flag("uram_register_opt", uram_register_opt)
+					.Flag("bram_enable_opt", bram_enable_opt)
+					.Flag("shift_register_opt", shift_register_opt)
+					.Flag("hold_fix", hold_fix)
+					.Flag("aggressive_hold_fix", aggressive_hold_fix)
+					.Flag("retime", retime)
+					.OptionalNamedString("force_replication_on_nets", force_replication_on_nets)
+					.OptionalNamedString("directive", directive)
+					.Flag("critical_pin_opt", critical_pin_opt)
+					.Flag("clock_opt", clock_opt)
+					.OptionalNamedString("path_groups", path_groups)
+					.Flag("tns_cleanup", tns_cleanup)
+					.Flag("sll_reg_hold_fix", sll_reg_hold_fix)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Automatically place ports and leaf-level instances
+		///
+		///
+		/// TCL Syntax: place_design [-directive <arg>] [-no_timing_driven] [-timing_summary] [-unplace] [-post_place_opt] [-no_psip] [-no_bufg_opt] [-quiet] [-verbose]
 		///
 		/// Place the specified ports and logic cells in the current design, or all ports and logic cells, onto
 		/// device resources on the target part. The tool optimizes placement to minimize negative timing
@@ -810,20 +843,25 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void place_design(string directive = null, bool? no_timing_driven = null, bool? timing_summary = null, bool? unplace = null, bool? post_place_opt = null, bool? no_psip = null, bool? no_bufg_opt = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("place_design");
-			command.OptionalString("directive", directive);
-			command.Flag("no_timing_driven", no_timing_driven);
-			command.Flag("timing_summary", timing_summary);
-			command.Flag("unplace", unplace);
-			command.Flag("post_place_opt", post_place_opt);
-			command.Flag("no_psip", no_psip);
-			command.Flag("no_bufg_opt", no_bufg_opt);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: place_design [-directive <arg>] [-no_timing_driven] [-timing_summary] [-unplace] [-post_place_opt] [-no_psip] [-no_bufg_opt] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("place_design")
+					.OptionalNamedString("directive", directive)
+					.Flag("no_timing_driven", no_timing_driven)
+					.Flag("timing_summary", timing_summary)
+					.Flag("unplace", unplace)
+					.Flag("post_place_opt", post_place_opt)
+					.Flag("no_psip", no_psip)
+					.Flag("no_bufg_opt", no_bufg_opt)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// load iPhysOpt script and run it.
+		///
+		///
+		/// TCL Syntax: read_iphys_opt_tcl [-fanout_opt] [-critical_cell_opt] [-placement_opt] [-rewire] [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-shift_register_opt] [-auto_pipeline] [-critical_pin_opt] [-include_skipped_optimizations] [-place] [-insert_negative_edge_ffs] [-hold_fix] [-slr_crossing_opt] [-quiet] [-verbose] [<input>]
 		///
 		/// Interactive physical optimization can be used in two ways:
 		/// • Applying post-placement physical optimizations to the pre-placement netlist to improve the
@@ -929,29 +967,34 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void read_iphys_opt_tcl(string input, bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, bool? auto_pipeline = null, bool? critical_pin_opt = null, bool? include_skipped_optimizations = null, bool? place = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_iphys_opt_tcl");
-			command.Flag("fanout_opt", fanout_opt);
-			command.Flag("critical_cell_opt", critical_cell_opt);
-			command.Flag("placement_opt", placement_opt);
-			command.Flag("rewire", rewire);
-			command.Flag("dsp_register_opt", dsp_register_opt);
-			command.Flag("bram_register_opt", bram_register_opt);
-			command.Flag("uram_register_opt", uram_register_opt);
-			command.Flag("shift_register_opt", shift_register_opt);
-			command.Flag("auto_pipeline", auto_pipeline);
-			command.Flag("critical_pin_opt", critical_pin_opt);
-			command.Flag("include_skipped_optimizations", include_skipped_optimizations);
-			command.Flag("place", place);
-			command.Flag("insert_negative_edge_ffs", insert_negative_edge_ffs);
-			command.Flag("hold_fix", hold_fix);
-			command.Flag("slr_crossing_opt", slr_crossing_opt);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("input", input);
-			_tcl.Add(command);
+			// TCL Syntax: read_iphys_opt_tcl [-fanout_opt] [-critical_cell_opt] [-placement_opt] [-rewire] [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-shift_register_opt] [-auto_pipeline] [-critical_pin_opt] [-include_skipped_optimizations] [-place] [-insert_negative_edge_ffs] [-hold_fix] [-slr_crossing_opt] [-quiet] [-verbose] [<input>]
+			_tcl.Add(
+				new SimpleTCLCommand("read_iphys_opt_tcl")
+					.Flag("fanout_opt", fanout_opt)
+					.Flag("critical_cell_opt", critical_cell_opt)
+					.Flag("placement_opt", placement_opt)
+					.Flag("rewire", rewire)
+					.Flag("dsp_register_opt", dsp_register_opt)
+					.Flag("bram_register_opt", bram_register_opt)
+					.Flag("uram_register_opt", uram_register_opt)
+					.Flag("shift_register_opt", shift_register_opt)
+					.Flag("auto_pipeline", auto_pipeline)
+					.Flag("critical_pin_opt", critical_pin_opt)
+					.Flag("include_skipped_optimizations", include_skipped_optimizations)
+					.Flag("place", place)
+					.Flag("insert_negative_edge_ffs", insert_negative_edge_ffs)
+					.Flag("hold_fix", hold_fix)
+					.Flag("slr_crossing_opt", slr_crossing_opt)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(input)
+			);
 		}
 		/// <summary>
 		/// Register a Tcl proc with Vivado.
+		///
+		///
+		/// TCL Syntax: register_proc [-quiet] [-verbose] <proc> [<tasknm>]
 		///
 		/// Register a Tcl procedure (proc) with the Vivado Tcl command interpretor to register the command
 		/// with the Vivado Design Suite help system.
@@ -1010,15 +1053,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Nothing</returns>
 		public void register_proc(string proc, bool? quiet = null, bool? verbose = null, string tasknm = null)
 		{
-			var command = new SimpleTCLCommand("register_proc");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("proc", proc);
-			command.OptionalString("tasknm", tasknm);
-			_tcl.Add(command);
+			// TCL Syntax: register_proc [-quiet] [-verbose] <proc> [<tasknm>]
+			_tcl.Add(
+				new SimpleTCLCommand("register_proc")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(proc)
+					.OptionalString(tasknm)
+			);
 		}
 		/// <summary>
 		/// Perform pipeline register insertion analysis and display report.
+		///
+		///
+		/// TCL Syntax: report_pipeline_analysis [-cells <args>] [-verbose] [-clocks <args>] [-file <arg>] [-include_paths_to_pipeline] [-append] [-max_added_latency <arg>] [-report_loops] [-return_string] [-quiet]
 		///
 		/// This command performs an analysis of a synthesized design, hypothetically inserting pipeline
 		/// stages in the design and reports the potential frequency (Fmax) increase of each clock domain.
@@ -1085,21 +1133,26 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void report_pipeline_analysis(string cells = null, bool? verbose = null, string clocks = null, string file = null, bool? include_paths_to_pipeline = null, bool? append = null, string max_added_latency = null, bool? report_loops = null, bool? return_string = null, bool? quiet = null)
 		{
-			var command = new SimpleTCLCommand("report_pipeline_analysis");
-			command.OptionalString("cells", cells);
-			command.Flag("verbose", verbose);
-			command.OptionalString("clocks", clocks);
-			command.OptionalString("file", file);
-			command.Flag("include_paths_to_pipeline", include_paths_to_pipeline);
-			command.Flag("append", append);
-			command.OptionalString("max_added_latency", max_added_latency);
-			command.Flag("report_loops", report_loops);
-			command.Flag("return_string", return_string);
-			command.Flag("quiet", quiet);
-			_tcl.Add(command);
+			// TCL Syntax: report_pipeline_analysis [-cells <args>] [-verbose] [-clocks <args>] [-file <arg>] [-include_paths_to_pipeline] [-append] [-max_added_latency <arg>] [-report_loops] [-return_string] [-quiet]
+			_tcl.Add(
+				new SimpleTCLCommand("report_pipeline_analysis")
+					.OptionalNamedString("cells", cells)
+					.Flag("verbose", verbose)
+					.OptionalNamedString("clocks", clocks)
+					.OptionalNamedString("file", file)
+					.Flag("include_paths_to_pipeline", include_paths_to_pipeline)
+					.Flag("append", append)
+					.OptionalNamedString("max_added_latency", max_added_latency)
+					.Flag("report_loops", report_loops)
+					.Flag("return_string", return_string)
+					.Flag("quiet", quiet)
+			);
 		}
 		/// <summary>
 		/// Route the current design
+		///
+		///
+		/// TCL Syntax: route_design [-unroute] [-release_memory] [-nets <args>] [-physical_nets] [-pins <arg>] [-directive <arg>] [-tns_cleanup] [-no_timing_driven] [-preserve] [-delay] [-auto_delay] -max_delay <arg> -min_delay <arg> [-timing_summary] [-finalize] [-ultrathreads] [-quiet] [-verbose]
 		///
 		/// Route the nets in the current design to complete logic connections on the target part.
 		/// Predefined routing strategies can be quickly selected using the route_design -directive
@@ -1228,29 +1281,34 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void route_design(string max_delay, string min_delay, bool? unroute = null, bool? release_memory = null, string nets = null, bool? physical_nets = null, string pins = null, string directive = null, bool? tns_cleanup = null, bool? no_timing_driven = null, bool? preserve = null, bool? delay = null, bool? auto_delay = null, bool? timing_summary = null, bool? finalize = null, bool? ultrathreads = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("route_design");
-			command.Flag("unroute", unroute);
-			command.Flag("release_memory", release_memory);
-			command.OptionalString("nets", nets);
-			command.Flag("physical_nets", physical_nets);
-			command.OptionalString("pins", pins);
-			command.OptionalString("directive", directive);
-			command.Flag("tns_cleanup", tns_cleanup);
-			command.Flag("no_timing_driven", no_timing_driven);
-			command.Flag("preserve", preserve);
-			command.Flag("delay", delay);
-			command.Flag("auto_delay", auto_delay);
-			command.RequiredString("max_delay", max_delay);
-			command.RequiredString("min_delay", min_delay);
-			command.Flag("timing_summary", timing_summary);
-			command.Flag("finalize", finalize);
-			command.Flag("ultrathreads", ultrathreads);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: route_design [-unroute] [-release_memory] [-nets <args>] [-physical_nets] [-pins <arg>] [-directive <arg>] [-tns_cleanup] [-no_timing_driven] [-preserve] [-delay] [-auto_delay] -max_delay <arg> -min_delay <arg> [-timing_summary] [-finalize] [-ultrathreads] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("route_design")
+					.Flag("unroute", unroute)
+					.Flag("release_memory", release_memory)
+					.OptionalNamedString("nets", nets)
+					.Flag("physical_nets", physical_nets)
+					.OptionalNamedString("pins", pins)
+					.OptionalNamedString("directive", directive)
+					.Flag("tns_cleanup", tns_cleanup)
+					.Flag("no_timing_driven", no_timing_driven)
+					.Flag("preserve", preserve)
+					.Flag("delay", delay)
+					.Flag("auto_delay", auto_delay)
+					.RequiredNamedString("max_delay", max_delay)
+					.RequiredNamedString("min_delay", min_delay)
+					.Flag("timing_summary", timing_summary)
+					.Flag("finalize", finalize)
+					.Flag("ultrathreads", ultrathreads)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Synthesize a design using Vivado Synthesis and open that design
+		///
+		///
+		/// TCL Syntax: synth_design [-name <arg>] [-part <arg>] [-constrset <arg>] [-top <arg>] [-include_dirs <args>] [-generic <args>] [-verilog_define <args>] [-flatten_hierarchy <arg>] [-gated_clock_conversion <arg>] [-directive <arg>] [-rtl] [-bufg <arg>] [-no_lc] [-fanout_limit <arg>] [-shreg_min_size <arg>] [-mode <arg>] [-fsm_extraction <arg>] [-rtl_skip_ip] [-rtl_skip_constraints] [-keep_equivalent_registers] [-resource_sharing <arg>] [-cascade_dsp <arg>] [-control_set_opt_threshold <arg>] [-incremental <arg>] [-max_bram <arg>] [-max_uram <arg>] [-max_dsp <arg>] [-max_bram_cascade_height <arg>] [-max_uram_cascade_height <arg>] [-retiming] [-no_srlextract] [-assert] [-no_timing_driven] [-sfcu] [-quiet] [-verbose]
 		///
 		/// Directly launches the Vivado synthesis engine to compile and synthesize a design in either
 		/// Project Mode or Non-Project Mode in the Vivado Design Suite. Refer to the Vivado Design Suite
@@ -1478,47 +1536,52 @@ namespace Quokka.TCL.Vivado
 		/// <returns>design object</returns>
 		public void synth_design(string name = null, string part = null, string constrset = null, string top = null, string include_dirs = null, string generic = null, string verilog_define = null, string flatten_hierarchy = null, string gated_clock_conversion = null, string directive = null, bool? rtl = null, string bufg = null, bool? no_lc = null, string fanout_limit = null, string shreg_min_size = null, string mode = null, string fsm_extraction = null, bool? rtl_skip_ip = null, bool? rtl_skip_constraints = null, bool? keep_equivalent_registers = null, string resource_sharing = null, string cascade_dsp = null, string control_set_opt_threshold = null, string incremental = null, string max_bram = null, string max_uram = null, string max_dsp = null, string max_bram_cascade_height = null, string max_uram_cascade_height = null, bool? retiming = null, bool? no_srlextract = null, bool? assert = null, bool? no_timing_driven = null, bool? sfcu = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("synth_design");
-			command.OptionalString("name", name);
-			command.OptionalString("part", part);
-			command.OptionalString("constrset", constrset);
-			command.OptionalString("top", top);
-			command.OptionalString("include_dirs", include_dirs);
-			command.OptionalString("generic", generic);
-			command.OptionalString("verilog_define", verilog_define);
-			command.OptionalString("flatten_hierarchy", flatten_hierarchy);
-			command.OptionalString("gated_clock_conversion", gated_clock_conversion);
-			command.OptionalString("directive", directive);
-			command.Flag("rtl", rtl);
-			command.OptionalString("bufg", bufg);
-			command.Flag("no_lc", no_lc);
-			command.OptionalString("fanout_limit", fanout_limit);
-			command.OptionalString("shreg_min_size", shreg_min_size);
-			command.OptionalString("mode", mode);
-			command.OptionalString("fsm_extraction", fsm_extraction);
-			command.Flag("rtl_skip_ip", rtl_skip_ip);
-			command.Flag("rtl_skip_constraints", rtl_skip_constraints);
-			command.Flag("keep_equivalent_registers", keep_equivalent_registers);
-			command.OptionalString("resource_sharing", resource_sharing);
-			command.OptionalString("cascade_dsp", cascade_dsp);
-			command.OptionalString("control_set_opt_threshold", control_set_opt_threshold);
-			command.OptionalString("incremental", incremental);
-			command.OptionalString("max_bram", max_bram);
-			command.OptionalString("max_uram", max_uram);
-			command.OptionalString("max_dsp", max_dsp);
-			command.OptionalString("max_bram_cascade_height", max_bram_cascade_height);
-			command.OptionalString("max_uram_cascade_height", max_uram_cascade_height);
-			command.Flag("retiming", retiming);
-			command.Flag("no_srlextract", no_srlextract);
-			command.Flag("assert", assert);
-			command.Flag("no_timing_driven", no_timing_driven);
-			command.Flag("sfcu", sfcu);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: synth_design [-name <arg>] [-part <arg>] [-constrset <arg>] [-top <arg>] [-include_dirs <args>] [-generic <args>] [-verilog_define <args>] [-flatten_hierarchy <arg>] [-gated_clock_conversion <arg>] [-directive <arg>] [-rtl] [-bufg <arg>] [-no_lc] [-fanout_limit <arg>] [-shreg_min_size <arg>] [-mode <arg>] [-fsm_extraction <arg>] [-rtl_skip_ip] [-rtl_skip_constraints] [-keep_equivalent_registers] [-resource_sharing <arg>] [-cascade_dsp <arg>] [-control_set_opt_threshold <arg>] [-incremental <arg>] [-max_bram <arg>] [-max_uram <arg>] [-max_dsp <arg>] [-max_bram_cascade_height <arg>] [-max_uram_cascade_height <arg>] [-retiming] [-no_srlextract] [-assert] [-no_timing_driven] [-sfcu] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("synth_design")
+					.OptionalNamedString("name", name)
+					.OptionalNamedString("part", part)
+					.OptionalNamedString("constrset", constrset)
+					.OptionalNamedString("top", top)
+					.OptionalNamedString("include_dirs", include_dirs)
+					.OptionalNamedString("generic", generic)
+					.OptionalNamedString("verilog_define", verilog_define)
+					.OptionalNamedString("flatten_hierarchy", flatten_hierarchy)
+					.OptionalNamedString("gated_clock_conversion", gated_clock_conversion)
+					.OptionalNamedString("directive", directive)
+					.Flag("rtl", rtl)
+					.OptionalNamedString("bufg", bufg)
+					.Flag("no_lc", no_lc)
+					.OptionalNamedString("fanout_limit", fanout_limit)
+					.OptionalNamedString("shreg_min_size", shreg_min_size)
+					.OptionalNamedString("mode", mode)
+					.OptionalNamedString("fsm_extraction", fsm_extraction)
+					.Flag("rtl_skip_ip", rtl_skip_ip)
+					.Flag("rtl_skip_constraints", rtl_skip_constraints)
+					.Flag("keep_equivalent_registers", keep_equivalent_registers)
+					.OptionalNamedString("resource_sharing", resource_sharing)
+					.OptionalNamedString("cascade_dsp", cascade_dsp)
+					.OptionalNamedString("control_set_opt_threshold", control_set_opt_threshold)
+					.OptionalNamedString("incremental", incremental)
+					.OptionalNamedString("max_bram", max_bram)
+					.OptionalNamedString("max_uram", max_uram)
+					.OptionalNamedString("max_dsp", max_dsp)
+					.OptionalNamedString("max_bram_cascade_height", max_bram_cascade_height)
+					.OptionalNamedString("max_uram_cascade_height", max_uram_cascade_height)
+					.Flag("retiming", retiming)
+					.Flag("no_srlextract", no_srlextract)
+					.Flag("assert", assert)
+					.Flag("no_timing_driven", no_timing_driven)
+					.Flag("sfcu", sfcu)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Unregister a previously registered Tcl proc.
+		///
+		///
+		/// TCL Syntax: unregister_proc [-quiet] [-verbose] <tasknm>
 		///
 		/// Unregister the Tcl command, or <tasknm>, from the Vivado Design Suite Tcl interpretor.
 		///
@@ -1540,14 +1603,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Nothing</returns>
 		public void unregister_proc(string tasknm, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("unregister_proc");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("tasknm", tasknm);
-			_tcl.Add(command);
+			// TCL Syntax: unregister_proc [-quiet] [-verbose] <tasknm>
+			_tcl.Add(
+				new SimpleTCLCommand("unregister_proc")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(tasknm)
+			);
 		}
 		/// <summary>
 		/// Update clock routing on global clocks if they are modified after placement
+		///
+		///
+		/// TCL Syntax: update_clock_routing [-quiet] [-verbose]
 		///
 		/// The update_clock_routing command is an advanced command used for manually updating
 		/// the routing structures of all global clocks in designs targeting the UltraScale architecture. The
@@ -1601,13 +1669,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void update_clock_routing(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("update_clock_routing");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: update_clock_routing [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("update_clock_routing")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Update the NoC solution
+		///
+		///
+		/// TCL Syntax: update_noc_qos [-force] [-quiet] [-verbose]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1747
 		/// </summary>
@@ -1625,14 +1698,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void update_noc_qos(bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("update_noc_qos");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: update_noc_qos [-force] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("update_noc_qos")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Write iPhysOpt script.
+		///
+		///
+		/// TCL Syntax: write_iphys_opt_tcl [-place] [-binary] [-quiet] [-verbose] [<output>]
 		///
 		/// Because physical optimization requires timing data that is only available after placement, the
 		/// phys_opt_design command cannot be run prior to placement. However, the interactive
@@ -1685,13 +1763,15 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void write_iphys_opt_tcl(string output, bool? place = null, bool? binary = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_iphys_opt_tcl");
-			command.Flag("place", place);
-			command.Flag("binary", binary);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("output", output);
-			_tcl.Add(command);
+			// TCL Syntax: write_iphys_opt_tcl [-place] [-binary] [-quiet] [-verbose] [<output>]
+			_tcl.Add(
+				new SimpleTCLCommand("write_iphys_opt_tcl")
+					.Flag("place", place)
+					.Flag("binary", binary)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(output)
+			);
 		}
 	}
 }

@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class IPFlowCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public IPFlowCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public IPFlowCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Add a new bus interface to a peripheral.
+		///
+		///
+		/// TCL Syntax: add_peripheral_interface -interface_mode <arg> -axi_type <arg> [-quiet] [-verbose] <name> <peripheral>
 		///
 		/// Add an AXI bus interface to a peripheral created with the create_peripheral command.
 		///
@@ -45,17 +48,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void add_peripheral_interface(string interface_mode, string axi_type, string name, string peripheral, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("add_peripheral_interface");
-			command.RequiredString("interface_mode", interface_mode);
-			command.RequiredString("axi_type", axi_type);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.RequiredString("peripheral", peripheral);
-			_tcl.Add(command);
+			// TCL Syntax: add_peripheral_interface -interface_mode <arg> -axi_type <arg> [-quiet] [-verbose] <name> <peripheral>
+			_tcl.Add(
+				new SimpleTCLCommand("add_peripheral_interface")
+					.RequiredNamedString("interface_mode", interface_mode)
+					.RequiredNamedString("axi_type", axi_type)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.RequiredString(peripheral)
+			);
 		}
 		/// <summary>
 		/// Compile C code into RTL
+		///
+		///
+		/// TCL Syntax: compile_c [-force] [-quiet] [-verbose] <objects>
 		///
 		/// In IP cores that are imported from Vivado HLS, the compile_c command detects C, C++, and
 		/// SystemC files and converts those files to RTL for synthesis by the Vivado Design Suite.
@@ -88,15 +96,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void compile_c(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("compile_c");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: compile_c [-force] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("compile_c")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Manage the IP instance Synthesis cache. Lists out the IP Cache entries if no options are specified.
+		///
+		///
+		/// TCL Syntax: config_ip_cache [-use_cache_location <arg>] [-use_project_cache] [-disable_cache] [-clear_output_repo] [-clear_local_cache] [-cache_has_match] [-cache_was_used] [-get_id] [-remove] [-vlnv <arg>] [-old_swvers] [-unused] [-swver <arg>] [-num_days_old <arg>] [-num_days_unused <arg>] [-obs_synth_crc] [-disk_usage_output_repo] [-report] [-rptfile <arg>] [-csvfile <arg>] [-import_from_project] [-filter <arg>] [-regexp] [-nocase] [-purge] [-quiet] [-verbose] [<ip>]
 		///
 		/// This command lets you manage the Vivado Design Suite out-of-context (OOC) IP cache. The
 		/// Vivado Design Suite caches the synthesis results for customized OOC IP in an IP repository, so
@@ -276,39 +289,44 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void config_ip_cache(string use_cache_location = null, bool? use_project_cache = null, bool? disable_cache = null, bool? clear_output_repo = null, bool? clear_local_cache = null, bool? cache_has_match = null, bool? cache_was_used = null, bool? get_id = null, bool? remove = null, string vlnv = null, bool? old_swvers = null, bool? unused = null, string swver = null, string num_days_old = null, string num_days_unused = null, bool? obs_synth_crc = null, bool? disk_usage_output_repo = null, bool? report = null, string rptfile = null, string csvfile = null, bool? import_from_project = null, string filter = null, bool? regexp = null, bool? nocase = null, bool? purge = null, bool? quiet = null, bool? verbose = null, string ip = null)
 		{
-			var command = new SimpleTCLCommand("config_ip_cache");
-			command.OptionalString("use_cache_location", use_cache_location);
-			command.Flag("use_project_cache", use_project_cache);
-			command.Flag("disable_cache", disable_cache);
-			command.Flag("clear_output_repo", clear_output_repo);
-			command.Flag("clear_local_cache", clear_local_cache);
-			command.Flag("cache_has_match", cache_has_match);
-			command.Flag("cache_was_used", cache_was_used);
-			command.Flag("get_id", get_id);
-			command.Flag("remove", remove);
-			command.OptionalString("vlnv", vlnv);
-			command.Flag("old_swvers", old_swvers);
-			command.Flag("unused", unused);
-			command.OptionalString("swver", swver);
-			command.OptionalString("num_days_old", num_days_old);
-			command.OptionalString("num_days_unused", num_days_unused);
-			command.Flag("obs_synth_crc", obs_synth_crc);
-			command.Flag("disk_usage_output_repo", disk_usage_output_repo);
-			command.Flag("report", report);
-			command.OptionalString("rptfile", rptfile);
-			command.OptionalString("csvfile", csvfile);
-			command.Flag("import_from_project", import_from_project);
-			command.OptionalString("filter", filter);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("purge", purge);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("ip", ip);
-			_tcl.Add(command);
+			// TCL Syntax: config_ip_cache [-use_cache_location <arg>] [-use_project_cache] [-disable_cache] [-clear_output_repo] [-clear_local_cache] [-cache_has_match] [-cache_was_used] [-get_id] [-remove] [-vlnv <arg>] [-old_swvers] [-unused] [-swver <arg>] [-num_days_old <arg>] [-num_days_unused <arg>] [-obs_synth_crc] [-disk_usage_output_repo] [-report] [-rptfile <arg>] [-csvfile <arg>] [-import_from_project] [-filter <arg>] [-regexp] [-nocase] [-purge] [-quiet] [-verbose] [<ip>]
+			_tcl.Add(
+				new SimpleTCLCommand("config_ip_cache")
+					.OptionalNamedString("use_cache_location", use_cache_location)
+					.Flag("use_project_cache", use_project_cache)
+					.Flag("disable_cache", disable_cache)
+					.Flag("clear_output_repo", clear_output_repo)
+					.Flag("clear_local_cache", clear_local_cache)
+					.Flag("cache_has_match", cache_has_match)
+					.Flag("cache_was_used", cache_was_used)
+					.Flag("get_id", get_id)
+					.Flag("remove", remove)
+					.OptionalNamedString("vlnv", vlnv)
+					.Flag("old_swvers", old_swvers)
+					.Flag("unused", unused)
+					.OptionalNamedString("swver", swver)
+					.OptionalNamedString("num_days_old", num_days_old)
+					.OptionalNamedString("num_days_unused", num_days_unused)
+					.Flag("obs_synth_crc", obs_synth_crc)
+					.Flag("disk_usage_output_repo", disk_usage_output_repo)
+					.Flag("report", report)
+					.OptionalNamedString("rptfile", rptfile)
+					.OptionalNamedString("csvfile", csvfile)
+					.Flag("import_from_project", import_from_project)
+					.OptionalNamedString("filter", filter)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("purge", purge)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(ip)
+			);
 		}
 		/// <summary>
 		/// Convert specified IP to or from core container format.
+		///
+		///
+		/// TCL Syntax: convert_ips [-force] [-to_core_container] [-from_core_container] [-quiet] [-verbose] <objects>
 		///
 		/// This command converts existing IP into core container format, or reverts core container IP into
 		/// the expanded non-core container format.
@@ -367,17 +385,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void convert_ips(string objects, bool? force = null, bool? to_core_container = null, bool? from_core_container = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("convert_ips");
-			command.Flag("force", force);
-			command.Flag("to_core_container", to_core_container);
-			command.Flag("from_core_container", from_core_container);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: convert_ips [-force] [-to_core_container] [-from_core_container] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("convert_ips")
+					.Flag("force", force)
+					.Flag("to_core_container", to_core_container)
+					.Flag("from_core_container", from_core_container)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Copy an existing IP
+		///
+		///
+		/// TCL Syntax: copy_ip -name <arg> [-dir <arg>] [-quiet] [-verbose] <objects>...
 		///
 		/// Create a copy of an IP core that has been previously instanced into the current project.
 		///
@@ -407,16 +430,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>IP file object that was added to the project</returns>
 		public void copy_ip(string name, string objects, string dir = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("copy_ip");
-			command.RequiredString("name", name);
-			command.OptionalString("dir", dir);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: copy_ip -name <arg> [-dir <arg>] [-quiet] [-verbose] <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("copy_ip")
+					.RequiredNamedString("name", name)
+					.OptionalNamedString("dir", dir)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Create an instance of a configurable IP and add it to the fileset
+		///
+		///
+		/// TCL Syntax: create_ip [-vlnv <arg>] -module_name <arg> [-dir <arg>] [-force] [-allow_hidden] [-vendor <arg>] [-library <arg>] [-name <arg>] [-version <arg>] [-revision <arg>] [-quiet] [-verbose]
 		///
 		/// This command creates an XCI file for a configurable IP core from the IP catalog, and adds it to the
 		/// source files of the current project. This creates an IP source object which must be instantiated
@@ -506,23 +534,28 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of file objects that were added</returns>
 		public void create_ip(string module_name, string vlnv = null, string dir = null, bool? force = null, bool? allow_hidden = null, string vendor = null, string library = null, string name = null, string version = null, string revision = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_ip");
-			command.OptionalString("vlnv", vlnv);
-			command.RequiredString("module_name", module_name);
-			command.OptionalString("dir", dir);
-			command.Flag("force", force);
-			command.Flag("allow_hidden", allow_hidden);
-			command.OptionalString("vendor", vendor);
-			command.OptionalString("library", library);
-			command.OptionalString("name", name);
-			command.OptionalString("version", version);
-			command.OptionalString("revision", revision);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: create_ip [-vlnv <arg>] -module_name <arg> [-dir <arg>] [-force] [-allow_hidden] [-vendor <arg>] [-library <arg>] [-name <arg>] [-version <arg>] [-revision <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("create_ip")
+					.OptionalNamedString("vlnv", vlnv)
+					.RequiredNamedString("module_name", module_name)
+					.OptionalNamedString("dir", dir)
+					.Flag("force", force)
+					.Flag("allow_hidden", allow_hidden)
+					.OptionalNamedString("vendor", vendor)
+					.OptionalNamedString("library", library)
+					.OptionalNamedString("name", name)
+					.OptionalNamedString("version", version)
+					.OptionalNamedString("revision", revision)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Creates a run for the given IP.
+		///
+		///
+		/// TCL Syntax: create_ip_run [-force] [-quiet] [-verbose] <objects>
 		///
 		/// Defines a synthesis and implementation run for a single IP object as specified by the get_ips
 		/// command, or for the specified IP core file (XCI) as specified by the get_files command.
@@ -558,15 +591,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_ip_run(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_ip_run");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: create_ip_run [-force] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("create_ip_run")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Create a peripheral with a VLNV.
+		///
+		///
+		/// TCL Syntax: create_peripheral [-dir <arg>] [-quiet] [-verbose] <vendor> <library> <name> <version>
 		///
 		/// Create an AXI peripheral to add to the IP repository with the specified VLNV attribute.
 		/// The AXI peripheral that is created is just a framework until interfaces have been added to the
@@ -606,18 +644,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_peripheral(string vendor, string library, string name, string version, string dir = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_peripheral");
-			command.OptionalString("dir", dir);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("vendor", vendor);
-			command.RequiredString("library", library);
-			command.RequiredString("name", name);
-			command.RequiredString("version", version);
-			_tcl.Add(command);
+			// TCL Syntax: create_peripheral [-dir <arg>] [-quiet] [-verbose] <vendor> <library> <name> <version>
+			_tcl.Add(
+				new SimpleTCLCommand("create_peripheral")
+					.OptionalNamedString("dir", dir)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(vendor)
+					.RequiredString(library)
+					.RequiredString(name)
+					.RequiredString(version)
+			);
 		}
 		/// <summary>
 		/// Deletes the block fileset and run associated with a given IP.
+		///
+		///
+		/// TCL Syntax: delete_ip_run [-force] [-quiet] [-verbose] <objects>
 		///
 		/// Deletes the out-of-context (OOC) synthesis and implementation runs for the specified IP
 		/// module.
@@ -654,15 +697,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_ip_run(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_ip_run");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: delete_ip_run [-force] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("delete_ip_run")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Extract files from a core container to disk
+		///
+		///
+		/// TCL Syntax: extract_files [-base_dir <arg>] [-force] [-no_ip_dir] [-no_paths] [-quiet] [-verbose] <files>...
 		///
 		/// Extract the files from an IP in core container format.
 		/// The core container format for IP is a compressed zip file that reduces the file structure in the
@@ -707,18 +755,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of files that were extracted with the new paths</returns>
 		public void extract_files(string files, string base_dir = null, bool? force = null, bool? no_ip_dir = null, bool? no_paths = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("extract_files");
-			command.OptionalString("base_dir", base_dir);
-			command.Flag("force", force);
-			command.Flag("no_ip_dir", no_ip_dir);
-			command.Flag("no_paths", no_paths);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: extract_files [-base_dir <arg>] [-force] [-no_ip_dir] [-no_paths] [-quiet] [-verbose] <files>...
+			_tcl.Add(
+				new SimpleTCLCommand("extract_files")
+					.OptionalNamedString("base_dir", base_dir)
+					.Flag("force", force)
+					.Flag("no_ip_dir", no_ip_dir)
+					.Flag("no_paths", no_paths)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// Generate output products for peripheral object.
+		///
+		///
+		/// TCL Syntax: generate_peripheral [-driver] [-example_design] [-bfm_example_design] [-debug_hw_example_design] [-enable_interrupt] [-force] [-quiet] [-verbose] <peripheral>
 		///
 		/// Generate the output products for the specified peripheral object. The output products are
 		/// written to the IP repository location specified when the IP is created by the
@@ -764,20 +817,25 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void generate_peripheral(string peripheral, bool? driver = null, bool? example_design = null, bool? bfm_example_design = null, bool? debug_hw_example_design = null, bool? enable_interrupt = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("generate_peripheral");
-			command.Flag("driver", driver);
-			command.Flag("example_design", example_design);
-			command.Flag("bfm_example_design", bfm_example_design);
-			command.Flag("debug_hw_example_design", debug_hw_example_design);
-			command.Flag("enable_interrupt", enable_interrupt);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("peripheral", peripheral);
-			_tcl.Add(command);
+			// TCL Syntax: generate_peripheral [-driver] [-example_design] [-bfm_example_design] [-debug_hw_example_design] [-enable_interrupt] [-force] [-quiet] [-verbose] <peripheral>
+			_tcl.Add(
+				new SimpleTCLCommand("generate_peripheral")
+					.Flag("driver", driver)
+					.Flag("example_design", example_design)
+					.Flag("bfm_example_design", bfm_example_design)
+					.Flag("debug_hw_example_design", debug_hw_example_design)
+					.Flag("enable_interrupt", enable_interrupt)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(peripheral)
+			);
 		}
 		/// <summary>
 		/// Generate target data for the specified source
+		///
+		///
+		/// TCL Syntax: generate_target [-force] [-quiet] [-verbose] <name> <objects>
 		///
 		/// This command generates target data for the specified IP objects (get_ips) or source file for IP
 		/// cores (.xci and .xco), DSP modules (.slx or .mdl), or block designs (.bd). The target data
@@ -832,16 +890,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void generate_target(string name, string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("generate_target");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: generate_target [-force] [-quiet] [-verbose] <name> <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("generate_target")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Get a list of results for IP upgrades during the current project
+		///
+		///
+		/// TCL Syntax: get_ip_upgrade_results [-srcset <arg>] [-quiet] [-verbose] [<objects>...]
 		///
 		/// Returns the names of the upgrade_log files for the specified IPs.
 		/// This command is used by the Vivado IDE to populate the IP Status Report window with
@@ -876,15 +939,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of IP upgrade results</returns>
 		public void get_ip_upgrade_results(string srcset = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
-			var command = new SimpleTCLCommand("get_ip_upgrade_results");
-			command.OptionalString("srcset", srcset);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: get_ip_upgrade_results [-srcset <arg>] [-quiet] [-verbose] [<objects>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_ip_upgrade_results")
+					.OptionalNamedString("srcset", srcset)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(objects)
+			);
 		}
 		/// <summary>
 		/// Get a list of IP from the current IP Catalog
+		///
+		///
+		/// TCL Syntax: get_ipdefs [-name] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-all] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Get a list of IP cores defined in the IP catalog of the current project, based on the specified
 		/// search pattern. The default is to return all IP cores defined in the Vivado tools IP catalog.
@@ -954,20 +1022,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>List of Catalog IP objects</returns>
 		public void get_ipdefs(bool? name = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? all = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_ipdefs");
-			command.Flag("name", name);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("all", all);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_ipdefs [-name] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-all] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_ipdefs")
+					.Flag("name", name)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("all", all)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of IPs in the current design
+		///
+		///
+		/// TCL Syntax: get_ips [-regexp] [-nocase] [-all] [-filter <arg>] [-exclude_bd_ips] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Get a list of IP cores in the current project based on the specified search pattern. The default
 		/// command returns a list of all IPs in the project.
@@ -1022,20 +1095,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of IP objects</returns>
 		public void get_ips(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? exclude_bd_ips = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_ips");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("all", all);
-			command.OptionalString("filter", filter);
-			command.Flag("exclude_bd_ips", exclude_bd_ips);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_ips [-regexp] [-nocase] [-all] [-filter <arg>] [-exclude_bd_ips] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_ips")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("all", all)
+					.OptionalNamedString("filter", filter)
+					.Flag("exclude_bd_ips", exclude_bd_ips)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Import an IP file and add it to the fileset
+		///
+		///
+		/// TCL Syntax: import_ip [-srcset <arg>] [-name <arg>] [-quiet] [-verbose] [<files>]
 		///
 		/// Adds an existing XCI or XCO file as an IP source into the current project, and copies it into the
 		/// local project directory structure.
@@ -1079,16 +1157,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of file objects that were added</returns>
 		public void import_ip(string srcset = null, string name = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
-			var command = new SimpleTCLCommand("import_ip");
-			command.OptionalString("srcset", srcset);
-			command.OptionalString("name", name);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: import_ip [-srcset <arg>] [-name <arg>] [-quiet] [-verbose] [<files>]
+			_tcl.Add(
+				new SimpleTCLCommand("import_ip")
+					.OptionalNamedString("srcset", srcset)
+					.OptionalNamedString("name", name)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(files)
+			);
 		}
 		/// <summary>
 		/// Open the example project for the indicated IP
+		///
+		///
+		/// TCL Syntax: open_example_project [-dir <arg>] [-force] [-in_process] [-quiet] [-verbose] <objects>...
 		///
 		/// Open an example project for the specified IP cores. The example project can be used to explore
 		/// the features of the IP core in a stand-alone project, instead of integrated into the current project.
@@ -1126,17 +1209,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The Project that was opened</returns>
 		public void open_example_project(string objects, string dir = null, bool? force = null, bool? in_process = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("open_example_project");
-			command.OptionalString("dir", dir);
-			command.Flag("force", force);
-			command.Flag("in_process", in_process);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: open_example_project [-dir <arg>] [-force] [-in_process] [-quiet] [-verbose] <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("open_example_project")
+					.OptionalNamedString("dir", dir)
+					.Flag("force", force)
+					.Flag("in_process", in_process)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Read one or more IP files
+		///
+		///
+		/// TCL Syntax: read_ip [-quiet] [-verbose] <files>
 		///
 		/// Read the specified list of IP files (XCI) and add them to the design and the current fileset. Files are
 		/// added by reference into the current project, just as in the add_files command.
@@ -1174,14 +1262,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of IP file objects that were added</returns>
 		public void read_ip(string files, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_ip");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: read_ip [-quiet] [-verbose] <files>
+			_tcl.Add(
+				new SimpleTCLCommand("read_ip")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// Report on the status of the IP instances in the project.
+		///
+		///
+		/// TCL Syntax: report_ip_status [-name <arg>] [-file <arg>] [-append] [-return_string] [-license_status] [-resource_data] [-quiet] [-verbose]
 		///
 		/// This command examines the IP cores in the current project, and reports the state of the IP with
 		/// regard to the latest IP catalog. The following information is included in the IP Status report:
@@ -1248,19 +1341,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>True for success</returns>
 		public void report_ip_status(string name = null, string file = null, bool? append = null, bool? return_string = null, bool? license_status = null, bool? resource_data = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_ip_status");
-			command.OptionalString("name", name);
-			command.OptionalString("file", file);
-			command.Flag("append", append);
-			command.Flag("return_string", return_string);
-			command.Flag("license_status", license_status);
-			command.Flag("resource_data", resource_data);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: report_ip_status [-name <arg>] [-file <arg>] [-append] [-return_string] [-license_status] [-resource_data] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("report_ip_status")
+					.OptionalNamedString("name", name)
+					.OptionalNamedString("file", file)
+					.Flag("append", append)
+					.Flag("return_string", return_string)
+					.Flag("license_status", license_status)
+					.Flag("resource_data", resource_data)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Reset target data for the specified source
+		///
+		///
+		/// TCL Syntax: reset_target [-quiet] [-verbose] <name> <objects>
 		///
 		/// Remove the current target data for the specified IP core. This deletes any files that were
 		/// delivered during generation of the specified targets. This does not remove the core from the
@@ -1290,15 +1388,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void reset_target(string name, string objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("reset_target");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: reset_target [-quiet] [-verbose] <name> <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("reset_target")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Generate a synthesis netlist for an IP
+		///
+		///
+		/// TCL Syntax: synth_ip [-force] [-quiet] [-verbose] <objects>
 		///
 		/// This command is used in the non-project flow to create a synthesized design checkpoint file
 		/// (DCP) to support the out-of-context (OOC) IP flow, or to synthesize and implement an IP module
@@ -1338,16 +1441,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void synth_ip(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("synth_ip");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: synth_ip [-force] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("synth_ip")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Update the IP Catalog. Before executing this command optionally use the following to set
 		/// repository paths:'set_property ip_repo_paths <repo_path_list> [current_fileset]'
+		///
+		///
+		/// TCL Syntax: update_ip_catalog [-rebuild] [-add_ip <arg>] [-delete_ip <arg>] [-delete_mult_ip <args>] [-disable_ip <arg>] [-enable_ip <arg>] [-add_interface <arg>] [-create_index] [-repo_path <arg>] [-update_module_ref] [-quiet] [-verbose]
 		///
 		/// Update the IP catalog associated with the current design.
 		/// The Xilinx® IP catalog, or repository, is located in the installation hierarchy of the Vivado Design
@@ -1439,23 +1547,28 @@ namespace Quokka.TCL.Vivado
 		/// <returns>True for success</returns>
 		public void update_ip_catalog(bool? rebuild = null, string add_ip = null, string delete_ip = null, string delete_mult_ip = null, string disable_ip = null, string enable_ip = null, string add_interface = null, bool? create_index = null, string repo_path = null, bool? update_module_ref = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("update_ip_catalog");
-			command.Flag("rebuild", rebuild);
-			command.OptionalString("add_ip", add_ip);
-			command.OptionalString("delete_ip", delete_ip);
-			command.OptionalString("delete_mult_ip", delete_mult_ip);
-			command.OptionalString("disable_ip", disable_ip);
-			command.OptionalString("enable_ip", enable_ip);
-			command.OptionalString("add_interface", add_interface);
-			command.Flag("create_index", create_index);
-			command.OptionalString("repo_path", repo_path);
-			command.Flag("update_module_ref", update_module_ref);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: update_ip_catalog [-rebuild] [-add_ip <arg>] [-delete_ip <arg>] [-delete_mult_ip <args>] [-disable_ip <arg>] [-enable_ip <arg>] [-add_interface <arg>] [-create_index] [-repo_path <arg>] [-update_module_ref] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("update_ip_catalog")
+					.Flag("rebuild", rebuild)
+					.OptionalNamedString("add_ip", add_ip)
+					.OptionalNamedString("delete_ip", delete_ip)
+					.OptionalNamedString("delete_mult_ip", delete_mult_ip)
+					.OptionalNamedString("disable_ip", disable_ip)
+					.OptionalNamedString("enable_ip", enable_ip)
+					.OptionalNamedString("add_interface", add_interface)
+					.Flag("create_index", create_index)
+					.OptionalNamedString("repo_path", repo_path)
+					.Flag("update_module_ref", update_module_ref)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Refresh module reference definition and instance(s)
+		///
+		///
+		/// TCL Syntax: update_module_reference [-quiet] [-verbose] [<ips>...]
 		///
 		/// Refresh the block design cell or cells that reference module definitions from RTL source files by
 		/// rereading the module definition from the source file.
@@ -1485,14 +1598,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>A return code indicating success or failure.</returns>
 		public void update_module_reference(bool? quiet = null, bool? verbose = null, string ips = null)
 		{
-			var command = new SimpleTCLCommand("update_module_reference");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("ips", ips);
-			_tcl.Add(command);
+			// TCL Syntax: update_module_reference [-quiet] [-verbose] [<ips>...]
+			_tcl.Add(
+				new SimpleTCLCommand("update_module_reference")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(ips)
+			);
 		}
 		/// <summary>
 		/// Upgrade a configurable IP to a later version
+		///
+		///
+		/// TCL Syntax: upgrade_ip [-srcset <arg>] [-vlnv <arg>] [-log <arg>] [-quiet] [-verbose] <objects>...
 		///
 		/// This command upgrades the specified IP cores from an older version to the latest version in the
 		/// IP catalog.
@@ -1547,18 +1665,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>A return code indicating success or failure.</returns>
 		public void upgrade_ip(string objects, string srcset = null, string vlnv = null, string log = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("upgrade_ip");
-			command.OptionalString("srcset", srcset);
-			command.OptionalString("vlnv", vlnv);
-			command.OptionalString("log", log);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: upgrade_ip [-srcset <arg>] [-vlnv <arg>] [-log <arg>] [-quiet] [-verbose] <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("upgrade_ip")
+					.OptionalNamedString("srcset", srcset)
+					.OptionalNamedString("vlnv", vlnv)
+					.OptionalNamedString("log", log)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// This command applies any pending set_property commands and returns parameter validation
 		/// messages, if any exist
+		///
+		///
+		/// TCL Syntax: validate_ip [-save_ip] [-quiet] [-verbose] [<ips>]
 		///
 		/// Perform DRC check on IP to ensure that it is properly constructed. This command returns 1
 		/// when all IPs have been validated, or 0 when there is a problem.
@@ -1587,15 +1710,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void validate_ip(bool? save_ip = null, bool? quiet = null, bool? verbose = null, string ips = null)
 		{
-			var command = new SimpleTCLCommand("validate_ip");
-			command.Flag("save_ip", save_ip);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("ips", ips);
-			_tcl.Add(command);
+			// TCL Syntax: validate_ip [-save_ip] [-quiet] [-verbose] [<ips>]
+			_tcl.Add(
+				new SimpleTCLCommand("validate_ip")
+					.Flag("save_ip", save_ip)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(ips)
+			);
 		}
 		/// <summary>
 		/// Write a tcl script on disk that will recreate a given IP.
+		///
+		///
+		/// TCL Syntax: write_ip_tcl [-force] [-no_ip_version] [-ip_name <arg>] [-show_defaults] [-multiple_files] [-quiet] [-verbose] [<objects>] [<tcl_filename>...]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1833
 		/// </summary>
@@ -1645,20 +1773,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>IP TCL file</returns>
 		public void write_ip_tcl(bool? force = null, bool? no_ip_version = null, string ip_name = null, bool? show_defaults = null, bool? multiple_files = null, bool? quiet = null, bool? verbose = null, string objects = null, string tcl_filename = null)
 		{
-			var command = new SimpleTCLCommand("write_ip_tcl");
-			command.Flag("force", force);
-			command.Flag("no_ip_version", no_ip_version);
-			command.OptionalString("ip_name", ip_name);
-			command.Flag("show_defaults", show_defaults);
-			command.Flag("multiple_files", multiple_files);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("objects", objects);
-			command.OptionalString("tcl_filename", tcl_filename);
-			_tcl.Add(command);
+			// TCL Syntax: write_ip_tcl [-force] [-no_ip_version] [-ip_name <arg>] [-show_defaults] [-multiple_files] [-quiet] [-verbose] [<objects>] [<tcl_filename>...]
+			_tcl.Add(
+				new SimpleTCLCommand("write_ip_tcl")
+					.Flag("force", force)
+					.Flag("no_ip_version", no_ip_version)
+					.OptionalNamedString("ip_name", ip_name)
+					.Flag("show_defaults", show_defaults)
+					.Flag("multiple_files", multiple_files)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(objects)
+					.OptionalString(tcl_filename)
+			);
 		}
 		/// <summary>
 		/// Save peripheral component to the disk.
+		///
+		///
+		/// TCL Syntax: write_peripheral [-quiet] [-verbose] <peripheral>
 		///
 		/// Write the specified AXI peripheral object to disk in the form of the component.xml file. The
 		/// peripheral is written to the repository location specified by the create_peripheral
@@ -1680,11 +1813,13 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void write_peripheral(string peripheral, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_peripheral");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("peripheral", peripheral);
-			_tcl.Add(command);
+			// TCL Syntax: write_peripheral [-quiet] [-verbose] <peripheral>
+			_tcl.Add(
+				new SimpleTCLCommand("write_peripheral")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(peripheral)
+			);
 		}
 	}
 }

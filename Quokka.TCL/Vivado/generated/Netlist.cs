@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class NetlistCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public NetlistCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public NetlistCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Connect a net to pins or ports
+		///
+		///
+		/// TCL Syntax: connect_net [-hierarchical] [-basename <arg>] [-net <args>] [-objects <args>] [-net_object_list <args>] [-dict <args>] [-quiet] [-verbose]
 		///
 		/// This command allows the user to connect a specified net to one or more pins or ports in the
 		/// netlist of an open Synthesized or Implemented Design.
@@ -77,19 +80,24 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void connect_net(string objects, bool? hierarchical = null, string basename = null, string net = null, string net_object_list = null, string dict = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("connect_net");
-			command.Flag("hierarchical", hierarchical);
-			command.OptionalString("basename", basename);
-			command.OptionalString("net", net);
-			command.RequiredString("objects", objects);
-			command.OptionalString("net_object_list", net_object_list);
-			command.OptionalString("dict", dict);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: connect_net [-hierarchical] [-basename <arg>] [-net <args>] [-objects <args>] [-net_object_list <args>] [-dict <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("connect_net")
+					.Flag("hierarchical", hierarchical)
+					.OptionalNamedString("basename", basename)
+					.OptionalNamedString("net", net)
+					.RequiredNamedString("objects", objects)
+					.OptionalNamedString("net_object_list", net_object_list)
+					.OptionalNamedString("dict", dict)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Create cells in the current design
+		///
+		///
+		/// TCL Syntax: create_cell -reference <arg> [-black_box] [-quiet] [-verbose] <cells>...
 		///
 		/// Add cells to the netlist of the current Synthesized or Implemented design.
 		/// Note: You cannot add cells to library macros, or macro-primitives.
@@ -137,16 +145,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_cell(string reference, string cells, bool? black_box = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_cell");
-			command.RequiredString("reference", reference);
-			command.Flag("black_box", black_box);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("cells", cells);
-			_tcl.Add(command);
+			// TCL Syntax: create_cell -reference <arg> [-black_box] [-quiet] [-verbose] <cells>...
+			_tcl.Add(
+				new SimpleTCLCommand("create_cell")
+					.RequiredNamedString("reference", reference)
+					.Flag("black_box", black_box)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(cells)
+			);
 		}
 		/// <summary>
 		/// Create nets in the current design
+		///
+		///
+		/// TCL Syntax: create_net [-from <arg>] [-to <arg>] [-quiet] [-verbose] <nets>...
 		///
 		/// Create new nets in the current netlist of an open Synthesized or Implemented Design.
 		/// Note: You cannot add nets to library macros, or macro-primitives.
@@ -189,16 +202,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_net(string nets, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_net");
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("nets", nets);
-			_tcl.Add(command);
+			// TCL Syntax: create_net [-from <arg>] [-to <arg>] [-quiet] [-verbose] <nets>...
+			_tcl.Add(
+				new SimpleTCLCommand("create_net")
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(nets)
+			);
 		}
 		/// <summary>
 		/// Create pins in the current design
+		///
+		///
+		/// TCL Syntax: create_pin [-from <arg>] [-to <arg>] -direction <arg> [-quiet] [-verbose] <pins>...
 		///
 		/// Add single pins or bus pins to the current netlist of an open Synthesized or Implemented Design.
 		/// You may define attributes of the pin such as direction and bus width, as well as the pin name.
@@ -252,17 +270,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_pin(string direction, string pins, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_pin");
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.RequiredString("direction", direction);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("pins", pins);
-			_tcl.Add(command);
+			// TCL Syntax: create_pin [-from <arg>] [-to <arg>] -direction <arg> [-quiet] [-verbose] <pins>...
+			_tcl.Add(
+				new SimpleTCLCommand("create_pin")
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.RequiredNamedString("direction", direction)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(pins)
+			);
 		}
 		/// <summary>
 		/// Disconnect a net from pins or ports
+		///
+		///
+		/// TCL Syntax: disconnect_net [-prune] [-net <arg>] [-objects <args>] [-pinlist <args>] [-quiet] [-verbose]
 		///
 		/// This command allows the user to disconnect a specified net from one or more pins or ports in the
 		/// netlist of an open Synthesized or Implemented Design.
@@ -306,17 +329,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void disconnect_net(string objects, bool? prune = null, string net = null, string pinlist = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("disconnect_net");
-			command.Flag("prune", prune);
-			command.OptionalString("net", net);
-			command.RequiredString("objects", objects);
-			command.OptionalString("pinlist", pinlist);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: disconnect_net [-prune] [-net <arg>] [-objects <args>] [-pinlist <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("disconnect_net")
+					.Flag("prune", prune)
+					.OptionalNamedString("net", net)
+					.RequiredNamedString("objects", objects)
+					.OptionalNamedString("pinlist", pinlist)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get the routed or estimated delays in picoseconds on a net from the driver to each load pin.
+		///
+		///
+		/// TCL Syntax: get_net_delays -of_objects <args> [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-to <args>] [-interconnect_only] [-quiet] [-verbose]
 		///
 		/// Get delay objects for the specified nets in the current design, from the driver to each load pin, or
 		/// to specified load pins, through specific pins.
@@ -386,20 +414,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>net_delays</returns>
 		public void get_net_delays(string of_objects, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, string to = null, bool? interconnect_only = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_net_delays");
-			command.RequiredString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("patterns", patterns);
-			command.OptionalString("filter", filter);
-			command.OptionalString("to", to);
-			command.Flag("interconnect_only", interconnect_only);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: get_net_delays -of_objects <args> [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-to <args>] [-interconnect_only] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("get_net_delays")
+					.RequiredNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("patterns", patterns)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("to", to)
+					.Flag("interconnect_only", interconnect_only)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Remove cells from the current design
+		///
+		///
+		/// TCL Syntax: remove_cell [-quiet] [-verbose] <cells>...
 		///
 		/// Remove cells from the current netlist in either an open Synthesized or Implemented design.
 		/// Note: You cannot remove cells from library macros, also called macro-primitives.
@@ -430,14 +463,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_cell(string cells, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("remove_cell");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("cells", cells);
-			_tcl.Add(command);
+			// TCL Syntax: remove_cell [-quiet] [-verbose] <cells>...
+			_tcl.Add(
+				new SimpleTCLCommand("remove_cell")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(cells)
+			);
 		}
 		/// <summary>
 		/// Remove nets from the current design
+		///
+		///
+		/// TCL Syntax: remove_net [-prune] [-quiet] [-verbose] <nets>...
 		///
 		/// Remove the specified net from the netlist of an open Synthesized or Implemented Design.
 		/// Note: You cannot remove nets from library macros, also called macro-primitives.
@@ -473,15 +511,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_net(string nets, bool? prune = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("remove_net");
-			command.Flag("prune", prune);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("nets", nets);
-			_tcl.Add(command);
+			// TCL Syntax: remove_net [-prune] [-quiet] [-verbose] <nets>...
+			_tcl.Add(
+				new SimpleTCLCommand("remove_net")
+					.Flag("prune", prune)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(nets)
+			);
 		}
 		/// <summary>
 		/// Remove pins from the current design
+		///
+		///
+		/// TCL Syntax: remove_pin [-quiet] [-verbose] <pins>...
 		///
 		/// Remove pins from the current netlist in either an open Synthesized or Implemented design.
 		/// Note: You cannot remove pins from library macros, or macro-primitives.
@@ -515,14 +558,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_pin(string pins, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("remove_pin");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("pins", pins);
-			_tcl.Add(command);
+			// TCL Syntax: remove_pin [-quiet] [-verbose] <pins>...
+			_tcl.Add(
+				new SimpleTCLCommand("remove_pin")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(pins)
+			);
 		}
 		/// <summary>
 		/// rename a cell
+		///
+		///
+		/// TCL Syntax: rename_cell -to <arg> [-quiet] [-verbose] <cell>...
 		///
 		/// Rename a single hierarchical or leaf-level cell in the current synthesized or implemented design.
 		/// TIP: You cannot rename cells with DONT_TOUCH property set to TRUE.
@@ -561,15 +609,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void rename_cell(string to, string cell, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("rename_cell");
-			command.RequiredString("to", to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("cell", cell);
-			_tcl.Add(command);
+			// TCL Syntax: rename_cell -to <arg> [-quiet] [-verbose] <cell>...
+			_tcl.Add(
+				new SimpleTCLCommand("rename_cell")
+					.RequiredNamedString("to", to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(cell)
+			);
 		}
 		/// <summary>
 		/// rename a net
+		///
+		///
+		/// TCL Syntax: rename_net -to <arg> [-quiet] [-verbose] <net>...
 		///
 		/// Rename a net in the current synthesized or implemented design.
 		/// The following are limitations with regard to renaming nets:
@@ -610,15 +663,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void rename_net(string to, string net, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("rename_net");
-			command.RequiredString("to", to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("net", net);
-			_tcl.Add(command);
+			// TCL Syntax: rename_net -to <arg> [-quiet] [-verbose] <net>...
+			_tcl.Add(
+				new SimpleTCLCommand("rename_net")
+					.RequiredNamedString("to", to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(net)
+			);
 		}
 		/// <summary>
 		/// rename a pin
+		///
+		///
+		/// TCL Syntax: rename_pin -to <arg> [-quiet] [-verbose] <pin>...
 		///
 		/// Rename the specified pin on a hierarchical cell in the current synthesized or implemented design.
 		/// The following are limitations with regard to renaming pins:
@@ -667,15 +725,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void rename_pin(string to, string pin, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("rename_pin");
-			command.RequiredString("to", to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("pin", pin);
-			_tcl.Add(command);
+			// TCL Syntax: rename_pin -to <arg> [-quiet] [-verbose] <pin>...
+			_tcl.Add(
+				new SimpleTCLCommand("rename_pin")
+					.RequiredNamedString("to", to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(pin)
+			);
 		}
 		/// <summary>
 		/// rename a port
+		///
+		///
+		/// TCL Syntax: rename_port -to <arg> [-quiet] [-verbose] <port>...
 		///
 		/// Rename a single port in the current synthesized or implemented design.
 		/// TIP: You cannot rename individual bits of a bus port, but you can collectively rename the whole bus.
@@ -714,15 +777,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void rename_port(string to, string port, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("rename_port");
-			command.RequiredString("to", to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("port", port);
-			_tcl.Add(command);
+			// TCL Syntax: rename_port -to <arg> [-quiet] [-verbose] <port>...
+			_tcl.Add(
+				new SimpleTCLCommand("rename_port")
+					.RequiredNamedString("to", to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(port)
+			);
 		}
 		/// <summary>
 		/// rename a cell ref
+		///
+		///
+		/// TCL Syntax: rename_ref [-ref <arg>] [-to <arg>] [-prefix_all <arg>] [-quiet] [-verbose]
 		///
 		/// Rename the reference name of a single non-primitive cell, or apply a reference prefix to all non￾primitive cells in the current synthesized or implemented design.
 		/// This command provides a mechanism to change the non-primitive reference names in the current
@@ -741,7 +809,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1257
 		/// </summary>
-		/// <param name="ref">
+		/// <param name="@ref">
 		/// Optional
 		/// Cell ref to rename
 		/// </param>
@@ -763,18 +831,23 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void rename_ref(string ref = null, string to = null, string prefix_all = null, bool? quiet = null, bool? verbose = null)
+		public void rename_ref(string @ref = null, string to = null, string prefix_all = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("rename_ref");
-			command.OptionalString("ref", ref);
-			command.OptionalString("to", to);
-			command.OptionalString("prefix_all", prefix_all);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: rename_ref [-ref <arg>] [-to <arg>] [-prefix_all <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("rename_ref")
+					.OptionalNamedString("ref", @ref)
+					.OptionalNamedString("to", to)
+					.OptionalNamedString("prefix_all", prefix_all)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Resize net bus in the current design
+		///
+		///
+		/// TCL Syntax: resize_net_bus [-from <arg>] [-to <arg>] [-quiet] [-verbose] <net_bus_name>...
 		///
 		/// Resize an existing bus net, to grow the bus, shrink the bus, or renumber the current range of
 		/// indexes. You can only do a single grow, shrink, or renumber operation with each command.
@@ -818,16 +891,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void resize_net_bus(string net_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("resize_net_bus");
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("net_bus_name", net_bus_name);
-			_tcl.Add(command);
+			// TCL Syntax: resize_net_bus [-from <arg>] [-to <arg>] [-quiet] [-verbose] <net_bus_name>...
+			_tcl.Add(
+				new SimpleTCLCommand("resize_net_bus")
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(net_bus_name)
+			);
 		}
 		/// <summary>
 		/// Resize pin bus in the current design
+		///
+		///
+		/// TCL Syntax: resize_pin_bus [-from <arg>] [-to <arg>] [-quiet] [-verbose] <pin_bus_name>...
 		///
 		/// Resize an existing bus pin, to grow the bus, shrink the bus, or renumber the current range of pin
 		/// indexes. You can only do a single grow, shrink, or renumber operation with each command.
@@ -879,16 +957,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void resize_pin_bus(string pin_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("resize_pin_bus");
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("pin_bus_name", pin_bus_name);
-			_tcl.Add(command);
+			// TCL Syntax: resize_pin_bus [-from <arg>] [-to <arg>] [-quiet] [-verbose] <pin_bus_name>...
+			_tcl.Add(
+				new SimpleTCLCommand("resize_pin_bus")
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(pin_bus_name)
+			);
 		}
 		/// <summary>
 		/// Tie off unused cell pins
+		///
+		///
+		/// TCL Syntax: tie_unused_pins [-of_objects <args>] [-quiet] [-verbose]
 		///
 		/// Tie up or down the unconnected pins of cells in the open synthesized or implemented design.
 		/// The command uses an internal process to identify whether a pin should be tied up or down.
@@ -911,11 +994,13 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void tie_unused_pins(string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("tie_unused_pins");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: tie_unused_pins [-of_objects <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("tie_unused_pins")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 	}
 }

@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class MemoryCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public MemoryCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public MemoryCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Call IP Services to regenerate an IP, then stitch it into the current netlist
+		///
+		///
+		/// TCL Syntax: implement_mig_cores [-outputdir <arg>] [-rtlonly] [-force] [-debug_output] [-quiet] [-verbose]
 		///
 		/// Implements the memory IP cores in the current project.
 		/// Memory IP included in the Xilinx® IP catalog are used to generate memory controllers and
@@ -70,17 +73,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void implement_mig_cores(string outputdir = null, bool? rtlonly = null, bool? force = null, bool? debug_output = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("implement_mig_cores");
-			command.OptionalString("outputdir", outputdir);
-			command.Flag("rtlonly", rtlonly);
-			command.Flag("force", force);
-			command.Flag("debug_output", debug_output);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: implement_mig_cores [-outputdir <arg>] [-rtlonly] [-force] [-debug_output] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("implement_mig_cores")
+					.OptionalNamedString("outputdir", outputdir)
+					.Flag("rtlonly", rtlonly)
+					.Flag("force", force)
+					.Flag("debug_output", debug_output)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Call IP Services to regenerate an IP, then stitch it into the current netlist
+		///
+		///
+		/// TCL Syntax: implement_xphy_cores [-outputdir <arg>] [-rtlonly] [-force] [-debug_output] [-quiet] [-verbose]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 961
 		/// </summary>
@@ -113,17 +121,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void implement_xphy_cores(string outputdir = null, bool? rtlonly = null, bool? force = null, bool? debug_output = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("implement_xphy_cores");
-			command.OptionalString("outputdir", outputdir);
-			command.Flag("rtlonly", rtlonly);
-			command.Flag("force", force);
-			command.Flag("debug_output", debug_output);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: implement_xphy_cores [-outputdir <arg>] [-rtlonly] [-force] [-debug_output] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("implement_xphy_cores")
+					.OptionalNamedString("outputdir", outputdir)
+					.Flag("rtlonly", rtlonly)
+					.Flag("force", force)
+					.Flag("debug_output", debug_output)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Update and initialize the BRAM initialization strings with contents of elf files.
+		///
+		///
+		/// TCL Syntax: refresh_meminit [-quiet] [-verbose]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1199
 		/// </summary>
@@ -137,10 +150,12 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void refresh_meminit(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("refresh_meminit");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: refresh_meminit [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("refresh_meminit")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 	}
 }

@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class SysGenCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public SysGenCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public SysGenCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Create DSP source for Xilinx System Generator and add to the source fileset
+		///
+		///
+		/// TCL Syntax: create_sysgen [-quiet] [-verbose] <name>
 		///
 		/// Create a DSP sub-module for use in the current project, and add it to the source files.
 		/// This command will launch System Generator for DSP to let you design the hardware portion of
@@ -46,14 +49,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Name for the new sub module</returns>
 		public void create_sysgen(string name, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_sysgen");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_sysgen [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_sysgen")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Generate HDL wrapper for the specified source
+		///
+		///
+		/// TCL Syntax: make_wrapper [-top] [-testbench] [-inst_template] [-fileset <arg>] [-import] [-force] [-quiet] [-verbose] <files>
 		///
 		/// Create a Verilog or VHDL wrapper for instantiating a sub-design into the project.
 		/// The make_wrapper command will create a wrapper for Embedded Processor Designs from the
@@ -114,17 +122,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void make_wrapper(string files, bool? top = null, bool? testbench = null, bool? inst_template = null, string fileset = null, bool? import = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("make_wrapper");
-			command.Flag("top", top);
-			command.Flag("testbench", testbench);
-			command.Flag("inst_template", inst_template);
-			command.OptionalString("fileset", fileset);
-			command.Flag("import", import);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: make_wrapper [-top] [-testbench] [-inst_template] [-fileset <arg>] [-import] [-force] [-quiet] [-verbose] <files>
+			_tcl.Add(
+				new SimpleTCLCommand("make_wrapper")
+					.Flag("top", top)
+					.Flag("testbench", testbench)
+					.Flag("inst_template", inst_template)
+					.OptionalNamedString("fileset", fileset)
+					.Flag("import", import)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 	}
 }

@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class GUIControlCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public GUIControlCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public GUIControlCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Create a custom command in the GUI
+		///
+		///
+		/// TCL Syntax: create_gui_custom_command -name <arg> [-menu_name <arg>] [-description <arg>] [-show_on_toolbar] [-run_proc <arg>] [-toolbar_icon <arg>] [-command <arg>] [-tcl_file <arg>] [-quiet] [-verbose]
 		///
 		/// This commands creates a GUI menu item for a user custom command. The menu command
 		/// appears in the Tools → Custom Commands menu in the Vivado IDE.
@@ -76,21 +79,26 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_gui_custom_command(string name, string menu_name = null, string description = null, bool? show_on_toolbar = null, string run_proc = null, string toolbar_icon = null, string command = null, string tcl_file = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_gui_custom_command");
-			command.RequiredString("name", name);
-			command.OptionalString("menu_name", menu_name);
-			command.OptionalString("description", description);
-			command.Flag("show_on_toolbar", show_on_toolbar);
-			command.OptionalString("run_proc", run_proc);
-			command.OptionalString("toolbar_icon", toolbar_icon);
-			command.OptionalString("command", command);
-			command.OptionalString("tcl_file", tcl_file);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: create_gui_custom_command -name <arg> [-menu_name <arg>] [-description <arg>] [-show_on_toolbar] [-run_proc <arg>] [-toolbar_icon <arg>] [-command <arg>] [-tcl_file <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("create_gui_custom_command")
+					.RequiredNamedString("name", name)
+					.OptionalNamedString("menu_name", menu_name)
+					.OptionalNamedString("description", description)
+					.Flag("show_on_toolbar", show_on_toolbar)
+					.OptionalNamedString("run_proc", run_proc)
+					.OptionalNamedString("toolbar_icon", toolbar_icon)
+					.OptionalNamedString("command", command)
+					.OptionalNamedString("tcl_file", tcl_file)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Create a custom command argument for a custom command in the GUI
+		///
+		///
+		/// TCL Syntax: create_gui_custom_command_arg -command_name <arg> -arg_name <arg> [-default <arg>] [-comment <arg>] [-optional] [-quiet] [-verbose]
 		///
 		/// This commands defines an argument for a specific custom GUI command.
 		/// You can use the get_gui_custom_commands to determine the list of defined custom
@@ -135,18 +143,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_gui_custom_command_arg(string command_name, string arg_name, string @default = null, string comment = null, bool? optional = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_gui_custom_command_arg");
-			command.RequiredString("command_name", command_name);
-			command.RequiredString("arg_name", arg_name);
-			command.OptionalString("default", @default);
-			command.OptionalString("comment", comment);
-			command.Flag("optional", optional);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: create_gui_custom_command_arg -command_name <arg> -arg_name <arg> [-default <arg>] [-comment <arg>] [-optional] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("create_gui_custom_command_arg")
+					.RequiredNamedString("command_name", command_name)
+					.RequiredNamedString("arg_name", arg_name)
+					.OptionalNamedString("default", @default)
+					.OptionalNamedString("comment", comment)
+					.Flag("optional", optional)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// End a set of commands that can be undone/redone as a group
+		///
+		///
+		/// TCL Syntax: endgroup [-quiet] [-verbose]
 		///
 		/// Ends a sequence of commands that can be undone or redone as a series. Use startgroup to
 		/// start the sequence of commands.
@@ -181,13 +194,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void endgroup(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("endgroup");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: endgroup [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("endgroup")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get custom command arguments
+		///
+		///
+		/// TCL Syntax: get_gui_custom_command_args -command_name <arg> [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Returns the list of GUI custom command argument names for a particular GUI custom command.
 		/// You can use the get_gui_custom_commands to determine the list of defined custom
@@ -228,17 +246,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of custom command argument names</returns>
 		public void get_gui_custom_command_args(string command_name, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_gui_custom_command_args");
-			command.RequiredString("command_name", command_name);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_gui_custom_command_args -command_name <arg> [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_gui_custom_command_args")
+					.RequiredNamedString("command_name", command_name)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get custom commands
+		///
+		///
+		/// TCL Syntax: get_gui_custom_commands [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Returns the list of GUI custom commands.
 		///
@@ -273,16 +296,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of custom command names</returns>
 		public void get_gui_custom_commands(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_gui_custom_commands");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_gui_custom_commands [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_gui_custom_commands")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get highlighted objects
+		///
+		///
+		/// TCL Syntax: get_highlighted_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-quiet] [-verbose]
 		///
 		/// Gets the highlighted objects in the current design open in the Vivado IDE. Objects can be
 		/// highlighted with the highlight_objects command.
@@ -322,16 +350,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of highlighted objects</returns>
 		public void get_highlighted_objects(string color_index = null, string rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_highlighted_objects");
-			command.OptionalString("color_index", color_index);
-			command.OptionalString("rgb", rgb);
-			command.OptionalString("color", color);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: get_highlighted_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("get_highlighted_objects")
+					.OptionalNamedString("color_index", color_index)
+					.OptionalNamedString("rgb", rgb)
+					.OptionalNamedString("color", color)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get marked objects
+		///
+		///
+		/// TCL Syntax: get_marked_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose]
 		///
 		/// Get the marked objects in the current design open in the Vivado IDE. Objects can be marked
 		/// with the mark_objects command.
@@ -366,15 +399,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of marked objects</returns>
 		public void get_marked_objects(string rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_marked_objects");
-			command.OptionalString("rgb", rgb);
-			command.OptionalString("color", color);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: get_marked_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("get_marked_objects")
+					.OptionalNamedString("rgb", rgb)
+					.OptionalNamedString("color", color)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get selected objects
+		///
+		///
+		/// TCL Syntax: get_selected_objects [-primary] [-quiet] [-verbose]
 		///
 		/// Gets the objects currently selected in the Vivado IDE by the select_objects command. Can
 		/// get the primary selected object and any secondary selected objects as well.
@@ -410,14 +448,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of selected objects</returns>
 		public void get_selected_objects(bool? primary = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_selected_objects");
-			command.Flag("primary", primary);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: get_selected_objects [-primary] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("get_selected_objects")
+					.Flag("primary", primary)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Highlight objects in different colors
+		///
+		///
+		/// TCL Syntax: highlight_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-leaf_cells] [-quiet] [-verbose] <objects>
 		///
 		/// Highlights the specified or selected object or objects in a color as determined by one of the
 		/// available color options.
@@ -464,18 +507,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void highlight_objects(string objects, string color_index = null, string rgb = null, string color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("highlight_objects");
-			command.OptionalString("color_index", color_index);
-			command.OptionalString("rgb", rgb);
-			command.OptionalString("color", color);
-			command.Flag("leaf_cells", leaf_cells);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: highlight_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-leaf_cells] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("highlight_objects")
+					.OptionalNamedString("color_index", color_index)
+					.OptionalNamedString("rgb", rgb)
+					.OptionalNamedString("color", color)
+					.Flag("leaf_cells", leaf_cells)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Mark objects in GUI
+		///
+		///
+		/// TCL Syntax: mark_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose] <objects>
 		///
 		/// Marks specified objects in GUI mode. This command places an iconic mark to aid in the location
 		/// of the specified object or objects. The mark is displayed in a color as determined by one of the
@@ -511,16 +559,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void mark_objects(string objects, string rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("mark_objects");
-			command.OptionalString("rgb", rgb);
-			command.OptionalString("color", color);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: mark_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("mark_objects")
+					.OptionalNamedString("rgb", rgb)
+					.OptionalNamedString("color", color)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Re-do previous command
+		///
+		///
+		/// TCL Syntax: redo [-list] [-quiet] [-verbose]
 		///
 		/// IMPORTANT! The UNDO and REDO commands are intended for use in the Vivado IDE, and are not
 		/// recommended for use in Tcl scripts to restore designs to a former state. To restore a design to a specific
@@ -551,14 +604,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>with -list, the list of redoable tasks</returns>
 		public void redo(bool? list = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("redo");
-			command.Flag("list", list);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: redo [-list] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("redo")
+					.Flag("list", list)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Remove one or more custom command arguments
+		///
+		///
+		/// TCL Syntax: remove_gui_custom_command_args -command_name <arg> [-quiet] [-verbose] <names>...
 		///
 		/// Remove one or more GUI custom command arguments of a particular GUI custom command.
 		/// You can use the get_gui_custom_commands to determine the list of defined custom
@@ -591,15 +649,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_gui_custom_command_args(string command_name, string names, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("remove_gui_custom_command_args");
-			command.RequiredString("command_name", command_name);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("names", names);
-			_tcl.Add(command);
+			// TCL Syntax: remove_gui_custom_command_args -command_name <arg> [-quiet] [-verbose] <names>...
+			_tcl.Add(
+				new SimpleTCLCommand("remove_gui_custom_command_args")
+					.RequiredNamedString("command_name", command_name)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(names)
+			);
 		}
 		/// <summary>
 		/// Remove one or more custom commands
+		///
+		///
+		/// TCL Syntax: remove_gui_custom_commands [-quiet] [-verbose] <names>...
 		///
 		/// Remove one or more GUI custom commands.
 		/// You can use the get_gui_custom_commands to determine the list of defined custom
@@ -624,14 +687,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_gui_custom_commands(string names, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("remove_gui_custom_commands");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("names", names);
-			_tcl.Add(command);
+			// TCL Syntax: remove_gui_custom_commands [-quiet] [-verbose] <names>...
+			_tcl.Add(
+				new SimpleTCLCommand("remove_gui_custom_commands")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(names)
+			);
 		}
 		/// <summary>
 		/// Select objects in GUI
+		///
+		///
+		/// TCL Syntax: select_objects [-add] [-quiet] [-verbose] <objects>
 		///
 		/// Selects the specified object in the appropriate open views in the GUI mode. This command is for
 		/// display purposes only. You must use the get_selected_objects command to return the
@@ -665,15 +733,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void select_objects(string objects, bool? add = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("select_objects");
-			command.Flag("add", add);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: select_objects [-add] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("select_objects")
+					.Flag("add", add)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Show objects in Find Results view
+		///
+		///
+		/// TCL Syntax: show_objects [-name <arg>] [-quiet] [-verbose] <objects>
 		///
 		/// Populates the specified objects into the Find Results window in the Vivado IDE.
 		/// Note: This command is only useful when run in the Vivado IDE. When run in Tcl or Batch mode the
@@ -706,15 +779,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void show_objects(string objects, string name = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("show_objects");
-			command.OptionalString("name", name);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: show_objects [-name <arg>] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("show_objects")
+					.OptionalNamedString("name", name)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Show netlist items in schematic view
+		///
+		///
+		/// TCL Syntax: show_schematic [-add] [-remove] [-regenerate] [-pin_pairs] [-name <arg>] [-quiet] [-verbose] <objects>
 		///
 		/// Create a schematic view containing the specified design objects when the tool is invoked in GUI
 		/// mode.
@@ -777,19 +855,24 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void show_schematic(string objects, bool? add = null, bool? remove = null, bool? regenerate = null, bool? pin_pairs = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("show_schematic");
-			command.Flag("add", add);
-			command.Flag("remove", remove);
-			command.Flag("regenerate", regenerate);
-			command.Flag("pin_pairs", pin_pairs);
-			command.OptionalString("name", name);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: show_schematic [-add] [-remove] [-regenerate] [-pin_pairs] [-name <arg>] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("show_schematic")
+					.Flag("add", add)
+					.Flag("remove", remove)
+					.Flag("regenerate", regenerate)
+					.Flag("pin_pairs", pin_pairs)
+					.OptionalNamedString("name", name)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Start GUI
+		///
+		///
+		/// TCL Syntax: start_gui [-verbose]
 		///
 		/// Launches the GUI when the tool is running in the Vivado Design Suite Tcl shell. The GUI is
 		/// invoked with the current project, design, and run information.
@@ -806,12 +889,17 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void start_gui(bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("start_gui");
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: start_gui [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("start_gui")
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Start a set of commands that can be undone/redone as a group
+		///
+		///
+		/// TCL Syntax: startgroup [-try] [-quiet] [-verbose]
 		///
 		/// Starts a sequence of commands that can be undone or redone as a series. Use endgroup to end
 		/// the sequence of commands.
@@ -838,7 +926,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1683
 		/// </summary>
-		/// <param name="try">
+		/// <param name="@try">
 		/// Optional
 		/// Don't start a group if one has already been started
 		/// </param>
@@ -851,16 +939,21 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>int</returns>
-		public void startgroup(bool? try = null, bool? quiet = null, bool? verbose = null)
+		public void startgroup(bool? @try = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("startgroup");
-			command.Flag("try", try);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: startgroup [-try] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("startgroup")
+					.Flag("try", @try)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Close GUI
+		///
+		///
+		/// TCL Syntax: stop_gui [-verbose]
 		///
 		/// Stops GUI mode and places the tool into Tcl mode, running in the Vivado Design Suite Tcl shell. In
 		/// Tcl mode, all commands must be entered as Tcl commands or through Tcl scripts.
@@ -876,12 +969,17 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void stop_gui(bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("stop_gui");
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: stop_gui [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("stop_gui")
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Un-do previous command
+		///
+		///
+		/// TCL Syntax: undo [-list] [-quiet] [-verbose]
 		///
 		/// IMPORTANT! The undo and redo commands are intended for use in the Vivado IDE, and are not
 		/// recommended for use in Tcl scripts to restore designs to a former state. To restore a design to a specific
@@ -913,14 +1011,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>with -list, the list of undoable tasks</returns>
 		public void undo(bool? list = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("undo");
-			command.Flag("list", list);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: undo [-list] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("undo")
+					.Flag("list", list)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Unhighlight objects that are currently highlighted
+		///
+		///
+		/// TCL Syntax: unhighlight_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-leaf_cells] [-quiet] [-verbose] [<objects>]
 		///
 		/// This command is for use in GUI mode. This command unhighlights the specified object or objects
 		/// that were previously highlighted by the highlight_objects command.
@@ -965,18 +1068,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void unhighlight_objects(string color_index = null, string rgb = null, string color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
-			var command = new SimpleTCLCommand("unhighlight_objects");
-			command.OptionalString("color_index", color_index);
-			command.OptionalString("rgb", rgb);
-			command.OptionalString("color", color);
-			command.Flag("leaf_cells", leaf_cells);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: unhighlight_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-leaf_cells] [-quiet] [-verbose] [<objects>]
+			_tcl.Add(
+				new SimpleTCLCommand("unhighlight_objects")
+					.OptionalNamedString("color_index", color_index)
+					.OptionalNamedString("rgb", rgb)
+					.OptionalNamedString("color", color)
+					.Flag("leaf_cells", leaf_cells)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(objects)
+			);
 		}
 		/// <summary>
 		/// Unmark items that are currently marked
+		///
+		///
+		/// TCL Syntax: unmark_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose] [<objects>]
 		///
 		/// Unmarks the specified object or objects that were previously marked by the mark_objects
 		/// command. This command is for use in GUI mode.
@@ -1014,16 +1122,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void unmark_objects(string rgb = null, string color = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
-			var command = new SimpleTCLCommand("unmark_objects");
-			command.OptionalString("rgb", rgb);
-			command.OptionalString("color", color);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: unmark_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose] [<objects>]
+			_tcl.Add(
+				new SimpleTCLCommand("unmark_objects")
+					.OptionalNamedString("rgb", rgb)
+					.OptionalNamedString("color", color)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(objects)
+			);
 		}
 		/// <summary>
 		/// Unselect items that are currently selected
+		///
+		///
+		/// TCL Syntax: unselect_objects [-quiet] [-verbose] [<objects>]
 		///
 		/// Unselects the specified object or objects that were previously selected by the
 		/// select_objects command.
@@ -1053,11 +1166,13 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void unselect_objects(bool? quiet = null, bool? verbose = null, string objects = null)
 		{
-			var command = new SimpleTCLCommand("unselect_objects");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: unselect_objects [-quiet] [-verbose] [<objects>]
+			_tcl.Add(
+				new SimpleTCLCommand("unselect_objects")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(objects)
+			);
 		}
 	}
 }

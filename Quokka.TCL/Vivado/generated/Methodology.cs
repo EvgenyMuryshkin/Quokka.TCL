@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class MethodologyCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public MethodologyCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public MethodologyCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Create a DRC/METHODOLOGY/CDC message waiver
+		///
+		///
+		/// TCL Syntax: create_waiver [-type <arg>] [-id <arg>] [-objects <args>] [-from <args>] [-to <args>] [-strings <args>] [-of_objects <args>] [-user <arg>] -description <arg> [-tags <arg>] [-timestamp <arg>] [-scoped] [-quiet] [-verbose]
 		///
 		/// After report_drc, report_methodology, or report_cdc commands are run, they return
 		/// messages of specific violations or conditions found in the design. These violations can prevent
@@ -135,25 +138,30 @@ namespace Quokka.TCL.Vivado
 		/// <returns>waiver</returns>
 		public void create_waiver(string description, string type = null, string id = null, string objects = null, string from = null, string to = null, string strings = null, string of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_waiver");
-			command.OptionalString("type", type);
-			command.OptionalString("id", id);
-			command.OptionalString("objects", objects);
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.OptionalString("strings", strings);
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("user", user);
-			command.RequiredString("description", description);
-			command.OptionalString("tags", tags);
-			command.OptionalString("timestamp", timestamp);
-			command.Flag("scoped", scoped);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: create_waiver [-type <arg>] [-id <arg>] [-objects <args>] [-from <args>] [-to <args>] [-strings <args>] [-of_objects <args>] [-user <arg>] -description <arg> [-tags <arg>] [-timestamp <arg>] [-scoped] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("create_waiver")
+					.OptionalNamedString("type", type)
+					.OptionalNamedString("id", id)
+					.OptionalNamedString("objects", objects)
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.OptionalNamedString("strings", strings)
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("user", user)
+					.RequiredNamedString("description", description)
+					.OptionalNamedString("tags", tags)
+					.OptionalNamedString("timestamp", timestamp)
+					.Flag("scoped", scoped)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get a list of Methodology rule check objects
+		///
+		///
+		/// TCL Syntax: get_methodology_checks [-regexp] [-nocase] [-filter <arg>] [-abbrev <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of the currently defined methodology checks. This list includes the factory defined
 		/// methodology checks for process and timing.
@@ -199,18 +207,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of Methodology rule_check objects</returns>
 		public void get_methodology_checks(bool? regexp = null, bool? nocase = null, string filter = null, string abbrev = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_methodology_checks");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("abbrev", abbrev);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_methodology_checks [-regexp] [-nocase] [-filter <arg>] [-abbrev <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_methodology_checks")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("abbrev", abbrev)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of Methodology violations from a previous report_methodology run
+		///
+		///
+		/// TCL Syntax: get_methodology_violations [-name <arg>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of violation objects found in the design when the report_methodology command
 		/// is run. The properties of individual violation objects can be queried using report_property or
@@ -269,18 +282,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of Methodology violation objects</returns>
 		public void get_methodology_violations(string name = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_methodology_violations");
-			command.OptionalString("name", name);
-			command.Flag("regexp", regexp);
-			command.OptionalString("filter", filter);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_methodology_violations [-name <arg>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_methodology_violations")
+					.OptionalNamedString("name", name)
+					.Flag("regexp", regexp)
+					.OptionalNamedString("filter", filter)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Methodology Checks
+		///
+		///
+		/// TCL Syntax: report_methodology [-name <arg>] [-cells <args>] [-checks <args>] [-file <arg>] [-rpx <arg>] [-append] [-waived] [-no_waivers] [-slack_lesser_than <arg>] [-return_string] [-quiet] [-verbose]
 		///
 		/// Check the current design against a specified set of methodology checks and report any errors or
 		/// violations that are found.
@@ -366,23 +384,28 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void report_methodology(string name = null, string cells = null, string checks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, string slack_lesser_than = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_methodology");
-			command.OptionalString("name", name);
-			command.OptionalString("cells", cells);
-			command.OptionalString("checks", checks);
-			command.OptionalString("file", file);
-			command.OptionalString("rpx", rpx);
-			command.Flag("append", append);
-			command.Flag("waived", waived);
-			command.Flag("no_waivers", no_waivers);
-			command.OptionalString("slack_lesser_than", slack_lesser_than);
-			command.Flag("return_string", return_string);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: report_methodology [-name <arg>] [-cells <args>] [-checks <args>] [-file <arg>] [-rpx <arg>] [-append] [-waived] [-no_waivers] [-slack_lesser_than <arg>] [-return_string] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("report_methodology")
+					.OptionalNamedString("name", name)
+					.OptionalNamedString("cells", cells)
+					.OptionalNamedString("checks", checks)
+					.OptionalNamedString("file", file)
+					.OptionalNamedString("rpx", rpx)
+					.Flag("append", append)
+					.Flag("waived", waived)
+					.Flag("no_waivers", no_waivers)
+					.OptionalNamedString("slack_lesser_than", slack_lesser_than)
+					.Flag("return_string", return_string)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Remove Methodology report
+		///
+		///
+		/// TCL Syntax: reset_methodology [-name <arg>] [-quiet] [-verbose]
 		///
 		/// Clear the methodology results from the specified named result set.
 		/// This command operates silently, returning nothing if successful, or returning an error if it fails.
@@ -406,14 +429,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void reset_methodology(string name = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("reset_methodology");
-			command.OptionalString("name", name);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: reset_methodology [-name <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("reset_methodology")
+					.OptionalNamedString("name", name)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Reset one or more Methodology checks to factory defaults.
+		///
+		///
+		/// TCL Syntax: reset_methodology_check [-quiet] [-verbose] [<checks>...]
 		///
 		/// Reset the specified methodology checks to the defaults provided by the Vivado Design Suite.
 		/// This will restore the check to its default configuration, including any changes to the IS_ENABLED
@@ -450,11 +478,13 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void reset_methodology_check(string checks, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("reset_methodology_check");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("checks", checks);
-			_tcl.Add(command);
+			// TCL Syntax: reset_methodology_check [-quiet] [-verbose] [<checks>...]
+			_tcl.Add(
+				new SimpleTCLCommand("reset_methodology_check")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(checks)
+			);
 		}
 	}
 }

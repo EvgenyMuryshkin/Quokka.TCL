@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class ObjectCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public ObjectCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public ObjectCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Add DRC rule check objects to a rule deck
+		///
+		///
+		/// TCL Syntax: add_drc_checks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] -ruledeck <arg> [-quiet] [-verbose] [<patterns>]
 		///
 		/// Add design rule checks to the specified drc_ruledeck object.
 		/// A rule deck is a collection of design rule checks grouped for convenience, to be run with the
@@ -81,19 +84,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>drc_check</returns>
 		public void add_drc_checks(string ruledeck, string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("add_drc_checks");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.RequiredString("ruledeck", ruledeck);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: add_drc_checks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] -ruledeck <arg> [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("add_drc_checks")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.RequiredNamedString("ruledeck", ruledeck)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Applies board connections to given designs
+		///
+		///
+		/// TCL Syntax: apply_board_connection [-board_interface <arg>] -ip_intf <arg> -diagram <arg> [-quiet] [-verbose]
 		///
 		/// Connects the interface pin of an IP core in the specified block design to the interface of the
 		/// current board part in the current project or design.
@@ -145,16 +153,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>sucess/failure status of applied action.</returns>
 		public void apply_board_connection(string ip_intf, string diagram, string board_interface = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("apply_board_connection");
-			command.OptionalString("board_interface", board_interface);
-			command.RequiredString("ip_intf", ip_intf);
-			command.RequiredString("diagram", diagram);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: apply_board_connection [-board_interface <arg>] -ip_intf <arg> -diagram <arg> [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("apply_board_connection")
+					.OptionalNamedString("board_interface", board_interface)
+					.RequiredNamedString("ip_intf", ip_intf)
+					.RequiredNamedString("diagram", diagram)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Check if a module can be referenced
+		///
+		///
+		/// TCL Syntax: can_resolve_reference [-quiet] [-verbose] <module>...
 		///
 		/// This command is used to validate reference to modules prior to trying to import them into the
 		/// design. Its primary use is in scripts like the script produced by the write_bd_tcl command,
@@ -180,14 +193,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void can_resolve_reference(string module, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("can_resolve_reference");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("module", module);
-			_tcl.Add(command);
+			// TCL Syntax: can_resolve_reference [-quiet] [-verbose] <module>...
+			_tcl.Add(
+				new SimpleTCLCommand("can_resolve_reference")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(module)
+			);
 		}
 		/// <summary>
 		/// Manage the IP instance Synthesis cache. Lists out the IP Cache entries if no options are specified.
+		///
+		///
+		/// TCL Syntax: config_ip_cache [-use_cache_location <arg>] [-use_project_cache] [-disable_cache] [-clear_output_repo] [-clear_local_cache] [-cache_has_match] [-cache_was_used] [-get_id] [-remove] [-vlnv <arg>] [-old_swvers] [-unused] [-swver <arg>] [-num_days_old <arg>] [-num_days_unused <arg>] [-obs_synth_crc] [-disk_usage_output_repo] [-report] [-rptfile <arg>] [-csvfile <arg>] [-import_from_project] [-filter <arg>] [-regexp] [-nocase] [-purge] [-quiet] [-verbose] [<ip>]
 		///
 		/// This command lets you manage the Vivado Design Suite out-of-context (OOC) IP cache. The
 		/// Vivado Design Suite caches the synthesis results for customized OOC IP in an IP repository, so
@@ -367,39 +385,44 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void config_ip_cache(string use_cache_location = null, bool? use_project_cache = null, bool? disable_cache = null, bool? clear_output_repo = null, bool? clear_local_cache = null, bool? cache_has_match = null, bool? cache_was_used = null, bool? get_id = null, bool? remove = null, string vlnv = null, bool? old_swvers = null, bool? unused = null, string swver = null, string num_days_old = null, string num_days_unused = null, bool? obs_synth_crc = null, bool? disk_usage_output_repo = null, bool? report = null, string rptfile = null, string csvfile = null, bool? import_from_project = null, string filter = null, bool? regexp = null, bool? nocase = null, bool? purge = null, bool? quiet = null, bool? verbose = null, string ip = null)
 		{
-			var command = new SimpleTCLCommand("config_ip_cache");
-			command.OptionalString("use_cache_location", use_cache_location);
-			command.Flag("use_project_cache", use_project_cache);
-			command.Flag("disable_cache", disable_cache);
-			command.Flag("clear_output_repo", clear_output_repo);
-			command.Flag("clear_local_cache", clear_local_cache);
-			command.Flag("cache_has_match", cache_has_match);
-			command.Flag("cache_was_used", cache_was_used);
-			command.Flag("get_id", get_id);
-			command.Flag("remove", remove);
-			command.OptionalString("vlnv", vlnv);
-			command.Flag("old_swvers", old_swvers);
-			command.Flag("unused", unused);
-			command.OptionalString("swver", swver);
-			command.OptionalString("num_days_old", num_days_old);
-			command.OptionalString("num_days_unused", num_days_unused);
-			command.Flag("obs_synth_crc", obs_synth_crc);
-			command.Flag("disk_usage_output_repo", disk_usage_output_repo);
-			command.Flag("report", report);
-			command.OptionalString("rptfile", rptfile);
-			command.OptionalString("csvfile", csvfile);
-			command.Flag("import_from_project", import_from_project);
-			command.OptionalString("filter", filter);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("purge", purge);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("ip", ip);
-			_tcl.Add(command);
+			// TCL Syntax: config_ip_cache [-use_cache_location <arg>] [-use_project_cache] [-disable_cache] [-clear_output_repo] [-clear_local_cache] [-cache_has_match] [-cache_was_used] [-get_id] [-remove] [-vlnv <arg>] [-old_swvers] [-unused] [-swver <arg>] [-num_days_old <arg>] [-num_days_unused <arg>] [-obs_synth_crc] [-disk_usage_output_repo] [-report] [-rptfile <arg>] [-csvfile <arg>] [-import_from_project] [-filter <arg>] [-regexp] [-nocase] [-purge] [-quiet] [-verbose] [<ip>]
+			_tcl.Add(
+				new SimpleTCLCommand("config_ip_cache")
+					.OptionalNamedString("use_cache_location", use_cache_location)
+					.Flag("use_project_cache", use_project_cache)
+					.Flag("disable_cache", disable_cache)
+					.Flag("clear_output_repo", clear_output_repo)
+					.Flag("clear_local_cache", clear_local_cache)
+					.Flag("cache_has_match", cache_has_match)
+					.Flag("cache_was_used", cache_was_used)
+					.Flag("get_id", get_id)
+					.Flag("remove", remove)
+					.OptionalNamedString("vlnv", vlnv)
+					.Flag("old_swvers", old_swvers)
+					.Flag("unused", unused)
+					.OptionalNamedString("swver", swver)
+					.OptionalNamedString("num_days_old", num_days_old)
+					.OptionalNamedString("num_days_unused", num_days_unused)
+					.Flag("obs_synth_crc", obs_synth_crc)
+					.Flag("disk_usage_output_repo", disk_usage_output_repo)
+					.Flag("report", report)
+					.OptionalNamedString("rptfile", rptfile)
+					.OptionalNamedString("csvfile", csvfile)
+					.Flag("import_from_project", import_from_project)
+					.OptionalNamedString("filter", filter)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("purge", purge)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(ip)
+			);
 		}
 		/// <summary>
 		/// Create a user defined DRC rule
+		///
+		///
+		/// TCL Syntax: create_drc_check [-hiername <arg>] -name <arg> [-desc <arg>] [-msg <arg>] -rule_body <arg> [-severity <arg>] [-quiet] [-verbose]
 		///
 		/// Create a new user-defined DRC rule check, drc_check, for use by the tool when running
 		/// report_drc.
@@ -522,19 +545,24 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_drc_check(string name, string rule_body, string hiername = null, string desc = null, string msg = null, string severity = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_drc_check");
-			command.OptionalString("hiername", hiername);
-			command.RequiredString("name", name);
-			command.OptionalString("desc", desc);
-			command.OptionalString("msg", msg);
-			command.RequiredString("rule_body", rule_body);
-			command.OptionalString("severity", severity);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: create_drc_check [-hiername <arg>] -name <arg> [-desc <arg>] [-msg <arg>] -rule_body <arg> [-severity <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("create_drc_check")
+					.OptionalNamedString("hiername", hiername)
+					.RequiredNamedString("name", name)
+					.OptionalNamedString("desc", desc)
+					.OptionalNamedString("msg", msg)
+					.RequiredNamedString("rule_body", rule_body)
+					.OptionalNamedString("severity", severity)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Create one or more user defined DRC rule deck objects
+		///
+		///
+		/// TCL Syntax: create_drc_ruledeck [-quiet] [-verbose] <ruledecks>...
 		///
 		/// Create one or more user-defined rule decks for use when running report_drc.
 		/// A drc_ruledeck object is a collection of design rule checks, grouped for convenience, to be run at
@@ -567,14 +595,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>drc_ruledeck</returns>
 		public void create_drc_ruledeck(string ruledecks, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_drc_ruledeck");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("ruledecks", ruledecks);
-			_tcl.Add(command);
+			// TCL Syntax: create_drc_ruledeck [-quiet] [-verbose] <ruledecks>...
+			_tcl.Add(
+				new SimpleTCLCommand("create_drc_ruledeck")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(ruledecks)
+			);
 		}
 		/// <summary>
 		/// Create new PartitionDef
+		///
+		///
+		/// TCL Syntax: create_partition_def -name <arg> -module <arg> [-library <arg>] [-quiet] [-verbose]
 		///
 		/// IMPORTANT! You must first define the project as a Partial Reconfiguration (PR) project by setting the
 		/// PR_FLOW property on the project to TRUE, or by using the Tools > Enable Partial Reconfiguration command.
@@ -615,16 +648,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_partition_def(string name, string module, string library = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_partition_def");
-			command.RequiredString("name", name);
-			command.RequiredString("module", module);
-			command.OptionalString("library", library);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: create_partition_def -name <arg> -module <arg> [-library <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("create_partition_def")
+					.RequiredNamedString("name", name)
+					.RequiredNamedString("module", module)
+					.OptionalNamedString("library", library)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Create new Configuration
+		///
+		///
+		/// TCL Syntax: create_pr_configuration -name <arg> [-partitions <args>] [-greyboxes <args>] [-use_netlist] [-quiet] [-verbose]
 		///
 		/// IMPORTANT! You must first define the project as a Partial Reconfiguration (PR) project by setting the
 		/// PR_FLOW property on the project to TRUE, or by using the Tools > Enable Partial Reconfiguration command.
@@ -673,17 +711,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_pr_configuration(string name, string partitions = null, string greyboxes = null, bool? use_netlist = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_pr_configuration");
-			command.RequiredString("name", name);
-			command.OptionalString("partitions", partitions);
-			command.OptionalString("greyboxes", greyboxes);
-			command.Flag("use_netlist", use_netlist);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: create_pr_configuration -name <arg> [-partitions <args>] [-greyboxes <args>] [-use_netlist] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("create_pr_configuration")
+					.RequiredNamedString("name", name)
+					.OptionalNamedString("partitions", partitions)
+					.OptionalNamedString("greyboxes", greyboxes)
+					.Flag("use_netlist", use_netlist)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Create new reconfig Module
+		///
+		///
+		/// TCL Syntax: create_reconfig_module -name <arg> [-top <arg>] [-gate_level] -partition_def <arg> [-define_from <arg>] [-define_from_file <arg>] [-quiet] [-verbose]
 		///
 		/// IMPORTANT! You must first define the project as a Partial Reconfiguration (PR) project by setting the
 		/// PR_FLOW property on the project to TRUE, or by using the Tools > Enable Partial Reconfiguration command.
@@ -744,19 +787,24 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_reconfig_module(string name, string partition_def, string top = null, bool? gate_level = null, string define_from = null, string define_from_file = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_reconfig_module");
-			command.RequiredString("name", name);
-			command.OptionalString("top", top);
-			command.Flag("gate_level", gate_level);
-			command.RequiredString("partition_def", partition_def);
-			command.OptionalString("define_from", define_from);
-			command.OptionalString("define_from_file", define_from_file);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: create_reconfig_module -name <arg> [-top <arg>] [-gate_level] -partition_def <arg> [-define_from <arg>] [-define_from_file <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("create_reconfig_module")
+					.RequiredNamedString("name", name)
+					.OptionalNamedString("top", top)
+					.Flag("gate_level", gate_level)
+					.RequiredNamedString("partition_def", partition_def)
+					.OptionalNamedString("define_from", define_from)
+					.OptionalNamedString("define_from_file", define_from_file)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Create Configurable Report objects.
+		///
+		///
+		/// TCL Syntax: create_report_config [-report_name <arg>] [-report_type <arg>] -steps <args> -runs <args> [-options <arg>] [-copy_of <args>] [-quiet] [-verbose]
 		///
 		/// This command lets you create configurable report objects to add to synthesis and
 		/// implementation runs, or to add to Report Strategies. A report object defines the report type and
@@ -829,19 +877,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>List of configurable report objects</returns>
 		public void create_report_config(string steps, string runs, string report_name = null, string report_type = null, string options = null, string copy_of = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_report_config");
-			command.OptionalString("report_name", report_name);
-			command.OptionalString("report_type", report_type);
-			command.RequiredString("steps", steps);
-			command.RequiredString("runs", runs);
-			command.OptionalString("options", options);
-			command.OptionalString("copy_of", copy_of);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: create_report_config [-report_name <arg>] [-report_type <arg>] -steps <args> -runs <args> [-options <arg>] [-copy_of <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("create_report_config")
+					.OptionalNamedString("report_name", report_name)
+					.OptionalNamedString("report_type", report_type)
+					.RequiredNamedString("steps", steps)
+					.RequiredNamedString("runs", runs)
+					.OptionalNamedString("options", options)
+					.OptionalNamedString("copy_of", copy_of)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Create a DRC/METHODOLOGY/CDC message waiver
+		///
+		///
+		/// TCL Syntax: create_waiver [-type <arg>] [-id <arg>] [-objects <args>] [-from <args>] [-to <args>] [-strings <args>] [-of_objects <args>] [-user <arg>] -description <arg> [-tags <arg>] [-timestamp <arg>] [-scoped] [-quiet] [-verbose]
 		///
 		/// After report_drc, report_methodology, or report_cdc commands are run, they return
 		/// messages of specific violations or conditions found in the design. These violations can prevent
@@ -964,25 +1017,30 @@ namespace Quokka.TCL.Vivado
 		/// <returns>waiver</returns>
 		public void create_waiver(string description, string type = null, string id = null, string objects = null, string from = null, string to = null, string strings = null, string of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_waiver");
-			command.OptionalString("type", type);
-			command.OptionalString("id", id);
-			command.OptionalString("objects", objects);
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.OptionalString("strings", strings);
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("user", user);
-			command.RequiredString("description", description);
-			command.OptionalString("tags", tags);
-			command.OptionalString("timestamp", timestamp);
-			command.Flag("scoped", scoped);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: create_waiver [-type <arg>] [-id <arg>] [-objects <args>] [-from <args>] [-to <args>] [-strings <args>] [-of_objects <args>] [-user <arg>] -description <arg> [-tags <arg>] [-timestamp <arg>] [-scoped] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("create_waiver")
+					.OptionalNamedString("type", type)
+					.OptionalNamedString("id", id)
+					.OptionalNamedString("objects", objects)
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.OptionalNamedString("strings", strings)
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("user", user)
+					.RequiredNamedString("description", description)
+					.OptionalNamedString("tags", tags)
+					.OptionalNamedString("timestamp", timestamp)
+					.Flag("scoped", scoped)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get the current board object
+		///
+		///
+		/// TCL Syntax: current_board [-quiet] [-verbose]
 		///
 		/// Returns the board in use in the current project.
 		/// The board file, board.xml located in the data/boards folder of the Vivado Design Suite
@@ -1017,13 +1075,18 @@ namespace Quokka.TCL.Vivado
 		/// <returns>current board object</returns>
 		public void current_board(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("current_board");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: current_board [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("current_board")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get the current board_part object
+		///
+		///
+		/// TCL Syntax: current_board_part [-quiet] [-verbose]
 		///
 		/// Return the Xilinx device used in the current project or design.
 		/// The board file, board.xml located in the data/boards folder of the Vivado Design Suite
@@ -1059,13 +1122,18 @@ namespace Quokka.TCL.Vivado
 		/// <returns>current board_part object</returns>
 		public void current_board_part(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("current_board_part");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: current_board_part [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("current_board_part")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get a list of PartitionDefs
+		///
+		///
+		/// TCL Syntax: current_pr_configuration [-quiet] [-verbose] [<config>...]
 		///
 		/// Get or set the current PR configuration.
 		/// In the Partial Reconfiguration (PR) design flow, the PR configuration lets you specify a
@@ -1098,14 +1166,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of PartitionDef objects</returns>
 		public void current_pr_configuration(bool? quiet = null, bool? verbose = null, string config = null)
 		{
-			var command = new SimpleTCLCommand("current_pr_configuration");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("config", config);
-			_tcl.Add(command);
+			// TCL Syntax: current_pr_configuration [-quiet] [-verbose] [<config>...]
+			_tcl.Add(
+				new SimpleTCLCommand("current_pr_configuration")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(config)
+			);
 		}
 		/// <summary>
 		/// Delete one or more user-defined DRC checks.
+		///
+		///
+		/// TCL Syntax: delete_drc_check [-quiet] [-verbose] <name>...
 		///
 		/// Delete a single user-defined design rule check from the current project. User-defined design rule
 		/// checks are created using the create_drc_checks command.
@@ -1137,14 +1210,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_drc_check(string name, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_drc_check");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: delete_drc_check [-quiet] [-verbose] <name>...
+			_tcl.Add(
+				new SimpleTCLCommand("delete_drc_check")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Delete one or more user defined DRC rule deck objects
+		///
+		///
+		/// TCL Syntax: delete_drc_ruledeck [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Delete one or more user-defined drc_ruledeck objects from the current project. The rule deck
 		/// does not have to be empty to be deleted, and once it is deleted there is no way to recover it. The
@@ -1189,17 +1267,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>drc_ruledeck</returns>
 		public void delete_drc_ruledeck(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("delete_drc_ruledeck");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: delete_drc_ruledeck [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("delete_drc_ruledeck")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Removes the HW Bitstream object from a list of hardware devices.
+		///
+		///
+		/// TCL Syntax: delete_hw_bitstream [-of_objects <args>] [-quiet] [-verbose]
 		///
 		/// This command deletes the hw_bitstream object from the specified hw_device objects.
 		/// This clears the PROGRAM.HW_BITSTREAM and PROGRAM.FILE properties on the hw_device
@@ -1222,14 +1305,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware devices</returns>
 		public void delete_hw_bitstream(string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_hw_bitstream");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: delete_hw_bitstream [-of_objects <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("delete_hw_bitstream")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Deletes a list of available QoR suggestions
+		///
+		///
+		/// TCL Syntax: delete_qor_suggestions [-quiet] [-verbose] [<IDs>]
 		///
 		/// Removes QoR suggestion objects that are currently in memory. Suggestion objects are generated
 		/// running the report_qor_suggestion command, without specifying -of_objects, and by
@@ -1257,14 +1345,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_qor_suggestions(string IDs, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_qor_suggestions");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("IDs", IDs);
-			_tcl.Add(command);
+			// TCL Syntax: delete_qor_suggestions [-quiet] [-verbose] [<IDs>]
+			_tcl.Add(
+				new SimpleTCLCommand("delete_qor_suggestions")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(IDs)
+			);
 		}
 		/// <summary>
 		/// Delete a set of existing configurable report objects
+		///
+		///
+		/// TCL Syntax: delete_report_configs [-quiet] [-verbose] <report_configs>...
 		///
 		/// Removes specified report objects from the current project. The report objects are created by the
 		/// create_report_config command.
@@ -1289,14 +1382,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_report_configs(string report_configs, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_report_configs");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("report_configs", report_configs);
-			_tcl.Add(command);
+			// TCL Syntax: delete_report_configs [-quiet] [-verbose] <report_configs>...
+			_tcl.Add(
+				new SimpleTCLCommand("delete_report_configs")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(report_configs)
+			);
 		}
 		/// <summary>
 		/// Delete one or more DRC/METHODOLOGY/CDC message waivers
+		///
+		///
+		/// TCL Syntax: delete_waivers [-scoped] [-quiet] [-verbose] [<objects>...]
 		///
 		/// After report_drc, report_methodology, or report_cdc commands are run, they return
 		/// messages of specific violations or conditions found in the design. These violations can prevent
@@ -1331,15 +1429,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_waivers(bool? scoped = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
-			var command = new SimpleTCLCommand("delete_waivers");
-			command.Flag("scoped", scoped);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: delete_waivers [-scoped] [-quiet] [-verbose] [<objects>...]
+			_tcl.Add(
+				new SimpleTCLCommand("delete_waivers")
+					.Flag("scoped", scoped)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(objects)
+			);
 		}
 		/// <summary>
 		/// Filter a list, resulting in new list
+		///
+		///
+		/// TCL Syntax: filter [-regexp] [-nocase] [-quiet] [-verbose] [<objects>] [<filter>]
 		///
 		/// Takes a list of objects, and returns a reduced list of objects that match the specified filter search
 		/// pattern.
@@ -1384,17 +1487,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>new list</returns>
 		public void filter(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string objects = null, string filter = null)
 		{
-			var command = new SimpleTCLCommand("filter");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("objects", objects);
-			command.OptionalString("filter", filter);
-			_tcl.Add(command);
+			// TCL Syntax: filter [-regexp] [-nocase] [-quiet] [-verbose] [<objects>] [<filter>]
+			_tcl.Add(
+				new SimpleTCLCommand("filter")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(objects)
+					.OptionalString(filter)
+			);
 		}
 		/// <summary>
 		/// Find a routing path between two nodes.
+		///
+		///
+		/// TCL Syntax: find_routing_path [-allow_overlap] [-max_nodes <arg>] [-min_nodes <arg>] [-from <args>] [-to <args>] [-quiet] [-verbose]
 		///
 		/// Finds a routing solution between two nodes on an unrouted, or partially routed net, in an
 		/// implemented design.
@@ -1463,18 +1571,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void find_routing_path(bool? allow_overlap = null, string max_nodes = null, string min_nodes = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("find_routing_path");
-			command.Flag("allow_overlap", allow_overlap);
-			command.OptionalString("max_nodes", max_nodes);
-			command.OptionalString("min_nodes", min_nodes);
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: find_routing_path [-allow_overlap] [-max_nodes <arg>] [-min_nodes <arg>] [-from <args>] [-to <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("find_routing_path")
+					.Flag("allow_overlap", allow_overlap)
+					.OptionalNamedString("max_nodes", max_nodes)
+					.OptionalNamedString("min_nodes", min_nodes)
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Generate a set of configurable report objects
+		///
+		///
+		/// TCL Syntax: generate_reports [-jobs <arg>] [-quiet] [-verbose] <report_configs>...
 		///
 		/// Generates specified report objects as created by the create_report_config command.
 		/// Because the report objects are associated with specific steps of synthesis or implementation
@@ -1506,15 +1619,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void generate_reports(string report_configs, string jobs = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("generate_reports");
-			command.OptionalString("jobs", jobs);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("report_configs", report_configs);
-			_tcl.Add(command);
+			// TCL Syntax: generate_reports [-jobs <arg>] [-quiet] [-verbose] <report_configs>...
+			_tcl.Add(
+				new SimpleTCLCommand("generate_reports")
+					.OptionalNamedString("jobs", jobs)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(report_configs)
+			);
 		}
 		/// <summary>
 		/// Get a list of bel_pins. If a design is loaded, gets the constructed site type bels.
+		///
+		///
+		/// TCL Syntax: get_bel_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns a list of pins on the specified BELs, or matching a specified search pattern.
 		/// The default command gets a list of all pins on all BELs on the device.
@@ -1564,18 +1682,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>bel_pin</returns>
 		public void get_bel_pins(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_bel_pins");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_bel_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_bel_pins")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of bels. If a design is loaded, gets the constructed site type bels.
+		///
+		///
+		/// TCL Syntax: get_bels [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_routing_bels] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Basic Elements, or BELs, are building blocks of logic, such as flip-flops, LUTs, and carry logic, that
 		/// make up a SLICE. This command returns a list of BELs on the target part that match a specified
@@ -1630,19 +1753,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>bels</returns>
 		public void get_bels(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_routing_bels = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_bels");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("include_routing_bels", include_routing_bels);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_bels [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_routing_bels] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_bels")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("include_routing_bels", include_routing_bels)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of board bus net objects
+		///
+		///
+		/// TCL Syntax: get_board_bus_nets [-regexp] [-nocase] [-all] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of individual connection bus nets of the specified connection bus object, or the board
 		/// component or board component pin objects.
@@ -1700,19 +1828,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of bus nets in the board</returns>
 		public void get_board_bus_nets(string of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_bus_nets");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("all", all);
-			command.OptionalString("filter", filter);
-			command.RequiredString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_bus_nets [-regexp] [-nocase] [-all] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_bus_nets")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("all", all)
+					.OptionalNamedString("filter", filter)
+					.RequiredNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of board bus objects
+		///
+		///
+		/// TCL Syntax: get_board_buses [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of connection buses defined on the current board, as defined in the Board Interface
 		/// file.
@@ -1770,19 +1903,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of buses in the board</returns>
 		public void get_board_buses(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_buses");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("all", all);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_buses [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_buses")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("all", all)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of interfaces in the board components that implement busdef specified by VLNV
+		///
+		///
+		/// TCL Syntax: get_board_component_interfaces [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of interfaces defined on the components found on the current board, as defined in the
 		/// Board Interface file.
@@ -1845,19 +1983,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of bus interfaces</returns>
 		public void get_board_component_interfaces(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_component_interfaces");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("all", all);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_component_interfaces [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_component_interfaces")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("all", all)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of component mode objects
+		///
+		///
+		/// TCL Syntax: get_board_component_modes [-regexp] [-nocase] [-all] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of various component modes defined on the current board, as defined in the Board
 		/// Interface file.
@@ -1915,19 +2058,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of component modes in the board</returns>
 		public void get_board_component_modes(string of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_component_modes");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("all", all);
-			command.OptionalString("filter", filter);
-			command.RequiredString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_component_modes [-regexp] [-nocase] [-all] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_component_modes")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("all", all)
+					.OptionalNamedString("filter", filter)
+					.RequiredNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of board_part pins object
+		///
+		///
+		/// TCL Syntax: get_board_component_pins [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of individual board component pins of the specified board component object of the
 		/// current_board.
@@ -1981,18 +2129,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of pins in the board_part</returns>
 		public void get_board_component_pins(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_component_pins");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.RequiredString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_component_pins [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_component_pins")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.RequiredNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get the list of components available in the board
+		///
+		///
+		/// TCL Syntax: get_board_components [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of components defined on the current board, as defined in the Board Interface file.
 		/// The board file, board.xml located in the data/boards folder of the Vivado Design Suite
@@ -2047,19 +2200,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of component objects</returns>
 		public void get_board_components(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_components");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("all", all);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_components [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_components")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("all", all)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of interface ports object
+		///
+		///
+		/// TCL Syntax: get_board_interface_ports [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of various physical ports assigned to the component interfaces defined on the current
 		/// board, as defined in the Board Interface file. The interface ports can be returned from component
@@ -2118,18 +2276,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of ports in the given interface</returns>
 		public void get_board_interface_ports(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_interface_ports");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.RequiredString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_interface_ports [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_interface_ports")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.RequiredNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of ip preference objects
+		///
+		///
+		/// TCL Syntax: get_board_ip_preferences [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of IP preferences defined on the current board, as defined in the Board Interface file.
 		/// The board file, board.xml located in the data/boards folder of the Vivado Design Suite
@@ -2183,18 +2346,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of ip preferences for the component</returns>
 		public void get_board_ip_preferences(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_ip_preferences");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.RequiredString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_ip_preferences [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_ip_preferences")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.RequiredNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of board jumper objects
+		///
+		///
+		/// TCL Syntax: get_board_jumpers [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of jumpers defined on the current board, as defined in the Board Interface file.
 		/// The board file, board.xml located in the data/boards folder of the Vivado Design Suite
@@ -2245,18 +2413,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of jumpers in the board</returns>
 		public void get_board_jumpers(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_jumpers");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_jumpers [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_jumpers")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of board parameter objects
+		///
+		///
+		/// TCL Syntax: get_board_parameters [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of parameters defined on the current board, as defined in the Board Interface file.
 		/// The board file, board.xml located in the data/boards folder of the Vivado Design Suite
@@ -2309,18 +2482,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of parameters in the board</returns>
 		public void get_board_parameters(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_parameters");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_parameters [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_parameters")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of interfaces in the board_part that implement busdef specified by VLNV
+		///
+		///
+		/// TCL Syntax: get_board_part_interfaces [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of interfaces defined on the Xilinx device, or current board part as defined by the
 		/// BOARD_PART property, on the board in use by the current project or open design.
@@ -2381,18 +2559,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of bus interfaces</returns>
 		public void get_board_part_interfaces(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_part_interfaces");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_part_interfaces [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_part_interfaces")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of board_part pins object
+		///
+		///
+		/// TCL Syntax: get_board_part_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of component pin objects on the current board part in use by the current project or
 		/// design.
@@ -2472,18 +2655,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of pins in the board_part</returns>
 		public void get_board_part_pins(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_part_pins");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_part_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_part_pins")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get the list of board_part available in the project
+		///
+		///
+		/// TCL Syntax: get_board_parts [-regexp] [-nocase] [-latest_file_version] [-latest_hw_revision] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of available board parts in the board repository, as defined by the Board Interface files
 		/// available for use by the current project or design.
@@ -2544,19 +2732,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of board_part objects</returns>
 		public void get_board_parts(bool? regexp = null, bool? nocase = null, bool? latest_file_version = null, bool? latest_hw_revision = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_parts");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("latest_file_version", latest_file_version);
-			command.Flag("latest_hw_revision", latest_hw_revision);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_parts [-regexp] [-nocase] [-latest_file_version] [-latest_hw_revision] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_parts")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("latest_file_version", latest_file_version)
+					.Flag("latest_hw_revision", latest_hw_revision)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get the list of boards available in the project
+		///
+		///
+		/// TCL Syntax: get_boards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of evaluation boards available for use by the current project.
 		/// The board file, board.xml located in the data/boards folder of the Vivado Design Suite
@@ -2617,18 +2810,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of board objects</returns>
 		public void get_boards(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_boards");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_boards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_boards")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of CDC violations from a previous report_cdc run
+		///
+		///
+		/// TCL Syntax: get_cdc_violations [-name <arg>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of violation objects found in the design when the report_cdc command is run. The
 		/// properties of individual violation objects can be queried using report_property or
@@ -2687,18 +2885,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of CDC violation objects</returns>
 		public void get_cdc_violations(string name = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_cdc_violations");
-			command.OptionalString("name", name);
-			command.Flag("regexp", regexp);
-			command.OptionalString("filter", filter);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_cdc_violations [-name <arg>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_cdc_violations")
+					.OptionalNamedString("name", name)
+					.Flag("regexp", regexp)
+					.OptionalNamedString("filter", filter)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of cells in the current design
+		///
+		///
+		/// TCL Syntax: get_cells [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_replicated_objects] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of cell objects in the current design that match a specified search pattern. The default
 		/// command returns a list of all cells in the current_instance of the open design, as specified by the
@@ -2802,22 +3005,27 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of cell objects</returns>
 		public void get_cells(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_cells");
-			command.OptionalString("hsc", hsc);
-			command.Flag("hierarchical", hierarchical);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("match_style", match_style);
-			command.Flag("include_replicated_objects", include_replicated_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_cells [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_replicated_objects] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_cells")
+					.OptionalNamedString("hsc", hsc)
+					.Flag("hierarchical", hierarchical)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("match_style", match_style)
+					.Flag("include_replicated_objects", include_replicated_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of cfgmem_parts available in the software
+		///
+		///
+		/// TCL Syntax: get_cfgmem_parts [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Get a list of configuration flash memory devices supported by the Vivado Design Suite or Vivado
 		/// Lab Edition.
@@ -2876,18 +3084,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of cfgmem_part objects</returns>
 		public void get_cfgmem_parts(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_cfgmem_parts");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_cfgmem_parts [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_cfgmem_parts")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get the clock regions for the current device.
+		///
+		///
+		/// TCL Syntax: get_clock_regions [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of clock regions on the target part that match a specified search pattern. The default
 		/// command gets a list of all clock regions on the device in an open design.
@@ -2940,18 +3153,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>clock_regions</returns>
 		public void get_clock_regions(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_clock_regions");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_clock_regions [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_clock_regions")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of clocks in the current design
+		///
+		///
+		/// TCL Syntax: get_clocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_generated_clocks] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of clocks in the current design that match a specified search pattern. The default
 		/// command gets a list of all clocks in the design, like the all_clocks command.
@@ -3015,20 +3233,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of clocks</returns>
 		public void get_clocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? include_generated_clocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_clocks");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("match_style", match_style);
-			command.Flag("include_generated_clocks", include_generated_clocks);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_clocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_generated_clocks] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_clocks")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("match_style", match_style)
+					.Flag("include_generated_clocks", include_generated_clocks)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Create the Project summary dashboard
+		///
+		///
+		/// TCL Syntax: get_dashboard_gadgets [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of the dashboard gadgets in the current project.
 		///
@@ -3052,14 +3275,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void get_dashboard_gadgets(bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_dashboard_gadgets");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_dashboard_gadgets [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_dashboard_gadgets")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of debug cores in the current design
+		///
+		///
+		/// TCL Syntax: get_debug_cores [-filter <arg>] [-of_objects <args>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of Vivado Lab Edition debug cores in the current project that match a specified search
 		/// pattern. The default command gets a list of all debug cores in the project.
@@ -3113,18 +3341,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of debug_core objects</returns>
 		public void get_debug_cores(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_debug_cores");
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_debug_cores [-filter <arg>] [-of_objects <args>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_debug_cores")
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of debug ports in the current design
+		///
+		///
+		/// TCL Syntax: get_debug_ports [-filter <arg>] [-of_objects <args>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of ports defined on ILA debug cores in the current project that match a specified
 		/// search pattern. The default command gets a list of all debug ports in the project.
@@ -3177,18 +3410,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of debug_port objects</returns>
 		public void get_debug_ports(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_debug_ports");
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_debug_ports [-filter <arg>] [-of_objects <args>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_debug_ports")
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of designs in the current project
+		///
+		///
+		/// TCL Syntax: get_designs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of open designs in the current project that match a specified search pattern. The
 		/// default command gets a list of all open designs in the project.
@@ -3234,17 +3472,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of design objects</returns>
 		public void get_designs(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_designs");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_designs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_designs")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of DRC rule check objects
+		///
+		///
+		/// TCL Syntax: get_drc_checks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-abbrev <arg>] [-ruledecks <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of the currently defined DRC checks. This list includes both factory defined design rule
 		/// checks, and user-defined checks created by the create_drc_check command.
@@ -3300,20 +3543,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of DRC rule_check objects</returns>
 		public void get_drc_checks(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, string abbrev = null, string ruledecks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_drc_checks");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("abbrev", abbrev);
-			command.OptionalString("ruledecks", ruledecks);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_drc_checks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-abbrev <arg>] [-ruledecks <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_drc_checks")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("abbrev", abbrev)
+					.OptionalNamedString("ruledecks", ruledecks)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of DRC rule deck objects
+		///
+		///
+		/// TCL Syntax: get_drc_ruledecks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of currently defined rule decks for use with the report_drc command.
 		/// A rule deck is a collection of design rule checks grouped for convenience, to be run at different
@@ -3367,18 +3615,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>drc_ruledeck</returns>
 		public void get_drc_ruledecks(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_drc_ruledecks");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_drc_ruledecks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_drc_ruledecks")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of DRC violations from a previous report_drc run
+		///
+		///
+		/// TCL Syntax: get_drc_violations [-name <arg>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of violation objects found in the design when the report_drc command is run.
 		/// Violation objects are created at the time DRC is run, either by the internal design rule checks
@@ -3441,18 +3694,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of DRC violation objects</returns>
 		public void get_drc_violations(string name = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_drc_violations");
-			command.OptionalString("name", name);
-			command.Flag("regexp", regexp);
-			command.OptionalString("filter", filter);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_drc_violations [-name <arg>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_drc_violations")
+					.OptionalNamedString("name", name)
+					.Flag("regexp", regexp)
+					.OptionalNamedString("filter", filter)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of source files
+		///
+		///
+		/// TCL Syntax: get_files [-regexp] [-nocase] [-filter <arg>] [-compile_order <arg>] [-used_in <arg>] [-references] [-all] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of files in the current project that match a specified search pattern. The default
 		/// command gets a list of all files in the project.
@@ -3539,22 +3797,27 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of file objects</returns>
 		public void get_files(bool? regexp = null, bool? nocase = null, string filter = null, string compile_order = null, string used_in = null, bool? references = null, bool? all = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_files");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("compile_order", compile_order);
-			command.OptionalString("used_in", used_in);
-			command.Flag("references", references);
-			command.Flag("all", all);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_files [-regexp] [-nocase] [-filter <arg>] [-compile_order <arg>] [-used_in <arg>] [-references] [-all] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_files")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("compile_order", compile_order)
+					.OptionalNamedString("used_in", used_in)
+					.Flag("references", references)
+					.Flag("all", all)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of filesets in the current project
+		///
+		///
+		/// TCL Syntax: get_filesets [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of filesets in the current project that match a specified search pattern. The default
 		/// command gets a list of all filesets in the project.
@@ -3612,18 +3875,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of fileset objects</returns>
 		public void get_filesets(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_filesets");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_filesets [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_filesets")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of generated clocks in the current design
+		///
+		///
+		/// TCL Syntax: get_generated_clocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of generated clocks in the current project that match a specified search pattern. The
 		/// default command gets a list of all generated clocks in the project.
@@ -3677,19 +3945,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of clocks</returns>
 		public void get_generated_clocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_generated_clocks");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("match_style", match_style);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_generated_clocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_generated_clocks")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("match_style", match_style)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get highlighted objects
+		///
+		///
+		/// TCL Syntax: get_highlighted_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-quiet] [-verbose]
 		///
 		/// Gets the highlighted objects in the current design open in the Vivado IDE. Objects can be
 		/// highlighted with the highlight_objects command.
@@ -3729,16 +4002,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of highlighted objects</returns>
 		public void get_highlighted_objects(string color_index = null, string rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_highlighted_objects");
-			command.OptionalString("color_index", color_index);
-			command.OptionalString("rgb", rgb);
-			command.OptionalString("color", color);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: get_highlighted_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("get_highlighted_objects")
+					.OptionalNamedString("color_index", color_index)
+					.OptionalNamedString("rgb", rgb)
+					.OptionalNamedString("color", color)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware AXI transactions.
+		///
+		///
+		/// TCL Syntax: get_hw_axi_txns [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the read or write transactions for the specified JTAG to AXI Master core, hw_axi object.
 		/// The JTAG to AXI Master is a customizable IP core that works as an AXI Master to drive AXI
@@ -3791,18 +4069,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hw_axi_txns</returns>
 		public void get_hw_axi_txns(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_axi_txns");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_axi_txns [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_axi_txns")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware AXI objects.
+		///
+		///
+		/// TCL Syntax: get_hw_axis [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the JTAG to AXI Master core objects, or hw_axi objects, defined on the current hardware
 		/// device.
@@ -3857,18 +4140,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hw_axi</returns>
 		public void get_hw_axis(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_axis");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_axis [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_axis")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware cfgmems.
+		///
+		///
+		/// TCL Syntax: get_hw_cfgmems [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Get a list of hardware configuration memory (hw_cfgmem) objects created for the current
 		/// hw_device.
@@ -3913,17 +4201,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware cfgmems</returns>
 		public void get_hw_cfgmems(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_cfgmems");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_cfgmems [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_cfgmems")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of Versal integrated and soft DDRMC cores.
+		///
+		///
+		/// TCL Syntax: get_hw_ddrmcs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Xilinx Versal devices include integrated DDR Memory Controllers (DDRMC), as well as fabric
 		/// based memory controllers. Refer to the LogiCore IP Product Guide: Versal ACAP Network on Chip
@@ -3974,18 +4267,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>integrated and soft DDRMC cores</returns>
 		public void get_hw_ddrmcs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_ddrmcs");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_ddrmcs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_ddrmcs")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware devices.
+		///
+		///
+		/// TCL Syntax: get_hw_devices [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the hardware devices on the open target of a connected hardware server.
 		/// Each hardware target can have one or more Xilinx devices to program, or to use for debugging
@@ -4026,18 +4324,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware devices</returns>
 		public void get_hw_devices(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_devices");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_devices [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_devices")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware HBM cores.
+		///
+		///
+		/// TCL Syntax: get_hw_hbms [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Certain Xilinx® UltraScale+ devices include an integrated High-Bandwidth Memory (HBM)
 		/// controller. Refer to the LogiCore IP Product Guide: AXI High Bandwidth Memory Controller
@@ -4090,18 +4393,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware HBM cores</returns>
 		public void get_hw_hbms(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_hbms");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_hbms [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_hbms")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware ILA data objects.
+		///
+		///
+		/// TCL Syntax: get_hw_ila_datas [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the ILA data objects in the Vivado logic analyzer.
 		/// The upload_hw_ila_data command creates a hw_ila_data object in the process of moving
@@ -4147,18 +4455,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware ILA data</returns>
 		public void get_hw_ila_datas(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_ila_datas");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_ila_datas [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_ila_datas")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware ILA.
+		///
+		///
+		/// TCL Syntax: get_hw_ilas [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the ILA debug core objects defined on the current hardware device.
 		/// The Integrated Logic Analyzer (ILA) debug core lets you perform in-system debug of
@@ -4228,18 +4541,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware ILAs</returns>
 		public void get_hw_ilas(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_ilas");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_ilas [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_ilas")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware Migs cores.
+		///
+		///
+		/// TCL Syntax: get_hw_migs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the hw_mig objects on the current hardware device.
 		/// Memory IP included in the Xilinx IP catalog are used to generate memory controllers and
@@ -4298,18 +4616,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware migs cores</returns>
 		public void get_hw_migs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_migs");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_migs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_migs")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware probes.
+		///
+		///
+		/// TCL Syntax: get_hw_probes [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the hw_probe objects in the Hardware Manager that are defined on signals in the design,
 		/// or that are assigned to the specified ILA or VIO debug cores.
@@ -4364,18 +4687,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware probes</returns>
 		public void get_hw_probes(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_probes");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_probes [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_probes")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware servers.
+		///
+		///
+		/// TCL Syntax: get_hw_servers [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// IMPORTANT! You must use the open_hw command to open the Hardware Manager in the Vivado Design
 		/// Suite before using this command.
@@ -4417,17 +4745,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware servers</returns>
 		public void get_hw_servers(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_servers");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_servers [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_servers")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO GT commons.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_commons [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the QPLL objects, hw_sio_commons, defined on the IBERT debug core on the current
 		/// hardware device.
@@ -4477,18 +4810,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO GT commons</returns>
 		public void get_hw_sio_commons(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_commons");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_commons [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_commons")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO GT groups.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_gtgroups [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the groups of GTs, hw_sio_gtgroups, as they relate to the quads that are in use on the
 		/// IBERT debug core on the current hardware device.
@@ -4541,18 +4879,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO GT groups.</returns>
 		public void get_hw_sio_gtgroups(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_gtgroups");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_gtgroups [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_gtgroups")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO GTs.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_gts [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the Gigabit Transceiver objects (GTs), hw_sio_gt, that are in use on the IBERT debug core
 		/// on the current hardware device.
@@ -4604,18 +4947,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO GTs</returns>
 		public void get_hw_sio_gts(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_gts");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_gts [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_gts")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO IBERT cores.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_iberts [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the Integrated Bit Error Ratio Tester (IBERT) debug core objects, hw_sio_ibert, defined
 		/// on the current hardware device.
@@ -4673,18 +5021,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO IBERT cores.</returns>
 		public void get_hw_sio_iberts(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_iberts");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_iberts [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_iberts")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO link groups.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_linkgroups [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the defined groups, or associations of communication links between TX and RX objects
 		/// on the GTs of the IBERT debug core defined on the current hardware device.
@@ -4729,18 +5082,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO link groups</returns>
 		public void get_hw_sio_linkgroups(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_linkgroups");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_linkgroups [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_linkgroups")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO links.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_links [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the communication links between TX and RX objects on the GTs of the IBERT debug
 		/// core defined on the current hardware device.
@@ -4786,18 +5144,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO links</returns>
 		public void get_hw_sio_links(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_links");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_links [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_links")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO PLLs.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_plls [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the PLL objects, hw_sio_pll, defined on the IBERT debug core on the current hardware
 		/// device.
@@ -4846,18 +5209,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO PLLs</returns>
 		public void get_hw_sio_plls(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_plls");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_plls [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_plls")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO RXs.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_rxs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the receiver objects, hw_sio_rx, of the Gigabit Transceivers (GTs) that are in use on the
 		/// IBERT debug core on the current hardware device.
@@ -4902,18 +5270,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO RXs</returns>
 		public void get_hw_sio_rxs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_rxs");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_rxs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_rxs")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO scans.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_scans [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns serial I/O analyzer scan objects for the IBERT debug core.
 		/// To analyze the margin of a given link, it is often helpful to run a scan of the link using the
@@ -4956,18 +5329,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO scans</returns>
 		public void get_hw_sio_scans(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_scans");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_scans [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_scans")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO sweeps.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_sweeps [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Return the serial I/O analyzer link sweep objects defined on the IBERT debug core.
 		/// To analyze the margin of a given link, it is often helpful to run a scan of the link using the
@@ -5018,18 +5396,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO sweeps</returns>
 		public void get_hw_sio_sweeps(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_sweeps");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_sweeps [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_sweeps")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO TXs.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_txs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the transmitter objects, hw_sio_tx, of the Gigabit Transceivers (GTs) that are in use on the
 		/// IBERT debug core on the current hardware device.
@@ -5074,18 +5457,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO TXs</returns>
 		public void get_hw_sio_txs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_txs");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_txs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_txs")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SysMons.
+		///
+		///
+		/// TCL Syntax: get_hw_sysmons [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the Sysmon debug core objects defined on the current hardware device.
 		/// The System Monitor (SYSMON) Analog-to-Digital Converter (ADC) is used to measure die
@@ -5147,18 +5535,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware sysmons</returns>
 		public void get_hw_sysmons(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sysmons");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sysmons [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sysmons")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware targets.
+		///
+		///
+		/// TCL Syntax: get_hw_targets [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the available hardware targets of the connected hardware servers.
 		/// The hardware target is a system board containing a JTAG chain of one or more Xilinx devices that
@@ -5209,18 +5602,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware targets</returns>
 		public void get_hw_targets(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_targets");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_targets [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_targets")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware VIOs.
+		///
+		///
+		/// TCL Syntax: get_hw_vios [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the Virtual Input/Output (VIO) debug core objects that are defined on the current
 		/// hardware device, hw_device.
@@ -5272,18 +5670,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware VIOs</returns>
 		public void get_hw_vios(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_vios");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_vios [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_vios")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of I/O port interfaces in the current design
+		///
+		///
+		/// TCL Syntax: get_interfaces [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of IO interfaces in the current project that match a specified search pattern. The
 		/// default command gets a list of all IO interfaces in the project.
@@ -5329,18 +5732,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of interface objects</returns>
 		public void get_interfaces(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_interfaces");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_interfaces [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_interfaces")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of IO standards.
+		///
+		///
+		/// TCL Syntax: get_io_standards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Get a list of IOSTANDARDs available for use on the target device.
 		/// Note: To improve memory and performance, the get_* commands return a container list of a single type
@@ -5388,18 +5796,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>IO standards</returns>
 		public void get_io_standards(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_io_standards");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_io_standards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_io_standards")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of iobanks.
+		///
+		///
+		/// TCL Syntax: get_iobanks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of I/O Banks on the target device in the current project that match a specified search
 		/// pattern. The default command gets a list of all I/O Banks on the target device.
@@ -5448,18 +5861,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>iobanks</returns>
 		public void get_iobanks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_iobanks");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_iobanks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_iobanks")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of results for IP upgrades during the current project
+		///
+		///
+		/// TCL Syntax: get_ip_upgrade_results [-srcset <arg>] [-quiet] [-verbose] [<objects>...]
 		///
 		/// Returns the names of the upgrade_log files for the specified IPs.
 		/// This command is used by the Vivado IDE to populate the IP Status Report window with
@@ -5494,15 +5912,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of IP upgrade results</returns>
 		public void get_ip_upgrade_results(string srcset = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
-			var command = new SimpleTCLCommand("get_ip_upgrade_results");
-			command.OptionalString("srcset", srcset);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: get_ip_upgrade_results [-srcset <arg>] [-quiet] [-verbose] [<objects>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_ip_upgrade_results")
+					.OptionalNamedString("srcset", srcset)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(objects)
+			);
 		}
 		/// <summary>
 		/// Get a list of IP from the current IP Catalog
+		///
+		///
+		/// TCL Syntax: get_ipdefs [-name] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-all] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Get a list of IP cores defined in the IP catalog of the current project, based on the specified
 		/// search pattern. The default is to return all IP cores defined in the Vivado tools IP catalog.
@@ -5572,20 +5995,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>List of Catalog IP objects</returns>
 		public void get_ipdefs(bool? name = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? all = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_ipdefs");
-			command.Flag("name", name);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("all", all);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_ipdefs [-name] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-all] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_ipdefs")
+					.Flag("name", name)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("all", all)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of IPs in the current design
+		///
+		///
+		/// TCL Syntax: get_ips [-regexp] [-nocase] [-all] [-filter <arg>] [-exclude_bd_ips] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Get a list of IP cores in the current project based on the specified search pattern. The default
 		/// command returns a list of all IPs in the project.
@@ -5640,20 +6068,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of IP objects</returns>
 		public void get_ips(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? exclude_bd_ips = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_ips");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("all", all);
-			command.OptionalString("filter", filter);
-			command.Flag("exclude_bd_ips", exclude_bd_ips);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_ips [-regexp] [-nocase] [-all] [-filter <arg>] [-exclude_bd_ips] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_ips")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("all", all)
+					.OptionalNamedString("filter", filter)
+					.Flag("exclude_bd_ips", exclude_bd_ips)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of Library Cells
+		///
+		///
+		/// TCL Syntax: get_lib_cells [-regexp] [-filter <arg>] [-nocase] [-include_unsupported] [-of_objects <args>] [-quiet] [-verbose] <patterns>
 		///
 		/// Get a list of cells in the library for the target part of the current design. Use this command to
 		/// query and look for a specific library cell, or type of cell and to get the properties of the cells.
@@ -5713,19 +6146,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of library cells</returns>
 		public void get_lib_cells(string patterns, bool? regexp = null, string filter = null, bool? nocase = null, bool? include_unsupported = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_lib_cells");
-			command.Flag("regexp", regexp);
-			command.OptionalString("filter", filter);
-			command.Flag("nocase", nocase);
-			command.Flag("include_unsupported", include_unsupported);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_lib_cells [-regexp] [-filter <arg>] [-nocase] [-include_unsupported] [-of_objects <args>] [-quiet] [-verbose] <patterns>
+			_tcl.Add(
+				new SimpleTCLCommand("get_lib_cells")
+					.Flag("regexp", regexp)
+					.OptionalNamedString("filter", filter)
+					.Flag("nocase", nocase)
+					.Flag("include_unsupported", include_unsupported)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of Library Cell Pins
+		///
+		///
+		/// TCL Syntax: get_lib_pins [-regexp] [-filter <arg>] [-nocase] [-of_objects <args>] [-quiet] [-verbose] <patterns>
 		///
 		/// Gets a list of the pins on a specified cell of the cell library for the target part in the current design.
 		/// Note: This command requires a hierarchical name which includes the library name and cell name as well as
@@ -5777,18 +6215,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of library cell pins</returns>
 		public void get_lib_pins(string patterns, bool? regexp = null, string filter = null, bool? nocase = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_lib_pins");
-			command.Flag("regexp", regexp);
-			command.OptionalString("filter", filter);
-			command.Flag("nocase", nocase);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_lib_pins [-regexp] [-filter <arg>] [-nocase] [-of_objects <args>] [-quiet] [-verbose] <patterns>
+			_tcl.Add(
+				new SimpleTCLCommand("get_lib_pins")
+					.Flag("regexp", regexp)
+					.OptionalNamedString("filter", filter)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of Libraries
+		///
+		///
+		/// TCL Syntax: get_libs [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets the cell library for the target device in the current design. There is a library for each device
 		/// family because there are primitives that may be available in one device family but not in others.
@@ -5830,17 +6273,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of libraries</returns>
 		public void get_libs(bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_libs");
-			command.Flag("regexp", regexp);
-			command.OptionalString("filter", filter);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_libs [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_libs")
+					.Flag("regexp", regexp)
+					.OptionalNamedString("filter", filter)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of macros in the current design
+		///
+		///
+		/// TCL Syntax: get_macros [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of macros in the current design that match a specified search pattern. The default
 		/// command returns a list of all macros in the design.
@@ -5888,18 +6336,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of macro objects</returns>
 		public void get_macros(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_macros");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_macros [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_macros")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get marked objects
+		///
+		///
+		/// TCL Syntax: get_marked_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose]
 		///
 		/// Get the marked objects in the current design open in the Vivado IDE. Objects can be marked
 		/// with the mark_objects command.
@@ -5934,15 +6387,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of marked objects</returns>
 		public void get_marked_objects(string rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_marked_objects");
-			command.OptionalString("rgb", rgb);
-			command.OptionalString("color", color);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: get_marked_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("get_marked_objects")
+					.OptionalNamedString("rgb", rgb)
+					.OptionalNamedString("color", color)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get a list of Methodology rule check objects
+		///
+		///
+		/// TCL Syntax: get_methodology_checks [-regexp] [-nocase] [-filter <arg>] [-abbrev <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of the currently defined methodology checks. This list includes the factory defined
 		/// methodology checks for process and timing.
@@ -5988,18 +6446,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of Methodology rule_check objects</returns>
 		public void get_methodology_checks(bool? regexp = null, bool? nocase = null, string filter = null, string abbrev = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_methodology_checks");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("abbrev", abbrev);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_methodology_checks [-regexp] [-nocase] [-filter <arg>] [-abbrev <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_methodology_checks")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("abbrev", abbrev)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of Methodology violations from a previous report_methodology run
+		///
+		///
+		/// TCL Syntax: get_methodology_violations [-name <arg>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of violation objects found in the design when the report_methodology command
 		/// is run. The properties of individual violation objects can be queried using report_property or
@@ -6058,18 +6521,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of Methodology violation objects</returns>
 		public void get_methodology_violations(string name = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_methodology_violations");
-			command.OptionalString("name", name);
-			command.Flag("regexp", regexp);
-			command.OptionalString("filter", filter);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_methodology_violations [-name <arg>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_methodology_violations")
+					.OptionalNamedString("name", name)
+					.Flag("regexp", regexp)
+					.OptionalNamedString("filter", filter)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get the routed or estimated delays in picoseconds on a net from the driver to each load pin.
+		///
+		///
+		/// TCL Syntax: get_net_delays -of_objects <args> [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-to <args>] [-interconnect_only] [-quiet] [-verbose]
 		///
 		/// Get delay objects for the specified nets in the current design, from the driver to each load pin, or
 		/// to specified load pins, through specific pins.
@@ -6139,20 +6607,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>net_delays</returns>
 		public void get_net_delays(string of_objects, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, string to = null, bool? interconnect_only = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_net_delays");
-			command.RequiredString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("patterns", patterns);
-			command.OptionalString("filter", filter);
-			command.OptionalString("to", to);
-			command.Flag("interconnect_only", interconnect_only);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: get_net_delays -of_objects <args> [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-to <args>] [-interconnect_only] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("get_net_delays")
+					.RequiredNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("patterns", patterns)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("to", to)
+					.Flag("interconnect_only", interconnect_only)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get a list of nets in the current design
+		///
+		///
+		/// TCL Syntax: get_nets [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-top_net_of_hierarchical_group] [-segments] [-boundary_type <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of nets in the current design that match a specified search pattern. The default
 		/// command gets a list of all nets in the current_instance of the open design, as specified by the
@@ -6258,24 +6731,29 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of net objects</returns>
 		public void get_nets(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? top_net_of_hierarchical_group = null, bool? segments = null, string boundary_type = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_nets");
-			command.OptionalString("hsc", hsc);
-			command.Flag("hierarchical", hierarchical);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("match_style", match_style);
-			command.Flag("top_net_of_hierarchical_group", top_net_of_hierarchical_group);
-			command.Flag("segments", segments);
-			command.OptionalString("boundary_type", boundary_type);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_nets [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-top_net_of_hierarchical_group] [-segments] [-boundary_type <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_nets")
+					.OptionalNamedString("hsc", hsc)
+					.Flag("hierarchical", hierarchical)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("match_style", match_style)
+					.Flag("top_net_of_hierarchical_group", top_net_of_hierarchical_group)
+					.Flag("segments", segments)
+					.OptionalNamedString("boundary_type", boundary_type)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of nodes in the device.
+		///
+		///
+		/// TCL Syntax: get_nodes [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-uphill] [-downhill] [-flyover] [-from <args>] [-to <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns a list of nodes on the device that match a specified search pattern in an open design.
 		/// The default command gets a list of all nodes on the device.
@@ -6350,23 +6828,28 @@ namespace Quokka.TCL.Vivado
 		/// <returns>nodes</returns>
 		public void get_nodes(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? uphill = null, bool? downhill = null, bool? flyover = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_nodes");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("uphill", uphill);
-			command.Flag("downhill", downhill);
-			command.Flag("flyover", flyover);
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_nodes [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-uphill] [-downhill] [-flyover] [-from <args>] [-to <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_nodes")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("uphill", uphill)
+					.Flag("downhill", downhill)
+					.Flag("flyover", flyover)
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of package pins
+		///
+		///
+		/// TCL Syntax: get_package_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of the pins on the selected package for the target device. The default command gets a
 		/// list of all pins on the package.
@@ -6417,18 +6900,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of package pin objects</returns>
 		public void get_package_pins(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_package_pins");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_package_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_package_pins")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of PartitionDefs
+		///
+		///
+		/// TCL Syntax: get_partition_defs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// IMPORTANT! You must first define the project as a Partial Reconfiguration (PR) project by setting the
 		/// PR_FLOW property on the project to TRUE, or by using the Tools → Enable Partial Reconfiguration command.
@@ -6473,17 +6961,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of PartitionDef objects</returns>
 		public void get_partition_defs(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_partition_defs");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_partition_defs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_partition_defs")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of parts available in the software
+		///
+		///
+		/// TCL Syntax: get_parts [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of parts that match a specified search pattern. The default command gets a list of all
 		/// parts.
@@ -6530,17 +7023,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of part objects</returns>
 		public void get_parts(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_parts");
-			command.Flag("regexp", regexp);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_parts [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_parts")
+					.Flag("regexp", regexp)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of path groups in the current design
+		///
+		///
+		/// TCL Syntax: get_path_groups [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of timing path groups in the current project that match a specified search pattern. The
 		/// default command gets a list of all path groups in the design.
@@ -6584,16 +7082,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of path groups</returns>
 		public void get_path_groups(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_path_groups");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_path_groups [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_path_groups")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of Pblocks in the current design
+		///
+		///
+		/// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblock] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of Pblocks defined in the current project that match a specific pattern. The default
 		/// command gets a list of all Pblocks in the project.
@@ -6649,19 +7152,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of Pblock objects</returns>
 		public void get_pblocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_nested_pblock = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_pblocks");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("include_nested_pblock", include_nested_pblock);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblock] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_pblocks")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("include_nested_pblock", include_nested_pblock)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of pins in the current design
+		///
+		///
+		/// TCL Syntax: get_pins [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-leaf] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_replicated_objects] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of pin objects in the current design that match a specified search pattern. The default
 		/// command gets a list of all pins in the current_instance of the open design, as specified by the
@@ -6764,23 +7272,28 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of pin objects</returns>
 		public void get_pins(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, bool? leaf = null, string filter = null, string of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_pins");
-			command.OptionalString("hsc", hsc);
-			command.Flag("hierarchical", hierarchical);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("leaf", leaf);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("match_style", match_style);
-			command.Flag("include_replicated_objects", include_replicated_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_pins [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-leaf] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_replicated_objects] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_pins")
+					.OptionalNamedString("hsc", hsc)
+					.Flag("hierarchical", hierarchical)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("leaf", leaf)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("match_style", match_style)
+					.Flag("include_replicated_objects", include_replicated_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of programmable interconnect points (pips) on the current device.
+		///
+		///
+		/// TCL Syntax: get_pips [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-uphill] [-downhill] [-from <args>] [-to <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Programmable interconnect points, or PIPs, provide the physical routing paths on the device used
 		/// to connect logic networks. This command returns a list of PIPs on the device that match a
@@ -6850,22 +7363,27 @@ namespace Quokka.TCL.Vivado
 		/// <returns>pips</returns>
 		public void get_pips(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? uphill = null, bool? downhill = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_pips");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("uphill", uphill);
-			command.Flag("downhill", downhill);
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_pips [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-uphill] [-downhill] [-from <args>] [-to <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_pips")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("uphill", uphill)
+					.Flag("downhill", downhill)
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of package pin byte groups.
+		///
+		///
+		/// TCL Syntax: get_pkgpin_bytegroups [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of the byte groups on the I/O banks of the current Xilinx UltraScale device.
 		/// For 7 series devices, the hierarchy of IO Banks is divided into two object types: I/O Banks and
@@ -6919,18 +7437,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>pin_group</returns>
 		public void get_pkgpin_bytegroups(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_pkgpin_bytegroups");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_pkgpin_bytegroups [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_pkgpin_bytegroups")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of pkgpin nibbles.
+		///
+		///
+		/// TCL Syntax: get_pkgpin_nibbles [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Return a list of nibbles, or half-bytes, on the I/O banks of the current Xilinx UltraScale device.
 		/// For 7 series devices, the hierarchy of IO Banks is divided into two object types: I/O Banks and
@@ -6984,18 +7507,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>pin_nibble</returns>
 		public void get_pkgpin_nibbles(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_pkgpin_nibbles");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_pkgpin_nibbles [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_pkgpin_nibbles")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of ports in the current design
+		///
+		///
+		/// TCL Syntax: get_ports [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-scoped_to_current_instance] [-no_traverse] [-prop_thru_buffers] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of port objects in the current design that match a specified search pattern. The default
 		/// command gets a list of all ports in the design.
@@ -7073,22 +7601,27 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of port objects</returns>
 		public void get_ports(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? scoped_to_current_instance = null, bool? no_traverse = null, bool? prop_thru_buffers = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_ports");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("match_style", match_style);
-			command.Flag("scoped_to_current_instance", scoped_to_current_instance);
-			command.Flag("no_traverse", no_traverse);
-			command.Flag("prop_thru_buffers", prop_thru_buffers);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_ports [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-scoped_to_current_instance] [-no_traverse] [-prop_thru_buffers] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_ports")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("match_style", match_style)
+					.Flag("scoped_to_current_instance", scoped_to_current_instance)
+					.Flag("no_traverse", no_traverse)
+					.Flag("prop_thru_buffers", prop_thru_buffers)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of partition configurations
+		///
+		///
+		/// TCL Syntax: get_pr_configurations [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Get a list of PR configuration objects in the current project.
 		/// In the Partial Reconfiguration (PR) design flow, the PR configuration lets you specify a
@@ -7131,17 +7664,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of Configuration objects</returns>
 		public void get_pr_configurations(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_pr_configurations");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_pr_configurations [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_pr_configurations")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of available unisim primitives for a part
+		///
+		///
+		/// TCL Syntax: get_primitives [-regexp] [-nocase] [-filter <arg>] [-part <arg>] [-retarget] [-macro] [-hierarchy] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Get a list of all supported primitives for the specified device. This command can be used on an
 		/// open elaborated, synthesized, or implemented design, in which case it will get the PART from the
@@ -7203,21 +7741,26 @@ namespace Quokka.TCL.Vivado
 		/// <returns>primitive types</returns>
 		public void get_primitives(string patterns, bool? regexp = null, bool? nocase = null, string filter = null, string part = null, bool? retarget = null, bool? macro = null, bool? hierarchy = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_primitives");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("part", part);
-			command.Flag("retarget", retarget);
-			command.Flag("macro", macro);
-			command.Flag("hierarchy", hierarchy);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_primitives [-regexp] [-nocase] [-filter <arg>] [-part <arg>] [-retarget] [-macro] [-hierarchy] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_primitives")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("part", part)
+					.Flag("retarget", retarget)
+					.Flag("macro", macro)
+					.Flag("hierarchy", hierarchy)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of projects
+		///
+		///
+		/// TCL Syntax: get_projects [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of open projects that match the specified search pattern. The default gets a list of all
 		/// open projects.
@@ -7266,17 +7809,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of project objects</returns>
 		public void get_projects(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_projects");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_projects [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_projects")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get properties of object
+		///
+		///
+		/// TCL Syntax: get_property [-min] [-max] [-quiet] [-verbose] <name> <object>
 		///
 		/// Gets the current value of the named property from the specified object or objects. If multiple
 		/// objects are specified, a list of values is returned.
@@ -7334,17 +7882,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>property value</returns>
 		public void get_property(string name, string @object, bool? min = null, bool? max = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_property");
-			command.Flag("min", min);
-			command.Flag("max", max);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.RequiredString("object", @object);
-			_tcl.Add(command);
+			// TCL Syntax: get_property [-min] [-max] [-quiet] [-verbose] <name> <object>
+			_tcl.Add(
+				new SimpleTCLCommand("get_property")
+					.Flag("min", min)
+					.Flag("max", max)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.RequiredString(@object)
+			);
 		}
 		/// <summary>
 		/// Get a list of available QoR suggestions
+		///
+		///
+		/// TCL Syntax: get_qor_suggestions [-filter <arg>] [-quiet] [-verbose] [<IDs>]
 		///
 		/// Get existing QoR suggestion objects created by the report_qor_suggestions command, or
 		/// read into the design using read_qor_suggestions. The selected QoR objects can be written
@@ -7385,15 +7938,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of qor suggestion objects</returns>
 		public void get_qor_suggestions(string filter = null, bool? quiet = null, bool? verbose = null, string IDs = null)
 		{
-			var command = new SimpleTCLCommand("get_qor_suggestions");
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("IDs", IDs);
-			_tcl.Add(command);
+			// TCL Syntax: get_qor_suggestions [-filter <arg>] [-quiet] [-verbose] [<IDs>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_qor_suggestions")
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(IDs)
+			);
 		}
 		/// <summary>
 		/// Get a list of ReconfigModules
+		///
+		///
+		/// TCL Syntax: get_reconfig_modules [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Get a list of reconfigurable modules (RMs) in the current design that match a specified search
 		/// pattern. The default command returns a list of all RMs in the current project.
@@ -7435,18 +7993,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of ReconfigModule objects</returns>
 		public void get_reconfig_modules(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_reconfig_modules");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_reconfig_modules [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_reconfig_modules")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of Configurable Report objects
+		///
+		///
+		/// TCL Syntax: get_report_configs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns a list of report objects created by the create_report_config command.
 		/// This command returns the list of report objects matching the search pattern and filters, or returns
@@ -7492,18 +8055,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of Configurable Report objects</returns>
 		public void get_report_configs(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_report_configs");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_report_configs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_report_configs")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of runs
+		///
+		///
+		/// TCL Syntax: get_runs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of synthesis and implementation runs in the current project that match a specified
 		/// search pattern. The default command gets a list of all runs defined in the project.
@@ -7552,18 +8120,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of run objects</returns>
 		public void get_runs(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_runs");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_runs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_runs")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get selected objects
+		///
+		///
+		/// TCL Syntax: get_selected_objects [-primary] [-quiet] [-verbose]
 		///
 		/// Gets the objects currently selected in the Vivado IDE by the select_objects command. Can
 		/// get the primary selected object and any secondary selected objects as well.
@@ -7599,14 +8172,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of selected objects</returns>
 		public void get_selected_objects(bool? primary = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_selected_objects");
-			command.Flag("primary", primary);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: get_selected_objects [-primary] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("get_selected_objects")
+					.Flag("primary", primary)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get a list of site_pins.
+		///
+		///
+		/// TCL Syntax: get_site_pins [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns a list of site pins of the specified site, node, logical cell pin, or net objects in an open
 		/// design.
@@ -7664,18 +8242,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>site_pins</returns>
 		public void get_site_pins(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_site_pins");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_site_pins [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_site_pins")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of site_pips from the given object.
+		///
+		///
+		/// TCL Syntax: get_site_pips [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Programmable interconnect points, or PIPs, provide the physical routing paths on the device used
 		/// to connect logic networks. This command returns a list of PIPs on specified sites that match a
@@ -7725,18 +8308,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>site_pips</returns>
 		public void get_site_pips(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_site_pips");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_site_pips [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_site_pips")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of Sites
+		///
+		///
+		/// TCL Syntax: get_sites [-regexp] [-filter <arg>] [-nocase] [-range <args>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of sites on the target device that match a specified search pattern. The default
 		/// command gets a list of all sites on the target device.
@@ -7815,19 +8403,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of site objects</returns>
 		public void get_sites(bool? regexp = null, string filter = null, bool? nocase = null, string range = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_sites");
-			command.Flag("regexp", regexp);
-			command.OptionalString("filter", filter);
-			command.Flag("nocase", nocase);
-			command.OptionalString("range", range);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_sites [-regexp] [-filter <arg>] [-nocase] [-range <args>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_sites")
+					.Flag("regexp", regexp)
+					.OptionalNamedString("filter", filter)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("range", range)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of slrs.
+		///
+		///
+		/// TCL Syntax: get_slrs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Get a list of the super logic regions (SLRs) on the target device. On Devices that do not contain
 		/// multiple SLRs, the SLR0 is returned.
@@ -7881,18 +8474,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>slr</returns>
 		public void get_slrs(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_slrs");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_slrs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_slrs")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of speed_models in the device.
+		///
+		///
+		/// TCL Syntax: get_speed_models [-of_objects <args>] [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-speed_pattern <arg>] [-quiet] [-verbose]
 		///
 		/// Get speed models for UltraScale architecture device resources in the current design.
 		/// Speed files are provided by Xilinx for each device and speed grade. Speed files contain speed
@@ -7972,19 +8570,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>speed_models</returns>
 		public void get_speed_models(string of_objects = null, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, string speed_pattern = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_speed_models");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("patterns", patterns);
-			command.OptionalString("filter", filter);
-			command.OptionalString("speed_pattern", speed_pattern);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: get_speed_models [-of_objects <args>] [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-speed_pattern <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("get_speed_models")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("patterns", patterns)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("speed_pattern", speed_pattern)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get a list of tiles.
+		///
+		///
+		/// TCL Syntax: get_tiles [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// This command returns a list of tiles on the device in an open design. The default command gets a
 		/// list of all tiles on the device.
@@ -8035,18 +8638,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>tiles</returns>
 		public void get_tiles(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_tiles");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_tiles [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_tiles")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of timing arcs
+		///
+		///
+		/// TCL Syntax: get_timing_arcs [-from <args>] [-to <args>] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose]
 		///
 		/// Gets a list of timing arcs for the specified objects. You can filter the timing arcs according to
 		/// specified properties.
@@ -8100,17 +8708,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of timing arc objects</returns>
 		public void get_timing_arcs(string from = null, string to = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_timing_arcs");
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: get_timing_arcs [-from <args>] [-to <args>] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("get_timing_arcs")
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get timing paths
+		///
+		///
+		/// TCL Syntax: get_timing_paths [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-delay_type <arg>] [-setup] [-hold] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-slack_lesser_than <arg>] [-slack_greater_than <arg>] [-group <args>] [-no_report_unconstrained] [-user_ignored] [-routable_nets] [-sort_by <arg>] [-filter <arg>] [-regexp] [-nocase] [-cell <args>] [-quiet] [-verbose]
 		///
 		/// Gets timing path objects that meet the specified criteria. This command can be used to predefine
 		/// timing paths to pass to the report_timing command for instance. Another usage of this
@@ -8279,39 +8892,44 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void get_timing_paths(string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, string delay_type = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string slack_lesser_than = null, string slack_greater_than = null, string group = null, bool? no_report_unconstrained = null, bool? user_ignored = null, bool? routable_nets = null, string sort_by = null, string filter = null, bool? regexp = null, bool? nocase = null, string cell = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_timing_paths");
-			command.OptionalString("from", from);
-			command.OptionalString("rise_from", rise_from);
-			command.OptionalString("fall_from", fall_from);
-			command.OptionalString("to", to);
-			command.OptionalString("rise_to", rise_to);
-			command.OptionalString("fall_to", fall_to);
-			command.OptionalString("through", through);
-			command.OptionalString("rise_through", rise_through);
-			command.OptionalString("fall_through", fall_through);
-			command.OptionalString("delay_type", delay_type);
-			command.Flag("setup", setup);
-			command.Flag("hold", hold);
-			command.OptionalString("max_paths", max_paths);
-			command.OptionalString("nworst", nworst);
-			command.Flag("unique_pins", unique_pins);
-			command.OptionalString("slack_lesser_than", slack_lesser_than);
-			command.OptionalString("slack_greater_than", slack_greater_than);
-			command.OptionalString("group", group);
-			command.Flag("no_report_unconstrained", no_report_unconstrained);
-			command.Flag("user_ignored", user_ignored);
-			command.Flag("routable_nets", routable_nets);
-			command.OptionalString("sort_by", sort_by);
-			command.OptionalString("filter", filter);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("cell", cell);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: get_timing_paths [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-delay_type <arg>] [-setup] [-hold] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-slack_lesser_than <arg>] [-slack_greater_than <arg>] [-group <args>] [-no_report_unconstrained] [-user_ignored] [-routable_nets] [-sort_by <arg>] [-filter <arg>] [-regexp] [-nocase] [-cell <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("get_timing_paths")
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("rise_from", rise_from)
+					.OptionalNamedString("fall_from", fall_from)
+					.OptionalNamedString("to", to)
+					.OptionalNamedString("rise_to", rise_to)
+					.OptionalNamedString("fall_to", fall_to)
+					.OptionalNamedString("through", through)
+					.OptionalNamedString("rise_through", rise_through)
+					.OptionalNamedString("fall_through", fall_through)
+					.OptionalNamedString("delay_type", delay_type)
+					.Flag("setup", setup)
+					.Flag("hold", hold)
+					.OptionalNamedString("max_paths", max_paths)
+					.OptionalNamedString("nworst", nworst)
+					.Flag("unique_pins", unique_pins)
+					.OptionalNamedString("slack_lesser_than", slack_lesser_than)
+					.OptionalNamedString("slack_greater_than", slack_greater_than)
+					.OptionalNamedString("group", group)
+					.Flag("no_report_unconstrained", no_report_unconstrained)
+					.Flag("user_ignored", user_ignored)
+					.Flag("routable_nets", routable_nets)
+					.OptionalNamedString("sort_by", sort_by)
+					.OptionalNamedString("filter", filter)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("cell", cell)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get one or more DRC/METHODOLOGY/CDC message waivers
+		///
+		///
+		/// TCL Syntax: get_waivers [-type <arg>] [-id <arg>] [-of_objects <args>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
 		///
 		/// The create_waiver command lets you select individual DRC, methodology, or CDC violations
 		/// or rule checks that can be waived for a design, letting you move forward in the design flow. The
@@ -8376,20 +8994,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>waivers</returns>
 		public void get_waivers(string type = null, string id = null, string of_objects = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_waivers");
-			command.OptionalString("type", type);
-			command.OptionalString("id", id);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.OptionalString("filter", filter);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_waivers [-type <arg>] [-id <arg>] [-of_objects <args>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_waivers")
+					.OptionalNamedString("type", type)
+					.OptionalNamedString("id", id)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.OptionalNamedString("filter", filter)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of wires.
+		///
+		///
+		/// TCL Syntax: get_wires [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-uphill] [-downhill] [-from <args>] [-to <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns a list of wires in the design that match a specified search pattern in an open design.
 		/// The default command gets a list of all wires in the design.
@@ -8455,22 +9078,27 @@ namespace Quokka.TCL.Vivado
 		/// <returns>wires</returns>
 		public void get_wires(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? uphill = null, bool? downhill = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_wires");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("uphill", uphill);
-			command.Flag("downhill", downhill);
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_wires [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-uphill] [-downhill] [-from <args>] [-to <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_wires")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("uphill", uphill)
+					.Flag("downhill", downhill)
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Return probe sample values
+		///
+		///
+		/// TCL Syntax: list_hw_samples [-quiet] [-verbose] [<hw_probe>]
 		///
 		/// Writes data samples from the specified hw_probe object on the current hw_ila.
 		/// The number of captured samples returned from the specified probe is equal to the DATA_DEPTH
@@ -8517,14 +9145,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>samples</returns>
 		public void list_hw_samples(bool? quiet = null, bool? verbose = null, string hw_probe = null)
 		{
-			var command = new SimpleTCLCommand("list_hw_samples");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_probe", hw_probe);
-			_tcl.Add(command);
+			// TCL Syntax: list_hw_samples [-quiet] [-verbose] [<hw_probe>]
+			_tcl.Add(
+				new SimpleTCLCommand("list_hw_samples")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_probe)
+			);
 		}
 		/// <summary>
 		/// List properties of object
+		///
+		///
+		/// TCL Syntax: list_property [-class <arg>] [-regexp] [-quiet] [-verbose] [<object>] [<pattern>]
 		///
 		/// Gets a list of all properties on a specified object or class.
 		/// Note: report_property also returns a list of properties on an object or class of objects, but also reports
@@ -8566,17 +9199,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of property names</returns>
 		public void list_property(string @class = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, string @object = null, string pattern = null)
 		{
-			var command = new SimpleTCLCommand("list_property");
-			command.OptionalString("class", @class);
-			command.Flag("regexp", regexp);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("object", @object);
-			command.OptionalString("pattern", pattern);
-			_tcl.Add(command);
+			// TCL Syntax: list_property [-class <arg>] [-regexp] [-quiet] [-verbose] [<object>] [<pattern>]
+			_tcl.Add(
+				new SimpleTCLCommand("list_property")
+					.OptionalNamedString("class", @class)
+					.Flag("regexp", regexp)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(@object)
+					.OptionalString(pattern)
+			);
 		}
 		/// <summary>
 		/// List legal property values of object
+		///
+		///
+		/// TCL Syntax: list_property_value [-default] [-class <arg>] [-quiet] [-verbose] <name> [<object>]
 		///
 		/// Gets a list of valid values for an enumerated type property of either a class of objects or a
 		/// specific object.
@@ -8623,17 +9261,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of property values</returns>
 		public void list_property_value(string name, bool? @default = null, string @class = null, bool? quiet = null, bool? verbose = null, string @object = null)
 		{
-			var command = new SimpleTCLCommand("list_property_value");
-			command.Flag("default", @default);
-			command.OptionalString("class", @class);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.OptionalString("object", @object);
-			_tcl.Add(command);
+			// TCL Syntax: list_property_value [-default] [-class <arg>] [-quiet] [-verbose] <name> [<object>]
+			_tcl.Add(
+				new SimpleTCLCommand("list_property_value")
+					.Flag("default", @default)
+					.OptionalNamedString("class", @class)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.OptionalString(@object)
+			);
 		}
 		/// <summary>
 		/// Remove DRC rule check objects from a user rule deck
+		///
+		///
+		/// TCL Syntax: remove_drc_checks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] -ruledeck <arg> [-quiet] [-verbose] [<patterns>]
 		///
 		/// Remove the specified design rule checks from a drc_ruledeck object.
 		/// A rule deck is a collection of design rule checks grouped for convenience, to be run with the
@@ -8695,19 +9338,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>drc_check</returns>
 		public void remove_drc_checks(string ruledeck, string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("remove_drc_checks");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.RequiredString("ruledeck", ruledeck);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: remove_drc_checks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] -ruledeck <arg> [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("remove_drc_checks")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.RequiredNamedString("ruledeck", ruledeck)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Report properties of object
+		///
+		///
+		/// TCL Syntax: report_property [-all] [-class <arg>] [-return_string] [-file <arg>] [-append] [-regexp] [-quiet] [-verbose] [<object>] [<pattern>]
 		///
 		/// Gets the property name, property type, and property value for all of the properties on a specified
 		/// object, or class of objects.
@@ -8784,21 +9432,26 @@ namespace Quokka.TCL.Vivado
 		/// <returns>property report</returns>
 		public void report_property(bool? all = null, string @class = null, bool? return_string = null, string file = null, bool? append = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, string @object = null, string pattern = null)
 		{
-			var command = new SimpleTCLCommand("report_property");
-			command.Flag("all", all);
-			command.OptionalString("class", @class);
-			command.Flag("return_string", return_string);
-			command.OptionalString("file", file);
-			command.Flag("append", append);
-			command.Flag("regexp", regexp);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("object", @object);
-			command.OptionalString("pattern", pattern);
-			_tcl.Add(command);
+			// TCL Syntax: report_property [-all] [-class <arg>] [-return_string] [-file <arg>] [-append] [-regexp] [-quiet] [-verbose] [<object>] [<pattern>]
+			_tcl.Add(
+				new SimpleTCLCommand("report_property")
+					.Flag("all", all)
+					.OptionalNamedString("class", @class)
+					.Flag("return_string", return_string)
+					.OptionalNamedString("file", file)
+					.Flag("append", append)
+					.Flag("regexp", regexp)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(@object)
+					.OptionalString(pattern)
+			);
 		}
 		/// <summary>
 		/// Recommend QoR Suggestions
+		///
+		///
+		/// TCL Syntax: report_qor_suggestions [-file <arg>] [-name <arg>] [-append] [-return_string] [-max_strategies <arg>] [-max_paths <arg>] [-evaluate_pipelining] [-no_split] [-models_dir <arg>] [-cell <args>] [-of_objects <args>] [-quiet] [-verbose]
 		///
 		/// Report design and tool option recommendations related to improving the quality of results (QoR).
 		/// The report looks at timing constraints, netlist characteristics, failing timing paths, and congestion
@@ -8893,24 +9546,29 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void report_qor_suggestions(string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? evaluate_pipelining = null, bool? no_split = null, string models_dir = null, string cell = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_qor_suggestions");
-			command.OptionalString("file", file);
-			command.OptionalString("name", name);
-			command.Flag("append", append);
-			command.Flag("return_string", return_string);
-			command.OptionalString("max_strategies", max_strategies);
-			command.OptionalString("max_paths", max_paths);
-			command.Flag("evaluate_pipelining", evaluate_pipelining);
-			command.Flag("no_split", no_split);
-			command.OptionalString("models_dir", models_dir);
-			command.OptionalString("cell", cell);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: report_qor_suggestions [-file <arg>] [-name <arg>] [-append] [-return_string] [-max_strategies <arg>] [-max_paths <arg>] [-evaluate_pipelining] [-no_split] [-models_dir <arg>] [-cell <args>] [-of_objects <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("report_qor_suggestions")
+					.OptionalNamedString("file", file)
+					.OptionalNamedString("name", name)
+					.Flag("append", append)
+					.Flag("return_string", return_string)
+					.OptionalNamedString("max_strategies", max_strategies)
+					.OptionalNamedString("max_paths", max_paths)
+					.Flag("evaluate_pipelining", evaluate_pipelining)
+					.Flag("no_split", no_split)
+					.OptionalNamedString("models_dir", models_dir)
+					.OptionalNamedString("cell", cell)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Report status of DRC/METHODOLOGY/CDC message waivers
+		///
+		///
+		/// TCL Syntax: report_waivers [-file <arg>] [-type <arg>] [-write_valid_waivers] [-write_ignored_waivers] [-append] [-return_string] [-show_msgs_with_no_waivers] [-quiet] [-verbose]
 		///
 		/// Reports DRC, METHODOLOGY, and CDC violation messages and displays what waivers are in
 		/// place in the current design.
@@ -8965,20 +9623,25 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void report_waivers(string file = null, string type = null, bool? write_valid_waivers = null, bool? write_ignored_waivers = null, bool? append = null, bool? return_string = null, bool? show_msgs_with_no_waivers = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_waivers");
-			command.OptionalString("file", file);
-			command.OptionalString("type", type);
-			command.Flag("write_valid_waivers", write_valid_waivers);
-			command.Flag("write_ignored_waivers", write_ignored_waivers);
-			command.Flag("append", append);
-			command.Flag("return_string", return_string);
-			command.Flag("show_msgs_with_no_waivers", show_msgs_with_no_waivers);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: report_waivers [-file <arg>] [-type <arg>] [-write_valid_waivers] [-write_ignored_waivers] [-append] [-return_string] [-show_msgs_with_no_waivers] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("report_waivers")
+					.OptionalNamedString("file", file)
+					.OptionalNamedString("type", type)
+					.Flag("write_valid_waivers", write_valid_waivers)
+					.Flag("write_ignored_waivers", write_ignored_waivers)
+					.Flag("append", append)
+					.Flag("return_string", return_string)
+					.Flag("show_msgs_with_no_waivers", show_msgs_with_no_waivers)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Reset one or more DRC checks to factory defaults.
+		///
+		///
+		/// TCL Syntax: reset_drc_check [-quiet] [-verbose] [<checks>...]
 		///
 		/// Reset the specified DRC checks to the defaults provided by the Vivado Design Suite. This will
 		/// restore the DRC check to its default configuration, including any changes to the IS_ENABLED or
@@ -9012,14 +9675,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void reset_drc_check(string checks, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("reset_drc_check");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("checks", checks);
-			_tcl.Add(command);
+			// TCL Syntax: reset_drc_check [-quiet] [-verbose] [<checks>...]
+			_tcl.Add(
+				new SimpleTCLCommand("reset_drc_check")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(checks)
+			);
 		}
 		/// <summary>
 		/// Reset one or more Methodology checks to factory defaults.
+		///
+		///
+		/// TCL Syntax: reset_methodology_check [-quiet] [-verbose] [<checks>...]
 		///
 		/// Reset the specified methodology checks to the defaults provided by the Vivado Design Suite.
 		/// This will restore the check to its default configuration, including any changes to the IS_ENABLED
@@ -9056,14 +9724,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void reset_methodology_check(string checks, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("reset_methodology_check");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("checks", checks);
-			_tcl.Add(command);
+			// TCL Syntax: reset_methodology_check [-quiet] [-verbose] [<checks>...]
+			_tcl.Add(
+				new SimpleTCLCommand("reset_methodology_check")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(checks)
+			);
 		}
 		/// <summary>
 		/// Reset property on object(s)
+		///
+		///
+		/// TCL Syntax: reset_property [-quiet] [-verbose] <property_name> <objects>...
 		///
 		/// Restores the specified property to its default value on the specified object or objects. If no
 		/// default is defined for the property, the property is unassigned on the specified object.
@@ -9096,15 +9769,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The value that was set if success, "" if failure</returns>
 		public void reset_property(string property_name, string objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("reset_property");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("property_name", property_name);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: reset_property [-quiet] [-verbose] <property_name> <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("reset_property")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(property_name)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// change to a stable state of a specified transition
+		///
+		///
+		/// TCL Syntax: run_state_hw_jtag [-state <args>] [-quiet] [-verbose] <stable_state>
 		///
 		/// Transition the hw_jtag object of the current hardware target to the specified TAP stable state.
 		/// A hw_jtag object is created by the Hardware Manager feature of the Vivado Design Suite when a
@@ -9169,15 +9847,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware JTAG</returns>
 		public void run_state_hw_jtag(string stable_state, string state = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("run_state_hw_jtag");
-			command.OptionalString("state", state);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("stable_state", stable_state);
-			_tcl.Add(command);
+			// TCL Syntax: run_state_hw_jtag [-state <args>] [-quiet] [-verbose] <stable_state>
+			_tcl.Add(
+				new SimpleTCLCommand("run_state_hw_jtag")
+					.OptionalNamedString("state", state)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(stable_state)
+			);
 		}
 		/// <summary>
 		/// Forces IEEE 1149.1 TAP state machine to a stable state for a specified wait period
+		///
+		///
+		/// TCL Syntax: runtest_hw_jtag [-wait_state <arg>] [-end_state <arg>] [-sec <arg>] [-max_wait <arg>] [-tck <arg>] [-quiet] [-verbose]
 		///
 		/// Specify a wait operation for the hw_jtag object state machine which defines:
 		/// • Which TAP stable state to go to perform the wait operation.
@@ -9232,18 +9915,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void runtest_hw_jtag(string wait_state = null, string end_state = null, string sec = null, string max_wait = null, string tck = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("runtest_hw_jtag");
-			command.OptionalString("wait_state", wait_state);
-			command.OptionalString("end_state", end_state);
-			command.OptionalString("sec", sec);
-			command.OptionalString("max_wait", max_wait);
-			command.OptionalString("tck", tck);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: runtest_hw_jtag [-wait_state <arg>] [-end_state <arg>] [-sec <arg>] [-max_wait <arg>] [-tck <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("runtest_hw_jtag")
+					.OptionalNamedString("wait_state", wait_state)
+					.OptionalNamedString("end_state", end_state)
+					.OptionalNamedString("sec", sec)
+					.OptionalNamedString("max_wait", max_wait)
+					.OptionalNamedString("tck", tck)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Perform shift DR on 'hw_jtag'.
+		///
+		///
+		/// TCL Syntax: scan_dr_hw_jtag [-tdi <arg>] [-tdo <arg>] [-mask <arg>] [-smask <arg>] [-quiet] [-verbose] <length>
 		///
 		/// The scan_dr_hw_jtag command specifies a scan pattern to be scanned into the JTAG
 		/// interface target data register.
@@ -9313,18 +10001,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware TDO</returns>
 		public void scan_dr_hw_jtag(string length, string tdi = null, string tdo = null, string mask = null, string smask = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("scan_dr_hw_jtag");
-			command.OptionalString("tdi", tdi);
-			command.OptionalString("tdo", tdo);
-			command.OptionalString("mask", mask);
-			command.OptionalString("smask", smask);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("length", length);
-			_tcl.Add(command);
+			// TCL Syntax: scan_dr_hw_jtag [-tdi <arg>] [-tdo <arg>] [-mask <arg>] [-smask <arg>] [-quiet] [-verbose] <length>
+			_tcl.Add(
+				new SimpleTCLCommand("scan_dr_hw_jtag")
+					.OptionalNamedString("tdi", tdi)
+					.OptionalNamedString("tdo", tdo)
+					.OptionalNamedString("mask", mask)
+					.OptionalNamedString("smask", smask)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(length)
+			);
 		}
 		/// <summary>
 		/// Perform shift IR on 'hw_jtag'.
+		///
+		///
+		/// TCL Syntax: scan_ir_hw_jtag [-tdi <arg>] [-tdo <arg>] [-mask <arg>] [-smask <arg>] [-quiet] [-verbose] <length>
 		///
 		/// The scan_ir_hw_jtag command specifies a scan pattern to be scanned into the JTAG
 		/// interface target instruction register.
@@ -9392,18 +10085,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware TDO</returns>
 		public void scan_ir_hw_jtag(string length, string tdi = null, string tdo = null, string mask = null, string smask = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("scan_ir_hw_jtag");
-			command.OptionalString("tdi", tdi);
-			command.OptionalString("tdo", tdo);
-			command.OptionalString("mask", mask);
-			command.OptionalString("smask", smask);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("length", length);
-			_tcl.Add(command);
+			// TCL Syntax: scan_ir_hw_jtag [-tdi <arg>] [-tdo <arg>] [-mask <arg>] [-smask <arg>] [-quiet] [-verbose] <length>
+			_tcl.Add(
+				new SimpleTCLCommand("scan_ir_hw_jtag")
+					.OptionalNamedString("tdi", tdi)
+					.OptionalNamedString("tdo", tdo)
+					.OptionalNamedString("mask", mask)
+					.OptionalNamedString("smask", smask)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(length)
+			);
 		}
 		/// <summary>
 		/// Set property on object(s)
+		///
+		///
+		/// TCL Syntax: set_property [-dict <args>] [-quiet] [-verbose] <name> <value> <objects>...
 		///
 		/// Assigns the defined property <name> and <value> to the specified <objects>.
 		/// This command can be used to define any property on an object in the design. Each object has a
@@ -9495,17 +10193,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_property(string name, string value, string objects, string dict = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_property");
-			command.OptionalString("dict", dict);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.RequiredString("value", value);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: set_property [-dict <args>] [-quiet] [-verbose] <name> <value> <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("set_property")
+					.OptionalNamedString("dict", dict)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.RequiredString(value)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Write a tcl script on disk that will recreate a given IP.
+		///
+		///
+		/// TCL Syntax: write_ip_tcl [-force] [-no_ip_version] [-ip_name <arg>] [-show_defaults] [-multiple_files] [-quiet] [-verbose] [<objects>] [<tcl_filename>...]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1833
 		/// </summary>
@@ -9555,20 +10258,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>IP TCL file</returns>
 		public void write_ip_tcl(bool? force = null, bool? no_ip_version = null, string ip_name = null, bool? show_defaults = null, bool? multiple_files = null, bool? quiet = null, bool? verbose = null, string objects = null, string tcl_filename = null)
 		{
-			var command = new SimpleTCLCommand("write_ip_tcl");
-			command.Flag("force", force);
-			command.Flag("no_ip_version", no_ip_version);
-			command.OptionalString("ip_name", ip_name);
-			command.Flag("show_defaults", show_defaults);
-			command.Flag("multiple_files", multiple_files);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("objects", objects);
-			command.OptionalString("tcl_filename", tcl_filename);
-			_tcl.Add(command);
+			// TCL Syntax: write_ip_tcl [-force] [-no_ip_version] [-ip_name <arg>] [-show_defaults] [-multiple_files] [-quiet] [-verbose] [<objects>] [<tcl_filename>...]
+			_tcl.Add(
+				new SimpleTCLCommand("write_ip_tcl")
+					.Flag("force", force)
+					.Flag("no_ip_version", no_ip_version)
+					.OptionalNamedString("ip_name", ip_name)
+					.Flag("show_defaults", show_defaults)
+					.Flag("multiple_files", multiple_files)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(objects)
+					.OptionalString(tcl_filename)
+			);
 		}
 		/// <summary>
 		/// Write out one or more DRC/METHODOLOGY/CDC message waivers in command form
+		///
+		///
+		/// TCL Syntax: write_waivers [-type <arg>] [-objects <args>] [-return_string] [-force] [-quiet] [-verbose] [<file>]
 		///
 		/// To save waivers from one design session to the next, you must use write_waivers to create
 		/// an XDC file of the waiver commands, and read_xdc to read those waivers back into the design
@@ -9612,15 +10320,17 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void write_waivers(string file, string type = null, string objects = null, bool? return_string = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_waivers");
-			command.OptionalString("type", type);
-			command.OptionalString("objects", objects);
-			command.Flag("return_string", return_string);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_waivers [-type <arg>] [-objects <args>] [-return_string] [-force] [-quiet] [-verbose] [<file>]
+			_tcl.Add(
+				new SimpleTCLCommand("write_waivers")
+					.OptionalNamedString("type", type)
+					.OptionalNamedString("objects", objects)
+					.Flag("return_string", return_string)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 	}
 }

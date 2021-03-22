@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class SDCCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public SDCCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public SDCCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Get a list of all clocks in the current design
+		///
+		///
+		/// TCL Syntax: all_clocks [-quiet] [-verbose]
 		///
 		/// Returns a list of all clocks that have been declared in the current design.
 		/// To get a list of specific clocks in the design, use the get_clocks command, or use the filter
@@ -40,13 +43,18 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of clock objects</returns>
 		public void all_clocks(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("all_clocks");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: all_clocks [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("all_clocks")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get a list of all input ports in the current design
+		///
+		///
+		/// TCL Syntax: all_inputs [-quiet] [-verbose]
 		///
 		/// Returns a list of all input port objects in the current design.
 		/// To get a list of specific inputs in the design, use the get_ports command, or use the filter
@@ -77,13 +85,18 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of port objects</returns>
 		public void all_inputs(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("all_inputs");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: all_inputs [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("all_inputs")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get a list of all output ports in the current design
+		///
+		///
+		/// TCL Syntax: all_outputs [-quiet] [-verbose]
 		///
 		/// Returns a list of all output port objects that have been declared in the current design.
 		/// To get a list of specific outputs in the design, use the get_ports command, or use the filter
@@ -110,13 +123,18 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of port objects</returns>
 		public void all_outputs(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("all_outputs");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: all_outputs [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("all_outputs")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get a list of register cells or pins in the current design
+		///
+		///
+		/// TCL Syntax: all_registers [-clock <args>] [-rise_clock <args>] [-fall_clock <args>] [-cells] [-data_pins] [-clock_pins] [-async_pins] [-output_pins] [-level_sensitive] [-edge_triggered] [-no_hierarchy] [-quiet] [-verbose]
 		///
 		/// Returns a list of sequential register cells or register pins in the current design.
 		/// TIP: Returned objects includes DSPs and BRAMs as they contain internal registers.
@@ -194,24 +212,29 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of cell or pin objects</returns>
 		public void all_registers(string clock = null, string rise_clock = null, string fall_clock = null, bool? cells = null, bool? data_pins = null, bool? clock_pins = null, bool? async_pins = null, bool? output_pins = null, bool? level_sensitive = null, bool? edge_triggered = null, bool? no_hierarchy = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("all_registers");
-			command.OptionalString("clock", clock);
-			command.OptionalString("rise_clock", rise_clock);
-			command.OptionalString("fall_clock", fall_clock);
-			command.Flag("cells", cells);
-			command.Flag("data_pins", data_pins);
-			command.Flag("clock_pins", clock_pins);
-			command.Flag("async_pins", async_pins);
-			command.Flag("output_pins", output_pins);
-			command.Flag("level_sensitive", level_sensitive);
-			command.Flag("edge_triggered", edge_triggered);
-			command.Flag("no_hierarchy", no_hierarchy);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: all_registers [-clock <args>] [-rise_clock <args>] [-fall_clock <args>] [-cells] [-data_pins] [-clock_pins] [-async_pins] [-output_pins] [-level_sensitive] [-edge_triggered] [-no_hierarchy] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("all_registers")
+					.OptionalNamedString("clock", clock)
+					.OptionalNamedString("rise_clock", rise_clock)
+					.OptionalNamedString("fall_clock", fall_clock)
+					.Flag("cells", cells)
+					.Flag("data_pins", data_pins)
+					.Flag("clock_pins", clock_pins)
+					.Flag("async_pins", async_pins)
+					.Flag("output_pins", output_pins)
+					.Flag("level_sensitive", level_sensitive)
+					.Flag("edge_triggered", edge_triggered)
+					.Flag("no_hierarchy", no_hierarchy)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Create a clock object
+		///
+		///
+		/// TCL Syntax: create_clock -period <arg> [-name <arg>] [-waveform <args>] [-add] [-quiet] [-verbose] [<objects>]
 		///
 		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado IDE
 		/// offer timing diagrams and additional details around defining specific timing constraints. You can refer to these
@@ -279,18 +302,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>new clock object</returns>
 		public void create_clock(string period, string name = null, string waveform = null, bool? add = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
-			var command = new SimpleTCLCommand("create_clock");
-			command.RequiredString("period", period);
-			command.OptionalString("name", name);
-			command.OptionalString("waveform", waveform);
-			command.Flag("add", add);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: create_clock -period <arg> [-name <arg>] [-waveform <args>] [-add] [-quiet] [-verbose] [<objects>]
+			_tcl.Add(
+				new SimpleTCLCommand("create_clock")
+					.RequiredNamedString("period", period)
+					.OptionalNamedString("name", name)
+					.OptionalNamedString("waveform", waveform)
+					.Flag("add", add)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(objects)
+			);
 		}
 		/// <summary>
 		/// Create a generated clock object
+		///
+		///
+		/// TCL Syntax: create_generated_clock [-name <arg>] [-source <args>] [-edges <args>] [-divide_by <arg>] [-multiply_by <arg>] [-combinational] [-duty_cycle <arg>] [-invert] [-edge_shift <args>] [-add] [-master_clock <args>] [-quiet] [-verbose] <objects>
 		///
 		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado IDE
 		/// offer timing diagrams and additional details around defining specific timing constraints. You can refer to these
@@ -404,25 +432,30 @@ namespace Quokka.TCL.Vivado
 		/// <returns>new clock object</returns>
 		public void create_generated_clock(string objects, string name = null, string source = null, string edges = null, string divide_by = null, string multiply_by = null, bool? combinational = null, string duty_cycle = null, bool? invert = null, string edge_shift = null, bool? add = null, string master_clock = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_generated_clock");
-			command.OptionalString("name", name);
-			command.OptionalString("source", source);
-			command.OptionalString("edges", edges);
-			command.OptionalString("divide_by", divide_by);
-			command.OptionalString("multiply_by", multiply_by);
-			command.Flag("combinational", combinational);
-			command.OptionalString("duty_cycle", duty_cycle);
-			command.Flag("invert", invert);
-			command.OptionalString("edge_shift", edge_shift);
-			command.Flag("add", add);
-			command.OptionalString("master_clock", master_clock);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: create_generated_clock [-name <arg>] [-source <args>] [-edges <args>] [-divide_by <arg>] [-multiply_by <arg>] [-combinational] [-duty_cycle <arg>] [-invert] [-edge_shift <args>] [-add] [-master_clock <args>] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("create_generated_clock")
+					.OptionalNamedString("name", name)
+					.OptionalNamedString("source", source)
+					.OptionalNamedString("edges", edges)
+					.OptionalNamedString("divide_by", divide_by)
+					.OptionalNamedString("multiply_by", multiply_by)
+					.Flag("combinational", combinational)
+					.OptionalNamedString("duty_cycle", duty_cycle)
+					.Flag("invert", invert)
+					.OptionalNamedString("edge_shift", edge_shift)
+					.Flag("add", add)
+					.OptionalNamedString("master_clock", master_clock)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Set or get the current design.
+		///
+		///
+		/// TCL Syntax: current_design [-quiet] [-verbose] [<design>]
 		///
 		/// Defines the current design or returns the name of the current design in the active project.
 		/// The current design and current instance are the target of most Tcl commands, design edits and
@@ -451,14 +484,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>design object</returns>
 		public void current_design(bool? quiet = null, bool? verbose = null, string design = null)
 		{
-			var command = new SimpleTCLCommand("current_design");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("design", design);
-			_tcl.Add(command);
+			// TCL Syntax: current_design [-quiet] [-verbose] [<design>]
+			_tcl.Add(
+				new SimpleTCLCommand("current_design")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(design)
+			);
 		}
 		/// <summary>
 		/// Set or get the current instance
+		///
+		///
+		/// TCL Syntax: current_instance [-quiet] [-verbose] [<instance>]
 		///
 		/// Set the current instance in the design hierarchy to the specified instance cell or to the top of the
 		/// current design. By default, current_instance points to the top module of the
@@ -510,14 +548,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>instance name</returns>
 		public void current_instance(bool? quiet = null, bool? verbose = null, string instance = null)
 		{
-			var command = new SimpleTCLCommand("current_instance");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("instance", instance);
-			_tcl.Add(command);
+			// TCL Syntax: current_instance [-quiet] [-verbose] [<instance>]
+			_tcl.Add(
+				new SimpleTCLCommand("current_instance")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(instance)
+			);
 		}
 		/// <summary>
 		/// Get a list of cells in the current design
+		///
+		///
+		/// TCL Syntax: get_cells [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_replicated_objects] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of cell objects in the current design that match a specified search pattern. The default
 		/// command returns a list of all cells in the current_instance of the open design, as specified by the
@@ -621,22 +664,27 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of cell objects</returns>
 		public void get_cells(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_cells");
-			command.OptionalString("hsc", hsc);
-			command.Flag("hierarchical", hierarchical);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("match_style", match_style);
-			command.Flag("include_replicated_objects", include_replicated_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_cells [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_replicated_objects] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_cells")
+					.OptionalNamedString("hsc", hsc)
+					.Flag("hierarchical", hierarchical)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("match_style", match_style)
+					.Flag("include_replicated_objects", include_replicated_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of clocks in the current design
+		///
+		///
+		/// TCL Syntax: get_clocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_generated_clocks] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of clocks in the current design that match a specified search pattern. The default
 		/// command gets a list of all clocks in the design, like the all_clocks command.
@@ -700,20 +748,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of clocks</returns>
 		public void get_clocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? include_generated_clocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_clocks");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("match_style", match_style);
-			command.Flag("include_generated_clocks", include_generated_clocks);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_clocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_generated_clocks] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_clocks")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("match_style", match_style)
+					.Flag("include_generated_clocks", include_generated_clocks)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get hierarchical separator character
+		///
+		///
+		/// TCL Syntax: get_hierarchy_separator [-quiet] [-verbose]
 		///
 		/// Gets the character currently used for separating levels of hierarchy in the design. You can set the
 		/// hierarchy separator using the set_hierarchy_separator command.
@@ -733,13 +786,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void get_hierarchy_separator(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_hierarchy_separator");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: get_hierarchy_separator [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hierarchy_separator")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get a list of nets in the current design
+		///
+		///
+		/// TCL Syntax: get_nets [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-top_net_of_hierarchical_group] [-segments] [-boundary_type <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of nets in the current design that match a specified search pattern. The default
 		/// command gets a list of all nets in the current_instance of the open design, as specified by the
@@ -845,24 +903,29 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of net objects</returns>
 		public void get_nets(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? top_net_of_hierarchical_group = null, bool? segments = null, string boundary_type = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_nets");
-			command.OptionalString("hsc", hsc);
-			command.Flag("hierarchical", hierarchical);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("match_style", match_style);
-			command.Flag("top_net_of_hierarchical_group", top_net_of_hierarchical_group);
-			command.Flag("segments", segments);
-			command.OptionalString("boundary_type", boundary_type);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_nets [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-top_net_of_hierarchical_group] [-segments] [-boundary_type <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_nets")
+					.OptionalNamedString("hsc", hsc)
+					.Flag("hierarchical", hierarchical)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("match_style", match_style)
+					.Flag("top_net_of_hierarchical_group", top_net_of_hierarchical_group)
+					.Flag("segments", segments)
+					.OptionalNamedString("boundary_type", boundary_type)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of pins in the current design
+		///
+		///
+		/// TCL Syntax: get_pins [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-leaf] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_replicated_objects] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of pin objects in the current design that match a specified search pattern. The default
 		/// command gets a list of all pins in the current_instance of the open design, as specified by the
@@ -965,23 +1028,28 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of pin objects</returns>
 		public void get_pins(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, bool? leaf = null, string filter = null, string of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_pins");
-			command.OptionalString("hsc", hsc);
-			command.Flag("hierarchical", hierarchical);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("leaf", leaf);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("match_style", match_style);
-			command.Flag("include_replicated_objects", include_replicated_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_pins [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-leaf] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_replicated_objects] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_pins")
+					.OptionalNamedString("hsc", hsc)
+					.Flag("hierarchical", hierarchical)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("leaf", leaf)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("match_style", match_style)
+					.Flag("include_replicated_objects", include_replicated_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of ports in the current design
+		///
+		///
+		/// TCL Syntax: get_ports [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-scoped_to_current_instance] [-no_traverse] [-prop_thru_buffers] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of port objects in the current design that match a specified search pattern. The default
 		/// command gets a list of all ports in the design.
@@ -1059,22 +1127,27 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of port objects</returns>
 		public void get_ports(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? scoped_to_current_instance = null, bool? no_traverse = null, bool? prop_thru_buffers = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_ports");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("match_style", match_style);
-			command.Flag("scoped_to_current_instance", scoped_to_current_instance);
-			command.Flag("no_traverse", no_traverse);
-			command.Flag("prop_thru_buffers", prop_thru_buffers);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_ports [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-scoped_to_current_instance] [-no_traverse] [-prop_thru_buffers] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_ports")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("match_style", match_style)
+					.Flag("scoped_to_current_instance", scoped_to_current_instance)
+					.Flag("no_traverse", no_traverse)
+					.Flag("prop_thru_buffers", prop_thru_buffers)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Groups paths for cost function calculations
+		///
+		///
+		/// TCL Syntax: group_path [-name <args>] [-weight <arg>] [-default] [-from <args>] [-to <args>] [-through <args>] [-quiet] [-verbose]
 		///
 		/// This command lets you group a set of paths for cost function calculations, primarily for timing
 		/// analysis. The Vivado tool automatically defines path groups of clock signals for special handling.
@@ -1142,19 +1215,24 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void group_path(string name = null, string weight = null, bool? @default = null, string from = null, string to = null, string through = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("group_path");
-			command.OptionalString("name", name);
-			command.OptionalString("weight", weight);
-			command.Flag("default", @default);
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.OptionalString("through", through);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: group_path [-name <args>] [-weight <arg>] [-default] [-from <args>] [-to <args>] [-through <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("group_path")
+					.OptionalNamedString("name", name)
+					.OptionalNamedString("weight", weight)
+					.Flag("default", @default)
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.OptionalNamedString("through", through)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Specify that an input is 1, 0, rising or falling
+		///
+		///
+		/// TCL Syntax: set_case_analysis [-quiet] [-verbose] <value> <objects>
 		///
 		/// Specifies that a pin or port is in a steady state of 1, 0, rising or falling.
 		/// This command is usually used to force values onto the ports to help reduce the analysis space,
@@ -1193,15 +1271,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_case_analysis(string value, string objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_case_analysis");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("value", value);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: set_case_analysis [-quiet] [-verbose] <value> <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("set_case_analysis")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(value)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Set exclusive or asynchronous clock groups
+		///
+		///
+		/// TCL Syntax: set_clock_groups [-name <arg>] [-logically_exclusive] [-physically_exclusive] [-asynchronous] [-group <args>] [-quiet] [-verbose]
 		///
 		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado IDE
 		/// offer timing diagrams and additional details around defining specific timing constraints. You can refer to these
@@ -1266,18 +1349,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_clock_groups(string name = null, bool? logically_exclusive = null, bool? physically_exclusive = null, bool? asynchronous = null, string group = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_clock_groups");
-			command.OptionalString("name", name);
-			command.Flag("logically_exclusive", logically_exclusive);
-			command.Flag("physically_exclusive", physically_exclusive);
-			command.Flag("asynchronous", asynchronous);
-			command.OptionalString("group", group);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: set_clock_groups [-name <arg>] [-logically_exclusive] [-physically_exclusive] [-asynchronous] [-group <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("set_clock_groups")
+					.OptionalNamedString("name", name)
+					.Flag("logically_exclusive", logically_exclusive)
+					.Flag("physically_exclusive", physically_exclusive)
+					.Flag("asynchronous", asynchronous)
+					.OptionalNamedString("group", group)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Capture actual or predicted clock latency
+		///
+		///
+		/// TCL Syntax: set_clock_latency [-clock <args>] [-rise] [-fall] [-min] [-max] [-source] [-late] [-early] [-quiet] [-verbose] <latency> <objects>
 		///
 		/// This command defines a clock's source or network latency for specified clocks, ports, or pins.
 		/// Note: This command operates silently and does not return direct feedback of its operation.
@@ -1344,23 +1432,28 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_clock_latency(string latency, string objects, string clock = null, bool? rise = null, bool? fall = null, bool? min = null, bool? max = null, bool? source = null, bool? late = null, bool? early = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_clock_latency");
-			command.OptionalString("clock", clock);
-			command.Flag("rise", rise);
-			command.Flag("fall", fall);
-			command.Flag("min", min);
-			command.Flag("max", max);
-			command.Flag("source", source);
-			command.Flag("late", late);
-			command.Flag("early", early);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("latency", latency);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: set_clock_latency [-clock <args>] [-rise] [-fall] [-min] [-max] [-source] [-late] [-early] [-quiet] [-verbose] <latency> <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("set_clock_latency")
+					.OptionalNamedString("clock", clock)
+					.Flag("rise", rise)
+					.Flag("fall", fall)
+					.Flag("min", min)
+					.Flag("max", max)
+					.Flag("source", source)
+					.Flag("late", late)
+					.Flag("early", early)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(latency)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Set clock sense on ports or pins
+		///
+		///
+		/// TCL Syntax: set_clock_sense [-positive] [-negative] [-stop_propagation] [-clocks <args>] [-quiet] [-verbose] <pins>
 		///
 		/// Sets clock sense at specified ports or pins. This is used to define the positive or negative
 		/// unateness at the pin relative to a clock object. However, the specified unateness only applies at a
@@ -1405,18 +1498,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_clock_sense(string pins, bool? positive = null, bool? negative = null, bool? stop_propagation = null, string clocks = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_clock_sense");
-			command.Flag("positive", positive);
-			command.Flag("negative", negative);
-			command.Flag("stop_propagation", stop_propagation);
-			command.OptionalString("clocks", clocks);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("pins", pins);
-			_tcl.Add(command);
+			// TCL Syntax: set_clock_sense [-positive] [-negative] [-stop_propagation] [-clocks <args>] [-quiet] [-verbose] <pins>
+			_tcl.Add(
+				new SimpleTCLCommand("set_clock_sense")
+					.Flag("positive", positive)
+					.Flag("negative", negative)
+					.Flag("stop_propagation", stop_propagation)
+					.OptionalNamedString("clocks", clocks)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(pins)
+			);
 		}
 		/// <summary>
 		/// set clock uncertainty
+		///
+		///
+		/// TCL Syntax: set_clock_uncertainty [-setup] [-hold] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-quiet] [-verbose] <uncertainty> [<objects>]
 		///
 		/// This command is used to add to the uncertainty of a clock in the design, and does not override
 		/// the default jitter calculation. This is referred to as the user clock uncertainty. The
@@ -1514,23 +1612,28 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_clock_uncertainty(string uncertainty, bool? setup = null, bool? hold = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
-			var command = new SimpleTCLCommand("set_clock_uncertainty");
-			command.Flag("setup", setup);
-			command.Flag("hold", hold);
-			command.OptionalString("from", from);
-			command.OptionalString("rise_from", rise_from);
-			command.OptionalString("fall_from", fall_from);
-			command.OptionalString("to", to);
-			command.OptionalString("rise_to", rise_to);
-			command.OptionalString("fall_to", fall_to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("uncertainty", uncertainty);
-			command.OptionalString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: set_clock_uncertainty [-setup] [-hold] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-quiet] [-verbose] <uncertainty> [<objects>]
+			_tcl.Add(
+				new SimpleTCLCommand("set_clock_uncertainty")
+					.Flag("setup", setup)
+					.Flag("hold", hold)
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("rise_from", rise_from)
+					.OptionalNamedString("fall_from", fall_from)
+					.OptionalNamedString("to", to)
+					.OptionalNamedString("rise_to", rise_to)
+					.OptionalNamedString("fall_to", fall_to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(uncertainty)
+					.OptionalString(objects)
+			);
 		}
 		/// <summary>
 		/// Create data to data checks
+		///
+		///
+		/// TCL Syntax: set_data_check [-from <args>] [-to <args>] [-rise_from <args>] [-fall_from <args>] [-rise_to <args>] [-fall_to <args>] [-setup] [-hold] [-clock <args>] [-quiet] [-verbose] <value>
 		///
 		/// Performs a setup and hold check for a data pin with respect to another data pin. This is different
 		/// from a conventional setup and hold check that is done with respect to a clock pin.
@@ -1604,23 +1707,28 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_data_check(string value, string from = null, string to = null, string rise_from = null, string fall_from = null, string rise_to = null, string fall_to = null, bool? setup = null, bool? hold = null, string clock = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_data_check");
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.OptionalString("rise_from", rise_from);
-			command.OptionalString("fall_from", fall_from);
-			command.OptionalString("rise_to", rise_to);
-			command.OptionalString("fall_to", fall_to);
-			command.Flag("setup", setup);
-			command.Flag("hold", hold);
-			command.OptionalString("clock", clock);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("value", value);
-			_tcl.Add(command);
+			// TCL Syntax: set_data_check [-from <args>] [-to <args>] [-rise_from <args>] [-fall_from <args>] [-rise_to <args>] [-fall_to <args>] [-setup] [-hold] [-clock <args>] [-quiet] [-verbose] <value>
+			_tcl.Add(
+				new SimpleTCLCommand("set_data_check")
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.OptionalNamedString("rise_from", rise_from)
+					.OptionalNamedString("fall_from", fall_from)
+					.OptionalNamedString("rise_to", rise_to)
+					.OptionalNamedString("fall_to", fall_to)
+					.Flag("setup", setup)
+					.Flag("hold", hold)
+					.OptionalNamedString("clock", clock)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(value)
+			);
 		}
 		/// <summary>
 		/// Disable timing arcs
+		///
+		///
+		/// TCL Syntax: set_disable_timing [-from <arg>] [-to <arg>] [-quiet] [-verbose] <objects>
 		///
 		/// Disables timing arcs within a specified cell or cells that lead to the output pins of the cell. Only
 		/// the I/O paths between the clock port and the outputs of the cell are disabled.
@@ -1670,16 +1778,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_disable_timing(string objects, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_disable_timing");
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: set_disable_timing [-from <arg>] [-to <arg>] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("set_disable_timing")
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Define false path
+		///
+		///
+		/// TCL Syntax: set_false_path [-setup] [-hold] [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose]
 		///
 		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado IDE
 		/// offer timing diagrams and additional details around defining specific timing constraints. You can refer to these
@@ -1763,27 +1876,32 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_false_path(bool? setup = null, bool? hold = null, bool? rise = null, bool? fall = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_false_path");
-			command.Flag("setup", setup);
-			command.Flag("hold", hold);
-			command.Flag("rise", rise);
-			command.Flag("fall", fall);
-			command.Flag("reset_path", reset_path);
-			command.OptionalString("from", from);
-			command.OptionalString("rise_from", rise_from);
-			command.OptionalString("fall_from", fall_from);
-			command.OptionalString("to", to);
-			command.OptionalString("rise_to", rise_to);
-			command.OptionalString("fall_to", fall_to);
-			command.OptionalString("through", through);
-			command.OptionalString("rise_through", rise_through);
-			command.OptionalString("fall_through", fall_through);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: set_false_path [-setup] [-hold] [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("set_false_path")
+					.Flag("setup", setup)
+					.Flag("hold", hold)
+					.Flag("rise", rise)
+					.Flag("fall", fall)
+					.Flag("reset_path", reset_path)
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("rise_from", rise_from)
+					.OptionalNamedString("fall_from", fall_from)
+					.OptionalNamedString("to", to)
+					.OptionalNamedString("rise_to", rise_to)
+					.OptionalNamedString("fall_to", fall_to)
+					.OptionalNamedString("through", through)
+					.OptionalNamedString("rise_through", rise_through)
+					.OptionalNamedString("fall_through", fall_through)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Set hierarchical separator character
+		///
+		///
+		/// TCL Syntax: set_hierarchy_separator [-quiet] [-verbose] [<separator>]
 		///
 		/// Sets the character that will be used for separating levels of hierarchy in the design.
 		/// Note: This command operates silently and does not return direct feedback of its operation
@@ -1809,14 +1927,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_hierarchy_separator(bool? quiet = null, bool? verbose = null, string separator = null)
 		{
-			var command = new SimpleTCLCommand("set_hierarchy_separator");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("separator", separator);
-			_tcl.Add(command);
+			// TCL Syntax: set_hierarchy_separator [-quiet] [-verbose] [<separator>]
+			_tcl.Add(
+				new SimpleTCLCommand("set_hierarchy_separator")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(separator)
+			);
 		}
 		/// <summary>
 		/// Set input delay on ports
+		///
+		///
+		/// TCL Syntax: set_input_delay [-clock <args>] [-reference_pin <args>] [-clock_fall] [-rise] [-fall] [-max] [-min] [-add_delay] [-network_latency_included] [-source_latency_included] [-quiet] [-verbose] <delay> <objects>
 		///
 		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado IDE
 		/// offer timing diagrams and additional details around defining specific timing constraints. You can refer to these
@@ -1925,25 +2048,30 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_input_delay(string delay, string objects, string clock = null, string reference_pin = null, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_input_delay");
-			command.OptionalString("clock", clock);
-			command.OptionalString("reference_pin", reference_pin);
-			command.Flag("clock_fall", clock_fall);
-			command.Flag("rise", rise);
-			command.Flag("fall", fall);
-			command.Flag("max", max);
-			command.Flag("min", min);
-			command.Flag("add_delay", add_delay);
-			command.Flag("network_latency_included", network_latency_included);
-			command.Flag("source_latency_included", source_latency_included);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("delay", delay);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: set_input_delay [-clock <args>] [-reference_pin <args>] [-clock_fall] [-rise] [-fall] [-max] [-min] [-add_delay] [-network_latency_included] [-source_latency_included] [-quiet] [-verbose] <delay> <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("set_input_delay")
+					.OptionalNamedString("clock", clock)
+					.OptionalNamedString("reference_pin", reference_pin)
+					.Flag("clock_fall", clock_fall)
+					.Flag("rise", rise)
+					.Flag("fall", fall)
+					.Flag("max", max)
+					.Flag("min", min)
+					.Flag("add_delay", add_delay)
+					.Flag("network_latency_included", network_latency_included)
+					.Flag("source_latency_included", source_latency_included)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(delay)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Set capacitance on ports and nets
+		///
+		///
+		/// TCL Syntax: set_load [-rise] [-fall] [-max] [-min] [-quiet] [-verbose] <capacitance> <objects>
 		///
 		/// Sets the load capacitance on output ports to the specified value. The load capacitance is used
 		/// during power analysis when running the report_power command, but is not used during
@@ -1993,19 +2121,24 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_load(string capacitance, string objects, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_load");
-			command.Flag("rise", rise);
-			command.Flag("fall", fall);
-			command.Flag("max", max);
-			command.Flag("min", min);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("capacitance", capacitance);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: set_load [-rise] [-fall] [-max] [-min] [-quiet] [-verbose] <capacitance> <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("set_load")
+					.Flag("rise", rise)
+					.Flag("fall", fall)
+					.Flag("max", max)
+					.Flag("min", min)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(capacitance)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Sets logic dc for port/pins
+		///
+		///
+		/// TCL Syntax: set_logic_dc [-quiet] [-verbose] <objects>
 		///
 		/// Sets the specified input ports or input pins to a logic value of 'X', as unknown or don't care. This
 		/// command is NOT supported in Synthesis.
@@ -2030,14 +2163,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_logic_dc(string objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_logic_dc");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: set_logic_dc [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("set_logic_dc")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Sets logic one for port/pins
+		///
+		///
+		/// TCL Syntax: set_logic_one [-quiet] [-verbose] <objects>
 		///
 		/// Sets the specified input ports or input pins to a logic one. This command is NOT supported in
 		/// Synthesis.
@@ -2066,14 +2204,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_logic_one(string objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_logic_one");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: set_logic_one [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("set_logic_one")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Sets logic zero for port/pins
+		///
+		///
+		/// TCL Syntax: set_logic_zero [-quiet] [-verbose] <objects>
 		///
 		/// Sets the specified input ports and input pins to a logic zero. This command is NOT supported in
 		/// Synthesis.
@@ -2098,14 +2241,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_logic_zero(string objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_logic_zero");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: set_logic_zero [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("set_logic_zero")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Specify maximum delay for timing paths
+		///
+		///
+		/// TCL Syntax: set_max_delay [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-datapath_only] [-quiet] [-verbose] <delay>
 		///
 		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado IDE
 		/// offer timing diagrams and additional details around defining specific timing constraints. You can refer to these
@@ -2208,27 +2356,32 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_max_delay(string delay, bool? rise = null, bool? fall = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? datapath_only = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_max_delay");
-			command.Flag("rise", rise);
-			command.Flag("fall", fall);
-			command.Flag("reset_path", reset_path);
-			command.OptionalString("from", from);
-			command.OptionalString("rise_from", rise_from);
-			command.OptionalString("fall_from", fall_from);
-			command.OptionalString("to", to);
-			command.OptionalString("rise_to", rise_to);
-			command.OptionalString("fall_to", fall_to);
-			command.OptionalString("through", through);
-			command.OptionalString("rise_through", rise_through);
-			command.OptionalString("fall_through", fall_through);
-			command.Flag("datapath_only", datapath_only);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("delay", delay);
-			_tcl.Add(command);
+			// TCL Syntax: set_max_delay [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-datapath_only] [-quiet] [-verbose] <delay>
+			_tcl.Add(
+				new SimpleTCLCommand("set_max_delay")
+					.Flag("rise", rise)
+					.Flag("fall", fall)
+					.Flag("reset_path", reset_path)
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("rise_from", rise_from)
+					.OptionalNamedString("fall_from", fall_from)
+					.OptionalNamedString("to", to)
+					.OptionalNamedString("rise_to", rise_to)
+					.OptionalNamedString("fall_to", fall_to)
+					.OptionalNamedString("through", through)
+					.OptionalNamedString("rise_through", rise_through)
+					.OptionalNamedString("fall_through", fall_through)
+					.Flag("datapath_only", datapath_only)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(delay)
+			);
 		}
 		/// <summary>
 		/// Limit time borrowing for latches
+		///
+		///
+		/// TCL Syntax: set_max_time_borrow [-quiet] [-verbose] <delay> <objects>
 		///
 		/// Sets the maximum amount of time in nanoseconds that can be borrowed between nets when
 		/// analyzing the timing on latches.
@@ -2261,15 +2414,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_max_time_borrow(string delay, string objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_max_time_borrow");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("delay", delay);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: set_max_time_borrow [-quiet] [-verbose] <delay> <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("set_max_time_borrow")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(delay)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Specify minimum delay for timing paths
+		///
+		///
+		/// TCL Syntax: set_min_delay [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose] <delay>
 		///
 		/// Sets the minimum delay allowed on a timing path, specified in nanoseconds (ns). The specified
 		/// delay value is assigned to both the rising and falling edges of the defined timing paths unless the
@@ -2355,26 +2513,31 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_min_delay(string delay, bool? rise = null, bool? fall = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_min_delay");
-			command.Flag("rise", rise);
-			command.Flag("fall", fall);
-			command.Flag("reset_path", reset_path);
-			command.OptionalString("from", from);
-			command.OptionalString("rise_from", rise_from);
-			command.OptionalString("fall_from", fall_from);
-			command.OptionalString("to", to);
-			command.OptionalString("rise_to", rise_to);
-			command.OptionalString("fall_to", fall_to);
-			command.OptionalString("through", through);
-			command.OptionalString("rise_through", rise_through);
-			command.OptionalString("fall_through", fall_through);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("delay", delay);
-			_tcl.Add(command);
+			// TCL Syntax: set_min_delay [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose] <delay>
+			_tcl.Add(
+				new SimpleTCLCommand("set_min_delay")
+					.Flag("rise", rise)
+					.Flag("fall", fall)
+					.Flag("reset_path", reset_path)
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("rise_from", rise_from)
+					.OptionalNamedString("fall_from", fall_from)
+					.OptionalNamedString("to", to)
+					.OptionalNamedString("rise_to", rise_to)
+					.OptionalNamedString("fall_to", fall_to)
+					.OptionalNamedString("through", through)
+					.OptionalNamedString("rise_through", rise_through)
+					.OptionalNamedString("fall_through", fall_through)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(delay)
+			);
 		}
 		/// <summary>
 		/// Define multicycle path
+		///
+		///
+		/// TCL Syntax: set_multicycle_path [-setup] [-hold] [-rise] [-fall] [-start] [-end] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose] <path_multiplier>
 		///
 		/// By default, the Vivado timing engine performs a single-cycle analysis, in which the setup check is
 		/// performed at the destination on the capture edge, one clock cycle after the edge of the source
@@ -2503,30 +2666,35 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_multicycle_path(string path_multiplier, bool? setup = null, bool? hold = null, bool? rise = null, bool? fall = null, bool? start = null, bool? end = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_multicycle_path");
-			command.Flag("setup", setup);
-			command.Flag("hold", hold);
-			command.Flag("rise", rise);
-			command.Flag("fall", fall);
-			command.Flag("start", start);
-			command.Flag("end", end);
-			command.Flag("reset_path", reset_path);
-			command.OptionalString("from", from);
-			command.OptionalString("rise_from", rise_from);
-			command.OptionalString("fall_from", fall_from);
-			command.OptionalString("to", to);
-			command.OptionalString("rise_to", rise_to);
-			command.OptionalString("fall_to", fall_to);
-			command.OptionalString("through", through);
-			command.OptionalString("rise_through", rise_through);
-			command.OptionalString("fall_through", fall_through);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("path_multiplier", path_multiplier);
-			_tcl.Add(command);
+			// TCL Syntax: set_multicycle_path [-setup] [-hold] [-rise] [-fall] [-start] [-end] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose] <path_multiplier>
+			_tcl.Add(
+				new SimpleTCLCommand("set_multicycle_path")
+					.Flag("setup", setup)
+					.Flag("hold", hold)
+					.Flag("rise", rise)
+					.Flag("fall", fall)
+					.Flag("start", start)
+					.Flag("end", end)
+					.Flag("reset_path", reset_path)
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("rise_from", rise_from)
+					.OptionalNamedString("fall_from", fall_from)
+					.OptionalNamedString("to", to)
+					.OptionalNamedString("rise_to", rise_to)
+					.OptionalNamedString("fall_to", fall_to)
+					.OptionalNamedString("through", through)
+					.OptionalNamedString("rise_through", rise_through)
+					.OptionalNamedString("fall_through", fall_through)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(path_multiplier)
+			);
 		}
 		/// <summary>
 		/// Set operating conditions for power estimation
+		///
+		///
+		/// TCL Syntax: set_operating_conditions [-voltage <args>] [-grade <arg>] [-process <arg>] [-junction_temp <arg>] [-ambient_temp <arg>] [-thetaja <arg>] [-thetasa <arg>] [-airflow <arg>] [-heatsink <arg>] [-thetajb <arg>] [-board <arg>] [-board_temp <arg>] [-board_layers <arg>] [-design_power_budget <arg>] [-quiet] [-verbose]
 		///
 		/// Sets the real-world operating conditions that are used when performing analysis of the design.
 		/// The environmental operating conditions of the device are used for power analysis when running
@@ -2620,27 +2788,32 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_operating_conditions(string voltage = null, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_operating_conditions");
-			command.OptionalString("voltage", voltage);
-			command.OptionalString("grade", grade);
-			command.OptionalString("process", process);
-			command.OptionalString("junction_temp", junction_temp);
-			command.OptionalString("ambient_temp", ambient_temp);
-			command.OptionalString("thetaja", thetaja);
-			command.OptionalString("thetasa", thetasa);
-			command.OptionalString("airflow", airflow);
-			command.OptionalString("heatsink", heatsink);
-			command.OptionalString("thetajb", thetajb);
-			command.OptionalString("board", board);
-			command.OptionalString("board_temp", board_temp);
-			command.OptionalString("board_layers", board_layers);
-			command.OptionalString("design_power_budget", design_power_budget);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: set_operating_conditions [-voltage <args>] [-grade <arg>] [-process <arg>] [-junction_temp <arg>] [-ambient_temp <arg>] [-thetaja <arg>] [-thetasa <arg>] [-airflow <arg>] [-heatsink <arg>] [-thetajb <arg>] [-board <arg>] [-board_temp <arg>] [-board_layers <arg>] [-design_power_budget <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("set_operating_conditions")
+					.OptionalNamedString("voltage", voltage)
+					.OptionalNamedString("grade", grade)
+					.OptionalNamedString("process", process)
+					.OptionalNamedString("junction_temp", junction_temp)
+					.OptionalNamedString("ambient_temp", ambient_temp)
+					.OptionalNamedString("thetaja", thetaja)
+					.OptionalNamedString("thetasa", thetasa)
+					.OptionalNamedString("airflow", airflow)
+					.OptionalNamedString("heatsink", heatsink)
+					.OptionalNamedString("thetajb", thetajb)
+					.OptionalNamedString("board", board)
+					.OptionalNamedString("board_temp", board_temp)
+					.OptionalNamedString("board_layers", board_layers)
+					.OptionalNamedString("design_power_budget", design_power_budget)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Set output delay on ports
+		///
+		///
+		/// TCL Syntax: set_output_delay [-clock <args>] [-reference_pin <args>] [-clock_fall] [-rise] [-fall] [-max] [-min] [-add_delay] [-network_latency_included] [-source_latency_included] [-quiet] [-verbose] <delay> <objects>
 		///
 		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado IDE
 		/// offer timing diagrams and additional details around defining specific timing constraints. You can refer to these
@@ -2734,25 +2907,30 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_output_delay(string delay, string objects, string clock = null, string reference_pin = null, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_output_delay");
-			command.OptionalString("clock", clock);
-			command.OptionalString("reference_pin", reference_pin);
-			command.Flag("clock_fall", clock_fall);
-			command.Flag("rise", rise);
-			command.Flag("fall", fall);
-			command.Flag("max", max);
-			command.Flag("min", min);
-			command.Flag("add_delay", add_delay);
-			command.Flag("network_latency_included", network_latency_included);
-			command.Flag("source_latency_included", source_latency_included);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("delay", delay);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: set_output_delay [-clock <args>] [-reference_pin <args>] [-clock_fall] [-rise] [-fall] [-max] [-min] [-add_delay] [-network_latency_included] [-source_latency_included] [-quiet] [-verbose] <delay> <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("set_output_delay")
+					.OptionalNamedString("clock", clock)
+					.OptionalNamedString("reference_pin", reference_pin)
+					.Flag("clock_fall", clock_fall)
+					.Flag("rise", rise)
+					.Flag("fall", fall)
+					.Flag("max", max)
+					.Flag("min", min)
+					.Flag("add_delay", add_delay)
+					.Flag("network_latency_included", network_latency_included)
+					.Flag("source_latency_included", source_latency_included)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(delay)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Specify propagated clock latency
+		///
+		///
+		/// TCL Syntax: set_propagated_clock [-quiet] [-verbose] <objects>
 		///
 		/// Propagates clock latency throughout a clock network, resulting in more accurate skew and timing
 		/// results throughout the clock network.
@@ -2779,14 +2957,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_propagated_clock(string objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_propagated_clock");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: set_propagated_clock [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("set_propagated_clock")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Set units for checking
+		///
+		///
+		/// TCL Syntax: set_units [-capacitance <arg>] [-current <arg>] [-voltage <arg>] [-power <arg>] [-resistance <arg>] [-altitude <arg>] [-quiet] [-verbose]
 		///
 		/// This command specifies the default units to be assumed when the design is analyzed. Specifically,
 		/// the -current, -voltage, -power, and -resistance options impact the values returned by
@@ -2843,16 +3026,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_units(string capacitance = null, string current = null, string voltage = null, string power = null, string resistance = null, string altitude = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_units");
-			command.OptionalString("capacitance", capacitance);
-			command.OptionalString("current", current);
-			command.OptionalString("voltage", voltage);
-			command.OptionalString("power", power);
-			command.OptionalString("resistance", resistance);
-			command.OptionalString("altitude", altitude);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: set_units [-capacitance <arg>] [-current <arg>] [-voltage <arg>] [-power <arg>] [-resistance <arg>] [-altitude <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("set_units")
+					.OptionalNamedString("capacitance", capacitance)
+					.OptionalNamedString("current", current)
+					.OptionalNamedString("voltage", voltage)
+					.OptionalNamedString("power", power)
+					.OptionalNamedString("resistance", resistance)
+					.OptionalNamedString("altitude", altitude)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 	}
 }

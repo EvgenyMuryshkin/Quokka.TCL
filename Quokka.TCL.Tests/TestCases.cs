@@ -7,12 +7,14 @@ using System.Text;
 namespace Quokka.TCL.Tests
 {
     [TestClass]
-    public class TestCases
+    public class TestCases : TCLTestClass
     {
+        [TestMethod]
         public void CreateProject()
         {
             var tcl = new VivadoTCL();
-            //tcl.projutils.
+            tcl.Project.create_project("test");
+            SaveTCL(tcl);
         }
     }
 }

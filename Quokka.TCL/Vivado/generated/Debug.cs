@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class DebugCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public DebugCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public DebugCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Apply trigger at startup init values to an ILA core in the design
+		///
+		///
+		/// TCL Syntax: apply_hw_ila_trigger [-ila_cell <arg>] [-quiet] [-verbose] [<file>]
 		///
 		/// Apply a trigger configuration file to the bitstream of a design, to support ILA trigger at startup.
 		/// This command is used to configure the trigger settings of an ILA core in a design bitstream (.bit)
@@ -61,12 +64,14 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void apply_hw_ila_trigger(string ila_cell = null, bool? quiet = null, bool? verbose = null, string file = null)
 		{
-			var command = new SimpleTCLCommand("apply_hw_ila_trigger");
-			command.OptionalString("ila_cell", ila_cell);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: apply_hw_ila_trigger [-ila_cell <arg>] [-quiet] [-verbose] [<file>]
+			_tcl.Add(
+				new SimpleTCLCommand("apply_hw_ila_trigger")
+					.OptionalNamedString("ila_cell", ila_cell)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(file)
+			);
 		}
 		/// <summary>
 		/// Connect debug slave instances to the master instance. A valid master is a debug bridge or debug
@@ -74,6 +79,9 @@ namespace Quokka.TCL.Vivado
 		/// following debug cores (Ex: ILA, VIO, JTAG_to_AXI). connect_debug_cores can only connect
 		/// master and slave instances that exist in the same region (either in Reconfigurable Partition or
 		/// static)
+		///
+		///
+		/// TCL Syntax: connect_debug_cores -master <args> -slaves <args> [-quiet] [-verbose]
 		///
 		/// Connect debug slave instances to the specified master instance. The command can add the
 		/// specified slaves into an existing debug chain, where the specified slaves will be connected to the
@@ -118,15 +126,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>debug master and slave instances</returns>
 		public void connect_debug_cores(string master, string slaves, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("connect_debug_cores");
-			command.RequiredString("master", master);
-			command.RequiredString("slaves", slaves);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: connect_debug_cores -master <args> -slaves <args> [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("connect_debug_cores")
+					.RequiredNamedString("master", master)
+					.RequiredNamedString("slaves", slaves)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Connect nets and pins to debug port channels
+		///
+		///
+		/// TCL Syntax: connect_debug_port [-channel_start_index <arg>] [-quiet] [-verbose] <port> <nets>...
 		///
 		/// Connects a signal from the netlist design to a port on an ILA debug core that was added to the
 		/// design using the create_debug_core command. The signal can either be connected to a
@@ -175,16 +188,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void connect_debug_port(string port, string nets, string channel_start_index = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("connect_debug_port");
-			command.OptionalString("channel_start_index", channel_start_index);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("port", port);
-			command.RequiredString("nets", nets);
-			_tcl.Add(command);
+			// TCL Syntax: connect_debug_port [-channel_start_index <arg>] [-quiet] [-verbose] <port> <nets>...
+			_tcl.Add(
+				new SimpleTCLCommand("connect_debug_port")
+					.OptionalNamedString("channel_start_index", channel_start_index)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(port)
+					.RequiredString(nets)
+			);
 		}
 		/// <summary>
 		/// Create a new Integrated Logic Analyzer debug core
+		///
+		///
+		/// TCL Syntax: create_debug_core [-quiet] [-verbose] <name> <type>
 		///
 		/// Adds a new Integrated Logic Analyzer (ILA) debug core to an open netlist design in the current
 		/// project. The ILA debug core defines ports for connecting nets to for debugging the design in the
@@ -268,15 +286,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>new debug_core object</returns>
 		public void create_debug_core(string name, string type, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_debug_core");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.RequiredString("type", type);
-			_tcl.Add(command);
+			// TCL Syntax: create_debug_core [-quiet] [-verbose] <name> <type>
+			_tcl.Add(
+				new SimpleTCLCommand("create_debug_core")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.RequiredString(type)
+			);
 		}
 		/// <summary>
 		/// Create a new debug port
+		///
+		///
+		/// TCL Syntax: create_debug_port [-quiet] [-verbose] <name> <type>
 		///
 		/// Defines a new port to be added to an existing Vivado ILA debug core that was added to the
 		/// design using the create_debug_core command. The port provides connection points on an
@@ -325,15 +348,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>new debug_port object</returns>
 		public void create_debug_port(string name, string type, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_debug_port");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.RequiredString("type", type);
-			_tcl.Add(command);
+			// TCL Syntax: create_debug_port [-quiet] [-verbose] <name> <type>
+			_tcl.Add(
+				new SimpleTCLCommand("create_debug_port")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.RequiredString(type)
+			);
 		}
 		/// <summary>
 		/// Delete a debug core
+		///
+		///
+		/// TCL Syntax: delete_debug_core [-quiet] [-verbose] <cores>...
 		///
 		/// Removes Vivado Lab Edition debug cores from the current project that were added by the
 		/// create_debug_core command.
@@ -360,14 +388,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_debug_core(string cores, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_debug_core");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("cores", cores);
-			_tcl.Add(command);
+			// TCL Syntax: delete_debug_core [-quiet] [-verbose] <cores>...
+			_tcl.Add(
+				new SimpleTCLCommand("delete_debug_core")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(cores)
+			);
 		}
 		/// <summary>
 		/// Delete debug port
+		///
+		///
+		/// TCL Syntax: delete_debug_port [-quiet] [-verbose] <ports>...
 		///
 		/// Deletes ports from Vivado Lab Edition debug cores in the current project. You can disconnect a
 		/// signal from a debug port using disconnect_debug_port, or remove the port altogether using
@@ -399,14 +432,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_debug_port(string ports, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_debug_port");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("ports", ports);
-			_tcl.Add(command);
+			// TCL Syntax: delete_debug_port [-quiet] [-verbose] <ports>...
+			_tcl.Add(
+				new SimpleTCLCommand("delete_debug_port")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(ports)
+			);
 		}
 		/// <summary>
 		/// Disconnect nets and pins from debug port channels
+		///
+		///
+		/// TCL Syntax: disconnect_debug_port [-channel_index <arg>] [-quiet] [-verbose] <port>
 		///
 		/// Disconnect signals from the debug ports.
 		/// Signals from the Netlist Design are connected to ports of a ILA debug core using the
@@ -445,15 +483,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void disconnect_debug_port(string port, string channel_index = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("disconnect_debug_port");
-			command.OptionalString("channel_index", channel_index);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("port", port);
-			_tcl.Add(command);
+			// TCL Syntax: disconnect_debug_port [-channel_index <arg>] [-quiet] [-verbose] <port>
+			_tcl.Add(
+				new SimpleTCLCommand("disconnect_debug_port")
+					.OptionalNamedString("channel_index", channel_index)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(port)
+			);
 		}
 		/// <summary>
 		/// Get a list of debug cores in the current design
+		///
+		///
+		/// TCL Syntax: get_debug_cores [-filter <arg>] [-of_objects <args>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of Vivado Lab Edition debug cores in the current project that match a specified search
 		/// pattern. The default command gets a list of all debug cores in the project.
@@ -507,18 +550,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of debug_core objects</returns>
 		public void get_debug_cores(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_debug_cores");
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_debug_cores [-filter <arg>] [-of_objects <args>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_debug_cores")
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of debug ports in the current design
+		///
+		///
+		/// TCL Syntax: get_debug_ports [-filter <arg>] [-of_objects <args>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of ports defined on ILA debug cores in the current project that match a specified
 		/// search pattern. The default command gets a list of all debug ports in the project.
@@ -571,18 +619,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of debug_port objects</returns>
 		public void get_debug_ports(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_debug_ports");
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_debug_ports [-filter <arg>] [-of_objects <args>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_debug_ports")
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Implement debug core
+		///
+		///
+		/// TCL Syntax: implement_debug_core [-quiet] [-verbose] [<cores>...]
 		///
 		/// Implements the Vivado logic analyzer debug cores in the current project. The tools will be run
 		/// once for any ILA debug cores specified, and run one more time for the Debug Hub core if all
@@ -618,14 +671,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void implement_debug_core(bool? quiet = null, bool? verbose = null, string cores = null)
 		{
-			var command = new SimpleTCLCommand("implement_debug_core");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("cores", cores);
-			_tcl.Add(command);
+			// TCL Syntax: implement_debug_core [-quiet] [-verbose] [<cores>...]
+			_tcl.Add(
+				new SimpleTCLCommand("implement_debug_core")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(cores)
+			);
 		}
 		/// <summary>
 		/// Modify routed probe connections to debug cores.
+		///
+		///
+		/// TCL Syntax: modify_debug_ports [-probes <args>] [-quiet] [-verbose]
 		///
 		/// Modifies a routed design to connect nets to specified ports of debug cores. This command takes
 		/// a list of connections to be made to specified debug probes. Each connection is defined as a Tcl
@@ -663,14 +721,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void modify_debug_ports(string probes, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("modify_debug_ports");
-			command.RequiredString("probes", probes);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: modify_debug_ports [-probes <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("modify_debug_ports")
+					.RequiredNamedString("probes", probes)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Report details on debug cores
+		///
+		///
+		/// TCL Syntax: report_debug_core [-file <arg>] [-append] [-return_string] [-full_path] [-quiet] [-verbose]
 		///
 		/// Writes a report of the various Vivado device tool debug cores in the current project, and the
 		/// parameters of those cores. Debug cores can be added to a project using the
@@ -711,17 +774,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void report_debug_core(string file = null, bool? append = null, bool? return_string = null, bool? full_path = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_debug_core");
-			command.OptionalString("file", file);
-			command.Flag("append", append);
-			command.Flag("return_string", return_string);
-			command.Flag("full_path", full_path);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: report_debug_core [-file <arg>] [-append] [-return_string] [-full_path] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("report_debug_core")
+					.OptionalNamedString("file", file)
+					.Flag("append", append)
+					.Flag("return_string", return_string)
+					.Flag("full_path", full_path)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Write debug probes to a file
+		///
+		///
+		/// TCL Syntax: write_debug_probes [-cell <arg>] [-no_partial_ltxfile] [-force] [-quiet] [-verbose] <file>
 		///
 		/// Writes a Vivado Design Suite logic analyzer probes file containing ILA debug cores and signal
 		/// probes added to the current design. The debug probes data file typically has a .ltx file
@@ -764,14 +832,16 @@ namespace Quokka.TCL.Vivado
 		/// <returns>name of the output file</returns>
 		public void write_debug_probes(string file, string cell = null, bool? no_partial_ltxfile = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_debug_probes");
-			command.OptionalString("cell", cell);
-			command.Flag("no_partial_ltxfile", no_partial_ltxfile);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_debug_probes [-cell <arg>] [-no_partial_ltxfile] [-force] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_debug_probes")
+					.OptionalNamedString("cell", cell)
+					.Flag("no_partial_ltxfile", no_partial_ltxfile)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 	}
 }

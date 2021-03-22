@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class ProjectCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public ProjectCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public ProjectCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Add sources to the active fileset
+		///
+		///
+		/// TCL Syntax: add_files [-fileset <arg>] [-of_objects <args>] [-norecurse] [-copy_to <arg>] [-force] [-scan_for_includes] [-quiet] [-verbose] [<files>...]
 		///
 		/// Adds one or more source files, or the source file contents of one or more directories, to the
 		/// specified fileset in the current project. Valid source files include HDL sources (VHDL, Verilog,
@@ -116,20 +119,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of file objects that were added</returns>
 		public void add_files(string fileset = null, string of_objects = null, bool? norecurse = null, string copy_to = null, bool? force = null, bool? scan_for_includes = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
-			var command = new SimpleTCLCommand("add_files");
-			command.OptionalString("fileset", fileset);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("norecurse", norecurse);
-			command.OptionalString("copy_to", copy_to);
-			command.Flag("force", force);
-			command.Flag("scan_for_includes", scan_for_includes);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: add_files [-fileset <arg>] [-of_objects <args>] [-norecurse] [-copy_to <arg>] [-force] [-scan_for_includes] [-quiet] [-verbose] [<files>...]
+			_tcl.Add(
+				new SimpleTCLCommand("add_files")
+					.OptionalNamedString("fileset", fileset)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("norecurse", norecurse)
+					.OptionalNamedString("copy_to", copy_to)
+					.Flag("force", force)
+					.Flag("scan_for_includes", scan_for_includes)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(files)
+			);
 		}
 		/// <summary>
 		/// Add a new bus interface to a peripheral.
+		///
+		///
+		/// TCL Syntax: add_peripheral_interface -interface_mode <arg> -axi_type <arg> [-quiet] [-verbose] <name> <peripheral>
 		///
 		/// Add an AXI bus interface to a peripheral created with the create_peripheral command.
 		///
@@ -162,17 +170,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void add_peripheral_interface(string interface_mode, string axi_type, string name, string peripheral, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("add_peripheral_interface");
-			command.RequiredString("interface_mode", interface_mode);
-			command.RequiredString("axi_type", axi_type);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.RequiredString("peripheral", peripheral);
-			_tcl.Add(command);
+			// TCL Syntax: add_peripheral_interface -interface_mode <arg> -axi_type <arg> [-quiet] [-verbose] <name> <peripheral>
+			_tcl.Add(
+				new SimpleTCLCommand("add_peripheral_interface")
+					.RequiredNamedString("interface_mode", interface_mode)
+					.RequiredNamedString("axi_type", axi_type)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.RequiredString(peripheral)
+			);
 		}
 		/// <summary>
 		/// Applies board connections to given designs
+		///
+		///
+		/// TCL Syntax: apply_board_connection [-board_interface <arg>] -ip_intf <arg> -diagram <arg> [-quiet] [-verbose]
 		///
 		/// Connects the interface pin of an IP core in the specified block design to the interface of the
 		/// current board part in the current project or design.
@@ -224,16 +237,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>sucess/failure status of applied action.</returns>
 		public void apply_board_connection(string ip_intf, string diagram, string board_interface = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("apply_board_connection");
-			command.OptionalString("board_interface", board_interface);
-			command.RequiredString("ip_intf", ip_intf);
-			command.RequiredString("diagram", diagram);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: apply_board_connection [-board_interface <arg>] -ip_intf <arg> -diagram <arg> [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("apply_board_connection")
+					.OptionalNamedString("board_interface", board_interface)
+					.RequiredNamedString("ip_intf", ip_intf)
+					.RequiredNamedString("diagram", diagram)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Archive the current project
+		///
+		///
+		/// TCL Syntax: archive_project [-temp_dir <arg>] [-force] [-exclude_run_results] [-include_config_settings] [-include_runs_in_progress] [-include_local_ip_cache] [-quiet] [-verbose] [<file>]
 		///
 		/// Archives a project to store as backup, or to encapsulate the design and send it to a remote site.
 		/// The tool parses the hierarchy of the design, copies the required source files, include files, and
@@ -305,21 +323,26 @@ namespace Quokka.TCL.Vivado
 		/// <returns>true</returns>
 		public void archive_project(string temp_dir = null, bool? force = null, bool? exclude_run_results = null, bool? include_config_settings = null, bool? include_runs_in_progress = null, bool? include_local_ip_cache = null, bool? quiet = null, bool? verbose = null, string file = null)
 		{
-			var command = new SimpleTCLCommand("archive_project");
-			command.OptionalString("temp_dir", temp_dir);
-			command.Flag("force", force);
-			command.Flag("exclude_run_results", exclude_run_results);
-			command.Flag("include_config_settings", include_config_settings);
-			command.Flag("include_runs_in_progress", include_runs_in_progress);
-			command.Flag("include_local_ip_cache", include_local_ip_cache);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: archive_project [-temp_dir <arg>] [-force] [-exclude_run_results] [-include_config_settings] [-include_runs_in_progress] [-include_local_ip_cache] [-quiet] [-verbose] [<file>]
+			_tcl.Add(
+				new SimpleTCLCommand("archive_project")
+					.OptionalNamedString("temp_dir", temp_dir)
+					.Flag("force", force)
+					.Flag("exclude_run_results", exclude_run_results)
+					.Flag("include_config_settings", include_config_settings)
+					.Flag("include_runs_in_progress", include_runs_in_progress)
+					.Flag("include_local_ip_cache", include_local_ip_cache)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(file)
+			);
 		}
 		/// <summary>
 		/// Auto detect the XPM Libraries that are used in the design and set the XPM_LIBRARIES project
 		/// property.
+		///
+		///
+		/// TCL Syntax: auto_detect_xpm [-quiet] [-verbose]
 		///
 		/// This command collects the list of Xilinx Parameterized Macros (XPM) used in RTL design files and
 		/// sets the XPM_LIBRARIES property. Because it identifies XPM used in the RTL source files, it
@@ -348,13 +371,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void auto_detect_xpm(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("auto_detect_xpm");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: auto_detect_xpm [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("auto_detect_xpm")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Check if a module can be referenced
+		///
+		///
+		/// TCL Syntax: can_resolve_reference [-quiet] [-verbose] <module>...
 		///
 		/// This command is used to validate reference to modules prior to trying to import them into the
 		/// design. Its primary use is in scripts like the script produced by the write_bd_tcl command,
@@ -380,14 +408,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void can_resolve_reference(string module, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("can_resolve_reference");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("module", module);
-			_tcl.Add(command);
+			// TCL Syntax: can_resolve_reference [-quiet] [-verbose] <module>...
+			_tcl.Add(
+				new SimpleTCLCommand("can_resolve_reference")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(module)
+			);
 		}
 		/// <summary>
 		/// Check HDL syntax in the supplied fileset or active fileset.
+		///
+		///
+		/// TCL Syntax: check_syntax [-fileset <arg>] [-return_string] [-quiet] [-verbose]
 		///
 		/// Parses Verilog, SystemVerilog, and VHDL source files and generates syntax warnings and error
 		/// messages for the design.
@@ -419,15 +452,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void check_syntax(string fileset = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("check_syntax");
-			command.OptionalString("fileset", fileset);
-			command.Flag("return_string", return_string);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: check_syntax [-fileset <arg>] [-return_string] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("check_syntax")
+					.OptionalNamedString("fileset", fileset)
+					.Flag("return_string", return_string)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Close the current design
+		///
+		///
+		/// TCL Syntax: close_design [-quiet] [-verbose]
 		///
 		/// Closes the currently active design. If the design has been modified, you will not be prompted to
 		/// save the design prior to closing. You will need to run save_design or save_design_as to
@@ -455,13 +493,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void close_design(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("close_design");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: close_design [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("close_design")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Close current opened project
+		///
+		///
+		/// TCL Syntax: close_project [-delete] [-quiet] [-verbose]
 		///
 		/// Closes the current open project.
 		/// TIP: Any user-defined Tcl variables that are in the global namespace (i.e. not in a project-specific namespace)
@@ -497,14 +540,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void close_project(bool? delete = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("close_project");
-			command.Flag("delete", delete);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: close_project [-delete] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("close_project")
+					.Flag("delete", delete)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Compile C code into RTL
+		///
+		///
+		/// TCL Syntax: compile_c [-force] [-quiet] [-verbose] <objects>
 		///
 		/// In IP cores that are imported from Vivado HLS, the compile_c command detects C, C++, and
 		/// SystemC files and converts those files to RTL for synthesis by the Vivado Design Suite.
@@ -537,15 +585,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void compile_c(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("compile_c");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: compile_c [-force] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("compile_c")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Copy an existing IP
+		///
+		///
+		/// TCL Syntax: copy_ip -name <arg> [-dir <arg>] [-quiet] [-verbose] <objects>...
 		///
 		/// Create a copy of an IP core that has been previously instanced into the current project.
 		///
@@ -575,16 +628,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>IP file object that was added to the project</returns>
 		public void copy_ip(string name, string objects, string dir = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("copy_ip");
-			command.RequiredString("name", name);
-			command.OptionalString("dir", dir);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: copy_ip -name <arg> [-dir <arg>] [-quiet] [-verbose] <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("copy_ip")
+					.RequiredNamedString("name", name)
+					.OptionalNamedString("dir", dir)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Create the Gadget for Project summary dashboard
+		///
+		///
+		/// TCL Syntax: create_dashboard_gadget -name <arg> -type <arg> [-quiet] [-verbose]
 		///
 		/// IMPORTANT! This command is primarily intended to be used in the Vivado IDE, with the Project Summary,
 		/// and the Add Gadget command.
@@ -628,15 +686,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_dashboard_gadget(string name, string type, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_dashboard_gadget");
-			command.RequiredString("name", name);
-			command.RequiredString("type", type);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: create_dashboard_gadget -name <arg> -type <arg> [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("create_dashboard_gadget")
+					.RequiredNamedString("name", name)
+					.RequiredNamedString("type", type)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Create a new fileset
+		///
+		///
+		/// TCL Syntax: create_fileset [-constrset] [-simset] [-blockset] [-clone_properties <arg>] -define_from <arg> [-quiet] [-verbose] <name>
 		///
 		/// Defines a new fileset within a design project. Files can be added to a newly created fileset using
 		/// the add_files command.
@@ -708,19 +771,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>new fileset object</returns>
 		public void create_fileset(string define_from, string name, bool? constrset = null, bool? simset = null, bool? blockset = null, string clone_properties = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_fileset");
-			command.Flag("constrset", constrset);
-			command.Flag("simset", simset);
-			command.Flag("blockset", blockset);
-			command.OptionalString("clone_properties", clone_properties);
-			command.RequiredString("define_from", define_from);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_fileset [-constrset] [-simset] [-blockset] [-clone_properties <arg>] -define_from <arg> [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_fileset")
+					.Flag("constrset", constrset)
+					.Flag("simset", simset)
+					.Flag("blockset", blockset)
+					.OptionalNamedString("clone_properties", clone_properties)
+					.RequiredNamedString("define_from", define_from)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Creates a run for the given IP.
+		///
+		///
+		/// TCL Syntax: create_ip_run [-force] [-quiet] [-verbose] <objects>
 		///
 		/// Defines a synthesis and implementation run for a single IP object as specified by the get_ips
 		/// command, or for the specified IP core file (XCI) as specified by the get_files command.
@@ -756,15 +824,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_ip_run(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_ip_run");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: create_ip_run [-force] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("create_ip_run")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Create a peripheral with a VLNV.
+		///
+		///
+		/// TCL Syntax: create_peripheral [-dir <arg>] [-quiet] [-verbose] <vendor> <library> <name> <version>
 		///
 		/// Create an AXI peripheral to add to the IP repository with the specified VLNV attribute.
 		/// The AXI peripheral that is created is just a framework until interfaces have been added to the
@@ -804,18 +877,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_peripheral(string vendor, string library, string name, string version, string dir = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_peripheral");
-			command.OptionalString("dir", dir);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("vendor", vendor);
-			command.RequiredString("library", library);
-			command.RequiredString("name", name);
-			command.RequiredString("version", version);
-			_tcl.Add(command);
+			// TCL Syntax: create_peripheral [-dir <arg>] [-quiet] [-verbose] <vendor> <library> <name> <version>
+			_tcl.Add(
+				new SimpleTCLCommand("create_peripheral")
+					.OptionalNamedString("dir", dir)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(vendor)
+					.RequiredString(library)
+					.RequiredString(name)
+					.RequiredString(version)
+			);
 		}
 		/// <summary>
 		/// Create a new project
+		///
+		///
+		/// TCL Syntax: create_project [-part <arg>] [-force] [-in_memory] [-ip] [-rtl_kernel] [-quiet] [-verbose] [<name>] [<dir>]
 		///
 		/// Creates a Vivado Design Suite project file (.xpr), or a project file for the Vivado Lab Edition (.lpr),
 		/// in the specified directory.
@@ -906,20 +984,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>new project object</returns>
 		public void create_project(string name, string part = null, bool? force = null, bool? in_memory = null, bool? ip = null, bool? rtl_kernel = null, bool? quiet = null, bool? verbose = null, string dir = null)
 		{
-			var command = new SimpleTCLCommand("create_project");
-			command.OptionalString("part", part);
-			command.Flag("force", force);
-			command.Flag("in_memory", in_memory);
-			command.Flag("ip", ip);
-			command.Flag("rtl_kernel", rtl_kernel);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.OptionalString("dir", dir);
-			_tcl.Add(command);
+			// TCL Syntax: create_project [-part <arg>] [-force] [-in_memory] [-ip] [-rtl_kernel] [-quiet] [-verbose] [<name>] [<dir>]
+			_tcl.Add(
+				new SimpleTCLCommand("create_project")
+					.OptionalNamedString("part", part)
+					.Flag("force", force)
+					.Flag("in_memory", in_memory)
+					.Flag("ip", ip)
+					.Flag("rtl_kernel", rtl_kernel)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.OptionalString(dir)
+			);
 		}
 		/// <summary>
 		/// Define a synthesis or implementation run for the current project
+		///
+		///
+		/// TCL Syntax: create_run [-constrset <arg>] [-parent_run <arg>] [-part <arg>] -flow <arg> [-strategy <arg>] [-report_strategy <arg>] [-pr_config <arg>] [-quiet] [-verbose] <name>
 		///
 		/// Defines a synthesis or implementation run. The attributes of the run can be configured with the
 		/// use of the set_property command.
@@ -979,22 +1062,27 @@ namespace Quokka.TCL.Vivado
 		/// <returns>run object</returns>
 		public void create_run(string flow, string name, string constrset = null, string parent_run = null, string part = null, string strategy = null, string report_strategy = null, string pr_config = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_run");
-			command.OptionalString("constrset", constrset);
-			command.OptionalString("parent_run", parent_run);
-			command.OptionalString("part", part);
-			command.RequiredString("flow", flow);
-			command.OptionalString("strategy", strategy);
-			command.OptionalString("report_strategy", report_strategy);
-			command.OptionalString("pr_config", pr_config);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_run [-constrset <arg>] [-parent_run <arg>] [-part <arg>] -flow <arg> [-strategy <arg>] [-report_strategy <arg>] [-pr_config <arg>] [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_run")
+					.OptionalNamedString("constrset", constrset)
+					.OptionalNamedString("parent_run", parent_run)
+					.OptionalNamedString("part", part)
+					.RequiredNamedString("flow", flow)
+					.OptionalNamedString("strategy", strategy)
+					.OptionalNamedString("report_strategy", report_strategy)
+					.OptionalNamedString("pr_config", pr_config)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Create embedded source for XPS and add to the source fileset (Not supported anymore. Please
 		/// use Vivado IP integrator.)
+		///
+		///
+		/// TCL Syntax: create_xps [-quiet] [-verbose] <name>
 		///
 		/// Create an Embedded Processor source for use in the current project, and add it to the source
 		/// files.
@@ -1030,14 +1118,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>source file name that was created</returns>
 		public void create_xps(string name, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_xps");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_xps [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_xps")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Get the current board_part object
+		///
+		///
+		/// TCL Syntax: current_board_part [-quiet] [-verbose]
 		///
 		/// Return the Xilinx device used in the current project or design.
 		/// The board file, board.xml located in the data/boards folder of the Vivado Design Suite
@@ -1073,13 +1166,18 @@ namespace Quokka.TCL.Vivado
 		/// <returns>current board_part object</returns>
 		public void current_board_part(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("current_board_part");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: current_board_part [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("current_board_part")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get the current fileset (any type) or set the current fileset (applicable to simulation filesets only)
+		///
+		///
+		/// TCL Syntax: current_fileset [-constrset] [-simset] [-quiet] [-verbose] [<fileset>...]
 		///
 		/// Get the active source, constraint, or simulation fileset within the current project.
 		/// When used without any options, current_fileset sets and returns the sources_1 set as the active
@@ -1119,16 +1217,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>current fileset (the current srcset by default)</returns>
 		public void current_fileset(bool? constrset = null, bool? simset = null, bool? quiet = null, bool? verbose = null, string fileset = null)
 		{
-			var command = new SimpleTCLCommand("current_fileset");
-			command.Flag("constrset", constrset);
-			command.Flag("simset", simset);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("fileset", fileset);
-			_tcl.Add(command);
+			// TCL Syntax: current_fileset [-constrset] [-simset] [-quiet] [-verbose] [<fileset>...]
+			_tcl.Add(
+				new SimpleTCLCommand("current_fileset")
+					.Flag("constrset", constrset)
+					.Flag("simset", simset)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(fileset)
+			);
 		}
 		/// <summary>
 		/// Set or get current project
+		///
+		///
+		/// TCL Syntax: current_project [-quiet] [-verbose] [<project>]
 		///
 		/// Specifies the current project or returns the current project when no project is specified.
 		///
@@ -1157,14 +1260,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>current or newly set project object</returns>
 		public void current_project(bool? quiet = null, bool? verbose = null, string project = null)
 		{
-			var command = new SimpleTCLCommand("current_project");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("project", project);
-			_tcl.Add(command);
+			// TCL Syntax: current_project [-quiet] [-verbose] [<project>]
+			_tcl.Add(
+				new SimpleTCLCommand("current_project")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(project)
+			);
 		}
 		/// <summary>
 		/// Set or get the current run
+		///
+		///
+		/// TCL Syntax: current_run [-synthesis] [-implementation] [-quiet] [-verbose] [<run>]
 		///
 		/// Defines the current synthesis or implementation run, or returns the name of the current run. The
 		/// current run is the one automatically selected when the Synthesize or Implement commands are
@@ -1204,16 +1312,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>run object</returns>
 		public void current_run(bool? synthesis = null, bool? implementation = null, bool? quiet = null, bool? verbose = null, string run = null)
 		{
-			var command = new SimpleTCLCommand("current_run");
-			command.Flag("synthesis", synthesis);
-			command.Flag("implementation", implementation);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("run", run);
-			_tcl.Add(command);
+			// TCL Syntax: current_run [-synthesis] [-implementation] [-quiet] [-verbose] [<run>]
+			_tcl.Add(
+				new SimpleTCLCommand("current_run")
+					.Flag("synthesis", synthesis)
+					.Flag("implementation", implementation)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(run)
+			);
 		}
 		/// <summary>
 		/// Deletes the gadgets from project summary dashboard
+		///
+		///
+		/// TCL Syntax: delete_dashboard_gadgets [-quiet] [-verbose] <gadgets>
 		///
 		/// This command removes the gadget from the Project Summary dashboard, and removes it from
 		/// the project.
@@ -1234,14 +1347,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_dashboard_gadgets(string gadgets, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_dashboard_gadgets");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("gadgets", gadgets);
-			_tcl.Add(command);
+			// TCL Syntax: delete_dashboard_gadgets [-quiet] [-verbose] <gadgets>
+			_tcl.Add(
+				new SimpleTCLCommand("delete_dashboard_gadgets")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(gadgets)
+			);
 		}
 		/// <summary>
 		/// Delete a fileset
+		///
+		///
+		/// TCL Syntax: delete_fileset [-merge <arg>] [-quiet] [-verbose] <fileset>
 		///
 		/// Deletes the specified fileset. However, if the fileset cannot be deleted, then no message is
 		/// returned.
@@ -1271,15 +1389,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_fileset(string fileset, string merge = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_fileset");
-			command.OptionalString("merge", merge);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("fileset", fileset);
-			_tcl.Add(command);
+			// TCL Syntax: delete_fileset [-merge <arg>] [-quiet] [-verbose] <fileset>
+			_tcl.Add(
+				new SimpleTCLCommand("delete_fileset")
+					.OptionalNamedString("merge", merge)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(fileset)
+			);
 		}
 		/// <summary>
 		/// Deletes the block fileset and run associated with a given IP.
+		///
+		///
+		/// TCL Syntax: delete_ip_run [-force] [-quiet] [-verbose] <objects>
 		///
 		/// Deletes the out-of-context (OOC) synthesis and implementation runs for the specified IP
 		/// module.
@@ -1316,15 +1439,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_ip_run(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_ip_run");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: delete_ip_run [-force] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("delete_ip_run")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Delete existing runs
+		///
+		///
+		/// TCL Syntax: delete_runs [-noclean_dir] [-quiet] [-verbose] <runs>
 		///
 		/// Deletes the specified runs from the project, and deletes all results of the run from the project
 		/// directory on the hard drive unless otherwise specified.
@@ -1355,16 +1483,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_runs(string runs, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_runs");
-			command.Flag("noclean_dir", noclean_dir);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("runs", runs);
-			_tcl.Add(command);
+			// TCL Syntax: delete_runs [-noclean_dir] [-quiet] [-verbose] <runs>
+			_tcl.Add(
+				new SimpleTCLCommand("delete_runs")
+					.Flag("noclean_dir", noclean_dir)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(runs)
+			);
 		}
 		/// <summary>
 		/// Find top module candidates in the supplied files, fileset, or active fileset. Returns a rank ordered
 		/// list of candidates.
+		///
+		///
+		/// TCL Syntax: find_top [-fileset <arg>] [-files <args>] [-return_file_paths] [-quiet] [-verbose]
 		///
 		/// Find the most likely candidates for the top module in the files defined in the current fileset, or in
 		/// the specified fileset, or in the specified list of files.
@@ -1410,16 +1543,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void find_top(string fileset = null, string files = null, bool? return_file_paths = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("find_top");
-			command.OptionalString("fileset", fileset);
-			command.OptionalString("files", files);
-			command.Flag("return_file_paths", return_file_paths);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: find_top [-fileset <arg>] [-files <args>] [-return_file_paths] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("find_top")
+					.OptionalNamedString("fileset", fileset)
+					.OptionalNamedString("files", files)
+					.Flag("return_file_paths", return_file_paths)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Generate output products for peripheral object.
+		///
+		///
+		/// TCL Syntax: generate_peripheral [-driver] [-example_design] [-bfm_example_design] [-debug_hw_example_design] [-enable_interrupt] [-force] [-quiet] [-verbose] <peripheral>
 		///
 		/// Generate the output products for the specified peripheral object. The output products are
 		/// written to the IP repository location specified when the IP is created by the
@@ -1465,20 +1603,25 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void generate_peripheral(string peripheral, bool? driver = null, bool? example_design = null, bool? bfm_example_design = null, bool? debug_hw_example_design = null, bool? enable_interrupt = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("generate_peripheral");
-			command.Flag("driver", driver);
-			command.Flag("example_design", example_design);
-			command.Flag("bfm_example_design", bfm_example_design);
-			command.Flag("debug_hw_example_design", debug_hw_example_design);
-			command.Flag("enable_interrupt", enable_interrupt);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("peripheral", peripheral);
-			_tcl.Add(command);
+			// TCL Syntax: generate_peripheral [-driver] [-example_design] [-bfm_example_design] [-debug_hw_example_design] [-enable_interrupt] [-force] [-quiet] [-verbose] <peripheral>
+			_tcl.Add(
+				new SimpleTCLCommand("generate_peripheral")
+					.Flag("driver", driver)
+					.Flag("example_design", example_design)
+					.Flag("bfm_example_design", bfm_example_design)
+					.Flag("debug_hw_example_design", debug_hw_example_design)
+					.Flag("enable_interrupt", enable_interrupt)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(peripheral)
+			);
 		}
 		/// <summary>
 		/// Generate target data for the specified source
+		///
+		///
+		/// TCL Syntax: generate_target [-force] [-quiet] [-verbose] <name> <objects>
 		///
 		/// This command generates target data for the specified IP objects (get_ips) or source file for IP
 		/// cores (.xci and .xco), DSP modules (.slx or .mdl), or block designs (.bd). The target data
@@ -1533,16 +1676,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void generate_target(string name, string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("generate_target");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: generate_target [-force] [-quiet] [-verbose] <name> <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("generate_target")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Get the list of board_part available in the project
+		///
+		///
+		/// TCL Syntax: get_board_parts [-regexp] [-nocase] [-latest_file_version] [-latest_hw_revision] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of available board parts in the board repository, as defined by the Board Interface files
 		/// available for use by the current project or design.
@@ -1603,19 +1751,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of board_part objects</returns>
 		public void get_board_parts(bool? regexp = null, bool? nocase = null, bool? latest_file_version = null, bool? latest_hw_revision = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_parts");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("latest_file_version", latest_file_version);
-			command.Flag("latest_hw_revision", latest_hw_revision);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_parts [-regexp] [-nocase] [-latest_file_version] [-latest_hw_revision] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_parts")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("latest_file_version", latest_file_version)
+					.Flag("latest_hw_revision", latest_hw_revision)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get the list of boards available in the project
+		///
+		///
+		/// TCL Syntax: get_boards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of evaluation boards available for use by the current project.
 		/// The board file, board.xml located in the data/boards folder of the Vivado Design Suite
@@ -1676,18 +1829,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of board objects</returns>
 		public void get_boards(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_boards");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_boards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_boards")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Create the Project summary dashboard
+		///
+		///
+		/// TCL Syntax: get_dashboard_gadgets [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of the dashboard gadgets in the current project.
 		///
@@ -1711,14 +1869,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void get_dashboard_gadgets(bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_dashboard_gadgets");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_dashboard_gadgets [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_dashboard_gadgets")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of source files
+		///
+		///
+		/// TCL Syntax: get_files [-regexp] [-nocase] [-filter <arg>] [-compile_order <arg>] [-used_in <arg>] [-references] [-all] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of files in the current project that match a specified search pattern. The default
 		/// command gets a list of all files in the project.
@@ -1805,22 +1968,27 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of file objects</returns>
 		public void get_files(bool? regexp = null, bool? nocase = null, string filter = null, string compile_order = null, string used_in = null, bool? references = null, bool? all = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_files");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("compile_order", compile_order);
-			command.OptionalString("used_in", used_in);
-			command.Flag("references", references);
-			command.Flag("all", all);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_files [-regexp] [-nocase] [-filter <arg>] [-compile_order <arg>] [-used_in <arg>] [-references] [-all] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_files")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("compile_order", compile_order)
+					.OptionalNamedString("used_in", used_in)
+					.Flag("references", references)
+					.Flag("all", all)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of filesets in the current project
+		///
+		///
+		/// TCL Syntax: get_filesets [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of filesets in the current project that match a specified search pattern. The default
 		/// command gets a list of all filesets in the project.
@@ -1878,18 +2046,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of fileset objects</returns>
 		public void get_filesets(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_filesets");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_filesets [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_filesets")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of results for IP upgrades during the current project
+		///
+		///
+		/// TCL Syntax: get_ip_upgrade_results [-srcset <arg>] [-quiet] [-verbose] [<objects>...]
 		///
 		/// Returns the names of the upgrade_log files for the specified IPs.
 		/// This command is used by the Vivado IDE to populate the IP Status Report window with
@@ -1924,15 +2097,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of IP upgrade results</returns>
 		public void get_ip_upgrade_results(string srcset = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
-			var command = new SimpleTCLCommand("get_ip_upgrade_results");
-			command.OptionalString("srcset", srcset);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: get_ip_upgrade_results [-srcset <arg>] [-quiet] [-verbose] [<objects>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_ip_upgrade_results")
+					.OptionalNamedString("srcset", srcset)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(objects)
+			);
 		}
 		/// <summary>
 		/// Get a list of IPs in the current design
+		///
+		///
+		/// TCL Syntax: get_ips [-regexp] [-nocase] [-all] [-filter <arg>] [-exclude_bd_ips] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Get a list of IP cores in the current project based on the specified search pattern. The default
 		/// command returns a list of all IPs in the project.
@@ -1987,20 +2165,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of IP objects</returns>
 		public void get_ips(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? exclude_bd_ips = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_ips");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("all", all);
-			command.OptionalString("filter", filter);
-			command.Flag("exclude_bd_ips", exclude_bd_ips);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_ips [-regexp] [-nocase] [-all] [-filter <arg>] [-exclude_bd_ips] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_ips")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("all", all)
+					.OptionalNamedString("filter", filter)
+					.Flag("exclude_bd_ips", exclude_bd_ips)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of projects
+		///
+		///
+		/// TCL Syntax: get_projects [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of open projects that match the specified search pattern. The default gets a list of all
 		/// open projects.
@@ -2049,17 +2232,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of project objects</returns>
 		public void get_projects(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_projects");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_projects [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_projects")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of runs
+		///
+		///
+		/// TCL Syntax: get_runs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of synthesis and implementation runs in the current project that match a specified
 		/// search pattern. The default command gets a list of all runs defined in the project.
@@ -2108,18 +2296,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of run objects</returns>
 		public void get_runs(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_runs");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_runs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_runs")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Display help for one or more topics
+		///
+		///
+		/// TCL Syntax: help [-category <arg>] [-args] [-syntax] [-long] [-prop <arg>] [-class <arg>] [-message <arg>] [-quiet] [-verbose] [<pattern_or_object>]
 		///
 		/// Returns a long description of the specified Tcl command; or a list of available Xilinx Tcl command
 		/// categories; or a list of commands matching a specific pattern.
@@ -2182,7 +2375,7 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Display syntax description
 		/// </param>
-		/// <param name="long">
+		/// <param name="@long">
 		/// Optional
 		/// Display long help description
 		/// </param>
@@ -2215,23 +2408,28 @@ namespace Quokka.TCL.Vivado
 		/// Display help for topics that match the specified pattern
 		/// Default: *
 		/// </param>
-		public void help(string category = null, bool? args = null, bool? syntax = null, bool? long = null, string prop = null, string @class = null, string message = null, bool? quiet = null, bool? verbose = null, string pattern_or_object = null)
+		public void help(string category = null, bool? args = null, bool? syntax = null, bool? @long = null, string prop = null, string @class = null, string message = null, bool? quiet = null, bool? verbose = null, string pattern_or_object = null)
 		{
-			var command = new SimpleTCLCommand("help");
-			command.OptionalString("category", category);
-			command.Flag("args", args);
-			command.Flag("syntax", syntax);
-			command.Flag("long", long);
-			command.OptionalString("prop", prop);
-			command.OptionalString("class", @class);
-			command.OptionalString("message", message);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("pattern_or_object", pattern_or_object);
-			_tcl.Add(command);
+			// TCL Syntax: help [-category <arg>] [-args] [-syntax] [-long] [-prop <arg>] [-class <arg>] [-message <arg>] [-quiet] [-verbose] [<pattern_or_object>]
+			_tcl.Add(
+				new SimpleTCLCommand("help")
+					.OptionalNamedString("category", category)
+					.Flag("args", args)
+					.Flag("syntax", syntax)
+					.Flag("long", @long)
+					.OptionalNamedString("prop", prop)
+					.OptionalNamedString("class", @class)
+					.OptionalNamedString("message", message)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(pattern_or_object)
+			);
 		}
 		/// <summary>
 		/// Import files and/or directories into the active fileset
+		///
+		///
+		/// TCL Syntax: import_files [-fileset <arg>] [-force] [-of_objects <args>] [-norecurse] [-flat] [-relative_to <arg>] [-quiet] [-verbose] [<files>...]
 		///
 		/// Imports one or more files or the source file contents of one or more directories to the specified
 		/// fileset.
@@ -2306,20 +2504,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>A list of file objects that were imported</returns>
 		public void import_files(string fileset = null, bool? force = null, string of_objects = null, bool? norecurse = null, bool? flat = null, string relative_to = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
-			var command = new SimpleTCLCommand("import_files");
-			command.OptionalString("fileset", fileset);
-			command.Flag("force", force);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("norecurse", norecurse);
-			command.Flag("flat", flat);
-			command.OptionalString("relative_to", relative_to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: import_files [-fileset <arg>] [-force] [-of_objects <args>] [-norecurse] [-flat] [-relative_to <arg>] [-quiet] [-verbose] [<files>...]
+			_tcl.Add(
+				new SimpleTCLCommand("import_files")
+					.OptionalNamedString("fileset", fileset)
+					.Flag("force", force)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("norecurse", norecurse)
+					.Flag("flat", flat)
+					.OptionalNamedString("relative_to", relative_to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(files)
+			);
 		}
 		/// <summary>
 		/// Import an IP file and add it to the fileset
+		///
+		///
+		/// TCL Syntax: import_ip [-srcset <arg>] [-name <arg>] [-quiet] [-verbose] [<files>]
 		///
 		/// Adds an existing XCI or XCO file as an IP source into the current project, and copies it into the
 		/// local project directory structure.
@@ -2363,16 +2566,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of file objects that were added</returns>
 		public void import_ip(string srcset = null, string name = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
-			var command = new SimpleTCLCommand("import_ip");
-			command.OptionalString("srcset", srcset);
-			command.OptionalString("name", name);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: import_ip [-srcset <arg>] [-name <arg>] [-quiet] [-verbose] [<files>]
+			_tcl.Add(
+				new SimpleTCLCommand("import_ip")
+					.OptionalNamedString("srcset", srcset)
+					.OptionalNamedString("name", name)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(files)
+			);
 		}
 		/// <summary>
 		/// Imports the given Synplify project file
+		///
+		///
+		/// TCL Syntax: import_synplify [-copy_sources] [-quiet] [-verbose] <file>
 		///
 		/// Imports Synplify synthesis project files (.prj) into the current project, including the various
 		/// source files used in the synthesis run.
@@ -2404,15 +2612,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of files object that were imported from the Synplify file</returns>
 		public void import_synplify(string file, bool? copy_sources = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("import_synplify");
-			command.Flag("copy_sources", copy_sources);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: import_synplify [-copy_sources] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("import_synplify")
+					.Flag("copy_sources", copy_sources)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Import XISE project file settings into the created project
+		///
+		///
+		/// TCL Syntax: import_xise [-copy_sources] [-quiet] [-verbose] <file>
 		///
 		/// Imports an ISE project file (XISE) into the current project. This allows ISE projects to be quickly
 		/// migrated into the Vivado Design Suite for synthesis, simulation, and implementation. All project
@@ -2450,15 +2663,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>true</returns>
 		public void import_xise(string file, bool? copy_sources = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("import_xise");
-			command.Flag("copy_sources", copy_sources);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: import_xise [-copy_sources] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("import_xise")
+					.Flag("copy_sources", copy_sources)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Imports the given XST project file
+		///
+		///
+		/// TCL Syntax: import_xst [-copy_sources] [-quiet] [-verbose] <file>
 		///
 		/// Imports XST synthesis project files into the current project, including the various source files
 		/// used in the XST run.
@@ -2490,15 +2708,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of files object that were imported from the XST file</returns>
 		public void import_xst(string file, bool? copy_sources = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("import_xst");
-			command.Flag("copy_sources", copy_sources);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: import_xst [-copy_sources] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("import_xst")
+					.Flag("copy_sources", copy_sources)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Launch a set of runs
+		///
+		///
+		/// TCL Syntax: launch_runs [-jobs <arg>] [-scripts_only] [-lsf <arg>] [-sge <arg>] [-cluster_configuration <arg>] [-dir <arg>] [-to_step <arg>] [-next_step] [-host <args>] [-remote_cmd <arg>] [-email_to <args>] [-email_all] [-pre_launch_script <arg>] [-post_launch_script <arg>] [-custom_script <arg>] [-force] [-quiet] [-verbose] <runs>...
 		///
 		/// Launches synthesis and implementation runs when running the Vivado tools in Project Mode.
 		/// Refer to the Vivado Design Suite User Guide: Design Flows Overview (UG892) for a complete
@@ -2626,30 +2849,35 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void launch_runs(string runs, string jobs = null, bool? scripts_only = null, string lsf = null, string sge = null, string cluster_configuration = null, string dir = null, string to_step = null, bool? next_step = null, string host = null, string remote_cmd = null, string email_to = null, bool? email_all = null, string pre_launch_script = null, string post_launch_script = null, string custom_script = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("launch_runs");
-			command.OptionalString("jobs", jobs);
-			command.Flag("scripts_only", scripts_only);
-			command.OptionalString("lsf", lsf);
-			command.OptionalString("sge", sge);
-			command.OptionalString("cluster_configuration", cluster_configuration);
-			command.OptionalString("dir", dir);
-			command.OptionalString("to_step", to_step);
-			command.Flag("next_step", next_step);
-			command.OptionalString("host", host);
-			command.OptionalString("remote_cmd", remote_cmd);
-			command.OptionalString("email_to", email_to);
-			command.Flag("email_all", email_all);
-			command.OptionalString("pre_launch_script", pre_launch_script);
-			command.OptionalString("post_launch_script", post_launch_script);
-			command.OptionalString("custom_script", custom_script);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("runs", runs);
-			_tcl.Add(command);
+			// TCL Syntax: launch_runs [-jobs <arg>] [-scripts_only] [-lsf <arg>] [-sge <arg>] [-cluster_configuration <arg>] [-dir <arg>] [-to_step <arg>] [-next_step] [-host <args>] [-remote_cmd <arg>] [-email_to <args>] [-email_all] [-pre_launch_script <arg>] [-post_launch_script <arg>] [-custom_script <arg>] [-force] [-quiet] [-verbose] <runs>...
+			_tcl.Add(
+				new SimpleTCLCommand("launch_runs")
+					.OptionalNamedString("jobs", jobs)
+					.Flag("scripts_only", scripts_only)
+					.OptionalNamedString("lsf", lsf)
+					.OptionalNamedString("sge", sge)
+					.OptionalNamedString("cluster_configuration", cluster_configuration)
+					.OptionalNamedString("dir", dir)
+					.OptionalNamedString("to_step", to_step)
+					.Flag("next_step", next_step)
+					.OptionalNamedString("host", host)
+					.OptionalNamedString("remote_cmd", remote_cmd)
+					.OptionalNamedString("email_to", email_to)
+					.Flag("email_all", email_all)
+					.OptionalNamedString("pre_launch_script", pre_launch_script)
+					.OptionalNamedString("post_launch_script", post_launch_script)
+					.OptionalNamedString("custom_script", custom_script)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(runs)
+			);
 		}
 		/// <summary>
 		/// List applicable targets for the specified source
+		///
+		///
+		/// TCL Syntax: list_targets [-quiet] [-verbose] <files>
 		///
 		/// List the targets that are available for a specified IP core, DSP module, or IP Subsystem. The
 		/// following file types are accepted: .xci, .xco, .mdl, .bd, .bxml.
@@ -2677,15 +2905,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of targets</returns>
 		public void list_targets(string files, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("list_targets");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: list_targets [-quiet] [-verbose] <files>
+			_tcl.Add(
+				new SimpleTCLCommand("list_targets")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// Locks or unlocks netlist, placement or routing of a design. The 'lock/unlock' will only applied on
 		/// physically placed cells and routed nets
+		///
+		///
+		/// TCL Syntax: lock_design [-level <arg>] [-unlock] [-export] [-quiet] [-verbose] [<cell>]
 		///
 		/// This command is used in the Hierarchical Design Flows for Design Preservation and Partial
 		/// Reconfiguration. Refer to the Vivado Design Suite User Guide: Hierarchical Design (UG905) for more
@@ -2739,17 +2972,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void lock_design(string level = null, bool? unlock = null, bool? export = null, bool? quiet = null, bool? verbose = null, string cell = null)
 		{
-			var command = new SimpleTCLCommand("lock_design");
-			command.OptionalString("level", level);
-			command.Flag("unlock", unlock);
-			command.Flag("export", export);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("cell", cell);
-			_tcl.Add(command);
+			// TCL Syntax: lock_design [-level <arg>] [-unlock] [-export] [-quiet] [-verbose] [<cell>]
+			_tcl.Add(
+				new SimpleTCLCommand("lock_design")
+					.OptionalNamedString("level", level)
+					.Flag("unlock", unlock)
+					.Flag("export", export)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(cell)
+			);
 		}
 		/// <summary>
 		/// Generate HDL wrapper for the specified source
+		///
+		///
+		/// TCL Syntax: make_wrapper [-top] [-testbench] [-inst_template] [-fileset <arg>] [-import] [-force] [-quiet] [-verbose] <files>
 		///
 		/// Create a Verilog or VHDL wrapper for instantiating a sub-design into the project.
 		/// The make_wrapper command will create a wrapper for Embedded Processor Designs from the
@@ -2810,20 +3048,25 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void make_wrapper(string files, bool? top = null, bool? testbench = null, bool? inst_template = null, string fileset = null, bool? import = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("make_wrapper");
-			command.Flag("top", top);
-			command.Flag("testbench", testbench);
-			command.Flag("inst_template", inst_template);
-			command.OptionalString("fileset", fileset);
-			command.Flag("import", import);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: make_wrapper [-top] [-testbench] [-inst_template] [-fileset <arg>] [-import] [-force] [-quiet] [-verbose] <files>
+			_tcl.Add(
+				new SimpleTCLCommand("make_wrapper")
+					.Flag("top", top)
+					.Flag("testbench", testbench)
+					.Flag("inst_template", inst_template)
+					.OptionalNamedString("fileset", fileset)
+					.Flag("import", import)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// Reposition the Gadget for Project summary dashboard
+		///
+		///
+		/// TCL Syntax: move_dashboard_gadget -name <arg> -row <arg> -col <arg> [-dashboard <arg>] [-quiet] [-verbose]
 		///
 		/// Specify the placement of a dashboard gadget into the dashboard.
 		/// TIP: Currently the Project Summary is the only dashboard, so the gadget is placed into that dashboard.
@@ -2861,17 +3104,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void move_dashboard_gadget(string name, string row, string col, string dashboard = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("move_dashboard_gadget");
-			command.RequiredString("name", name);
-			command.RequiredString("row", row);
-			command.RequiredString("col", col);
-			command.OptionalString("dashboard", dashboard);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: move_dashboard_gadget -name <arg> -row <arg> -col <arg> [-dashboard <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("move_dashboard_gadget")
+					.RequiredNamedString("name", name)
+					.RequiredNamedString("row", row)
+					.RequiredNamedString("col", col)
+					.OptionalNamedString("dashboard", dashboard)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Moves the files from one fileset to another while maintaining all of their original properties.
+		///
+		///
+		/// TCL Syntax: move_files [-fileset <arg>] [-of_objects <args>] [-quiet] [-verbose] [<files>...]
 		///
 		/// Moves files returned by the get_files command from one fileset to another while maintaining
 		/// the properties on the files.
@@ -2905,16 +3153,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of files that were moved</returns>
 		public void move_files(string fileset = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
-			var command = new SimpleTCLCommand("move_files");
-			command.OptionalString("fileset", fileset);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: move_files [-fileset <arg>] [-of_objects <args>] [-quiet] [-verbose] [<files>...]
+			_tcl.Add(
+				new SimpleTCLCommand("move_files")
+					.OptionalNamedString("fileset", fileset)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(files)
+			);
 		}
 		/// <summary>
 		/// Open a design checkpoint in a new project
+		///
+		///
+		/// TCL Syntax: open_checkpoint [-part <arg>] [-ignore_timing] [-quiet] [-verbose] <file>
 		///
 		/// Open a design checkpoint file (DCP), create a new in-memory project and initialize a design
 		/// immediately in the new project with the contents of the checkpoint. This command can be used
@@ -2959,16 +3212,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void open_checkpoint(string file, string part = null, bool? ignore_timing = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("open_checkpoint");
-			command.OptionalString("part", part);
-			command.Flag("ignore_timing", ignore_timing);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: open_checkpoint [-part <arg>] [-ignore_timing] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("open_checkpoint")
+					.OptionalNamedString("part", part)
+					.Flag("ignore_timing", ignore_timing)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Open the example project for the indicated IP
+		///
+		///
+		/// TCL Syntax: open_example_project [-dir <arg>] [-force] [-in_process] [-quiet] [-verbose] <objects>...
 		///
 		/// Open an example project for the specified IP cores. The example project can be used to explore
 		/// the features of the IP core in a stand-alone project, instead of integrated into the current project.
@@ -3006,17 +3264,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The Project that was opened</returns>
 		public void open_example_project(string objects, string dir = null, bool? force = null, bool? in_process = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("open_example_project");
-			command.OptionalString("dir", dir);
-			command.Flag("force", force);
-			command.Flag("in_process", in_process);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: open_example_project [-dir <arg>] [-force] [-in_process] [-quiet] [-verbose] <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("open_example_project")
+					.OptionalNamedString("dir", dir)
+					.Flag("force", force)
+					.Flag("in_process", in_process)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Open an IO design
+		///
+		///
+		/// TCL Syntax: open_io_design [-name <arg>] [-part <arg>] [-constrset <arg>] [-quiet] [-verbose]
 		///
 		/// Opens a new or existing I/O Pin Planning design.
 		/// Note: The design_mode property for the current source fileset must be defined as PinPlanning in order to
@@ -3055,16 +3318,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>design object</returns>
 		public void open_io_design(string name = null, string part = null, string constrset = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("open_io_design");
-			command.OptionalString("name", name);
-			command.OptionalString("part", part);
-			command.OptionalString("constrset", constrset);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: open_io_design [-name <arg>] [-part <arg>] [-constrset <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("open_io_design")
+					.OptionalNamedString("name", name)
+					.OptionalNamedString("part", part)
+					.OptionalNamedString("constrset", constrset)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Open a Vivado project file (.xpr)
+		///
+		///
+		/// TCL Syntax: open_project [-part <arg>] [-read_only] [-quiet] [-verbose] <file>
 		///
 		/// Opens the specified Vivado Design Suite project file (.xpr), or the project file for the Vivado Lab
 		/// Edition (.lpr).
@@ -3105,16 +3373,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>opened project object</returns>
 		public void open_project(string file, string part = null, bool? read_only = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("open_project");
-			command.OptionalString("part", part);
-			command.Flag("read_only", read_only);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: open_project [-part <arg>] [-read_only] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("open_project")
+					.OptionalNamedString("part", part)
+					.Flag("read_only", read_only)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Open a run into a netlist or implementation design
+		///
+		///
+		/// TCL Syntax: open_run [-name <arg>] [-pr_config <arg>] [-quiet] [-verbose] <run>
 		///
 		/// Opens the specified synthesis run into a Netlist Design or implementation run into an
 		/// Implemented Design. The run properties defining the target part and constraint set are combined
@@ -3157,16 +3430,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>design object</returns>
 		public void open_run(string run, string name = null, string pr_config = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("open_run");
-			command.OptionalString("name", name);
-			command.OptionalString("pr_config", pr_config);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("run", run);
-			_tcl.Add(command);
+			// TCL Syntax: open_run [-name <arg>] [-pr_config <arg>] [-quiet] [-verbose] <run>
+			_tcl.Add(
+				new SimpleTCLCommand("open_run")
+					.OptionalNamedString("name", name)
+					.OptionalNamedString("pr_config", pr_config)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(run)
+			);
 		}
 		/// <summary>
 		/// Refresh the current design
+		///
+		///
+		/// TCL Syntax: refresh_design [-part <arg>] [-quiet] [-verbose]
 		///
 		/// Reloads the current design from the project data on the hard drive. This overwrites the in￾memory view of the design to undo any recent design changes.
 		///
@@ -3198,14 +3476,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void refresh_design(string part = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("refresh_design");
-			command.OptionalString("part", part);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: refresh_design [-part <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("refresh_design")
+					.OptionalNamedString("part", part)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Update and initialize the BRAM initialization strings with contents of elf files.
+		///
+		///
+		/// TCL Syntax: refresh_meminit [-quiet] [-verbose]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1199
 		/// </summary>
@@ -3219,13 +3502,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void refresh_meminit(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("refresh_meminit");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: refresh_meminit [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("refresh_meminit")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Reimport files when they are found out-of-date
+		///
+		///
+		/// TCL Syntax: reimport_files [-force] [-quiet] [-verbose] [<files>...]
 		///
 		/// Reimports project files. This updates the local project files from the original referenced source
 		/// files.
@@ -3262,15 +3550,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of file objects that were imported</returns>
 		public void reimport_files(bool? force = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
-			var command = new SimpleTCLCommand("reimport_files");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: reimport_files [-force] [-quiet] [-verbose] [<files>...]
+			_tcl.Add(
+				new SimpleTCLCommand("reimport_files")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(files)
+			);
 		}
 		/// <summary>
 		/// Remove files or directories from a fileset
+		///
+		///
+		/// TCL Syntax: remove_files [-fileset <arg>] [-quiet] [-verbose] <files>...
 		///
 		/// Removes the specified file objects from the current or specified fileset. The file is removed from
 		/// the current project, but is not removed from the disk.
@@ -3311,15 +3604,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of files that were removed</returns>
 		public void remove_files(string files, string fileset = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("remove_files");
-			command.OptionalString("fileset", fileset);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: remove_files [-fileset <arg>] [-quiet] [-verbose] <files>...
+			_tcl.Add(
+				new SimpleTCLCommand("remove_files")
+					.OptionalNamedString("fileset", fileset)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// Change the order of source files in the active fileset
+		///
+		///
+		/// TCL Syntax: reorder_files [-fileset <arg>] [-before <arg>] [-after <arg>] [-front] [-back] [-auto] [-disable_unused] [-quiet] [-verbose] <files>...
 		///
 		/// Reorders source files in the specified fileset. Takes the files indicated and places them at the front
 		/// of, the back of, or before or after other files within the fileset. This command also has an auto
@@ -3379,21 +3677,26 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void reorder_files(string files, string fileset = null, string before = null, string after = null, bool? front = null, bool? back = null, bool? auto = null, bool? disable_unused = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("reorder_files");
-			command.OptionalString("fileset", fileset);
-			command.OptionalString("before", before);
-			command.OptionalString("after", after);
-			command.Flag("front", front);
-			command.Flag("back", back);
-			command.Flag("auto", auto);
-			command.Flag("disable_unused", disable_unused);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: reorder_files [-fileset <arg>] [-before <arg>] [-after <arg>] [-front] [-back] [-auto] [-disable_unused] [-quiet] [-verbose] <files>...
+			_tcl.Add(
+				new SimpleTCLCommand("reorder_files")
+					.OptionalNamedString("fileset", fileset)
+					.OptionalNamedString("before", before)
+					.OptionalNamedString("after", after)
+					.Flag("front", front)
+					.Flag("back", back)
+					.Flag("auto", auto)
+					.Flag("disable_unused", disable_unused)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// Report the compile order by analyzing files and constructing a hierarchy.
+		///
+		///
+		/// TCL Syntax: report_compile_order [-fileset <arg>] [-missing_instances] [-constraints] [-sources] [-used_in <arg>] [-file <arg>] [-append] [-of_objects <args>] [-quiet] [-verbose]
 		///
 		/// Report the compilation order of files in the various active filesets: constraints, design sources,
 		/// and simulation sources.
@@ -3458,21 +3761,26 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void report_compile_order(string fileset = null, bool? missing_instances = null, bool? constraints = null, bool? sources = null, string used_in = null, string file = null, bool? append = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_compile_order");
-			command.OptionalString("fileset", fileset);
-			command.Flag("missing_instances", missing_instances);
-			command.Flag("constraints", constraints);
-			command.Flag("sources", sources);
-			command.OptionalString("used_in", used_in);
-			command.OptionalString("file", file);
-			command.Flag("append", append);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: report_compile_order [-fileset <arg>] [-missing_instances] [-constraints] [-sources] [-used_in <arg>] [-file <arg>] [-append] [-of_objects <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("report_compile_order")
+					.OptionalNamedString("fileset", fileset)
+					.Flag("missing_instances", missing_instances)
+					.Flag("constraints", constraints)
+					.Flag("sources", sources)
+					.OptionalNamedString("used_in", used_in)
+					.OptionalNamedString("file", file)
+					.Flag("append", append)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Reset current project
+		///
+		///
+		/// TCL Syntax: reset_project [-exclude_runs] [-exclude_ips] [-exclude_sim_runs] [-quiet] [-verbose]
 		///
 		/// Reset the current project to its starting condition, with source and constraint files, by cleaning
 		/// out the various output files created during synthesis, simulation, implementation, and
@@ -3506,16 +3814,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void reset_project(bool? exclude_runs = null, bool? exclude_ips = null, bool? exclude_sim_runs = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("reset_project");
-			command.Flag("exclude_runs", exclude_runs);
-			command.Flag("exclude_ips", exclude_ips);
-			command.Flag("exclude_sim_runs", exclude_sim_runs);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: reset_project [-exclude_runs] [-exclude_ips] [-exclude_sim_runs] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("reset_project")
+					.Flag("exclude_runs", exclude_runs)
+					.Flag("exclude_ips", exclude_ips)
+					.Flag("exclude_sim_runs", exclude_sim_runs)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Reset an existing run
+		///
+		///
+		/// TCL Syntax: reset_runs [-prev_step] [-from_step <arg>] [-quiet] [-verbose] <runs>
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1480
 		/// </summary>
@@ -3541,16 +3854,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void reset_runs(string runs, bool? prev_step = null, string from_step = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("reset_runs");
-			command.Flag("prev_step", prev_step);
-			command.OptionalString("from_step", from_step);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("runs", runs);
-			_tcl.Add(command);
+			// TCL Syntax: reset_runs [-prev_step] [-from_step <arg>] [-quiet] [-verbose] <runs>
+			_tcl.Add(
+				new SimpleTCLCommand("reset_runs")
+					.Flag("prev_step", prev_step)
+					.OptionalNamedString("from_step", from_step)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(runs)
+			);
 		}
 		/// <summary>
 		/// Reset target data for the specified source
+		///
+		///
+		/// TCL Syntax: reset_target [-quiet] [-verbose] <name> <objects>
 		///
 		/// Remove the current target data for the specified IP core. This deletes any files that were
 		/// delivered during generation of the specified targets. This does not remove the core from the
@@ -3580,15 +3898,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void reset_target(string name, string objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("reset_target");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: reset_target [-quiet] [-verbose] <name> <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("reset_target")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Save the current design's constraints
+		///
+		///
+		/// TCL Syntax: save_constraints [-force] [-quiet] [-verbose]
 		///
 		/// Saves any changes to the constraints files of the active constraints set. This command writes any
 		/// changes to the constraints files to the project data on the hard drive; saving any work in progress
@@ -3615,14 +3938,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void save_constraints(bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("save_constraints");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: save_constraints [-force] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("save_constraints")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Save current design's constraints as a new set of constraints files
+		///
+		///
+		/// TCL Syntax: save_constraints_as [-dir <arg>] [-target_constrs_file <arg>] [-quiet] [-verbose] <name>
 		///
 		/// Copies the active constraints set to create a new constraints set, with local copies of any
 		/// constraints files that are part of the constraints set. You can also specify a new constraints file to
@@ -3671,16 +3999,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void save_constraints_as(string name, string dir = null, string target_constrs_file = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("save_constraints_as");
-			command.OptionalString("dir", dir);
-			command.OptionalString("target_constrs_file", target_constrs_file);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: save_constraints_as [-dir <arg>] [-target_constrs_file <arg>] [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("save_constraints_as")
+					.OptionalNamedString("dir", dir)
+					.OptionalNamedString("target_constrs_file", target_constrs_file)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Save the current project under a new name
+		///
+		///
+		/// TCL Syntax: save_project_as [-scan_for_includes] [-exclude_run_results] [-include_local_ip_cache] [-force] [-quiet] [-verbose] <name> [<dir>]
 		///
 		/// Saves a currently open project file under a new name in the specified directory, or in the current
 		/// working directory if no other directory is specified.
@@ -3735,19 +4068,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>saved project object</returns>
 		public void save_project_as(string name, bool? scan_for_includes = null, bool? exclude_run_results = null, bool? include_local_ip_cache = null, bool? force = null, bool? quiet = null, bool? verbose = null, string dir = null)
 		{
-			var command = new SimpleTCLCommand("save_project_as");
-			command.Flag("scan_for_includes", scan_for_includes);
-			command.Flag("exclude_run_results", exclude_run_results);
-			command.Flag("include_local_ip_cache", include_local_ip_cache);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.OptionalString("dir", dir);
-			_tcl.Add(command);
+			// TCL Syntax: save_project_as [-scan_for_includes] [-exclude_run_results] [-include_local_ip_cache] [-force] [-quiet] [-verbose] <name> [<dir>]
+			_tcl.Add(
+				new SimpleTCLCommand("save_project_as")
+					.Flag("scan_for_includes", scan_for_includes)
+					.Flag("exclude_run_results", exclude_run_results)
+					.Flag("include_local_ip_cache", include_local_ip_cache)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.OptionalString(dir)
+			);
 		}
 		/// <summary>
 		/// Sets the part on the current project. If no project is open, then a diskless project is created.
+		///
+		///
+		/// TCL Syntax: set_part [-quiet] [-verbose] <part>
 		///
 		/// Change the part used by the current project for subsequent elaboration, synthesis,
 		/// implementation, and analysis.
@@ -3783,14 +4121,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_part(string part, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_part");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("part", part);
-			_tcl.Add(command);
+			// TCL Syntax: set_part [-quiet] [-verbose] <part>
+			_tcl.Add(
+				new SimpleTCLCommand("set_part")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(part)
+			);
 		}
 		/// <summary>
 		/// Set Timing Speed Grade and Temperature Grade
+		///
+		///
+		/// TCL Syntax: set_speed_grade [-temperature <arg>] [-quiet] [-verbose] [<value>]
 		///
 		/// Note: After set_speed_grade has been used on a design, it can be used for timing analysis, but it will no
 		/// longer go through implementation. If you want to run implementation on the design, you should save the
@@ -3834,15 +4177,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>string result</returns>
 		public void set_speed_grade(string temperature = null, bool? quiet = null, bool? verbose = null, string value = null)
 		{
-			var command = new SimpleTCLCommand("set_speed_grade");
-			command.OptionalString("temperature", temperature);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("value", value);
-			_tcl.Add(command);
+			// TCL Syntax: set_speed_grade [-temperature <arg>] [-quiet] [-verbose] [<value>]
+			_tcl.Add(
+				new SimpleTCLCommand("set_speed_grade")
+					.OptionalNamedString("temperature", temperature)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(value)
+			);
 		}
 		/// <summary>
 		/// Generate a synthesis netlist for an IP
+		///
+		///
+		/// TCL Syntax: synth_ip [-force] [-quiet] [-verbose] <objects>
 		///
 		/// This command is used in the non-project flow to create a synthesized design checkpoint file
 		/// (DCP) to support the out-of-context (OOC) IP flow, or to synthesize and implement an IP module
@@ -3882,15 +4230,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void synth_ip(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("synth_ip");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: synth_ip [-force] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("synth_ip")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Updates a fileset compile order and possibly top based on a design graph.
+		///
+		///
+		/// TCL Syntax: update_compile_order [-force_gui] [-fileset <arg>] [-quiet] [-verbose]
 		///
 		/// Update the compile order of the design sources in the current project, or in the specified fileset.
 		///
@@ -3918,15 +4271,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void update_compile_order(bool? force_gui = null, string fileset = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("update_compile_order");
-			command.Flag("force_gui", force_gui);
-			command.OptionalString("fileset", fileset);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: update_compile_order [-force_gui] [-fileset <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("update_compile_order")
+					.Flag("force_gui", force_gui)
+					.OptionalNamedString("fileset", fileset)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// update the netlist of the current design
+		///
+		///
+		/// TCL Syntax: update_design -cells <args> [-strict] [-from_file <arg>] [-from_design <arg>] [-from_cell <arg>] [-black_box] [-buffer_ports] [-quiet] [-verbose]
 		///
 		/// This command updates the in-memory design, replacing the current netlist in the specified cell
 		/// with a netlist from a specified file, from another open design, from a specified cell of a design, or
@@ -3986,20 +4344,25 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void update_design(string cells, bool? strict = null, string from_file = null, string from_design = null, string from_cell = null, bool? black_box = null, bool? buffer_ports = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("update_design");
-			command.RequiredString("cells", cells);
-			command.Flag("strict", strict);
-			command.OptionalString("from_file", from_file);
-			command.OptionalString("from_design", from_design);
-			command.OptionalString("from_cell", from_cell);
-			command.Flag("black_box", black_box);
-			command.Flag("buffer_ports", buffer_ports);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: update_design -cells <args> [-strict] [-from_file <arg>] [-from_design <arg>] [-from_cell <arg>] [-black_box] [-buffer_ports] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("update_design")
+					.RequiredNamedString("cells", cells)
+					.Flag("strict", strict)
+					.OptionalNamedString("from_file", from_file)
+					.OptionalNamedString("from_design", from_design)
+					.OptionalNamedString("from_cell", from_cell)
+					.Flag("black_box", black_box)
+					.Flag("buffer_ports", buffer_ports)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Update file(s) in the project based on the file(s) or directory(ies) specified
+		///
+		///
+		/// TCL Syntax: update_files [-from_files <args>] [-norecurse] [-to_files <args>] [-filesets <args>] [-force] [-report_only] [-quiet] [-verbose]
 		///
 		/// Updates the specified files with the contents of specified remote files. Use this command to
 		/// update a local file with the contents of its original remote file, or replace it with the contents of a
@@ -4051,19 +4414,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of the files updated</returns>
 		public void update_files(string from_files = null, bool? norecurse = null, string to_files = null, string filesets = null, bool? force = null, bool? report_only = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("update_files");
-			command.OptionalString("from_files", from_files);
-			command.Flag("norecurse", norecurse);
-			command.OptionalString("to_files", to_files);
-			command.OptionalString("filesets", filesets);
-			command.Flag("force", force);
-			command.Flag("report_only", report_only);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: update_files [-from_files <args>] [-norecurse] [-to_files <args>] [-filesets <args>] [-force] [-report_only] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("update_files")
+					.OptionalNamedString("from_files", from_files)
+					.Flag("norecurse", norecurse)
+					.OptionalNamedString("to_files", to_files)
+					.OptionalNamedString("filesets", filesets)
+					.Flag("force", force)
+					.Flag("report_only", report_only)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Update the dcp by adding the generated sw param info files to it
+		///
+		///
+		/// TCL Syntax: update_sw_parameters [-quiet] [-verbose]
 		///
 		/// Updates the design check points (DCPs) with the latest hardware def. This hardware def will have
 		/// the updated sw parameters information.
@@ -4091,13 +4459,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void update_sw_parameters(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("update_sw_parameters");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: update_sw_parameters [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("update_sw_parameters")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Block execution of further Tcl commands until the specified run completes.
+		///
+		///
+		/// TCL Syntax: wait_on_run [-timeout <arg>] [-quiet] [-verbose] <run>
 		///
 		/// Blocks the execution of Tcl commands until the specified run has completed either successfully
 		/// or in error, or until the specified amount of time has elapsed.
@@ -4141,15 +4514,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void wait_on_run(string run, string timeout = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("wait_on_run");
-			command.OptionalString("timeout", timeout);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("run", run);
-			_tcl.Add(command);
+			// TCL Syntax: wait_on_run [-timeout <arg>] [-quiet] [-verbose] <run>
+			_tcl.Add(
+				new SimpleTCLCommand("wait_on_run")
+					.OptionalNamedString("timeout", timeout)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(run)
+			);
 		}
 		/// <summary>
 		/// Writes hardware definition for use in the software development
+		///
+		///
+		/// TCL Syntax: write_hwdef [-force] [-quiet] [-verbose] <file>
 		///
 		/// Writes a hardware definition (.hwdef) file for use in the software development tools (SDK).
 		/// The write_hwdef command is intended to simplify the movement of designs from the Vivado
@@ -4186,15 +4564,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>success/failure status of applied action.</returns>
 		public void write_hwdef(string file, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_hwdef");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_hwdef [-force] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_hwdef")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Write a tcl script on disk that will recreate a given IP.
+		///
+		///
+		/// TCL Syntax: write_ip_tcl [-force] [-no_ip_version] [-ip_name <arg>] [-show_defaults] [-multiple_files] [-quiet] [-verbose] [<objects>] [<tcl_filename>...]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1833
 		/// </summary>
@@ -4244,20 +4627,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>IP TCL file</returns>
 		public void write_ip_tcl(bool? force = null, bool? no_ip_version = null, string ip_name = null, bool? show_defaults = null, bool? multiple_files = null, bool? quiet = null, bool? verbose = null, string objects = null, string tcl_filename = null)
 		{
-			var command = new SimpleTCLCommand("write_ip_tcl");
-			command.Flag("force", force);
-			command.Flag("no_ip_version", no_ip_version);
-			command.OptionalString("ip_name", ip_name);
-			command.Flag("show_defaults", show_defaults);
-			command.Flag("multiple_files", multiple_files);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("objects", objects);
-			command.OptionalString("tcl_filename", tcl_filename);
-			_tcl.Add(command);
+			// TCL Syntax: write_ip_tcl [-force] [-no_ip_version] [-ip_name <arg>] [-show_defaults] [-multiple_files] [-quiet] [-verbose] [<objects>] [<tcl_filename>...]
+			_tcl.Add(
+				new SimpleTCLCommand("write_ip_tcl")
+					.Flag("force", force)
+					.Flag("no_ip_version", no_ip_version)
+					.OptionalNamedString("ip_name", ip_name)
+					.Flag("show_defaults", show_defaults)
+					.Flag("multiple_files", multiple_files)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(objects)
+					.OptionalString(tcl_filename)
+			);
 		}
 		/// <summary>
 		/// Save peripheral component to the disk.
+		///
+		///
+		/// TCL Syntax: write_peripheral [-quiet] [-verbose] <peripheral>
 		///
 		/// Write the specified AXI peripheral object to disk in the form of the component.xml file. The
 		/// peripheral is written to the repository location specified by the create_peripheral
@@ -4279,11 +4667,13 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void write_peripheral(string peripheral, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_peripheral");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("peripheral", peripheral);
-			_tcl.Add(command);
+			// TCL Syntax: write_peripheral [-quiet] [-verbose] <peripheral>
+			_tcl.Add(
+				new SimpleTCLCommand("write_peripheral")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(peripheral)
+			);
 		}
 	}
 }

@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class FloorplanCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public FloorplanCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public FloorplanCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Add cells to a Pblock
+		///
+		///
+		/// TCL Syntax: add_cells_to_pblock [-top] [-add_primitives] [-clear_locs] [-quiet] [-verbose] <pblock> [<cells>...]
 		///
 		/// Adds specified logic instances to a Pblock in an open implemented design. Once cells have been
 		/// added to a Pblock, you can place the Pblocks onto the fabric of the FPGA using the
@@ -62,18 +65,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void add_cells_to_pblock(string pblock, bool? top = null, bool? add_primitives = null, bool? clear_locs = null, bool? quiet = null, bool? verbose = null, string cells = null)
 		{
-			var command = new SimpleTCLCommand("add_cells_to_pblock");
-			command.Flag("top", top);
-			command.Flag("add_primitives", add_primitives);
-			command.Flag("clear_locs", clear_locs);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("pblock", pblock);
-			command.OptionalString("cells", cells);
-			_tcl.Add(command);
+			// TCL Syntax: add_cells_to_pblock [-top] [-add_primitives] [-clear_locs] [-quiet] [-verbose] <pblock> [<cells>...]
+			_tcl.Add(
+				new SimpleTCLCommand("add_cells_to_pblock")
+					.Flag("top", top)
+					.Flag("add_primitives", add_primitives)
+					.Flag("clear_locs", clear_locs)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(pblock)
+					.OptionalString(cells)
+			);
 		}
 		/// <summary>
 		/// Create a new Pblock
+		///
+		///
+		/// TCL Syntax: create_pblock [-quiet] [-verbose] <name>
 		///
 		/// Defines a Pblock to allow you to add logic instances for floorplanning purposes.
 		/// You can add logic elements to the Pblock using the add_cells_to_pblock command, and
@@ -112,14 +120,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>new pblock object</returns>
 		public void create_pblock(string name, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_pblock");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_pblock [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_pblock")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Remove Pblock
+		///
+		///
+		/// TCL Syntax: delete_pblocks [-hier] [-quiet] [-verbose] <pblocks>...
 		///
 		/// Deletes the specified Pblocks from the design. Pblocks are created using the create_pblock
 		/// command.
@@ -147,15 +160,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_pblocks(string pblocks, bool? hier = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_pblocks");
-			command.Flag("hier", hier);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("pblocks", pblocks);
-			_tcl.Add(command);
+			// TCL Syntax: delete_pblocks [-hier] [-quiet] [-verbose] <pblocks>...
+			_tcl.Add(
+				new SimpleTCLCommand("delete_pblocks")
+					.Flag("hier", hier)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(pblocks)
+			);
 		}
 		/// <summary>
 		/// Delete an RPM
+		///
+		///
+		/// TCL Syntax: delete_rpm [-quiet] [-verbose] <rpm>
 		///
 		/// Deletes the specified Relationally Placed Macro (RPM) from the design.
 		/// An RPM is a list of logic elements (FFS, LUT, CY4, RAM, etc.) collected into a set (U_SET, H_SET,
@@ -185,14 +203,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_rpm(string rpm, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_rpm");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("rpm", rpm);
-			_tcl.Add(command);
+			// TCL Syntax: delete_rpm [-quiet] [-verbose] <rpm>
+			_tcl.Add(
+				new SimpleTCLCommand("delete_rpm")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(rpm)
+			);
 		}
 		/// <summary>
 		/// Get a list of Pblocks in the current design
+		///
+		///
+		/// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblock] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of Pblocks defined in the current project that match a specific pattern. The default
 		/// command gets a list of all Pblocks in the project.
@@ -248,20 +271,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of Pblock objects</returns>
 		public void get_pblocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_nested_pblock = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_pblocks");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("include_nested_pblock", include_nested_pblock);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblock] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_pblocks")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("include_nested_pblock", include_nested_pblock)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Move or place one or more instances to new locations. Sites and cells are required to be listed in
 		/// the right order and there should be same number of sites as number of cells.
+		///
+		///
+		/// TCL Syntax: place_cell [-quiet] [-verbose] <cell_site_list>...
 		///
 		/// Places cells onto device resources of the target part. Cells can be placed onto specific BEL sites
 		/// (e.g. SLICE_X49Y60/A6LUT), or into available SLICE resources (e.g. SLICE_X49Y60). If you
@@ -313,14 +341,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void place_cell(string cell_site_list, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("place_cell");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("cell_site_list", cell_site_list);
-			_tcl.Add(command);
+			// TCL Syntax: place_cell [-quiet] [-verbose] <cell_site_list>...
+			_tcl.Add(
+				new SimpleTCLCommand("place_cell")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(cell_site_list)
+			);
 		}
 		/// <summary>
 		/// Resize Pblocks according to SLICE demand and re-position them according to connectivity
+		///
+		///
+		/// TCL Syntax: place_pblocks [-effort <arg>] [-utilization <arg>] [-quiet] [-verbose] <pblocks>...
 		///
 		/// Places Pblocks onto the fabric of the FPGA. Pblocks must be created using the create_pblock
 		/// command, and should be populated with assigned logic using the add_cells_to_pblock
@@ -357,16 +390,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void place_pblocks(string pblocks, string effort = null, string utilization = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("place_pblocks");
-			command.OptionalString("effort", effort);
-			command.OptionalString("utilization", utilization);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("pblocks", pblocks);
-			_tcl.Add(command);
+			// TCL Syntax: place_pblocks [-effort <arg>] [-utilization <arg>] [-quiet] [-verbose] <pblocks>...
+			_tcl.Add(
+				new SimpleTCLCommand("place_pblocks")
+					.OptionalNamedString("effort", effort)
+					.OptionalNamedString("utilization", utilization)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(pblocks)
+			);
 		}
 		/// <summary>
 		/// Remove cells from a Pblock
+		///
+		///
+		/// TCL Syntax: remove_cells_from_pblock [-quiet] [-verbose] <pblock> <cells>...
 		///
 		/// Removes the specified logic instances from a Pblock. Cells are added to a Pblock with the
 		/// add_cells_to_pblock command.
@@ -396,15 +434,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_cells_from_pblock(string pblock, string cells, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("remove_cells_from_pblock");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("pblock", pblock);
-			command.RequiredString("cells", cells);
-			_tcl.Add(command);
+			// TCL Syntax: remove_cells_from_pblock [-quiet] [-verbose] <pblock> <cells>...
+			_tcl.Add(
+				new SimpleTCLCommand("remove_cells_from_pblock")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(pblock)
+					.RequiredString(cells)
+			);
 		}
 		/// <summary>
 		/// Move, resize, add and remove Pblock site-range constraints
+		///
+		///
+		/// TCL Syntax: resize_pblock [-add <args>] [-remove <args>] [-from <args>] [-to <args>] [-replace] [-locs <arg>] [-quiet] [-verbose] <pblock>
 		///
 		/// Place, resize, move, or remove the specified Pblock. The Pblock must have been created using
 		/// the create_pblock command.
@@ -469,20 +512,25 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void resize_pblock(string pblock, string add = null, string remove = null, string from = null, string to = null, bool? replace = null, string locs = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("resize_pblock");
-			command.OptionalString("add", add);
-			command.OptionalString("remove", remove);
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.Flag("replace", replace);
-			command.OptionalString("locs", locs);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("pblock", pblock);
-			_tcl.Add(command);
+			// TCL Syntax: resize_pblock [-add <args>] [-remove <args>] [-from <args>] [-to <args>] [-replace] [-locs <arg>] [-quiet] [-verbose] <pblock>
+			_tcl.Add(
+				new SimpleTCLCommand("resize_pblock")
+					.OptionalNamedString("add", add)
+					.OptionalNamedString("remove", remove)
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.Flag("replace", replace)
+					.OptionalNamedString("locs", locs)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(pblock)
+			);
 		}
 		/// <summary>
 		/// Swap two locations
+		///
+		///
+		/// TCL Syntax: swap_locs [-quiet] [-verbose] <aloc> <bloc>
 		///
 		/// Swaps the LOC constraints assigned to two similar logic elements. A logic element is an element
 		/// that can be placed onto a device resource on the FPGA.
@@ -516,15 +564,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void swap_locs(string aloc, string bloc, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("swap_locs");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("aloc", aloc);
-			command.RequiredString("bloc", bloc);
-			_tcl.Add(command);
+			// TCL Syntax: swap_locs [-quiet] [-verbose] <aloc> <bloc>
+			_tcl.Add(
+				new SimpleTCLCommand("swap_locs")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(aloc)
+					.RequiredString(bloc)
+			);
 		}
 		/// <summary>
 		/// Unplace one or more instances.
+		///
+		///
+		/// TCL Syntax: unplace_cell [-quiet] [-verbose] <cell_list>...
 		///
 		/// Unplace the specified cells from their current placement site.
 		///
@@ -551,11 +604,13 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void unplace_cell(string cell_list, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("unplace_cell");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("cell_list", cell_list);
-			_tcl.Add(command);
+			// TCL Syntax: unplace_cell [-quiet] [-verbose] <cell_list>...
+			_tcl.Add(
+				new SimpleTCLCommand("unplace_cell")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(cell_list)
+			);
 		}
 	}
 }

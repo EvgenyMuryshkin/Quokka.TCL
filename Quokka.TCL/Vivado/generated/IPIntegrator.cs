@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class IPIntegratorCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public IPIntegratorCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public IPIntegratorCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Runs an automation rule on an IPI object.
+		///
+		///
+		/// TCL Syntax: apply_bd_automation -rule <arg> [-config <args>] -dict <arg> -opts <arg> [-quiet] [-verbose] <objects>...
 		///
 		/// IP integrator provides the Designer Assistance feature, using the apply_bd_automation
 		/// command, to automatically configure and/or add other relevant IP integrator cells around a
@@ -66,18 +69,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Returns success or failure</returns>
 		public void apply_bd_automation(string rule, string dict, string opts, string objects, string config = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("apply_bd_automation");
-			command.RequiredString("rule", rule);
-			command.OptionalString("config", config);
-			command.RequiredString("dict", dict);
-			command.RequiredString("opts", opts);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: apply_bd_automation -rule <arg> [-config <args>] -dict <arg> -opts <arg> [-quiet] [-verbose] <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("apply_bd_automation")
+					.RequiredNamedString("rule", rule)
+					.OptionalNamedString("config", config)
+					.RequiredNamedString("dict", dict)
+					.RequiredNamedString("opts", opts)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Applies board connections to given designs
+		///
+		///
+		/// TCL Syntax: apply_board_connection [-board_interface <arg>] -ip_intf <arg> -diagram <arg> [-quiet] [-verbose]
 		///
 		/// Connects the interface pin of an IP core in the specified block design to the interface of the
 		/// current board part in the current project or design.
@@ -129,16 +137,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>sucess/failure status of applied action.</returns>
 		public void apply_board_connection(string ip_intf, string diagram, string board_interface = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("apply_board_connection");
-			command.OptionalString("board_interface", board_interface);
-			command.RequiredString("ip_intf", ip_intf);
-			command.RequiredString("diagram", diagram);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: apply_board_connection [-board_interface <arg>] -ip_intf <arg> -diagram <arg> [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("apply_board_connection")
+					.OptionalNamedString("board_interface", board_interface)
+					.RequiredNamedString("ip_intf", ip_intf)
+					.RequiredNamedString("diagram", diagram)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Automatically assign addresses to unmapped IP
+		///
+		///
+		/// TCL Syntax: assign_bd_address [-target_address_space <arg>] [-boundary] [-master_boundary] [-external] -dict <arg> [-import_from_file <arg>] [-export_to_file <arg>] [-export_gui_to_file <arg>] [-offset <arg>] [-range <arg>] [-base_high <arg>] [-force] [-quiet] [-verbose] [<objects>...]
 		///
 		/// Assign unmapped IP address segments to address spaces in the IP integrator subsystem design.
 		/// If the target address space is not specified, the IP integrator will automatically assign the address
@@ -222,26 +235,31 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The newly mapped segments, "" if failed.</returns>
 		public void assign_bd_address(string dict, string target_address_space = null, bool? boundary = null, bool? master_boundary = null, bool? external = null, string import_from_file = null, string export_to_file = null, string export_gui_to_file = null, string offset = null, string range = null, string base_high = null, bool? force = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
-			var command = new SimpleTCLCommand("assign_bd_address");
-			command.OptionalString("target_address_space", target_address_space);
-			command.Flag("boundary", boundary);
-			command.Flag("master_boundary", master_boundary);
-			command.Flag("external", external);
-			command.RequiredString("dict", dict);
-			command.OptionalString("import_from_file", import_from_file);
-			command.OptionalString("export_to_file", export_to_file);
-			command.OptionalString("export_gui_to_file", export_gui_to_file);
-			command.OptionalString("offset", offset);
-			command.OptionalString("range", range);
-			command.OptionalString("base_high", base_high);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: assign_bd_address [-target_address_space <arg>] [-boundary] [-master_boundary] [-external] -dict <arg> [-import_from_file <arg>] [-export_to_file <arg>] [-export_gui_to_file <arg>] [-offset <arg>] [-range <arg>] [-base_high <arg>] [-force] [-quiet] [-verbose] [<objects>...]
+			_tcl.Add(
+				new SimpleTCLCommand("assign_bd_address")
+					.OptionalNamedString("target_address_space", target_address_space)
+					.Flag("boundary", boundary)
+					.Flag("master_boundary", master_boundary)
+					.Flag("external", external)
+					.RequiredNamedString("dict", dict)
+					.OptionalNamedString("import_from_file", import_from_file)
+					.OptionalNamedString("export_to_file", export_to_file)
+					.OptionalNamedString("export_gui_to_file", export_gui_to_file)
+					.OptionalNamedString("offset", offset)
+					.OptionalNamedString("range", range)
+					.OptionalNamedString("base_high", base_high)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(objects)
+			);
 		}
 		/// <summary>
 		/// Close a design.
+		///
+		///
+		/// TCL Syntax: close_bd_design [-quiet] [-verbose] <name>
 		///
 		/// Closes the specified IP subsystem design in the IP integrator of the Vivado Design Suite.
 		/// If the design has been modified, you will not be prompted to save the design prior to closing. You
@@ -265,14 +283,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The design object, "" if failed.</returns>
 		public void close_bd_design(string name, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("close_bd_design");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: close_bd_design [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("close_bd_design")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Compile C code into RTL
+		///
+		///
+		/// TCL Syntax: compile_c [-force] [-quiet] [-verbose] <objects>
 		///
 		/// In IP cores that are imported from Vivado HLS, the compile_c command detects C, C++, and
 		/// SystemC files and converts those files to RTL for synthesis by the Vivado Design Suite.
@@ -305,15 +328,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void compile_c(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("compile_c");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: compile_c [-force] [-quiet] [-verbose] <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("compile_c")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Connect intf_port and intf_pin list.
+		///
+		///
+		/// TCL Syntax: connect_bd_intf_net [-intf_net <arg>] [-boundary_type <arg>] [-quiet] [-verbose] <object1> <object2> [<auto>]
 		///
 		/// Connect the interface pins on an IP integrator cell to other interface pins, or to external interface
 		/// ports. An interface is a grouping of signals that share a common function in the IP integrator
@@ -359,18 +387,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
 		public void connect_bd_intf_net(string object1, string object2, string intf_net = null, string boundary_type = null, bool? quiet = null, bool? verbose = null, string auto = null)
 		{
-			var command = new SimpleTCLCommand("connect_bd_intf_net");
-			command.OptionalString("intf_net", intf_net);
-			command.OptionalString("boundary_type", boundary_type);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("object1", object1);
-			command.RequiredString("object2", object2);
-			command.OptionalString("auto", auto);
-			_tcl.Add(command);
+			// TCL Syntax: connect_bd_intf_net [-intf_net <arg>] [-boundary_type <arg>] [-quiet] [-verbose] <object1> <object2> [<auto>]
+			_tcl.Add(
+				new SimpleTCLCommand("connect_bd_intf_net")
+					.OptionalNamedString("intf_net", intf_net)
+					.OptionalNamedString("boundary_type", boundary_type)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(object1)
+					.RequiredString(object2)
+					.OptionalString(auto)
+			);
 		}
 		/// <summary>
 		/// Connect port and pin object list.
+		///
+		///
+		/// TCL Syntax: connect_bd_net [-net <arg>] [-boundary_type <arg>] [-quiet] [-verbose] <objects>...
 		///
 		/// Create a new net in the current IP integrator subsystem design connecting the specified list of
 		/// block diagram port and pin objects, or connect an existing net to the specified pins and ports.
@@ -420,16 +453,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
 		public void connect_bd_net(string objects, string net = null, string boundary_type = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("connect_bd_net");
-			command.OptionalString("net", net);
-			command.OptionalString("boundary_type", boundary_type);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: connect_bd_net [-net <arg>] [-boundary_type <arg>] [-quiet] [-verbose] <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("connect_bd_net")
+					.OptionalNamedString("net", net)
+					.OptionalNamedString("boundary_type", boundary_type)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Make copies of the objects and add the copies to the given hierarchical cell.
+		///
+		///
+		/// TCL Syntax: copy_bd_objs [-prefix <arg>] [-from_design <arg>] [-quiet] [-verbose] <parent_cell> <objects>...
 		///
 		/// Use this command to copy IP integrator objects from one open subsystem design to a second
 		/// subsystem design. The selected objects can be copied into the top-level of the current subsystem
@@ -473,17 +511,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>0, "" if failed.</returns>
 		public void copy_bd_objs(string parent_cell, string objects, string prefix = null, string from_design = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("copy_bd_objs");
-			command.OptionalString("prefix", prefix);
-			command.OptionalString("from_design", from_design);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("parent_cell", parent_cell);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: copy_bd_objs [-prefix <arg>] [-from_design <arg>] [-quiet] [-verbose] <parent_cell> <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("copy_bd_objs")
+					.OptionalNamedString("prefix", prefix)
+					.OptionalNamedString("from_design", from_design)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(parent_cell)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Create a new segment.
+		///
+		///
+		/// TCL Syntax: create_bd_addr_seg -range <arg> -offset <arg> [-quiet] [-verbose] [<parent_addr_space>] [<slave_segment>] <name>
 		///
 		/// Create a new address segment object, bd_addr_seg, in the current IP integrator subsystem
 		/// design.
@@ -523,18 +566,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The newly created segment object, "" if failed.</returns>
 		public void create_bd_addr_seg(string range, string offset, string parent_addr_space, string slave_segment, string name, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_bd_addr_seg");
-			command.RequiredString("range", range);
-			command.RequiredString("offset", offset);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("parent_addr_space", parent_addr_space);
-			command.RequiredString("slave_segment", slave_segment);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_bd_addr_seg -range <arg> -offset <arg> [-quiet] [-verbose] [<parent_addr_space>] [<slave_segment>] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_bd_addr_seg")
+					.RequiredNamedString("range", range)
+					.RequiredNamedString("offset", offset)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(parent_addr_space)
+					.RequiredString(slave_segment)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Add an IP cell from the IP catalog, or add a new hierarchical block.
+		///
+		///
+		/// TCL Syntax: create_bd_cell [-vlnv <arg>] [-type <arg>] [-reference <arg>] [-revision <arg>] [-quiet] [-verbose] <name>
 		///
 		/// Add a cell from the Vivado catalog to the current subsystem design, create a new hierarchical
 		/// module to add to the subsystem design, or create a new module by referencing the module
@@ -586,18 +634,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The newly created cell object. Returns nothing if the command fails.</returns>
 		public void create_bd_cell(string vlnv, string name, string type = null, string reference = null, string revision = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_bd_cell");
-			command.RequiredString("vlnv", vlnv);
-			command.OptionalString("type", type);
-			command.OptionalString("reference", reference);
-			command.OptionalString("revision", revision);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_bd_cell [-vlnv <arg>] [-type <arg>] [-reference <arg>] [-revision <arg>] [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_bd_cell")
+					.RequiredNamedString("vlnv", vlnv)
+					.OptionalNamedString("type", type)
+					.OptionalNamedString("reference", reference)
+					.OptionalNamedString("revision", revision)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Create a new design and its top level hierarchy cell with the same name.
+		///
+		///
+		/// TCL Syntax: create_bd_design [-dir <arg>] [-cell <arg>] [-quiet] [-verbose] <name>
 		///
 		/// Create a new IP subsystem design module to add to the current project, and for use with the IP
 		/// integrator of the Vivado Design Suite.
@@ -634,16 +687,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The newly created design object, "" if failed.</returns>
 		public void create_bd_design(string name, string dir = null, string cell = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_bd_design");
-			command.OptionalString("dir", dir);
-			command.OptionalString("cell", cell);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_bd_design [-dir <arg>] [-cell <arg>] [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_bd_design")
+					.OptionalNamedString("dir", dir)
+					.OptionalNamedString("cell", cell)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Create a new intf_net.
+		///
+		///
+		/// TCL Syntax: create_bd_intf_net [-quiet] [-verbose] <name>
 		///
 		/// Create a new IP integrator interface net for the subsystem design.
 		/// This command returns the newly created interface net object if successful, and returns noting if it
@@ -666,14 +724,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The newly created intf_net object, "" if failed.</returns>
 		public void create_bd_intf_net(string name, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_bd_intf_net");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_bd_intf_net [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_bd_intf_net")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Create a new intf_pin.
+		///
+		///
+		/// TCL Syntax: create_bd_intf_pin -vlnv <arg> -mode <arg> [-quiet] [-verbose] <name>
 		///
 		/// Create a new interface pin on an IP integrator hierarchical module. An IP integrator interface is a
 		/// grouping of signals that share a common function, and can include both individual signals and
@@ -714,16 +777,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The newly created intf_pin object, "" if failed.</returns>
 		public void create_bd_intf_pin(string vlnv, string mode, string name, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_bd_intf_pin");
-			command.RequiredString("vlnv", vlnv);
-			command.RequiredString("mode", mode);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_bd_intf_pin -vlnv <arg> -mode <arg> [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_bd_intf_pin")
+					.RequiredNamedString("vlnv", vlnv)
+					.RequiredNamedString("mode", mode)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Create a new interface port.
+		///
+		///
+		/// TCL Syntax: create_bd_intf_port -vlnv <arg> -mode <arg> [-board_intf <arg>] [-quiet] [-verbose] <name>
 		///
 		/// Create a new IP integrator subsystem design interface port. An IP integrator interface is a
 		/// grouping of signals that share a common function, and can include both individual signals and
@@ -763,17 +831,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The newly created interface port object, "" if failed.</returns>
 		public void create_bd_intf_port(string vlnv, string mode, string name, string board_intf = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_bd_intf_port");
-			command.RequiredString("vlnv", vlnv);
-			command.RequiredString("mode", mode);
-			command.OptionalString("board_intf", board_intf);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_bd_intf_port -vlnv <arg> -mode <arg> [-board_intf <arg>] [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_bd_intf_port")
+					.RequiredNamedString("vlnv", vlnv)
+					.RequiredNamedString("mode", mode)
+					.OptionalNamedString("board_intf", board_intf)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Create a new TLM interface port.
+		///
+		///
+		/// TCL Syntax: create_bd_intf_tlm_port -vlnv <arg> -mode <arg> [-quiet] [-verbose] <name>
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 230
 		/// </summary>
@@ -800,16 +873,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The newly created TLM interface port object, "" if failed.</returns>
 		public void create_bd_intf_tlm_port(string vlnv, string mode, string name, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_bd_intf_tlm_port");
-			command.RequiredString("vlnv", vlnv);
-			command.RequiredString("mode", mode);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_bd_intf_tlm_port -vlnv <arg> -mode <arg> [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_bd_intf_tlm_port")
+					.RequiredNamedString("vlnv", vlnv)
+					.RequiredNamedString("mode", mode)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Create a new net.
+		///
+		///
+		/// TCL Syntax: create_bd_net [-quiet] [-verbose] <name>
 		///
 		/// Create a new net in the current IP integrator subsystem design.
 		/// This command returns the newly created net object, or returns an error if failed.
@@ -831,14 +909,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The newly created net object, "" if failed.</returns>
 		public void create_bd_net(string name, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_bd_net");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_bd_net [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_bd_net")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Create a new pin.
+		///
+		///
+		/// TCL Syntax: create_bd_pin [-from <arg>] [-to <arg>] -dir <arg> [-type <arg>] [-quiet] [-verbose] <name>
 		///
 		/// Create a new pin to add to an IP integrator hierarchical module.
 		/// This command returns the name of the newly created pin object, or returns an error message if it
@@ -882,18 +965,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The newly created pin object, "" if failed.</returns>
 		public void create_bd_pin(string dir, string name, string from = null, string to = null, string type = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_bd_pin");
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.RequiredString("dir", dir);
-			command.OptionalString("type", type);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_bd_pin [-from <arg>] [-to <arg>] -dir <arg> [-type <arg>] [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_bd_pin")
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.RequiredNamedString("dir", dir)
+					.OptionalNamedString("type", type)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Create a new port for an IP subsystem design.
+		///
+		///
+		/// TCL Syntax: create_bd_port [-from <arg>] [-to <arg>] -dir <arg> [-type <arg>] [-freq_hz <arg>] [-quiet] [-verbose] <name>
 		///
 		/// Create a new port to add to an IP integrator subsystem design. The port is a connection to
 		/// signals external to the subsystem design.
@@ -944,19 +1032,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The newly created port object. Returns nothing if the command fails.</returns>
 		public void create_bd_port(string dir, string name, string from = null, string to = null, string type = null, string freq_hz = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_bd_port");
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.RequiredString("dir", dir);
-			command.OptionalString("type", type);
-			command.OptionalString("freq_hz", freq_hz);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_bd_port [-from <arg>] [-to <arg>] -dir <arg> [-type <arg>] [-freq_hz <arg>] [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_bd_port")
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.RequiredNamedString("dir", dir)
+					.OptionalNamedString("type", type)
+					.OptionalNamedString("freq_hz", freq_hz)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Create a new TLM port for an IP subsystem design.
+		///
+		///
+		/// TCL Syntax: create_bd_tlm_port [-quiet] [-verbose] <name>
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 237
 		/// </summary>
@@ -975,14 +1068,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The newly created TLM port object. Returns nothing if the command fails.</returns>
 		public void create_bd_tlm_port(string name, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_bd_tlm_port");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_bd_tlm_port [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_bd_tlm_port")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Set or get current design.
+		///
+		///
+		/// TCL Syntax: current_bd_design [-quiet] [-verbose] [<design>]
 		///
 		/// Defines the current IP subsystem design for use with the IP integrator of the Vivado Design
 		/// Suite, or returns the name of the current design in the active project.
@@ -1018,14 +1116,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The current design object, "" if failed.</returns>
 		public void current_bd_design(bool? quiet = null, bool? verbose = null, string design = null)
 		{
-			var command = new SimpleTCLCommand("current_bd_design");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("design", design);
-			_tcl.Add(command);
+			// TCL Syntax: current_bd_design [-quiet] [-verbose] [<design>]
+			_tcl.Add(
+				new SimpleTCLCommand("current_bd_design")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(design)
+			);
 		}
 		/// <summary>
 		/// Set or get current cell instance.
+		///
+		///
+		/// TCL Syntax: current_bd_instance [-quiet] [-verbose] [<instance>]
 		///
 		/// Set or get the current hierarchical cell instance in the current IP integrator subsystem design, as
 		/// defined by current_bd_design. The current instance is referenced from the top-level of the
@@ -1058,14 +1161,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The current cell instance object, "" if failed.</returns>
 		public void current_bd_instance(bool? quiet = null, bool? verbose = null, string instance = null)
 		{
-			var command = new SimpleTCLCommand("current_bd_instance");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("instance", instance);
-			_tcl.Add(command);
+			// TCL Syntax: current_bd_instance [-quiet] [-verbose] [<instance>]
+			_tcl.Add(
+				new SimpleTCLCommand("current_bd_instance")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(instance)
+			);
 		}
 		/// <summary>
 		/// Delete specified objects.
+		///
+		///
+		/// TCL Syntax: delete_bd_objs [-quiet] [-verbose] <objects>...
 		///
 		/// Delete specified objects from the current IP integrator subsystem design.
 		/// Objects must be passed directly to the delete_bd_objs command, and not simply referenced
@@ -1090,14 +1198,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Pass if successful in deleting objects</returns>
 		public void delete_bd_objs(string objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_bd_objs");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: delete_bd_objs [-quiet] [-verbose] <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("delete_bd_objs")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Disconnect an intf_net.
+		///
+		///
+		/// TCL Syntax: disconnect_bd_intf_net [-quiet] [-verbose] <intf_net> <objects>...
 		///
 		/// Disconnect a single interface net in the IP integrator subsystem design from the specified
 		/// objects. An interface is a grouping of signals that share a common function in the IP integrator
@@ -1128,15 +1241,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
 		public void disconnect_bd_intf_net(string intf_net, string objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("disconnect_bd_intf_net");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("intf_net", intf_net);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: disconnect_bd_intf_net [-quiet] [-verbose] <intf_net> <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("disconnect_bd_intf_net")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(intf_net)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Disconnect a net from the object.
+		///
+		///
+		/// TCL Syntax: disconnect_bd_net [-quiet] [-verbose] <net> <objects>...
 		///
 		/// Disconnect a single net in the IP integrator subsystem design from the specified objects.
 		/// This command lets you disconnect the specified nets from pins or ports in the IP subsystem
@@ -1165,15 +1283,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
 		public void disconnect_bd_net(string net, string objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("disconnect_bd_net");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("net", net);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: disconnect_bd_net [-quiet] [-verbose] <net> <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("disconnect_bd_net")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(net)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Exclude segment from an address space.
+		///
+		///
+		/// TCL Syntax: exclude_bd_addr_seg [-target_address_space <arg>] [-quiet] [-verbose] [<segment_to_exclude>]
 		///
 		/// Exclude the specified AXI peripheral address segment from access by the AXI master it is
 		/// mapped to, in order to support sparse connectivity and eliminate unneeded device resources.
@@ -1230,15 +1353,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The newly excluded segment object, "" if failed.</returns>
 		public void exclude_bd_addr_seg(string target_address_space = null, bool? quiet = null, bool? verbose = null, string segment_to_exclude = null)
 		{
-			var command = new SimpleTCLCommand("exclude_bd_addr_seg");
-			command.OptionalString("target_address_space", target_address_space);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("segment_to_exclude", segment_to_exclude);
-			_tcl.Add(command);
+			// TCL Syntax: exclude_bd_addr_seg [-target_address_space <arg>] [-quiet] [-verbose] [<segment_to_exclude>]
+			_tcl.Add(
+				new SimpleTCLCommand("exclude_bd_addr_seg")
+					.OptionalNamedString("target_address_space", target_address_space)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(segment_to_exclude)
+			);
 		}
 		/// <summary>
 		/// Export current design as a static example design
+		///
+		///
+		/// TCL Syntax: export_as_example_design -vlnv <arg> [-no_ip_version] [-force] [-quiet] [-verbose] -directory <arg>
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 502
 		/// </summary>
@@ -1270,17 +1398,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void export_as_example_design(string vlnv, string directory, bool? no_ip_version = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("export_as_example_design");
-			command.RequiredString("vlnv", vlnv);
-			command.Flag("no_ip_version", no_ip_version);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("directory", directory);
-			_tcl.Add(command);
+			// TCL Syntax: export_as_example_design -vlnv <arg> [-no_ip_version] [-force] [-quiet] [-verbose] -directory <arg>
+			_tcl.Add(
+				new SimpleTCLCommand("export_as_example_design")
+					.RequiredNamedString("vlnv", vlnv)
+					.Flag("no_ip_version", no_ip_version)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredNamedString("directory", directory)
+			);
 		}
 		/// <summary>
 		/// Find a list of pins, ports or interfaces with a given relationship to the given object.
+		///
+		///
+		/// TCL Syntax: find_bd_objs -relation <arg> [-boundary_type <arg>] [-thru_hier] [-stop_at_interconnect] [-end_type <arg>] [-quiet] [-verbose] <objects>...
 		///
 		/// Find a list of pins, ports or interfaces with a given relationship to the specified objects.
 		/// This command returns a list of pins, ports or interface objects if successful, or returns an error if
@@ -1343,19 +1476,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>List of pins, ports or interface objects, "" if failed.</returns>
 		public void find_bd_objs(string relation, string objects, string boundary_type = null, bool? thru_hier = null, bool? stop_at_interconnect = null, string end_type = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("find_bd_objs");
-			command.RequiredString("relation", relation);
-			command.OptionalString("boundary_type", boundary_type);
-			command.Flag("thru_hier", thru_hier);
-			command.Flag("stop_at_interconnect", stop_at_interconnect);
-			command.OptionalString("end_type", end_type);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: find_bd_objs -relation <arg> [-boundary_type <arg>] [-thru_hier] [-stop_at_interconnect] [-end_type <arg>] [-quiet] [-verbose] <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("find_bd_objs")
+					.RequiredNamedString("relation", relation)
+					.OptionalNamedString("boundary_type", boundary_type)
+					.Flag("thru_hier", thru_hier)
+					.Flag("stop_at_interconnect", stop_at_interconnect)
+					.OptionalNamedString("end_type", end_type)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Generate target data for the specified source
+		///
+		///
+		/// TCL Syntax: generate_target [-force] [-quiet] [-verbose] <name> <objects>
 		///
 		/// This command generates target data for the specified IP objects (get_ips) or source file for IP
 		/// cores (.xci and .xco), DSP modules (.slx or .mdl), or block designs (.bd). The target data
@@ -1410,16 +1548,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void generate_target(string name, string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("generate_target");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: generate_target [-force] [-quiet] [-verbose] <name> <objects>
+			_tcl.Add(
+				new SimpleTCLCommand("generate_target")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Get a list of segments
+		///
+		///
+		/// TCL Syntax: get_bd_addr_segs [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-excluded] [-addressed] [-unaddressed] [-addressing] [-addressables] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Get a list of address segments in the current IP integrator subsystem design.
 		/// Note: To improve memory and performance, the get_* commands return a container list of a single type
@@ -1488,23 +1631,28 @@ namespace Quokka.TCL.Vivado
 		/// <returns>List of segment objects, "" if failed.</returns>
 		public void get_bd_addr_segs(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? excluded = null, bool? addressed = null, bool? unaddressed = null, bool? addressing = null, bool? addressables = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_bd_addr_segs");
-			command.Flag("regexp", regexp);
-			command.Flag("hierarchical", hierarchical);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("excluded", excluded);
-			command.Flag("addressed", addressed);
-			command.Flag("unaddressed", unaddressed);
-			command.Flag("addressing", addressing);
-			command.Flag("addressables", addressables);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_bd_addr_segs [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-excluded] [-addressed] [-unaddressed] [-addressing] [-addressables] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_bd_addr_segs")
+					.Flag("regexp", regexp)
+					.Flag("hierarchical", hierarchical)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("excluded", excluded)
+					.Flag("addressed", addressed)
+					.Flag("unaddressed", unaddressed)
+					.Flag("addressing", addressing)
+					.Flag("addressables", addressables)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of addr_spaces
+		///
+		///
+		/// TCL Syntax: get_bd_addr_spaces [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Get a list of address spaces in the current IP integrator subsystem design.
 		/// Note: To improve memory and performance, the get_* commands return a container list of a single type
@@ -1575,18 +1723,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>List of addr_space objects, "" if failed.</returns>
 		public void get_bd_addr_spaces(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_bd_addr_spaces");
-			command.Flag("regexp", regexp);
-			command.Flag("hierarchical", hierarchical);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_bd_addr_spaces [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_bd_addr_spaces")
+					.Flag("regexp", regexp)
+					.Flag("hierarchical", hierarchical)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of block diagram cells
+		///
+		///
+		/// TCL Syntax: get_bd_cells [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Get a list of cells in the current IP integrator subsystem design, or current subsystem instance. IP
 		/// integrator subsystem cells are either IP cores drawn from the IP integrator catalog, or hierarchical
@@ -1638,18 +1791,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>List of block diagram cell objects, "" if failed.</returns>
 		public void get_bd_cells(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_bd_cells");
-			command.Flag("regexp", regexp);
-			command.Flag("hierarchical", hierarchical);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_bd_cells [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_bd_cells")
+					.Flag("regexp", regexp)
+					.Flag("hierarchical", hierarchical)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of designs
+		///
+		///
+		/// TCL Syntax: get_bd_designs [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of IP subsystem designs open in the current project that match a specified search
 		/// pattern. The default command gets a list of all open IP subsystem designs in the project.
@@ -1690,17 +1848,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>List of design objects, "" if failed.</returns>
 		public void get_bd_designs(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_bd_designs");
-			command.Flag("regexp", regexp);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_bd_designs [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_bd_designs")
+					.Flag("regexp", regexp)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of intf_nets
+		///
+		///
+		/// TCL Syntax: get_bd_intf_nets [-regexp] [-hierarchical] [-filter <arg>] [-boundary_type <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of interface nets in the current IP integrator subsystem design that match a specified
 		/// search pattern. The default command gets a list of all interface nets in the subsystem design.
@@ -1761,19 +1924,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>List of pin objects, "" if failed.</returns>
 		public void get_bd_intf_nets(bool? regexp = null, bool? hierarchical = null, string filter = null, string boundary_type = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_bd_intf_nets");
-			command.Flag("regexp", regexp);
-			command.Flag("hierarchical", hierarchical);
-			command.OptionalString("filter", filter);
-			command.OptionalString("boundary_type", boundary_type);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_bd_intf_nets [-regexp] [-hierarchical] [-filter <arg>] [-boundary_type <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_bd_intf_nets")
+					.Flag("regexp", regexp)
+					.Flag("hierarchical", hierarchical)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("boundary_type", boundary_type)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of intf_pins
+		///
+		///
+		/// TCL Syntax: get_bd_intf_pins [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of interface pin objects on the current IP subsystem design that match a specified
 		/// search pattern. The default command gets a list of all interface pins in the subsystem design.
@@ -1828,18 +1996,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>List of pin objects, "" if failed.</returns>
 		public void get_bd_intf_pins(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_bd_intf_pins");
-			command.Flag("regexp", regexp);
-			command.Flag("hierarchical", hierarchical);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_bd_intf_pins [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_bd_intf_pins")
+					.Flag("regexp", regexp)
+					.Flag("hierarchical", hierarchical)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of intf_ports
+		///
+		///
+		/// TCL Syntax: get_bd_intf_ports [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of interface port objects in the current IP integrator subsystem design that match a
 		/// specified search pattern. The default command gets a list of all interface ports in the subsystem
@@ -1888,17 +2061,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>List of port objects, "" if failed.</returns>
 		public void get_bd_intf_ports(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_bd_intf_ports");
-			command.Flag("regexp", regexp);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_bd_intf_ports [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_bd_intf_ports")
+					.Flag("regexp", regexp)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of nets
+		///
+		///
+		/// TCL Syntax: get_bd_nets [-regexp] [-hierarchical] [-filter <arg>] [-boundary_type <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of nets in the current IP integrator subsystem design that match a specified search
 		/// pattern. The default command gets a list of all nets in the subsystem design.
@@ -1958,19 +2136,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>List of pin objects, "" if failed.</returns>
 		public void get_bd_nets(bool? regexp = null, bool? hierarchical = null, string filter = null, string boundary_type = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_bd_nets");
-			command.Flag("regexp", regexp);
-			command.Flag("hierarchical", hierarchical);
-			command.OptionalString("filter", filter);
-			command.OptionalString("boundary_type", boundary_type);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_bd_nets [-regexp] [-hierarchical] [-filter <arg>] [-boundary_type <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_bd_nets")
+					.Flag("regexp", regexp)
+					.Flag("hierarchical", hierarchical)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("boundary_type", boundary_type)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of pins
+		///
+		///
+		/// TCL Syntax: get_bd_pins [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of pin objects on the current IP subsystem design that match a specified search
 		/// pattern. The default command gets a list of all pins in the subsystem design.
@@ -2025,18 +2208,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>List of pin objects, "" if failed.</returns>
 		public void get_bd_pins(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_bd_pins");
-			command.Flag("regexp", regexp);
-			command.Flag("hierarchical", hierarchical);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_bd_pins [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_bd_pins")
+					.Flag("regexp", regexp)
+					.Flag("hierarchical", hierarchical)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of ports
+		///
+		///
+		/// TCL Syntax: get_bd_ports [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of port objects in the current IP integrator subsystem design that match a specified
 		/// search pattern. The default command gets a list of all ports in the subsystem design.
@@ -2081,17 +2269,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>List of port objects, "" if failed.</returns>
 		public void get_bd_ports(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_bd_ports");
-			command.Flag("regexp", regexp);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_bd_ports [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_bd_ports")
+					.Flag("regexp", regexp)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of registers
+		///
+		///
+		/// TCL Syntax: get_bd_regs [-of_objects <args>] [-quiet] [-verbose]
 		///
 		/// Get a list of registers using the objects of address segments, interface pins, and external interface
 		/// ports. The register objects will provide the register's display name and the memory offset
@@ -2140,14 +2333,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>List of register objects, "" if failed.</returns>
 		public void get_bd_regs(string of_objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_bd_regs");
-			command.RequiredString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: get_bd_regs [-of_objects <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("get_bd_regs")
+					.RequiredNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get a list of example designs
+		///
+		///
+		/// TCL Syntax: get_example_designs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// The command returns a list of example designs available in the current release of the Vivado
 		/// Design Suite, or returns an error if it fails.
@@ -2193,17 +2391,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of design objects</returns>
 		public void get_example_designs(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_example_designs");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_example_designs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_example_designs")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of IPI example designs
+		///
+		///
+		/// TCL Syntax: get_template_bd_designs [-quiet] [-verbose]
 		///
 		/// The command returns the list of template block designs available in the current release of the
 		/// Vivado Design Suite, or returns an error if it fails.
@@ -2224,15 +2427,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of IPI design objects</returns>
 		public void get_template_bd_designs(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_template_bd_designs");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: get_template_bd_designs [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("get_template_bd_designs")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Create a hierarchical cell, and then move the group of cells into the hierarchy cell. The
 		/// connections between these cells are maintained; the connections between these cells and other
 		/// cells are maintained through crossing hierarchy cell.
+		///
+		///
+		/// TCL Syntax: group_bd_cells [-prefix <arg>] [-quiet] [-verbose] [<target_cell_name>] [<cells>...]
 		///
 		/// Create a new hierarchical module in the current IP integrator subsystem design, and move the
 		/// specified cells into that module.
@@ -2271,16 +2479,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>0 if success.</returns>
 		public void group_bd_cells(string target_cell_name, string cells, string prefix = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("group_bd_cells");
-			command.OptionalString("prefix", prefix);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("target_cell_name", target_cell_name);
-			command.RequiredString("cells", cells);
-			_tcl.Add(command);
+			// TCL Syntax: group_bd_cells [-prefix <arg>] [-quiet] [-verbose] [<target_cell_name>] [<cells>...]
+			_tcl.Add(
+				new SimpleTCLCommand("group_bd_cells")
+					.OptionalNamedString("prefix", prefix)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(target_cell_name)
+					.RequiredString(cells)
+			);
 		}
 		/// <summary>
 		/// include segment from an address space.
+		///
+		///
+		/// TCL Syntax: include_bd_addr_seg [-quiet] [-verbose] [<segment_to_include>]
 		///
 		/// Reverses the exclusion of an AXI peripheral address segment from access by the AXI master, and
 		/// restores the address segment to a mapped state.
@@ -2315,14 +2528,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The newly included segment object, "" if failed.</returns>
 		public void include_bd_addr_seg(bool? quiet = null, bool? verbose = null, string segment_to_include = null)
 		{
-			var command = new SimpleTCLCommand("include_bd_addr_seg");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("segment_to_include", segment_to_include);
-			_tcl.Add(command);
+			// TCL Syntax: include_bd_addr_seg [-quiet] [-verbose] [<segment_to_include>]
+			_tcl.Add(
+				new SimpleTCLCommand("include_bd_addr_seg")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(segment_to_include)
+			);
 		}
 		/// <summary>
 		/// Creates an example design from a predefined template in an open project.
+		///
+		///
+		/// TCL Syntax: instantiate_example_design [-design <arg>] [-hier <arg>] [-project <arg>] [-project_location <arg>] [-options <args>] [-quiet] [-verbose] <template>
 		///
 		/// This command creates an example design from a predefined template in an open project. The
 		/// target part specified by the open project must be compatible with the example design, as defined
@@ -2393,19 +2611,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Returns the name of the template applied.</returns>
 		public void instantiate_example_design(string template, string design = null, string hier = null, string project = null, string project_location = null, string options = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("instantiate_example_design");
-			command.OptionalString("design", design);
-			command.OptionalString("hier", hier);
-			command.OptionalString("project", project);
-			command.OptionalString("project_location", project_location);
-			command.OptionalString("options", options);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("template", template);
-			_tcl.Add(command);
+			// TCL Syntax: instantiate_example_design [-design <arg>] [-hier <arg>] [-project <arg>] [-project_location <arg>] [-options <args>] [-quiet] [-verbose] <template>
+			_tcl.Add(
+				new SimpleTCLCommand("instantiate_example_design")
+					.OptionalNamedString("design", design)
+					.OptionalNamedString("hier", hier)
+					.OptionalNamedString("project", project)
+					.OptionalNamedString("project_location", project_location)
+					.OptionalNamedString("options", options)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(template)
+			);
 		}
 		/// <summary>
 		/// Creates a block design in IP integrator from a predefined template.
+		///
+		///
+		/// TCL Syntax: instantiate_template_bd_design -design <arg> [-hier <arg>] [-options <args>] [-quiet] [-verbose] <template>
 		///
 		/// This command creates an example design from a template Block Design in the IP integrator of
 		/// the Vivado Design Suite.
@@ -2447,18 +2670,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Returns the name of the template applied.</returns>
 		public void instantiate_template_bd_design(string design, string template, string hier = null, string options = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("instantiate_template_bd_design");
-			command.RequiredString("design", design);
-			command.OptionalString("hier", hier);
-			command.OptionalString("options", options);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("template", template);
-			_tcl.Add(command);
+			// TCL Syntax: instantiate_template_bd_design -design <arg> [-hier <arg>] [-options <args>] [-quiet] [-verbose] <template>
+			_tcl.Add(
+				new SimpleTCLCommand("instantiate_template_bd_design")
+					.RequiredNamedString("design", design)
+					.OptionalNamedString("hier", hier)
+					.OptionalNamedString("options", options)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(template)
+			);
 		}
 		/// <summary>
 		/// Create external port for the corresponding interface pins. If a cell is specified, create external
 		/// interface ports for all unconnected interface pins.
+		///
+		///
+		/// TCL Syntax: make_bd_intf_pins_external [-quiet] [-verbose] <objects>...
 		///
 		/// Create an external interface port in the current block design and connect that to the selected
 		/// block interface pin. If a bd_cell is specified as the argument, all unconnected block interface pins
@@ -2493,15 +2721,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Pass if successful in creating at least one interface port</returns>
 		public void make_bd_intf_pins_external(string objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("make_bd_intf_pins_external");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: make_bd_intf_pins_external [-quiet] [-verbose] <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("make_bd_intf_pins_external")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Create external port for the corresponding pin. If a cell is specified, create external ports for all
 		/// unconnected pins.
+		///
+		///
+		/// TCL Syntax: make_bd_pins_external [-quiet] [-verbose] <objects>...
 		///
 		/// Create an external port in the current block design and connect that to the selected block pin. If
 		/// a bd_cell is specified as the argument, all unconnected block pins of that cell will be made
@@ -2535,15 +2768,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Pass if successful in creating at least one port</returns>
 		public void make_bd_pins_external(string objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("make_bd_pins_external");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: make_bd_pins_external [-quiet] [-verbose] <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("make_bd_pins_external")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Move cells into a hierarchy cell. The connections between these cells are maintained; the
 		/// connections between these cells and other cells are maintained through crossing hierarchy cell.
+		///
+		///
+		/// TCL Syntax: move_bd_cells [-prefix <arg>] [-quiet] [-verbose] [<parent_cell>] [<cells>...]
 		///
 		/// Move IP integrator cells into the specified hierarchical module within the current subsystem
 		/// design. The connections between the cells being moved are maintained; connections between
@@ -2580,16 +2818,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>0 if success.</returns>
 		public void move_bd_cells(string prefix = null, bool? quiet = null, bool? verbose = null, string parent_cell = null, string cells = null)
 		{
-			var command = new SimpleTCLCommand("move_bd_cells");
-			command.OptionalString("prefix", prefix);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("parent_cell", parent_cell);
-			command.OptionalString("cells", cells);
-			_tcl.Add(command);
+			// TCL Syntax: move_bd_cells [-prefix <arg>] [-quiet] [-verbose] [<parent_cell>] [<cells>...]
+			_tcl.Add(
+				new SimpleTCLCommand("move_bd_cells")
+					.OptionalNamedString("prefix", prefix)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(parent_cell)
+					.OptionalString(cells)
+			);
 		}
 		/// <summary>
 		/// Open an existing IP subsystem design from disk file.
+		///
+		///
+		/// TCL Syntax: open_bd_design [-quiet] [-verbose] <name>
 		///
 		/// Open an IP subsystem design in the IP integrator of the Vivado IDE. The IP subsystem must
 		/// previously have been created using the create_bd_design command.
@@ -2617,14 +2860,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The design object. Returns nothing if the command fails.</returns>
 		public void open_bd_design(string name, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("open_bd_design");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: open_bd_design [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("open_bd_design")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Read one or more IPIntegrator design files
+		///
+		///
+		/// TCL Syntax: read_bd [-quiet] [-verbose] <files>...
 		///
 		/// Read the specified IP subsystem design files, or block designs, into the current project or the in￾memory design. This command is similar to the add_files command. The block design file is
 		/// added to the source fileset as it is read.
@@ -2657,14 +2905,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of IPIntegrator design file objects that were added</returns>
 		public void read_bd(string files, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_bd");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: read_bd [-quiet] [-verbose] <files>...
+			_tcl.Add(
+				new SimpleTCLCommand("read_bd")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// Regenerate layout.
+		///
+		///
+		/// TCL Syntax: regenerate_bd_layout [-hierarchy <arg>] [-layout_file <arg>] [-routing] [-quiet] [-verbose]
 		///
 		/// Regenerate the layout of the current IP integrator subsystem design in the open canvas. This
 		/// command updates and redraws the graphical elements of the subsystem design in the Vivado
@@ -2695,17 +2948,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void regenerate_bd_layout(string hierarchy = null, string layout_file = null, bool? routing = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("regenerate_bd_layout");
-			command.OptionalString("hierarchy", hierarchy);
-			command.OptionalString("layout_file", layout_file);
-			command.Flag("routing", routing);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: regenerate_bd_layout [-hierarchy <arg>] [-layout_file <arg>] [-routing] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("regenerate_bd_layout")
+					.OptionalNamedString("hierarchy", hierarchy)
+					.OptionalNamedString("layout_file", layout_file)
+					.Flag("routing", routing)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Replace cell1 with cell2 by disconnecting connections to cell1 and connecting those connections
 		/// to cell2.
+		///
+		///
+		/// TCL Syntax: replace_bd_cell [-preserve_name] [-preserve_configuration] [-quiet] [-verbose] [<cell1>] [<cell2>...]
 		///
 		/// Move the connections currently assigned to one IP integrator cell to another IP integrator cell in
 		/// the current design. This is intended to help you quickly replace one cell with another by moving
@@ -2748,17 +3006,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
 		public void replace_bd_cell(string cell1, bool? preserve_name = null, bool? preserve_configuration = null, bool? quiet = null, bool? verbose = null, string cell2 = null)
 		{
-			var command = new SimpleTCLCommand("replace_bd_cell");
-			command.Flag("preserve_name", preserve_name);
-			command.Flag("preserve_configuration", preserve_configuration);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("cell1", cell1);
-			command.OptionalString("cell2", cell2);
-			_tcl.Add(command);
+			// TCL Syntax: replace_bd_cell [-preserve_name] [-preserve_configuration] [-quiet] [-verbose] [<cell1>] [<cell2>...]
+			_tcl.Add(
+				new SimpleTCLCommand("replace_bd_cell")
+					.Flag("preserve_name", preserve_name)
+					.Flag("preserve_configuration", preserve_configuration)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(cell1)
+					.OptionalString(cell2)
+			);
 		}
 		/// <summary>
 		/// Report differences between two block designs. Note this TCL command may compare bus￾interface parameters from IP .xit files that are not reported in the stand-alone diffbd executable.
+		///
+		///
+		/// TCL Syntax: report_bd_diffs [-format <arg>] [-file <arg>] [-open_html] [-brief] [-strict] [-fast] [-return_string] [-depth <arg>] [-crossprobe] [-repository <arg>] [-take_snapshot] [-diff_snapshot] [-quiet] [-verbose] <design1> <design2>
 		///
 		/// Analyze and report the difference between two block design files (.bd).
 		/// TIP: There is also a standalone version of this command, diffbd, that can be run from the command line. You
@@ -2857,27 +3120,32 @@ namespace Quokka.TCL.Vivado
 		/// <returns>0 if no functional differences, >0 if different, -1 on error</returns>
 		public void report_bd_diffs(string design1, string design2, string format = null, string file = null, bool? open_html = null, bool? brief = null, bool? strict = null, bool? fast = null, bool? return_string = null, string depth = null, bool? crossprobe = null, string repository = null, bool? take_snapshot = null, bool? diff_snapshot = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_bd_diffs");
-			command.OptionalString("format", format);
-			command.OptionalString("file", file);
-			command.Flag("open_html", open_html);
-			command.Flag("brief", brief);
-			command.Flag("strict", strict);
-			command.Flag("fast", fast);
-			command.Flag("return_string", return_string);
-			command.OptionalString("depth", depth);
-			command.Flag("crossprobe", crossprobe);
-			command.OptionalString("repository", repository);
-			command.Flag("take_snapshot", take_snapshot);
-			command.Flag("diff_snapshot", diff_snapshot);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("design1", design1);
-			command.RequiredString("design2", design2);
-			_tcl.Add(command);
+			// TCL Syntax: report_bd_diffs [-format <arg>] [-file <arg>] [-open_html] [-brief] [-strict] [-fast] [-return_string] [-depth <arg>] [-crossprobe] [-repository <arg>] [-take_snapshot] [-diff_snapshot] [-quiet] [-verbose] <design1> <design2>
+			_tcl.Add(
+				new SimpleTCLCommand("report_bd_diffs")
+					.OptionalNamedString("format", format)
+					.OptionalNamedString("file", file)
+					.Flag("open_html", open_html)
+					.Flag("brief", brief)
+					.Flag("strict", strict)
+					.Flag("fast", fast)
+					.Flag("return_string", return_string)
+					.OptionalNamedString("depth", depth)
+					.Flag("crossprobe", crossprobe)
+					.OptionalNamedString("repository", repository)
+					.Flag("take_snapshot", take_snapshot)
+					.Flag("diff_snapshot", diff_snapshot)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(design1)
+					.RequiredString(design2)
+			);
 		}
 		/// <summary>
 		/// Save an existing IP subsystem design to disk file.
+		///
+		///
+		/// TCL Syntax: save_bd_design [-quiet] [-verbose] [<name>]
 		///
 		/// Saves any changes to the current or specified IP subsystem design in the IP integrator of the
 		/// Vivado Design Suite.
@@ -2903,15 +3171,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
 		public void save_bd_design(bool? quiet = null, bool? verbose = null, string name = null)
 		{
-			var command = new SimpleTCLCommand("save_bd_design");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: save_bd_design [-quiet] [-verbose] [<name>]
+			_tcl.Add(
+				new SimpleTCLCommand("save_bd_design")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(name)
+			);
 		}
 		/// <summary>
 		/// Save a copy of the existing IP subsystem design to specified disk file with a different name.
 		/// Generated output products will not be saved.
+		///
+		///
+		/// TCL Syntax: save_bd_design_as [-dir <arg>] [-ignore_comments] [-force] [-quiet] [-verbose] [<name>]
 		///
 		/// Save a copy of an existing block design from the IP integrator to a new location, or with a
 		/// different name. The generated output products of the block design will not be saved to the new
@@ -2954,19 +3227,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
 		public void save_bd_design_as(string dir = null, bool? ignore_comments = null, bool? force = null, bool? quiet = null, bool? verbose = null, string name = null)
 		{
-			var command = new SimpleTCLCommand("save_bd_design_as");
-			command.OptionalString("dir", dir);
-			command.Flag("ignore_comments", ignore_comments);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: save_bd_design_as [-dir <arg>] [-ignore_comments] [-force] [-quiet] [-verbose] [<name>]
+			_tcl.Add(
+				new SimpleTCLCommand("save_bd_design_as")
+					.OptionalNamedString("dir", dir)
+					.Flag("ignore_comments", ignore_comments)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(name)
+			);
 		}
 		/// <summary>
 		/// Move the group of cells inside a hierarchy cell to its parent cell, and then remove the hierarchical
 		/// cell. The connections between these cells are maintained; the connections between these cells
 		/// and other cells are maintained through crossing hierarchy cell.
+		///
+		///
+		/// TCL Syntax: ungroup_bd_cells [-prefix <arg>] [-quiet] [-verbose] [<cells>...]
 		///
 		/// This command is intended to undo the grouping of IP integrator cells into a hierarchical module,
 		/// by either the group_bd_cells or the move_bd_cells commands. The command moves the
@@ -2997,15 +3275,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>0 if success.</returns>
 		public void ungroup_bd_cells(string cells, string prefix = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("ungroup_bd_cells");
-			command.OptionalString("prefix", prefix);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("cells", cells);
-			_tcl.Add(command);
+			// TCL Syntax: ungroup_bd_cells [-prefix <arg>] [-quiet] [-verbose] [<cells>...]
+			_tcl.Add(
+				new SimpleTCLCommand("ungroup_bd_cells")
+					.OptionalNamedString("prefix", prefix)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(cells)
+			);
 		}
 		/// <summary>
 		/// Upgrade configurable IPIntegrator cell(s) to later version
+		///
+		///
+		/// TCL Syntax: upgrade_bd_cells [-latest <arg>] [-quiet] [-verbose] <objects>...
 		///
 		/// Upgrade IP integrator cells to the latest version available in the IP integrator catalog.
 		/// This command lets you update IP integrator subsystem designs from an earlier release to use the
@@ -3034,15 +3317,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>List of IPIntegrator cell names those were upgraded, "" if failed.</returns>
 		public void upgrade_bd_cells(string objects, string latest = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("upgrade_bd_cells");
-			command.OptionalString("latest", latest);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: upgrade_bd_cells [-latest <arg>] [-quiet] [-verbose] <objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("upgrade_bd_cells")
+					.OptionalNamedString("latest", latest)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(objects)
+			);
 		}
 		/// <summary>
 		/// Run Parameter Propagation for specified design or for a specific cell.
+		///
+		///
+		/// TCL Syntax: validate_bd_design [-force] [-design <arg>] [-include_pfm] [-quiet] [-verbose]
 		///
 		/// Validate an IP integrator subsystem design, or IP cell or hierarchical module.
 		///
@@ -3076,16 +3364,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
 		public void validate_bd_design(bool? force = null, string design = null, bool? include_pfm = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("validate_bd_design");
-			command.Flag("force", force);
-			command.OptionalString("design", design);
-			command.Flag("include_pfm", include_pfm);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: validate_bd_design [-force] [-design <arg>] [-include_pfm] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("validate_bd_design")
+					.Flag("force", force)
+					.OptionalNamedString("design", design)
+					.Flag("include_pfm", include_pfm)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Export the current design to a Tcl file on disk.
+		///
+		///
+		/// TCL Syntax: write_bd_tcl [-force] [-bd_name <arg>] [-no_mig_contents] [-no_ip_version] [-ignore_minor_versions] [-bd_folder <arg>] [-check_ips <arg>] [-hier_blks <arg>] [-include_layout] [-exclude_layout] [-make_local] [-no_project_wrapper] [-exclude_pfm] [-quiet] [-verbose] <tcl_filename>
 		///
 		/// Export the current IP integrator subsystem design as a Tcl script file to the disk.
 		/// IMPORTANT! Any directory in the path specified by the <name> option must already exist, or the script will
@@ -3193,24 +3486,26 @@ namespace Quokka.TCL.Vivado
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
 		public void write_bd_tcl(string tcl_filename, bool? force = null, string bd_name = null, bool? no_mig_contents = null, bool? no_ip_version = null, bool? ignore_minor_versions = null, string bd_folder = null, string check_ips = null, string hier_blks = null, bool? include_layout = null, bool? exclude_layout = null, bool? make_local = null, bool? no_project_wrapper = null, bool? exclude_pfm = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_bd_tcl");
-			command.Flag("force", force);
-			command.OptionalString("bd_name", bd_name);
-			command.Flag("no_mig_contents", no_mig_contents);
-			command.Flag("no_ip_version", no_ip_version);
-			command.Flag("ignore_minor_versions", ignore_minor_versions);
-			command.OptionalString("bd_folder", bd_folder);
-			command.OptionalString("check_ips", check_ips);
-			command.OptionalString("hier_blks", hier_blks);
-			command.Flag("include_layout", include_layout);
-			command.Flag("exclude_layout", exclude_layout);
-			command.Flag("make_local", make_local);
-			command.Flag("no_project_wrapper", no_project_wrapper);
-			command.Flag("exclude_pfm", exclude_pfm);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("tcl_filename", tcl_filename);
-			_tcl.Add(command);
+			// TCL Syntax: write_bd_tcl [-force] [-bd_name <arg>] [-no_mig_contents] [-no_ip_version] [-ignore_minor_versions] [-bd_folder <arg>] [-check_ips <arg>] [-hier_blks <arg>] [-include_layout] [-exclude_layout] [-make_local] [-no_project_wrapper] [-exclude_pfm] [-quiet] [-verbose] <tcl_filename>
+			_tcl.Add(
+				new SimpleTCLCommand("write_bd_tcl")
+					.Flag("force", force)
+					.OptionalNamedString("bd_name", bd_name)
+					.Flag("no_mig_contents", no_mig_contents)
+					.Flag("no_ip_version", no_ip_version)
+					.Flag("ignore_minor_versions", ignore_minor_versions)
+					.OptionalNamedString("bd_folder", bd_folder)
+					.OptionalNamedString("check_ips", check_ips)
+					.OptionalNamedString("hier_blks", hier_blks)
+					.Flag("include_layout", include_layout)
+					.Flag("exclude_layout", exclude_layout)
+					.Flag("make_local", make_local)
+					.Flag("no_project_wrapper", no_project_wrapper)
+					.Flag("exclude_pfm", exclude_pfm)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(tcl_filename)
+			);
 		}
 	}
 }

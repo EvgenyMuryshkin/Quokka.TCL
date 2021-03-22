@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class FeasibilityCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public FeasibilityCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public FeasibilityCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Deletes a list of available QoR suggestions
+		///
+		///
+		/// TCL Syntax: delete_qor_suggestions [-quiet] [-verbose] [<IDs>]
 		///
 		/// Removes QoR suggestion objects that are currently in memory. Suggestion objects are generated
 		/// running the report_qor_suggestion command, without specifying -of_objects, and by
@@ -40,14 +43,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_qor_suggestions(string IDs, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_qor_suggestions");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("IDs", IDs);
-			_tcl.Add(command);
+			// TCL Syntax: delete_qor_suggestions [-quiet] [-verbose] [<IDs>]
+			_tcl.Add(
+				new SimpleTCLCommand("delete_qor_suggestions")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(IDs)
+			);
 		}
 		/// <summary>
 		/// Get a list of available QoR suggestions
+		///
+		///
+		/// TCL Syntax: get_qor_suggestions [-filter <arg>] [-quiet] [-verbose] [<IDs>]
 		///
 		/// Get existing QoR suggestion objects created by the report_qor_suggestions command, or
 		/// read into the design using read_qor_suggestions. The selected QoR objects can be written
@@ -88,15 +96,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of qor suggestion objects</returns>
 		public void get_qor_suggestions(string filter = null, bool? quiet = null, bool? verbose = null, string IDs = null)
 		{
-			var command = new SimpleTCLCommand("get_qor_suggestions");
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("IDs", IDs);
-			_tcl.Add(command);
+			// TCL Syntax: get_qor_suggestions [-filter <arg>] [-quiet] [-verbose] [<IDs>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_qor_suggestions")
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(IDs)
+			);
 		}
 		/// <summary>
 		/// Read QoR Suggestions from the given file
+		///
+		///
+		/// TCL Syntax: read_qor_suggestions [-quiet] [-verbose] <file>
 		///
 		/// Read the specified file and extract the QoR suggestions from the file.
 		/// This command returns the name of the QoR file read, or returns an error if it fails.
@@ -123,14 +136,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void read_qor_suggestions(string file, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_qor_suggestions");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: read_qor_suggestions [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("read_qor_suggestions")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Feasibility Checks
+		///
+		///
+		/// TCL Syntax: report_qor_assessment [-file <arg>] [-max_paths <arg>] [-append] [-quiet] [-verbose]
 		///
 		/// This command look for trouble spots in the design and assesses the likelihood of a design
 		/// meeting design goals. This command requires an open elaborated, synthesized or implemented
@@ -184,16 +202,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void report_qor_assessment(string file = null, string max_paths = null, bool? append = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_qor_assessment");
-			command.OptionalString("file", file);
-			command.OptionalString("max_paths", max_paths);
-			command.Flag("append", append);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: report_qor_assessment [-file <arg>] [-max_paths <arg>] [-append] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("report_qor_assessment")
+					.OptionalNamedString("file", file)
+					.OptionalNamedString("max_paths", max_paths)
+					.Flag("append", append)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Recommend QoR Suggestions
+		///
+		///
+		/// TCL Syntax: report_qor_suggestions [-file <arg>] [-name <arg>] [-append] [-return_string] [-max_strategies <arg>] [-max_paths <arg>] [-evaluate_pipelining] [-no_split] [-models_dir <arg>] [-cell <args>] [-of_objects <args>] [-quiet] [-verbose]
 		///
 		/// Report design and tool option recommendations related to improving the quality of results (QoR).
 		/// The report looks at timing constraints, netlist characteristics, failing timing paths, and congestion
@@ -288,24 +311,29 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void report_qor_suggestions(string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? evaluate_pipelining = null, bool? no_split = null, string models_dir = null, string cell = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_qor_suggestions");
-			command.OptionalString("file", file);
-			command.OptionalString("name", name);
-			command.Flag("append", append);
-			command.Flag("return_string", return_string);
-			command.OptionalString("max_strategies", max_strategies);
-			command.OptionalString("max_paths", max_paths);
-			command.Flag("evaluate_pipelining", evaluate_pipelining);
-			command.Flag("no_split", no_split);
-			command.OptionalString("models_dir", models_dir);
-			command.OptionalString("cell", cell);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: report_qor_suggestions [-file <arg>] [-name <arg>] [-append] [-return_string] [-max_strategies <arg>] [-max_paths <arg>] [-evaluate_pipelining] [-no_split] [-models_dir <arg>] [-cell <args>] [-of_objects <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("report_qor_suggestions")
+					.OptionalNamedString("file", file)
+					.OptionalNamedString("name", name)
+					.Flag("append", append)
+					.Flag("return_string", return_string)
+					.OptionalNamedString("max_strategies", max_strategies)
+					.OptionalNamedString("max_paths", max_paths)
+					.Flag("evaluate_pipelining", evaluate_pipelining)
+					.Flag("no_split", no_split)
+					.OptionalNamedString("models_dir", models_dir)
+					.OptionalNamedString("cell", cell)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Write QoR Suggestions to the given file
+		///
+		///
+		/// TCL Syntax: write_qor_suggestions [-strategy_dir <arg>] [-tcl_output_dir <arg>] [-force] [-of_objects <args>] [-quiet] [-verbose] <file>
 		///
 		/// Write the QoR suggestions generated by the report_qor_suggestions command. You can
 		/// combine the suggestions from the latest report with suggestions read into the design with
@@ -369,15 +397,17 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void write_qor_suggestions(string file, string strategy_dir = null, string tcl_output_dir = null, bool? force = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_qor_suggestions");
-			command.OptionalString("strategy_dir", strategy_dir);
-			command.OptionalString("tcl_output_dir", tcl_output_dir);
-			command.Flag("force", force);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_qor_suggestions [-strategy_dir <arg>] [-tcl_output_dir <arg>] [-force] [-of_objects <args>] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_qor_suggestions")
+					.OptionalNamedString("strategy_dir", strategy_dir)
+					.OptionalNamedString("tcl_output_dir", tcl_output_dir)
+					.Flag("force", force)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 	}
 }

@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class WaiverCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public WaiverCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public WaiverCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Create a DRC/METHODOLOGY/CDC message waiver
+		///
+		///
+		/// TCL Syntax: create_waiver [-type <arg>] [-id <arg>] [-objects <args>] [-from <args>] [-to <args>] [-strings <args>] [-of_objects <args>] [-user <arg>] -description <arg> [-tags <arg>] [-timestamp <arg>] [-scoped] [-quiet] [-verbose]
 		///
 		/// After report_drc, report_methodology, or report_cdc commands are run, they return
 		/// messages of specific violations or conditions found in the design. These violations can prevent
@@ -135,25 +138,30 @@ namespace Quokka.TCL.Vivado
 		/// <returns>waiver</returns>
 		public void create_waiver(string description, string type = null, string id = null, string objects = null, string from = null, string to = null, string strings = null, string of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_waiver");
-			command.OptionalString("type", type);
-			command.OptionalString("id", id);
-			command.OptionalString("objects", objects);
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.OptionalString("strings", strings);
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("user", user);
-			command.RequiredString("description", description);
-			command.OptionalString("tags", tags);
-			command.OptionalString("timestamp", timestamp);
-			command.Flag("scoped", scoped);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: create_waiver [-type <arg>] [-id <arg>] [-objects <args>] [-from <args>] [-to <args>] [-strings <args>] [-of_objects <args>] [-user <arg>] -description <arg> [-tags <arg>] [-timestamp <arg>] [-scoped] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("create_waiver")
+					.OptionalNamedString("type", type)
+					.OptionalNamedString("id", id)
+					.OptionalNamedString("objects", objects)
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.OptionalNamedString("strings", strings)
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("user", user)
+					.RequiredNamedString("description", description)
+					.OptionalNamedString("tags", tags)
+					.OptionalNamedString("timestamp", timestamp)
+					.Flag("scoped", scoped)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Delete one or more DRC/METHODOLOGY/CDC message waivers
+		///
+		///
+		/// TCL Syntax: delete_waivers [-scoped] [-quiet] [-verbose] [<objects>...]
 		///
 		/// After report_drc, report_methodology, or report_cdc commands are run, they return
 		/// messages of specific violations or conditions found in the design. These violations can prevent
@@ -188,15 +196,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_waivers(bool? scoped = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
-			var command = new SimpleTCLCommand("delete_waivers");
-			command.Flag("scoped", scoped);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("objects", objects);
-			_tcl.Add(command);
+			// TCL Syntax: delete_waivers [-scoped] [-quiet] [-verbose] [<objects>...]
+			_tcl.Add(
+				new SimpleTCLCommand("delete_waivers")
+					.Flag("scoped", scoped)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(objects)
+			);
 		}
 		/// <summary>
 		/// Get one or more DRC/METHODOLOGY/CDC message waivers
+		///
+		///
+		/// TCL Syntax: get_waivers [-type <arg>] [-id <arg>] [-of_objects <args>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
 		///
 		/// The create_waiver command lets you select individual DRC, methodology, or CDC violations
 		/// or rule checks that can be waived for a design, letting you move forward in the design flow. The
@@ -261,20 +274,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>waivers</returns>
 		public void get_waivers(string type = null, string id = null, string of_objects = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_waivers");
-			command.OptionalString("type", type);
-			command.OptionalString("id", id);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.OptionalString("filter", filter);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_waivers [-type <arg>] [-id <arg>] [-of_objects <args>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_waivers")
+					.OptionalNamedString("type", type)
+					.OptionalNamedString("id", id)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.OptionalNamedString("filter", filter)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Report status of DRC/METHODOLOGY/CDC message waivers
+		///
+		///
+		/// TCL Syntax: report_waivers [-file <arg>] [-type <arg>] [-write_valid_waivers] [-write_ignored_waivers] [-append] [-return_string] [-show_msgs_with_no_waivers] [-quiet] [-verbose]
 		///
 		/// Reports DRC, METHODOLOGY, and CDC violation messages and displays what waivers are in
 		/// place in the current design.
@@ -329,20 +347,25 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void report_waivers(string file = null, string type = null, bool? write_valid_waivers = null, bool? write_ignored_waivers = null, bool? append = null, bool? return_string = null, bool? show_msgs_with_no_waivers = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_waivers");
-			command.OptionalString("file", file);
-			command.OptionalString("type", type);
-			command.Flag("write_valid_waivers", write_valid_waivers);
-			command.Flag("write_ignored_waivers", write_ignored_waivers);
-			command.Flag("append", append);
-			command.Flag("return_string", return_string);
-			command.Flag("show_msgs_with_no_waivers", show_msgs_with_no_waivers);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: report_waivers [-file <arg>] [-type <arg>] [-write_valid_waivers] [-write_ignored_waivers] [-append] [-return_string] [-show_msgs_with_no_waivers] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("report_waivers")
+					.OptionalNamedString("file", file)
+					.OptionalNamedString("type", type)
+					.Flag("write_valid_waivers", write_valid_waivers)
+					.Flag("write_ignored_waivers", write_ignored_waivers)
+					.Flag("append", append)
+					.Flag("return_string", return_string)
+					.Flag("show_msgs_with_no_waivers", show_msgs_with_no_waivers)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Write out one or more DRC/METHODOLOGY/CDC message waivers in command form
+		///
+		///
+		/// TCL Syntax: write_waivers [-type <arg>] [-objects <args>] [-return_string] [-force] [-quiet] [-verbose] [<file>]
 		///
 		/// To save waivers from one design session to the next, you must use write_waivers to create
 		/// an XDC file of the waiver commands, and read_xdc to read those waivers back into the design
@@ -386,15 +409,17 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void write_waivers(string file, string type = null, string objects = null, bool? return_string = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_waivers");
-			command.OptionalString("type", type);
-			command.OptionalString("objects", objects);
-			command.Flag("return_string", return_string);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_waivers [-type <arg>] [-objects <args>] [-return_string] [-force] [-quiet] [-verbose] [<file>]
+			_tcl.Add(
+				new SimpleTCLCommand("write_waivers")
+					.OptionalNamedString("type", type)
+					.OptionalNamedString("objects", objects)
+					.Flag("return_string", return_string)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 	}
 }

@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class ToolLaunchCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public ToolLaunchCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public ToolLaunchCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Get registered simulators
+		///
+		///
+		/// TCL Syntax: get_simulators [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Get the list of simulators registered for use with the Vivado Design Suite unified simulation
 		/// environment.
@@ -50,17 +53,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void get_simulators(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_simulators");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_simulators [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_simulators")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Issues an error that you can not run this command
+		///
+		///
+		/// TCL Syntax: launch_chipscope_analyzer [-run <arg>] [-csproject <arg>] [-quiet] [-verbose]
 		///
 		/// Launches the ChipScope™ Pro Analyzer tool for the active run, or a specified Implemented
 		/// Design run. You can setup a Netlist Design for use with ChipScope prior to implementation, using
@@ -100,15 +108,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void launch_chipscope_analyzer(string run = null, string csproject = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("launch_chipscope_analyzer");
-			command.OptionalString("run", run);
-			command.OptionalString("csproject", csproject);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: launch_chipscope_analyzer [-run <arg>] [-csproject <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("launch_chipscope_analyzer")
+					.OptionalNamedString("run", run)
+					.OptionalNamedString("csproject", csproject)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Issues an error that you can not run this command
+		///
+		///
+		/// TCL Syntax: launch_impact [-run <arg>] [-ipf <arg>] [-quiet] [-verbose]
 		///
 		/// Launch iMPACT to configure your device and generate programming files. You can also read back
 		/// and verify design configuration data, debug configuration problems, or execute XSVF files.
@@ -138,15 +151,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void launch_impact(string run = null, string ipf = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("launch_impact");
-			command.OptionalString("run", run);
-			command.OptionalString("ipf", ipf);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: launch_impact [-run <arg>] [-ipf <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("launch_impact")
+					.OptionalNamedString("run", run)
+					.OptionalNamedString("ipf", ipf)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Launch simulation
+		///
+		///
+		/// TCL Syntax: launch_simulation [-step <arg>] [-simset <arg>] [-mode <arg>] [-type <arg>] [-scripts_only] [-of_objects <args>] [-absolute_path] [-install_path <arg>] [-noclean_dir] [-quiet] [-verbose]
 		///
 		/// Launch a simulator to perform analysis and verification of a design.
 		/// The launch_simulation command creates a script file for the target simulator and then
@@ -253,19 +271,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void launch_simulation(string step = null, string simset = null, string mode = null, string type = null, bool? scripts_only = null, string of_objects = null, bool? absolute_path = null, string install_path = null, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("launch_simulation");
-			command.OptionalString("step", step);
-			command.OptionalString("simset", simset);
-			command.OptionalString("mode", mode);
-			command.OptionalString("type", type);
-			command.Flag("scripts_only", scripts_only);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("absolute_path", absolute_path);
-			command.OptionalString("install_path", install_path);
-			command.Flag("noclean_dir", noclean_dir);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: launch_simulation [-step <arg>] [-simset <arg>] [-mode <arg>] [-type <arg>] [-scripts_only] [-of_objects <args>] [-absolute_path] [-install_path <arg>] [-noclean_dir] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("launch_simulation")
+					.OptionalNamedString("step", step)
+					.OptionalNamedString("simset", simset)
+					.OptionalNamedString("mode", mode)
+					.OptionalNamedString("type", type)
+					.Flag("scripts_only", scripts_only)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("absolute_path", absolute_path)
+					.OptionalNamedString("install_path", install_path)
+					.Flag("noclean_dir", noclean_dir)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 	}
 }

@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class xilinxtclstoreCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public xilinxtclstoreCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public xilinxtclstoreCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// (User-written application) Convert all provided NGC files to a supported format
+		///
+		///
+		/// TCL Syntax: convert_ngc [-output_dir <arg>] [-format <arg>] [-add_to_project] [-force] [-quiet] [-verbose] <files>
 		///
 		/// Converts provided NGC files to a supported format.
 		///
@@ -62,19 +65,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>None</returns>
 		public void convert_ngc(string files, string output_dir = null, string format = null, bool? add_to_project = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("convert_ngc");
-			command.OptionalString("output_dir", output_dir);
-			command.OptionalString("format", format);
-			command.Flag("add_to_project", add_to_project);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: convert_ngc [-output_dir <arg>] [-format <arg>] [-add_to_project] [-force] [-quiet] [-verbose] <files>
+			_tcl.Add(
+				new SimpleTCLCommand("convert_ngc")
+					.OptionalNamedString("output_dir", output_dir)
+					.OptionalNamedString("format", format)
+					.Flag("add_to_project", add_to_project)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// (User-written application) Copy a run from an already existing run, source-run, to a new copy of
 		/// that run, destination-run.
+		///
+		///
+		/// TCL Syntax: copy_run [-parent_run <arg>] [-verbose] -name <arg> [-quiet] <run>
 		///
 		/// Copies an existing synthesis or implementation run.
 		///
@@ -111,13 +119,15 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The new run object</returns>
 		public void copy_run(string name, string run, string parent_run = null, bool? verbose = null, bool? quiet = null)
 		{
-			var command = new SimpleTCLCommand("copy_run");
-			command.OptionalString("parent_run", parent_run);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.Flag("quiet", quiet);
-			command.RequiredString("run", run);
-			_tcl.Add(command);
+			// TCL Syntax: copy_run [-parent_run <arg>] [-verbose] -name <arg> [-quiet] <run>
+			_tcl.Add(
+				new SimpleTCLCommand("copy_run")
+					.OptionalNamedString("parent_run", parent_run)
+					.Flag("verbose", verbose)
+					.RequiredNamedString("name", name)
+					.Flag("quiet", quiet)
+					.RequiredString(run)
+			);
 		}
 		/// <summary>
 		/// (User-written application) Creates and launches a new run based on the suggestions by
@@ -141,6 +151,9 @@ namespace Quokka.TCL.Vivado
 		/// RQSPreImpl_<>.tcl file is available, it is set as STEPS.OPT_DESIGN.TCL.PRE property for new
 		/// impl run otherwise RQSImplCommon_<>.tcl is set. In both the flows adding or setting files is
 		/// subject to availability of those files in the output directory.
+		///
+		///
+		/// TCL Syntax: create_rqs_run -dir <arg> -new_name <arg> [-synth_name <arg>] [-opt_more_options <arg>] [-place_more_options <arg>] [-quiet] [-verbose]
 		///
 		/// Creates and launches a new implementation run based on the suggestions provided by
 		/// report_qor_suggestions.
@@ -193,19 +206,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>None</returns>
 		public void create_rqs_run(string dir, string new_name, string synth_name = null, string opt_more_options = null, string place_more_options = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_rqs_run");
-			command.RequiredString("dir", dir);
-			command.RequiredString("new_name", new_name);
-			command.OptionalString("synth_name", synth_name);
-			command.OptionalString("opt_more_options", opt_more_options);
-			command.OptionalString("place_more_options", place_more_options);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: create_rqs_run -dir <arg> -new_name <arg> [-synth_name <arg>] [-opt_more_options <arg>] [-place_more_options <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("create_rqs_run")
+					.RequiredNamedString("dir", dir)
+					.RequiredNamedString("new_name", new_name)
+					.OptionalNamedString("synth_name", synth_name)
+					.OptionalNamedString("opt_more_options", opt_more_options)
+					.OptionalNamedString("place_more_options", place_more_options)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// (User-written application) Create and write a single design checkpoint and stub files for a Block
 		/// Design (BD), for use with third party synthesis tools. Perform synthesis as necessary.
+		///
+		///
+		/// TCL Syntax: export_bd_synth [-force] [-keep] [-verbose] [-quiet] <file>
 		///
 		/// Runs synthesis for a block design (.bd), integrates the design along with any needed sub-designs
 		/// (e.g. out-of-context synthesized IP), and writes out a single design checkpoint (.dcp) of the
@@ -241,13 +259,15 @@ namespace Quokka.TCL.Vivado
 		/// <returns>(none) An error will be thrown if the command is not successful</returns>
 		public void export_bd_synth(string file, bool? force = null, bool? keep = null, bool? verbose = null, bool? quiet = null)
 		{
-			var command = new SimpleTCLCommand("export_bd_synth");
-			command.Flag("force", force);
-			command.Flag("keep", keep);
-			command.Flag("verbose", verbose);
-			command.Flag("quiet", quiet);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: export_bd_synth [-force] [-keep] [-verbose] [-quiet] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("export_bd_synth")
+					.Flag("force", force)
+					.Flag("keep", keep)
+					.Flag("verbose", verbose)
+					.Flag("quiet", quiet)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// (User-written application) Generate and export IP/IPI user files from a project. This can be
@@ -257,6 +277,9 @@ namespace Quokka.TCL.Vivado
 		/// files [-lib_map_path <arg> = Empty]: Compiled simulation library directory path [-no_script]: Do
 		/// not export simulation scripts [-sync]: Delete IP/IPI dynamic and simulation script files [-reset]:
 		/// Delete all IP/IPI static, dynamic and simulation script files [-force]: Overwrite files
+		///
+		///
+		/// TCL Syntax: export_ip_user_files [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-no_script] [-sync] [-reset] [-force] [-quiet] [-verbose]
 		///
 		/// Export IP user files repository with static, dynamic, netlist, verilog/vhdl stubs and memory
 		/// initializaton files.
@@ -313,22 +336,27 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of files that were exported</returns>
 		public void export_ip_user_files(string of_objects = null, string ip_user_files_dir = null, string ipstatic_source_dir = null, string lib_map_path = null, bool? no_script = null, bool? sync = null, bool? reset = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("export_ip_user_files");
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("ip_user_files_dir", ip_user_files_dir);
-			command.OptionalString("ipstatic_source_dir", ipstatic_source_dir);
-			command.OptionalString("lib_map_path", lib_map_path);
-			command.Flag("no_script", no_script);
-			command.Flag("sync", sync);
-			command.Flag("reset", reset);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: export_ip_user_files [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-no_script] [-sync] [-reset] [-force] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("export_ip_user_files")
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("ip_user_files_dir", ip_user_files_dir)
+					.OptionalNamedString("ipstatic_source_dir", ipstatic_source_dir)
+					.OptionalNamedString("lib_map_path", lib_map_path)
+					.Flag("no_script", no_script)
+					.Flag("sync", sync)
+					.Flag("reset", reset)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// (User-written application) Export a script and associated data files (if any) for driving standalone
 		/// simulation using the specified simulator.
+		///
+		///
+		/// TCL Syntax: export_simulation [-simulator <arg>] [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-script_name <arg>] [-directory <arg>] [-runtime <arg>] [-define <arg>] [-generic <arg>] [-include <arg>] [-use_ip_compiled_libs] [-absolute_path] [-export_source_files] [-32bit] [-force] [-quiet] [-verbose]
 		///
 		/// Export a simulation script file for the target simulator. Currently the Cadence Incisive Enterprise
 		/// Simulator (ies) and the Synopsys VCS MX simulator (vcs_mx) are supported. The generated
@@ -503,26 +531,28 @@ namespace Quokka.TCL.Vivado
 		/// <returns>None</returns>
 		public void export_simulation(string simulator = null, string of_objects = null, string ip_user_files_dir = null, string ipstatic_source_dir = null, string lib_map_path = null, string script_name = null, string directory = null, string runtime = null, string define = null, string generic = null, string include = null, bool? use_ip_compiled_libs = null, bool? absolute_path = null, bool? export_source_files = null, bool? _32bit = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("export_simulation");
-			command.OptionalString("simulator", simulator);
-			command.OptionalString("of_objects", of_objects);
-			command.OptionalString("ip_user_files_dir", ip_user_files_dir);
-			command.OptionalString("ipstatic_source_dir", ipstatic_source_dir);
-			command.OptionalString("lib_map_path", lib_map_path);
-			command.OptionalString("script_name", script_name);
-			command.OptionalString("directory", directory);
-			command.OptionalString("runtime", runtime);
-			command.OptionalString("define", define);
-			command.OptionalString("generic", generic);
-			command.OptionalString("include", include);
-			command.Flag("use_ip_compiled_libs", use_ip_compiled_libs);
-			command.Flag("absolute_path", absolute_path);
-			command.Flag("export_source_files", export_source_files);
-			command.Flag("32bit", _32bit);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: export_simulation [-simulator <arg>] [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-script_name <arg>] [-directory <arg>] [-runtime <arg>] [-define <arg>] [-generic <arg>] [-include <arg>] [-use_ip_compiled_libs] [-absolute_path] [-export_source_files] [-32bit] [-force] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("export_simulation")
+					.OptionalNamedString("simulator", simulator)
+					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedString("ip_user_files_dir", ip_user_files_dir)
+					.OptionalNamedString("ipstatic_source_dir", ipstatic_source_dir)
+					.OptionalNamedString("lib_map_path", lib_map_path)
+					.OptionalNamedString("script_name", script_name)
+					.OptionalNamedString("directory", directory)
+					.OptionalNamedString("runtime", runtime)
+					.OptionalNamedString("define", define)
+					.OptionalNamedString("generic", generic)
+					.OptionalNamedString("include", include)
+					.Flag("use_ip_compiled_libs", use_ip_compiled_libs)
+					.Flag("absolute_path", absolute_path)
+					.Flag("export_source_files", export_source_files)
+					.Flag("32bit", _32bit)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// (User-written application) Extract IP static files from the project or repository and prepare it for
@@ -532,6 +562,9 @@ namespace Quokka.TCL.Vivado
 		/// for the specified IP library [-project]: Extract static files for the current project [-install]: Extract
 		/// static files for the IP catalog [-no_update_catalog]: Do no update IP catalog [-force]: Overwrite
 		/// static files
+		///
+		///
+		/// TCL Syntax: setup_ip_static_library [-directory <arg>] [-ip_repo_path <arg>] [-ips <arg>] [-library <arg>] [-project] [-install] [-no_update_catalog] [-force] [-quiet] [-verbose]
 		///
 		/// Retrieve static simulation files for IP cores used in the current project, or from the Xilinx IP
 		/// catalog, and create a source library for the compile_simlib command to use for compiling the
@@ -590,21 +623,26 @@ namespace Quokka.TCL.Vivado
 		/// <returns>None</returns>
 		public void setup_ip_static_library(string directory = null, string ip_repo_path = null, string ips = null, string library = null, bool? project = null, bool? install = null, bool? no_update_catalog = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("setup_ip_static_library");
-			command.OptionalString("directory", directory);
-			command.OptionalString("ip_repo_path", ip_repo_path);
-			command.OptionalString("ips", ips);
-			command.OptionalString("library", library);
-			command.Flag("project", project);
-			command.Flag("install", install);
-			command.Flag("no_update_catalog", no_update_catalog);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: setup_ip_static_library [-directory <arg>] [-ip_repo_path <arg>] [-ips <arg>] [-library <arg>] [-project] [-install] [-no_update_catalog] [-force] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("setup_ip_static_library")
+					.OptionalNamedString("directory", directory)
+					.OptionalNamedString("ip_repo_path", ip_repo_path)
+					.OptionalNamedString("ips", ips)
+					.OptionalNamedString("library", library)
+					.Flag("project", project)
+					.Flag("install", install)
+					.Flag("no_update_catalog", no_update_catalog)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// (User-written application) Export Tcl script for re-creating the current project
+		///
+		///
+		/// TCL Syntax: write_project_tcl [-paths_relative_to <arg>] [-origin_dir_override <arg>] [-target_proj_dir <arg>] [-force] [-all_properties] [-no_copy_sources] [-no_ip_version] [-absolute_path] [-dump_project_info] [-use_bd_files] [-internal] [-quiet] [-verbose] <file>
 		///
 		/// Creates a Tcl script to recreate the current project.
 		/// The generated script will contain the Tcl commands for creating the project, setting the project
@@ -715,7 +753,7 @@ namespace Quokka.TCL.Vivado
 		/// Use BD sources directly instead of writing out procs to
 		/// create them
 		/// </param>
-		/// <param name="internal">
+		/// <param name="@internal">
 		/// Optional
 		/// Print basic header information in the generated tcl script
 		/// </param>
@@ -729,24 +767,26 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>true (0) if success, false (1) otherwise</returns>
-		public void write_project_tcl(string file, string paths_relative_to = null, string origin_dir_override = null, string target_proj_dir = null, bool? force = null, bool? all_properties = null, bool? no_copy_sources = null, bool? no_ip_version = null, bool? absolute_path = null, bool? dump_project_info = null, bool? use_bd_files = null, bool? internal = null, bool? quiet = null, bool? verbose = null)
+		public void write_project_tcl(string file, string paths_relative_to = null, string origin_dir_override = null, string target_proj_dir = null, bool? force = null, bool? all_properties = null, bool? no_copy_sources = null, bool? no_ip_version = null, bool? absolute_path = null, bool? dump_project_info = null, bool? use_bd_files = null, bool? @internal = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_project_tcl");
-			command.OptionalString("paths_relative_to", paths_relative_to);
-			command.OptionalString("origin_dir_override", origin_dir_override);
-			command.OptionalString("target_proj_dir", target_proj_dir);
-			command.Flag("force", force);
-			command.Flag("all_properties", all_properties);
-			command.Flag("no_copy_sources", no_copy_sources);
-			command.Flag("no_ip_version", no_ip_version);
-			command.Flag("absolute_path", absolute_path);
-			command.Flag("dump_project_info", dump_project_info);
-			command.Flag("use_bd_files", use_bd_files);
-			command.Flag("internal", internal);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_project_tcl [-paths_relative_to <arg>] [-origin_dir_override <arg>] [-target_proj_dir <arg>] [-force] [-all_properties] [-no_copy_sources] [-no_ip_version] [-absolute_path] [-dump_project_info] [-use_bd_files] [-internal] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_project_tcl")
+					.OptionalNamedString("paths_relative_to", paths_relative_to)
+					.OptionalNamedString("origin_dir_override", origin_dir_override)
+					.OptionalNamedString("target_proj_dir", target_proj_dir)
+					.Flag("force", force)
+					.Flag("all_properties", all_properties)
+					.Flag("no_copy_sources", no_copy_sources)
+					.Flag("no_ip_version", no_ip_version)
+					.Flag("absolute_path", absolute_path)
+					.Flag("dump_project_info", dump_project_info)
+					.Flag("use_bd_files", use_bd_files)
+					.Flag("internal", @internal)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 	}
 }

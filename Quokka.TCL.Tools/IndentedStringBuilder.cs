@@ -31,6 +31,10 @@ namespace Quokka.TCL.Tools
                 AppendLine(close);
             });
         }
+        public void AppendContent(string content)
+        {
+            _builder.Append(content);
+        }
 
         public void AppendLine(string content)
         {

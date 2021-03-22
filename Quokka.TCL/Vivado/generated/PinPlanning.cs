@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class PinPlanningCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public PinPlanningCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public PinPlanningCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Create a new I/O port interface
+		///
+		///
+		/// TCL Syntax: create_interface [-parent <arg>] [-quiet] [-verbose] <name>
 		///
 		/// Creates a new interface for grouping scalar or differential I/O ports.
 		///
@@ -42,15 +45,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>new interface object</returns>
 		public void create_interface(string name, string parent = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_interface");
-			command.OptionalString("parent", parent);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_interface [-parent <arg>] [-quiet] [-verbose] <name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_interface")
+					.OptionalNamedString("parent", parent)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+			);
 		}
 		/// <summary>
 		/// Create scalar or bus port
+		///
+		///
+		/// TCL Syntax: create_port -direction <arg> [-from <arg>] [-to <arg>] [-diff_pair] [-interface <arg>] [-quiet] [-verbose] <name> [<negative_name>]
 		///
 		/// Creates a port and specifies such parameters as direction, width, single-ended or differential, and
 		/// optionally assigns it to an existing interface. New ports are added at the top-level of the design
@@ -105,7 +113,7 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Create differential pair of ports
 		/// </param>
-		/// <param name="interface">
+		/// <param name="@interface">
 		/// Optional
 		/// Assign new port to this interface
 		/// </param>
@@ -122,22 +130,27 @@ namespace Quokka.TCL.Vivado
 		/// Optional negative name of a diff-pair
 		/// </param>
 		/// <returns>list of port objects that were created</returns>
-		public void create_port(string direction, string name, string from = null, string to = null, bool? diff_pair = null, string interface = null, bool? quiet = null, bool? verbose = null, string negative_name = null)
+		public void create_port(string direction, string name, string from = null, string to = null, bool? diff_pair = null, string @interface = null, bool? quiet = null, bool? verbose = null, string negative_name = null)
 		{
-			var command = new SimpleTCLCommand("create_port");
-			command.RequiredString("direction", direction);
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.Flag("diff_pair", diff_pair);
-			command.OptionalString("interface", interface);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.OptionalString("negative_name", negative_name);
-			_tcl.Add(command);
+			// TCL Syntax: create_port -direction <arg> [-from <arg>] [-to <arg>] [-diff_pair] [-interface <arg>] [-quiet] [-verbose] <name> [<negative_name>]
+			_tcl.Add(
+				new SimpleTCLCommand("create_port")
+					.RequiredNamedString("direction", direction)
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.Flag("diff_pair", diff_pair)
+					.OptionalNamedString("interface", @interface)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.OptionalString(negative_name)
+			);
 		}
 		/// <summary>
 		/// Delete I/O port interfaces from the project
+		///
+		///
+		/// TCL Syntax: delete_interface [-all] [-quiet] [-verbose] <interfaces>...
 		///
 		/// Deletes an existing interface and optionally deletes all of the associated ports and buses using
 		/// the interface.
@@ -166,15 +179,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_interface(string interfaces, bool? all = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_interface");
-			command.Flag("all", all);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("interfaces", interfaces);
-			_tcl.Add(command);
+			// TCL Syntax: delete_interface [-all] [-quiet] [-verbose] <interfaces>...
+			_tcl.Add(
+				new SimpleTCLCommand("delete_interface")
+					.Flag("all", all)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(interfaces)
+			);
 		}
 		/// <summary>
 		/// Make differential pair for 2 ports
+		///
+		///
+		/// TCL Syntax: make_diff_pair_ports [-quiet] [-verbose] <ports>...
 		///
 		/// Joins two existing ports to create a differential pair. The port directions, interfaces, and other
 		/// properties must match in order for the specified ports to be joined as a differential pair.
@@ -201,14 +219,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void make_diff_pair_ports(string ports, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("make_diff_pair_ports");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("ports", ports);
-			_tcl.Add(command);
+			// TCL Syntax: make_diff_pair_ports [-quiet] [-verbose] <ports>...
+			_tcl.Add(
+				new SimpleTCLCommand("make_diff_pair_ports")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(ports)
+			);
 		}
 		/// <summary>
 		/// Automatically place a set of ports
+		///
+		///
+		/// TCL Syntax: place_ports [-skip_unconnected_ports] [-check_only] [-iobank <args>] [-quiet] [-verbose] [<ports>...]
 		///
 		/// Assign ports to the pins of the Xilinx FPGA package, by automatically or manually placing ports.
 		/// • Automatically places ports on an available I/O or clocking site, or into the specified I/O banks.
@@ -255,17 +278,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void place_ports(bool? skip_unconnected_ports = null, bool? check_only = null, string iobank = null, bool? quiet = null, bool? verbose = null, string ports = null)
 		{
-			var command = new SimpleTCLCommand("place_ports");
-			command.Flag("skip_unconnected_ports", skip_unconnected_ports);
-			command.Flag("check_only", check_only);
-			command.OptionalString("iobank", iobank);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("ports", ports);
-			_tcl.Add(command);
+			// TCL Syntax: place_ports [-skip_unconnected_ports] [-check_only] [-iobank <args>] [-quiet] [-verbose] [<ports>...]
+			_tcl.Add(
+				new SimpleTCLCommand("place_ports")
+					.Flag("skip_unconnected_ports", skip_unconnected_ports)
+					.Flag("check_only", check_only)
+					.OptionalNamedString("iobank", iobank)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(ports)
+			);
 		}
 		/// <summary>
 		/// Remove the given list of top ports from the netlist.
+		///
+		///
+		/// TCL Syntax: remove_port [-quiet] [-verbose] <ports>...
 		///
 		/// Removes the specified ports or buses.
 		/// To remove a bus port, you must specify the primary port name, and not specify a bus index. This
@@ -304,14 +332,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_port(string ports, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("remove_port");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("ports", ports);
-			_tcl.Add(command);
+			// TCL Syntax: remove_port [-quiet] [-verbose] <ports>...
+			_tcl.Add(
+				new SimpleTCLCommand("remove_port")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(ports)
+			);
 		}
 		/// <summary>
 		/// Resize port bus in the current design
+		///
+		///
+		/// TCL Syntax: resize_port_bus [-from <arg>] [-to <arg>] [-quiet] [-verbose] <port_bus_name>...
 		///
 		/// Resize an existing bus port, to grow the bus, shrink the bus, or renumber the current range of
 		/// port indexes. You can only do a single grow, shrink, or renumber operation with each command.
@@ -361,16 +394,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void resize_port_bus(string port_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("resize_port_bus");
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("port_bus_name", port_bus_name);
-			_tcl.Add(command);
+			// TCL Syntax: resize_port_bus [-from <arg>] [-to <arg>] [-quiet] [-verbose] <port_bus_name>...
+			_tcl.Add(
+				new SimpleTCLCommand("resize_port_bus")
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(port_bus_name)
+			);
 		}
 		/// <summary>
 		/// Set user columns on one or more package pins
+		///
+		///
+		/// TCL Syntax: set_package_pin_val [-quiet] [-verbose] <column> <value> <package_pins>...
 		///
 		/// Create user-defined package pin attributes and assign values to specific pins on the package.
 		/// User-defined pin attributes can be defined in a CSV file and imported into an I/O Pin Planning
@@ -411,16 +449,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_package_pin_val(string column, string value, string package_pins, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_package_pin_val");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("column", column);
-			command.RequiredString("value", value);
-			command.RequiredString("package_pins", package_pins);
-			_tcl.Add(command);
+			// TCL Syntax: set_package_pin_val [-quiet] [-verbose] <column> <value> <package_pins>...
+			_tcl.Add(
+				new SimpleTCLCommand("set_package_pin_val")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(column)
+					.RequiredString(value)
+					.RequiredString(package_pins)
+			);
 		}
 		/// <summary>
 		/// Remove differential pair relationship between 2 ports
+		///
+		///
+		/// TCL Syntax: split_diff_pair_ports [-quiet] [-verbose] <ports>...
 		///
 		/// Splits an existing differential pair of ports into two single-ended ports.
 		/// Note: This command operates silently and does not return direct feedback of its operation.
@@ -444,11 +487,13 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void split_diff_pair_ports(string ports, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("split_diff_pair_ports");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("ports", ports);
-			_tcl.Add(command);
+			// TCL Syntax: split_diff_pair_ports [-quiet] [-verbose] <ports>...
+			_tcl.Add(
+				new SimpleTCLCommand("split_diff_pair_ports")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(ports)
+			);
 		}
 	}
 }

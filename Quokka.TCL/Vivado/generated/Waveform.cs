@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class WaveformCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public WaveformCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public WaveformCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Add new waves
+		///
+		///
+		/// TCL Syntax: add_wave [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-reverse] [-radix <arg>] [-color <arg>] [-name <arg>] [-recursive] [-r] [-regexp] [-nocase] [-quiet] [-verbose] <items>...
 		///
 		/// The add_wave command creates one or more new design-based wave objects.
 		/// This command returns the name of the newly-created wave object(s).
@@ -110,26 +113,31 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The new waves</returns>
 		public void add_wave(string items, string into = null, string at_wave = null, string after_wave = null, string before_wave = null, bool? reverse = null, string radix = null, string color = null, string name = null, bool? recursive = null, bool? r = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("add_wave");
-			command.OptionalString("into", into);
-			command.OptionalString("at_wave", at_wave);
-			command.OptionalString("after_wave", after_wave);
-			command.OptionalString("before_wave", before_wave);
-			command.Flag("reverse", reverse);
-			command.OptionalString("radix", radix);
-			command.OptionalString("color", color);
-			command.OptionalString("name", name);
-			command.Flag("recursive", recursive);
-			command.Flag("r", r);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("items", items);
-			_tcl.Add(command);
+			// TCL Syntax: add_wave [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-reverse] [-radix <arg>] [-color <arg>] [-name <arg>] [-recursive] [-r] [-regexp] [-nocase] [-quiet] [-verbose] <items>...
+			_tcl.Add(
+				new SimpleTCLCommand("add_wave")
+					.OptionalNamedString("into", into)
+					.OptionalNamedString("at_wave", at_wave)
+					.OptionalNamedString("after_wave", after_wave)
+					.OptionalNamedString("before_wave", before_wave)
+					.Flag("reverse", reverse)
+					.OptionalNamedString("radix", radix)
+					.OptionalNamedString("color", color)
+					.OptionalNamedString("name", name)
+					.Flag("recursive", recursive)
+					.Flag("r", r)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(items)
+			);
 		}
 		/// <summary>
 		/// Add a new divider
+		///
+		///
+		/// TCL Syntax: add_wave_divider [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-color <arg>] [-quiet] [-verbose] [<name>]
 		///
 		/// Creates a wave divider in the wave form viewer. The wave divider can be used to separate
 		/// groups of related objects, for easier viewing.
@@ -184,19 +192,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The new divider</returns>
 		public void add_wave_divider(string into = null, string at_wave = null, string after_wave = null, string before_wave = null, string color = null, bool? quiet = null, bool? verbose = null, string name = null)
 		{
-			var command = new SimpleTCLCommand("add_wave_divider");
-			command.OptionalString("into", into);
-			command.OptionalString("at_wave", at_wave);
-			command.OptionalString("after_wave", after_wave);
-			command.OptionalString("before_wave", before_wave);
-			command.OptionalString("color", color);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: add_wave_divider [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-color <arg>] [-quiet] [-verbose] [<name>]
+			_tcl.Add(
+				new SimpleTCLCommand("add_wave_divider")
+					.OptionalNamedString("into", into)
+					.OptionalNamedString("at_wave", at_wave)
+					.OptionalNamedString("after_wave", after_wave)
+					.OptionalNamedString("before_wave", before_wave)
+					.OptionalNamedString("color", color)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(name)
+			);
 		}
 		/// <summary>
 		/// Add a new group
+		///
+		///
+		/// TCL Syntax: add_wave_group [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-quiet] [-verbose] [<name>]
 		///
 		/// Creates a wave group into a specified or current waveform configuration. New wave objects and
 		/// wave_dividers can be added into the wave group to build up the waveform display.
@@ -245,18 +258,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The new group</returns>
 		public void add_wave_group(string into = null, string at_wave = null, string after_wave = null, string before_wave = null, bool? quiet = null, bool? verbose = null, string name = null)
 		{
-			var command = new SimpleTCLCommand("add_wave_group");
-			command.OptionalString("into", into);
-			command.OptionalString("at_wave", at_wave);
-			command.OptionalString("after_wave", after_wave);
-			command.OptionalString("before_wave", before_wave);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: add_wave_group [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-quiet] [-verbose] [<name>]
+			_tcl.Add(
+				new SimpleTCLCommand("add_wave_group")
+					.OptionalNamedString("into", into)
+					.OptionalNamedString("at_wave", at_wave)
+					.OptionalNamedString("after_wave", after_wave)
+					.OptionalNamedString("before_wave", before_wave)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(name)
+			);
 		}
 		/// <summary>
 		/// Create a new wave marker
+		///
+		///
+		/// TCL Syntax: add_wave_marker [-into <arg>] [-name <arg>] [-quiet] [-verbose] [<time>] [<unit>]
 		///
 		/// Creates a wave marker at the specified time and of the specified name in the current waveform
 		/// configuration.
@@ -296,17 +314,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The new created marker</returns>
 		public void add_wave_marker(string into = null, string name = null, bool? quiet = null, bool? verbose = null, string time = null, string unit = null)
 		{
-			var command = new SimpleTCLCommand("add_wave_marker");
-			command.OptionalString("into", into);
-			command.OptionalString("name", name);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("time", time);
-			command.OptionalString("unit", unit);
-			_tcl.Add(command);
+			// TCL Syntax: add_wave_marker [-into <arg>] [-name <arg>] [-quiet] [-verbose] [<time>] [<unit>]
+			_tcl.Add(
+				new SimpleTCLCommand("add_wave_marker")
+					.OptionalNamedString("into", into)
+					.OptionalNamedString("name", name)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(time)
+					.OptionalString(unit)
+			);
 		}
 		/// <summary>
 		/// Add a new virtual bus
+		///
+		///
+		/// TCL Syntax: add_wave_virtual_bus [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-reverse] [-radix <arg>] [-color <arg>] [-quiet] [-verbose] [<name>]
 		///
 		/// The add_wave_virtual_bus command creates a new virtual bus of the specified <name>.
 		/// The command inserts the virtual bus into the wave configuration (WCFG) where specified, or by
@@ -369,21 +392,26 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The new virtual bus</returns>
 		public void add_wave_virtual_bus(string into = null, string at_wave = null, string after_wave = null, string before_wave = null, bool? reverse = null, string radix = null, string color = null, bool? quiet = null, bool? verbose = null, string name = null)
 		{
-			var command = new SimpleTCLCommand("add_wave_virtual_bus");
-			command.OptionalString("into", into);
-			command.OptionalString("at_wave", at_wave);
-			command.OptionalString("after_wave", after_wave);
-			command.OptionalString("before_wave", before_wave);
-			command.Flag("reverse", reverse);
-			command.OptionalString("radix", radix);
-			command.OptionalString("color", color);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: add_wave_virtual_bus [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-reverse] [-radix <arg>] [-color <arg>] [-quiet] [-verbose] [<name>]
+			_tcl.Add(
+				new SimpleTCLCommand("add_wave_virtual_bus")
+					.OptionalNamedString("into", into)
+					.OptionalNamedString("at_wave", at_wave)
+					.OptionalNamedString("after_wave", after_wave)
+					.OptionalNamedString("before_wave", before_wave)
+					.Flag("reverse", reverse)
+					.OptionalNamedString("radix", radix)
+					.OptionalNamedString("color", color)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(name)
+			);
 		}
 		/// <summary>
 		/// Closes the wave config
+		///
+		///
+		/// TCL Syntax: close_wave_config [-force] [-quiet] [-verbose] [<wcfgobj>]
 		///
 		/// Close the current, or specified wave configuration.
 		/// In the Vivado® simulator GUI, you can work with a waveform to analyze your design and debug
@@ -422,15 +450,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void close_wave_config(bool? force = null, bool? quiet = null, bool? verbose = null, string wcfgobj = null)
 		{
-			var command = new SimpleTCLCommand("close_wave_config");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("wcfgobj", wcfgobj);
-			_tcl.Add(command);
+			// TCL Syntax: close_wave_config [-force] [-quiet] [-verbose] [<wcfgobj>]
+			_tcl.Add(
+				new SimpleTCLCommand("close_wave_config")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(wcfgobj)
+			);
 		}
 		/// <summary>
 		/// Creates a new wave config
+		///
+		///
+		/// TCL Syntax: create_wave_config [-quiet] [-verbose] [<name>]
 		///
 		/// Create a new wave configuration object in the current simulation, and open the waveform
 		/// configuration in the Vivado IDE. This will make the new wave configuration object the current
@@ -466,14 +499,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The new wave config</returns>
 		public void create_wave_config(bool? quiet = null, bool? verbose = null, string name = null)
 		{
-			var command = new SimpleTCLCommand("create_wave_config");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("name", name);
-			_tcl.Add(command);
+			// TCL Syntax: create_wave_config [-quiet] [-verbose] [<name>]
+			_tcl.Add(
+				new SimpleTCLCommand("create_wave_config")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(name)
+			);
 		}
 		/// <summary>
 		/// Gets the current WCFG object and sets it to the specified WCFG object if given
+		///
+		///
+		/// TCL Syntax: current_wave_config [-quiet] [-verbose] [<wcfgObj>]
 		///
 		/// Set or get the current wave configuration object for the current simulation.
 		/// In the Vivado® simulator GUI, you can work with a waveform to analyze your design and debug
@@ -503,14 +541,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Returns the new or current wave configuration object</returns>
 		public void current_wave_config(bool? quiet = null, bool? verbose = null, string wcfgObj = null)
 		{
-			var command = new SimpleTCLCommand("current_wave_config");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("wcfgObj", wcfgObj);
-			_tcl.Add(command);
+			// TCL Syntax: current_wave_config [-quiet] [-verbose] [<wcfgObj>]
+			_tcl.Add(
+				new SimpleTCLCommand("current_wave_config")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(wcfgObj)
+			);
 		}
 		/// <summary>
 		/// Gets the wave configs that match the given options
+		///
+		///
+		/// TCL Syntax: get_wave_configs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Get the wave configuration objects that match the specified search options in the current
 		/// simulation.
@@ -556,17 +599,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Wave configs that match the given options</returns>
 		public void get_wave_configs(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_wave_configs");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_wave_configs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_wave_configs")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets wave objects from a wave configuration
+		///
+		///
+		/// TCL Syntax: get_waves [-of <args>] [-regexp] [-nocase] [-filter <arg>] [-recursive] [-r] [-long_name] [-short_name] [-quiet] [-verbose] <patterns>...
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 942
 		/// </summary>
@@ -622,23 +670,28 @@ namespace Quokka.TCL.Vivado
 		/// <returns>a collection of found wave objects</returns>
 		public void get_waves(string patterns, string of = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? recursive = null, bool? r = null, bool? long_name = null, bool? short_name = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_waves");
-			command.OptionalString("of", of);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("recursive", recursive);
-			command.Flag("r", r);
-			command.Flag("long_name", long_name);
-			command.Flag("short_name", short_name);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_waves [-of <args>] [-regexp] [-nocase] [-filter <arg>] [-recursive] [-r] [-long_name] [-short_name] [-quiet] [-verbose] <patterns>...
+			_tcl.Add(
+				new SimpleTCLCommand("get_waves")
+					.OptionalNamedString("of", of)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("recursive", recursive)
+					.Flag("r", r)
+					.Flag("long_name", long_name)
+					.Flag("short_name", short_name)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(patterns)
+			);
 		}
 		/// <summary>
 		/// Moves wave objects from their current position to the specified position in the wave
 		/// configuration
+		///
+		///
+		/// TCL Syntax: move_wave [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-quiet] [-verbose] <items>...
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1049
 		/// </summary>
@@ -677,18 +730,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void move_wave(string items, string into = null, string at_wave = null, string after_wave = null, string before_wave = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("move_wave");
-			command.OptionalString("into", into);
-			command.OptionalString("at_wave", at_wave);
-			command.OptionalString("after_wave", after_wave);
-			command.OptionalString("before_wave", before_wave);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("items", items);
-			_tcl.Add(command);
+			// TCL Syntax: move_wave [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-quiet] [-verbose] <items>...
+			_tcl.Add(
+				new SimpleTCLCommand("move_wave")
+					.OptionalNamedString("into", into)
+					.OptionalNamedString("at_wave", at_wave)
+					.OptionalNamedString("after_wave", after_wave)
+					.OptionalNamedString("before_wave", before_wave)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(items)
+			);
 		}
 		/// <summary>
 		/// Open a wave config
+		///
+		///
+		/// TCL Syntax: open_wave_config [-quiet] [-verbose] [<filename>]
 		///
 		/// Open the specified Wave Config file (.wcfg) in the current simulation.
 		/// Vivado simulator uses a simulation debug data model to allow users to debug HDL source files
@@ -729,14 +787,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The wave config opened</returns>
 		public void open_wave_config(bool? quiet = null, bool? verbose = null, string filename = null)
 		{
-			var command = new SimpleTCLCommand("open_wave_config");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("filename", filename);
-			_tcl.Add(command);
+			// TCL Syntax: open_wave_config [-quiet] [-verbose] [<filename>]
+			_tcl.Add(
+				new SimpleTCLCommand("open_wave_config")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(filename)
+			);
 		}
 		/// <summary>
 		/// Removes wave objects from the current wave configuration
+		///
+		///
+		/// TCL Syntax: remove_wave [-of <args>] [-quiet] [-verbose] <items>...
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1247
 		/// </summary>
@@ -759,15 +822,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_wave(string items, string of = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("remove_wave");
-			command.OptionalString("of", of);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("items", items);
-			_tcl.Add(command);
+			// TCL Syntax: remove_wave [-of <args>] [-quiet] [-verbose] <items>...
+			_tcl.Add(
+				new SimpleTCLCommand("remove_wave")
+					.OptionalNamedString("of", of)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(items)
+			);
 		}
 		/// <summary>
 		/// Saves the specified or current wave configuration object to the given filename
+		///
+		///
+		/// TCL Syntax: save_wave_config [-object <args>] [-quiet] [-verbose] [<filename>]
 		///
 		/// Save the current or specified wave configuration object to a specified filename.
 		/// If the wave configuration object has not been saved before, and does not have a FILE_PATH
@@ -808,15 +876,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The wave configuration object saved</returns>
 		public void save_wave_config(string @object = null, bool? quiet = null, bool? verbose = null, string filename = null)
 		{
-			var command = new SimpleTCLCommand("save_wave_config");
-			command.OptionalString("object", @object);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("filename", filename);
-			_tcl.Add(command);
+			// TCL Syntax: save_wave_config [-object <args>] [-quiet] [-verbose] [<filename>]
+			_tcl.Add(
+				new SimpleTCLCommand("save_wave_config")
+					.OptionalNamedString("object", @object)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(filename)
+			);
 		}
 		/// <summary>
 		/// Display help for one or more topics
+		///
+		///
+		/// TCL Syntax: select_wave_objects [-quiet] [-verbose] <items>...
 		///
 		/// Selects the specified object in the Waveform window of the Vivado IDE. This command is for
 		/// selecting displayed items in the Waveform window only, and is similar to the select_objects
@@ -846,11 +919,13 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void select_wave_objects(string items, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("select_wave_objects");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("items", items);
-			_tcl.Add(command);
+			// TCL Syntax: select_wave_objects [-quiet] [-verbose] <items>...
+			_tcl.Add(
+				new SimpleTCLCommand("select_wave_objects")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(items)
+			);
 		}
 	}
 }

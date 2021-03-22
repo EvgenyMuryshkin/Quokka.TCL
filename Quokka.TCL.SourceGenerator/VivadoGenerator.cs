@@ -163,8 +163,8 @@ namespace Quokka.TCL.SourceGenerator
                         builder.AppendLine($"public partial class {category}Commands");
                         using (builder.CodeBlock())
                         {
-                            builder.AppendLine($"private readonly QuokkaTCL _tcl;");
-                            builder.AppendLine($"public {category}Commands(QuokkaTCL tcl)");
+                            builder.AppendLine($"private readonly TCLFile<VivadoTCL> _tcl;");
+                            builder.AppendLine($"public {category}Commands(TCLFile<VivadoTCL> tcl)");
                             using (builder.CodeBlock())
                             {
                                 builder.AppendLine($"_tcl = tcl;");
@@ -177,6 +177,9 @@ namespace Quokka.TCL.SourceGenerator
 
                                 builder.AppendLine($"/// <summary>");
                                 builder.AppendDocumentationLinesIfAny(record.ShortDescription);
+                                builder.AppendDocumentationSeparator();
+                                builder.AppendLine($"/// TCL Syntax: {record.Syntax}");
+                                builder.AppendDocumentationSeparator();
                                 builder.AppendDocumentationLinesIfAny(record.Description);
                                 builder.AppendDocumentationLinesIfAny(record.Examples);
                                 builder.AppendDocumentationLines($"See {pdfName}, page {commandData.Page}");
@@ -224,27 +227,47 @@ namespace Quokka.TCL.SourceGenerator
                                 builder.AppendLine($"public void {command}({string.Join(", ", args)})");
                                 using (builder.CodeBlock())
                                 {
-                                    builder.AppendLine($"var command = new SimpleTCLCommand(\"{command}\");");
-
-                                    foreach (var arg in record.Parameters)
+                                    builder.AppendLine($"// TCL Syntax: {record.Syntax}");
+                                    builder.AppendLine($"_tcl.Add(");
+                                    using (builder.Indent())
                                     {
-                                        switch (arg)
+                                        builder.AppendLine($"new SimpleTCLCommand(\"{command}\")");
+                                        using (builder.Indent())
                                         {
-                                            case VivadoCommandOptionalFlagParameter _:
-                                                builder.AppendLine($"command.Flag(\"{arg.Name}\", {arg.CSName});");
-                                                break;
-                                            case VivadoCommandOptionalParameter _:
-                                                builder.AppendLine($"command.OptionalString(\"{arg.Name}\", {arg.CSName});");
-                                                break;
-                                            case VivadoCommandRequiredParameter _:
-                                                builder.AppendLine($"command.RequiredString(\"{arg.Name}\", {arg.CSName});");
-                                                break;
-                                            default:
-                                                throw new Exception($"Unsupported parameter type: {arg.GetType()}");
+                                            foreach (var arg in record.Parameters)
+                                            {
+                                                switch (arg)
+                                                {
+                                                    case VivadoCommandOptionalFlagParameter f:
+                                                        builder.AppendLine($".Flag(\"{arg.Name}\", {arg.CSName})");
+                                                        break;
+                                                    case VivadoCommandOptionalParameter o:
+                                                        if (o.IsNamed)
+                                                        {
+                                                            builder.AppendLine($".OptionalNamedString(\"{arg.Name}\", {arg.CSName})");
+                                                        }
+                                                        else
+                                                        {
+                                                            builder.AppendLine($".OptionalString({arg.CSName})");
+                                                        }
+                                                        break;
+                                                    case VivadoCommandRequiredParameter p:
+                                                        if (p.IsNamed)
+                                                        {
+                                                            builder.AppendLine($".RequiredNamedString(\"{arg.Name}\", {arg.CSName})");
+                                                        }
+                                                        else
+                                                        {
+                                                            builder.AppendLine($".RequiredString({arg.CSName})");
+                                                        }
+                                                        break;
+                                                    default:
+                                                        throw new Exception($"Unsupported parameter type: {arg.GetType()}");
+                                                }
+                                            }
                                         }
                                     }
-
-                                    builder.AppendLine($"_tcl.Add(command);");
+                                    builder.AppendLine($");");
                                 }
                             }
                         }
@@ -260,25 +283,16 @@ namespace Quokka.TCL.SourceGenerator
                 vivadoTCL.AppendLine("namespace Quokka.TCL.Vivado");
                 using (vivadoTCL.CodeBlock())
                 {
-                    vivadoTCL.AppendLine($"public partial class VivadoTCL : QuokkaTCL");
+                    vivadoTCL.AppendLine($"public partial class VivadoTCL : TCLFile<VivadoTCL>");
                     using (vivadoTCL.CodeBlock())
                     {
                         foreach (var category in categories)
                         {
                             vivadoTCL.AppendLine($"public {category}Commands {category} => new {category}Commands(this);");
                         }
-/*
-                        vivadoTCL.AppendLine($"public VivadoTCL()");
-                        using (vivadoTCL.CodeBlock())
-                        {
-                            foreach (var category in categories)
-                            {
-                                vivadoTCL.AppendLine($"{category} = new {category}Commands(this);");
-                            }
-                        }
-*/
                     }
                 }
+
                 var vivadoTCLFilePath = Path.Combine(generatedPath, $"VivadoTCL.cs");
                 File.WriteAllText(vivadoTCLFilePath, vivadoTCL.ToString());
 

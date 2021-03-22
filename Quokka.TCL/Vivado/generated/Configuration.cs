@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class ConfigurationCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public ConfigurationCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public ConfigurationCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Configure Implementation
+		///
+		///
+		/// TCL Syntax: config_implementation [-quiet] [-verbose] [<list>]
 		///
 		/// This command lets you configure implementation parameters to control the behavior of the
 		/// implementation process.
@@ -39,11 +42,13 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void config_implementation(string list, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("config_implementation");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("list", list);
-			_tcl.Add(command);
+			// TCL Syntax: config_implementation [-quiet] [-verbose] [<list>]
+			_tcl.Add(
+				new SimpleTCLCommand("config_implementation")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(list)
+			);
 		}
 	}
 }

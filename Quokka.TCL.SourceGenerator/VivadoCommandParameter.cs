@@ -8,7 +8,8 @@ namespace Quokka.TCL.SourceGenerator
     {
         static HashSet<string> keywords = new HashSet<string>()
         {
-            "class", "default", "fixed", "object"
+            "class", "default", "fixed", "object", "try", "internal", "ref", "interface",
+            "short", "long", "string"
         };
 
         public string Name;

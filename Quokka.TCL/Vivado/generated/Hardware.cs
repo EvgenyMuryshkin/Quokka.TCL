@@ -6,14 +6,17 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class HardwareCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public HardwareCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public HardwareCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Select Pseudo Channel to add to Activity Monitor on the specified hardware HBM(s). Must
 		/// specify the Memory Controller number first, follow by Pseudo Channel number.
+		///
+		///
+		/// TCL Syntax: add_hw_hbm_pc [-quiet] [-verbose] <mc_num> <pc_num> <hw_objects>
 		///
 		/// The HBM activity monitor (amon) can be used to gain real-time access to performance
 		/// monitoring and temperature sensors certain Xilinx® UltraScale+ devices that include an
@@ -68,16 +71,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void add_hw_hbm_pc(string mc_num, string pc_num, string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("add_hw_hbm_pc");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("mc_num", mc_num);
-			command.RequiredString("pc_num", pc_num);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: add_hw_hbm_pc [-quiet] [-verbose] <mc_num> <pc_num> <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("add_hw_hbm_pc")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(mc_num)
+					.RequiredString(pc_num)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Add an enumerated name-value pair to a hw_probe enumeration.
+		///
+		///
+		/// TCL Syntax: add_hw_probe_enum [-no_gui_update] [-dict <args>] [-quiet] [-verbose] <name> <value> <hw_probe>
 		///
 		/// Assign enumerated name/value pairs to specified hardware probe objects.
 		/// This command is intended to make it easier to monitor the states of signals in the Vivado logic
@@ -157,18 +165,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void add_hw_probe_enum(string name, string value, string hw_probe, bool? no_gui_update = null, string dict = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("add_hw_probe_enum");
-			command.Flag("no_gui_update", no_gui_update);
-			command.OptionalString("dict", dict);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.RequiredString("value", value);
-			command.RequiredString("hw_probe", hw_probe);
-			_tcl.Add(command);
+			// TCL Syntax: add_hw_probe_enum [-no_gui_update] [-dict <args>] [-quiet] [-verbose] <name> <value> <hw_probe>
+			_tcl.Add(
+				new SimpleTCLCommand("add_hw_probe_enum")
+					.Flag("no_gui_update", no_gui_update)
+					.OptionalNamedString("dict", dict)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.RequiredString(value)
+					.RequiredString(hw_probe)
+			);
 		}
 		/// <summary>
 		/// Issue JTAG Program command to hw_device
+		///
+		///
+		/// TCL Syntax: boot_hw_device [-disable_done_check] [-timeout <arg>] [-quiet] [-verbose] <hw_device>
 		///
 		/// Issue JTAG PROGRAM command to the hw_device (FPGA).
 		/// The boot_hw_device command triggers the FPGA boot and board startup sequence. The boot
@@ -204,16 +217,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void boot_hw_device(string hw_device, bool? disable_done_check = null, string timeout = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("boot_hw_device");
-			command.Flag("disable_done_check", disable_done_check);
-			command.OptionalString("timeout", timeout);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_device", hw_device);
-			_tcl.Add(command);
+			// TCL Syntax: boot_hw_device [-disable_done_check] [-timeout <arg>] [-quiet] [-verbose] <hw_device>
+			_tcl.Add(
+				new SimpleTCLCommand("boot_hw_device")
+					.Flag("disable_done_check", disable_done_check)
+					.OptionalNamedString("timeout", timeout)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_device)
+			);
 		}
 		/// <summary>
 		/// Close the hardware tool
+		///
+		///
+		/// TCL Syntax: close_hw_manager [-quiet] [-verbose]
 		///
 		/// Close the Hardware Manager tool in the Vivado Design Suite.
 		/// Opening the Hardware Manager using the open_hw_manager command, is the first step in
@@ -232,13 +250,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void close_hw_manager(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("close_hw_manager");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: close_hw_manager [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("close_hw_manager")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Close a hardware target
+		///
+		///
+		/// TCL Syntax: close_hw_target [-quiet] [-verbose] [<hw_target>]
 		///
 		/// Close the connection to the current or specified hardware target that was previously opened
 		/// using the open_hw_target command.
@@ -266,15 +289,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void close_hw_target(bool? quiet = null, bool? verbose = null, string hw_target = null)
 		{
-			var command = new SimpleTCLCommand("close_hw_target");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_target", hw_target);
-			_tcl.Add(command);
+			// TCL Syntax: close_hw_target [-quiet] [-verbose] [<hw_target>]
+			_tcl.Add(
+				new SimpleTCLCommand("close_hw_target")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_target)
+			);
 		}
 		/// <summary>
 		/// Commit the property changes of the current hardware object. Inputs can be HBM or device
 		/// hardware object. At least one object is required.
+		///
+		///
+		/// TCL Syntax: commit_hw_hbm [-quiet] [-verbose] <hw_objects>
 		///
 		/// Commit the current values of properties defined on the specified HBM controller in the Vivado
 		/// hardware manager to the current hardware device.
@@ -305,15 +333,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void commit_hw_hbm(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("commit_hw_hbm");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: commit_hw_hbm [-quiet] [-verbose] <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("commit_hw_hbm")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Commit the property changes of the current hardware object. Inputs can be any mig, device,
 		/// target, or server hardware object. At least one object is required.
+		///
+		///
+		/// TCL Syntax: commit_hw_mig [-quiet] [-verbose] <hw_objects>
 		///
 		/// Commit the current values of properties defined on the specified memory IP debug core
 		/// hardware objects in the Hardware Manager feature of the Vivado Design Suite to the current
@@ -341,15 +374,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void commit_hw_mig(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("commit_hw_mig");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: commit_hw_mig [-quiet] [-verbose] <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("commit_hw_mig")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Commit the property changes of the current hardware object. Inputs can be any serial I/O
 		/// (except scan and sweep), device, target, or server hardware object. At least one object is required.
+		///
+		///
+		/// TCL Syntax: commit_hw_sio [-quiet] [-verbose] <hw_objects>
 		///
 		/// Commit the current values of properties defined on the specified serial I/O hardware objects in
 		/// the Hardware Manager feature of the Vivado Design Suite to the current hardware device.
@@ -379,15 +417,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void commit_hw_sio(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("commit_hw_sio");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: commit_hw_sio [-quiet] [-verbose] <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("commit_hw_sio")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Commit the property changes of the current hardware object. Inputs can be hw_server,
 		/// hw_target, hw_device or hw_sysmon objects. At least one object is required.
+		///
+		///
+		/// TCL Syntax: commit_hw_sysmon [-quiet] [-verbose] <hw_objects>
 		///
 		/// The commit_hw_sysmon command takes the current property values defined on a hw_sysmon
 		/// object, and commits them to the system monitor registers on the hardware device.
@@ -411,14 +454,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void commit_hw_sysmon(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("commit_hw_sysmon");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: commit_hw_sysmon [-quiet] [-verbose] <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("commit_hw_sysmon")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Write hardware VIO probe OUTPUT_VALUE properties values to VIO core(s).
+		///
+		///
+		/// TCL Syntax: commit_hw_vio [-quiet] [-verbose] <hw_objects>...
 		///
 		/// Commit the current values defined on the probes of the VIO Debug core to the current hardware
 		/// device.
@@ -448,14 +496,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void commit_hw_vio(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("commit_hw_vio");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: commit_hw_vio [-quiet] [-verbose] <hw_objects>...
+			_tcl.Add(
+				new SimpleTCLCommand("commit_hw_vio")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Configure the device GTs for the specified device.
+		///
+		///
+		/// TCL Syntax: config_hw_sio_gts [-dict <args>] [-quiet] [-verbose] <hw_device>
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 171
 		/// </summary>
@@ -478,15 +531,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void config_hw_sio_gts(string hw_device, string dict = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("config_hw_sio_gts");
-			command.OptionalString("dict", dict);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_device", hw_device);
-			_tcl.Add(command);
+			// TCL Syntax: config_hw_sio_gts [-dict <args>] [-quiet] [-verbose] <hw_device>
+			_tcl.Add(
+				new SimpleTCLCommand("config_hw_sio_gts")
+					.OptionalNamedString("dict", dict)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_device)
+			);
 		}
 		/// <summary>
 		/// Open a connection to a hardware server
+		///
+		///
+		/// TCL Syntax: connect_hw_server [-url <arg>] [-cs_url <arg>] [-quiet] [-verbose]
 		///
 		/// IMPORTANT! You must use the open_hw command to open the Hardware Manager in the Vivado Design
 		/// Suite before using this command.
@@ -535,15 +593,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware server</returns>
 		public void connect_hw_server(string url = null, string cs_url = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("connect_hw_server");
-			command.OptionalString("url", url);
-			command.OptionalString("cs_url", cs_url);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: connect_hw_server [-url <arg>] [-cs_url <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("connect_hw_server")
+					.OptionalNamedString("url", url)
+					.OptionalNamedString("cs_url", cs_url)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Create hardware AXI transaction object
+		///
+		///
+		/// TCL Syntax: create_hw_axi_txn [-address <arg>] [-data <arg>] [-size <arg>] -type <arg> [-len <arg>] [-burst <arg>] [-cache <arg>] [-id <arg>] [-force] [-quiet] [-verbose] <name> <hw_axi>
 		///
 		/// Define a read or write transaction for the JTAG to AXI Master core, hw_axi object, specified by
 		/// the get_hw_axis command.
@@ -618,24 +681,29 @@ namespace Quokka.TCL.Vivado
 		/// <returns>New hardware AXI transaction object.</returns>
 		public void create_hw_axi_txn(string type, string name, string hw_axi, string address = null, string data = null, string size = null, string len = null, string burst = null, string cache = null, string id = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_hw_axi_txn");
-			command.OptionalString("address", address);
-			command.OptionalString("data", data);
-			command.OptionalString("size", size);
-			command.RequiredString("type", type);
-			command.OptionalString("len", len);
-			command.OptionalString("burst", burst);
-			command.OptionalString("cache", cache);
-			command.OptionalString("id", id);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.RequiredString("hw_axi", hw_axi);
-			_tcl.Add(command);
+			// TCL Syntax: create_hw_axi_txn [-address <arg>] [-data <arg>] [-size <arg>] -type <arg> [-len <arg>] [-burst <arg>] [-cache <arg>] [-id <arg>] [-force] [-quiet] [-verbose] <name> <hw_axi>
+			_tcl.Add(
+				new SimpleTCLCommand("create_hw_axi_txn")
+					.OptionalNamedString("address", address)
+					.OptionalNamedString("data", data)
+					.OptionalNamedString("size", size)
+					.RequiredNamedString("type", type)
+					.OptionalNamedString("len", len)
+					.OptionalNamedString("burst", burst)
+					.OptionalNamedString("cache", cache)
+					.OptionalNamedString("id", id)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.RequiredString(hw_axi)
+			);
 		}
 		/// <summary>
 		/// Read bitstream file into memory
+		///
+		///
+		/// TCL Syntax: create_hw_bitstream -hw_device <arg> [-mask <arg>] [-nky <arg>] [-detect_partial] [-quiet] [-verbose] [<file>]
 		///
 		/// Read a bitstream file, created with the write_bitstream command, to create a hw_bitstream
 		/// object, and associate that object with a hw_device object in the Hardware Manager feature of
@@ -686,18 +754,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_hw_bitstream(string hw_device, string file, string mask = null, string nky = null, bool? detect_partial = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_hw_bitstream");
-			command.RequiredString("hw_device", hw_device);
-			command.OptionalString("mask", mask);
-			command.OptionalString("nky", nky);
-			command.Flag("detect_partial", detect_partial);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: create_hw_bitstream -hw_device <arg> [-mask <arg>] [-nky <arg>] [-detect_partial] [-quiet] [-verbose] [<file>]
+			_tcl.Add(
+				new SimpleTCLCommand("create_hw_bitstream")
+					.RequiredNamedString("hw_device", hw_device)
+					.OptionalNamedString("mask", mask)
+					.OptionalNamedString("nky", nky)
+					.Flag("detect_partial", detect_partial)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Read cfgmem file into memory
+		///
+		///
+		/// TCL Syntax: create_hw_cfgmem -hw_device <arg> [-quiet] [-verbose] <mem_device>
 		///
 		/// Create a hw_cfgmem object associated with the specified hw_device.
 		/// The process whereby the bitstream data is loaded or programmed into the Xilinx® FPGA is called
@@ -739,15 +812,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_hw_cfgmem(string hw_device, string mem_device, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_hw_cfgmem");
-			command.RequiredString("hw_device", hw_device);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("mem_device", mem_device);
-			_tcl.Add(command);
+			// TCL Syntax: create_hw_cfgmem -hw_device <arg> [-quiet] [-verbose] <mem_device>
+			_tcl.Add(
+				new SimpleTCLCommand("create_hw_cfgmem")
+					.RequiredNamedString("hw_device", hw_device)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(mem_device)
+			);
 		}
 		/// <summary>
 		/// Create a hw_device (jtag chain) on an open target
+		///
+		///
+		/// TCL Syntax: create_hw_device [-idcode <arg>] [-irlength <arg>] [-mask <arg>] [-part <arg>] [-quiet] [-verbose]
 		///
 		/// The Vivado hardware manager supports programming of hardware devices through the use of
 		/// Serial Vector Format (SVF) files. SVF files are ASCII files that contain both programming
@@ -836,17 +914,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_hw_device(string idcode = null, string irlength = null, string mask = null, string part = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_hw_device");
-			command.OptionalString("idcode", idcode);
-			command.OptionalString("irlength", irlength);
-			command.OptionalString("mask", mask);
-			command.OptionalString("part", part);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: create_hw_device [-idcode <arg>] [-irlength <arg>] [-mask <arg>] [-part <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("create_hw_device")
+					.OptionalNamedString("idcode", idcode)
+					.OptionalNamedString("irlength", irlength)
+					.OptionalNamedString("mask", mask)
+					.OptionalNamedString("part", part)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Create hardware probe object
+		///
+		///
+		/// TCL Syntax: create_hw_probe [-no_gui_update] [-map <arg>] [-quiet] [-verbose] <name> <core>
 		///
 		/// This command creates a new user-defined probe on the specified ILA core to define triggers and
 		/// view data in the Vivado Logic Analyzer. The new probe can combine specific bit values of existing
@@ -900,19 +983,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>New hardware probe object.</returns>
 		public void create_hw_probe(string name, string core, bool? no_gui_update = null, string map = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_hw_probe");
-			command.Flag("no_gui_update", no_gui_update);
-			command.OptionalString("map", map);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.RequiredString("core", core);
-			_tcl.Add(command);
+			// TCL Syntax: create_hw_probe [-no_gui_update] [-map <arg>] [-quiet] [-verbose] <name> <core>
+			_tcl.Add(
+				new SimpleTCLCommand("create_hw_probe")
+					.Flag("no_gui_update", no_gui_update)
+					.OptionalNamedString("map", map)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.RequiredString(core)
+			);
 		}
 		/// <summary>
 		/// Create a new link between hardware RX and TX endpoints. There must be at least one hardware
 		/// TX or RX endpoint specified. If one is missing, the endpoint will be treated as Unknown. The
 		/// unknown endpoint can be renamed in a link property.
+		///
+		///
+		/// TCL Syntax: create_hw_sio_link [-description <arg>] [-quiet] [-verbose] [<hw_sio_rx>] [<hw_sio_tx>]
 		///
 		/// Define a communication links between transmitter (TX) and receiver (RX) objects on the GTs of
 		/// the IBERT debug core implemented on the current hardware device.
@@ -949,16 +1037,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The new hardware SIO link</returns>
 		public void create_hw_sio_link(string description = null, bool? quiet = null, bool? verbose = null, string hw_sio_rx = null, string hw_sio_tx = null)
 		{
-			var command = new SimpleTCLCommand("create_hw_sio_link");
-			command.OptionalString("description", description);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_sio_rx", hw_sio_rx);
-			command.OptionalString("hw_sio_tx", hw_sio_tx);
-			_tcl.Add(command);
+			// TCL Syntax: create_hw_sio_link [-description <arg>] [-quiet] [-verbose] [<hw_sio_rx>] [<hw_sio_tx>]
+			_tcl.Add(
+				new SimpleTCLCommand("create_hw_sio_link")
+					.OptionalNamedString("description", description)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_sio_rx)
+					.OptionalString(hw_sio_tx)
+			);
 		}
 		/// <summary>
 		/// Create a new hardware SIO link group.
+		///
+		///
+		/// TCL Syntax: create_hw_sio_linkgroup [-description <arg>] [-quiet] [-verbose] <hw_sio_links>
 		///
 		/// Create a new group to associate the specified TX to RX communication links on the IBERT debug
 		/// core implemented on the current device.
@@ -990,15 +1083,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The new hardware SIO link group</returns>
 		public void create_hw_sio_linkgroup(string hw_sio_links, string description = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_hw_sio_linkgroup");
-			command.OptionalString("description", description);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_sio_links", hw_sio_links);
-			_tcl.Add(command);
+			// TCL Syntax: create_hw_sio_linkgroup [-description <arg>] [-quiet] [-verbose] <hw_sio_links>
+			_tcl.Add(
+				new SimpleTCLCommand("create_hw_sio_linkgroup")
+					.OptionalNamedString("description", description)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_sio_links)
+			);
 		}
 		/// <summary>
 		/// Create a new hardware SIO scan. If a Link object is passed in, it must have a RX Endpoint object.
+		///
+		///
+		/// TCL Syntax: create_hw_sio_scan [-description <arg>] [-link_settings <arg>] [-quiet] [-verbose] <scan_type> <hw_sio_object>
 		///
 		/// Create a serial I/O analyzer scan object for the specified communication link on the IBERT debug
 		/// core.
@@ -1041,18 +1139,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The new hardware SIO scan</returns>
 		public void create_hw_sio_scan(string scan_type, string hw_sio_object, string description = null, string link_settings = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_hw_sio_scan");
-			command.OptionalString("description", description);
-			command.OptionalString("link_settings", link_settings);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("scan_type", scan_type);
-			command.RequiredString("hw_sio_object", hw_sio_object);
-			_tcl.Add(command);
+			// TCL Syntax: create_hw_sio_scan [-description <arg>] [-link_settings <arg>] [-quiet] [-verbose] <scan_type> <hw_sio_object>
+			_tcl.Add(
+				new SimpleTCLCommand("create_hw_sio_scan")
+					.OptionalNamedString("description", description)
+					.OptionalNamedString("link_settings", link_settings)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(scan_type)
+					.RequiredString(hw_sio_object)
+			);
 		}
 		/// <summary>
 		/// Create a new hardware SIO sweep. If a Link object is passed in, it must have a RX Endpoint
 		/// object.
+		///
+		///
+		/// TCL Syntax: create_hw_sio_sweep [-description <arg>] [-iteration_settings <arg>] [-quiet] [-verbose] <scan_type> [<hw_sio_link>]
 		///
 		/// Create a serial I/O analyzer link sweep object to run multiple scans across a range of values.
 		/// To analyze the margin of a given link, it is often helpful to run a scan of the link using the
@@ -1097,17 +1200,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The new hardware SIO sweep</returns>
 		public void create_hw_sio_sweep(string scan_type, string description = null, string iteration_settings = null, bool? quiet = null, bool? verbose = null, string hw_sio_link = null)
 		{
-			var command = new SimpleTCLCommand("create_hw_sio_sweep");
-			command.OptionalString("description", description);
-			command.OptionalString("iteration_settings", iteration_settings);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("scan_type", scan_type);
-			command.OptionalString("hw_sio_link", hw_sio_link);
-			_tcl.Add(command);
+			// TCL Syntax: create_hw_sio_sweep [-description <arg>] [-iteration_settings <arg>] [-quiet] [-verbose] <scan_type> [<hw_sio_link>]
+			_tcl.Add(
+				new SimpleTCLCommand("create_hw_sio_sweep")
+					.OptionalNamedString("description", description)
+					.OptionalNamedString("iteration_settings", iteration_settings)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(scan_type)
+					.OptionalString(hw_sio_link)
+			);
 		}
 		/// <summary>
 		/// Create a hw_target (jtag chain) and set its name
+		///
+		///
+		/// TCL Syntax: create_hw_target [-copy <arg>] [-quiet] [-verbose] <target_name>
 		///
 		/// The Vivado hardware manager supports programming of hardware devices through the use of
 		/// Serial Vector Format (SVF) files. SVF files are ASCII files that contain both programming
@@ -1172,15 +1280,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware targets</returns>
 		public void create_hw_target(string target_name, string copy = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_hw_target");
-			command.OptionalString("copy", copy);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("target_name", target_name);
-			_tcl.Add(command);
+			// TCL Syntax: create_hw_target [-copy <arg>] [-quiet] [-verbose] <target_name>
+			_tcl.Add(
+				new SimpleTCLCommand("create_hw_target")
+					.OptionalNamedString("copy", copy)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(target_name)
+			);
 		}
 		/// <summary>
 		/// Get or set the current hardware cfgmem
+		///
+		///
+		/// TCL Syntax: current_hw_cfgmem [-hw_device <args>] [-quiet] [-verbose] [<hw_cfgmem>]
 		///
 		/// Set or return the current hardware cfgmem object.
 		/// The process whereby the design specific data is loaded or programmed into the Xilinx® FPGA is
@@ -1217,15 +1330,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware cfgmem</returns>
 		public void current_hw_cfgmem(string hw_device = null, bool? quiet = null, bool? verbose = null, string hw_cfgmem = null)
 		{
-			var command = new SimpleTCLCommand("current_hw_cfgmem");
-			command.OptionalString("hw_device", hw_device);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_cfgmem", hw_cfgmem);
-			_tcl.Add(command);
+			// TCL Syntax: current_hw_cfgmem [-hw_device <args>] [-quiet] [-verbose] [<hw_cfgmem>]
+			_tcl.Add(
+				new SimpleTCLCommand("current_hw_cfgmem")
+					.OptionalNamedString("hw_device", hw_device)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_cfgmem)
+			);
 		}
 		/// <summary>
 		/// Get or set the current hardware device
+		///
+		///
+		/// TCL Syntax: current_hw_device [-quiet] [-verbose] [<hw_device>]
 		///
 		/// Set or return the current Xilinx FPGA targeted by the Hardware Manager in the Vivado Design
 		/// Suite for programming and debug.
@@ -1272,14 +1390,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware device</returns>
 		public void current_hw_device(bool? quiet = null, bool? verbose = null, string hw_device = null)
 		{
-			var command = new SimpleTCLCommand("current_hw_device");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_device", hw_device);
-			_tcl.Add(command);
+			// TCL Syntax: current_hw_device [-quiet] [-verbose] [<hw_device>]
+			_tcl.Add(
+				new SimpleTCLCommand("current_hw_device")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_device)
+			);
 		}
 		/// <summary>
 		/// Get or set the current hardware ILA
+		///
+		///
+		/// TCL Syntax: current_hw_ila [-quiet] [-verbose] [<hw_ila>]
 		///
 		/// Set or return the current hardware ILA debug core targeted by the Hardware Manager in the
 		/// Vivado Design Suite for programming and debug.
@@ -1316,14 +1439,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware ILA</returns>
 		public void current_hw_ila(bool? quiet = null, bool? verbose = null, string hw_ila = null)
 		{
-			var command = new SimpleTCLCommand("current_hw_ila");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_ila", hw_ila);
-			_tcl.Add(command);
+			// TCL Syntax: current_hw_ila [-quiet] [-verbose] [<hw_ila>]
+			_tcl.Add(
+				new SimpleTCLCommand("current_hw_ila")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_ila)
+			);
 		}
 		/// <summary>
 		/// Get or set the current hardware ILA data
+		///
+		///
+		/// TCL Syntax: current_hw_ila_data [-quiet] [-verbose] [<hw_ila_data>]
 		///
 		/// Set or return the current ILA debug core data object.
 		/// The ILA data object is created in the Vivado logic analyzer using the upload_hw_ila_data
@@ -1356,14 +1484,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware ILA data</returns>
 		public void current_hw_ila_data(bool? quiet = null, bool? verbose = null, string hw_ila_data = null)
 		{
-			var command = new SimpleTCLCommand("current_hw_ila_data");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_ila_data", hw_ila_data);
-			_tcl.Add(command);
+			// TCL Syntax: current_hw_ila_data [-quiet] [-verbose] [<hw_ila_data>]
+			_tcl.Add(
+				new SimpleTCLCommand("current_hw_ila_data")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_ila_data)
+			);
 		}
 		/// <summary>
 		/// Get or set the current hardware server
+		///
+		///
+		/// TCL Syntax: current_hw_server [-quiet] [-verbose] [<hw_server>]
 		///
 		/// Defines the current hardware server from the list of hardware servers that are connected to the
 		/// Vivado Design Suite, or returns the currently connected hardware server object.
@@ -1403,14 +1536,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware server</returns>
 		public void current_hw_server(bool? quiet = null, bool? verbose = null, string hw_server = null)
 		{
-			var command = new SimpleTCLCommand("current_hw_server");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_server", hw_server);
-			_tcl.Add(command);
+			// TCL Syntax: current_hw_server [-quiet] [-verbose] [<hw_server>]
+			_tcl.Add(
+				new SimpleTCLCommand("current_hw_server")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_server)
+			);
 		}
 		/// <summary>
 		/// Get or set the current hardware target
+		///
+		///
+		/// TCL Syntax: current_hw_target [-quiet] [-verbose] [<hw_target>]
 		///
 		/// After opening the Hardware Manager in the Vivado Design Suite, and connecting to the Xilinx
 		/// hardware server (hw_server) using the connect_hw_server command, you will need to set
@@ -1454,14 +1592,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware target</returns>
 		public void current_hw_target(bool? quiet = null, bool? verbose = null, string hw_target = null)
 		{
-			var command = new SimpleTCLCommand("current_hw_target");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_target", hw_target);
-			_tcl.Add(command);
+			// TCL Syntax: current_hw_target [-quiet] [-verbose] [<hw_target>]
+			_tcl.Add(
+				new SimpleTCLCommand("current_hw_target")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_target)
+			);
 		}
 		/// <summary>
 		/// Delete hardware AXI Transaction objects
+		///
+		///
+		/// TCL Syntax: delete_hw_axi_txn [-quiet] [-verbose] <hw_axi_txns>...
 		///
 		/// This command deletes the named AXI transaction objects, hw_axi_txn, from the specified hw_axi
 		/// objects.
@@ -1486,14 +1629,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_hw_axi_txn(string hw_axi_txns, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_hw_axi_txn");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_axi_txns", hw_axi_txns);
-			_tcl.Add(command);
+			// TCL Syntax: delete_hw_axi_txn [-quiet] [-verbose] <hw_axi_txns>...
+			_tcl.Add(
+				new SimpleTCLCommand("delete_hw_axi_txn")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_axi_txns)
+			);
 		}
 		/// <summary>
 		/// Removes the HW Bitstream object from a list of hardware devices.
+		///
+		///
+		/// TCL Syntax: delete_hw_bitstream [-of_objects <args>] [-quiet] [-verbose]
 		///
 		/// This command deletes the hw_bitstream object from the specified hw_device objects.
 		/// This clears the PROGRAM.HW_BITSTREAM and PROGRAM.FILE properties on the hw_device
@@ -1516,14 +1664,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware devices</returns>
 		public void delete_hw_bitstream(string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_hw_bitstream");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: delete_hw_bitstream [-of_objects <args>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("delete_hw_bitstream")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Removes hw_cfgmem object from memory
+		///
+		///
+		/// TCL Syntax: delete_hw_cfgmem [-quiet] [-verbose] <cfgmem>
 		///
 		/// Removes the specified hw_cfgmem object from the current hw_device.
 		///
@@ -1543,14 +1696,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_hw_cfgmem(string cfgmem, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_hw_cfgmem");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("cfgmem", cfgmem);
-			_tcl.Add(command);
+			// TCL Syntax: delete_hw_cfgmem [-quiet] [-verbose] <cfgmem>
+			_tcl.Add(
+				new SimpleTCLCommand("delete_hw_cfgmem")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(cfgmem)
+			);
 		}
 		/// <summary>
 		/// Delete hardware probe objects
+		///
+		///
+		/// TCL Syntax: delete_hw_probe [-quiet] [-verbose] <hw_probes>...
 		///
 		/// Delete a user-defined probe from the current hw_ila. The user-define probe must be created by
 		/// the create_hw_probe command.
@@ -1575,14 +1733,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_hw_probe(string hw_probes, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("delete_hw_probe");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_probes", hw_probes);
-			_tcl.Add(command);
+			// TCL Syntax: delete_hw_probe [-quiet] [-verbose] <hw_probes>...
+			_tcl.Add(
+				new SimpleTCLCommand("delete_hw_probe")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_probes)
+			);
 		}
 		/// <summary>
 		/// Delete a hw_target
+		///
+		///
+		/// TCL Syntax: delete_hw_target [-quiet] [-verbose] [<target_object>]
 		///
 		/// This command deletes a virtual hardware target from the current_hw_server.
 		/// The hw_target object must be a virtual target created by the create_hw_target command, or
@@ -1608,15 +1771,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void delete_hw_target(bool? quiet = null, bool? verbose = null, string target_object = null)
 		{
-			var command = new SimpleTCLCommand("delete_hw_target");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("target_object", target_object);
-			_tcl.Add(command);
+			// TCL Syntax: delete_hw_target [-quiet] [-verbose] [<target_object>]
+			_tcl.Add(
+				new SimpleTCLCommand("delete_hw_target")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(target_object)
+			);
 		}
 		/// <summary>
 		/// Automatically detect links between RX and TX endpoints. Create a new link group to contain the
 		/// links.
+		///
+		///
+		/// TCL Syntax: detect_hw_sio_links [-force] [-quiet] [-verbose]
 		///
 		/// Automatically detects existing or previously defined communication pathways between GT
 		/// transmitters and receivers that are defined on the open hardware target.
@@ -1649,14 +1817,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>A new hardware SIO link group of found links</returns>
 		public void detect_hw_sio_links(bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("detect_hw_sio_links");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: detect_hw_sio_links [-force] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("detect_hw_sio_links")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Close a connection to a hardware server
+		///
+		///
+		/// TCL Syntax: disconnect_hw_server [-quiet] [-verbose] [<hw_server>]
 		///
 		/// Disconnect the current or specified Vivado tools hardware server from the Vivado Design Suite.
 		/// The current hardware server is either the last connected hardware server, or one you have
@@ -1681,14 +1854,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void disconnect_hw_server(bool? quiet = null, bool? verbose = null, string hw_server = null)
 		{
-			var command = new SimpleTCLCommand("disconnect_hw_server");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_server", hw_server);
-			_tcl.Add(command);
+			// TCL Syntax: disconnect_hw_server [-quiet] [-verbose] [<hw_server>]
+			_tcl.Add(
+				new SimpleTCLCommand("disconnect_hw_server")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_server)
+			);
 		}
 		/// <summary>
 		/// Display hardware ILA data in viewer
+		///
+		///
+		/// TCL Syntax: display_hw_ila_data [-wcfg <arg>] [-reset] [-quiet] [-verbose] [<hw_ila_data>...]
 		///
 		/// This command is intended for use with the graphical user interface of the Vivado Design Suite
 		/// logic analyzer feature. It displays the specified ILA debug core data object in a wave config
@@ -1730,16 +1908,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void display_hw_ila_data(string wcfg = null, bool? reset = null, bool? quiet = null, bool? verbose = null, string hw_ila_data = null)
 		{
-			var command = new SimpleTCLCommand("display_hw_ila_data");
-			command.OptionalString("wcfg", wcfg);
-			command.Flag("reset", reset);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_ila_data", hw_ila_data);
-			_tcl.Add(command);
+			// TCL Syntax: display_hw_ila_data [-wcfg <arg>] [-reset] [-quiet] [-verbose] [<hw_ila_data>...]
+			_tcl.Add(
+				new SimpleTCLCommand("display_hw_ila_data")
+					.OptionalNamedString("wcfg", wcfg)
+					.Flag("reset", reset)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_ila_data)
+			);
 		}
 		/// <summary>
 		/// Display an existing hardware SIO scan.
+		///
+		///
+		/// TCL Syntax: display_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
 		///
 		/// This command is intended for use with the graphical user interface of the Vivado Design Suite
 		/// serial I/O analyzer feature. It displays the specified SIO scan data object, or objects, in a Scan
@@ -1764,14 +1947,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void display_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("display_hw_sio_scan");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_sio_scans", hw_sio_scans);
-			_tcl.Add(command);
+			// TCL Syntax: display_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
+			_tcl.Add(
+				new SimpleTCLCommand("display_hw_sio_scan")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_sio_scans)
+			);
 		}
 		/// <summary>
 		/// Execute SVF file on current_hw_target
+		///
+		///
+		/// TCL Syntax: execute_hw_svf [-quiet] [-verbose] <file_name>
 		///
 		/// The Vivado hardware manager supports programming of hardware devices through the use of
 		/// Serial Vector Format (SVF) files. SVF files are ASCII files that contain both programming
@@ -1810,14 +1998,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void execute_hw_svf(string file_name, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("execute_hw_svf");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file_name", file_name);
-			_tcl.Add(command);
+			// TCL Syntax: execute_hw_svf [-quiet] [-verbose] <file_name>
+			_tcl.Add(
+				new SimpleTCLCommand("execute_hw_svf")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file_name)
+			);
 		}
 		/// <summary>
 		/// Get a list of cfgmem_parts available in the software
+		///
+		///
+		/// TCL Syntax: get_cfgmem_parts [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Get a list of configuration flash memory devices supported by the Vivado Design Suite or Vivado
 		/// Lab Edition.
@@ -1876,18 +2069,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of cfgmem_part objects</returns>
 		public void get_cfgmem_parts(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_cfgmem_parts");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_cfgmem_parts [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_cfgmem_parts")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware AXI transactions.
+		///
+		///
+		/// TCL Syntax: get_hw_axi_txns [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the read or write transactions for the specified JTAG to AXI Master core, hw_axi object.
 		/// The JTAG to AXI Master is a customizable IP core that works as an AXI Master to drive AXI
@@ -1940,18 +2138,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hw_axi_txns</returns>
 		public void get_hw_axi_txns(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_axi_txns");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_axi_txns [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_axi_txns")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware AXI objects.
+		///
+		///
+		/// TCL Syntax: get_hw_axis [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the JTAG to AXI Master core objects, or hw_axi objects, defined on the current hardware
 		/// device.
@@ -2006,18 +2209,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hw_axi</returns>
 		public void get_hw_axis(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_axis");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_axis [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_axis")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware cfgmems.
+		///
+		///
+		/// TCL Syntax: get_hw_cfgmems [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Get a list of hardware configuration memory (hw_cfgmem) objects created for the current
 		/// hw_device.
@@ -2062,17 +2270,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware cfgmems</returns>
 		public void get_hw_cfgmems(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_cfgmems");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_cfgmems [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_cfgmems")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of Versal integrated and soft DDRMC cores.
+		///
+		///
+		/// TCL Syntax: get_hw_ddrmcs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Xilinx Versal devices include integrated DDR Memory Controllers (DDRMC), as well as fabric
 		/// based memory controllers. Refer to the LogiCore IP Product Guide: Versal ACAP Network on Chip
@@ -2123,18 +2336,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>integrated and soft DDRMC cores</returns>
 		public void get_hw_ddrmcs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_ddrmcs");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_ddrmcs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_ddrmcs")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware devices.
+		///
+		///
+		/// TCL Syntax: get_hw_devices [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the hardware devices on the open target of a connected hardware server.
 		/// Each hardware target can have one or more Xilinx devices to program, or to use for debugging
@@ -2175,18 +2393,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware devices</returns>
 		public void get_hw_devices(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_devices");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_devices [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_devices")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware HBM cores.
+		///
+		///
+		/// TCL Syntax: get_hw_hbms [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Certain Xilinx® UltraScale+ devices include an integrated High-Bandwidth Memory (HBM)
 		/// controller. Refer to the LogiCore IP Product Guide: AXI High Bandwidth Memory Controller
@@ -2239,18 +2462,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware HBM cores</returns>
 		public void get_hw_hbms(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_hbms");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_hbms [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_hbms")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware ILA data objects.
+		///
+		///
+		/// TCL Syntax: get_hw_ila_datas [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the ILA data objects in the Vivado logic analyzer.
 		/// The upload_hw_ila_data command creates a hw_ila_data object in the process of moving
@@ -2296,18 +2524,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware ILA data</returns>
 		public void get_hw_ila_datas(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_ila_datas");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_ila_datas [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_ila_datas")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware ILA.
+		///
+		///
+		/// TCL Syntax: get_hw_ilas [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the ILA debug core objects defined on the current hardware device.
 		/// The Integrated Logic Analyzer (ILA) debug core lets you perform in-system debug of
@@ -2377,18 +2610,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware ILAs</returns>
 		public void get_hw_ilas(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_ilas");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_ilas [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_ilas")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware Migs cores.
+		///
+		///
+		/// TCL Syntax: get_hw_migs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the hw_mig objects on the current hardware device.
 		/// Memory IP included in the Xilinx IP catalog are used to generate memory controllers and
@@ -2447,18 +2685,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware migs cores</returns>
 		public void get_hw_migs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_migs");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_migs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_migs")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware probes.
+		///
+		///
+		/// TCL Syntax: get_hw_probes [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the hw_probe objects in the Hardware Manager that are defined on signals in the design,
 		/// or that are assigned to the specified ILA or VIO debug cores.
@@ -2513,18 +2756,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware probes</returns>
 		public void get_hw_probes(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_probes");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_probes [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_probes")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware servers.
+		///
+		///
+		/// TCL Syntax: get_hw_servers [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// IMPORTANT! You must use the open_hw command to open the Hardware Manager in the Vivado Design
 		/// Suite before using this command.
@@ -2566,17 +2814,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware servers</returns>
 		public void get_hw_servers(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_servers");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_servers [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_servers")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO GT commons.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_commons [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the QPLL objects, hw_sio_commons, defined on the IBERT debug core on the current
 		/// hardware device.
@@ -2626,18 +2879,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO GT commons</returns>
 		public void get_hw_sio_commons(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_commons");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_commons [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_commons")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO GT groups.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_gtgroups [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the groups of GTs, hw_sio_gtgroups, as they relate to the quads that are in use on the
 		/// IBERT debug core on the current hardware device.
@@ -2690,18 +2948,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO GT groups.</returns>
 		public void get_hw_sio_gtgroups(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_gtgroups");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_gtgroups [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_gtgroups")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO GTs.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_gts [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the Gigabit Transceiver objects (GTs), hw_sio_gt, that are in use on the IBERT debug core
 		/// on the current hardware device.
@@ -2753,18 +3016,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO GTs</returns>
 		public void get_hw_sio_gts(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_gts");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_gts [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_gts")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO IBERT cores.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_iberts [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the Integrated Bit Error Ratio Tester (IBERT) debug core objects, hw_sio_ibert, defined
 		/// on the current hardware device.
@@ -2822,18 +3090,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO IBERT cores.</returns>
 		public void get_hw_sio_iberts(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_iberts");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_iberts [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_iberts")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO link groups.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_linkgroups [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the defined groups, or associations of communication links between TX and RX objects
 		/// on the GTs of the IBERT debug core defined on the current hardware device.
@@ -2878,18 +3151,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO link groups</returns>
 		public void get_hw_sio_linkgroups(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_linkgroups");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_linkgroups [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_linkgroups")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO links.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_links [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the communication links between TX and RX objects on the GTs of the IBERT debug
 		/// core defined on the current hardware device.
@@ -2935,18 +3213,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO links</returns>
 		public void get_hw_sio_links(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_links");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_links [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_links")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO PLLs.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_plls [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the PLL objects, hw_sio_pll, defined on the IBERT debug core on the current hardware
 		/// device.
@@ -2995,18 +3278,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO PLLs</returns>
 		public void get_hw_sio_plls(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_plls");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_plls [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_plls")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO RXs.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_rxs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the receiver objects, hw_sio_rx, of the Gigabit Transceivers (GTs) that are in use on the
 		/// IBERT debug core on the current hardware device.
@@ -3051,18 +3339,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO RXs</returns>
 		public void get_hw_sio_rxs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_rxs");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_rxs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_rxs")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO scans.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_scans [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns serial I/O analyzer scan objects for the IBERT debug core.
 		/// To analyze the margin of a given link, it is often helpful to run a scan of the link using the
@@ -3105,18 +3398,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO scans</returns>
 		public void get_hw_sio_scans(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_scans");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_scans [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_scans")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO sweeps.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_sweeps [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Return the serial I/O analyzer link sweep objects defined on the IBERT debug core.
 		/// To analyze the margin of a given link, it is often helpful to run a scan of the link using the
@@ -3167,18 +3465,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO sweeps</returns>
 		public void get_hw_sio_sweeps(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_sweeps");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_sweeps [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_sweeps")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SIO TXs.
+		///
+		///
+		/// TCL Syntax: get_hw_sio_txs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the transmitter objects, hw_sio_tx, of the Gigabit Transceivers (GTs) that are in use on the
 		/// IBERT debug core on the current hardware device.
@@ -3223,18 +3526,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO TXs</returns>
 		public void get_hw_sio_txs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sio_txs");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sio_txs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sio_txs")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get the system monitor register value
+		///
+		///
+		/// TCL Syntax: get_hw_sysmon_reg [-quiet] [-verbose] <hw_sysmon> <hexaddress>
 		///
 		/// Returns the hex value of the system monitor register defined at the specified address of the
 		/// specified hw_sysmon object.
@@ -3282,15 +3590,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Register value in Hex.</returns>
 		public void get_hw_sysmon_reg(string hw_sysmon, string hexaddress, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sysmon_reg");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_sysmon", hw_sysmon);
-			command.RequiredString("hexaddress", hexaddress);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sysmon_reg [-quiet] [-verbose] <hw_sysmon> <hexaddress>
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sysmon_reg")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_sysmon)
+					.RequiredString(hexaddress)
+			);
 		}
 		/// <summary>
 		/// Get list of hardware SysMons.
+		///
+		///
+		/// TCL Syntax: get_hw_sysmons [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the Sysmon debug core objects defined on the current hardware device.
 		/// The System Monitor (SYSMON) Analog-to-Digital Converter (ADC) is used to measure die
@@ -3352,18 +3665,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware sysmons</returns>
 		public void get_hw_sysmons(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_sysmons");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_sysmons [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_sysmons")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware targets.
+		///
+		///
+		/// TCL Syntax: get_hw_targets [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the available hardware targets of the connected hardware servers.
 		/// The hardware target is a system board containing a JTAG chain of one or more Xilinx devices that
@@ -3414,18 +3732,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware targets</returns>
 		public void get_hw_targets(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_targets");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_targets [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_targets")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get a list of hardware VIOs.
+		///
+		///
+		/// TCL Syntax: get_hw_vios [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Returns the Virtual Input/Output (VIO) debug core objects that are defined on the current
 		/// hardware device, hw_device.
@@ -3477,18 +3800,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware VIOs</returns>
 		public void get_hw_vios(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_hw_vios");
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_hw_vios [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Add(
+				new SimpleTCLCommand("get_hw_vios")
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Return probe sample values
+		///
+		///
+		/// TCL Syntax: list_hw_samples [-quiet] [-verbose] [<hw_probe>]
 		///
 		/// Writes data samples from the specified hw_probe object on the current hw_ila.
 		/// The number of captured samples returned from the specified probe is equal to the DATA_DEPTH
@@ -3535,14 +3863,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>samples</returns>
 		public void list_hw_samples(bool? quiet = null, bool? verbose = null, string hw_probe = null)
 		{
-			var command = new SimpleTCLCommand("list_hw_samples");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_probe", hw_probe);
-			_tcl.Add(command);
+			// TCL Syntax: list_hw_samples [-quiet] [-verbose] [<hw_probe>]
+			_tcl.Add(
+				new SimpleTCLCommand("list_hw_samples")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_probe)
+			);
 		}
 		/// <summary>
 		/// Open the hardware tool
+		///
+		///
+		/// TCL Syntax: open_hw_manager [-quiet] [-verbose]
 		///
 		/// Open the Hardware Manager in the Vivado Design Suite in either the Vivado IDE or in Tcl or
 		/// batch mode. Opening the Hardware Manager is the first step in programming and/or debugging
@@ -3592,13 +3925,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void open_hw_manager(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("open_hw_manager");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: open_hw_manager [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("open_hw_manager")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Open a connection to a hardware target on the hardware server
+		///
+		///
+		/// TCL Syntax: open_hw_target [-jtag_mode <arg>] [-xvc_url <arg>] [-auto_calibrate] [-quiet] [-verbose] [<hw_target>]
 		///
 		/// Opens a connection to the specified hardware target of the connected hardware servers, or
 		/// opens the current hardware target.
@@ -3649,17 +3987,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void open_hw_target(string jtag_mode = null, string xvc_url = null, bool? auto_calibrate = null, bool? quiet = null, bool? verbose = null, string hw_target = null)
 		{
-			var command = new SimpleTCLCommand("open_hw_target");
-			command.OptionalString("jtag_mode", jtag_mode);
-			command.OptionalString("xvc_url", xvc_url);
-			command.Flag("auto_calibrate", auto_calibrate);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_target", hw_target);
-			_tcl.Add(command);
+			// TCL Syntax: open_hw_target [-jtag_mode <arg>] [-xvc_url <arg>] [-auto_calibrate] [-quiet] [-verbose] [<hw_target>]
+			_tcl.Add(
+				new SimpleTCLCommand("open_hw_target")
+					.OptionalNamedString("jtag_mode", jtag_mode)
+					.OptionalNamedString("xvc_url", xvc_url)
+					.Flag("auto_calibrate", auto_calibrate)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_target)
+			);
 		}
 		/// <summary>
 		/// Pause Activity Monitor runs for the specified hardware HBM(s)
+		///
+		///
+		/// TCL Syntax: pause_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
 		///
 		/// The pause_hw_hbm_amon command pauses a running HBM activity monitor in the Vivado
 		/// hardware manager that has been previously started using the run_hw_hbm_amon command.
@@ -3684,14 +4027,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void pause_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("pause_hw_hbm_amon");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: pause_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("pause_hw_hbm_amon")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Program Cfgmem object
+		///
+		///
+		/// TCL Syntax: program_hw_cfgmem [-svf_file <arg>] [-force] [-append] [-quiet] [-verbose] [<hw_cfgmem>...]
 		///
 		/// Erase, blank check, program, and/or verify the specified hw_cfgmem object with the memory
 		/// configuration file defined in the object's PROGRAM.FILE property. The memory configuration file
@@ -3759,17 +4107,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void program_hw_cfgmem(string hw_cfgmem, string svf_file = null, bool? force = null, bool? append = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("program_hw_cfgmem");
-			command.OptionalString("svf_file", svf_file);
-			command.Flag("force", force);
-			command.Flag("append", append);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_cfgmem", hw_cfgmem);
-			_tcl.Add(command);
+			// TCL Syntax: program_hw_cfgmem [-svf_file <arg>] [-force] [-append] [-quiet] [-verbose] [<hw_cfgmem>...]
+			_tcl.Add(
+				new SimpleTCLCommand("program_hw_cfgmem")
+					.OptionalNamedString("svf_file", svf_file)
+					.Flag("force", force)
+					.Flag("append", append)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_cfgmem)
+			);
 		}
 		/// <summary>
 		/// Program hardware devices
+		///
+		///
+		/// TCL Syntax: program_hw_devices [-key <arg>] [-clear] [-skip_program_keys] [-skip_program_rsa] [-user_efuse <arg>] [-user_efuse_128 <arg>] [-control_efuse <arg>] [-security_efuse <arg>] [-only_export_efuse] [-svf_file <arg>] [-efuse_export_file <arg>] [-disable_eos_check] [-skip_reset] [-force] [-append] [-type <arg>] [-quiet] [-verbose] [<hw_device>...]
 		///
 		/// Program the specified hardware device object or objects on the open hardware target of the
 		/// current hardware server.
@@ -3895,30 +4248,35 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware devices</returns>
 		public void program_hw_devices(string key = null, bool? clear = null, bool? skip_program_keys = null, bool? skip_program_rsa = null, string user_efuse = null, string user_efuse_128 = null, string control_efuse = null, string security_efuse = null, bool? only_export_efuse = null, string svf_file = null, string efuse_export_file = null, bool? disable_eos_check = null, bool? skip_reset = null, bool? force = null, bool? append = null, string type = null, bool? quiet = null, bool? verbose = null, string hw_device = null)
 		{
-			var command = new SimpleTCLCommand("program_hw_devices");
-			command.OptionalString("key", key);
-			command.Flag("clear", clear);
-			command.Flag("skip_program_keys", skip_program_keys);
-			command.Flag("skip_program_rsa", skip_program_rsa);
-			command.OptionalString("user_efuse", user_efuse);
-			command.OptionalString("user_efuse_128", user_efuse_128);
-			command.OptionalString("control_efuse", control_efuse);
-			command.OptionalString("security_efuse", security_efuse);
-			command.Flag("only_export_efuse", only_export_efuse);
-			command.OptionalString("svf_file", svf_file);
-			command.OptionalString("efuse_export_file", efuse_export_file);
-			command.Flag("disable_eos_check", disable_eos_check);
-			command.Flag("skip_reset", skip_reset);
-			command.Flag("force", force);
-			command.Flag("append", append);
-			command.OptionalString("type", type);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_device", hw_device);
-			_tcl.Add(command);
+			// TCL Syntax: program_hw_devices [-key <arg>] [-clear] [-skip_program_keys] [-skip_program_rsa] [-user_efuse <arg>] [-user_efuse_128 <arg>] [-control_efuse <arg>] [-security_efuse <arg>] [-only_export_efuse] [-svf_file <arg>] [-efuse_export_file <arg>] [-disable_eos_check] [-skip_reset] [-force] [-append] [-type <arg>] [-quiet] [-verbose] [<hw_device>...]
+			_tcl.Add(
+				new SimpleTCLCommand("program_hw_devices")
+					.OptionalNamedString("key", key)
+					.Flag("clear", clear)
+					.Flag("skip_program_keys", skip_program_keys)
+					.Flag("skip_program_rsa", skip_program_rsa)
+					.OptionalNamedString("user_efuse", user_efuse)
+					.OptionalNamedString("user_efuse_128", user_efuse_128)
+					.OptionalNamedString("control_efuse", control_efuse)
+					.OptionalNamedString("security_efuse", security_efuse)
+					.Flag("only_export_efuse", only_export_efuse)
+					.OptionalNamedString("svf_file", svf_file)
+					.OptionalNamedString("efuse_export_file", efuse_export_file)
+					.Flag("disable_eos_check", disable_eos_check)
+					.Flag("skip_reset", skip_reset)
+					.Flag("force", force)
+					.Flag("append", append)
+					.OptionalNamedString("type", type)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_device)
+			);
 		}
 		/// <summary>
 		/// Read hardware ILA data from a file
+		///
+		///
+		/// TCL Syntax: read_hw_ila_data [-quiet] [-verbose] <file>
 		///
 		/// Read ILA debug core data from the specified file, and create an hw_ila_data object.
 		/// The ILA debug sample data is acquired from a running device using the upload_hw_ila_data
@@ -3950,15 +4308,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Name of the output file</returns>
 		public void read_hw_ila_data(string file, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_hw_ila_data");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: read_hw_ila_data [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("read_hw_ila_data")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Read hardware SIO scan data from a file. A hardware SIO scan object will be created if not
 		/// provided.
+		///
+		///
+		/// TCL Syntax: read_hw_sio_scan [-quiet] [-verbose] <file> [<hw_sio_scan>]
 		///
 		/// Read a hardware SIO scan data file and create a hw_sio_scan object in the Hardware Manager
 		/// feature of the Vivado Design Suite.
@@ -3991,16 +4354,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO scan object</returns>
 		public void read_hw_sio_scan(string file, bool? quiet = null, bool? verbose = null, string hw_sio_scan = null)
 		{
-			var command = new SimpleTCLCommand("read_hw_sio_scan");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			command.OptionalString("hw_sio_scan", hw_sio_scan);
-			_tcl.Add(command);
+			// TCL Syntax: read_hw_sio_scan [-quiet] [-verbose] <file> [<hw_sio_scan>]
+			_tcl.Add(
+				new SimpleTCLCommand("read_hw_sio_scan")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+					.OptionalString(hw_sio_scan)
+			);
 		}
 		/// <summary>
 		/// Read hardware SIO sweep data from a directory. A hardware SIO sweep object will be created if
 		/// not provided.
+		///
+		///
+		/// TCL Syntax: read_hw_sio_sweep [-quiet] [-verbose] <directory> [<hw_sio_sweep>]
 		///
 		/// Read a hardware SIO sweep data directory and create a hw_sio_sweep object in the Hardware
 		/// Manager feature of the Vivado Design Suite.
@@ -4034,15 +4402,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware SIO sweep object</returns>
 		public void read_hw_sio_sweep(string directory, bool? quiet = null, bool? verbose = null, string hw_sio_sweep = null)
 		{
-			var command = new SimpleTCLCommand("read_hw_sio_sweep");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("directory", directory);
-			command.OptionalString("hw_sio_sweep", hw_sio_sweep);
-			_tcl.Add(command);
+			// TCL Syntax: read_hw_sio_sweep [-quiet] [-verbose] <directory> [<hw_sio_sweep>]
+			_tcl.Add(
+				new SimpleTCLCommand("read_hw_sio_sweep")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(directory)
+					.OptionalString(hw_sio_sweep)
+			);
 		}
 		/// <summary>
 		/// Readback data from the hw_cfgmem object
+		///
+		///
+		/// TCL Syntax: readback_hw_cfgmem [-checksum] [-force] [-all] [-offset <arg>] -file <arg> [-format <arg>] [-datacount <arg>] [-quiet] [-verbose] [<hw_cfgmem>...]
 		///
 		/// Read programming data off of the hardware configuration memory device, specified as a
 		/// hw_cfgmem object.
@@ -4099,21 +4472,26 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void readback_hw_cfgmem(string file, bool? checksum = null, bool? force = null, bool? all = null, string offset = null, string format = null, string datacount = null, bool? quiet = null, bool? verbose = null, string hw_cfgmem = null)
 		{
-			var command = new SimpleTCLCommand("readback_hw_cfgmem");
-			command.Flag("checksum", checksum);
-			command.Flag("force", force);
-			command.Flag("all", all);
-			command.OptionalString("offset", offset);
-			command.RequiredString("file", file);
-			command.OptionalString("format", format);
-			command.OptionalString("datacount", datacount);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_cfgmem", hw_cfgmem);
-			_tcl.Add(command);
+			// TCL Syntax: readback_hw_cfgmem [-checksum] [-force] [-all] [-offset <arg>] -file <arg> [-format <arg>] [-datacount <arg>] [-quiet] [-verbose] [<hw_cfgmem>...]
+			_tcl.Add(
+				new SimpleTCLCommand("readback_hw_cfgmem")
+					.Flag("checksum", checksum)
+					.Flag("force", force)
+					.Flag("all", all)
+					.OptionalNamedString("offset", offset)
+					.RequiredNamedString("file", file)
+					.OptionalNamedString("format", format)
+					.OptionalNamedString("datacount", datacount)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_cfgmem)
+			);
 		}
 		/// <summary>
 		/// Readback hardware devices
+		///
+		///
+		/// TCL Syntax: readback_hw_device [-force] [-capture] [-readback_file <arg>] [-bin_file <arg>] [-quiet] [-verbose] [<hw_device>...]
 		///
 		/// Read bitstream data from the current hardware device and write it to the specified readback or
 		/// binary file.
@@ -4155,18 +4533,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware devices</returns>
 		public void readback_hw_device(bool? force = null, bool? capture = null, string readback_file = null, string bin_file = null, bool? quiet = null, bool? verbose = null, string hw_device = null)
 		{
-			var command = new SimpleTCLCommand("readback_hw_device");
-			command.Flag("force", force);
-			command.Flag("capture", capture);
-			command.OptionalString("readback_file", readback_file);
-			command.OptionalString("bin_file", bin_file);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_device", hw_device);
-			_tcl.Add(command);
+			// TCL Syntax: readback_hw_device [-force] [-capture] [-readback_file <arg>] [-bin_file <arg>] [-quiet] [-verbose] [<hw_device>...]
+			_tcl.Add(
+				new SimpleTCLCommand("readback_hw_device")
+					.Flag("force", force)
+					.Flag("capture", capture)
+					.OptionalNamedString("readback_file", readback_file)
+					.OptionalNamedString("bin_file", bin_file)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_device)
+			);
 		}
 		/// <summary>
 		/// Refresh hardware AXI object status.
+		///
+		///
+		/// TCL Syntax: refresh_hw_axi [-quiet] [-verbose] [<hw_axis>...]
 		///
 		/// Refresh the STATUS properties of the hw_axi object with the values from the current hw_device.
 		/// The refresh command takes the values from the status registers of the JTAG to AXI MASTER on
@@ -4194,16 +4577,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void refresh_hw_axi(string hw_axis, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("refresh_hw_axi");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_axis", hw_axis);
-			_tcl.Add(command);
+			// TCL Syntax: refresh_hw_axi [-quiet] [-verbose] [<hw_axis>...]
+			_tcl.Add(
+				new SimpleTCLCommand("refresh_hw_axi")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_axis)
+			);
 		}
 		/// <summary>
 		/// Refresh the status of the current hardware object. Inputs need to be any DDRMC object. At least
 		/// one object is required. If properties are specified, but do not exist in the object, those properties
 		/// will not be refreshed.
+		///
+		///
+		/// TCL Syntax: refresh_hw_ddrmc [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 		///
 		/// Refreshes the in-memory contents of all of the properties, or specified properties, of the
 		/// specified Versal DDR Memory Controller (DDRMC) objects with values read from the current
@@ -4245,16 +4633,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void refresh_hw_ddrmc(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("refresh_hw_ddrmc");
-			command.Flag("regexp", regexp);
-			command.OptionalString("properties", properties);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: refresh_hw_ddrmc [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("refresh_hw_ddrmc")
+					.Flag("regexp", regexp)
+					.OptionalNamedString("properties", properties)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Refresh a hardware device. Read device and core information from device.
+		///
+		///
+		/// TCL Syntax: refresh_hw_device [-update_hw_probes <arg>] [-disable_done_check] [-force_poll] [-quiet] [-verbose] [<hw_device>]
 		///
 		/// Refreshes the in-memory view of the device by scanning for debug and IBERT cores on the
 		/// specified hw_device object, and also reads a probe file when directed.
@@ -4292,19 +4685,24 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void refresh_hw_device(string update_hw_probes = null, bool? disable_done_check = null, bool? force_poll = null, bool? quiet = null, bool? verbose = null, string hw_device = null)
 		{
-			var command = new SimpleTCLCommand("refresh_hw_device");
-			command.OptionalString("update_hw_probes", update_hw_probes);
-			command.Flag("disable_done_check", disable_done_check);
-			command.Flag("force_poll", force_poll);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_device", hw_device);
-			_tcl.Add(command);
+			// TCL Syntax: refresh_hw_device [-update_hw_probes <arg>] [-disable_done_check] [-force_poll] [-quiet] [-verbose] [<hw_device>]
+			_tcl.Add(
+				new SimpleTCLCommand("refresh_hw_device")
+					.OptionalNamedString("update_hw_probes", update_hw_probes)
+					.Flag("disable_done_check", disable_done_check)
+					.Flag("force_poll", force_poll)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_device)
+			);
 		}
 		/// <summary>
 		/// Refresh the status of the current hardware object. Inputs can be HBM or device hardware object.
 		/// At least one object is required. If properties are specified that do not exist in the object, that
 		/// property will not be refreshed.
+		///
+		///
+		/// TCL Syntax: refresh_hw_hbm [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 		///
 		/// Refreshes the in-memory view of all of the properties, or specified properties, of the specified
 		/// HBM controller objects with values read from the current hardware device.
@@ -4348,18 +4746,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void refresh_hw_hbm(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("refresh_hw_hbm");
-			command.Flag("regexp", regexp);
-			command.OptionalString("properties", properties);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: refresh_hw_hbm [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("refresh_hw_hbm")
+					.Flag("regexp", regexp)
+					.OptionalNamedString("properties", properties)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Refresh the status of the current hardware object. Inputs can be any mig, device, target, or server
 		/// hardware object. At least one object is required. If properties are specified that do not exist in the
 		/// object, that property will not be refreshed.
+		///
+		///
+		/// TCL Syntax: refresh_hw_mig [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 		///
 		/// Refreshes the in-memory view of all of the properties, or specified properties, of the specified
 		/// hw_mig objects with values read from the current hardware device.
@@ -4395,16 +4798,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void refresh_hw_mig(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("refresh_hw_mig");
-			command.Flag("regexp", regexp);
-			command.OptionalString("properties", properties);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: refresh_hw_mig [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("refresh_hw_mig")
+					.Flag("regexp", regexp)
+					.OptionalNamedString("properties", properties)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Refresh a connection to a hardware server
+		///
+		///
+		/// TCL Syntax: refresh_hw_server [-force_poll] [-quiet] [-verbose] [<hw_server>]
 		///
 		/// Refresh or reopen the connection to the current or specified hardware server.
 		/// This command returns the connection messages from the hardware server, or returns an error if
@@ -4430,17 +4838,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void refresh_hw_server(bool? force_poll = null, bool? quiet = null, bool? verbose = null, string hw_server = null)
 		{
-			var command = new SimpleTCLCommand("refresh_hw_server");
-			command.Flag("force_poll", force_poll);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_server", hw_server);
-			_tcl.Add(command);
+			// TCL Syntax: refresh_hw_server [-force_poll] [-quiet] [-verbose] [<hw_server>]
+			_tcl.Add(
+				new SimpleTCLCommand("refresh_hw_server")
+					.Flag("force_poll", force_poll)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_server)
+			);
 		}
 		/// <summary>
 		/// Refresh the status of the specified hardware objects. Inputs can be any serial I/O (except scan
 		/// and sweep), device, target, or server hardware object. At least one object is required. If properties
 		/// are specified that do not exist in the object, that property will not be refreshed.
+		///
+		///
+		/// TCL Syntax: refresh_hw_sio [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 		///
 		/// Refreshes the in-memory view of all of the properties, or specified properties, of the specified
 		/// hw_sio objects with values read from the actual object on the hardware device.
@@ -4476,18 +4889,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void refresh_hw_sio(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("refresh_hw_sio");
-			command.Flag("regexp", regexp);
-			command.OptionalString("properties", properties);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: refresh_hw_sio [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("refresh_hw_sio")
+					.Flag("regexp", regexp)
+					.OptionalNamedString("properties", properties)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Refresh the status of the current hardware object. Inputs can be hw_server, hw_target,
 		/// hw_device or hw_sysmon objects. At least one object is required. If properties are specified that
 		/// do not exist in the object, that property will not be refreshed.
+		///
+		///
+		/// TCL Syntax: refresh_hw_sysmon [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 		///
 		/// Refresh the properties of the hw_sysmon object with the values on the system monitor (XADC)
 		/// from the current hw_device.
@@ -4523,16 +4941,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void refresh_hw_sysmon(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("refresh_hw_sysmon");
-			command.Flag("regexp", regexp);
-			command.OptionalString("properties", properties);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: refresh_hw_sysmon [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("refresh_hw_sysmon")
+					.Flag("regexp", regexp)
+					.OptionalNamedString("properties", properties)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Refresh a hardware target
+		///
+		///
+		/// TCL Syntax: refresh_hw_target [-force_poll] [-quiet] [-verbose] [<hw_target>]
 		///
 		/// Refresh the connection to the specified hardware target on the current hardware server, and
 		/// reload the hw_target object in the Hardware Manager of the Vivado Design Suite. If no
@@ -4572,16 +4995,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void refresh_hw_target(bool? force_poll = null, bool? quiet = null, bool? verbose = null, string hw_target = null)
 		{
-			var command = new SimpleTCLCommand("refresh_hw_target");
-			command.Flag("force_poll", force_poll);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_target", hw_target);
-			_tcl.Add(command);
+			// TCL Syntax: refresh_hw_target [-force_poll] [-quiet] [-verbose] [<hw_target>]
+			_tcl.Add(
+				new SimpleTCLCommand("refresh_hw_target")
+					.Flag("force_poll", force_poll)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_target)
+			);
 		}
 		/// <summary>
 		/// Update hardware probe INPUT_VALUE and ACTIVITY_VALUE properties with values read from
 		/// hardware VIO core(s).
+		///
+		///
+		/// TCL Syntax: refresh_hw_vio [-update_output_values] [-quiet] [-verbose] <hw_vios>...
 		///
 		/// Update the INPUT_VALUE and ACTIVITY_VALUE properties of the input probes of the specified
 		/// VIO debug cores with values read from the hw_vio core on the hardware device.
@@ -4615,16 +5043,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void refresh_hw_vio(string hw_vios, bool? update_output_values = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("refresh_hw_vio");
-			command.Flag("update_output_values", update_output_values);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_vios", hw_vios);
-			_tcl.Add(command);
+			// TCL Syntax: refresh_hw_vio [-update_output_values] [-quiet] [-verbose] <hw_vios>...
+			_tcl.Add(
+				new SimpleTCLCommand("refresh_hw_vio")
+					.Flag("update_output_values", update_output_values)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_vios)
+			);
 		}
 		/// <summary>
 		/// De-select Pseudo Channel from Activity Monitor on the specified hardware HBM(s). Must
 		/// specify the Memory Controller number first, follow by Pseudo Channel number.
+		///
+		///
+		/// TCL Syntax: remove_hw_hbm_pc [-quiet] [-verbose] <mc_num> <pc_num> <hw_objects>
 		///
 		/// The remove_hw_hbm_pc command removes a memory channel (mc)/psuedo channel (pc) that
 		/// has been previously added to an HBM activity monitor using the add_hw_hbm_pc command.
@@ -4660,16 +5093,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_hw_hbm_pc(string mc_num, string pc_num, string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("remove_hw_hbm_pc");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("mc_num", mc_num);
-			command.RequiredString("pc_num", pc_num);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: remove_hw_hbm_pc [-quiet] [-verbose] <mc_num> <pc_num> <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("remove_hw_hbm_pc")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(mc_num)
+					.RequiredString(pc_num)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Remove enumerated name-value pairs from a hw_probe enumeration.
+		///
+		///
+		/// TCL Syntax: remove_hw_probe_enum [-no_gui_update] [-list <args>] [-remove_all] [-quiet] [-verbose] <hw_probe>
 		///
 		/// Remove the enumerated name/value pairs defined on a specified hw_probe object.
 		/// The enumerated names (ENUM property) are added to a hw_probe object using the
@@ -4710,17 +5148,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_hw_probe_enum(string hw_probe, bool? no_gui_update = null, string list = null, bool? remove_all = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("remove_hw_probe_enum");
-			command.Flag("no_gui_update", no_gui_update);
-			command.OptionalString("list", list);
-			command.Flag("remove_all", remove_all);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_probe", hw_probe);
-			_tcl.Add(command);
+			// TCL Syntax: remove_hw_probe_enum [-no_gui_update] [-list <args>] [-remove_all] [-quiet] [-verbose] <hw_probe>
+			_tcl.Add(
+				new SimpleTCLCommand("remove_hw_probe_enum")
+					.Flag("no_gui_update", no_gui_update)
+					.OptionalNamedString("list", list)
+					.Flag("remove_all", remove_all)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_probe)
+			);
 		}
 		/// <summary>
 		/// Remove an existing hardware SIO link.
+		///
+		///
+		/// TCL Syntax: remove_hw_sio_link [-quiet] [-verbose] <hw_sio_links>
 		///
 		/// Removes the specified communication links between TX and RX objects on the GTs of the IBERT
 		/// debug core defined on the current hardware device.
@@ -4746,14 +5189,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_hw_sio_link(string hw_sio_links, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("remove_hw_sio_link");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_sio_links", hw_sio_links);
-			_tcl.Add(command);
+			// TCL Syntax: remove_hw_sio_link [-quiet] [-verbose] <hw_sio_links>
+			_tcl.Add(
+				new SimpleTCLCommand("remove_hw_sio_link")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_sio_links)
+			);
 		}
 		/// <summary>
 		/// Remove an existing hardware SIO link group.
+		///
+		///
+		/// TCL Syntax: remove_hw_sio_linkgroup [-quiet] [-verbose] <hw_sio_linkgroups>
 		///
 		/// Removes the specified group that associates communication links between TX and RX objects on
 		/// the GTs of the IBERT debug core defined on the current hardware device.
@@ -4781,14 +5229,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_hw_sio_linkgroup(string hw_sio_linkgroups, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("remove_hw_sio_linkgroup");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_sio_linkgroups", hw_sio_linkgroups);
-			_tcl.Add(command);
+			// TCL Syntax: remove_hw_sio_linkgroup [-quiet] [-verbose] <hw_sio_linkgroups>
+			_tcl.Add(
+				new SimpleTCLCommand("remove_hw_sio_linkgroup")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_sio_linkgroups)
+			);
 		}
 		/// <summary>
 		/// Remove an existing hardware SIO scan.
+		///
+		///
+		/// TCL Syntax: remove_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
 		///
 		/// Remove the specified serial I/O analyzer scan object.
 		/// This command returns nothing if successful, or returns an error if the command fails.
@@ -4809,14 +5262,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("remove_hw_sio_scan");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_sio_scans", hw_sio_scans);
-			_tcl.Add(command);
+			// TCL Syntax: remove_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
+			_tcl.Add(
+				new SimpleTCLCommand("remove_hw_sio_scan")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_sio_scans)
+			);
 		}
 		/// <summary>
 		/// Remove an existing hardware SIO sweep.
+		///
+		///
+		/// TCL Syntax: remove_hw_sio_sweep [-quiet] [-verbose] <hw_sio_sweeps>
 		///
 		/// Remove the specified serial I/O analyzer sweep scan object.
 		/// This command returns nothing if successful, or returns an error if the command fails.
@@ -4837,14 +5295,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void remove_hw_sio_sweep(string hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("remove_hw_sio_sweep");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_sio_sweeps", hw_sio_sweeps);
-			_tcl.Add(command);
+			// TCL Syntax: remove_hw_sio_sweep [-quiet] [-verbose] <hw_sio_sweeps>
+			_tcl.Add(
+				new SimpleTCLCommand("remove_hw_sio_sweep")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_sio_sweeps)
+			);
 		}
 		/// <summary>
 		/// Report formatted hardware AXI Transaction data
+		///
+		///
+		/// TCL Syntax: report_hw_axi_txn [-w <arg>] [-t <arg>] [-quiet] [-verbose] <hw_axi_txns>...
 		///
 		/// Report the results of the specified AXI transactions on the JTAG to AXI Master, hw_axi.
 		/// You can use this command after creating hw_axi_txn objects on existing hw_axi objects, and
@@ -4883,17 +5346,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void report_hw_axi_txn(string hw_axi_txns, string w = null, string t = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_hw_axi_txn");
-			command.OptionalString("w", w);
-			command.OptionalString("t", t);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_axi_txns", hw_axi_txns);
-			_tcl.Add(command);
+			// TCL Syntax: report_hw_axi_txn [-w <arg>] [-t <arg>] [-quiet] [-verbose] <hw_axi_txns>...
+			_tcl.Add(
+				new SimpleTCLCommand("report_hw_axi_txn")
+					.OptionalNamedString("w", w)
+					.OptionalNamedString("t", t)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_axi_txns)
+			);
 		}
 		/// <summary>
 		/// Formatted report on Versal integrated and soft Memory Controllers' (DDRMCs) memory
 		/// configurations, calibration status, stages, and window margins data.
+		///
+		///
+		/// TCL Syntax: report_hw_ddrmc [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] <hw_objects>
 		///
 		/// Report formatted information on memory IP hardware configuration, calibration, and margin.
 		/// Does not include the graphical margin scan plots that are available within the Vivado logic
@@ -4938,17 +5406,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void report_hw_ddrmc(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_hw_ddrmc");
-			command.OptionalString("file", file);
-			command.Flag("append", append);
-			command.Flag("return_string", return_string);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: report_hw_ddrmc [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("report_hw_ddrmc")
+					.OptionalNamedString("file", file)
+					.Flag("append", append)
+					.Flag("return_string", return_string)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Report formatted hardware MIG calibration status and margin data
+		///
+		///
+		/// TCL Syntax: report_hw_mig [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] <hw_objects>
 		///
 		/// Report formatted information on memory IP hardware configuration, calibration, and margin.
 		/// Does not include the graphical margin scan plots that are available within the Vivado logic
@@ -4993,17 +5466,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void report_hw_mig(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_hw_mig");
-			command.OptionalString("file", file);
-			command.Flag("append", append);
-			command.Flag("return_string", return_string);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: report_hw_mig [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("report_hw_mig")
+					.OptionalNamedString("file", file)
+					.Flag("append", append)
+					.Flag("return_string", return_string)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Report properties on hardware objects
+		///
+		///
+		/// TCL Syntax: report_hw_targets [-quiet] [-verbose]
 		///
 		/// This command returns properties related to the configuration of all hw_targets on the
 		/// current_hw_server object. The information reported by this command includes:
@@ -5032,13 +5510,18 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware objects</returns>
 		public void report_hw_targets(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("report_hw_targets");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: report_hw_targets [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("report_hw_targets")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Reset hardware AXI core state.
+		///
+		///
+		/// TCL Syntax: reset_hw_axi [-quiet] [-verbose] [<hw_axis>...]
 		///
 		/// Reset the STATUS properties of the specified hw_axi objects, or the current device.
 		/// The reset_hw_axi restores the hw_axi core on the current device to a known state from which
@@ -5067,14 +5550,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void reset_hw_axi(string hw_axis, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("reset_hw_axi");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_axis", hw_axis);
-			_tcl.Add(command);
+			// TCL Syntax: reset_hw_axi [-quiet] [-verbose] [<hw_axis>...]
+			_tcl.Add(
+				new SimpleTCLCommand("reset_hw_axi")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_axis)
+			);
 		}
 		/// <summary>
 		/// Reset hardware ILA control properties to default values.
+		///
+		///
+		/// TCL Syntax: reset_hw_ila [-reset_compare_values <arg>] [-quiet] [-verbose] [<hw_ilas>...]
 		///
 		/// Reset the trigger and capture configuration properties on the specified ILA debug core, and the
 		/// TRIGGER_COMPARE_VALUE and CAPTURE_COMPARE_VALUE properties on the core's debug
@@ -5117,16 +5605,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void reset_hw_ila(string reset_compare_values = null, bool? quiet = null, bool? verbose = null, string hw_ilas = null)
 		{
-			var command = new SimpleTCLCommand("reset_hw_ila");
-			command.OptionalString("reset_compare_values", reset_compare_values);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_ilas", hw_ilas);
-			_tcl.Add(command);
+			// TCL Syntax: reset_hw_ila [-reset_compare_values <arg>] [-quiet] [-verbose] [<hw_ilas>...]
+			_tcl.Add(
+				new SimpleTCLCommand("reset_hw_ila")
+					.OptionalNamedString("reset_compare_values", reset_compare_values)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_ilas)
+			);
 		}
 		/// <summary>
 		/// Reset hardware VIO ACTIVITY_VALUE properties, for hardware probes associated with specified
 		/// hardware VIO objects.
+		///
+		///
+		/// TCL Syntax: reset_hw_vio_activity [-quiet] [-verbose] <hw_vios>...
 		///
 		/// Resets the ACTIVITY_VALUE properties for all hardware probes on the specified VIO debug core
 		/// objects. The ACTIVITY_VALUE property is used by the Vivado IDE to represent transitions on
@@ -5153,14 +5646,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void reset_hw_vio_activity(string hw_vios, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("reset_hw_vio_activity");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_vios", hw_vios);
-			_tcl.Add(command);
+			// TCL Syntax: reset_hw_vio_activity [-quiet] [-verbose] <hw_vios>...
+			_tcl.Add(
+				new SimpleTCLCommand("reset_hw_vio_activity")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_vios)
+			);
 		}
 		/// <summary>
 		/// Reset hardware VIO core outputs to initial values.
+		///
+		///
+		/// TCL Syntax: reset_hw_vio_outputs [-quiet] [-verbose] <hw_vios>...
 		///
 		/// Reset the hardware VIO debug core outputs to their initial, or "reset" state.
 		/// The Virtual Input/Output (VIO) debug core can both monitor and drive internal signals on a
@@ -5190,14 +5688,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void reset_hw_vio_outputs(string hw_vios, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("reset_hw_vio_outputs");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_vios", hw_vios);
-			_tcl.Add(command);
+			// TCL Syntax: reset_hw_vio_outputs [-quiet] [-verbose] <hw_vios>...
+			_tcl.Add(
+				new SimpleTCLCommand("reset_hw_vio_outputs")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_vios)
+			);
 		}
 		/// <summary>
 		/// Resume Activity Monitor runs after paused for the specified hardware HBM(s)
+		///
+		///
+		/// TCL Syntax: resume_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
 		///
 		/// The resume_hw_hbm_amon command restarts a running HBM activity monitor in the Vivado
 		/// hardware manager that has been previously paused using the pause_hw_hbm_amon command.
@@ -5222,14 +5725,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void resume_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("resume_hw_hbm_amon");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: resume_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("resume_hw_hbm_amon")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Run hardware AXI read/write transaction(s)and update transaction status in hw_axi object..
+		///
+		///
+		/// TCL Syntax: run_hw_axi [-queue] [-quiet] [-verbose] <hw_axi_txns>...
 		///
 		/// Run the AXI transactions defined on the specified JTAG to AXI Master core.
 		/// AXI transactions are created with the create_hw_axi_txns command.
@@ -5256,15 +5764,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void run_hw_axi(string hw_axi_txns, bool? queue = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("run_hw_axi");
-			command.Flag("queue", queue);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_axi_txns", hw_axi_txns);
-			_tcl.Add(command);
+			// TCL Syntax: run_hw_axi [-queue] [-quiet] [-verbose] <hw_axi_txns>...
+			_tcl.Add(
+				new SimpleTCLCommand("run_hw_axi")
+					.Flag("queue", queue)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_axi_txns)
+			);
 		}
 		/// <summary>
 		/// Enable Activity Monitor runs for the specified hardware HBM(s)
+		///
+		///
+		/// TCL Syntax: run_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
 		///
 		/// The HBM activity monitor (amon) can be used to gain real-time access to performance
 		/// monitoring and temperature sensors certain Xilinx® UltraScale+ devices that include an
@@ -5299,14 +5812,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void run_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("run_hw_hbm_amon");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: run_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("run_hw_hbm_amon")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Arm hardware ILAs.
+		///
+		///
+		/// TCL Syntax: run_hw_ila [-trigger_now] [-compile_only] [-file <arg>] [-force] [-quiet] [-verbose] [<hw_ilas>...]
 		///
 		/// Arm triggers and run the specified hardware ILA debug cores on the current hardware device.
 		/// The Integrated Logic Analyzer (ILA) debug core lets you perform in-system debug of
@@ -5476,18 +5994,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void run_hw_ila(bool? trigger_now = null, bool? compile_only = null, string file = null, bool? force = null, bool? quiet = null, bool? verbose = null, string hw_ilas = null)
 		{
-			var command = new SimpleTCLCommand("run_hw_ila");
-			command.Flag("trigger_now", trigger_now);
-			command.Flag("compile_only", compile_only);
-			command.OptionalString("file", file);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_ilas", hw_ilas);
-			_tcl.Add(command);
+			// TCL Syntax: run_hw_ila [-trigger_now] [-compile_only] [-file <arg>] [-force] [-quiet] [-verbose] [<hw_ilas>...]
+			_tcl.Add(
+				new SimpleTCLCommand("run_hw_ila")
+					.Flag("trigger_now", trigger_now)
+					.Flag("compile_only", compile_only)
+					.OptionalNamedString("file", file)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_ilas)
+			);
 		}
 		/// <summary>
 		/// Run hardware SIO scans.
+		///
+		///
+		/// TCL Syntax: run_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
 		///
 		/// Run the specified serial I/O analyzer link scan.
 		/// To analyze the margin of a given link, it is often helpful to run a scan of the link using the
@@ -5519,14 +6042,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void run_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("run_hw_sio_scan");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_sio_scans", hw_sio_scans);
-			_tcl.Add(command);
+			// TCL Syntax: run_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
+			_tcl.Add(
+				new SimpleTCLCommand("run_hw_sio_scan")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_sio_scans)
+			);
 		}
 		/// <summary>
 		/// Run hardware SIO sweeps.
+		///
+		///
+		/// TCL Syntax: run_hw_sio_sweep [-quiet] [-verbose] <hw_sio_sweeps>
 		///
 		/// Run a serial I/O analyzer link sweep scan to run multiple scans across a range of values.
 		/// To analyze the margin of a given link, it is often helpful to run a scan of the link using the
@@ -5557,14 +6085,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void run_hw_sio_sweep(string hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("run_hw_sio_sweep");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_sio_sweeps", hw_sio_sweeps);
-			_tcl.Add(command);
+			// TCL Syntax: run_hw_sio_sweep [-quiet] [-verbose] <hw_sio_sweeps>
+			_tcl.Add(
+				new SimpleTCLCommand("run_hw_sio_sweep")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_sio_sweeps)
+			);
 		}
 		/// <summary>
 		/// change to a stable state of a specified transition
+		///
+		///
+		/// TCL Syntax: run_state_hw_jtag [-state <args>] [-quiet] [-verbose] <stable_state>
 		///
 		/// Transition the hw_jtag object of the current hardware target to the specified TAP stable state.
 		/// A hw_jtag object is created by the Hardware Manager feature of the Vivado Design Suite when a
@@ -5629,15 +6162,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware JTAG</returns>
 		public void run_state_hw_jtag(string stable_state, string state = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("run_state_hw_jtag");
-			command.OptionalString("state", state);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("stable_state", stable_state);
-			_tcl.Add(command);
+			// TCL Syntax: run_state_hw_jtag [-state <args>] [-quiet] [-verbose] <stable_state>
+			_tcl.Add(
+				new SimpleTCLCommand("run_state_hw_jtag")
+					.OptionalNamedString("state", state)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(stable_state)
+			);
 		}
 		/// <summary>
 		/// Forces IEEE 1149.1 TAP state machine to a stable state for a specified wait period
+		///
+		///
+		/// TCL Syntax: runtest_hw_jtag [-wait_state <arg>] [-end_state <arg>] [-sec <arg>] [-max_wait <arg>] [-tck <arg>] [-quiet] [-verbose]
 		///
 		/// Specify a wait operation for the hw_jtag object state machine which defines:
 		/// • Which TAP stable state to go to perform the wait operation.
@@ -5692,18 +6230,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void runtest_hw_jtag(string wait_state = null, string end_state = null, string sec = null, string max_wait = null, string tck = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("runtest_hw_jtag");
-			command.OptionalString("wait_state", wait_state);
-			command.OptionalString("end_state", end_state);
-			command.OptionalString("sec", sec);
-			command.OptionalString("max_wait", max_wait);
-			command.OptionalString("tck", tck);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: runtest_hw_jtag [-wait_state <arg>] [-end_state <arg>] [-sec <arg>] [-max_wait <arg>] [-tck <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("runtest_hw_jtag")
+					.OptionalNamedString("wait_state", wait_state)
+					.OptionalNamedString("end_state", end_state)
+					.OptionalNamedString("sec", sec)
+					.OptionalNamedString("max_wait", max_wait)
+					.OptionalNamedString("tck", tck)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Perform shift DR on 'hw_jtag'.
+		///
+		///
+		/// TCL Syntax: scan_dr_hw_jtag [-tdi <arg>] [-tdo <arg>] [-mask <arg>] [-smask <arg>] [-quiet] [-verbose] <length>
 		///
 		/// The scan_dr_hw_jtag command specifies a scan pattern to be scanned into the JTAG
 		/// interface target data register.
@@ -5773,18 +6316,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware TDO</returns>
 		public void scan_dr_hw_jtag(string length, string tdi = null, string tdo = null, string mask = null, string smask = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("scan_dr_hw_jtag");
-			command.OptionalString("tdi", tdi);
-			command.OptionalString("tdo", tdo);
-			command.OptionalString("mask", mask);
-			command.OptionalString("smask", smask);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("length", length);
-			_tcl.Add(command);
+			// TCL Syntax: scan_dr_hw_jtag [-tdi <arg>] [-tdo <arg>] [-mask <arg>] [-smask <arg>] [-quiet] [-verbose] <length>
+			_tcl.Add(
+				new SimpleTCLCommand("scan_dr_hw_jtag")
+					.OptionalNamedString("tdi", tdi)
+					.OptionalNamedString("tdo", tdo)
+					.OptionalNamedString("mask", mask)
+					.OptionalNamedString("smask", smask)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(length)
+			);
 		}
 		/// <summary>
 		/// Perform shift IR on 'hw_jtag'.
+		///
+		///
+		/// TCL Syntax: scan_ir_hw_jtag [-tdi <arg>] [-tdo <arg>] [-mask <arg>] [-smask <arg>] [-quiet] [-verbose] <length>
 		///
 		/// The scan_ir_hw_jtag command specifies a scan pattern to be scanned into the JTAG
 		/// interface target instruction register.
@@ -5852,18 +6400,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware TDO</returns>
 		public void scan_ir_hw_jtag(string length, string tdi = null, string tdo = null, string mask = null, string smask = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("scan_ir_hw_jtag");
-			command.OptionalString("tdi", tdi);
-			command.OptionalString("tdo", tdo);
-			command.OptionalString("mask", mask);
-			command.OptionalString("smask", smask);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("length", length);
-			_tcl.Add(command);
+			// TCL Syntax: scan_ir_hw_jtag [-tdi <arg>] [-tdo <arg>] [-mask <arg>] [-smask <arg>] [-quiet] [-verbose] <length>
+			_tcl.Add(
+				new SimpleTCLCommand("scan_ir_hw_jtag")
+					.OptionalNamedString("tdi", tdi)
+					.OptionalNamedString("tdo", tdo)
+					.OptionalNamedString("mask", mask)
+					.OptionalNamedString("smask", smask)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(length)
+			);
 		}
 		/// <summary>
 		/// Set the system monitor register value
+		///
+		///
+		/// TCL Syntax: set_hw_sysmon_reg [-quiet] [-verbose] <hw_sysmon> <hexaddress> <hexdata>
 		///
 		/// Set the system monitor register at the specified address to the hex value specified. This
 		/// command identifies a register on the hw_sysmon on the current device through its hex address
@@ -5911,16 +6464,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void set_hw_sysmon_reg(string hw_sysmon, string hexaddress, string hexdata, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("set_hw_sysmon_reg");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_sysmon", hw_sysmon);
-			command.RequiredString("hexaddress", hexaddress);
-			command.RequiredString("hexdata", hexdata);
-			_tcl.Add(command);
+			// TCL Syntax: set_hw_sysmon_reg [-quiet] [-verbose] <hw_sysmon> <hexaddress> <hexdata>
+			_tcl.Add(
+				new SimpleTCLCommand("set_hw_sysmon_reg")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_sysmon)
+					.RequiredString(hexaddress)
+					.RequiredString(hexdata)
+			);
 		}
 		/// <summary>
 		/// Disable Activity Monitor runs for the specified hardware HBM(s)
+		///
+		///
+		/// TCL Syntax: stop_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
 		///
 		/// The stop_hw_hbm_amon command stops a running HBM activity monitor in the Vivado
 		/// hardware manager that has been previously started using the run_hw_hbm_amon command.
@@ -5945,14 +6503,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void stop_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("stop_hw_hbm_amon");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_objects", hw_objects);
-			_tcl.Add(command);
+			// TCL Syntax: stop_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
+			_tcl.Add(
+				new SimpleTCLCommand("stop_hw_hbm_amon")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_objects)
+			);
 		}
 		/// <summary>
 		/// Stop hardware SIO scans.
+		///
+		///
+		/// TCL Syntax: stop_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
 		///
 		/// Stop the specified scan running in the Vivado serial I/O analyzer.
 		/// To analyze the margin of a given link, it is often helpful to run a scan of the link using the
@@ -5979,14 +6542,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void stop_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("stop_hw_sio_scan");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_sio_scans", hw_sio_scans);
-			_tcl.Add(command);
+			// TCL Syntax: stop_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
+			_tcl.Add(
+				new SimpleTCLCommand("stop_hw_sio_scan")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_sio_scans)
+			);
 		}
 		/// <summary>
 		/// Stop hardware SIO sweeps.
+		///
+		///
+		/// TCL Syntax: stop_hw_sio_sweep [-quiet] [-verbose] <hw_sio_sweeps>
 		///
 		/// Stop the specified sweep scan.
 		/// To analyze the margin of a given link, it is often helpful to run a scan of the link using the
@@ -6015,14 +6583,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void stop_hw_sio_sweep(string hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("stop_hw_sio_sweep");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_sio_sweeps", hw_sio_sweeps);
-			_tcl.Add(command);
+			// TCL Syntax: stop_hw_sio_sweep [-quiet] [-verbose] <hw_sio_sweeps>
+			_tcl.Add(
+				new SimpleTCLCommand("stop_hw_sio_sweep")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_sio_sweeps)
+			);
 		}
 		/// <summary>
 		/// Update the SmartLynq firmware image
+		///
+		///
+		/// TCL Syntax: update_hw_firmware [-file_path <arg>] [-config_path <arg>] [-skip_update] [-reset] [-format] [-flash] [-quiet] [-verbose] [<hw_server>]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1736
 		/// </summary>
@@ -6068,20 +6641,25 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void update_hw_firmware(string file_path = null, string config_path = null, bool? skip_update = null, bool? reset = null, bool? format = null, bool? flash = null, bool? quiet = null, bool? verbose = null, string hw_server = null)
 		{
-			var command = new SimpleTCLCommand("update_hw_firmware");
-			command.OptionalString("file_path", file_path);
-			command.OptionalString("config_path", config_path);
-			command.Flag("skip_update", skip_update);
-			command.Flag("reset", reset);
-			command.Flag("format", format);
-			command.Flag("flash", flash);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_server", hw_server);
-			_tcl.Add(command);
+			// TCL Syntax: update_hw_firmware [-file_path <arg>] [-config_path <arg>] [-skip_update] [-reset] [-format] [-flash] [-quiet] [-verbose] [<hw_server>]
+			_tcl.Add(
+				new SimpleTCLCommand("update_hw_firmware")
+					.OptionalNamedString("file_path", file_path)
+					.OptionalNamedString("config_path", config_path)
+					.Flag("skip_update", skip_update)
+					.Flag("reset", reset)
+					.Flag("format", format)
+					.Flag("flash", flash)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_server)
+			);
 		}
 		/// <summary>
 		/// Update the SmartLynq GPIO PMOD pin values
+		///
+		///
+		/// TCL Syntax: update_hw_gpio [-quiet] [-verbose] [<output_enable_mask>] [<output_pin_values>] [<hw_server>]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1737
 		/// </summary>
@@ -6110,16 +6688,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>All GPIO PMOD pin values</returns>
 		public void update_hw_gpio(bool? quiet = null, bool? verbose = null, string output_enable_mask = null, string output_pin_values = null, string hw_server = null)
 		{
-			var command = new SimpleTCLCommand("update_hw_gpio");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("output_enable_mask", output_enable_mask);
-			command.OptionalString("output_pin_values", output_pin_values);
-			command.OptionalString("hw_server", hw_server);
-			_tcl.Add(command);
+			// TCL Syntax: update_hw_gpio [-quiet] [-verbose] [<output_enable_mask>] [<output_pin_values>] [<hw_server>]
+			_tcl.Add(
+				new SimpleTCLCommand("update_hw_gpio")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(output_enable_mask)
+					.OptionalString(output_pin_values)
+					.OptionalString(hw_server)
+			);
 		}
 		/// <summary>
 		/// Stop capturing. Upload any captured hardware ILA data.
+		///
+		///
+		/// TCL Syntax: upload_hw_ila_data [-quiet] [-verbose] [<hw_ilas>...]
 		///
 		/// Upload the captured data from the memory buffers of the specified ILA debug cores on the Xilinx
 		/// FPGA hardware device, and move it into a hw_ila_data object in the Vivado logic analyzer.
@@ -6161,14 +6744,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware ILA data objects</returns>
 		public void upload_hw_ila_data(bool? quiet = null, bool? verbose = null, string hw_ilas = null)
 		{
-			var command = new SimpleTCLCommand("upload_hw_ila_data");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_ilas", hw_ilas);
-			_tcl.Add(command);
+			// TCL Syntax: upload_hw_ila_data [-quiet] [-verbose] [<hw_ilas>...]
+			_tcl.Add(
+				new SimpleTCLCommand("upload_hw_ila_data")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_ilas)
+			);
 		}
 		/// <summary>
 		/// Verify hardware devices
+		///
+		///
+		/// TCL Syntax: verify_hw_devices [-key <arg>] [-user_efuse <arg>] [-control_efuse <arg>] [-security_efuse <arg>] [-verbose] [-quiet] [<hw_device>...]
 		///
 		/// For EFUSE encrypted devices, this command compares the bitstream assigned to the
 		/// PROGRAM.FILE property on the specified hw_device with the bitstream programmed into the
@@ -6216,18 +6804,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>hardware devices</returns>
 		public void verify_hw_devices(string key = null, string user_efuse = null, string control_efuse = null, string security_efuse = null, bool? verbose = null, bool? quiet = null, string hw_device = null)
 		{
-			var command = new SimpleTCLCommand("verify_hw_devices");
-			command.OptionalString("key", key);
-			command.OptionalString("user_efuse", user_efuse);
-			command.OptionalString("control_efuse", control_efuse);
-			command.OptionalString("security_efuse", security_efuse);
-			command.Flag("verbose", verbose);
-			command.Flag("quiet", quiet);
-			command.OptionalString("hw_device", hw_device);
-			_tcl.Add(command);
+			// TCL Syntax: verify_hw_devices [-key <arg>] [-user_efuse <arg>] [-control_efuse <arg>] [-security_efuse <arg>] [-verbose] [-quiet] [<hw_device>...]
+			_tcl.Add(
+				new SimpleTCLCommand("verify_hw_devices")
+					.OptionalNamedString("key", key)
+					.OptionalNamedString("user_efuse", user_efuse)
+					.OptionalNamedString("control_efuse", control_efuse)
+					.OptionalNamedString("security_efuse", security_efuse)
+					.Flag("verbose", verbose)
+					.Flag("quiet", quiet)
+					.OptionalString(hw_device)
+			);
 		}
 		/// <summary>
 		/// Wait until all hardware ILA data has been captured.
+		///
+		///
+		/// TCL Syntax: wait_on_hw_ila [-timeout <arg>] [-quiet] [-verbose] [<hw_ilas>...]
 		///
 		/// Suspend Tcl script or Tcl command processing until the ILA debug core memory is filled by
 		/// captured data samples.
@@ -6260,15 +6853,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void wait_on_hw_ila(string timeout = null, bool? quiet = null, bool? verbose = null, string hw_ilas = null)
 		{
-			var command = new SimpleTCLCommand("wait_on_hw_ila");
-			command.OptionalString("timeout", timeout);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("hw_ilas", hw_ilas);
-			_tcl.Add(command);
+			// TCL Syntax: wait_on_hw_ila [-timeout <arg>] [-quiet] [-verbose] [<hw_ilas>...]
+			_tcl.Add(
+				new SimpleTCLCommand("wait_on_hw_ila")
+					.OptionalNamedString("timeout", timeout)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(hw_ilas)
+			);
 		}
 		/// <summary>
 		/// Wait until hardware SIO scan has completed.
+		///
+		///
+		/// TCL Syntax: wait_on_hw_sio_scan [-timeout <arg>] [-quiet] [-verbose] <hw_sio_scans>...
 		///
 		/// Suspend a Tcl script or Tcl command processing until the specified serial I/O analyzer scan is
 		/// complete.
@@ -6298,15 +6896,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void wait_on_hw_sio_scan(string hw_sio_scans, string timeout = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("wait_on_hw_sio_scan");
-			command.OptionalString("timeout", timeout);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_sio_scans", hw_sio_scans);
-			_tcl.Add(command);
+			// TCL Syntax: wait_on_hw_sio_scan [-timeout <arg>] [-quiet] [-verbose] <hw_sio_scans>...
+			_tcl.Add(
+				new SimpleTCLCommand("wait_on_hw_sio_scan")
+					.OptionalNamedString("timeout", timeout)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_sio_scans)
+			);
 		}
 		/// <summary>
 		/// Wait until hardware SIO sweep has completed.
+		///
+		///
+		/// TCL Syntax: wait_on_hw_sio_sweep [-timeout <arg>] [-quiet] [-verbose] <hw_sio_sweeps>...
 		///
 		/// Suspend a Tcl script or Tcl command processing until the serial I/O analyzer sweep scan is
 		/// complete.
@@ -6336,15 +6939,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void wait_on_hw_sio_sweep(string hw_sio_sweeps, string timeout = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("wait_on_hw_sio_sweep");
-			command.OptionalString("timeout", timeout);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("hw_sio_sweeps", hw_sio_sweeps);
-			_tcl.Add(command);
+			// TCL Syntax: wait_on_hw_sio_sweep [-timeout <arg>] [-quiet] [-verbose] <hw_sio_sweeps>...
+			_tcl.Add(
+				new SimpleTCLCommand("wait_on_hw_sio_sweep")
+					.OptionalNamedString("timeout", timeout)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(hw_sio_sweeps)
+			);
 		}
 		/// <summary>
 		/// Write hardware ILA data to a file
+		///
+		///
+		/// TCL Syntax: write_hw_ila_data [-force] [-csv_file] [-vcd_file] [-legacy_csv_file] [-quiet] [-verbose] <file> [<hw_ila_data>] [<hw_ila_data>]
 		///
 		/// Write the ILA debug core sample data, stored in the specified hw_ila_data object, to a binary file
 		/// on the disk.
@@ -6394,19 +7002,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Name of the output file</returns>
 		public void write_hw_ila_data(string file, bool? force = null, bool? csv_file = null, bool? vcd_file = null, bool? legacy_csv_file = null, bool? quiet = null, bool? verbose = null, string hw_ila_data = null)
 		{
-			var command = new SimpleTCLCommand("write_hw_ila_data");
-			command.Flag("force", force);
-			command.Flag("csv_file", csv_file);
-			command.Flag("vcd_file", vcd_file);
-			command.Flag("legacy_csv_file", legacy_csv_file);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			command.OptionalString("hw_ila_data", hw_ila_data);
-			_tcl.Add(command);
+			// TCL Syntax: write_hw_ila_data [-force] [-csv_file] [-vcd_file] [-legacy_csv_file] [-quiet] [-verbose] <file> [<hw_ila_data>] [<hw_ila_data>]
+			_tcl.Add(
+				new SimpleTCLCommand("write_hw_ila_data")
+					.Flag("force", force)
+					.Flag("csv_file", csv_file)
+					.Flag("vcd_file", vcd_file)
+					.Flag("legacy_csv_file", legacy_csv_file)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+					.OptionalString(hw_ila_data)
+			);
 		}
 		/// <summary>
 		/// Write scan data to a file.
+		///
+		///
+		/// TCL Syntax: write_hw_sio_scan [-force] [-quiet] [-verbose] <file> <hw_sio_scan>
 		///
 		/// Write the populated hw_sio_scan object after run_hw_sio_scan completes.
 		/// To analyze the margin of a given link, it is often helpful to run a scan of the link using the
@@ -6441,16 +7054,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Name of the output file</returns>
 		public void write_hw_sio_scan(string file, string hw_sio_scan, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_hw_sio_scan");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			command.RequiredString("hw_sio_scan", hw_sio_scan);
-			_tcl.Add(command);
+			// TCL Syntax: write_hw_sio_scan [-force] [-quiet] [-verbose] <file> <hw_sio_scan>
+			_tcl.Add(
+				new SimpleTCLCommand("write_hw_sio_scan")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+					.RequiredString(hw_sio_scan)
+			);
 		}
 		/// <summary>
 		/// Write sweep data to a directory.
+		///
+		///
+		/// TCL Syntax: write_hw_sio_sweep [-force] [-quiet] [-verbose] <directory> <hw_sio_sweep>
 		///
 		/// Write the populated hw_sio_sweep object after run_hw_sio_sweep completes.
 		/// To analyze the margin of a given link, it is often helpful to run a scan of the link using the
@@ -6488,16 +7106,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>Name of the output directory</returns>
 		public void write_hw_sio_sweep(string directory, string hw_sio_sweep, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_hw_sio_sweep");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("directory", directory);
-			command.RequiredString("hw_sio_sweep", hw_sio_sweep);
-			_tcl.Add(command);
+			// TCL Syntax: write_hw_sio_sweep [-force] [-quiet] [-verbose] <directory> <hw_sio_sweep>
+			_tcl.Add(
+				new SimpleTCLCommand("write_hw_sio_sweep")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(directory)
+					.RequiredString(hw_sio_sweep)
+			);
 		}
 		/// <summary>
 		/// Generate SVF file for current_hw_target
+		///
+		///
+		/// TCL Syntax: write_hw_svf [-force] [-quiet] [-verbose] <file_name>
 		///
 		/// The Vivado hardware manager supports programming of hardware devices through the use of
 		/// Serial Vector Format (SVF) files. SVF files are ASCII files that contain both programming
@@ -6587,12 +7210,14 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void write_hw_svf(string file_name, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_hw_svf");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file_name", file_name);
-			_tcl.Add(command);
+			// TCL Syntax: write_hw_svf [-force] [-quiet] [-verbose] <file_name>
+			_tcl.Add(
+				new SimpleTCLCommand("write_hw_svf")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file_name)
+			);
 		}
 	}
 }

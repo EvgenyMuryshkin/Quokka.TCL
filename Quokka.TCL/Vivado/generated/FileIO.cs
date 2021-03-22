@@ -6,14 +6,17 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class FileIOCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public FileIOCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public FileIOCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Auto detect the XPM Libraries that are used in the design and set the XPM_LIBRARIES project
 		/// property.
+		///
+		///
+		/// TCL Syntax: auto_detect_xpm [-quiet] [-verbose]
 		///
 		/// This command collects the list of Xilinx Parameterized Macros (XPM) used in RTL design files and
 		/// sets the XPM_LIBRARIES property. Because it identifies XPM used in the RTL source files, it
@@ -42,10 +45,12 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void auto_detect_xpm(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("auto_detect_xpm");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: auto_detect_xpm [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("auto_detect_xpm")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Enable/disable WebTalk to send software, IP and device usage statistics to Xilinx. Note: WebTalk
@@ -53,6 +58,9 @@ namespace Quokka.TCL.Vivado
 		/// bitstream is generated using the WebPACK license. If a design is using a device contained in
 		/// WebPACK and a WebPACK license is available, the WebPACK license will be used. To change
 		/// this, please see answer record 34746.
+		///
+		///
+		/// TCL Syntax: config_webtalk [-info] [-user <arg>] [-install <arg>] [-quiet] [-verbose]
 		///
 		/// WebTalk is a secure design data collection feature of Xilinx software that helps Xilinx understand
 		/// how you are using Xilinx devices, software, and Intellectual Property (IP).
@@ -104,16 +112,21 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void config_webtalk(bool? info = null, string user = null, string install = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("config_webtalk");
-			command.Flag("info", info);
-			command.OptionalString("user", user);
-			command.OptionalString("install", install);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: config_webtalk [-info] [-user <arg>] [-install <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("config_webtalk")
+					.Flag("info", info)
+					.OptionalNamedString("user", user)
+					.OptionalNamedString("install", install)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Generate a port on a given reconfigurable cell
+		///
+		///
+		/// TCL Syntax: create_port_on_reconfigurable_module [-cell <arg>] [-port <arg>] [-direction <arg>] [-from <arg>] [-to <arg>] [-quiet] [-verbose]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 329
 		/// </summary>
@@ -151,18 +164,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_port_on_reconfigurable_module(string cell = null, string port = null, string direction = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_port_on_reconfigurable_module");
-			command.OptionalString("cell", cell);
-			command.OptionalString("port", port);
-			command.OptionalString("direction", direction);
-			command.OptionalString("from", from);
-			command.OptionalString("to", to);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: create_port_on_reconfigurable_module [-cell <arg>] [-port <arg>] [-direction <arg>] [-from <arg>] [-to <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("create_port_on_reconfigurable_module")
+					.OptionalNamedString("cell", cell)
+					.OptionalNamedString("port", port)
+					.OptionalNamedString("direction", direction)
+					.OptionalNamedString("from", from)
+					.OptionalNamedString("to", to)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Decrypt an AES-GCM encrypted bitstream
+		///
+		///
+		/// TCL Syntax: decrypt_bitstream -encrypted_file <arg> -keyfile <arg> [-force] [-quiet] [-verbose] <file>
 		///
 		/// During implementation of secure encrypted UltraScale architecture designs, bitstream-level
 		/// verification must be performed on the final bitstream against the "golden" bitstream of the Xilinx
@@ -201,17 +219,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void decrypt_bitstream(string encrypted_file, string keyfile, string file, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("decrypt_bitstream");
-			command.RequiredString("encrypted_file", encrypted_file);
-			command.RequiredString("keyfile", keyfile);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: decrypt_bitstream -encrypted_file <arg> -keyfile <arg> [-force] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("decrypt_bitstream")
+					.RequiredNamedString("encrypted_file", encrypted_file)
+					.RequiredNamedString("keyfile", keyfile)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Encrypt files in place with a language specific key file in IEEE 1735. no default
+		///
+		///
+		/// TCL Syntax: encrypt [-key <arg>] -lang <arg> [-ext <arg>] [-quiet] [-verbose] <files>...
 		///
 		/// TIP: The encrypt command is provided with limited access, and requires a special license to use.
 		/// Allows anyone with an encryption license to encrypt Verilog or VHDL files using the IEEE 1735
@@ -251,17 +274,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void encrypt(string lang, string files, string key = null, string ext = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("encrypt");
-			command.OptionalString("key", key);
-			command.RequiredString("lang", lang);
-			command.OptionalString("ext", ext);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: encrypt [-key <arg>] -lang <arg> [-ext <arg>] [-quiet] [-verbose] <files>...
+			_tcl.Add(
+				new SimpleTCLCommand("encrypt")
+					.OptionalNamedString("key", key)
+					.RequiredNamedString("lang", lang)
+					.OptionalNamedString("ext", ext)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// Generate a base platform based on a given routed checkpoint
+		///
+		///
+		/// TCL Syntax: generate_base_platform [-source <arg>] [-reconfig_platform <arg>] [-base_platform <arg>] [-reconfig_platform_prefix <arg>] [-quiet] [-verbose]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 528
 		/// </summary>
@@ -293,17 +321,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void generate_base_platform(string source = null, string reconfig_platform = null, string base_platform = null, string reconfig_platform_prefix = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("generate_base_platform");
-			command.OptionalString("source", source);
-			command.OptionalString("reconfig_platform", reconfig_platform);
-			command.OptionalString("base_platform", base_platform);
-			command.OptionalString("reconfig_platform_prefix", reconfig_platform_prefix);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: generate_base_platform [-source <arg>] [-reconfig_platform <arg>] [-base_platform <arg>] [-reconfig_platform_prefix <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("generate_base_platform")
+					.OptionalNamedString("source", source)
+					.OptionalNamedString("reconfig_platform", reconfig_platform)
+					.OptionalNamedString("base_platform", base_platform)
+					.OptionalNamedString("reconfig_platform_prefix", reconfig_platform_prefix)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Write all the simulation .mem files.
+		///
+		///
+		/// TCL Syntax: generate_mem_files [-force] [-quiet] [-verbose] <directory>
 		///
 		/// For embedded processor based designs, with associated Executable Linkable Files (ELF) from the
 		/// Software Development Kit (SDK), this command merges the Block Memory Map (BMM) for the
@@ -339,15 +372,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The name of the directory</returns>
 		public void generate_mem_files(string directory, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("generate_mem_files");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("directory", directory);
-			_tcl.Add(command);
+			// TCL Syntax: generate_mem_files [-force] [-quiet] [-verbose] <directory>
+			_tcl.Add(
+				new SimpleTCLCommand("generate_mem_files")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(directory)
+			);
 		}
 		/// <summary>
 		/// Generate PBLOCK by exclude static
+		///
+		///
+		/// TCL Syntax: generate_pblock [-cell <arg>] [-inverse_pblock <arg>] [-nested_pblock <arg>] [-nested_width <arg>] [-quiet] [-verbose]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 531
 		/// </summary>
@@ -380,17 +418,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void generate_pblock(string cell = null, string inverse_pblock = null, string nested_pblock = null, string nested_width = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("generate_pblock");
-			command.OptionalString("cell", cell);
-			command.OptionalString("inverse_pblock", inverse_pblock);
-			command.OptionalString("nested_pblock", nested_pblock);
-			command.OptionalString("nested_width", nested_width);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: generate_pblock [-cell <arg>] [-inverse_pblock <arg>] [-nested_pblock <arg>] [-nested_width <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("generate_pblock")
+					.OptionalNamedString("cell", cell)
+					.OptionalNamedString("inverse_pblock", inverse_pblock)
+					.OptionalNamedString("nested_pblock", nested_pblock)
+					.OptionalNamedString("nested_width", nested_width)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Generate new platform based on base platform and wrapper module
+		///
+		///
+		/// TCL Syntax: generate_rl_platform [-use_source <arg>] [-reconfig_platform <arg>] [-base_platform <arg>] [-platform <arg>] [-quiet] [-verbose]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 537
 		/// </summary>
@@ -421,17 +464,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void generate_rl_platform(string use_source = null, string reconfig_platform = null, string base_platform = null, string platform = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("generate_rl_platform");
-			command.OptionalString("use_source", use_source);
-			command.OptionalString("reconfig_platform", reconfig_platform);
-			command.OptionalString("base_platform", base_platform);
-			command.OptionalString("platform", platform);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: generate_rl_platform [-use_source <arg>] [-reconfig_platform <arg>] [-base_platform <arg>] [-platform <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("generate_rl_platform")
+					.OptionalNamedString("use_source", use_source)
+					.OptionalNamedString("reconfig_platform", reconfig_platform)
+					.OptionalNamedString("base_platform", base_platform)
+					.OptionalNamedString("platform", platform)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Move HD.RECONFIGURABLE and related properties to sub-cells
+		///
+		///
+		/// TCL Syntax: generate_shx_platform [-base_platform <arg>] [-wrapper <arg>] [-output <arg>] [-reconfig_platform <arg>] [-quiet] [-verbose]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 538
 		/// </summary>
@@ -461,17 +509,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void generate_shx_platform(string base_platform = null, string wrapper = null, string output = null, string reconfig_platform = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("generate_shx_platform");
-			command.OptionalString("base_platform", base_platform);
-			command.OptionalString("wrapper", wrapper);
-			command.OptionalString("output", output);
-			command.OptionalString("reconfig_platform", reconfig_platform);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: generate_shx_platform [-base_platform <arg>] [-wrapper <arg>] [-output <arg>] [-reconfig_platform <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("generate_shx_platform")
+					.OptionalNamedString("base_platform", base_platform)
+					.OptionalNamedString("wrapper", wrapper)
+					.OptionalNamedString("output", output)
+					.OptionalNamedString("reconfig_platform", reconfig_platform)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Infer differential pairs, typically for ports just imported from a CSV or XDC file
+		///
+		///
+		/// TCL Syntax: infer_diff_pairs [-file_type <arg>] [-quiet] [-verbose] [<file>...]
 		///
 		/// The infer_diff_pairs command can be used in an I/O Pin Planning project, after importing
 		/// the I/O pin information using the read_csv or read_xdc command.
@@ -520,15 +573,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void infer_diff_pairs(string file_type = null, bool? quiet = null, bool? verbose = null, string file = null)
 		{
-			var command = new SimpleTCLCommand("infer_diff_pairs");
-			command.OptionalString("file_type", file_type);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: infer_diff_pairs [-file_type <arg>] [-quiet] [-verbose] [<file>...]
+			_tcl.Add(
+				new SimpleTCLCommand("infer_diff_pairs")
+					.OptionalNamedString("file_type", file_type)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(file)
+			);
 		}
 		/// <summary>
 		/// Open the Xilinx Shell Archive
+		///
+		///
+		/// TCL Syntax: open_hw_platform [-auto_upgrade] [-quiet] [-verbose] [<file>]
 		///
 		/// Open a Xilinx support archive (XSA) file and extract the Vivado project, block design, and IP from
 		/// the archive. This will create a project directory and project file (.xpr) from the XSA.
@@ -561,16 +619,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The name of the shell file</returns>
 		public void open_hw_platform(string file, bool? auto_upgrade = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("open_hw_platform");
-			command.Flag("auto_upgrade", auto_upgrade);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: open_hw_platform [-auto_upgrade] [-quiet] [-verbose] [<file>]
+			_tcl.Add(
+				new SimpleTCLCommand("open_hw_platform")
+					.Flag("auto_upgrade", auto_upgrade)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Re-establish a parent cell as a Reconfigurable Partition while removing a lower-level
 		/// Reconfigurable Partition when using the Hierarchical Partial Reconfiguration solution.
+		///
+		///
+		/// TCL Syntax: pr_recombine [-cell <arg>] [-quiet] [-verbose]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1115
 		/// </summary>
@@ -588,15 +651,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void pr_recombine(string cell = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("pr_recombine");
-			command.OptionalString("cell", cell);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: pr_recombine [-cell <arg>] [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("pr_recombine")
+					.OptionalNamedString("cell", cell)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Subdivide a Reconfigurable Partition into one or more lower-level Reconfigurable Partitions when
 		/// using the Hierarchical Partial Reconfiguration solution.
+		///
+		///
+		/// TCL Syntax: pr_subdivide [-cell <arg>] [-subcells <arg>] [-quiet] [-verbose] [<from_dcp>]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1116
 		/// </summary>
@@ -625,19 +693,24 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void pr_subdivide(string cell = null, string subcells = null, bool? quiet = null, bool? verbose = null, string from_dcp = null)
 		{
-			var command = new SimpleTCLCommand("pr_subdivide");
-			command.OptionalString("cell", cell);
-			command.OptionalString("subcells", subcells);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("from_dcp", from_dcp);
-			_tcl.Add(command);
+			// TCL Syntax: pr_subdivide [-cell <arg>] [-subcells <arg>] [-quiet] [-verbose] [<from_dcp>]
+			_tcl.Add(
+				new SimpleTCLCommand("pr_subdivide")
+					.OptionalNamedString("cell", cell)
+					.OptionalNamedString("subcells", subcells)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(from_dcp)
+			);
 		}
 		/// <summary>
 		/// Verify whether the design check points are replaceable on board. This command supports these
 		/// formats: (1) 'pr_verify DCP1 DCP2 -full_check'; (2) 'pr_verify -initial DCP1 -additional {DCP2
 		/// DCP3 DCP4 ...}'; (3) 'pr_verify -in_memory -additional {DCP2 DCP3 ...}'; For format (3), it must
 		/// have an in-memory design opened.
+		///
+		///
+		/// TCL Syntax: pr_verify [-full_check] [-file <arg>] [-initial <arg>] [-additional <arg>] [-in_memory] [-quiet] [-verbose] [<file1>] [<file2>]
 		///
 		/// This command is used to compare design checkpoint files for use in the Partial Reconfiguration
 		/// flow.
@@ -708,20 +781,25 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void pr_verify(bool? full_check = null, string file = null, string initial = null, string additional = null, bool? in_memory = null, bool? quiet = null, bool? verbose = null, string file1 = null, string file2 = null)
 		{
-			var command = new SimpleTCLCommand("pr_verify");
-			command.Flag("full_check", full_check);
-			command.OptionalString("file", file);
-			command.OptionalString("initial", initial);
-			command.OptionalString("additional", additional);
-			command.Flag("in_memory", in_memory);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("file1", file1);
-			command.OptionalString("file2", file2);
-			_tcl.Add(command);
+			// TCL Syntax: pr_verify [-full_check] [-file <arg>] [-initial <arg>] [-additional <arg>] [-in_memory] [-quiet] [-verbose] [<file1>] [<file2>]
+			_tcl.Add(
+				new SimpleTCLCommand("pr_verify")
+					.Flag("full_check", full_check)
+					.OptionalNamedString("file", file)
+					.OptionalNamedString("initial", initial)
+					.OptionalNamedString("additional", additional)
+					.Flag("in_memory", in_memory)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(file1)
+					.OptionalString(file2)
+			);
 		}
 		/// <summary>
 		/// Read one or more IPIntegrator design files
+		///
+		///
+		/// TCL Syntax: read_bd [-quiet] [-verbose] <files>...
 		///
 		/// Read the specified IP subsystem design files, or block designs, into the current project or the in￾memory design. This command is similar to the add_files command. The block design file is
 		/// added to the source fileset as it is read.
@@ -754,14 +832,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of IPIntegrator design file objects that were added</returns>
 		public void read_bd(string files, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_bd");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: read_bd [-quiet] [-verbose] <files>...
+			_tcl.Add(
+				new SimpleTCLCommand("read_bd")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// Read a design checkpoint
+		///
+		///
+		/// TCL Syntax: read_checkpoint [-cell <arg>] [-incremental] [-directive <arg>] [-reuse_objects <args>] [-fix_objects <args>] [-dcp_cell_list <args>] [-quiet] [-verbose] [<file>]
 		///
 		/// Reads a design checkpoint file (DCP) that contains the netlist, constraints, and may optionally
 		/// have the placement and routing information of an implemented design. You can save design
@@ -840,20 +923,25 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void read_checkpoint(string file, string cell = null, bool? incremental = null, string directive = null, string reuse_objects = null, string fix_objects = null, string dcp_cell_list = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_checkpoint");
-			command.OptionalString("cell", cell);
-			command.Flag("incremental", incremental);
-			command.OptionalString("directive", directive);
-			command.OptionalString("reuse_objects", reuse_objects);
-			command.OptionalString("fix_objects", fix_objects);
-			command.OptionalString("dcp_cell_list", dcp_cell_list);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: read_checkpoint [-cell <arg>] [-incremental] [-directive <arg>] [-reuse_objects <args>] [-fix_objects <args>] [-dcp_cell_list <args>] [-quiet] [-verbose] [<file>]
+			_tcl.Add(
+				new SimpleTCLCommand("read_checkpoint")
+					.OptionalNamedString("cell", cell)
+					.Flag("incremental", incremental)
+					.OptionalNamedString("directive", directive)
+					.OptionalNamedString("reuse_objects", reuse_objects)
+					.OptionalNamedString("fix_objects", fix_objects)
+					.OptionalNamedString("dcp_cell_list", dcp_cell_list)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Import package pin and port placement information
+		///
+		///
+		/// TCL Syntax: read_csv [-quiet_diff_pairs] [-quiet] [-verbose] <file>
 		///
 		/// Imports port definition and package pin placement information from a comma separated value
 		/// (CSV) file.
@@ -898,15 +986,20 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void read_csv(string file, bool? quiet_diff_pairs = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_csv");
-			command.Flag("quiet_diff_pairs", quiet_diff_pairs);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: read_csv [-quiet_diff_pairs] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("read_csv")
+					.Flag("quiet_diff_pairs", quiet_diff_pairs)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Read one or more EDIF or NGC files
+		///
+		///
+		/// TCL Syntax: read_edif [-quiet] [-verbose] <files>
 		///
 		/// Imports an EDIF or NGC netlist file into the Design Source fileset of the current project.
 		/// IMPORTANT! NGC format files are not supported in the Vivado Design Suite for UltraScale devices. It is
@@ -934,14 +1027,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of file objects that were added</returns>
 		public void read_edif(string files, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_edif");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: read_edif [-quiet] [-verbose] <files>
+			_tcl.Add(
+				new SimpleTCLCommand("read_edif")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// Read one or more IP files
+		///
+		///
+		/// TCL Syntax: read_ip [-quiet] [-verbose] <files>
 		///
 		/// Read the specified list of IP files (XCI) and add them to the design and the current fileset. Files are
 		/// added by reference into the current project, just as in the add_files command.
@@ -979,14 +1077,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of IP file objects that were added</returns>
 		public void read_ip(string files, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_ip");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: read_ip [-quiet] [-verbose] <files>
+			_tcl.Add(
+				new SimpleTCLCommand("read_ip")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// Read one or more data files (.mem .mif .dat).
+		///
+		///
+		/// TCL Syntax: read_mem [-quiet] [-verbose] <files>...
 		///
 		/// This command reads memory files of type MEM, DAT, or COE, and adds the files to the in￾memory design, or the current project, to initialize BRAM memory for behavioral simulation,
 		/// synthesis and post-synthesis simulation.
@@ -1013,14 +1116,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of file objects that were added</returns>
 		public void read_mem(string files, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_mem");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: read_mem [-quiet] [-verbose] <files>...
+			_tcl.Add(
+				new SimpleTCLCommand("read_mem")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// Read QoR Suggestions from the given file
+		///
+		///
+		/// TCL Syntax: read_qor_suggestions [-quiet] [-verbose] <file>
 		///
 		/// Read the specified file and extract the QoR suggestions from the file.
 		/// This command returns the name of the QoR file read, or returns an error if it fails.
@@ -1047,14 +1155,19 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void read_qor_suggestions(string file, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_qor_suggestions");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: read_qor_suggestions [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("read_qor_suggestions")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Import simulation data in saif format
+		///
+		///
+		/// TCL Syntax: read_saif [-strip_path <arg>] [-no_strip] [-out_file <arg>] [-quiet] [-verbose] <file>
 		///
 		/// Reads a Switching Activity Interchange Format (SAIF) file for use during power analysis by the
 		/// report_power command, or power optimization by power_opt_design. The read_saif
@@ -1096,17 +1209,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void read_saif(string file, string strip_path = null, bool? no_strip = null, string out_file = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_saif");
-			command.OptionalString("strip_path", strip_path);
-			command.Flag("no_strip", no_strip);
-			command.OptionalString("out_file", out_file);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: read_saif [-strip_path <arg>] [-no_strip] [-out_file <arg>] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("read_saif")
+					.OptionalNamedString("strip_path", strip_path)
+					.Flag("no_strip", no_strip)
+					.OptionalNamedString("out_file", out_file)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Import schematic
+		///
+		///
+		/// TCL Syntax: read_schematic [-name <arg>] [-quiet] [-verbose] <file>
 		///
 		/// Import a native schematic file that was previously exported from the Vivado Design Suite using
 		/// the write_schematic command.
@@ -1132,15 +1250,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>name of the file previously exported</returns>
 		public void read_schematic(string file, string name = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_schematic");
-			command.OptionalString("name", name);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: read_schematic [-name <arg>] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("read_schematic")
+					.OptionalNamedString("name", name)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Read timing results from Trace STA tool
+		///
+		///
+		/// TCL Syntax: read_twx [-cell <arg>] [-pblock <arg>] [-quiet] [-verbose] <name> <file>
 		///
 		/// Imports timing results in the TWX format timing report files generated by the Xilinx Timing
 		/// Reporter And Circuit Evaluator (TRACE) tool. The TWX file can be imported at the top-level,
@@ -1181,17 +1304,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void read_twx(string name, string file, string cell = null, string pblock = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_twx");
-			command.OptionalString("cell", cell);
-			command.OptionalString("pblock", pblock);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: read_twx [-cell <arg>] [-pblock <arg>] [-quiet] [-verbose] <name> <file>
+			_tcl.Add(
+				new SimpleTCLCommand("read_twx")
+					.OptionalNamedString("cell", cell)
+					.OptionalNamedString("pblock", pblock)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Read one or more Verilog files
+		///
+		///
+		/// TCL Syntax: read_verilog [-library <arg>] [-sv] [-quiet] [-verbose] <files>...
 		///
 		/// Reads Verilog or SystemVerilog source files. This command is similar to the add_files
 		/// command. The Verilog file is added to the source fileset as it is read. If the -library argument
@@ -1241,16 +1369,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of file objects that were added</returns>
 		public void read_verilog(string files, string library = null, bool? sv = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_verilog");
-			command.OptionalString("library", library);
-			command.Flag("sv", sv);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: read_verilog [-library <arg>] [-sv] [-quiet] [-verbose] <files>...
+			_tcl.Add(
+				new SimpleTCLCommand("read_verilog")
+					.OptionalNamedString("library", library)
+					.Flag("sv", sv)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// Read one or more VHDL files
+		///
+		///
+		/// TCL Syntax: read_vhdl -library <arg> [-vhdl2008] [-quiet] [-verbose] <files>
 		///
 		/// Reads VHDL source files. This command is similar to the add_files command. The VHDL files
 		/// are added to the source fileset as the file is read. If the -library argument is specified, the file
@@ -1290,16 +1423,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of file objects that were added</returns>
 		public void read_vhdl(string library, string files, bool? vhdl2008 = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_vhdl");
-			command.RequiredString("library", library);
-			command.Flag("vhdl2008", vhdl2008);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: read_vhdl -library <arg> [-vhdl2008] [-quiet] [-verbose] <files>
+			_tcl.Add(
+				new SimpleTCLCommand("read_vhdl")
+					.RequiredNamedString("library", library)
+					.Flag("vhdl2008", vhdl2008)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// read physical and timing constraints from one of more files.
+		///
+		///
+		/// TCL Syntax: read_xdc [-cells <args>] [-ref <arg>] [-quiet_diff_pairs] [-mode <arg>] [-unmanaged] [-no_add] [-quiet] [-verbose] <files>
 		///
 		/// Imports physical and timing constraints from a Xilinx Design Constraints file (XDC). The XDC is
 		/// imported into the current_instance level of the design hierarchy, which defaults to the top￾level of the design, or can be imported into specified cells. When imported at the top-level, the
@@ -1337,7 +1475,7 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Import constraints for these cells
 		/// </param>
-		/// <param name="ref">
+		/// <param name="@ref">
 		/// Optional
 		/// Import constraints for this ref
 		/// </param>
@@ -1368,22 +1506,27 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// </param>
 		/// <returns>list of files</returns>
-		public void read_xdc(string files, string cells = null, string ref = null, bool? quiet_diff_pairs = null, string mode = null, bool? unmanaged = null, bool? no_add = null, bool? quiet = null, bool? verbose = null)
+		public void read_xdc(string files, string cells = null, string @ref = null, bool? quiet_diff_pairs = null, string mode = null, bool? unmanaged = null, bool? no_add = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("read_xdc");
-			command.OptionalString("cells", cells);
-			command.OptionalString("ref", ref);
-			command.Flag("quiet_diff_pairs", quiet_diff_pairs);
-			command.OptionalString("mode", mode);
-			command.Flag("unmanaged", unmanaged);
-			command.Flag("no_add", no_add);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("files", files);
-			_tcl.Add(command);
+			// TCL Syntax: read_xdc [-cells <args>] [-ref <arg>] [-quiet_diff_pairs] [-mode <arg>] [-unmanaged] [-no_add] [-quiet] [-verbose] <files>
+			_tcl.Add(
+				new SimpleTCLCommand("read_xdc")
+					.OptionalNamedString("cells", cells)
+					.OptionalNamedString("ref", @ref)
+					.Flag("quiet_diff_pairs", quiet_diff_pairs)
+					.OptionalNamedString("mode", mode)
+					.Flag("unmanaged", unmanaged)
+					.Flag("no_add", no_add)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(files)
+			);
 		}
 		/// <summary>
 		/// Update and initialize the BRAM initialization strings with contents of elf files.
+		///
+		///
+		/// TCL Syntax: refresh_meminit [-quiet] [-verbose]
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1199
 		/// </summary>
@@ -1397,13 +1540,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void refresh_meminit(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("refresh_meminit");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: refresh_meminit [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("refresh_meminit")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Write an abstract shell checkpoint of the current design
+		///
+		///
+		/// TCL Syntax: write_abstract_shell -cell <arg> [-force] [-quiet] [-verbose] <file>
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1779
 		/// </summary>
@@ -1431,16 +1579,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The name of the checkpoint file</returns>
 		public void write_abstract_shell(string cell, string file, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_abstract_shell");
-			command.RequiredString("cell", cell);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_abstract_shell -cell <arg> [-force] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_abstract_shell")
+					.RequiredNamedString("cell", cell)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Export layout in native, pdf or svg
+		///
+		///
+		/// TCL Syntax: write_bd_layout [-force] [-format <arg>] [-orientation <arg>] [-scope <arg>] [-hierarchy <arg>] [-quiet] [-verbose] <file>
 		///
 		/// Write the current open block design in the Vivado IP integrator to the specified file format.
 		/// This command lets you print the block design, output it as a vector graphic file for use in
@@ -1492,19 +1645,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>name of the output file</returns>
 		public void write_bd_layout(string file, bool? force = null, string format = null, string orientation = null, string scope = null, string hierarchy = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_bd_layout");
-			command.Flag("force", force);
-			command.OptionalString("format", format);
-			command.OptionalString("orientation", orientation);
-			command.OptionalString("scope", scope);
-			command.OptionalString("hierarchy", hierarchy);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_bd_layout [-force] [-format <arg>] [-orientation <arg>] [-scope <arg>] [-hierarchy <arg>] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_bd_layout")
+					.Flag("force", force)
+					.OptionalNamedString("format", format)
+					.OptionalNamedString("orientation", orientation)
+					.OptionalNamedString("scope", scope)
+					.OptionalNamedString("hierarchy", hierarchy)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Write a bitstream for the current design
+		///
+		///
+		/// TCL Syntax: write_bitstream [-force] [-verbose] [-raw_bitfile] [-no_binary_bitfile] [-mask_file] [-readback_file] [-logic_location_file] [-bin_file] [-reference_bitfile <arg>] [-cell <arg>] [-no_partial_bitfile] [-quiet] <file>
 		///
 		/// Writes a bitstream file for the current project. This command must be run on an Implemented
 		/// Design. The bitstream written will be based on the open Implemented Design.
@@ -1624,24 +1782,29 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void write_bitstream(string file, bool? force = null, bool? verbose = null, bool? raw_bitfile = null, bool? no_binary_bitfile = null, bool? mask_file = null, bool? readback_file = null, bool? logic_location_file = null, bool? bin_file = null, string reference_bitfile = null, string cell = null, bool? no_partial_bitfile = null, bool? quiet = null)
 		{
-			var command = new SimpleTCLCommand("write_bitstream");
-			command.Flag("force", force);
-			command.Flag("verbose", verbose);
-			command.Flag("raw_bitfile", raw_bitfile);
-			command.Flag("no_binary_bitfile", no_binary_bitfile);
-			command.Flag("mask_file", mask_file);
-			command.Flag("readback_file", readback_file);
-			command.Flag("logic_location_file", logic_location_file);
-			command.Flag("bin_file", bin_file);
-			command.OptionalString("reference_bitfile", reference_bitfile);
-			command.OptionalString("cell", cell);
-			command.Flag("no_partial_bitfile", no_partial_bitfile);
-			command.Flag("quiet", quiet);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_bitstream [-force] [-verbose] [-raw_bitfile] [-no_binary_bitfile] [-mask_file] [-readback_file] [-logic_location_file] [-bin_file] [-reference_bitfile <arg>] [-cell <arg>] [-no_partial_bitfile] [-quiet] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_bitstream")
+					.Flag("force", force)
+					.Flag("verbose", verbose)
+					.Flag("raw_bitfile", raw_bitfile)
+					.Flag("no_binary_bitfile", no_binary_bitfile)
+					.Flag("mask_file", mask_file)
+					.Flag("readback_file", readback_file)
+					.Flag("logic_location_file", logic_location_file)
+					.Flag("bin_file", bin_file)
+					.OptionalNamedString("reference_bitfile", reference_bitfile)
+					.OptionalNamedString("cell", cell)
+					.Flag("no_partial_bitfile", no_partial_bitfile)
+					.Flag("quiet", quiet)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Write a bmm file
+		///
+		///
+		/// TCL Syntax: write_bmm [-force] [-quiet] [-verbose] <file>
 		///
 		/// The Block RAM Memory Map (BMM) file is a text file that describes how individual block RAMs
 		/// on an FPGA are grouped together into a contiguous address space called an Address Block.
@@ -1673,15 +1836,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The name of the bmm file</returns>
 		public void write_bmm(string file, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_bmm");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_bmm [-force] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_bmm")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Generate a design specific post-configuration BSDL file (.bsd).
+		///
+		///
+		/// TCL Syntax: write_bsdl [-force] [-bsd <arg>] [-quiet] [-verbose] <file>
 		///
 		/// Generate a Boundary Scan Description Language (BSDL) file (.bsd) for the current design that
 		/// reflects the post-configuration boundary scan architecture of the target device.
@@ -1720,16 +1888,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>name of the output file</returns>
 		public void write_bsdl(string file, bool? force = null, string bsd = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_bsdl");
-			command.Flag("force", force);
-			command.OptionalString("bsd", bsd);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_bsdl [-force] [-bsd <arg>] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_bsdl")
+					.Flag("force", force)
+					.OptionalNamedString("bsd", bsd)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Create file(s) for programming flash memory.
+		///
+		///
+		/// TCL Syntax: write_cfgmem [-force] -format <arg> -size <arg> [-interface <arg>] [-checksum] [-disablebitswap] [-loadbit <arg>] [-loaddata <arg>] [-quiet] [-verbose] <file>
 		///
 		/// This command formats a design specific configuration bitstream (.bit) file, and any specified
 		/// data files, into a specified memory configuration file format to program into a flash memory
@@ -1774,7 +1947,7 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Overwrite existing file
 		/// </param>
-		/// <param name="interface">
+		/// <param name="@interface">
 		/// Optional
 		/// Interface used to program device. Default: SMAPx8
 		/// </param>
@@ -1804,24 +1977,29 @@ namespace Quokka.TCL.Vivado
 		/// Optional
 		/// Suspend message limits during command execution
 		/// </param>
-		public void write_cfgmem(string format, string size, string file, bool? force = null, string interface = null, bool? checksum = null, bool? disablebitswap = null, string loadbit = null, string loaddata = null, bool? quiet = null, bool? verbose = null)
+		public void write_cfgmem(string format, string size, string file, bool? force = null, string @interface = null, bool? checksum = null, bool? disablebitswap = null, string loadbit = null, string loaddata = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_cfgmem");
-			command.Flag("force", force);
-			command.RequiredString("format", format);
-			command.RequiredString("size", size);
-			command.OptionalString("interface", interface);
-			command.Flag("checksum", checksum);
-			command.Flag("disablebitswap", disablebitswap);
-			command.OptionalString("loadbit", loadbit);
-			command.OptionalString("loaddata", loaddata);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_cfgmem [-force] -format <arg> -size <arg> [-interface <arg>] [-checksum] [-disablebitswap] [-loadbit <arg>] [-loaddata <arg>] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_cfgmem")
+					.Flag("force", force)
+					.RequiredNamedString("format", format)
+					.RequiredNamedString("size", size)
+					.OptionalNamedString("interface", @interface)
+					.Flag("checksum", checksum)
+					.Flag("disablebitswap", disablebitswap)
+					.OptionalNamedString("loadbit", loadbit)
+					.OptionalNamedString("loaddata", loaddata)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Write a checkpoint of the current design
+		///
+		///
+		/// TCL Syntax: write_checkpoint [-force] [-cell <arg>] [-logic_function_stripped] [-encrypt] [-key <arg>] [-incremental_synth] [-quiet] [-verbose] <file>
 		///
 		/// Saves the design at any point in the design process so that you can quickly import it back into the
 		/// tool as needed. A design checkpoint (DCP) can contain the netlist, the constraints, and any
@@ -1884,20 +2062,25 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The name of the checkpoint file</returns>
 		public void write_checkpoint(string file, bool? force = null, string cell = null, bool? logic_function_stripped = null, bool? encrypt = null, string key = null, bool? incremental_synth = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_checkpoint");
-			command.Flag("force", force);
-			command.OptionalString("cell", cell);
-			command.Flag("logic_function_stripped", logic_function_stripped);
-			command.Flag("encrypt", encrypt);
-			command.OptionalString("key", key);
-			command.Flag("incremental_synth", incremental_synth);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_checkpoint [-force] [-cell <arg>] [-logic_function_stripped] [-encrypt] [-key <arg>] [-incremental_synth] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_checkpoint")
+					.Flag("force", force)
+					.OptionalNamedString("cell", cell)
+					.Flag("logic_function_stripped", logic_function_stripped)
+					.Flag("encrypt", encrypt)
+					.OptionalNamedString("key", key)
+					.Flag("incremental_synth", incremental_synth)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Export package pin and port placement information
+		///
+		///
+		/// TCL Syntax: write_csv [-force] [-quiet] [-verbose] <file>
 		///
 		/// Writes package pin and port placement information into a comma separated value (CSV) file.
 		/// The specific format and requirements of the CSV file are described in the Vivado Design Suite User
@@ -1927,15 +2110,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>name of the output file</returns>
 		public void write_csv(string file, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_csv");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_csv [-force] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_csv")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Write debug probes to a file
+		///
+		///
+		/// TCL Syntax: write_debug_probes [-cell <arg>] [-no_partial_ltxfile] [-force] [-quiet] [-verbose] <file>
 		///
 		/// Writes a Vivado Design Suite logic analyzer probes file containing ILA debug cores and signal
 		/// probes added to the current design. The debug probes data file typically has a .ltx file
@@ -1978,17 +2166,22 @@ namespace Quokka.TCL.Vivado
 		/// <returns>name of the output file</returns>
 		public void write_debug_probes(string file, string cell = null, bool? no_partial_ltxfile = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_debug_probes");
-			command.OptionalString("cell", cell);
-			command.Flag("no_partial_ltxfile", no_partial_ltxfile);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_debug_probes [-cell <arg>] [-no_partial_ltxfile] [-force] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_debug_probes")
+					.OptionalNamedString("cell", cell)
+					.Flag("no_partial_ltxfile", no_partial_ltxfile)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Export the current netlist as an EDIF file
+		///
+		///
+		/// TCL Syntax: write_edif [-pblocks <args>] [-cell <arg>] [-force] [-security_mode <arg>] [-logic_function_stripped] [-quiet] [-verbose] <file>
 		///
 		/// Writes the current netlist as an EDIF file, or outputs the contents of specific Pblocks or
 		/// hierarchical cells as EDIF netlist files.
@@ -2042,19 +2235,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>the name of the output file or directory</returns>
 		public void write_edif(string file, string pblocks = null, string cell = null, bool? force = null, string security_mode = null, bool? logic_function_stripped = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_edif");
-			command.OptionalString("pblocks", pblocks);
-			command.OptionalString("cell", cell);
-			command.Flag("force", force);
-			command.OptionalString("security_mode", security_mode);
-			command.Flag("logic_function_stripped", logic_function_stripped);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_edif [-pblocks <args>] [-cell <arg>] [-force] [-security_mode <arg>] [-logic_function_stripped] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_edif")
+					.OptionalNamedString("pblocks", pblocks)
+					.OptionalNamedString("cell", cell)
+					.Flag("force", force)
+					.OptionalNamedString("security_mode", security_mode)
+					.Flag("logic_function_stripped", logic_function_stripped)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Write the Xilinx Shell Archive for the current design
+		///
+		///
+		/// TCL Syntax: write_hw_platform [-fixed] [-force] [-include_bit] [-include_emulation] [-minimal] [-quiet] [-verbose] [<file>]
 		///
 		/// Writes a Xilinx support archive (XSA) of the current design for use as a hardware platform.
 		/// All platforms are dynamically implemented during compilation, meaning that the accelerator logic
@@ -2108,19 +2306,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The name of the Shell file</returns>
 		public void write_hw_platform(string file, bool? @fixed = null, bool? force = null, bool? include_bit = null, bool? include_emulation = null, bool? minimal = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_hw_platform");
-			command.Flag("fixed", @fixed);
-			command.Flag("force", force);
-			command.Flag("include_bit", include_bit);
-			command.Flag("include_emulation", include_emulation);
-			command.Flag("minimal", minimal);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_hw_platform [-fixed] [-force] [-include_bit] [-include_emulation] [-minimal] [-quiet] [-verbose] [<file>]
+			_tcl.Add(
+				new SimpleTCLCommand("write_hw_platform")
+					.Flag("fixed", @fixed)
+					.Flag("force", force)
+					.Flag("include_bit", include_bit)
+					.Flag("include_emulation", include_emulation)
+					.Flag("minimal", minimal)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Write the unified JSON metadata file for the current design
+		///
+		///
+		/// TCL Syntax: write_hw_platform_metadata [-quiet] [-verbose] [<file>]
 		///
 		/// Writes a JSON metadata file for the platform represented by the current design.
 		/// This command returns the name of the JSON file written, or returns an error if it fails.
@@ -2146,14 +2349,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The name of the unified JSON metadata file</returns>
 		public void write_hw_platform_metadata(string file, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_hw_platform_metadata");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_hw_platform_metadata [-quiet] [-verbose] [<file>]
+			_tcl.Add(
+				new SimpleTCLCommand("write_hw_platform_metadata")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Write IBIS models for current floorplan
+		///
+		///
+		/// TCL Syntax: write_ibis [-force] [-allmodels] [-nopin] [-no_pin_mapping] [-truncate <arg>] [-component_name <arg>] [-ibs <arg>] [-pkg <arg>] [-quiet] [-verbose] <file>
 		///
 		/// Writes the IBIS models for the target device in the current design. The netlist and
 		/// implementation details from the design are combined with the per-pin parasitic package
@@ -2229,22 +2437,27 @@ namespace Quokka.TCL.Vivado
 		/// <returns>name of the output file</returns>
 		public void write_ibis(string file, bool? force = null, bool? allmodels = null, bool? nopin = null, bool? no_pin_mapping = null, string truncate = null, string component_name = null, string ibs = null, string pkg = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_ibis");
-			command.Flag("force", force);
-			command.Flag("allmodels", allmodels);
-			command.Flag("nopin", nopin);
-			command.Flag("no_pin_mapping", no_pin_mapping);
-			command.OptionalString("truncate", truncate);
-			command.OptionalString("component_name", component_name);
-			command.OptionalString("ibs", ibs);
-			command.OptionalString("pkg", pkg);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_ibis [-force] [-allmodels] [-nopin] [-no_pin_mapping] [-truncate <arg>] [-component_name <arg>] [-ibs <arg>] [-pkg <arg>] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_ibis")
+					.Flag("force", force)
+					.Flag("allmodels", allmodels)
+					.Flag("nopin", nopin)
+					.Flag("no_pin_mapping", no_pin_mapping)
+					.OptionalNamedString("truncate", truncate)
+					.OptionalNamedString("component_name", component_name)
+					.OptionalNamedString("ibs", ibs)
+					.OptionalNamedString("pkg", pkg)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Write file with inferred xdc timing constraints
+		///
+		///
+		/// TCL Syntax: write_inferred_xdc [-force] [-all] [-append] [-async_clocks] [-all_async_reg] [-clock_groups] [-clocks] [-excl_clocks] [-exceptions] [-io_constraints] [-merge_existing_constraints] [-name <arg>] [-quiet] [-verbose] [<file>]
 		///
 		/// You can use the write_inferred_xdc to find constraints that should be defined in the open
 		/// synthesized or implemented design. Write timing constraints that are automatically generated by
@@ -2343,26 +2556,31 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void write_inferred_xdc(string file, bool? force = null, bool? all = null, bool? append = null, bool? async_clocks = null, bool? all_async_reg = null, bool? clock_groups = null, bool? clocks = null, bool? excl_clocks = null, bool? exceptions = null, bool? io_constraints = null, bool? merge_existing_constraints = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_inferred_xdc");
-			command.Flag("force", force);
-			command.Flag("all", all);
-			command.Flag("append", append);
-			command.Flag("async_clocks", async_clocks);
-			command.Flag("all_async_reg", all_async_reg);
-			command.Flag("clock_groups", clock_groups);
-			command.Flag("clocks", clocks);
-			command.Flag("excl_clocks", excl_clocks);
-			command.Flag("exceptions", exceptions);
-			command.Flag("io_constraints", io_constraints);
-			command.Flag("merge_existing_constraints", merge_existing_constraints);
-			command.OptionalString("name", name);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_inferred_xdc [-force] [-all] [-append] [-async_clocks] [-all_async_reg] [-clock_groups] [-clocks] [-excl_clocks] [-exceptions] [-io_constraints] [-merge_existing_constraints] [-name <arg>] [-quiet] [-verbose] [<file>]
+			_tcl.Add(
+				new SimpleTCLCommand("write_inferred_xdc")
+					.Flag("force", force)
+					.Flag("all", all)
+					.Flag("append", append)
+					.Flag("async_clocks", async_clocks)
+					.Flag("all_async_reg", all_async_reg)
+					.Flag("clock_groups", clock_groups)
+					.Flag("clocks", clocks)
+					.Flag("excl_clocks", excl_clocks)
+					.Flag("exceptions", exceptions)
+					.Flag("io_constraints", io_constraints)
+					.Flag("merge_existing_constraints", merge_existing_constraints)
+					.OptionalNamedString("name", name)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Write the Memory Map Info of the design to a .mmi file.
+		///
+		///
+		/// TCL Syntax: write_mem_info [-force] [-quiet] [-verbose] <file>
 		///
 		/// This command writes a memory information (MMI) file defining the BRAM placement and
 		/// address ranges to create a memory map of the design.
@@ -2400,15 +2618,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The name of the .mmi file</returns>
 		public void write_mem_info(string file, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_mem_info");
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_mem_info [-force] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_mem_info")
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Write QoR Suggestions to the given file
+		///
+		///
+		/// TCL Syntax: write_qor_suggestions [-strategy_dir <arg>] [-tcl_output_dir <arg>] [-force] [-of_objects <args>] [-quiet] [-verbose] <file>
 		///
 		/// Write the QoR suggestions generated by the report_qor_suggestions command. You can
 		/// combine the suggestions from the latest report with suggestions read into the design with
@@ -2472,18 +2695,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void write_qor_suggestions(string file, string strategy_dir = null, string tcl_output_dir = null, bool? force = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_qor_suggestions");
-			command.OptionalString("strategy_dir", strategy_dir);
-			command.OptionalString("tcl_output_dir", tcl_output_dir);
-			command.Flag("force", force);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_qor_suggestions [-strategy_dir <arg>] [-tcl_output_dir <arg>] [-force] [-of_objects <args>] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_qor_suggestions")
+					.OptionalNamedString("strategy_dir", strategy_dir)
+					.OptionalNamedString("tcl_output_dir", tcl_output_dir)
+					.Flag("force", force)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Export schematic
+		///
+		///
+		/// TCL Syntax: write_schematic [-force] [-format <arg>] [-orientation <arg>] [-scope <arg>] [-name <arg>] [-quiet] [-verbose] <file>
 		///
 		/// Output the currently opened, or specified Schematic window in the Vivado IDE to a file.
 		/// The file can be written as a native ASCII file that can be read back into the Vivado IDE using the
@@ -2529,19 +2757,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>name of the output file</returns>
 		public void write_schematic(string file, bool? force = null, string format = null, string orientation = null, string scope = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_schematic");
-			command.Flag("force", force);
-			command.OptionalString("format", format);
-			command.OptionalString("orientation", orientation);
-			command.OptionalString("scope", scope);
-			command.OptionalString("name", name);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_schematic [-force] [-format <arg>] [-orientation <arg>] [-scope <arg>] [-name <arg>] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_schematic")
+					.Flag("force", force)
+					.OptionalNamedString("format", format)
+					.OptionalNamedString("orientation", orientation)
+					.OptionalNamedString("scope", scope)
+					.OptionalNamedString("name", name)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// write_sdf command generates flat sdf delay files for event simulation
+		///
+		///
+		/// TCL Syntax: write_sdf [-process_corner <arg>] [-cell <arg>] [-rename_top <arg>] [-force] [-mode <arg>] [-gzip] [-quiet] [-verbose] <file>
 		///
 		/// Writes the timing delays for cells in the design to a Standard Delay Format (SDF) file.
 		/// The output SDF file can be used by the write_verilog command to create Verilog netlists for
@@ -2594,20 +2827,25 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void write_sdf(string file, string process_corner = null, string cell = null, string rename_top = null, bool? force = null, string mode = null, bool? gzip = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_sdf");
-			command.OptionalString("process_corner", process_corner);
-			command.OptionalString("cell", cell);
-			command.OptionalString("rename_top", rename_top);
-			command.Flag("force", force);
-			command.OptionalString("mode", mode);
-			command.Flag("gzip", gzip);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_sdf [-process_corner <arg>] [-cell <arg>] [-rename_top <arg>] [-force] [-mode <arg>] [-gzip] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_sdf")
+					.OptionalNamedString("process_corner", process_corner)
+					.OptionalNamedString("cell", cell)
+					.OptionalNamedString("rename_top", rename_top)
+					.Flag("force", force)
+					.OptionalNamedString("mode", mode)
+					.Flag("gzip", gzip)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Export the current netlist in Verilog format
+		///
+		///
+		/// TCL Syntax: write_verilog [-cell <arg>] [-mode <arg>] [-lib] [-port_diff_buffers] [-write_all_overrides] [-keep_vcc_gnd] [-rename_top <arg>] [-sdf_anno <arg>] [-sdf_file <arg>] [-force] [-include_xilinx_libs] [-logic_function_stripped] [-quiet] [-verbose] <file>
 		///
 		/// Write a Verilog netlist of the current design or from a specific cell of the design to the specified
 		/// file or directory. The output is a IEEE 1364-2001 compliant Verilog HDL file that contains netlist
@@ -2700,26 +2938,31 @@ namespace Quokka.TCL.Vivado
 		/// <returns>the name of the output file or directory</returns>
 		public void write_verilog(string file, string cell = null, string mode = null, bool? lib = null, bool? port_diff_buffers = null, bool? write_all_overrides = null, bool? keep_vcc_gnd = null, string rename_top = null, string sdf_anno = null, string sdf_file = null, bool? force = null, bool? include_xilinx_libs = null, bool? logic_function_stripped = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_verilog");
-			command.OptionalString("cell", cell);
-			command.OptionalString("mode", mode);
-			command.Flag("lib", lib);
-			command.Flag("port_diff_buffers", port_diff_buffers);
-			command.Flag("write_all_overrides", write_all_overrides);
-			command.Flag("keep_vcc_gnd", keep_vcc_gnd);
-			command.OptionalString("rename_top", rename_top);
-			command.OptionalString("sdf_anno", sdf_anno);
-			command.OptionalString("sdf_file", sdf_file);
-			command.Flag("force", force);
-			command.Flag("include_xilinx_libs", include_xilinx_libs);
-			command.Flag("logic_function_stripped", logic_function_stripped);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_verilog [-cell <arg>] [-mode <arg>] [-lib] [-port_diff_buffers] [-write_all_overrides] [-keep_vcc_gnd] [-rename_top <arg>] [-sdf_anno <arg>] [-sdf_file <arg>] [-force] [-include_xilinx_libs] [-logic_function_stripped] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_verilog")
+					.OptionalNamedString("cell", cell)
+					.OptionalNamedString("mode", mode)
+					.Flag("lib", lib)
+					.Flag("port_diff_buffers", port_diff_buffers)
+					.Flag("write_all_overrides", write_all_overrides)
+					.Flag("keep_vcc_gnd", keep_vcc_gnd)
+					.OptionalNamedString("rename_top", rename_top)
+					.OptionalNamedString("sdf_anno", sdf_anno)
+					.OptionalNamedString("sdf_file", sdf_file)
+					.Flag("force", force)
+					.Flag("include_xilinx_libs", include_xilinx_libs)
+					.Flag("logic_function_stripped", logic_function_stripped)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Export the current netlist in VHDL format
+		///
+		///
+		/// TCL Syntax: write_vhdl [-cell <arg>] [-mode <arg>] [-lib] [-port_diff_buffers] [-write_all_overrides] [-keep_vcc_gnd] [-rename_top <arg>] [-arch_only] [-force] [-include_xilinx_libs] [-quiet] [-verbose] <file>
 		///
 		/// Write a VHDL netlist of the current design or from a specific cell of the design to the specified
 		/// file or directory.
@@ -2798,25 +3041,30 @@ namespace Quokka.TCL.Vivado
 		/// <returns>the name of the output file or directory</returns>
 		public void write_vhdl(string file, string cell = null, string mode = null, bool? lib = null, bool? port_diff_buffers = null, bool? write_all_overrides = null, bool? keep_vcc_gnd = null, string rename_top = null, bool? arch_only = null, bool? force = null, bool? include_xilinx_libs = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_vhdl");
-			command.OptionalString("cell", cell);
-			command.OptionalString("mode", mode);
-			command.Flag("lib", lib);
-			command.Flag("port_diff_buffers", port_diff_buffers);
-			command.Flag("write_all_overrides", write_all_overrides);
-			command.Flag("keep_vcc_gnd", keep_vcc_gnd);
-			command.OptionalString("rename_top", rename_top);
-			command.Flag("arch_only", arch_only);
-			command.Flag("force", force);
-			command.Flag("include_xilinx_libs", include_xilinx_libs);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_vhdl [-cell <arg>] [-mode <arg>] [-lib] [-port_diff_buffers] [-write_all_overrides] [-keep_vcc_gnd] [-rename_top <arg>] [-arch_only] [-force] [-include_xilinx_libs] [-quiet] [-verbose] <file>
+			_tcl.Add(
+				new SimpleTCLCommand("write_vhdl")
+					.OptionalNamedString("cell", cell)
+					.OptionalNamedString("mode", mode)
+					.Flag("lib", lib)
+					.Flag("port_diff_buffers", port_diff_buffers)
+					.Flag("write_all_overrides", write_all_overrides)
+					.Flag("keep_vcc_gnd", keep_vcc_gnd)
+					.OptionalNamedString("rename_top", rename_top)
+					.Flag("arch_only", arch_only)
+					.Flag("force", force)
+					.Flag("include_xilinx_libs", include_xilinx_libs)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Writes constraints to a Xilinx Design Constraints (XDC) file. The default file extension for a XDC
 		/// file is .xdc.
+		///
+		///
+		/// TCL Syntax: write_xdc [-no_fixed_only] [-constraints <arg>] [-cell <arg>] [-sdc] [-no_tool_comments] [-force] [-exclude_timing] [-exclude_physical] [-add_netlist_placement] [-logic_function_stripped] [-type <args>] [-quiet] [-verbose] [<file>]
 		///
 		/// Writes constraints to a Xilinx® Design Constraints file (XDC). The XDC can be exported from the
 		/// top-level, which is the default, or from a specific hierarchical cell.
@@ -2910,22 +3158,24 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void write_xdc(string file, bool? no_fixed_only = null, string constraints = null, string cell = null, bool? sdc = null, bool? no_tool_comments = null, bool? force = null, bool? exclude_timing = null, bool? exclude_physical = null, bool? add_netlist_placement = null, bool? logic_function_stripped = null, string type = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_xdc");
-			command.Flag("no_fixed_only", no_fixed_only);
-			command.OptionalString("constraints", constraints);
-			command.OptionalString("cell", cell);
-			command.Flag("sdc", sdc);
-			command.Flag("no_tool_comments", no_tool_comments);
-			command.Flag("force", force);
-			command.Flag("exclude_timing", exclude_timing);
-			command.Flag("exclude_physical", exclude_physical);
-			command.Flag("add_netlist_placement", add_netlist_placement);
-			command.Flag("logic_function_stripped", logic_function_stripped);
-			command.OptionalString("type", type);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_xdc [-no_fixed_only] [-constraints <arg>] [-cell <arg>] [-sdc] [-no_tool_comments] [-force] [-exclude_timing] [-exclude_physical] [-add_netlist_placement] [-logic_function_stripped] [-type <args>] [-quiet] [-verbose] [<file>]
+			_tcl.Add(
+				new SimpleTCLCommand("write_xdc")
+					.Flag("no_fixed_only", no_fixed_only)
+					.OptionalNamedString("constraints", constraints)
+					.OptionalNamedString("cell", cell)
+					.Flag("sdc", sdc)
+					.Flag("no_tool_comments", no_tool_comments)
+					.Flag("force", force)
+					.Flag("exclude_timing", exclude_timing)
+					.Flag("exclude_physical", exclude_physical)
+					.Flag("add_netlist_placement", add_netlist_placement)
+					.Flag("logic_function_stripped", logic_function_stripped)
+					.OptionalNamedString("type", type)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 	}
 }

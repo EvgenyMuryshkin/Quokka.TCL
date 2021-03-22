@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class CreatePeripheralCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public CreatePeripheralCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public CreatePeripheralCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Add a new bus interface to a peripheral.
+		///
+		///
+		/// TCL Syntax: add_peripheral_interface -interface_mode <arg> -axi_type <arg> [-quiet] [-verbose] <name> <peripheral>
 		///
 		/// Add an AXI bus interface to a peripheral created with the create_peripheral command.
 		///
@@ -45,17 +48,22 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void add_peripheral_interface(string interface_mode, string axi_type, string name, string peripheral, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("add_peripheral_interface");
-			command.RequiredString("interface_mode", interface_mode);
-			command.RequiredString("axi_type", axi_type);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("name", name);
-			command.RequiredString("peripheral", peripheral);
-			_tcl.Add(command);
+			// TCL Syntax: add_peripheral_interface -interface_mode <arg> -axi_type <arg> [-quiet] [-verbose] <name> <peripheral>
+			_tcl.Add(
+				new SimpleTCLCommand("add_peripheral_interface")
+					.RequiredNamedString("interface_mode", interface_mode)
+					.RequiredNamedString("axi_type", axi_type)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(name)
+					.RequiredString(peripheral)
+			);
 		}
 		/// <summary>
 		/// Create a peripheral with a VLNV.
+		///
+		///
+		/// TCL Syntax: create_peripheral [-dir <arg>] [-quiet] [-verbose] <vendor> <library> <name> <version>
 		///
 		/// Create an AXI peripheral to add to the IP repository with the specified VLNV attribute.
 		/// The AXI peripheral that is created is just a framework until interfaces have been added to the
@@ -95,18 +103,23 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void create_peripheral(string vendor, string library, string name, string version, string dir = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("create_peripheral");
-			command.OptionalString("dir", dir);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("vendor", vendor);
-			command.RequiredString("library", library);
-			command.RequiredString("name", name);
-			command.RequiredString("version", version);
-			_tcl.Add(command);
+			// TCL Syntax: create_peripheral [-dir <arg>] [-quiet] [-verbose] <vendor> <library> <name> <version>
+			_tcl.Add(
+				new SimpleTCLCommand("create_peripheral")
+					.OptionalNamedString("dir", dir)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(vendor)
+					.RequiredString(library)
+					.RequiredString(name)
+					.RequiredString(version)
+			);
 		}
 		/// <summary>
 		/// Generate output products for peripheral object.
+		///
+		///
+		/// TCL Syntax: generate_peripheral [-driver] [-example_design] [-bfm_example_design] [-debug_hw_example_design] [-enable_interrupt] [-force] [-quiet] [-verbose] <peripheral>
 		///
 		/// Generate the output products for the specified peripheral object. The output products are
 		/// written to the IP repository location specified when the IP is created by the
@@ -152,20 +165,25 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void generate_peripheral(string peripheral, bool? driver = null, bool? example_design = null, bool? bfm_example_design = null, bool? debug_hw_example_design = null, bool? enable_interrupt = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("generate_peripheral");
-			command.Flag("driver", driver);
-			command.Flag("example_design", example_design);
-			command.Flag("bfm_example_design", bfm_example_design);
-			command.Flag("debug_hw_example_design", debug_hw_example_design);
-			command.Flag("enable_interrupt", enable_interrupt);
-			command.Flag("force", force);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("peripheral", peripheral);
-			_tcl.Add(command);
+			// TCL Syntax: generate_peripheral [-driver] [-example_design] [-bfm_example_design] [-debug_hw_example_design] [-enable_interrupt] [-force] [-quiet] [-verbose] <peripheral>
+			_tcl.Add(
+				new SimpleTCLCommand("generate_peripheral")
+					.Flag("driver", driver)
+					.Flag("example_design", example_design)
+					.Flag("bfm_example_design", bfm_example_design)
+					.Flag("debug_hw_example_design", debug_hw_example_design)
+					.Flag("enable_interrupt", enable_interrupt)
+					.Flag("force", force)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(peripheral)
+			);
 		}
 		/// <summary>
 		/// Save peripheral component to the disk.
+		///
+		///
+		/// TCL Syntax: write_peripheral [-quiet] [-verbose] <peripheral>
 		///
 		/// Write the specified AXI peripheral object to disk in the form of the component.xml file. The
 		/// peripheral is written to the repository location specified by the create_peripheral
@@ -187,11 +205,13 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		public void write_peripheral(string peripheral, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_peripheral");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("peripheral", peripheral);
-			_tcl.Add(command);
+			// TCL Syntax: write_peripheral [-quiet] [-verbose] <peripheral>
+			_tcl.Add(
+				new SimpleTCLCommand("write_peripheral")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(peripheral)
+			);
 		}
 	}
 }

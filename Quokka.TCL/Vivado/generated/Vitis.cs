@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class VitisCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public VitisCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public VitisCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Open the Xilinx Shell Archive
+		///
+		///
+		/// TCL Syntax: open_hw_platform [-auto_upgrade] [-quiet] [-verbose] [<file>]
 		///
 		/// Open a Xilinx support archive (XSA) file and extract the Vivado project, block design, and IP from
 		/// the archive. This will create a project directory and project file (.xpr) from the XSA.
@@ -45,15 +48,20 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The name of the shell file</returns>
 		public void open_hw_platform(string file, bool? auto_upgrade = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("open_hw_platform");
-			command.Flag("auto_upgrade", auto_upgrade);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: open_hw_platform [-auto_upgrade] [-quiet] [-verbose] [<file>]
+			_tcl.Add(
+				new SimpleTCLCommand("open_hw_platform")
+					.Flag("auto_upgrade", auto_upgrade)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Validate the specified harware platform
+		///
+		///
+		/// TCL Syntax: validate_hw_platform [-verbose] [-quiet] [<file>]
 		///
 		/// Validate a Xilinx support archive (XSA) file to ensure it has the required content for the platform.
 		/// This command returns information related to the validation of the XSA, or returns an error if it
@@ -80,14 +88,19 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The name of the shell file</returns>
 		public void validate_hw_platform(bool? verbose = null, bool? quiet = null, string file = null)
 		{
-			var command = new SimpleTCLCommand("validate_hw_platform");
-			command.Flag("verbose", verbose);
-			command.Flag("quiet", quiet);
-			command.OptionalString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: validate_hw_platform [-verbose] [-quiet] [<file>]
+			_tcl.Add(
+				new SimpleTCLCommand("validate_hw_platform")
+					.Flag("verbose", verbose)
+					.Flag("quiet", quiet)
+					.OptionalString(file)
+			);
 		}
 		/// <summary>
 		/// Write the Xilinx Shell Archive for the current design
+		///
+		///
+		/// TCL Syntax: write_hw_platform [-fixed] [-force] [-include_bit] [-include_emulation] [-minimal] [-quiet] [-verbose] [<file>]
 		///
 		/// Writes a Xilinx support archive (XSA) of the current design for use as a hardware platform.
 		/// All platforms are dynamically implemented during compilation, meaning that the accelerator logic
@@ -141,19 +154,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The name of the Shell file</returns>
 		public void write_hw_platform(string file, bool? @fixed = null, bool? force = null, bool? include_bit = null, bool? include_emulation = null, bool? minimal = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_hw_platform");
-			command.Flag("fixed", @fixed);
-			command.Flag("force", force);
-			command.Flag("include_bit", include_bit);
-			command.Flag("include_emulation", include_emulation);
-			command.Flag("minimal", minimal);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_hw_platform [-fixed] [-force] [-include_bit] [-include_emulation] [-minimal] [-quiet] [-verbose] [<file>]
+			_tcl.Add(
+				new SimpleTCLCommand("write_hw_platform")
+					.Flag("fixed", @fixed)
+					.Flag("force", force)
+					.Flag("include_bit", include_bit)
+					.Flag("include_emulation", include_emulation)
+					.Flag("minimal", minimal)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 		/// <summary>
 		/// Write the unified JSON metadata file for the current design
+		///
+		///
+		/// TCL Syntax: write_hw_platform_metadata [-quiet] [-verbose] [<file>]
 		///
 		/// Writes a JSON metadata file for the platform represented by the current design.
 		/// This command returns the name of the JSON file written, or returns an error if it fails.
@@ -179,11 +197,13 @@ namespace Quokka.TCL.Vivado
 		/// <returns>The name of the unified JSON metadata file</returns>
 		public void write_hw_platform_metadata(string file, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("write_hw_platform_metadata");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.RequiredString("file", file);
-			_tcl.Add(command);
+			// TCL Syntax: write_hw_platform_metadata [-quiet] [-verbose] [<file>]
+			_tcl.Add(
+				new SimpleTCLCommand("write_hw_platform_metadata")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.RequiredString(file)
+			);
 		}
 	}
 }

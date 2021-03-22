@@ -4,7 +4,7 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class VivadoTCL : QuokkaTCL
+	public partial class VivadoTCL : TCLFile<VivadoTCL>
 	{
 		public BoardCommands Board => new BoardCommands(this);
 		public ConfigurationCommands Configuration => new ConfigurationCommands(this);

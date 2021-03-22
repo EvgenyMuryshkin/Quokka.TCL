@@ -6,13 +6,16 @@ namespace Quokka.TCL.Vivado
 {
 	public partial class BoardCommands
 	{
-		private readonly QuokkaTCL _tcl;
-		public BoardCommands(QuokkaTCL tcl)
+		private readonly TCLFile<VivadoTCL> _tcl;
+		public BoardCommands(TCLFile<VivadoTCL> tcl)
 		{
 			_tcl = tcl;
 		}
 		/// <summary>
 		/// Applies board connections to given designs
+		///
+		///
+		/// TCL Syntax: apply_board_connection [-board_interface <arg>] -ip_intf <arg> -diagram <arg> [-quiet] [-verbose]
 		///
 		/// Connects the interface pin of an IP core in the specified block design to the interface of the
 		/// current board part in the current project or design.
@@ -64,16 +67,21 @@ namespace Quokka.TCL.Vivado
 		/// <returns>sucess/failure status of applied action.</returns>
 		public void apply_board_connection(string ip_intf, string diagram, string board_interface = null, bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("apply_board_connection");
-			command.OptionalString("board_interface", board_interface);
-			command.RequiredString("ip_intf", ip_intf);
-			command.RequiredString("diagram", diagram);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: apply_board_connection [-board_interface <arg>] -ip_intf <arg> -diagram <arg> [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("apply_board_connection")
+					.OptionalNamedString("board_interface", board_interface)
+					.RequiredNamedString("ip_intf", ip_intf)
+					.RequiredNamedString("diagram", diagram)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get the current board object
+		///
+		///
+		/// TCL Syntax: current_board [-quiet] [-verbose]
 		///
 		/// Returns the board in use in the current project.
 		/// The board file, board.xml located in the data/boards folder of the Vivado Design Suite
@@ -108,13 +116,18 @@ namespace Quokka.TCL.Vivado
 		/// <returns>current board object</returns>
 		public void current_board(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("current_board");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: current_board [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("current_board")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Get the current board_part object
+		///
+		///
+		/// TCL Syntax: current_board_part [-quiet] [-verbose]
 		///
 		/// Return the Xilinx device used in the current project or design.
 		/// The board file, board.xml located in the data/boards folder of the Vivado Design Suite
@@ -150,13 +163,18 @@ namespace Quokka.TCL.Vivado
 		/// <returns>current board_part object</returns>
 		public void current_board_part(bool? quiet = null, bool? verbose = null)
 		{
-			var command = new SimpleTCLCommand("current_board_part");
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			_tcl.Add(command);
+			// TCL Syntax: current_board_part [-quiet] [-verbose]
+			_tcl.Add(
+				new SimpleTCLCommand("current_board_part")
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+			);
 		}
 		/// <summary>
 		/// Gets the list of board bus net objects
+		///
+		///
+		/// TCL Syntax: get_board_bus_nets [-regexp] [-nocase] [-all] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of individual connection bus nets of the specified connection bus object, or the board
 		/// component or board component pin objects.
@@ -214,19 +232,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of bus nets in the board</returns>
 		public void get_board_bus_nets(string of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_bus_nets");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("all", all);
-			command.OptionalString("filter", filter);
-			command.RequiredString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_bus_nets [-regexp] [-nocase] [-all] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_bus_nets")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("all", all)
+					.OptionalNamedString("filter", filter)
+					.RequiredNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of board bus objects
+		///
+		///
+		/// TCL Syntax: get_board_buses [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of connection buses defined on the current board, as defined in the Board Interface
 		/// file.
@@ -284,19 +307,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of buses in the board</returns>
 		public void get_board_buses(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_buses");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("all", all);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_buses [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_buses")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("all", all)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of interfaces in the board components that implement busdef specified by VLNV
+		///
+		///
+		/// TCL Syntax: get_board_component_interfaces [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of interfaces defined on the components found on the current board, as defined in the
 		/// Board Interface file.
@@ -359,19 +387,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of bus interfaces</returns>
 		public void get_board_component_interfaces(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_component_interfaces");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("all", all);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_component_interfaces [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_component_interfaces")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("all", all)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of component mode objects
+		///
+		///
+		/// TCL Syntax: get_board_component_modes [-regexp] [-nocase] [-all] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of various component modes defined on the current board, as defined in the Board
 		/// Interface file.
@@ -429,19 +462,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of component modes in the board</returns>
 		public void get_board_component_modes(string of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_component_modes");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("all", all);
-			command.OptionalString("filter", filter);
-			command.RequiredString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_component_modes [-regexp] [-nocase] [-all] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_component_modes")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("all", all)
+					.OptionalNamedString("filter", filter)
+					.RequiredNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of board_part pins object
+		///
+		///
+		/// TCL Syntax: get_board_component_pins [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of individual board component pins of the specified board component object of the
 		/// current_board.
@@ -495,18 +533,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of pins in the board_part</returns>
 		public void get_board_component_pins(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_component_pins");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.RequiredString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_component_pins [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_component_pins")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.RequiredNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get the list of components available in the board
+		///
+		///
+		/// TCL Syntax: get_board_components [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of components defined on the current board, as defined in the Board Interface file.
 		/// The board file, board.xml located in the data/boards folder of the Vivado Design Suite
@@ -561,19 +604,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of component objects</returns>
 		public void get_board_components(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_components");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("all", all);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_components [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_components")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("all", all)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of interface ports object
+		///
+		///
+		/// TCL Syntax: get_board_interface_ports [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of various physical ports assigned to the component interfaces defined on the current
 		/// board, as defined in the Board Interface file. The interface ports can be returned from component
@@ -632,18 +680,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of ports in the given interface</returns>
 		public void get_board_interface_ports(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_interface_ports");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.RequiredString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_interface_ports [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_interface_ports")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.RequiredNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of ip preference objects
+		///
+		///
+		/// TCL Syntax: get_board_ip_preferences [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of IP preferences defined on the current board, as defined in the Board Interface file.
 		/// The board file, board.xml located in the data/boards folder of the Vivado Design Suite
@@ -697,18 +750,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of ip preferences for the component</returns>
 		public void get_board_ip_preferences(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_ip_preferences");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.RequiredString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_ip_preferences [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_ip_preferences")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.RequiredNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of board jumper objects
+		///
+		///
+		/// TCL Syntax: get_board_jumpers [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of jumpers defined on the current board, as defined in the Board Interface file.
 		/// The board file, board.xml located in the data/boards folder of the Vivado Design Suite
@@ -759,18 +817,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of jumpers in the board</returns>
 		public void get_board_jumpers(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_jumpers");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_jumpers [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_jumpers")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of board parameter objects
+		///
+		///
+		/// TCL Syntax: get_board_parameters [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of parameters defined on the current board, as defined in the Board Interface file.
 		/// The board file, board.xml located in the data/boards folder of the Vivado Design Suite
@@ -823,18 +886,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of parameters in the board</returns>
 		public void get_board_parameters(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_parameters");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_parameters [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_parameters")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of interfaces in the board_part that implement busdef specified by VLNV
+		///
+		///
+		/// TCL Syntax: get_board_part_interfaces [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of interfaces defined on the Xilinx device, or current board part as defined by the
 		/// BOARD_PART property, on the board in use by the current project or open design.
@@ -895,18 +963,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of bus interfaces</returns>
 		public void get_board_part_interfaces(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_part_interfaces");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_part_interfaces [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_part_interfaces")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Gets the list of board_part pins object
+		///
+		///
+		/// TCL Syntax: get_board_part_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of component pin objects on the current board part in use by the current project or
 		/// design.
@@ -986,18 +1059,23 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of pins in the board_part</returns>
 		public void get_board_part_pins(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_part_pins");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_part_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_part_pins")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get the list of board_part available in the project
+		///
+		///
+		/// TCL Syntax: get_board_parts [-regexp] [-nocase] [-latest_file_version] [-latest_hw_revision] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of available board parts in the board repository, as defined by the Board Interface files
 		/// available for use by the current project or design.
@@ -1058,19 +1136,24 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of board_part objects</returns>
 		public void get_board_parts(bool? regexp = null, bool? nocase = null, bool? latest_file_version = null, bool? latest_hw_revision = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_board_parts");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.Flag("latest_file_version", latest_file_version);
-			command.Flag("latest_hw_revision", latest_hw_revision);
-			command.OptionalString("filter", filter);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_board_parts [-regexp] [-nocase] [-latest_file_version] [-latest_hw_revision] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_board_parts")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.Flag("latest_file_version", latest_file_version)
+					.Flag("latest_hw_revision", latest_hw_revision)
+					.OptionalNamedString("filter", filter)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 		/// <summary>
 		/// Get the list of boards available in the project
+		///
+		///
+		/// TCL Syntax: get_boards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 		///
 		/// Gets a list of evaluation boards available for use by the current project.
 		/// The board file, board.xml located in the data/boards folder of the Vivado Design Suite
@@ -1131,15 +1214,17 @@ namespace Quokka.TCL.Vivado
 		/// <returns>list of board objects</returns>
 		public void get_boards(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			var command = new SimpleTCLCommand("get_boards");
-			command.Flag("regexp", regexp);
-			command.Flag("nocase", nocase);
-			command.OptionalString("filter", filter);
-			command.OptionalString("of_objects", of_objects);
-			command.Flag("quiet", quiet);
-			command.Flag("verbose", verbose);
-			command.OptionalString("patterns", patterns);
-			_tcl.Add(command);
+			// TCL Syntax: get_boards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
+			_tcl.Add(
+				new SimpleTCLCommand("get_boards")
+					.Flag("regexp", regexp)
+					.Flag("nocase", nocase)
+					.OptionalNamedString("filter", filter)
+					.OptionalNamedString("of_objects", of_objects)
+					.Flag("quiet", quiet)
+					.Flag("verbose", verbose)
+					.OptionalString(patterns)
+			);
 		}
 	}
 }
