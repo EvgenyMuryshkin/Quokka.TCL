@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class ProjectCommands
+	public partial class ProjectCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public ProjectCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public ProjectCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Add sources to the active fileset
@@ -77,61 +79,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 42
 		/// </summary>
-		/// <param name="fileset">
-		/// Optional
-		/// Fileset name
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Filesets or sub-designs or RMs to add the files to
-		/// </param>
-		/// <param name="norecurse">
-		/// Optional
-		/// Do not recursively search in specified directories
-		/// </param>
-		/// <param name="copy_to">
-		/// Optional
-		/// Copy the file to the specified directory before adding it to
-		/// project
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite the existing file when -copy_to is used
-		/// </param>
-		/// <param name="scan_for_includes">
-		/// Optional
-		/// Scan and add any included files found in the fileset's RTL
-		/// sources
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="fileset">(Optional) Fileset name</param>
+		/// <param name="of_objects">(Optional) Filesets or sub-designs or RMs to add the files to</param>
+		/// <param name="norecurse">(Optional) Do not recursively search in specified directories</param>
+		/// <param name="copy_to">(Optional) Copy the file to the specified directory before adding it to project</param>
+		/// <param name="force">(Optional) Overwrite the existing file when -copy_to is used</param>
+		/// <param name="scan_for_includes">(Optional) Scan and add any included files found in the fileset's RTL sources</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="files">
-		/// Optional
+		/// (Optional)
 		/// Name of the files and/or directories to add. Must be
 		/// specified if -scan_for_includes is not used.
 		/// </param>
 		/// <returns>list of file objects that were added</returns>
-		public void add_files(string fileset = null, string of_objects = null, bool? norecurse = null, string copy_to = null, bool? force = null, bool? scan_for_includes = null, bool? quiet = null, bool? verbose = null, string files = null)
+		public TTCL add_files(string fileset = null, string of_objects = null, bool? norecurse = null, string copy_to = null, bool? force = null, bool? scan_for_includes = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
 			// TCL Syntax: add_files [-fileset <arg>] [-of_objects <args>] [-norecurse] [-copy_to <arg>] [-force] [-scan_for_includes] [-quiet] [-verbose] [<files>...]
-			_tcl.Add(
-				new SimpleTCLCommand("add_files")
-					.OptionalNamedString("fileset", fileset)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("norecurse", norecurse)
-					.OptionalNamedString("copy_to", copy_to)
-					.Flag("force", force)
-					.Flag("scan_for_includes", scan_for_includes)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(files)
-			);
+			_tcl.Entry(_builder.add_files(fileset, of_objects, norecurse, copy_to, force, scan_for_includes, quiet, verbose, files));
+			return _tcl;
 		}
 		/// <summary>
 		/// Add a new bus interface to a peripheral.
@@ -143,43 +109,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 55
 		/// </summary>
-		/// <param name="interface_mode">
-		/// Required
-		/// Mode of an interface, supported option - master,slave.
-		/// </param>
-		/// <param name="axi_type">
-		/// Required
-		/// Type of a axi interface, supported option - lite,full,stream.
-		/// </param>
-		/// <param name="name">
-		/// Required
-		/// Name to initialize the newly added element e.g S1_AXI,
-		/// M1_AXI
-		/// </param>
-		/// <param name="peripheral">
-		/// Required
-		/// Peripheral object
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void add_peripheral_interface(string interface_mode, string axi_type, string name, string peripheral, bool? quiet = null, bool? verbose = null)
+		/// <param name="interface_mode">(Required) Mode of an interface, supported option - master,slave.</param>
+		/// <param name="axi_type">(Required) Type of a axi interface, supported option - lite,full,stream.</param>
+		/// <param name="name">(Required) Name to initialize the newly added element e.g S1_AXI, M1_AXI</param>
+		/// <param name="peripheral">(Required) Peripheral object</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL add_peripheral_interface(string interface_mode, string axi_type, string name, string peripheral, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: add_peripheral_interface -interface_mode <arg> -axi_type <arg> [-quiet] [-verbose] <name> <peripheral>
-			_tcl.Add(
-				new SimpleTCLCommand("add_peripheral_interface")
-					.RequiredNamedString("interface_mode", interface_mode)
-					.RequiredNamedString("axi_type", axi_type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(peripheral)
-			);
+			_tcl.Entry(_builder.add_peripheral_interface(interface_mode, axi_type, name, peripheral, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Applies board connections to given designs
@@ -213,39 +153,20 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 99
 		/// </summary>
 		/// <param name="ip_intf">
-		/// Required
+		/// (Required)
 		/// Full path of IP interface name to which board automation
 		/// need to be applied.
 		/// </param>
-		/// <param name="diagram">
-		/// Required
-		/// The IP Integrator design name.
-		/// </param>
-		/// <param name="board_interface">
-		/// Optional
-		/// Board interface name to which connection need to be
-		/// applied.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="diagram">(Required) The IP Integrator design name.</param>
+		/// <param name="board_interface">(Optional) Board interface name to which connection need to be applied.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>sucess/failure status of applied action.</returns>
-		public void apply_board_connection(string ip_intf, string diagram, string board_interface = null, bool? quiet = null, bool? verbose = null)
+		public TTCL apply_board_connection(string ip_intf, string diagram, string board_interface = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: apply_board_connection [-board_interface <arg>] -ip_intf <arg> -diagram <arg> [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("apply_board_connection")
-					.OptionalNamedString("board_interface", board_interface)
-					.RequiredNamedString("ip_intf", ip_intf)
-					.RequiredNamedString("diagram", diagram)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.apply_board_connection(ip_intf, diagram, board_interface, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Archive the current project
@@ -281,61 +202,29 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 105
 		/// </summary>
-		/// <param name="temp_dir">
-		/// Optional
-		/// specify temporary location to save project copy to archive
-		/// Default: .
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing archived file
-		/// </param>
-		/// <param name="exclude_run_results">
-		/// Optional
-		/// Exclude run results from the archive
-		/// </param>
+		/// <param name="temp_dir">(Optional) specify temporary location to save project copy to archive Default: .</param>
+		/// <param name="force">(Optional) Overwrite existing archived file</param>
+		/// <param name="exclude_run_results">(Optional) Exclude run results from the archive</param>
 		/// <param name="include_config_settings">
-		/// Optional
+		/// (Optional)
 		/// Include current project environment configuration settings/
 		/// files in archive
 		/// </param>
 		/// <param name="include_runs_in_progress">
-		/// Optional
+		/// (Optional)
 		/// Include run result even if the run is in progress, this switch
 		/// will be ignored if -exclude_run_results is specified
 		/// </param>
-		/// <param name="include_local_ip_cache">
-		/// Optional
-		/// Include IP cache results in the archive
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// Name of the archive file
-		/// </param>
+		/// <param name="include_local_ip_cache">(Optional) Include IP cache results in the archive</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="file">(Optional) Name of the archive file</param>
 		/// <returns>true</returns>
-		public void archive_project(string temp_dir = null, bool? force = null, bool? exclude_run_results = null, bool? include_config_settings = null, bool? include_runs_in_progress = null, bool? include_local_ip_cache = null, bool? quiet = null, bool? verbose = null, string file = null)
+		public TTCL archive_project(string temp_dir = null, bool? force = null, bool? exclude_run_results = null, bool? include_config_settings = null, bool? include_runs_in_progress = null, bool? include_local_ip_cache = null, bool? quiet = null, bool? verbose = null, string file = null)
 		{
 			// TCL Syntax: archive_project [-temp_dir <arg>] [-force] [-exclude_run_results] [-include_config_settings] [-include_runs_in_progress] [-include_local_ip_cache] [-quiet] [-verbose] [<file>]
-			_tcl.Add(
-				new SimpleTCLCommand("archive_project")
-					.OptionalNamedString("temp_dir", temp_dir)
-					.Flag("force", force)
-					.Flag("exclude_run_results", exclude_run_results)
-					.Flag("include_config_settings", include_config_settings)
-					.Flag("include_runs_in_progress", include_runs_in_progress)
-					.Flag("include_local_ip_cache", include_local_ip_cache)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(file)
-			);
+			_tcl.Entry(_builder.archive_project(temp_dir, force, exclude_run_results, include_config_settings, include_runs_in_progress, include_local_ip_cache, quiet, verbose, file));
+			return _tcl;
 		}
 		/// <summary>
 		/// Auto detect the XPM Libraries that are used in the design and set the XPM_LIBRARIES project
@@ -361,22 +250,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 112
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void auto_detect_xpm(bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL auto_detect_xpm(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: auto_detect_xpm [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("auto_detect_xpm")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.auto_detect_xpm(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Check if a module can be referenced
@@ -394,27 +274,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 120
 		/// </summary>
-		/// <param name="module">
-		/// Required
-		/// module name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void can_resolve_reference(string module, bool? quiet = null, bool? verbose = null)
+		/// <param name="module">(Required) module name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL can_resolve_reference(string module, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: can_resolve_reference [-quiet] [-verbose] <module>...
-			_tcl.Add(
-				new SimpleTCLCommand("can_resolve_reference")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(module)
-			);
+			_tcl.Entry(_builder.can_resolve_reference(module, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Check HDL syntax in the supplied fileset or active fileset.
@@ -434,32 +301,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 122
 		/// </summary>
-		/// <param name="fileset">
-		/// Optional
-		/// Fileset to check for syntax
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return the syntax check messages as a string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void check_syntax(string fileset = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="fileset">(Optional) Fileset to check for syntax</param>
+		/// <param name="return_string">(Optional) Return the syntax check messages as a string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL check_syntax(string fileset = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: check_syntax [-fileset <arg>] [-return_string] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("check_syntax")
-					.OptionalNamedString("fileset", fileset)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.check_syntax(fileset, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Close the current design
@@ -483,22 +333,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 133
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void close_design(bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL close_design(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: close_design [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("close_design")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.close_design(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Close current opened project
@@ -526,27 +367,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 139
 		/// </summary>
-		/// <param name="delete">
-		/// Optional
-		/// Delete the project from disk also
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void close_project(bool? delete = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="delete">(Optional) Delete the project from disk also</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL close_project(bool? delete = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: close_project [-delete] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("close_project")
-					.Flag("delete", delete)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.close_project(delete, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Compile C code into RTL
@@ -567,32 +395,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 159
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// The objects which need C to RTL conversion
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Force generate product state regeneration
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void compile_c(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="objects">(Required) The objects which need C to RTL conversion</param>
+		/// <param name="force">(Optional) Force generate product state regeneration</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL compile_c(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: compile_c [-force] [-quiet] [-verbose] <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("compile_c")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.compile_c(objects, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Copy an existing IP
@@ -604,39 +415,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 213
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of copied IP
-		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// IP to be copied
-		/// </param>
+		/// <param name="name">(Required) Name of copied IP</param>
+		/// <param name="objects">(Required) IP to be copied</param>
 		/// <param name="dir">
-		/// Optional
+		/// (Optional)
 		/// Directory path for remote IP to be created and managed
 		/// outside the project
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>IP file object that was added to the project</returns>
-		public void copy_ip(string name, string objects, string dir = null, bool? quiet = null, bool? verbose = null)
+		public TTCL copy_ip(string name, string objects, string dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: copy_ip -name <arg> [-dir <arg>] [-quiet] [-verbose] <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("copy_ip")
-					.RequiredNamedString("name", name)
-					.OptionalNamedString("dir", dir)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.copy_ip(name, objects, dir, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create the Gadget for Project summary dashboard
@@ -668,32 +461,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 245
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of the gadget
-		/// </param>
-		/// <param name="type">
-		/// Required
-		/// Type of the gadget
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_dashboard_gadget(string name, string type, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Required) Name of the gadget</param>
+		/// <param name="type">(Required) Type of the gadget</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_dashboard_gadget(string name, string type, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_dashboard_gadget -name <arg> -type <arg> [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("create_dashboard_gadget")
-					.RequiredNamedString("name", name)
-					.RequiredNamedString("type", type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.create_dashboard_gadget(name, type, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new fileset
@@ -735,54 +511,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 264
 		/// </summary>
-		/// <param name="define_from">
-		/// Required
-		/// Name of the module in the source fileset to be the top of
-		/// the blockset
-		/// </param>
-		/// <param name="name">
-		/// Required
-		/// Name of the fileset to be create
-		/// </param>
-		/// <param name="constrset">
-		/// Optional
-		/// Create fileset as constraints fileset (default)
-		/// </param>
-		/// <param name="simset">
-		/// Optional
-		/// Create fileset as simulation source fileset
-		/// </param>
-		/// <param name="blockset">
-		/// Optional
-		/// Create fileset as block source fileset
-		/// </param>
-		/// <param name="clone_properties">
-		/// Optional
-		/// Fileset to initialize properties from
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="define_from">(Required) Name of the module in the source fileset to be the top of the blockset</param>
+		/// <param name="name">(Required) Name of the fileset to be create</param>
+		/// <param name="constrset">(Optional) Create fileset as constraints fileset (default)</param>
+		/// <param name="simset">(Optional) Create fileset as simulation source fileset</param>
+		/// <param name="blockset">(Optional) Create fileset as block source fileset</param>
+		/// <param name="clone_properties">(Optional) Fileset to initialize properties from</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>new fileset object</returns>
-		public void create_fileset(string define_from, string name, bool? constrset = null, bool? simset = null, bool? blockset = null, string clone_properties = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_fileset(string define_from, string name, bool? constrset = null, bool? simset = null, bool? blockset = null, string clone_properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_fileset [-constrset] [-simset] [-blockset] [-clone_properties <arg>] -define_from <arg> [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_fileset")
-					.Flag("constrset", constrset)
-					.Flag("simset", simset)
-					.Flag("blockset", blockset)
-					.OptionalNamedString("clone_properties", clone_properties)
-					.RequiredNamedString("define_from", define_from)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.create_fileset(define_from, name, constrset, simset, blockset, clone_properties, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Creates a run for the given IP.
@@ -806,32 +548,18 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 310
 		/// </summary>
 		/// <param name="objects">
-		/// Required
+		/// (Required)
 		/// All of the IP objects (from get_ips or get_files) for which a
 		/// run needs to be generated for.
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Force regeneration of products of the given IP.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_ip_run(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="force">(Optional) Force regeneration of products of the given IP.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_ip_run(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_ip_run [-force] [-quiet] [-verbose] <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("create_ip_run")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.create_ip_run(objects, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a peripheral with a VLNV.
@@ -846,48 +574,22 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 320
 		/// </summary>
-		/// <param name="vendor">
-		/// Required
-		/// Vendor, for example xilinx.com
-		/// </param>
-		/// <param name="library">
-		/// Required
-		/// Library, for example ip
-		/// </param>
-		/// <param name="name">
-		/// Required
-		/// Name, for example myip
-		/// </param>
-		/// <param name="version">
-		/// Required
-		/// Version, for example 1.4
-		/// </param>
+		/// <param name="vendor">(Required) Vendor, for example xilinx.com</param>
+		/// <param name="library">(Required) Library, for example ip</param>
+		/// <param name="name">(Required) Name, for example myip</param>
+		/// <param name="version">(Required) Version, for example 1.4</param>
 		/// <param name="dir">
-		/// Optional
+		/// (Optional)
 		/// Directory path for remote Peripheral to be created and
 		/// managed outside the project
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_peripheral(string vendor, string library, string name, string version, string dir = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_peripheral(string vendor, string library, string name, string version, string dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_peripheral [-dir <arg>] [-quiet] [-verbose] <vendor> <library> <name> <version>
-			_tcl.Add(
-				new SimpleTCLCommand("create_peripheral")
-					.OptionalNamedString("dir", dir)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(vendor)
-					.RequiredString(library)
-					.RequiredString(name)
-					.RequiredString(version)
-			);
+			_tcl.Entry(_builder.create_peripheral(vendor, library, name, version, dir, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new project
@@ -945,58 +647,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 333
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Project name
-		/// </param>
-		/// <param name="part">
-		/// Optional
-		/// Target part
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing project directory
-		/// </param>
-		/// <param name="in_memory">
-		/// Optional
-		/// Create an in-memory project
-		/// </param>
-		/// <param name="ip">
-		/// Optional
-		/// Default GUI behavior is for a managed IP project
-		/// </param>
-		/// <param name="rtl_kernel">
-		/// Optional
-		/// Default GUI behavior is for a RTL Kernel project
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="dir">
-		/// Optional
-		/// Directory where the project file is saved Default: .
-		/// </param>
+		/// <param name="name">(Required) Project name</param>
+		/// <param name="part">(Optional) Target part</param>
+		/// <param name="force">(Optional) Overwrite existing project directory</param>
+		/// <param name="in_memory">(Optional) Create an in-memory project</param>
+		/// <param name="ip">(Optional) Default GUI behavior is for a managed IP project</param>
+		/// <param name="rtl_kernel">(Optional) Default GUI behavior is for a RTL Kernel project</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="dir">(Optional) Directory where the project file is saved Default: .</param>
 		/// <returns>new project object</returns>
-		public void create_project(string name, string part = null, bool? force = null, bool? in_memory = null, bool? ip = null, bool? rtl_kernel = null, bool? quiet = null, bool? verbose = null, string dir = null)
+		public TTCL create_project(string name, string part = null, bool? force = null, bool? in_memory = null, bool? ip = null, bool? rtl_kernel = null, bool? quiet = null, bool? verbose = null, string dir = null)
 		{
 			// TCL Syntax: create_project [-part <arg>] [-force] [-in_memory] [-ip] [-rtl_kernel] [-quiet] [-verbose] [<name>] [<dir>]
-			_tcl.Add(
-				new SimpleTCLCommand("create_project")
-					.OptionalNamedString("part", part)
-					.Flag("force", force)
-					.Flag("in_memory", in_memory)
-					.Flag("ip", ip)
-					.Flag("rtl_kernel", rtl_kernel)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.OptionalString(dir)
-			);
+			_tcl.Entry(_builder.create_project(name, part, force, in_memory, ip, rtl_kernel, quiet, verbose, dir));
+			return _tcl;
 		}
 		/// <summary>
 		/// Define a synthesis or implementation run for the current project
@@ -1019,63 +684,22 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 349
 		/// </summary>
-		/// <param name="flow">
-		/// Required
-		/// Flow name
-		/// </param>
-		/// <param name="name">
-		/// Required
-		/// Name for new run
-		/// </param>
-		/// <param name="constrset">
-		/// Optional
-		/// Constraint fileset to use
-		/// </param>
-		/// <param name="parent_run">
-		/// Optional
-		/// Synthesis run to link to new implementation run
-		/// </param>
-		/// <param name="part">
-		/// Optional
-		/// Target part
-		/// </param>
-		/// <param name="strategy">
-		/// Optional
-		/// Strategy to apply to the run
-		/// </param>
-		/// <param name="report_strategy">
-		/// Optional
-		/// Report strategy to apply to the run
-		/// </param>
-		/// <param name="pr_config">
-		/// Optional
-		/// partition configuration to apply to the run
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="flow">(Required) Flow name</param>
+		/// <param name="name">(Required) Name for new run</param>
+		/// <param name="constrset">(Optional) Constraint fileset to use</param>
+		/// <param name="parent_run">(Optional) Synthesis run to link to new implementation run</param>
+		/// <param name="part">(Optional) Target part</param>
+		/// <param name="strategy">(Optional) Strategy to apply to the run</param>
+		/// <param name="report_strategy">(Optional) Report strategy to apply to the run</param>
+		/// <param name="pr_config">(Optional) partition configuration to apply to the run</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>run object</returns>
-		public void create_run(string flow, string name, string constrset = null, string parent_run = null, string part = null, string strategy = null, string report_strategy = null, string pr_config = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_run(string flow, string name, string constrset = null, string parent_run = null, string part = null, string strategy = null, string report_strategy = null, string pr_config = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_run [-constrset <arg>] [-parent_run <arg>] [-part <arg>] -flow <arg> [-strategy <arg>] [-report_strategy <arg>] [-pr_config <arg>] [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_run")
-					.OptionalNamedString("constrset", constrset)
-					.OptionalNamedString("parent_run", parent_run)
-					.OptionalNamedString("part", part)
-					.RequiredNamedString("flow", flow)
-					.OptionalNamedString("strategy", strategy)
-					.OptionalNamedString("report_strategy", report_strategy)
-					.OptionalNamedString("pr_config", pr_config)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.create_run(flow, name, constrset, parent_run, part, strategy, report_strategy, pr_config, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create embedded source for XPS and add to the source fileset (Not supported anymore. Please
@@ -1103,28 +727,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 363
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Source name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Required) Source name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>source file name that was created</returns>
-		public void create_xps(string name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_xps(string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_xps [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_xps")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.create_xps(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get the current board_part object
@@ -1155,23 +766,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 372
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>current board_part object</returns>
-		public void current_board_part(bool? quiet = null, bool? verbose = null)
+		public TTCL current_board_part(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: current_board_part [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("current_board_part")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.current_board_part(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get the current fileset (any type) or set the current fileset (applicable to simulation filesets only)
@@ -1193,39 +795,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 377
 		/// </summary>
-		/// <param name="constrset">
-		/// Optional
-		/// Get the current constraints fileset
-		/// </param>
-		/// <param name="simset">
-		/// Optional
-		/// Get the current active simulation fileset
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="fileset">
-		/// Optional
-		/// Specify the simulation fileset to set as current (active);
-		/// optional
-		/// </param>
+		/// <param name="constrset">(Optional) Get the current constraints fileset</param>
+		/// <param name="simset">(Optional) Get the current active simulation fileset</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="fileset">(Optional) Specify the simulation fileset to set as current (active); optional</param>
 		/// <returns>current fileset (the current srcset by default)</returns>
-		public void current_fileset(bool? constrset = null, bool? simset = null, bool? quiet = null, bool? verbose = null, string fileset = null)
+		public TTCL current_fileset(bool? constrset = null, bool? simset = null, bool? quiet = null, bool? verbose = null, string fileset = null)
 		{
 			// TCL Syntax: current_fileset [-constrset] [-simset] [-quiet] [-verbose] [<fileset>...]
-			_tcl.Add(
-				new SimpleTCLCommand("current_fileset")
-					.Flag("constrset", constrset)
-					.Flag("simset", simset)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(fileset)
-			);
+			_tcl.Entry(_builder.current_fileset(constrset, simset, quiet, verbose, fileset));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set or get current project
@@ -1245,28 +825,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 401
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="project">
-		/// Optional
-		/// Project to set as current
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="project">(Optional) Project to set as current</param>
 		/// <returns>current or newly set project object</returns>
-		public void current_project(bool? quiet = null, bool? verbose = null, string project = null)
+		public TTCL current_project(bool? quiet = null, bool? verbose = null, string project = null)
 		{
 			// TCL Syntax: current_project [-quiet] [-verbose] [<project>]
-			_tcl.Add(
-				new SimpleTCLCommand("current_project")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(project)
-			);
+			_tcl.Entry(_builder.current_project(quiet, verbose, project));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set or get the current run
@@ -1288,39 +855,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 403
 		/// </summary>
-		/// <param name="synthesis">
-		/// Optional
-		/// Set or get the current synthesis run
-		/// </param>
+		/// <param name="synthesis">(Optional) Set or get the current synthesis run</param>
 		/// <param name="implementation">
-		/// Optional
+		/// (Optional)
 		/// Set or get the current implementation run (default unless '-
 		/// synthesis' is specified)
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="run">
-		/// Optional
-		/// Run to set as current; optional
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="run">(Optional) Run to set as current; optional</param>
 		/// <returns>run object</returns>
-		public void current_run(bool? synthesis = null, bool? implementation = null, bool? quiet = null, bool? verbose = null, string run = null)
+		public TTCL current_run(bool? synthesis = null, bool? implementation = null, bool? quiet = null, bool? verbose = null, string run = null)
 		{
 			// TCL Syntax: current_run [-synthesis] [-implementation] [-quiet] [-verbose] [<run>]
-			_tcl.Add(
-				new SimpleTCLCommand("current_run")
-					.Flag("synthesis", synthesis)
-					.Flag("implementation", implementation)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(run)
-			);
+			_tcl.Entry(_builder.current_run(synthesis, implementation, quiet, verbose, run));
+			return _tcl;
 		}
 		/// <summary>
 		/// Deletes the gadgets from project summary dashboard
@@ -1333,27 +882,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 421
 		/// </summary>
-		/// <param name="gadgets">
-		/// Required
-		/// Gadgets to delete
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_dashboard_gadgets(string gadgets, bool? quiet = null, bool? verbose = null)
+		/// <param name="gadgets">(Required) Gadgets to delete</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_dashboard_gadgets(string gadgets, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_dashboard_gadgets [-quiet] [-verbose] <gadgets>
-			_tcl.Add(
-				new SimpleTCLCommand("delete_dashboard_gadgets")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(gadgets)
-			);
+			_tcl.Entry(_builder.delete_dashboard_gadgets(gadgets, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Delete a fileset
@@ -1371,32 +907,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 432
 		/// </summary>
-		/// <param name="fileset">
-		/// Required
-		/// Fileset to be deleted
-		/// </param>
-		/// <param name="merge">
-		/// Optional
-		/// Fileset to merge files from the deleted fileset into
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_fileset(string fileset, string merge = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="fileset">(Required) Fileset to be deleted</param>
+		/// <param name="merge">(Optional) Fileset to merge files from the deleted fileset into</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_fileset(string fileset, string merge = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_fileset [-merge <arg>] [-quiet] [-verbose] <fileset>
-			_tcl.Add(
-				new SimpleTCLCommand("delete_fileset")
-					.OptionalNamedString("merge", merge)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(fileset)
-			);
+			_tcl.Entry(_builder.delete_fileset(fileset, merge, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Deletes the block fileset and run associated with a given IP.
@@ -1421,32 +940,18 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 446
 		/// </summary>
 		/// <param name="objects">
-		/// Required
+		/// (Required)
 		/// All of the IP objects (from get_ips or get_files) for which the
 		/// block fileset and run will be deleted.
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Force the deletion of the block fileset and run.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_ip_run(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="force">(Optional) Force the deletion of the block fileset and run.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_ip_run(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_ip_run [-force] [-quiet] [-verbose] <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("delete_ip_run")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.delete_ip_run(objects, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Delete existing runs
@@ -1465,32 +970,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 466
 		/// </summary>
-		/// <param name="runs">
-		/// Required
-		/// Run to modify
-		/// </param>
-		/// <param name="noclean_dir">
-		/// Optional
-		/// Do not remove all output files and directories from disk
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_runs(string runs, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="runs">(Required) Run to modify</param>
+		/// <param name="noclean_dir">(Optional) Do not remove all output files and directories from disk</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_runs(string runs, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_runs [-noclean_dir] [-quiet] [-verbose] <runs>
-			_tcl.Add(
-				new SimpleTCLCommand("delete_runs")
-					.Flag("noclean_dir", noclean_dir)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(runs)
-			);
+			_tcl.Entry(_builder.delete_runs(runs, noclean_dir, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Find top module candidates in the supplied files, fileset, or active fileset. Returns a rank ordered
@@ -1519,39 +1007,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 524
 		/// </summary>
-		/// <param name="fileset">
-		/// Optional
-		/// Fileset to parse to search for top candidates
-		/// </param>
-		/// <param name="files">
-		/// Optional
-		/// Files to parse to search for top candidates
-		/// </param>
+		/// <param name="fileset">(Optional) Fileset to parse to search for top candidates</param>
+		/// <param name="files">(Optional) Files to parse to search for top candidates</param>
 		/// <param name="return_file_paths">
-		/// Optional
+		/// (Optional)
 		/// For each top returned, also include the associated file path.
 		/// The returned value will be a single list of strings, alternating
 		/// top names and file paths.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void find_top(string fileset = null, string files = null, bool? return_file_paths = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL find_top(string fileset = null, string files = null, bool? return_file_paths = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: find_top [-fileset <arg>] [-files <args>] [-return_file_paths] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("find_top")
-					.OptionalNamedString("fileset", fileset)
-					.OptionalNamedString("files", files)
-					.Flag("return_file_paths", return_file_paths)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.find_top(fileset, files, return_file_paths, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Generate output products for peripheral object.
@@ -1565,57 +1035,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 532
 		/// </summary>
-		/// <param name="peripheral">
-		/// Required
-		/// peripheral object
-		/// </param>
-		/// <param name="driver">
-		/// Optional
-		/// Generate driver for peripheral.
-		/// </param>
-		/// <param name="example_design">
-		/// Optional
-		/// Generate all supported example designs for peripheral.
-		/// </param>
-		/// <param name="bfm_example_design">
-		/// Optional
-		/// Generate bfm simulation example design for peripheral.
-		/// </param>
-		/// <param name="debug_hw_example_design">
-		/// Optional
-		/// Generate debug hardware example design for peripheral.
-		/// </param>
-		/// <param name="enable_interrupt">
-		/// Optional
-		/// Generate peripheral with interrupt suppport.
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite the existing IP in the repository.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void generate_peripheral(string peripheral, bool? driver = null, bool? example_design = null, bool? bfm_example_design = null, bool? debug_hw_example_design = null, bool? enable_interrupt = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="peripheral">(Required) peripheral object</param>
+		/// <param name="driver">(Optional) Generate driver for peripheral.</param>
+		/// <param name="example_design">(Optional) Generate all supported example designs for peripheral.</param>
+		/// <param name="bfm_example_design">(Optional) Generate bfm simulation example design for peripheral.</param>
+		/// <param name="debug_hw_example_design">(Optional) Generate debug hardware example design for peripheral.</param>
+		/// <param name="enable_interrupt">(Optional) Generate peripheral with interrupt suppport.</param>
+		/// <param name="force">(Optional) Overwrite the existing IP in the repository.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL generate_peripheral(string peripheral, bool? driver = null, bool? example_design = null, bool? bfm_example_design = null, bool? debug_hw_example_design = null, bool? enable_interrupt = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_peripheral [-driver] [-example_design] [-bfm_example_design] [-debug_hw_example_design] [-enable_interrupt] [-force] [-quiet] [-verbose] <peripheral>
-			_tcl.Add(
-				new SimpleTCLCommand("generate_peripheral")
-					.Flag("driver", driver)
-					.Flag("example_design", example_design)
-					.Flag("bfm_example_design", bfm_example_design)
-					.Flag("debug_hw_example_design", debug_hw_example_design)
-					.Flag("enable_interrupt", enable_interrupt)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(peripheral)
-			);
+			_tcl.Entry(_builder.generate_peripheral(peripheral, driver, example_design, bfm_example_design, debug_hw_example_design, enable_interrupt, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Generate target data for the specified source
@@ -1654,37 +1087,19 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 539
 		/// </summary>
 		/// <param name="name">
-		/// Required
+		/// (Required)
 		/// List of targets to be generated, or 'all' to generate all
 		/// supported targets
 		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// The objects for which data needs to be generated
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Force target data regeneration
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void generate_target(string name, string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="objects">(Required) The objects for which data needs to be generated</param>
+		/// <param name="force">(Optional) Force target data regeneration</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL generate_target(string name, string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_target [-force] [-quiet] [-verbose] <name> <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("generate_target")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.generate_target(name, objects, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get the list of board_part available in the project
@@ -1714,55 +1129,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 625
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching
-		/// </param>
-		/// <param name="latest_file_version">
-		/// Optional
-		/// Show only latest board parts by file version
-		/// </param>
-		/// <param name="latest_hw_revision">
-		/// Optional
-		/// Show only latest board parts by board revision
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
+		/// <param name="latest_file_version">(Optional) Show only latest board parts by file version</param>
+		/// <param name="latest_hw_revision">(Optional) Show only latest board parts by board revision</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">
-		/// Optional
+		/// (Optional)
 		/// Match Board Part names against patterns Default: * Values:
 		/// The default search pattern is the wildcard *, or .* when -
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of board_part objects</returns>
-		public void get_board_parts(bool? regexp = null, bool? nocase = null, bool? latest_file_version = null, bool? latest_hw_revision = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_parts(bool? regexp = null, bool? nocase = null, bool? latest_file_version = null, bool? latest_hw_revision = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_board_parts [-regexp] [-nocase] [-latest_file_version] [-latest_hw_revision] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
-			_tcl.Add(
-				new SimpleTCLCommand("get_board_parts")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("latest_file_version", latest_file_version)
-					.Flag("latest_hw_revision", latest_hw_revision)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_board_parts(regexp, nocase, latest_file_version, latest_hw_revision, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get the list of boards available in the project
@@ -1796,50 +1181,24 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 629
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'board' objects of these types: 'board_component'.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) Get 'board' objects of these types: 'board_component'.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">
-		/// Optional
+		/// (Optional)
 		/// Match Board names against patterns Default: * Values: The
 		/// default search pattern is the wildcard *, or .* when -regexp
 		/// is specified.
 		/// </param>
 		/// <returns>list of board objects</returns>
-		public void get_boards(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_boards(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_boards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
-			_tcl.Add(
-				new SimpleTCLCommand("get_boards")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_boards(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create the Project summary dashboard
@@ -1854,28 +1213,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 651
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">
-		/// Optional
+		/// (Optional)
 		/// Match gadget names against patterns Default: * Values: The
 		/// default search pattern is the wildcard *
 		/// </param>
-		public void get_dashboard_gadgets(bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_dashboard_gadgets(bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_dashboard_gadgets [-quiet] [-verbose] [<patterns>...]
-			_tcl.Add(
-				new SimpleTCLCommand("get_dashboard_gadgets")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_dashboard_gadgets(quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of source files
@@ -1916,73 +1265,27 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 675
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="compile_order">
-		/// Optional
-		/// Get files by type and in compilation order (must use with -
-		/// used_in)
-		/// </param>
-		/// <param name="used_in">
-		/// Optional
-		/// Get files used in a specific step (must use with -
-		/// compile_order)
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="compile_order">(Optional) Get files by type and in compilation order (must use with - used_in)</param>
+		/// <param name="used_in">(Optional) Get files used in a specific step (must use with - compile_order)</param>
 		/// <param name="references">
-		/// Optional
+		/// (Optional)
 		/// Get files referenced in the provided objects (must use with -
 		/// of_objects)
 		/// </param>
-		/// <param name="all">
-		/// Optional
-		/// Include all internal files.
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'file' objects of these types: 'file fileset ip
-		/// reconfig_module'.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match file names against patterns Default: *
-		/// </param>
+		/// <param name="all">(Optional) Include all internal files.</param>
+		/// <param name="of_objects">(Optional) Get 'file' objects of these types: 'file fileset ip reconfig_module'.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match file names against patterns Default: *</param>
 		/// <returns>list of file objects</returns>
-		public void get_files(bool? regexp = null, bool? nocase = null, string filter = null, string compile_order = null, string used_in = null, bool? references = null, bool? all = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_files(bool? regexp = null, bool? nocase = null, string filter = null, string compile_order = null, string used_in = null, bool? references = null, bool? all = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_files [-regexp] [-nocase] [-filter <arg>] [-compile_order <arg>] [-used_in <arg>] [-references] [-all] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_files")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("compile_order", compile_order)
-					.OptionalNamedString("used_in", used_in)
-					.Flag("references", references)
-					.Flag("all", all)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_files(regexp, nocase, filter, compile_order, used_in, references, all, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of filesets in the current project
@@ -2014,49 +1317,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 679
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'fileset' objects of these types: 'reconfig_module'.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match fileset names against patterns Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) Get 'fileset' objects of these types: 'reconfig_module'.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match fileset names against patterns Default: *</param>
 		/// <returns>list of fileset objects</returns>
-		public void get_filesets(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_filesets(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_filesets [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_filesets")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_filesets(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of results for IP upgrades during the current project
@@ -2075,36 +1348,25 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 786
 		/// </summary>
 		/// <param name="srcset">
-		/// Optional
+		/// (Optional)
 		/// (Optional) Specifies the source file set containing the
 		/// upgraded IP Default: The current source fileset Values:
 		/// Source set name
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">
-		/// Optional
+		/// (Optional)
 		/// IP to be upgraded Values: IP instance(s) within the design,
 		/// as returned by 'get_ips <instance name>' or 'get_bd_cells
 		/// <cell name>'
 		/// </param>
 		/// <returns>list of IP upgrade results</returns>
-		public void get_ip_upgrade_results(string srcset = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public TTCL get_ip_upgrade_results(string srcset = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: get_ip_upgrade_results [-srcset <arg>] [-quiet] [-verbose] [<objects>...]
-			_tcl.Add(
-				new SimpleTCLCommand("get_ip_upgrade_results")
-					.OptionalNamedString("srcset", srcset)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(objects)
-			);
+			_tcl.Entry(_builder.get_ip_upgrade_results(srcset, quiet, verbose, objects));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of IPs in the current design
@@ -2124,60 +1386,26 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 792
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching
-		/// </param>
-		/// <param name="all">
-		/// Optional
-		/// Include subcore IP in search
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="exclude_bd_ips">
-		/// Optional
-		/// Exclude all IP owned by a block design.
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'ip' objects of these types: 'ip file'.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
+		/// <param name="all">(Optional) Include subcore IP in search</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="exclude_bd_ips">(Optional) Exclude all IP owned by a block design.</param>
+		/// <param name="of_objects">(Optional) Get 'ip' objects of these types: 'ip file'.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">
-		/// Optional
+		/// (Optional)
 		/// Match IP names against patterns Default: * Values: The
 		/// default search pattern is the wildcard *, or .* when -regexp
 		/// is specified.
 		/// </param>
 		/// <returns>list of IP objects</returns>
-		public void get_ips(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? exclude_bd_ips = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_ips(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? exclude_bd_ips = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_ips [-regexp] [-nocase] [-all] [-filter <arg>] [-exclude_bd_ips] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
-			_tcl.Add(
-				new SimpleTCLCommand("get_ips")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("all", all)
-					.OptionalNamedString("filter", filter)
-					.Flag("exclude_bd_ips", exclude_bd_ips)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_ips(regexp, nocase, all, filter, exclude_bd_ips, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of projects
@@ -2204,44 +1432,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 877
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match project names against patterns Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match project names against patterns Default: *</param>
 		/// <returns>list of project objects</returns>
-		public void get_projects(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_projects(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_projects [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_projects")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_projects(regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of runs
@@ -2264,49 +1466,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 891
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'run' objects of these types: 'reconfig_module'.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match run names against patterns Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) Get 'run' objects of these types: 'reconfig_module'.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match run names against patterns Default: *</param>
 		/// <returns>list of run objects</returns>
-		public void get_runs(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_runs(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_runs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_runs")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_runs(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Display help for one or more topics
@@ -2363,67 +1535,27 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 951
 		/// </summary>
-		/// <param name="category">
-		/// Optional
-		/// Search for topics in the specified category
-		/// </param>
-		/// <param name="args">
-		/// Optional
-		/// Display arguments description
-		/// </param>
-		/// <param name="syntax">
-		/// Optional
-		/// Display syntax description
-		/// </param>
-		/// <param name="@long">
-		/// Optional
-		/// Display long help description
-		/// </param>
-		/// <param name="prop">
-		/// Optional
-		/// Display property help for matching property names Default:
-		/// *
-		/// </param>
-		/// <param name="@class">
-		/// Optional
-		/// Display object type help
-		/// </param>
+		/// <param name="category">(Optional) Search for topics in the specified category</param>
+		/// <param name="args">(Optional) Display arguments description</param>
+		/// <param name="syntax">(Optional) Display syntax description</param>
+		/// <param name="@long">(Optional) Display long help description</param>
+		/// <param name="prop">(Optional) Display property help for matching property names Default: *</param>
+		/// <param name="@class">(Optional) Display object type help</param>
 		/// <param name="message">
-		/// Optional
+		/// (Optional)
 		/// Display information about the message with the given
 		/// message. Every message delivered by the tool has a unique
 		/// global message ID that consists of an application sub￾system code and a message identifier. Example: -message
 		/// {Common 17-8}.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="pattern_or_object">
-		/// Optional
-		/// Display help for topics that match the specified pattern
-		/// Default: *
-		/// </param>
-		public void help(string category = null, bool? args = null, bool? syntax = null, bool? @long = null, string prop = null, string @class = null, string message = null, bool? quiet = null, bool? verbose = null, string pattern_or_object = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="pattern_or_object">(Optional) Display help for topics that match the specified pattern Default: *</param>
+		public TTCL help(string category = null, bool? args = null, bool? syntax = null, bool? @long = null, string prop = null, string @class = null, string message = null, bool? quiet = null, bool? verbose = null, string pattern_or_object = null)
 		{
 			// TCL Syntax: help [-category <arg>] [-args] [-syntax] [-long] [-prop <arg>] [-class <arg>] [-message <arg>] [-quiet] [-verbose] [<pattern_or_object>]
-			_tcl.Add(
-				new SimpleTCLCommand("help")
-					.OptionalNamedString("category", category)
-					.Flag("args", args)
-					.Flag("syntax", syntax)
-					.Flag("long", @long)
-					.OptionalNamedString("prop", prop)
-					.OptionalNamedString("class", @class)
-					.OptionalNamedString("message", message)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(pattern_or_object)
-			);
+			_tcl.Entry(_builder.help(category, args, syntax, @long, prop, @class, message, quiet, verbose, pattern_or_object));
+			return _tcl;
 		}
 		/// <summary>
 		/// Import files and/or directories into the active fileset
@@ -2465,58 +1597,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 962
 		/// </summary>
-		/// <param name="fileset">
-		/// Optional
-		/// Fileset name
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite files of the same name in project directory
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// RMs to import the files to
-		/// </param>
-		/// <param name="norecurse">
-		/// Optional
-		/// Disables the default behavior of recursive directory searches
-		/// </param>
-		/// <param name="flat">
-		/// Optional
-		/// Import the files into a flat directory structure
-		/// </param>
-		/// <param name="relative_to">
-		/// Optional
-		/// Import the files with respect to the given relative directory
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="files">
-		/// Optional
-		/// Name of the files to import into fileset
-		/// </param>
+		/// <param name="fileset">(Optional) Fileset name</param>
+		/// <param name="force">(Optional) Overwrite files of the same name in project directory</param>
+		/// <param name="of_objects">(Optional) RMs to import the files to</param>
+		/// <param name="norecurse">(Optional) Disables the default behavior of recursive directory searches</param>
+		/// <param name="flat">(Optional) Import the files into a flat directory structure</param>
+		/// <param name="relative_to">(Optional) Import the files with respect to the given relative directory</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="files">(Optional) Name of the files to import into fileset</param>
 		/// <returns>A list of file objects that were imported</returns>
-		public void import_files(string fileset = null, bool? force = null, string of_objects = null, bool? norecurse = null, bool? flat = null, string relative_to = null, bool? quiet = null, bool? verbose = null, string files = null)
+		public TTCL import_files(string fileset = null, bool? force = null, string of_objects = null, bool? norecurse = null, bool? flat = null, string relative_to = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
 			// TCL Syntax: import_files [-fileset <arg>] [-force] [-of_objects <args>] [-norecurse] [-flat] [-relative_to <arg>] [-quiet] [-verbose] [<files>...]
-			_tcl.Add(
-				new SimpleTCLCommand("import_files")
-					.OptionalNamedString("fileset", fileset)
-					.Flag("force", force)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("norecurse", norecurse)
-					.Flag("flat", flat)
-					.OptionalNamedString("relative_to", relative_to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(files)
-			);
+			_tcl.Entry(_builder.import_files(fileset, force, of_objects, norecurse, flat, relative_to, quiet, verbose, files));
+			return _tcl;
 		}
 		/// <summary>
 		/// Import an IP file and add it to the fileset
@@ -2538,43 +1633,31 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 965
 		/// </summary>
 		/// <param name="srcset">
-		/// Optional
+		/// (Optional)
 		/// (Optional) Specifies the source file set containing the objects
 		/// to be upgraded Default: The current source fileset Values:
 		/// Source set name
 		/// </param>
 		/// <param name="name">
-		/// Optional
+		/// (Optional)
 		/// (Optional) Specifies a replacement name for the imported
 		/// IP; may not be used with multiple files. Default: The current
 		/// name for the imported IP Values: The new name for the
 		/// imported IP
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="files">
-		/// Optional
+		/// (Optional)
 		/// Names of the IP files to be imported Values: A list of XCI
 		/// (and/or XCO) file name(s)
 		/// </param>
 		/// <returns>list of file objects that were added</returns>
-		public void import_ip(string srcset = null, string name = null, bool? quiet = null, bool? verbose = null, string files = null)
+		public TTCL import_ip(string srcset = null, string name = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
 			// TCL Syntax: import_ip [-srcset <arg>] [-name <arg>] [-quiet] [-verbose] [<files>]
-			_tcl.Add(
-				new SimpleTCLCommand("import_ip")
-					.OptionalNamedString("srcset", srcset)
-					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(files)
-			);
+			_tcl.Entry(_builder.import_ip(srcset, name, quiet, verbose, files));
+			return _tcl;
 		}
 		/// <summary>
 		/// Imports the given Synplify project file
@@ -2592,34 +1675,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 967
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Name of the Synplify project file to be imported
-		/// </param>
+		/// <param name="file">(Required) Name of the Synplify project file to be imported</param>
 		/// <param name="copy_sources">
-		/// Optional
+		/// (Optional)
 		/// Copy all the sources from synplify project file into the
 		/// created project
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of files object that were imported from the Synplify file</returns>
-		public void import_synplify(string file, bool? copy_sources = null, bool? quiet = null, bool? verbose = null)
+		public TTCL import_synplify(string file, bool? copy_sources = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: import_synplify [-copy_sources] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("import_synplify")
-					.Flag("copy_sources", copy_sources)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.import_synplify(file, copy_sources, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Import XISE project file settings into the created project
@@ -2644,33 +1713,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 969
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Name of the XISE project file to be imported
-		/// </param>
-		/// <param name="copy_sources">
-		/// Optional
-		/// Copy all ISE sources into the created project
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="file">(Required) Name of the XISE project file to be imported</param>
+		/// <param name="copy_sources">(Optional) Copy all ISE sources into the created project</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>true</returns>
-		public void import_xise(string file, bool? copy_sources = null, bool? quiet = null, bool? verbose = null)
+		public TTCL import_xise(string file, bool? copy_sources = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: import_xise [-copy_sources] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("import_xise")
-					.Flag("copy_sources", copy_sources)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.import_xise(file, copy_sources, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Imports the given XST project file
@@ -2688,34 +1740,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 971
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Name of the XST project file to be imported
-		/// </param>
-		/// <param name="copy_sources">
-		/// Optional
-		/// Copy all the sources from xst project file into the created
-		/// project
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="file">(Required) Name of the XST project file to be imported</param>
+		/// <param name="copy_sources">(Optional) Copy all the sources from xst project file into the created project</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of files object that were imported from the XST file</returns>
-		public void import_xst(string file, bool? copy_sources = null, bool? quiet = null, bool? verbose = null)
+		public TTCL import_xst(string file, bool? copy_sources = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: import_xst [-copy_sources] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("import_xst")
-					.Flag("copy_sources", copy_sources)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.import_xst(file, copy_sources, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Launch a set of runs
@@ -2758,120 +1792,66 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 990
 		/// </summary>
-		/// <param name="runs">
-		/// Required
-		/// Runs to launch
-		/// </param>
-		/// <param name="jobs">
-		/// Optional
-		/// Number of jobs Default: 1
-		/// </param>
-		/// <param name="scripts_only">
-		/// Optional
-		/// Only generate scripts
-		/// </param>
+		/// <param name="runs">(Required) Runs to launch</param>
+		/// <param name="jobs">(Optional) Number of jobs Default: 1</param>
+		/// <param name="scripts_only">(Optional) Only generate scripts</param>
 		/// <param name="lsf">
-		/// Optional
+		/// (Optional)
 		/// Use LSF to launch jobs. Required argument is the bsub
 		/// command line to pass to LSF Default: empty
 		/// </param>
 		/// <param name="sge">
-		/// Optional
+		/// (Optional)
 		/// Use SGE to launch jobs. Required argument is the qsub
 		/// command line to pass to SGE Default: empty
 		/// </param>
 		/// <param name="cluster_configuration">
-		/// Optional
+		/// (Optional)
 		/// Run jobs on a particular cluster configuration (picks cluster
 		/// configuration from GUI settings). Default: empty
 		/// </param>
-		/// <param name="dir">
-		/// Optional
-		/// Launch directory
-		/// </param>
+		/// <param name="dir">(Optional) Launch directory</param>
 		/// <param name="to_step">
-		/// Optional
+		/// (Optional)
 		/// Last Step to run. Ignored when launching multiple runs. Not
 		/// valid with -next_step
 		/// </param>
 		/// <param name="next_step">
-		/// Optional
+		/// (Optional)
 		/// Run next step. Ignored when launching multiple runs. Not
 		/// valid with -to_step.
 		/// </param>
 		/// <param name="host">
-		/// Optional
+		/// (Optional)
 		/// Launch on specified remote host with a specified number of
 		/// jobs. Example: -host {machine1 2} -host {machine2 4}
 		/// </param>
-		/// <param name="remote_cmd">
-		/// Optional
-		/// Command to log in to remote hosts Default: ssh -q -o
-		/// BatchMode=yes
-		/// </param>
+		/// <param name="remote_cmd">(Optional) Command to log in to remote hosts Default: ssh -q -o BatchMode=yes</param>
 		/// <param name="email_to">
-		/// Optional
+		/// (Optional)
 		/// List of email addresses to notify when jobs complete (only
 		/// applicable with -host)
 		/// </param>
-		/// <param name="email_all">
-		/// Optional
-		/// Send email after each job completes (only applicable with -
-		/// host)
-		/// </param>
-		/// <param name="pre_launch_script">
-		/// Optional
-		/// Script to run before launching each job (only applicable with
-		/// -host)
-		/// </param>
-		/// <param name="post_launch_script">
-		/// Optional
-		/// Script to run after each job completes (only applicable with -
-		/// host)
-		/// </param>
+		/// <param name="email_all">(Optional) Send email after each job completes (only applicable with - host)</param>
+		/// <param name="pre_launch_script">(Optional) Script to run before launching each job (only applicable with -host)</param>
+		/// <param name="post_launch_script">(Optional) Script to run after each job completes (only applicable with - host)</param>
 		/// <param name="custom_script">
-		/// Optional
+		/// (Optional)
 		/// User run script map file which contains run name to user
 		/// run script mapping
 		/// </param>
 		/// <param name="force">
-		/// Optional
+		/// (Optional)
 		/// Run the command, even if there are pending constraint
 		/// changes, which will be lost (in a Partial Reconfig design)
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void launch_runs(string runs, string jobs = null, bool? scripts_only = null, string lsf = null, string sge = null, string cluster_configuration = null, string dir = null, string to_step = null, bool? next_step = null, string host = null, string remote_cmd = null, string email_to = null, bool? email_all = null, string pre_launch_script = null, string post_launch_script = null, string custom_script = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL launch_runs(string runs, string jobs = null, bool? scripts_only = null, string lsf = null, string sge = null, string cluster_configuration = null, string dir = null, string to_step = null, bool? next_step = null, string host = null, string remote_cmd = null, string email_to = null, bool? email_all = null, string pre_launch_script = null, string post_launch_script = null, string custom_script = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: launch_runs [-jobs <arg>] [-scripts_only] [-lsf <arg>] [-sge <arg>] [-cluster_configuration <arg>] [-dir <arg>] [-to_step <arg>] [-next_step] [-host <args>] [-remote_cmd <arg>] [-email_to <args>] [-email_all] [-pre_launch_script <arg>] [-post_launch_script <arg>] [-custom_script <arg>] [-force] [-quiet] [-verbose] <runs>...
-			_tcl.Add(
-				new SimpleTCLCommand("launch_runs")
-					.OptionalNamedString("jobs", jobs)
-					.Flag("scripts_only", scripts_only)
-					.OptionalNamedString("lsf", lsf)
-					.OptionalNamedString("sge", sge)
-					.OptionalNamedString("cluster_configuration", cluster_configuration)
-					.OptionalNamedString("dir", dir)
-					.OptionalNamedString("to_step", to_step)
-					.Flag("next_step", next_step)
-					.OptionalNamedString("host", host)
-					.OptionalNamedString("remote_cmd", remote_cmd)
-					.OptionalNamedString("email_to", email_to)
-					.Flag("email_all", email_all)
-					.OptionalNamedString("pre_launch_script", pre_launch_script)
-					.OptionalNamedString("post_launch_script", post_launch_script)
-					.OptionalNamedString("custom_script", custom_script)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(runs)
-			);
+			_tcl.Entry(_builder.launch_runs(runs, jobs, scripts_only, lsf, sge, cluster_configuration, dir, to_step, next_step, host, remote_cmd, email_to, email_all, pre_launch_script, post_launch_script, custom_script, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// List applicable targets for the specified source
@@ -2890,28 +1870,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1015
 		/// </summary>
-		/// <param name="files">
-		/// Required
-		/// Source file for which the targets needs to be listed
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="files">(Required) Source file for which the targets needs to be listed</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of targets</returns>
-		public void list_targets(string files, bool? quiet = null, bool? verbose = null)
+		public TTCL list_targets(string files, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: list_targets [-quiet] [-verbose] <files>
-			_tcl.Add(
-				new SimpleTCLCommand("list_targets")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.list_targets(files, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Locks or unlocks netlist, placement or routing of a design. The 'lock/unlock' will only applied on
@@ -2942,46 +1909,30 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1019
 		/// </summary>
 		/// <param name="level">
-		/// Optional
+		/// (Optional)
 		/// specify the locking and unlocking level; Valid values are
 		/// logical, placement, and routing. Default: placement
 		/// </param>
 		/// <param name="unlock">
-		/// Optional
+		/// (Optional)
 		/// Unlock cells, if cells are not specified, whole design is
 		/// unlocked; '-level' parameter must be specified for
 		/// unlocking.
 		/// </param>
-		/// <param name="export">
-		/// Optional
-		/// mark that the constraints can be exported.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="export">(Optional) mark that the constraints can be exported.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="cell">
-		/// Optional
+		/// (Optional)
 		/// Lock cells, if cells are not specified, whole design is locked.
 		/// Notice only placed cells and routed nets will be locked.
 		/// Default: *
 		/// </param>
-		public void lock_design(string level = null, bool? unlock = null, bool? export = null, bool? quiet = null, bool? verbose = null, string cell = null)
+		public TTCL lock_design(string level = null, bool? unlock = null, bool? export = null, bool? quiet = null, bool? verbose = null, string cell = null)
 		{
 			// TCL Syntax: lock_design [-level <arg>] [-unlock] [-export] [-quiet] [-verbose] [<cell>]
-			_tcl.Add(
-				new SimpleTCLCommand("lock_design")
-					.OptionalNamedString("level", level)
-					.Flag("unlock", unlock)
-					.Flag("export", export)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(cell)
-			);
+			_tcl.Entry(_builder.lock_design(level, unlock, export, quiet, verbose, cell));
+			return _tcl;
 		}
 		/// <summary>
 		/// Generate HDL wrapper for the specified source
@@ -3008,59 +1959,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1036
 		/// </summary>
-		/// <param name="files">
-		/// Required
-		/// Source file for which the wrapper needs to be generated
-		/// </param>
-		/// <param name="top">
-		/// Optional
-		/// Create a top-level wrapper for the specified source
-		/// </param>
-		/// <param name="testbench">
-		/// Optional
-		/// Create a testbench for the specified source
-		/// </param>
+		/// <param name="files">(Required) Source file for which the wrapper needs to be generated</param>
+		/// <param name="top">(Optional) Create a top-level wrapper for the specified source</param>
+		/// <param name="testbench">(Optional) Create a testbench for the specified source</param>
 		/// <param name="inst_template">
-		/// Optional
+		/// (Optional)
 		/// Create an instantiation template for the specified source.
 		/// The template will not be added to the project and will be
 		/// generated for reference purposes only.
 		/// </param>
-		/// <param name="fileset">
-		/// Optional
-		/// Fileset name
-		/// </param>
-		/// <param name="import">
-		/// Optional
-		/// Import generated wrapper to the project
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing source(s)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void make_wrapper(string files, bool? top = null, bool? testbench = null, bool? inst_template = null, string fileset = null, bool? import = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="fileset">(Optional) Fileset name</param>
+		/// <param name="import">(Optional) Import generated wrapper to the project</param>
+		/// <param name="force">(Optional) Overwrite existing source(s)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL make_wrapper(string files, bool? top = null, bool? testbench = null, bool? inst_template = null, string fileset = null, bool? import = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: make_wrapper [-top] [-testbench] [-inst_template] [-fileset <arg>] [-import] [-force] [-quiet] [-verbose] <files>
-			_tcl.Add(
-				new SimpleTCLCommand("make_wrapper")
-					.Flag("top", top)
-					.Flag("testbench", testbench)
-					.Flag("inst_template", inst_template)
-					.OptionalNamedString("fileset", fileset)
-					.Flag("import", import)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.make_wrapper(files, top, testbench, inst_template, fileset, import, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reposition the Gadget for Project summary dashboard
@@ -3077,43 +1994,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1045
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of the gadget
-		/// </param>
-		/// <param name="row">
-		/// Required
-		/// Target row number to which the gadget has to be moved
-		/// </param>
-		/// <param name="col">
-		/// Required
-		/// Target column number to which the gadget has to be
-		/// moved
-		/// </param>
-		/// <param name="dashboard">
-		/// Optional
-		/// Name of the dashboard to which the gadget is associated
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void move_dashboard_gadget(string name, string row, string col, string dashboard = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Required) Name of the gadget</param>
+		/// <param name="row">(Required) Target row number to which the gadget has to be moved</param>
+		/// <param name="col">(Required) Target column number to which the gadget has to be moved</param>
+		/// <param name="dashboard">(Optional) Name of the dashboard to which the gadget is associated</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL move_dashboard_gadget(string name, string row, string col, string dashboard = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: move_dashboard_gadget -name <arg> -row <arg> -col <arg> [-dashboard <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("move_dashboard_gadget")
-					.RequiredNamedString("name", name)
-					.RequiredNamedString("row", row)
-					.RequiredNamedString("col", col)
-					.OptionalNamedString("dashboard", dashboard)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.move_dashboard_gadget(name, row, col, dashboard, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Moves the files from one fileset to another while maintaining all of their original properties.
@@ -3130,38 +2021,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1047
 		/// </summary>
-		/// <param name="fileset">
-		/// Optional
-		/// Destination fileset name
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Reconfig Modules to move the files to
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="files">
-		/// Optional
-		/// Name of the files to be moved
-		/// </param>
+		/// <param name="fileset">(Optional) Destination fileset name</param>
+		/// <param name="of_objects">(Optional) Reconfig Modules to move the files to</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="files">(Optional) Name of the files to be moved</param>
 		/// <returns>list of files that were moved</returns>
-		public void move_files(string fileset = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string files = null)
+		public TTCL move_files(string fileset = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
 			// TCL Syntax: move_files [-fileset <arg>] [-of_objects <args>] [-quiet] [-verbose] [<files>...]
-			_tcl.Add(
-				new SimpleTCLCommand("move_files")
-					.OptionalNamedString("fileset", fileset)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(files)
-			);
+			_tcl.Entry(_builder.move_files(fileset, of_objects, quiet, verbose, files));
+			return _tcl;
 		}
 		/// <summary>
 		/// Open a design checkpoint in a new project
@@ -3188,39 +2058,24 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1052
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Design checkpoint file
-		/// </param>
+		/// <param name="file">(Required) Design checkpoint file</param>
 		/// <param name="part">
-		/// Optional
+		/// (Optional)
 		/// Override the checkpoint part. Note that this may cause
 		/// errors if the checkpoint contains xdef.
 		/// </param>
 		/// <param name="ignore_timing">
-		/// Optional
+		/// (Optional)
 		/// reload a checkpoint without the timing constraints. Will not
 		/// work if '-time' option given.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void open_checkpoint(string file, string part = null, bool? ignore_timing = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL open_checkpoint(string file, string part = null, bool? ignore_timing = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_checkpoint [-part <arg>] [-ignore_timing] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("open_checkpoint")
-					.OptionalNamedString("part", part)
-					.Flag("ignore_timing", ignore_timing)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.open_checkpoint(file, part, ignore_timing, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Open the example project for the indicated IP
@@ -3237,43 +2092,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1054
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// The objects whose example projects will be opened
-		/// </param>
-		/// <param name="dir">
-		/// Optional
-		/// Path to directory where example project will be created
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite an example project if it exists
-		/// </param>
-		/// <param name="in_process">
-		/// Optional
-		/// Open the example project in the same process
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="objects">(Required) The objects whose example projects will be opened</param>
+		/// <param name="dir">(Optional) Path to directory where example project will be created</param>
+		/// <param name="force">(Optional) Overwrite an example project if it exists</param>
+		/// <param name="in_process">(Optional) Open the example project in the same process</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The Project that was opened</returns>
-		public void open_example_project(string objects, string dir = null, bool? force = null, bool? in_process = null, bool? quiet = null, bool? verbose = null)
+		public TTCL open_example_project(string objects, string dir = null, bool? force = null, bool? in_process = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_example_project [-dir <arg>] [-force] [-in_process] [-quiet] [-verbose] <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("open_example_project")
-					.OptionalNamedString("dir", dir)
-					.Flag("force", force)
-					.Flag("in_process", in_process)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.open_example_project(objects, dir, force, in_process, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Open an IO design
@@ -3295,38 +2125,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1064
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// Design name
-		/// </param>
-		/// <param name="part">
-		/// Optional
-		/// Target part
-		/// </param>
-		/// <param name="constrset">
-		/// Optional
-		/// Constraint fileset to use
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Optional) Design name</param>
+		/// <param name="part">(Optional) Target part</param>
+		/// <param name="constrset">(Optional) Constraint fileset to use</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>design object</returns>
-		public void open_io_design(string name = null, string part = null, string constrset = null, bool? quiet = null, bool? verbose = null)
+		public TTCL open_io_design(string name = null, string part = null, string constrset = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_io_design [-name <arg>] [-part <arg>] [-constrset <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("open_io_design")
-					.OptionalNamedString("name", name)
-					.OptionalNamedString("part", part)
-					.OptionalNamedString("constrset", constrset)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.open_io_design(name, part, constrset, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Open a Vivado project file (.xpr)
@@ -3350,38 +2159,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1066
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Project file to be read
-		/// </param>
-		/// <param name="part">
-		/// Optional
-		/// Open the project using this part (overrides project's part)
-		/// </param>
-		/// <param name="read_only">
-		/// Optional
-		/// Open the project in read-only mode
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="file">(Required) Project file to be read</param>
+		/// <param name="part">(Optional) Open the project using this part (overrides project's part)</param>
+		/// <param name="read_only">(Optional) Open the project in read-only mode</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>opened project object</returns>
-		public void open_project(string file, string part = null, bool? read_only = null, bool? quiet = null, bool? verbose = null)
+		public TTCL open_project(string file, string part = null, bool? read_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_project [-part <arg>] [-read_only] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("open_project")
-					.OptionalNamedString("part", part)
-					.Flag("read_only", read_only)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.open_project(file, part, read_only, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Open a run into a netlist or implementation design
@@ -3406,39 +2194,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1071
 		/// </summary>
-		/// <param name="run">
-		/// Required
-		/// Run to open into the design
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Design name
-		/// </param>
+		/// <param name="run">(Required) Run to open into the design</param>
+		/// <param name="name">(Optional) Design name</param>
 		/// <param name="pr_config">
-		/// Optional
+		/// (Optional)
 		/// PR Configuration to apply while opening the design (only
 		/// valid when opening a synthesis run)
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>design object</returns>
-		public void open_run(string run, string name = null, string pr_config = null, bool? quiet = null, bool? verbose = null)
+		public TTCL open_run(string run, string name = null, string pr_config = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_run [-name <arg>] [-pr_config <arg>] [-quiet] [-verbose] <run>
-			_tcl.Add(
-				new SimpleTCLCommand("open_run")
-					.OptionalNamedString("name", name)
-					.OptionalNamedString("pr_config", pr_config)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(run)
-			);
+			_tcl.Entry(_builder.open_run(run, name, pr_config, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Refresh the current design
@@ -3462,27 +2232,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1177
 		/// </summary>
-		/// <param name="part">
-		/// Optional
-		/// Target part
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void refresh_design(string part = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="part">(Optional) Target part</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL refresh_design(string part = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_design [-part <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("refresh_design")
-					.OptionalNamedString("part", part)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.refresh_design(part, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Update and initialize the BRAM initialization strings with contents of elf files.
@@ -3492,22 +2249,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1199
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void refresh_meminit(bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL refresh_meminit(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_meminit [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("refresh_meminit")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.refresh_meminit(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reimport files when they are found out-of-date
@@ -3529,35 +2277,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1205
 		/// </summary>
-		/// <param name="force">
-		/// Optional
-		/// Force a reimport to happen even when the local files may be
-		/// newer
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="force">(Optional) Force a reimport to happen even when the local files may be newer</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="files">
-		/// Optional
+		/// (Optional)
 		/// List of files to reimport. If no files are specified, all files in
 		/// the project that are out-of-date, will be reimported
 		/// </param>
 		/// <returns>list of file objects that were imported</returns>
-		public void reimport_files(bool? force = null, bool? quiet = null, bool? verbose = null, string files = null)
+		public TTCL reimport_files(bool? force = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
 			// TCL Syntax: reimport_files [-force] [-quiet] [-verbose] [<files>...]
-			_tcl.Add(
-				new SimpleTCLCommand("reimport_files")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(files)
-			);
+			_tcl.Entry(_builder.reimport_files(force, quiet, verbose, files));
+			return _tcl;
 		}
 		/// <summary>
 		/// Remove files or directories from a fileset
@@ -3585,33 +2318,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1221
 		/// </summary>
-		/// <param name="files">
-		/// Required
-		/// Name of the file(s) to be removed
-		/// </param>
-		/// <param name="fileset">
-		/// Optional
-		/// Fileset name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="files">(Required) Name of the file(s) to be removed</param>
+		/// <param name="fileset">(Optional) Fileset name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of files that were removed</returns>
-		public void remove_files(string files, string fileset = null, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_files(string files, string fileset = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_files [-fileset <arg>] [-quiet] [-verbose] <files>...
-			_tcl.Add(
-				new SimpleTCLCommand("remove_files")
-					.OptionalNamedString("fileset", fileset)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.remove_files(files, fileset, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Change the order of source files in the active fileset
@@ -3635,62 +2351,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1259
 		/// </summary>
-		/// <param name="files">
-		/// Required
-		/// Files to move
-		/// </param>
-		/// <param name="fileset">
-		/// Optional
-		/// Fileset to reorder
-		/// </param>
-		/// <param name="before">
-		/// Optional
-		/// Move the listed files before this file
-		/// </param>
-		/// <param name="after">
-		/// Optional
-		/// Move the listed files after this file
-		/// </param>
-		/// <param name="front">
-		/// Optional
-		/// Move the listed files to the front (default)
-		/// </param>
-		/// <param name="back">
-		/// Optional
-		/// Move the listed files to the back
-		/// </param>
-		/// <param name="auto">
-		/// Optional
-		/// Automatically re-orders the given fileset
-		/// </param>
-		/// <param name="disable_unused">
-		/// Optional
-		/// Disables all files not associated with the TOP design unit
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reorder_files(string files, string fileset = null, string before = null, string after = null, bool? front = null, bool? back = null, bool? auto = null, bool? disable_unused = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="files">(Required) Files to move</param>
+		/// <param name="fileset">(Optional) Fileset to reorder</param>
+		/// <param name="before">(Optional) Move the listed files before this file</param>
+		/// <param name="after">(Optional) Move the listed files after this file</param>
+		/// <param name="front">(Optional) Move the listed files to the front (default)</param>
+		/// <param name="back">(Optional) Move the listed files to the back</param>
+		/// <param name="auto">(Optional) Automatically re-orders the given fileset</param>
+		/// <param name="disable_unused">(Optional) Disables all files not associated with the TOP design unit</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reorder_files(string files, string fileset = null, string before = null, string after = null, bool? front = null, bool? back = null, bool? auto = null, bool? disable_unused = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reorder_files [-fileset <arg>] [-before <arg>] [-after <arg>] [-front] [-back] [-auto] [-disable_unused] [-quiet] [-verbose] <files>...
-			_tcl.Add(
-				new SimpleTCLCommand("reorder_files")
-					.OptionalNamedString("fileset", fileset)
-					.OptionalNamedString("before", before)
-					.OptionalNamedString("after", after)
-					.Flag("front", front)
-					.Flag("back", back)
-					.Flag("auto", auto)
-					.Flag("disable_unused", disable_unused)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.reorder_files(files, fileset, before, after, front, back, auto, disable_unused, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report the compile order by analyzing files and constructing a hierarchy.
@@ -3718,63 +2393,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1291
 		/// </summary>
-		/// <param name="fileset">
-		/// Optional
-		/// FileSet to parse to determine compile order
-		/// </param>
-		/// <param name="missing_instances">
-		/// Optional
-		/// Report missing instances in the design hierarchy
-		/// </param>
-		/// <param name="constraints">
-		/// Optional
-		/// Report the constraint compile order
-		/// </param>
-		/// <param name="sources">
-		/// Optional
-		/// Report the source compile order
-		/// </param>
-		/// <param name="used_in">
-		/// Optional
-		/// Specify the used in filter.
-		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// Filename to output results to.
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append output to existing file
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'file' objects of these types: 'file fileset ip
-		/// reconfig_module'.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_compile_order(string fileset = null, bool? missing_instances = null, bool? constraints = null, bool? sources = null, string used_in = null, string file = null, bool? append = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="fileset">(Optional) FileSet to parse to determine compile order</param>
+		/// <param name="missing_instances">(Optional) Report missing instances in the design hierarchy</param>
+		/// <param name="constraints">(Optional) Report the constraint compile order</param>
+		/// <param name="sources">(Optional) Report the source compile order</param>
+		/// <param name="used_in">(Optional) Specify the used in filter.</param>
+		/// <param name="file">(Optional) Filename to output results to.</param>
+		/// <param name="append">(Optional) Append output to existing file</param>
+		/// <param name="of_objects">(Optional) Get 'file' objects of these types: 'file fileset ip reconfig_module'.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_compile_order(string fileset = null, bool? missing_instances = null, bool? constraints = null, bool? sources = null, string used_in = null, string file = null, bool? append = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_compile_order [-fileset <arg>] [-missing_instances] [-constraints] [-sources] [-used_in <arg>] [-file <arg>] [-append] [-of_objects <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_compile_order")
-					.OptionalNamedString("fileset", fileset)
-					.Flag("missing_instances", missing_instances)
-					.Flag("constraints", constraints)
-					.Flag("sources", sources)
-					.OptionalNamedString("used_in", used_in)
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_compile_order(fileset, missing_instances, constraints, sources, used_in, file, append, of_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reset current project
@@ -3792,37 +2425,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1476
 		/// </summary>
-		/// <param name="exclude_runs">
-		/// Optional
-		/// Do not reset runs
-		/// </param>
-		/// <param name="exclude_ips">
-		/// Optional
-		/// Do not reset ips
-		/// </param>
-		/// <param name="exclude_sim_runs">
-		/// Optional
-		/// Do not reset simulation runs
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_project(bool? exclude_runs = null, bool? exclude_ips = null, bool? exclude_sim_runs = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="exclude_runs">(Optional) Do not reset runs</param>
+		/// <param name="exclude_ips">(Optional) Do not reset ips</param>
+		/// <param name="exclude_sim_runs">(Optional) Do not reset simulation runs</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_project(bool? exclude_runs = null, bool? exclude_ips = null, bool? exclude_sim_runs = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_project [-exclude_runs] [-exclude_ips] [-exclude_sim_runs] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("reset_project")
-					.Flag("exclude_runs", exclude_runs)
-					.Flag("exclude_ips", exclude_ips)
-					.Flag("exclude_sim_runs", exclude_sim_runs)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.reset_project(exclude_runs, exclude_ips, exclude_sim_runs, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reset an existing run
@@ -3832,37 +2444,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1480
 		/// </summary>
-		/// <param name="runs">
-		/// Required
-		/// Runs to modify
-		/// </param>
-		/// <param name="prev_step">
-		/// Optional
-		/// Reset last run step
-		/// </param>
-		/// <param name="from_step">
-		/// Optional
-		/// First Step to reset
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_runs(string runs, bool? prev_step = null, string from_step = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="runs">(Required) Runs to modify</param>
+		/// <param name="prev_step">(Optional) Reset last run step</param>
+		/// <param name="from_step">(Optional) First Step to reset</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_runs(string runs, bool? prev_step = null, string from_step = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_runs [-prev_step] [-from_step <arg>] [-quiet] [-verbose] <runs>
-			_tcl.Add(
-				new SimpleTCLCommand("reset_runs")
-					.Flag("prev_step", prev_step)
-					.OptionalNamedString("from_step", from_step)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(runs)
-			);
+			_tcl.Entry(_builder.reset_runs(runs, prev_step, from_step, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reset target data for the specified source
@@ -3879,33 +2470,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1488
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// List of targets to be reset, or 'all' to reset all generated
-		/// targets
-		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// The objects for which data needs to be reset
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_target(string name, string objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Required) List of targets to be reset, or 'all' to reset all generated targets</param>
+		/// <param name="objects">(Required) The objects for which data needs to be reset</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_target(string name, string objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_target [-quiet] [-verbose] <name> <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("reset_target")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.reset_target(name, objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Save the current design's constraints
@@ -3924,27 +2497,17 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1538
 		/// </summary>
 		/// <param name="force">
-		/// Optional
+		/// (Optional)
 		/// Force constraints save, overwriting the target and source
 		/// XDC if necessary
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void save_constraints(bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL save_constraints(bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: save_constraints [-force] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("save_constraints")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.save_constraints(force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Save current design's constraints as a new set of constraints files
@@ -3977,37 +2540,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1540
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of the new constraints fileset
-		/// </param>
-		/// <param name="dir">
-		/// Optional
-		/// Directory to save constraints to
-		/// </param>
-		/// <param name="target_constrs_file">
-		/// Optional
-		/// Target constraints file for the new fileset
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void save_constraints_as(string name, string dir = null, string target_constrs_file = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Required) Name of the new constraints fileset</param>
+		/// <param name="dir">(Optional) Directory to save constraints to</param>
+		/// <param name="target_constrs_file">(Optional) Target constraints file for the new fileset</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL save_constraints_as(string name, string dir = null, string target_constrs_file = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: save_constraints_as [-dir <arg>] [-target_constrs_file <arg>] [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("save_constraints_as")
-					.OptionalNamedString("dir", dir)
-					.OptionalNamedString("target_constrs_file", target_constrs_file)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.save_constraints_as(name, dir, target_constrs_file, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Save the current project under a new name
@@ -4033,53 +2575,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1542
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// New name for the project to save
-		/// </param>
-		/// <param name="scan_for_includes">
-		/// Optional
-		/// Scan for include files and add them to the new project
-		/// </param>
-		/// <param name="exclude_run_results">
-		/// Optional
-		/// Exclude run results in the new project
-		/// </param>
-		/// <param name="include_local_ip_cache">
-		/// Optional
-		/// Include IP cache results in the new project
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing project directory
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="dir">
-		/// Optional
-		/// Directory where the project file is saved Default: .
-		/// </param>
+		/// <param name="name">(Required) New name for the project to save</param>
+		/// <param name="scan_for_includes">(Optional) Scan for include files and add them to the new project</param>
+		/// <param name="exclude_run_results">(Optional) Exclude run results in the new project</param>
+		/// <param name="include_local_ip_cache">(Optional) Include IP cache results in the new project</param>
+		/// <param name="force">(Optional) Overwrite existing project directory</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="dir">(Optional) Directory where the project file is saved Default: .</param>
 		/// <returns>saved project object</returns>
-		public void save_project_as(string name, bool? scan_for_includes = null, bool? exclude_run_results = null, bool? include_local_ip_cache = null, bool? force = null, bool? quiet = null, bool? verbose = null, string dir = null)
+		public TTCL save_project_as(string name, bool? scan_for_includes = null, bool? exclude_run_results = null, bool? include_local_ip_cache = null, bool? force = null, bool? quiet = null, bool? verbose = null, string dir = null)
 		{
 			// TCL Syntax: save_project_as [-scan_for_includes] [-exclude_run_results] [-include_local_ip_cache] [-force] [-quiet] [-verbose] <name> [<dir>]
-			_tcl.Add(
-				new SimpleTCLCommand("save_project_as")
-					.Flag("scan_for_includes", scan_for_includes)
-					.Flag("exclude_run_results", exclude_run_results)
-					.Flag("include_local_ip_cache", include_local_ip_cache)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.OptionalString(dir)
-			);
+			_tcl.Entry(_builder.save_project_as(name, scan_for_includes, exclude_run_results, include_local_ip_cache, force, quiet, verbose, dir));
+			return _tcl;
 		}
 		/// <summary>
 		/// Sets the part on the current project. If no project is open, then a diskless project is created.
@@ -4107,27 +2616,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1642
 		/// </summary>
-		/// <param name="part">
-		/// Required
-		/// Set current project's part to this part.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_part(string part, bool? quiet = null, bool? verbose = null)
+		/// <param name="part">(Required) Set current project's part to this part.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_part(string part, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_part [-quiet] [-verbose] <part>
-			_tcl.Add(
-				new SimpleTCLCommand("set_part")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(part)
-			);
+			_tcl.Entry(_builder.set_part(part, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set Timing Speed Grade and Temperature Grade
@@ -4158,33 +2654,19 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1653
 		/// </summary>
 		/// <param name="temperature">
-		/// Optional
+		/// (Optional)
 		/// Temperature grade used for timing analysis (Not available
 		/// for 7 Series and earlier)
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="value">
-		/// Optional
-		/// Speed grade used for timing analysis
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="value">(Optional) Speed grade used for timing analysis</param>
 		/// <returns>string result</returns>
-		public void set_speed_grade(string temperature = null, bool? quiet = null, bool? verbose = null, string value = null)
+		public TTCL set_speed_grade(string temperature = null, bool? quiet = null, bool? verbose = null, string value = null)
 		{
 			// TCL Syntax: set_speed_grade [-temperature <arg>] [-quiet] [-verbose] [<value>]
-			_tcl.Add(
-				new SimpleTCLCommand("set_speed_grade")
-					.OptionalNamedString("temperature", temperature)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(value)
-			);
+			_tcl.Entry(_builder.set_speed_grade(temperature, quiet, verbose, value));
+			return _tcl;
 		}
 		/// <summary>
 		/// Generate a synthesis netlist for an IP
@@ -4212,32 +2694,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1709
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// All the objects for which a netlist needs to be generated for.
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Force regeneration of the netlist.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void synth_ip(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="objects">(Required) All the objects for which a netlist needs to be generated for.</param>
+		/// <param name="force">(Optional) Force regeneration of the netlist.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL synth_ip(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: synth_ip [-force] [-quiet] [-verbose] <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("synth_ip")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.synth_ip(objects, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Updates a fileset compile order and possibly top based on a design graph.
@@ -4252,33 +2717,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1729
 		/// </summary>
-		/// <param name="force_gui">
-		/// Optional
-		/// Execute this command, even when run interactively in the
-		/// GUI.
-		/// </param>
-		/// <param name="fileset">
-		/// Optional
-		/// Fileset to update based on a design graph
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void update_compile_order(bool? force_gui = null, string fileset = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="force_gui">(Optional) Execute this command, even when run interactively in the GUI.</param>
+		/// <param name="fileset">(Optional) Fileset to update based on a design graph</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL update_compile_order(bool? force_gui = null, string fileset = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: update_compile_order [-force_gui] [-fileset <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("update_compile_order")
-					.Flag("force_gui", force_gui)
-					.OptionalNamedString("fileset", fileset)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.update_compile_order(force_gui, fileset, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// update the netlist of the current design
@@ -4305,58 +2752,24 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1731
 		/// </summary>
-		/// <param name="cells">
-		/// Required
-		/// List of cells to update with a new sub-netlist.
-		/// </param>
+		/// <param name="cells">(Required) List of cells to update with a new sub-netlist.</param>
 		/// <param name="strict">
-		/// Optional
+		/// (Optional)
 		/// Require exact ports match for replacing cell (otherwise extra
 		/// ports are allowed).
 		/// </param>
-		/// <param name="from_file">
-		/// Optional
-		/// Name of the file containing the new sub-netlist.
-		/// </param>
-		/// <param name="from_design">
-		/// Optional
-		/// Name of the an open netlist design containing the new sub￾netlist.
-		/// </param>
-		/// <param name="from_cell">
-		/// Optional
-		/// Name of cell in the from_design which defines the new sub￾netlist.
-		/// </param>
-		/// <param name="black_box">
-		/// Optional
-		/// Update the cell to a black_box.
-		/// </param>
-		/// <param name="buffer_ports">
-		/// Optional
-		/// buffer all the ports of black box
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void update_design(string cells, bool? strict = null, string from_file = null, string from_design = null, string from_cell = null, bool? black_box = null, bool? buffer_ports = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="from_file">(Optional) Name of the file containing the new sub-netlist.</param>
+		/// <param name="from_design">(Optional) Name of the an open netlist design containing the new sub￾netlist.</param>
+		/// <param name="from_cell">(Optional) Name of cell in the from_design which defines the new sub￾netlist.</param>
+		/// <param name="black_box">(Optional) Update the cell to a black_box.</param>
+		/// <param name="buffer_ports">(Optional) buffer all the ports of black box</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL update_design(string cells, bool? strict = null, string from_file = null, string from_design = null, string from_cell = null, bool? black_box = null, bool? buffer_ports = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: update_design -cells <args> [-strict] [-from_file <arg>] [-from_design <arg>] [-from_cell <arg>] [-black_box] [-buffer_ports] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("update_design")
-					.RequiredNamedString("cells", cells)
-					.Flag("strict", strict)
-					.OptionalNamedString("from_file", from_file)
-					.OptionalNamedString("from_design", from_design)
-					.OptionalNamedString("from_cell", from_cell)
-					.Flag("black_box", black_box)
-					.Flag("buffer_ports", buffer_ports)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.update_design(cells, strict, from_file, from_design, from_cell, black_box, buffer_ports, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Update file(s) in the project based on the file(s) or directory(ies) specified
@@ -4377,55 +2790,28 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1734
 		/// </summary>
-		/// <param name="from_files">
-		/// Optional
-		/// New files and directories to use for updating
-		/// </param>
-		/// <param name="norecurse">
-		/// Optional
-		/// Recursively search in specified directories
-		/// </param>
-		/// <param name="to_files">
-		/// Optional
-		/// Existing project files and directories to limit updates to
-		/// </param>
-		/// <param name="filesets">
-		/// Optional
-		/// Fileset name
-		/// </param>
+		/// <param name="from_files">(Optional) New files and directories to use for updating</param>
+		/// <param name="norecurse">(Optional) Recursively search in specified directories</param>
+		/// <param name="to_files">(Optional) Existing project files and directories to limit updates to</param>
+		/// <param name="filesets">(Optional) Fileset name</param>
 		/// <param name="force">
-		/// Optional
+		/// (Optional)
 		/// Overwrite imported files in the project, even if read-only, if
 		/// possible
 		/// </param>
 		/// <param name="report_only">
-		/// Optional
+		/// (Optional)
 		/// Do no actual file updates, but report on updates that
 		/// otherwise would have been made
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of the files updated</returns>
-		public void update_files(string from_files = null, bool? norecurse = null, string to_files = null, string filesets = null, bool? force = null, bool? report_only = null, bool? quiet = null, bool? verbose = null)
+		public TTCL update_files(string from_files = null, bool? norecurse = null, string to_files = null, string filesets = null, bool? force = null, bool? report_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: update_files [-from_files <args>] [-norecurse] [-to_files <args>] [-filesets <args>] [-force] [-report_only] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("update_files")
-					.OptionalNamedString("from_files", from_files)
-					.Flag("norecurse", norecurse)
-					.OptionalNamedString("to_files", to_files)
-					.OptionalNamedString("filesets", filesets)
-					.Flag("force", force)
-					.Flag("report_only", report_only)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.update_files(from_files, norecurse, to_files, filesets, force, report_only, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Update the dcp by adding the generated sw param info files to it
@@ -4449,22 +2835,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1748
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void update_sw_parameters(bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL update_sw_parameters(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: update_sw_parameters [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("update_sw_parameters")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.update_sw_parameters(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Block execution of further Tcl commands until the specified run completes.
@@ -4495,33 +2872,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1777
 		/// </summary>
-		/// <param name="run">
-		/// Required
-		/// Run to wait on
-		/// </param>
-		/// <param name="timeout">
-		/// Optional
-		/// Maximum time to wait for the run to complete (in minutes)
-		/// Default: -1
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void wait_on_run(string run, string timeout = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="run">(Required) Run to wait on</param>
+		/// <param name="timeout">(Optional) Maximum time to wait for the run to complete (in minutes) Default: -1</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL wait_on_run(string run, string timeout = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: wait_on_run [-timeout <arg>] [-quiet] [-verbose] <run>
-			_tcl.Add(
-				new SimpleTCLCommand("wait_on_run")
-					.OptionalNamedString("timeout", timeout)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(run)
-			);
+			_tcl.Entry(_builder.wait_on_run(run, timeout, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Writes hardware definition for use in the software development
@@ -4545,33 +2904,19 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1824
 		/// </summary>
 		/// <param name="file">
-		/// Required
+		/// (Required)
 		/// Hardware definition file (Values: A filename with
 		/// alphanumeric characters and .hwdef extention.)
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrites the existing hardware definition file
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="force">(Optional) Overwrites the existing hardware definition file</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>success/failure status of applied action.</returns>
-		public void write_hwdef(string file, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_hwdef(string file, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_hwdef [-force] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_hwdef")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_hwdef(file, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write a tcl script on disk that will recreate a given IP.
@@ -4581,65 +2926,39 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1833
 		/// </summary>
-		/// <param name="force">
-		/// Optional
-		/// Flag to overwrite existing file.
-		/// </param>
+		/// <param name="force">(Optional) Flag to overwrite existing file.</param>
 		/// <param name="no_ip_version">
-		/// Optional
+		/// (Optional)
 		/// Flag to not include the IP version in the IP VLNV in create_ip
 		/// commands. NOTE - this may have implications if there are
 		/// major IP version changes.
 		/// </param>
 		/// <param name="ip_name">
-		/// Optional
+		/// (Optional)
 		/// Set the name of the IP. This argument is not supported for
 		/// multiple IP.
 		/// </param>
-		/// <param name="show_defaults">
-		/// Optional
-		/// Add a comment containing the default parameter values of
-		/// the IP.
-		/// </param>
-		/// <param name="multiple_files">
-		/// Optional
-		/// Flag to create a .tcl file for each IP supplied as an argument
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="show_defaults">(Optional) Add a comment containing the default parameter values of the IP.</param>
+		/// <param name="multiple_files">(Optional) Flag to create a .tcl file for each IP supplied as an argument</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">
-		/// Optional
+		/// (Optional)
 		/// IP(s) to be written to disk Values: IP instance(s) as returned
 		/// by 'get_ips <instance name>'
 		/// </param>
 		/// <param name="tcl_filename">
-		/// Optional
+		/// (Optional)
 		/// File path to the exported tcl file. If the path is a directory and
 		/// multiple IP are given as an argument, a file for each IP will
 		/// be created. Default: ./
 		/// </param>
 		/// <returns>IP TCL file</returns>
-		public void write_ip_tcl(bool? force = null, bool? no_ip_version = null, string ip_name = null, bool? show_defaults = null, bool? multiple_files = null, bool? quiet = null, bool? verbose = null, string objects = null, string tcl_filename = null)
+		public TTCL write_ip_tcl(bool? force = null, bool? no_ip_version = null, string ip_name = null, bool? show_defaults = null, bool? multiple_files = null, bool? quiet = null, bool? verbose = null, string objects = null, string tcl_filename = null)
 		{
 			// TCL Syntax: write_ip_tcl [-force] [-no_ip_version] [-ip_name <arg>] [-show_defaults] [-multiple_files] [-quiet] [-verbose] [<objects>] [<tcl_filename>...]
-			_tcl.Add(
-				new SimpleTCLCommand("write_ip_tcl")
-					.Flag("force", force)
-					.Flag("no_ip_version", no_ip_version)
-					.OptionalNamedString("ip_name", ip_name)
-					.Flag("show_defaults", show_defaults)
-					.Flag("multiple_files", multiple_files)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(objects)
-					.OptionalString(tcl_filename)
-			);
+			_tcl.Entry(_builder.write_ip_tcl(force, no_ip_version, ip_name, show_defaults, multiple_files, quiet, verbose, objects, tcl_filename));
+			return _tcl;
 		}
 		/// <summary>
 		/// Save peripheral component to the disk.
@@ -4653,27 +2972,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1838
 		/// </summary>
-		/// <param name="peripheral">
-		/// Required
-		/// Peripheral object
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void write_peripheral(string peripheral, bool? quiet = null, bool? verbose = null)
+		/// <param name="peripheral">(Required) Peripheral object</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL write_peripheral(string peripheral, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_peripheral [-quiet] [-verbose] <peripheral>
-			_tcl.Add(
-				new SimpleTCLCommand("write_peripheral")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(peripheral)
-			);
+			_tcl.Entry(_builder.write_peripheral(peripheral, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

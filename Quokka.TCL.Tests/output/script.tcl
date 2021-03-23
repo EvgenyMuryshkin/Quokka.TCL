@@ -1,1 +1,1 @@
-create_project test
+create_project -verbose test

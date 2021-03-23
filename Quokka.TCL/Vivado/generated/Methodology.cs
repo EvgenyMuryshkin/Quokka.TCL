@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class MethodologyCommands
+	public partial class MethodologyCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public MethodologyCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public MethodologyCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Create a DRC/METHODOLOGY/CDC message waiver
@@ -65,97 +67,70 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 357
 		/// </summary>
-		/// <param name="description">
-		/// Required
-		/// Description string of the cause for the waiver
-		/// </param>
-		/// <param name="type">
-		/// Optional
-		/// Type of waiver - DRC, METHODOLOGY, CDC
-		/// </param>
+		/// <param name="description">(Required) Description string of the cause for the waiver</param>
+		/// <param name="type">(Optional) Type of waiver - DRC, METHODOLOGY, CDC</param>
 		/// <param name="id">
-		/// Optional
+		/// (Optional)
 		/// ID of the DRC/METHODOLOGY/CDC message being waived,
 		/// not needed for -of_objects use
 		/// </param>
 		/// <param name="objects">
-		/// Optional
+		/// (Optional)
 		/// List of inserted message objects for which a DRC/
 		/// METHODOLOGY waiver will be set (i.e. %ELG, %SIG, etc. for
 		/// cells or nets, etc., sites, etc., or '*CELL', '*NET', '*SITE', etc.
 		/// as wildcards
 		/// </param>
 		/// <param name="from">
-		/// Optional
+		/// (Optional)
 		/// List of source (driver) pins or ports (or '*PORT', '*PIN' as
 		/// wildcard) for which a CDC waiver will be set
 		/// </param>
 		/// <param name="to">
-		/// Optional
+		/// (Optional)
 		/// List of target (load) pins or ports (or '*PORT', '*PIN' as
 		/// wildcard) for which a CDC waiver will be set
 		/// </param>
 		/// <param name="strings">
-		/// Optional
+		/// (Optional)
 		/// List of inserted message string values for which a DRC/
 		/// METHODOLOGY waiver will be set (i.e. %STR for strings, or
 		/// '*' as wildcard)
 		/// </param>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// List of DRC/METHODOLOGY/CDC violation objects for which
 		/// waiver(s) will be set
 		/// </param>
 		/// <param name="user">
-		/// Optional
+		/// (Optional)
 		/// Name of the user creating the waiver (required, but if not
 		/// specified, the waivers will take the USER name from the
 		/// environment if it is available)
 		/// </param>
 		/// <param name="tags">
-		/// Optional
+		/// (Optional)
 		/// Optional list of one or more tags to aid in subsequent
 		/// waiver identification or categorization
 		/// </param>
 		/// <param name="timestamp">
-		/// Optional
+		/// (Optional)
 		/// Timestamp of waiver - for restaining the original time of a
 		/// waiver being (re)created after being written
 		/// </param>
 		/// <param name="scoped">
-		/// Optional
+		/// (Optional)
 		/// Flag waiver to interpret object wildcards as scoped to the
 		/// current_instance that is set
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>waiver</returns>
-		public void create_waiver(string description, string type = null, string id = null, string objects = null, string from = null, string to = null, string strings = null, string of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_waiver(string description, string type = null, string id = null, string objects = null, string from = null, string to = null, string strings = null, string of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_waiver [-type <arg>] [-id <arg>] [-objects <args>] [-from <args>] [-to <args>] [-strings <args>] [-of_objects <args>] [-user <arg>] -description <arg> [-tags <arg>] [-timestamp <arg>] [-scoped] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("create_waiver")
-					.OptionalNamedString("type", type)
-					.OptionalNamedString("id", id)
-					.OptionalNamedString("objects", objects)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("strings", strings)
-					.OptionalNamedString("of_objects", of_objects)
-					.OptionalNamedString("user", user)
-					.RequiredNamedString("description", description)
-					.OptionalNamedString("tags", tags)
-					.OptionalNamedString("timestamp", timestamp)
-					.Flag("scoped", scoped)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.create_waiver(description, type, id, objects, from, to, strings, of_objects, user, tags, timestamp, scoped, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of Methodology rule check objects
@@ -175,49 +150,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 809
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="abbrev">
-		/// Optional
-		/// Get the largest ID for this abbrev
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'rule_check' objects against patterns. Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="abbrev">(Optional) Get the largest ID for this abbrev</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'rule_check' objects against patterns. Default: *</param>
 		/// <returns>list of Methodology rule_check objects</returns>
-		public void get_methodology_checks(bool? regexp = null, bool? nocase = null, string filter = null, string abbrev = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_methodology_checks(bool? regexp = null, bool? nocase = null, string filter = null, string abbrev = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_methodology_checks [-regexp] [-nocase] [-filter <arg>] [-abbrev <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_methodology_checks")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("abbrev", abbrev)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_methodology_checks(regexp, nocase, filter, abbrev, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of Methodology violations from a previous report_methodology run
@@ -248,51 +193,24 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 812
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// Get the results with this name
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Optional) Get the results with this name</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">
-		/// Optional
+		/// (Optional)
 		/// Match methodology_violations against patterns Default: *
 		/// Values: The default search pattern is the wildcard *, or .*
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of Methodology violation objects</returns>
-		public void get_methodology_violations(string name = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_methodology_violations(string name = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_methodology_violations [-name <arg>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_methodology_violations")
-					.OptionalNamedString("name", name)
-					.Flag("regexp", regexp)
-					.OptionalNamedString("filter", filter)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_methodology_violations(name, regexp, filter, nocase, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Methodology Checks
@@ -331,75 +249,31 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1359
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// Run report_methodology on the specified cell(s).
-		/// </param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="cells">(Optional) Run report_methodology on the specified cell(s).</param>
 		/// <param name="checks">
-		/// Optional
+		/// (Optional)
 		/// Report Methodology checks (see get_methodology_checks
 		/// for available checks)
 		/// </param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="rpx">
-		/// Optional
-		/// Report filename for persisted results.
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, do not overwrite the results file
-		/// </param>
-		/// <param name="waived">
-		/// Optional
-		/// Output result is Waived checks
-		/// </param>
-		/// <param name="no_waivers">
-		/// Optional
-		/// Disable waivers for checks
-		/// </param>
-		/// <param name="slack_lesser_than">
-		/// Optional
-		/// Set SYNTH rules Slack Threshold value in 'ns' (float) Default:
-		/// 2.0
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_methodology(string name = null, string cells = null, string checks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, string slack_lesser_than = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="rpx">(Optional) Report filename for persisted results.</param>
+		/// <param name="append">(Optional) Append the results to file, do not overwrite the results file</param>
+		/// <param name="waived">(Optional) Output result is Waived checks</param>
+		/// <param name="no_waivers">(Optional) Disable waivers for checks</param>
+		/// <param name="slack_lesser_than">(Optional) Set SYNTH rules Slack Threshold value in 'ns' (float) Default: 2.0</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_methodology(string name = null, string cells = null, string checks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, string slack_lesser_than = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_methodology [-name <arg>] [-cells <args>] [-checks <args>] [-file <arg>] [-rpx <arg>] [-append] [-waived] [-no_waivers] [-slack_lesser_than <arg>] [-return_string] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_methodology")
-					.OptionalNamedString("name", name)
-					.OptionalNamedString("cells", cells)
-					.OptionalNamedString("checks", checks)
-					.OptionalNamedString("file", file)
-					.OptionalNamedString("rpx", rpx)
-					.Flag("append", append)
-					.Flag("waived", waived)
-					.Flag("no_waivers", no_waivers)
-					.OptionalNamedString("slack_lesser_than", slack_lesser_than)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_methodology(name, cells, checks, file, rpx, append, waived, no_waivers, slack_lesser_than, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Remove Methodology report
@@ -415,27 +289,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1461
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// Methodology result name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_methodology(string name = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Optional) Methodology result name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_methodology(string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_methodology [-name <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("reset_methodology")
-					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.reset_methodology(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reset one or more Methodology checks to factory defaults.
@@ -464,27 +325,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1463
 		/// </summary>
-		/// <param name="checks">
-		/// Required
-		/// The list of checks to reset.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_methodology_check(string checks, bool? quiet = null, bool? verbose = null)
+		/// <param name="checks">(Required) The list of checks to reset.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_methodology_check(string checks, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_methodology_check [-quiet] [-verbose] [<checks>...]
-			_tcl.Add(
-				new SimpleTCLCommand("reset_methodology_check")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(checks)
-			);
+			_tcl.Entry(_builder.reset_methodology_check(checks, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

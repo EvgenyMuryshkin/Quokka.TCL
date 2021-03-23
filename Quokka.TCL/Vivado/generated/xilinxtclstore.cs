@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class xilinxtclstoreCommands
+	public partial class xilinxtclstoreCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public xilinxtclstoreCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public xilinxtclstoreCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// (User-written application) Convert all provided NGC files to a supported format
@@ -30,52 +32,35 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 208
 		/// </summary>
-		/// <param name="files">
-		/// Required
-		/// A list of NGC files to convert
-		/// </param>
+		/// <param name="files">(Required) A list of NGC files to convert</param>
 		/// <param name="output_dir">
-		/// Optional
+		/// (Optional)
 		/// Directory to place all output, else the output is placed at
 		/// location of NGC file Default: Script output directory path
 		/// </param>
 		/// <param name="format">
-		/// Optional
+		/// (Optional)
 		/// Accepts 'Verilog' or 'EDIF' (Default: EDIF), specifies the
 		/// desired output format Default: EDIF
 		/// </param>
 		/// <param name="add_to_project">
-		/// Optional
+		/// (Optional)
 		/// Adds the output files to the current project, if no project is
 		/// open, then this option does nothing
 		/// </param>
 		/// <param name="force">
-		/// Optional
+		/// (Optional)
 		/// Force overwriting of files that already exist on disk, replaces
 		/// files in project if add_to_project switch was specified
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>None</returns>
-		public void convert_ngc(string files, string output_dir = null, string format = null, bool? add_to_project = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL convert_ngc(string files, string output_dir = null, string format = null, bool? add_to_project = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: convert_ngc [-output_dir <arg>] [-format <arg>] [-add_to_project] [-force] [-quiet] [-verbose] <files>
-			_tcl.Add(
-				new SimpleTCLCommand("convert_ngc")
-					.OptionalNamedString("output_dir", output_dir)
-					.OptionalNamedString("format", format)
-					.Flag("add_to_project", add_to_project)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.convert_ngc(files, output_dir, format, add_to_project, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// (User-written application) Copy a run from an already existing run, source-run, to a new copy of
@@ -94,40 +79,22 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 215
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Specify the name of the new run
-		/// </param>
-		/// <param name="run">
-		/// Required
-		/// The run to be copied, accepts name or run object
-		/// </param>
+		/// <param name="name">(Required) Specify the name of the new run</param>
+		/// <param name="run">(Required) The run to be copied, accepts name or run object</param>
 		/// <param name="parent_run">
-		/// Optional
+		/// (Optional)
 		/// Specify the synthesis run for the new implementation run,
 		/// accepts name or run object (Default: same as source run)
 		/// Default: None
 		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Print detailed information as the copy progresses
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
+		/// <param name="verbose">(Optional) Print detailed information as the copy progresses</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <returns>The new run object</returns>
-		public void copy_run(string name, string run, string parent_run = null, bool? verbose = null, bool? quiet = null)
+		public TTCL copy_run(string name, string run, string parent_run = null, bool? verbose = null, bool? quiet = null)
 		{
 			// TCL Syntax: copy_run [-parent_run <arg>] [-verbose] -name <arg> [-quiet] <run>
-			_tcl.Add(
-				new SimpleTCLCommand("copy_run")
-					.OptionalNamedString("parent_run", parent_run)
-					.Flag("verbose", verbose)
-					.RequiredNamedString("name", name)
-					.Flag("quiet", quiet)
-					.RequiredString(run)
-			);
+			_tcl.Entry(_builder.copy_run(name, run, parent_run, verbose, quiet));
+			return _tcl;
 		}
 		/// <summary>
 		/// (User-written application) Creates and launches a new run based on the suggestions by
@@ -168,55 +135,38 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 346
 		/// </summary>
 		/// <param name="dir">
-		/// Required
+		/// (Required)
 		/// Specify the directory from where the xdc files and tcl files
 		/// need to fetched.
 		/// </param>
-		/// <param name="new_name">
-		/// Required
-		/// Specify the name of the new run
-		/// </param>
+		/// <param name="new_name">(Required) Specify the name of the new run</param>
 		/// <param name="synth_name">
-		/// Optional
+		/// (Optional)
 		/// Specify the name of the already existing synth run. This run
 		/// will be the parent run for the newly created impl run
 		/// Default: None
 		/// Name Description
 		/// </param>
 		/// <param name="opt_more_options">
-		/// Optional
+		/// (Optional)
 		/// optional argument. Specify the value for opt_design step's
 		/// more option property which will be set on newly created
 		/// run. Default: None
 		/// </param>
 		/// <param name="place_more_options">
-		/// Optional
+		/// (Optional)
 		/// Specify the value for place_design step's more option
 		/// property which will be set on newly created run. Default:
 		/// None
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>None</returns>
-		public void create_rqs_run(string dir, string new_name, string synth_name = null, string opt_more_options = null, string place_more_options = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_rqs_run(string dir, string new_name, string synth_name = null, string opt_more_options = null, string place_more_options = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_rqs_run -dir <arg> -new_name <arg> [-synth_name <arg>] [-opt_more_options <arg>] [-place_more_options <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("create_rqs_run")
-					.RequiredNamedString("dir", dir)
-					.RequiredNamedString("new_name", new_name)
-					.OptionalNamedString("synth_name", synth_name)
-					.OptionalNamedString("opt_more_options", opt_more_options)
-					.OptionalNamedString("place_more_options", place_more_options)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.create_rqs_run(dir, new_name, synth_name, opt_more_options, place_more_options, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// (User-written application) Create and write a single design checkpoint and stub files for a Block
@@ -236,38 +186,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 503
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// The Block Design file to write a synthesized checkpoint for
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing design checkpoint and stub files
-		/// </param>
-		/// <param name="keep">
-		/// Optional
-		/// Keep the temporary directory and project
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Print verbose messaging
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
+		/// <param name="file">(Required) The Block Design file to write a synthesized checkpoint for</param>
+		/// <param name="force">(Optional) Overwrite existing design checkpoint and stub files</param>
+		/// <param name="keep">(Optional) Keep the temporary directory and project</param>
+		/// <param name="verbose">(Optional) Print verbose messaging</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <returns>(none) An error will be thrown if the command is not successful</returns>
-		public void export_bd_synth(string file, bool? force = null, bool? keep = null, bool? verbose = null, bool? quiet = null)
+		public TTCL export_bd_synth(string file, bool? force = null, bool? keep = null, bool? verbose = null, bool? quiet = null)
 		{
 			// TCL Syntax: export_bd_synth [-force] [-keep] [-verbose] [-quiet] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("export_bd_synth")
-					.Flag("force", force)
-					.Flag("keep", keep)
-					.Flag("verbose", verbose)
-					.Flag("quiet", quiet)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.export_bd_synth(file, force, keep, verbose, quiet));
+			return _tcl;
 		}
 		/// <summary>
 		/// (User-written application) Generate and export IP/IPI user files from a project. This can be
@@ -291,65 +220,27 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 505
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// IP,IPI or a fileset object Default: None
-		/// </param>
+		/// <param name="of_objects">(Optional) IP,IPI or a fileset object Default: None</param>
 		/// <param name="ip_user_files_dir">
-		/// Optional
+		/// (Optional)
 		/// Directory path to simulation base directory (for static,
 		/// dynamic, wrapper, netlist, script and MEM files) Default:
 		/// None
 		/// </param>
-		/// <param name="ipstatic_source_dir">
-		/// Optional
-		/// Directory path to the IP static files Default: None
-		/// </param>
-		/// <param name="lib_map_path">
-		/// Optional
-		/// Compiled simulation library directory path Default: Empty
-		/// </param>
-		/// <param name="no_script">
-		/// Optional
-		/// Do not export simulation scripts Default: 1
-		/// </param>
-		/// <param name="sync">
-		/// Optional
-		/// Delete IP/IPI dynamic and simulation script files
-		/// </param>
-		/// <param name="reset">
-		/// Optional
-		/// Delete all IP/IPI static, dynamic and simulation script files
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite files
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="ipstatic_source_dir">(Optional) Directory path to the IP static files Default: None</param>
+		/// <param name="lib_map_path">(Optional) Compiled simulation library directory path Default: Empty</param>
+		/// <param name="no_script">(Optional) Do not export simulation scripts Default: 1</param>
+		/// <param name="sync">(Optional) Delete IP/IPI dynamic and simulation script files</param>
+		/// <param name="reset">(Optional) Delete all IP/IPI static, dynamic and simulation script files</param>
+		/// <param name="force">(Optional) Overwrite files</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of files that were exported</returns>
-		public void export_ip_user_files(string of_objects = null, string ip_user_files_dir = null, string ipstatic_source_dir = null, string lib_map_path = null, bool? no_script = null, bool? sync = null, bool? reset = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL export_ip_user_files(string of_objects = null, string ip_user_files_dir = null, string ipstatic_source_dir = null, string lib_map_path = null, bool? no_script = null, bool? sync = null, bool? reset = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: export_ip_user_files [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-no_script] [-sync] [-reset] [-force] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("export_ip_user_files")
-					.OptionalNamedString("of_objects", of_objects)
-					.OptionalNamedString("ip_user_files_dir", ip_user_files_dir)
-					.OptionalNamedString("ipstatic_source_dir", ipstatic_source_dir)
-					.OptionalNamedString("lib_map_path", lib_map_path)
-					.Flag("no_script", no_script)
-					.Flag("sync", sync)
-					.Flag("reset", reset)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.export_ip_user_files(of_objects, ip_user_files_dir, ipstatic_source_dir, lib_map_path, no_script, sync, reset, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// (User-written application) Export a script and associated data files (if any) for driving standalone
@@ -439,120 +330,75 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 508
 		/// </summary>
 		/// <param name="simulator">
-		/// Optional
+		/// (Optional)
 		/// Simulator for which the simulation script will be created
 		/// (value=all|xsim|modelsim|questa|ies|xceliu m|vcs|
 		/// riviera|activehdl) Default: all
 		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Export simulation script for the specified object Default:
-		/// None
-		/// </param>
+		/// <param name="of_objects">(Optional) Export simulation script for the specified object Default: None</param>
 		/// <param name="ip_user_files_dir">
-		/// Optional
+		/// (Optional)
 		/// Directory path to the exported IP/BD (Block Design) user
 		/// files (for static, dynamic and data files) Default: Empty
 		/// </param>
-		/// <param name="ipstatic_source_dir">
-		/// Optional
-		/// Directory path to the exported IP/BD static files Default:
-		/// Empty
-		/// </param>
+		/// <param name="ipstatic_source_dir">(Optional) Directory path to the exported IP/BD static files Default: Empty</param>
 		/// <param name="lib_map_path">
-		/// Optional
+		/// (Optional)
 		/// Precompiled simulation library directory path. If not
 		/// specified, then please follow the instructions in the
 		/// generated script header to manually provide the simulation
 		/// library mapping information. Default: Empty
 		/// </param>
 		/// <param name="script_name">
-		/// Optional
+		/// (Optional)
 		/// Output script filename. If not specified, then a file with a
 		/// default name will be created. Default: top_module.sh
 		/// </param>
 		/// <param name="directory">
-		/// Optional
+		/// (Optional)
 		/// Directory where the simulation script will be generated
 		/// Default: export_sim
 		/// </param>
 		/// <param name="runtime">
-		/// Optional
+		/// (Optional)
 		/// Run simulation for this time (default:full simulation run or
 		/// until a logical break or finish condition) Default: Empty
 		/// </param>
 		/// <param name="define">
-		/// Optional
+		/// (Optional)
 		/// Read verilog defines from the list specified with this switch
 		/// Default: Empty
 		/// </param>
 		/// <param name="generic">
-		/// Optional
+		/// (Optional)
 		/// Read vhdl generics from the list specified with this switch
 		/// Default: Empty
 		/// </param>
 		/// <param name="include">
-		/// Optional
+		/// (Optional)
 		/// Read include directory paths from the list specified with this
 		/// switch Default: Empty
 		/// </param>
 		/// <param name="use_ip_compiled_libs">
-		/// Optional
+		/// (Optional)
 		/// Reference pre-compiled IP static library during compilation.
 		/// This switch requires -ip_user_files_dir and -
 		/// ipstatic_source_dir switches as well for generating scripts
 		/// using pre-compiled IP library.
 		/// Name Description
 		/// </param>
-		/// <param name="absolute_path">
-		/// Optional
-		/// Make all file paths absolute
-		/// </param>
-		/// <param name="export_source_files">
-		/// Optional
-		/// Copy IP/BD design files to output directory
-		/// </param>
-		/// <param name="_32bit">
-		/// Optional
-		/// Perform 32bit compilation
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite previous files
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="absolute_path">(Optional) Make all file paths absolute</param>
+		/// <param name="export_source_files">(Optional) Copy IP/BD design files to output directory</param>
+		/// <param name="_32bit">(Optional) Perform 32bit compilation</param>
+		/// <param name="force">(Optional) Overwrite previous files</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>None</returns>
-		public void export_simulation(string simulator = null, string of_objects = null, string ip_user_files_dir = null, string ipstatic_source_dir = null, string lib_map_path = null, string script_name = null, string directory = null, string runtime = null, string define = null, string generic = null, string include = null, bool? use_ip_compiled_libs = null, bool? absolute_path = null, bool? export_source_files = null, bool? _32bit = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL export_simulation(string simulator = null, string of_objects = null, string ip_user_files_dir = null, string ipstatic_source_dir = null, string lib_map_path = null, string script_name = null, string directory = null, string runtime = null, string define = null, string generic = null, string include = null, bool? use_ip_compiled_libs = null, bool? absolute_path = null, bool? export_source_files = null, bool? _32bit = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: export_simulation [-simulator <arg>] [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-script_name <arg>] [-directory <arg>] [-runtime <arg>] [-define <arg>] [-generic <arg>] [-include <arg>] [-use_ip_compiled_libs] [-absolute_path] [-export_source_files] [-32bit] [-force] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("export_simulation")
-					.OptionalNamedString("simulator", simulator)
-					.OptionalNamedString("of_objects", of_objects)
-					.OptionalNamedString("ip_user_files_dir", ip_user_files_dir)
-					.OptionalNamedString("ipstatic_source_dir", ipstatic_source_dir)
-					.OptionalNamedString("lib_map_path", lib_map_path)
-					.OptionalNamedString("script_name", script_name)
-					.OptionalNamedString("directory", directory)
-					.OptionalNamedString("runtime", runtime)
-					.OptionalNamedString("define", define)
-					.OptionalNamedString("generic", generic)
-					.OptionalNamedString("include", include)
-					.Flag("use_ip_compiled_libs", use_ip_compiled_libs)
-					.Flag("absolute_path", absolute_path)
-					.Flag("export_source_files", export_source_files)
-					.Flag("32bit", _32bit)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.export_simulation(simulator, of_objects, ip_user_files_dir, ipstatic_source_dir, lib_map_path, script_name, directory, runtime, define, generic, include, use_ip_compiled_libs, absolute_path, export_source_files, _32bit, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// (User-written application) Extract IP static files from the project or repository and prepare it for
@@ -579,64 +425,26 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1668
 		/// </summary>
-		/// <param name="directory">
-		/// Optional
-		/// Extract static files in the specified directory Default: None
-		/// </param>
+		/// <param name="directory">(Optional) Extract static files in the specified directory Default: None</param>
 		/// <param name="ip_repo_path">
-		/// Optional
+		/// (Optional)
 		/// Extract static files from the specified IP repository path
 		/// Default: None
 		/// </param>
-		/// <param name="ips">
-		/// Optional
-		/// Extract static files for the specified IPs only Default: Empty
-		/// </param>
-		/// <param name="library">
-		/// Optional
-		/// Extract static files for the specified IP library Default: Empty
-		/// </param>
-		/// <param name="project">
-		/// Optional
-		/// Extract static files for the current project
-		/// </param>
-		/// <param name="install">
-		/// Optional
-		/// Extract static files for the IP catalog
-		/// </param>
-		/// <param name="no_update_catalog">
-		/// Optional
-		/// Do no update IP catalog Default: 1
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite static files
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="ips">(Optional) Extract static files for the specified IPs only Default: Empty</param>
+		/// <param name="library">(Optional) Extract static files for the specified IP library Default: Empty</param>
+		/// <param name="project">(Optional) Extract static files for the current project</param>
+		/// <param name="install">(Optional) Extract static files for the IP catalog</param>
+		/// <param name="no_update_catalog">(Optional) Do no update IP catalog Default: 1</param>
+		/// <param name="force">(Optional) Overwrite static files</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>None</returns>
-		public void setup_ip_static_library(string directory = null, string ip_repo_path = null, string ips = null, string library = null, bool? project = null, bool? install = null, bool? no_update_catalog = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL setup_ip_static_library(string directory = null, string ip_repo_path = null, string ips = null, string library = null, bool? project = null, bool? install = null, bool? no_update_catalog = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: setup_ip_static_library [-directory <arg>] [-ip_repo_path <arg>] [-ips <arg>] [-library <arg>] [-project] [-install] [-no_update_catalog] [-force] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("setup_ip_static_library")
-					.OptionalNamedString("directory", directory)
-					.OptionalNamedString("ip_repo_path", ip_repo_path)
-					.OptionalNamedString("ips", ips)
-					.OptionalNamedString("library", library)
-					.Flag("project", project)
-					.Flag("install", install)
-					.Flag("no_update_catalog", no_update_catalog)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.setup_ip_static_library(directory, ip_repo_path, ips, library, project, install, no_update_catalog, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// (User-written application) Export Tcl script for re-creating the current project
@@ -701,92 +509,47 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1840
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Name of the tcl script file to generate
-		/// </param>
+		/// <param name="file">(Required) Name of the tcl script file to generate</param>
 		/// <param name="paths_relative_to">
-		/// Optional
+		/// (Optional)
 		/// Override the reference directory variable for source file
 		/// relative paths Default: Script output directory path
 		/// </param>
 		/// <param name="origin_dir_override">
-		/// Optional
+		/// (Optional)
 		/// Set 'origin_dir' directory variable to the specified value
 		/// (Default is value specified with the -paths_relative_to switch)
 		/// Default: None
 		/// </param>
 		/// <param name="target_proj_dir">
-		/// Optional
+		/// (Optional)
 		/// Directory where the project needs to be restored Default:
 		/// Current project directory path
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing tcl script file
-		/// </param>
-		/// <param name="all_properties">
-		/// Optional
-		/// Write all properties (default & non-default) for the project
-		/// object(s)
-		/// </param>
+		/// <param name="force">(Optional) Overwrite existing tcl script file</param>
+		/// <param name="all_properties">(Optional) Write all properties (default & non-default) for the project object(s)</param>
 		/// <param name="no_copy_sources">
-		/// Optional
+		/// (Optional)
 		/// Do not import sources even if they were local in the original
 		/// project Default: 1
 		/// </param>
 		/// <param name="no_ip_version">
-		/// Optional
+		/// (Optional)
 		/// Flag to not include the IP version as part of the IP VLNV in
 		/// create_bd_cell commands. Default: 1
 		/// </param>
-		/// <param name="absolute_path">
-		/// Optional
-		/// Make all file paths absolute wrt the original project directory
-		/// </param>
-		/// <param name="dump_project_info">
-		/// Optional
-		/// Write object values
-		/// </param>
-		/// <param name="use_bd_files">
-		/// Optional
-		/// Use BD sources directly instead of writing out procs to
-		/// create them
-		/// </param>
-		/// <param name="@internal">
-		/// Optional
-		/// Print basic header information in the generated tcl script
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Execute the command quietly, returning no messages from
-		/// the command.
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="absolute_path">(Optional) Make all file paths absolute wrt the original project directory</param>
+		/// <param name="dump_project_info">(Optional) Write object values</param>
+		/// <param name="use_bd_files">(Optional) Use BD sources directly instead of writing out procs to create them</param>
+		/// <param name="@internal">(Optional) Print basic header information in the generated tcl script</param>
+		/// <param name="quiet">(Optional) Execute the command quietly, returning no messages from the command.</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>true (0) if success, false (1) otherwise</returns>
-		public void write_project_tcl(string file, string paths_relative_to = null, string origin_dir_override = null, string target_proj_dir = null, bool? force = null, bool? all_properties = null, bool? no_copy_sources = null, bool? no_ip_version = null, bool? absolute_path = null, bool? dump_project_info = null, bool? use_bd_files = null, bool? @internal = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_project_tcl(string file, string paths_relative_to = null, string origin_dir_override = null, string target_proj_dir = null, bool? force = null, bool? all_properties = null, bool? no_copy_sources = null, bool? no_ip_version = null, bool? absolute_path = null, bool? dump_project_info = null, bool? use_bd_files = null, bool? @internal = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_project_tcl [-paths_relative_to <arg>] [-origin_dir_override <arg>] [-target_proj_dir <arg>] [-force] [-all_properties] [-no_copy_sources] [-no_ip_version] [-absolute_path] [-dump_project_info] [-use_bd_files] [-internal] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_project_tcl")
-					.OptionalNamedString("paths_relative_to", paths_relative_to)
-					.OptionalNamedString("origin_dir_override", origin_dir_override)
-					.OptionalNamedString("target_proj_dir", target_proj_dir)
-					.Flag("force", force)
-					.Flag("all_properties", all_properties)
-					.Flag("no_copy_sources", no_copy_sources)
-					.Flag("no_ip_version", no_ip_version)
-					.Flag("absolute_path", absolute_path)
-					.Flag("dump_project_info", dump_project_info)
-					.Flag("use_bd_files", use_bd_files)
-					.Flag("internal", @internal)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_project_tcl(file, paths_relative_to, origin_dir_override, target_proj_dir, force, all_properties, no_copy_sources, no_ip_version, absolute_path, dump_project_info, use_bd_files, @internal, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

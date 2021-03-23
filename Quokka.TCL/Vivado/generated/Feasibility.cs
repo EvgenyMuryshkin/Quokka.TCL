@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class FeasibilityCommands
+	public partial class FeasibilityCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public FeasibilityCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public FeasibilityCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Deletes a list of available QoR suggestions
@@ -29,27 +31,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 458
 		/// </summary>
-		/// <param name="IDs">
-		/// Required
-		/// Match suggestion names against given names
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_qor_suggestions(string IDs, bool? quiet = null, bool? verbose = null)
+		/// <param name="IDs">(Required) Match suggestion names against given names</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_qor_suggestions(string IDs, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_qor_suggestions [-quiet] [-verbose] [<IDs>]
-			_tcl.Add(
-				new SimpleTCLCommand("delete_qor_suggestions")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(IDs)
-			);
+			_tcl.Entry(_builder.delete_qor_suggestions(IDs, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of available QoR suggestions
@@ -77,33 +66,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 883
 		/// </summary>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="IDs">
-		/// Optional
-		/// Match suggestion names against given names
-		/// </param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="IDs">(Optional) Match suggestion names against given names</param>
 		/// <returns>list of qor suggestion objects</returns>
-		public void get_qor_suggestions(string filter = null, bool? quiet = null, bool? verbose = null, string IDs = null)
+		public TTCL get_qor_suggestions(string filter = null, bool? quiet = null, bool? verbose = null, string IDs = null)
 		{
 			// TCL Syntax: get_qor_suggestions [-filter <arg>] [-quiet] [-verbose] [<IDs>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_qor_suggestions")
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(IDs)
-			);
+			_tcl.Entry(_builder.get_qor_suggestions(filter, quiet, verbose, IDs));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read QoR Suggestions from the given file
@@ -122,27 +94,17 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1153
 		/// </summary>
 		/// <param name="file">
-		/// Required
+		/// (Required)
 		/// QoR suggestions file Values: Path to the QoR suggestions
 		/// file, typically ending with .rqs.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void read_qor_suggestions(string file, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL read_qor_suggestions(string file, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_qor_suggestions [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("read_qor_suggestions")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.read_qor_suggestions(file, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Feasibility Checks
@@ -179,38 +141,19 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1392
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="max_paths">
-		/// Optional
-		/// Number of paths to consider for suggestion analysis
-		/// Default: 100
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, do not overwrite the results file
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_qor_assessment(string file = null, string max_paths = null, bool? append = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="max_paths">(Optional) Number of paths to consider for suggestion analysis Default: 100</param>
+		/// <param name="append">(Optional) Append the results to file, do not overwrite the results file</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_qor_assessment(string file = null, string max_paths = null, bool? append = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_qor_assessment [-file <arg>] [-max_paths <arg>] [-append] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_qor_assessment")
-					.OptionalNamedString("file", file)
-					.OptionalNamedString("max_paths", max_paths)
-					.Flag("append", append)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_qor_assessment(file, max_paths, append, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Recommend QoR Suggestions
@@ -254,80 +197,32 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1395
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report as string
-		/// </param>
-		/// <param name="max_strategies">
-		/// Optional
-		/// Number of strategies to suggest Default: 3
-		/// </param>
-		/// <param name="max_paths">
-		/// Optional
-		/// Number of paths to consider for suggestion analysis
-		/// Default: 100
-		/// </param>
-		/// <param name="evaluate_pipelining">
-		/// Optional
-		/// Generate DSP/BRAM pipelining xdc file
-		/// </param>
-		/// <param name="no_split">
-		/// Optional
-		/// Report without spliting the lines in tables
-		/// </param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="return_string">(Optional) Return report as string</param>
+		/// <param name="max_strategies">(Optional) Number of strategies to suggest Default: 3</param>
+		/// <param name="max_paths">(Optional) Number of paths to consider for suggestion analysis Default: 100</param>
+		/// <param name="evaluate_pipelining">(Optional) Generate DSP/BRAM pipelining xdc file</param>
+		/// <param name="no_split">(Optional) Report without spliting the lines in tables</param>
 		/// <param name="models_dir">
-		/// Optional
+		/// (Optional)
 		/// Path to the directory which consists of the models Default: /
 		/// proj/rdi-xco/builds/HEAD/nightly/RUNNING_ BUILD/
 		/// packages/customer/vivado/data/deca/models_dir
 		/// </param>
-		/// <param name="cell">
-		/// Optional
-		/// Report QOR suggestions for a given cell
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// List of QoR suggestion objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_qor_suggestions(string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? evaluate_pipelining = null, bool? no_split = null, string models_dir = null, string cell = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="cell">(Optional) Report QOR suggestions for a given cell</param>
+		/// <param name="of_objects">(Optional) List of QoR suggestion objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_qor_suggestions(string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? evaluate_pipelining = null, bool? no_split = null, string models_dir = null, string cell = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_qor_suggestions [-file <arg>] [-name <arg>] [-append] [-return_string] [-max_strategies <arg>] [-max_paths <arg>] [-evaluate_pipelining] [-no_split] [-models_dir <arg>] [-cell <args>] [-of_objects <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_qor_suggestions")
-					.OptionalNamedString("file", file)
-					.OptionalNamedString("name", name)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.OptionalNamedString("max_strategies", max_strategies)
-					.OptionalNamedString("max_paths", max_paths)
-					.Flag("evaluate_pipelining", evaluate_pipelining)
-					.Flag("no_split", no_split)
-					.OptionalNamedString("models_dir", models_dir)
-					.OptionalNamedString("cell", cell)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_qor_suggestions(file, name, append, return_string, max_strategies, max_paths, evaluate_pipelining, no_split, models_dir, cell, of_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write QoR Suggestions to the given file
@@ -364,50 +259,30 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1845
 		/// </summary>
 		/// <param name="file">
-		/// Required
+		/// (Required)
 		/// QoR suggestions file Values: A filename with alphanumeric
 		/// characters and .rqs extension.
 		/// </param>
 		/// <param name="strategy_dir">
-		/// Optional
+		/// (Optional)
 		/// Directory to create Strategy RQS & TCL files Values: If
 		/// passed a directory path, for each strategy suggested one set
 		/// of RQS and TCL files will be generated.
 		/// </param>
 		/// <param name="tcl_output_dir">
-		/// Optional
+		/// (Optional)
 		/// Directory to create TCL files Values: TCL files for the QoR
 		/// suggestions will be generated in the provided directory.
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing suggestions file
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// List of QoR suggestion objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void write_qor_suggestions(string file, string strategy_dir = null, string tcl_output_dir = null, bool? force = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="force">(Optional) Overwrite existing suggestions file</param>
+		/// <param name="of_objects">(Optional) List of QoR suggestion objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL write_qor_suggestions(string file, string strategy_dir = null, string tcl_output_dir = null, bool? force = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_qor_suggestions [-strategy_dir <arg>] [-tcl_output_dir <arg>] [-force] [-of_objects <args>] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_qor_suggestions")
-					.OptionalNamedString("strategy_dir", strategy_dir)
-					.OptionalNamedString("tcl_output_dir", tcl_output_dir)
-					.Flag("force", force)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_qor_suggestions(file, strategy_dir, tcl_output_dir, force, of_objects, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

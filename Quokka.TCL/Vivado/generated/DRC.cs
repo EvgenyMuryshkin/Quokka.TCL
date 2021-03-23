@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class DRCCommands
+	public partial class DRCCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public DRCCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public DRCCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Add DRC rule check objects to a rule deck
@@ -48,54 +50,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 38
 		/// </summary>
-		/// <param name="ruledeck">
-		/// Required
-		/// DRC rule deck to modify
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'rule_check' objects of these types: 'drc_ruledeck'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'rule_check' objects against patterns. Default: *
-		/// </param>
+		/// <param name="ruledeck">(Required) DRC rule deck to modify</param>
+		/// <param name="of_objects">(Optional) Get 'rule_check' objects of these types: 'drc_ruledeck'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'rule_check' objects against patterns. Default: *</param>
 		/// <returns>drc_check</returns>
-		public void add_drc_checks(string ruledeck, string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL add_drc_checks(string ruledeck, string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: add_drc_checks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] -ruledeck <arg> [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("add_drc_checks")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.RequiredNamedString("ruledeck", ruledeck)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.add_drc_checks(ruledeck, of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a user defined DRC rule
@@ -177,19 +145,19 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 253
 		/// </summary>
 		/// <param name="name">
-		/// Required
+		/// (Required)
 		/// Specify the name for this rule. This must be of the form
 		/// PREFIX-id where XXXX is a 4-6 letter abbreviation and id is an
 		/// integer identifying a particular rule. Similar checks should
 		/// have the same abbreviation and each a unique id.
 		/// </param>
 		/// <param name="rule_body">
-		/// Required
+		/// (Required)
 		/// The string representing the body of the rule. This can be a
 		/// tcl proc name or any string of tcl code to be evaluated.
 		/// </param>
 		/// <param name="hiername">
-		/// Optional
+		/// (Optional)
 		/// Specify the hiername for this rule. When the DRC UI panel is
 		/// created, this is used to place the new rule in the menu
 		/// hierarchy. Use a dot (.) to separate layers in the menu
@@ -197,45 +165,30 @@ namespace Quokka.TCL.Vivado
 		/// Default: User Defined
 		/// </param>
 		/// <param name="desc">
-		/// Optional
+		/// (Optional)
 		/// Specify the short description for this rule. It is optional and
 		/// will default to <User rule - default description>. Default:
 		/// User rule - default description
 		/// </param>
 		/// <param name="msg">
-		/// Optional
+		/// (Optional)
 		/// Specify the full description for this rule. Including the
 		/// substitutions. Values are: %MSG_STRING
 		/// %NETLIST_ELEMENT %SITE_GROUP %CLOCK_REGION
 		/// %BANK %BEL_GROUP.
 		/// </param>
 		/// <param name="severity">
-		/// Optional
+		/// (Optional)
 		/// Specify severity level for a DRC rule. Default: Warning.
 		/// Values: Error, Critical Warning, Warning, Advisory.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_drc_check(string name, string rule_body, string hiername = null, string desc = null, string msg = null, string severity = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_drc_check(string name, string rule_body, string hiername = null, string desc = null, string msg = null, string severity = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_drc_check [-hiername <arg>] -name <arg> [-desc <arg>] [-msg <arg>] -rule_body <arg> [-severity <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("create_drc_check")
-					.OptionalNamedString("hiername", hiername)
-					.RequiredNamedString("name", name)
-					.OptionalNamedString("desc", desc)
-					.OptionalNamedString("msg", msg)
-					.RequiredNamedString("rule_body", rule_body)
-					.OptionalNamedString("severity", severity)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.create_drc_check(name, rule_body, hiername, desc, msg, severity, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create one or more user defined DRC rule deck objects
@@ -259,28 +212,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 258
 		/// </summary>
-		/// <param name="ruledecks">
-		/// Required
-		/// Names of DRC rule decks to create
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="ruledecks">(Required) Names of DRC rule decks to create</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>drc_ruledeck</returns>
-		public void create_drc_ruledeck(string ruledecks, bool? quiet = null, bool? verbose = null)
+		public TTCL create_drc_ruledeck(string ruledecks, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_drc_ruledeck [-quiet] [-verbose] <ruledecks>...
-			_tcl.Add(
-				new SimpleTCLCommand("create_drc_ruledeck")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(ruledecks)
-			);
+			_tcl.Entry(_builder.create_drc_ruledeck(ruledecks, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a DRC violation
@@ -356,45 +296,29 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 260
 		/// </summary>
 		/// <param name="name">
-		/// Required
+		/// (Required)
 		/// Specify the name for this rule. This is the typically a 4-6
 		/// letter specification for your rule.
 		/// </param>
 		/// <param name="severity">
-		/// Optional
+		/// (Optional)
 		/// Specify severity level for a DRC rule. Default: WARNING.
 		/// Values: FATAL, ERROR, CRITICAL WARNING, WARNING,
 		/// ADVISORY.
 		/// </param>
-		/// <param name="msg">
-		/// Optional
-		/// Specify your message string for this DRC rule.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="msg">(Optional) Specify your message string for this DRC rule.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">
-		/// Optional
+		/// (Optional)
 		/// Cells, ports, pins, nets, clock regions, sites, package banks to
 		/// query.
 		/// </param>
-		public void create_drc_violation(string name, string severity = null, string msg = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public TTCL create_drc_violation(string name, string severity = null, string msg = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: create_drc_violation -name <arg> [-severity <arg>] [-msg <arg>] [-quiet] [-verbose] [<objects>...]
-			_tcl.Add(
-				new SimpleTCLCommand("create_drc_violation")
-					.RequiredNamedString("name", name)
-					.OptionalNamedString("severity", severity)
-					.OptionalNamedString("msg", msg)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(objects)
-			);
+			_tcl.Entry(_builder.create_drc_violation(name, severity, msg, quiet, verbose, objects));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a DRC/METHODOLOGY/CDC message waiver
@@ -450,97 +374,70 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 357
 		/// </summary>
-		/// <param name="description">
-		/// Required
-		/// Description string of the cause for the waiver
-		/// </param>
-		/// <param name="type">
-		/// Optional
-		/// Type of waiver - DRC, METHODOLOGY, CDC
-		/// </param>
+		/// <param name="description">(Required) Description string of the cause for the waiver</param>
+		/// <param name="type">(Optional) Type of waiver - DRC, METHODOLOGY, CDC</param>
 		/// <param name="id">
-		/// Optional
+		/// (Optional)
 		/// ID of the DRC/METHODOLOGY/CDC message being waived,
 		/// not needed for -of_objects use
 		/// </param>
 		/// <param name="objects">
-		/// Optional
+		/// (Optional)
 		/// List of inserted message objects for which a DRC/
 		/// METHODOLOGY waiver will be set (i.e. %ELG, %SIG, etc. for
 		/// cells or nets, etc., sites, etc., or '*CELL', '*NET', '*SITE', etc.
 		/// as wildcards
 		/// </param>
 		/// <param name="from">
-		/// Optional
+		/// (Optional)
 		/// List of source (driver) pins or ports (or '*PORT', '*PIN' as
 		/// wildcard) for which a CDC waiver will be set
 		/// </param>
 		/// <param name="to">
-		/// Optional
+		/// (Optional)
 		/// List of target (load) pins or ports (or '*PORT', '*PIN' as
 		/// wildcard) for which a CDC waiver will be set
 		/// </param>
 		/// <param name="strings">
-		/// Optional
+		/// (Optional)
 		/// List of inserted message string values for which a DRC/
 		/// METHODOLOGY waiver will be set (i.e. %STR for strings, or
 		/// '*' as wildcard)
 		/// </param>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// List of DRC/METHODOLOGY/CDC violation objects for which
 		/// waiver(s) will be set
 		/// </param>
 		/// <param name="user">
-		/// Optional
+		/// (Optional)
 		/// Name of the user creating the waiver (required, but if not
 		/// specified, the waivers will take the USER name from the
 		/// environment if it is available)
 		/// </param>
 		/// <param name="tags">
-		/// Optional
+		/// (Optional)
 		/// Optional list of one or more tags to aid in subsequent
 		/// waiver identification or categorization
 		/// </param>
 		/// <param name="timestamp">
-		/// Optional
+		/// (Optional)
 		/// Timestamp of waiver - for restaining the original time of a
 		/// waiver being (re)created after being written
 		/// </param>
 		/// <param name="scoped">
-		/// Optional
+		/// (Optional)
 		/// Flag waiver to interpret object wildcards as scoped to the
 		/// current_instance that is set
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>waiver</returns>
-		public void create_waiver(string description, string type = null, string id = null, string objects = null, string from = null, string to = null, string strings = null, string of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_waiver(string description, string type = null, string id = null, string objects = null, string from = null, string to = null, string strings = null, string of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_waiver [-type <arg>] [-id <arg>] [-objects <args>] [-from <args>] [-to <args>] [-strings <args>] [-of_objects <args>] [-user <arg>] -description <arg> [-tags <arg>] [-timestamp <arg>] [-scoped] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("create_waiver")
-					.OptionalNamedString("type", type)
-					.OptionalNamedString("id", id)
-					.OptionalNamedString("objects", objects)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("strings", strings)
-					.OptionalNamedString("of_objects", of_objects)
-					.OptionalNamedString("user", user)
-					.RequiredNamedString("description", description)
-					.OptionalNamedString("tags", tags)
-					.OptionalNamedString("timestamp", timestamp)
-					.Flag("scoped", scoped)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.create_waiver(description, type, id, objects, from, to, strings, of_objects, user, tags, timestamp, scoped, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Delete one or more user-defined DRC checks.
@@ -561,30 +458,20 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 427
 		/// </summary>
 		/// <param name="name">
-		/// Required
+		/// (Required)
 		/// Specify the key for the check to remove. This is the typically
 		/// of the form PREFIX-id where PREFIX is a 4-6 letter
 		/// abbreviation and id is a unique identifier. Use
 		/// get_drc_checks to determine the correct name to use. Only
 		/// user-defined DRC checks may be deleted.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_drc_check(string name, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_drc_check(string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_drc_check [-quiet] [-verbose] <name>...
-			_tcl.Add(
-				new SimpleTCLCommand("delete_drc_check")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.delete_drc_check(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Delete one or more user defined DRC rule deck objects
@@ -607,44 +494,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 429
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'drc_ruledeck' objects against patterns. Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'drc_ruledeck' objects against patterns. Default: *</param>
 		/// <returns>drc_ruledeck</returns>
-		public void delete_drc_ruledeck(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL delete_drc_ruledeck(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: delete_drc_ruledeck [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("delete_drc_ruledeck")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.delete_drc_ruledeck(regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of DRC rule check objects
@@ -666,59 +527,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 662
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'rule_check' objects of these types: 'drc_ruledeck'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="abbrev">
-		/// Optional
-		/// Get the largest ID for this abbrev
-		/// </param>
-		/// <param name="ruledecks">
-		/// Optional
-		/// Containers of Report DRC rule checks Default: default
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'rule_check' objects against patterns. Default: *
-		/// </param>
+		/// <param name="of_objects">(Optional) Get 'rule_check' objects of these types: 'drc_ruledeck'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="abbrev">(Optional) Get the largest ID for this abbrev</param>
+		/// <param name="ruledecks">(Optional) Containers of Report DRC rule checks Default: default</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'rule_check' objects against patterns. Default: *</param>
 		/// <returns>list of DRC rule_check objects</returns>
-		public void get_drc_checks(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, string abbrev = null, string ruledecks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_drc_checks(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, string abbrev = null, string ruledecks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_drc_checks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-abbrev <arg>] [-ruledecks <args>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_drc_checks")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("abbrev", abbrev)
-					.OptionalNamedString("ruledecks", ruledecks)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_drc_checks(of_objects, regexp, nocase, filter, abbrev, ruledecks, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of DRC rule deck objects
@@ -746,49 +569,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 665
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'drc_ruledeck' objects of these types: 'rule_check'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'drc_ruledeck' objects against patterns. Default: *
-		/// </param>
+		/// <param name="of_objects">(Optional) Get 'drc_ruledeck' objects of these types: 'rule_check'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'drc_ruledeck' objects against patterns. Default: *</param>
 		/// <returns>drc_ruledeck</returns>
-		public void get_drc_ruledecks(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_drc_ruledecks(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_drc_ruledecks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_drc_ruledecks")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_drc_ruledecks(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of DRC violations from a previous report_drc run
@@ -823,51 +616,24 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 668
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// Get the results with this name
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Optional) Get the results with this name</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">
-		/// Optional
+		/// (Optional)
 		/// Match drc_violations against patterns Default: * Values: The
 		/// default search pattern is the wildcard *, or .* when -regexp
 		/// is specified.
 		/// </param>
 		/// <returns>list of DRC violation objects</returns>
-		public void get_drc_violations(string name = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_drc_violations(string name = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_drc_violations [-name <arg>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_drc_violations")
-					.OptionalNamedString("name", name)
-					.Flag("regexp", regexp)
-					.OptionalNamedString("filter", filter)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_drc_violations(name, regexp, filter, nocase, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Remove DRC rule check objects from a user rule deck
@@ -899,54 +665,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1217
 		/// </summary>
-		/// <param name="ruledeck">
-		/// Required
-		/// DRC rule deck to modify
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'rule_check' objects of these types: 'drc_ruledeck'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'rule_check' objects against patterns. Default: *
-		/// </param>
+		/// <param name="ruledeck">(Required) DRC rule deck to modify</param>
+		/// <param name="of_objects">(Optional) Get 'rule_check' objects of these types: 'drc_ruledeck'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'rule_check' objects against patterns. Default: *</param>
 		/// <returns>drc_check</returns>
-		public void remove_drc_checks(string ruledeck, string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL remove_drc_checks(string ruledeck, string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: remove_drc_checks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] -ruledeck <arg> [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("remove_drc_checks")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.RequiredNamedString("ruledeck", ruledeck)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.remove_drc_checks(ruledeck, of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Run DRC
@@ -998,74 +730,31 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1322
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="upgrade_cw">
-		/// Optional
+		/// (Optional)
 		/// Specifies if report_drc should upgrade all
 		/// CRITICAL_WARNING violations to ERROR.
 		/// </param>
-		/// <param name="checks">
-		/// Optional
-		/// DRC checks (see get_drc_checks for available checks)
-		/// </param>
-		/// <param name="ruledecks">
-		/// Optional
-		/// Containers of DRC rule checks Default: default
-		/// </param>
+		/// <param name="checks">(Optional) DRC checks (see get_drc_checks for available checks)</param>
+		/// <param name="ruledecks">(Optional) Containers of DRC rule checks Default: default</param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="rpx">
-		/// Optional
-		/// Report filename for persisted results.
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, do not overwrite the results file
-		/// </param>
-		/// <param name="waived">
-		/// Optional
-		/// Output result is Waived checks
-		/// </param>
-		/// <param name="no_waivers">
-		/// Optional
-		/// Disable waivers for checks
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_drc(string name = null, bool? upgrade_cw = null, string checks = null, string ruledecks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="rpx">(Optional) Report filename for persisted results.</param>
+		/// <param name="append">(Optional) Append the results to file, do not overwrite the results file</param>
+		/// <param name="waived">(Optional) Output result is Waived checks</param>
+		/// <param name="no_waivers">(Optional) Disable waivers for checks</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_drc(string name = null, bool? upgrade_cw = null, string checks = null, string ruledecks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_drc [-name <arg>] [-upgrade_cw] [-checks <args>] [-ruledecks <args>] [-file <arg>] [-rpx <arg>] [-append] [-waived] [-no_waivers] [-return_string] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_drc")
-					.OptionalNamedString("name", name)
-					.Flag("upgrade_cw", upgrade_cw)
-					.OptionalNamedString("checks", checks)
-					.OptionalNamedString("ruledecks", ruledecks)
-					.OptionalNamedString("file", file)
-					.OptionalNamedString("rpx", rpx)
-					.Flag("append", append)
-					.Flag("waived", waived)
-					.Flag("no_waivers", no_waivers)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_drc(name, upgrade_cw, checks, ruledecks, file, rpx, append, waived, no_waivers, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Remove DRC report
@@ -1081,27 +770,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1449
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// DRC result name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_drc(string name = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Optional) DRC result name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_drc(string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_drc [-name <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("reset_drc")
-					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.reset_drc(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reset one or more DRC checks to factory defaults.
@@ -1127,27 +803,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1451
 		/// </summary>
-		/// <param name="checks">
-		/// Required
-		/// The list of checks to reset.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_drc_check(string checks, bool? quiet = null, bool? verbose = null)
+		/// <param name="checks">(Required) The list of checks to reset.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_drc_check(string checks, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_drc_check [-quiet] [-verbose] [<checks>...]
-			_tcl.Add(
-				new SimpleTCLCommand("reset_drc_check")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(checks)
-			);
+			_tcl.Entry(_builder.reset_drc_check(checks, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

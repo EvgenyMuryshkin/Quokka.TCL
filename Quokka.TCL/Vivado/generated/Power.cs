@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class PowerCommands
+	public partial class PowerCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public PowerCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public PowerCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Delete power results that were stored in memory under a given name.
@@ -26,27 +28,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 454
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name for the set of results to clear
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_power_results(string name, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Required) Name for the set of results to clear</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_power_results(string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_power_results -name <arg> [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("delete_power_results")
-					.RequiredNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.delete_power_results(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Optimize dynamic power using intelligent clock gating
@@ -80,22 +69,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1113
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void power_opt_design(bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL power_opt_design(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: power_opt_design [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("power_opt_design")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.power_opt_design(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Import simulation data in saif format
@@ -115,44 +95,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1155
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Specifies the name of the SAIF file to be read
-		/// </param>
+		/// <param name="file">(Required) Specifies the name of the SAIF file to be read</param>
 		/// <param name="strip_path">
-		/// Optional
+		/// (Optional)
 		/// Specifies the name of the instance of the current design as
 		/// it appears in the SAIF file
 		/// </param>
-		/// <param name="no_strip">
-		/// Optional
-		/// Do not strip first two levels of hierarchy from SAIF file
-		/// </param>
+		/// <param name="no_strip">(Optional) Do not strip first two levels of hierarchy from SAIF file</param>
 		/// <param name="out_file">
-		/// Optional
+		/// (Optional)
 		/// Specifies the name of the output file that contains nets that
 		/// could not be matched
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void read_saif(string file, string strip_path = null, bool? no_strip = null, string out_file = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL read_saif(string file, string strip_path = null, bool? no_strip = null, string out_file = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_saif [-strip_path <arg>] [-no_strip] [-out_file <arg>] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("read_saif")
-					.OptionalNamedString("strip_path", strip_path)
-					.Flag("no_strip", no_strip)
-					.OptionalNamedString("out_file", out_file)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.read_saif(file, strip_path, no_strip, out_file, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Run power estimation and display report
@@ -178,91 +139,37 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1375
 		/// </summary>
 		/// <param name="no_propagation">
-		/// Optional
+		/// (Optional)
 		/// Disables the propagation engine to estimate the switching
 		/// activity of nets.
 		/// </param>
-		/// <param name="hier">
-		/// Optional
-		/// Hierarchy report style (logic, power, or all) Default: power
-		/// </param>
-		/// <param name="hierarchical_depth">
-		/// Optional
-		/// Specifies the depth level for textual hierarchical report
-		/// Default: 4
-		/// </param>
-		/// <param name="vid">
-		/// Optional
-		/// Voltage ID (VID) of device is used
-		/// </param>
-		/// <param name="advisory">
-		/// Optional
-		/// Dump power advisory text report
-		/// </param>
+		/// <param name="hier">(Optional) Hierarchy report style (logic, power, or all) Default: power</param>
+		/// <param name="hierarchical_depth">(Optional) Specifies the depth level for textual hierarchical report Default: 4</param>
+		/// <param name="vid">(Optional) Voltage ID (VID) of device is used</param>
+		/// <param name="advisory">(Optional) Dump power advisory text report</param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="format">
-		/// Optional
-		/// Format for the power estimation report: text, xml Default:
-		/// text
-		/// </param>
-		/// <param name="xpe">
-		/// Optional
-		/// Output the results to XML file for importing into XPE
-		/// </param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="format">(Optional) Format for the power estimation report: text, xml Default: text</param>
+		/// <param name="xpe">(Optional) Output the results to XML file for importing into XPE</param>
 		/// <param name="l">
-		/// Optional
+		/// (Optional)
 		/// Maximum number of lines to report in detailed reports (l >=
 		/// 0) Default: 10
 		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// append power report to end of file
-		/// </param>
-		/// <param name="rpx">
-		/// Optional
-		/// Filename to output interactive results to.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_power(bool? no_propagation = null, string hier = null, string hierarchical_depth = null, bool? vid = null, bool? advisory = null, string file = null, string name = null, string format = null, string xpe = null, string l = null, bool? return_string = null, bool? append = null, string rpx = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="append">(Optional) append power report to end of file</param>
+		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_power(bool? no_propagation = null, string hier = null, string hierarchical_depth = null, bool? vid = null, bool? advisory = null, string file = null, string name = null, string format = null, string xpe = null, string l = null, bool? return_string = null, bool? append = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_power [-no_propagation] [-hier <arg>] [-hierarchical_depth <arg>] [-vid] [-advisory] [-file <arg>] [-name <arg>] [-format <arg>] [-xpe <arg>] [-l <arg>] [-return_string] [-append] [-rpx <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_power")
-					.Flag("no_propagation", no_propagation)
-					.OptionalNamedString("hier", hier)
-					.OptionalNamedString("hierarchical_depth", hierarchical_depth)
-					.Flag("vid", vid)
-					.Flag("advisory", advisory)
-					.OptionalNamedString("file", file)
-					.OptionalNamedString("name", name)
-					.OptionalNamedString("format", format)
-					.OptionalNamedString("xpe", xpe)
-					.OptionalNamedString("l", l)
-					.Flag("return_string", return_string)
-					.Flag("append", append)
-					.OptionalNamedString("rpx", rpx)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_power(no_propagation, hier, hierarchical_depth, vid, advisory, file, name, format, xpe, l, return_string, append, rpx, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report power optimizations
@@ -281,54 +188,24 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1379
 		/// </summary>
-		/// <param name="cell">
-		/// Optional
-		/// list of instance names Default: empty
-		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// output file
-		/// </param>
+		/// <param name="cell">(Optional) list of instance names Default: empty</param>
+		/// <param name="file">(Optional) output file</param>
 		/// <param name="format">
-		/// Optional
+		/// (Optional)
 		/// Specifies how to format the report. Default is 'text', another
 		/// option is 'xml'. Only applies if -file is used. If xml output is
 		/// used, -append is not allowed. Default: text
 		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// append if existing file. Otherwise overwrite existing file.
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_power_opt(string cell = null, string file = null, string format = null, string name = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="append">(Optional) append if existing file. Otherwise overwrite existing file.</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_power_opt(string cell = null, string file = null, string format = null, string name = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_power_opt [-cell <args>] [-file <arg>] [-format <arg>] [-name <arg>] [-append] [-return_string] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_power_opt")
-					.OptionalNamedString("cell", cell)
-					.OptionalNamedString("file", file)
-					.OptionalNamedString("format", format)
-					.OptionalNamedString("name", name)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_power_opt(cell, file, format, name, append, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reset operating conditions to tool default for power estimation
@@ -354,93 +231,27 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1471
 		/// </summary>
-		/// <param name="voltage">
-		/// Optional
-		/// Resets voltage value. Supported voltage supplies vary by
-		/// family.
-		/// </param>
-		/// <param name="grade">
-		/// Optional
-		/// Resets temperature grade
-		/// </param>
-		/// <param name="process">
-		/// Optional
-		/// Resets process
-		/// </param>
-		/// <param name="junction_temp">
-		/// Optional
-		/// Resets Junction Temperature
-		/// </param>
-		/// <param name="ambient_temp">
-		/// Optional
-		/// Resets Ambient Temperature
-		/// </param>
-		/// <param name="thetaja">
-		/// Optional
-		/// Resets ThetaJA
-		/// </param>
-		/// <param name="thetasa">
-		/// Optional
-		/// Resets ThetaSA
-		/// </param>
-		/// <param name="airflow">
-		/// Optional
-		/// Resets Airflow
-		/// </param>
-		/// <param name="heatsink">
-		/// Optional
-		/// Resets dimensions of heatsink
-		/// </param>
-		/// <param name="thetajb">
-		/// Optional
-		/// Resets ThetaJB
-		/// </param>
-		/// <param name="board">
-		/// Optional
-		/// Resets Board type
-		/// </param>
-		/// <param name="board_temp">
-		/// Optional
-		/// Resets Board Temperature
-		/// </param>
-		/// <param name="board_layers">
-		/// Optional
-		/// Resets Board layers
-		/// </param>
-		/// <param name="design_power_budget">
-		/// Optional
-		/// Design Power Budget (W)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_operating_conditions(string voltage = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="voltage">(Optional) Resets voltage value. Supported voltage supplies vary by family.</param>
+		/// <param name="grade">(Optional) Resets temperature grade</param>
+		/// <param name="process">(Optional) Resets process</param>
+		/// <param name="junction_temp">(Optional) Resets Junction Temperature</param>
+		/// <param name="ambient_temp">(Optional) Resets Ambient Temperature</param>
+		/// <param name="thetaja">(Optional) Resets ThetaJA</param>
+		/// <param name="thetasa">(Optional) Resets ThetaSA</param>
+		/// <param name="airflow">(Optional) Resets Airflow</param>
+		/// <param name="heatsink">(Optional) Resets dimensions of heatsink</param>
+		/// <param name="thetajb">(Optional) Resets ThetaJB</param>
+		/// <param name="board">(Optional) Resets Board type</param>
+		/// <param name="board_temp">(Optional) Resets Board Temperature</param>
+		/// <param name="board_layers">(Optional) Resets Board layers</param>
+		/// <param name="design_power_budget">(Optional) Design Power Budget (W)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_operating_conditions(string voltage = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_operating_conditions [-voltage <args>] [-grade] [-process] [-junction_temp] [-ambient_temp] [-thetaja] [-thetasa] [-airflow] [-heatsink] [-thetajb] [-board] [-board_temp] [-board_layers] [-design_power_budget] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("reset_operating_conditions")
-					.OptionalNamedString("voltage", voltage)
-					.Flag("grade", grade)
-					.Flag("process", process)
-					.Flag("junction_temp", junction_temp)
-					.Flag("ambient_temp", ambient_temp)
-					.Flag("thetaja", thetaja)
-					.Flag("thetasa", thetasa)
-					.Flag("airflow", airflow)
-					.Flag("heatsink", heatsink)
-					.Flag("thetajb", thetajb)
-					.Flag("board", board)
-					.Flag("board_temp", board_temp)
-					.Flag("board_layers", board_layers)
-					.Flag("design_power_budget", design_power_budget)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.reset_operating_conditions(voltage, grade, process, junction_temp, ambient_temp, thetaja, thetasa, airflow, heatsink, thetajb, board, board_temp, board_layers, design_power_budget, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reset switching activity on specified objects
@@ -463,56 +274,32 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1485
 		/// </summary>
-		/// <param name="@default">
-		/// Optional
-		/// Reset default static probability and default toggle rate
-		/// </param>
+		/// <param name="@default">(Optional) Reset default static probability and default toggle rate</param>
 		/// <param name="type">
-		/// Optional
+		/// (Optional)
 		/// Specify nodes in a specific category. List of valid type values:
 		/// io_output, io_bidir_enable, register, lut_ram, lut, dsp,
 		/// bram_enable, bram_wr_enable, gt_txdata, gt_rxdata.
 		/// </param>
 		/// <param name="hier">
-		/// Optional
+		/// (Optional)
 		/// Hierarchically resets the switching activity on a hierarchical
 		/// cells provided as <objects>.
 		/// </param>
-		/// <param name="all">
-		/// Optional
-		/// Reset switching activity on all nets
-		/// </param>
+		/// <param name="all">(Optional) Reset switching activity on all nets</param>
 		/// <param name="no_deassert_resets">
-		/// Optional
+		/// (Optional)
 		/// A switch to undo the deassertion of resets via command
 		/// set_switching_activity -deassert_resets
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="objects">
-		/// Optional
-		/// Objects to reset switching activity on
-		/// </param>
-		public void reset_switching_activity(bool? @default = null, string type = null, bool? hier = null, bool? all = null, bool? no_deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="objects">(Optional) Objects to reset switching activity on</param>
+		public TTCL reset_switching_activity(bool? @default = null, string type = null, bool? hier = null, bool? all = null, bool? no_deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: reset_switching_activity [-default] [-type <args>] [-hier] [-all] [-no_deassert_resets] [-quiet] [-verbose] [<objects>...]
-			_tcl.Add(
-				new SimpleTCLCommand("reset_switching_activity")
-					.Flag("default", @default)
-					.OptionalNamedString("type", type)
-					.Flag("hier", hier)
-					.Flag("all", all)
-					.Flag("no_deassert_resets", no_deassert_resets)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(objects)
-			);
+			_tcl.Entry(_builder.reset_switching_activity(@default, type, hier, all, no_deassert_resets, quiet, verbose, objects));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set operating conditions for power estimation
@@ -543,95 +330,38 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1630
 		/// </summary>
 		/// <param name="voltage">
-		/// Optional
+		/// (Optional)
 		/// List of voltage pairs, e.g., {name value}. Supported voltage
 		/// supplies vary by family.
 		/// </param>
 		/// <param name="grade">
-		/// Optional
+		/// (Optional)
 		/// Temperature grade. Supported values vary by family.
 		/// Default: commercial
 		/// </param>
-		/// <param name="process">
-		/// Optional
-		/// Process data: typical or maximum Default: typical
-		/// </param>
-		/// <param name="junction_temp">
-		/// Optional
-		/// Junction Temperature (C): auto|degC Default: auto
-		/// </param>
-		/// <param name="ambient_temp">
-		/// Optional
-		/// Ambient Temperature (C): default|degC Default: default
-		/// </param>
-		/// <param name="thetaja">
-		/// Optional
-		/// ThetaJA (C/W): auto|degC/W Default: auto
-		/// </param>
-		/// <param name="thetasa">
-		/// Optional
-		/// ThetaSA (C/W): auto|degC/W Default: auto
-		/// </param>
-		/// <param name="airflow">
-		/// Optional
-		/// Airflow (LFM): 0 to 750 Default: varies by family
-		/// </param>
+		/// <param name="process">(Optional) Process data: typical or maximum Default: typical</param>
+		/// <param name="junction_temp">(Optional) Junction Temperature (C): auto|degC Default: auto</param>
+		/// <param name="ambient_temp">(Optional) Ambient Temperature (C): default|degC Default: default</param>
+		/// <param name="thetaja">(Optional) ThetaJA (C/W): auto|degC/W Default: auto</param>
+		/// <param name="thetasa">(Optional) ThetaSA (C/W): auto|degC/W Default: auto</param>
+		/// <param name="airflow">(Optional) Airflow (LFM): 0 to 750 Default: varies by family</param>
 		/// <param name="heatsink">
-		/// Optional
+		/// (Optional)
 		/// Dimensions of heatsink: none, low, medium, high, custom
 		/// Default: medium
 		/// </param>
-		/// <param name="thetajb">
-		/// Optional
-		/// ThetaJB (C/W): auto|degC/W Default: auto
-		/// </param>
-		/// <param name="board">
-		/// Optional
-		/// Board type: jedec, small, medium, large, custom Default:
-		/// medium
-		/// </param>
-		/// <param name="board_temp">
-		/// Optional
-		/// Board Temperature degC
-		/// </param>
-		/// <param name="board_layers">
-		/// Optional
-		/// Board layers: 4to7, 8to11, 12to15, 16+ Default: 8to11
-		/// </param>
-		/// <param name="design_power_budget">
-		/// Optional
-		/// Design Power Budget (W) Default: Unspecified
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_operating_conditions(string voltage = null, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="thetajb">(Optional) ThetaJB (C/W): auto|degC/W Default: auto</param>
+		/// <param name="board">(Optional) Board type: jedec, small, medium, large, custom Default: medium</param>
+		/// <param name="board_temp">(Optional) Board Temperature degC</param>
+		/// <param name="board_layers">(Optional) Board layers: 4to7, 8to11, 12to15, 16+ Default: 8to11</param>
+		/// <param name="design_power_budget">(Optional) Design Power Budget (W) Default: Unspecified</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_operating_conditions(string voltage = null, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_operating_conditions [-voltage <args>] [-grade <arg>] [-process <arg>] [-junction_temp <arg>] [-ambient_temp <arg>] [-thetaja <arg>] [-thetasa <arg>] [-airflow <arg>] [-heatsink <arg>] [-thetajb <arg>] [-board <arg>] [-board_temp <arg>] [-board_layers <arg>] [-design_power_budget <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("set_operating_conditions")
-					.OptionalNamedString("voltage", voltage)
-					.OptionalNamedString("grade", grade)
-					.OptionalNamedString("process", process)
-					.OptionalNamedString("junction_temp", junction_temp)
-					.OptionalNamedString("ambient_temp", ambient_temp)
-					.OptionalNamedString("thetaja", thetaja)
-					.OptionalNamedString("thetasa", thetasa)
-					.OptionalNamedString("airflow", airflow)
-					.OptionalNamedString("heatsink", heatsink)
-					.OptionalNamedString("thetajb", thetajb)
-					.OptionalNamedString("board", board)
-					.OptionalNamedString("board_temp", board_temp)
-					.OptionalNamedString("board_layers", board_layers)
-					.OptionalNamedString("design_power_budget", design_power_budget)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.set_operating_conditions(voltage, grade, process, junction_temp, ambient_temp, thetaja, thetasa, airflow, heatsink, thetajb, board, board_temp, board_layers, design_power_budget, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set constraints for power optimization
@@ -672,44 +402,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1644
 		/// </summary>
-		/// <param name="include_cells">
-		/// Optional
-		/// Include only these instances for clock gating. Default: all
-		/// </param>
-		/// <param name="exclude_cells">
-		/// Optional
-		/// Exclude these instances from clock gating. Default: none
-		/// </param>
-		/// <param name="clocks">
-		/// Optional
-		/// Clock gate instances clocked by these clocks only. Default:
-		/// all clocks
-		/// </param>
+		/// <param name="include_cells">(Optional) Include only these instances for clock gating. Default: all</param>
+		/// <param name="exclude_cells">(Optional) Exclude these instances from clock gating. Default: none</param>
+		/// <param name="clocks">(Optional) Clock gate instances clocked by these clocks only. Default: all clocks</param>
 		/// <param name="cell_types">
-		/// Optional
+		/// (Optional)
 		/// Clock gate these cell types only. Specify either [all|none], or
 		/// one or more of [bram|reg|srl]. Default: all
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_power_opt(string include_cells = null, string exclude_cells = null, string clocks = null, string cell_types = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_power_opt(string include_cells = null, string exclude_cells = null, string clocks = null, string cell_types = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_power_opt [-include_cells <args>] [-exclude_cells <args>] [-clocks <args>] [-cell_types <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("set_power_opt")
-					.OptionalNamedString("include_cells", include_cells)
-					.OptionalNamedString("exclude_cells", exclude_cells)
-					.OptionalNamedString("clocks", clocks)
-					.OptionalNamedString("cell_types", cell_types)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.set_power_opt(include_cells, exclude_cells, clocks, cell_types, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set switching activity on specified objects or default types
@@ -752,7 +459,7 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1655
 		/// </summary>
 		/// <param name="toggle_rate">
-		/// Optional
+		/// (Optional)
 		/// Toggle rate (%) is the rate at which the output of
 		/// synchronous logic element switches compared to a given
 		/// clock input. It is modeled as a percentage between 0 - 200%.
@@ -763,7 +470,7 @@ namespace Quokka.TCL.Vivado
 		/// 0.0
 		/// </param>
 		/// <param name="default_toggle_rate">
-		/// Optional
+		/// (Optional)
 		/// The default toggle rate to be used in power analysis on the
 		/// primary inputs of the design. The default toggle rate is set
 		/// on those primary input nets whose switching activity is not
@@ -772,22 +479,19 @@ namespace Quokka.TCL.Vivado
 		/// is 12.5. Default: 12.5
 		/// </param>
 		/// <param name="type">
-		/// Optional
+		/// (Optional)
 		/// Specify nodes in a specific category. List of valid type values:
 		/// io_output, io_bidir_enable, register, lut_ram, lut, dsp,
 		/// bram_enable, bram_wr_enable, gt_txdata, gt_rxdata.
 		/// </param>
 		/// <param name="all">
-		/// Optional
+		/// (Optional)
 		/// Used together with -type, set switching activity on -type nets
 		/// within an instance
 		/// </param>
-		/// <param name="static_probability">
-		/// Optional
-		/// Static probability value: 0 <= Value <= 1 Default: 0.5
-		/// </param>
+		/// <param name="static_probability">(Optional) Static probability value: 0 <= Value <= 1 Default: 0.5</param>
 		/// <param name="default_static_probability">
-		/// Optional
+		/// (Optional)
 		/// The default static probability to be used in power analysis
 		/// on the design. The default static probability is set on those
 		/// primary inputs whose switching activity is not specified by
@@ -796,52 +500,30 @@ namespace Quokka.TCL.Vivado
 		/// 0.5
 		/// </param>
 		/// <param name="signal_rate">
-		/// Optional
+		/// (Optional)
 		/// The number of times an element changed state (high-to-low
 		/// and low-to-high) per second. Xilinx tools express this as
 		/// millions of transitions per second (Mtr/s). Default: 0.0
 		/// </param>
 		/// <param name="hier">
-		/// Optional
+		/// (Optional)
 		/// Hierarchically sets the switching activity on a hierarchical
 		/// instance provided via <objects> option. This option should
 		/// be used only with <objects> option
 		/// </param>
 		/// <param name="deassert_resets">
-		/// Optional
+		/// (Optional)
 		/// A switch to elegantly auto deassert all set,reset,preset and
 		/// clear signals that do not have conflicted polarities
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="objects">
-		/// Optional
-		/// Objects to set switching activity on
-		/// </param>
-		public void set_switching_activity(string toggle_rate = null, string default_toggle_rate = null, string type = null, bool? all = null, string static_probability = null, string default_static_probability = null, string signal_rate = null, bool? hier = null, bool? deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="objects">(Optional) Objects to set switching activity on</param>
+		public TTCL set_switching_activity(string toggle_rate = null, string default_toggle_rate = null, string type = null, bool? all = null, string static_probability = null, string default_static_probability = null, string signal_rate = null, bool? hier = null, bool? deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: set_switching_activity [-toggle_rate <arg>] [-default_toggle_rate <arg>] [-type <args>] [-all] [-static_probability <arg>] [-default_static_probability <arg>] [-signal_rate <arg>] [-hier] [-deassert_resets] [-quiet] [-verbose] [<objects>...]
-			_tcl.Add(
-				new SimpleTCLCommand("set_switching_activity")
-					.OptionalNamedString("toggle_rate", toggle_rate)
-					.OptionalNamedString("default_toggle_rate", default_toggle_rate)
-					.OptionalNamedString("type", type)
-					.Flag("all", all)
-					.OptionalNamedString("static_probability", static_probability)
-					.OptionalNamedString("default_static_probability", default_static_probability)
-					.OptionalNamedString("signal_rate", signal_rate)
-					.Flag("hier", hier)
-					.Flag("deassert_resets", deassert_resets)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(objects)
-			);
+			_tcl.Entry(_builder.set_switching_activity(toggle_rate, default_toggle_rate, type, all, static_probability, default_static_probability, signal_rate, hier, deassert_resets, quiet, verbose, objects));
+			return _tcl;
 		}
 	}
 }

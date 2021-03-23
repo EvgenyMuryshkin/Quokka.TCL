@@ -12,6 +12,11 @@ namespace Quokka.TCL.Tools
     {
         protected List<TCLEntry> _entries = new List<TCLEntry>();
 
+        public void Entry(TCLEntry entry)
+        {
+            _entries.Add(entry);
+        }
+
         public override string ToString()
         {
             var builder = new IndentedStringBuilder();

@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class MemoryCommands
+	public partial class MemoryCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public MemoryCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public MemoryCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Call IP Services to regenerate an IP, then stitch it into the current netlist
@@ -44,45 +46,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 959
 		/// </summary>
-		/// <param name="outputdir">
-		/// Optional
-		/// Target Output Directory for PHY IP Generated Files Default:
-		/// empty
-		/// </param>
+		/// <param name="outputdir">(Optional) Target Output Directory for PHY IP Generated Files Default: empty</param>
 		/// <param name="rtlonly">
-		/// Optional
+		/// (Optional)
 		/// Run the complete process to generate the PHY RTL code but
 		/// do not replace the PHY core netlist
 		/// </param>
 		/// <param name="force">
-		/// Optional
+		/// (Optional)
 		/// Implement all non-optimized memory cores. When use with
 		/// -rtlonly, optimized cores will be included, as well.
 		/// </param>
-		/// <param name="debug_output">
-		/// Optional
-		/// Enable debugging output.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void implement_mig_cores(string outputdir = null, bool? rtlonly = null, bool? force = null, bool? debug_output = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="debug_output">(Optional) Enable debugging output.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL implement_mig_cores(string outputdir = null, bool? rtlonly = null, bool? force = null, bool? debug_output = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: implement_mig_cores [-outputdir <arg>] [-rtlonly] [-force] [-debug_output] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("implement_mig_cores")
-					.OptionalNamedString("outputdir", outputdir)
-					.Flag("rtlonly", rtlonly)
-					.Flag("force", force)
-					.Flag("debug_output", debug_output)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.implement_mig_cores(outputdir, rtlonly, force, debug_output, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Call IP Services to regenerate an IP, then stitch it into the current netlist
@@ -92,45 +74,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 961
 		/// </summary>
-		/// <param name="outputdir">
-		/// Optional
-		/// Target Output Directory for PHY IP Generated Files Default:
-		/// empty
-		/// </param>
+		/// <param name="outputdir">(Optional) Target Output Directory for PHY IP Generated Files Default: empty</param>
 		/// <param name="rtlonly">
-		/// Optional
+		/// (Optional)
 		/// Run the complete process to generate the PHY RTL code but
 		/// do not replace the PHY core netlist
 		/// </param>
 		/// <param name="force">
-		/// Optional
+		/// (Optional)
 		/// Implement all non-optimized memory cores. When use with
 		/// -rtlonly, optimized cores will be included, as well.
 		/// </param>
-		/// <param name="debug_output">
-		/// Optional
-		/// Enable debugging output.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void implement_xphy_cores(string outputdir = null, bool? rtlonly = null, bool? force = null, bool? debug_output = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="debug_output">(Optional) Enable debugging output.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL implement_xphy_cores(string outputdir = null, bool? rtlonly = null, bool? force = null, bool? debug_output = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: implement_xphy_cores [-outputdir <arg>] [-rtlonly] [-force] [-debug_output] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("implement_xphy_cores")
-					.OptionalNamedString("outputdir", outputdir)
-					.Flag("rtlonly", rtlonly)
-					.Flag("force", force)
-					.Flag("debug_output", debug_output)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.implement_xphy_cores(outputdir, rtlonly, force, debug_output, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Update and initialize the BRAM initialization strings with contents of elf files.
@@ -140,22 +102,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1199
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void refresh_meminit(bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL refresh_meminit(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_meminit [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("refresh_meminit")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.refresh_meminit(quiet, verbose));
+			return _tcl;
 		}
 	}
 }

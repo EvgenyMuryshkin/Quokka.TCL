@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class HardwareCommands
+	public partial class HardwareCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public HardwareCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public HardwareCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Select Pseudo Channel to add to Activity Monitor on the specified hardware HBM(s). Must
@@ -49,37 +51,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 50
 		/// </summary>
-		/// <param name="mc_num">
-		/// Required
-		/// Memory Controller number to select: 0 to 7
-		/// </param>
-		/// <param name="pc_num">
-		/// Required
-		/// Pseudo Channel number to select: 0 or 1
-		/// </param>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void add_hw_hbm_pc(string mc_num, string pc_num, string hw_objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="mc_num">(Required) Memory Controller number to select: 0 to 7</param>
+		/// <param name="pc_num">(Required) Pseudo Channel number to select: 0 or 1</param>
+		/// <param name="hw_objects">(Required) hardware objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL add_hw_hbm_pc(string mc_num, string pc_num, string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: add_hw_hbm_pc [-quiet] [-verbose] <mc_num> <pc_num> <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("add_hw_hbm_pc")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(mc_num)
-					.RequiredString(pc_num)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.add_hw_hbm_pc(mc_num, pc_num, hw_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Add an enumerated name-value pair to a hw_probe enumeration.
@@ -135,47 +116,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 52
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Enumerated name.
-		/// </param>
-		/// <param name="value">
-		/// Required
-		/// Explicit value.
-		/// </param>
-		/// <param name="hw_probe">
-		/// Required
-		/// hw_probe object.
-		/// </param>
-		/// <param name="no_gui_update">
-		/// Optional
-		/// Defer GUI update.
-		/// </param>
-		/// <param name="dict">
-		/// Optional
-		/// List of parameter name-value pairs.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void add_hw_probe_enum(string name, string value, string hw_probe, bool? no_gui_update = null, string dict = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Required) Enumerated name.</param>
+		/// <param name="value">(Required) Explicit value.</param>
+		/// <param name="hw_probe">(Required) hw_probe object.</param>
+		/// <param name="no_gui_update">(Optional) Defer GUI update.</param>
+		/// <param name="dict">(Optional) List of parameter name-value pairs.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL add_hw_probe_enum(string name, string value, string hw_probe, bool? no_gui_update = null, string dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: add_hw_probe_enum [-no_gui_update] [-dict <args>] [-quiet] [-verbose] <name> <value> <hw_probe>
-			_tcl.Add(
-				new SimpleTCLCommand("add_hw_probe_enum")
-					.Flag("no_gui_update", no_gui_update)
-					.OptionalNamedString("dict", dict)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(value)
-					.RequiredString(hw_probe)
-			);
+			_tcl.Entry(_builder.add_hw_probe_enum(name, value, hw_probe, no_gui_update, dict, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Issue JTAG Program command to hw_device
@@ -195,37 +147,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 114
 		/// </summary>
-		/// <param name="hw_device">
-		/// Required
-		/// Target hw_device connection
-		/// </param>
-		/// <param name="disable_done_check">
-		/// Optional
-		/// Disable done check for boot device
-		/// </param>
-		/// <param name="timeout">
-		/// Optional
-		/// Time out for boot (seconds) Default: default
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void boot_hw_device(string hw_device, bool? disable_done_check = null, string timeout = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_device">(Required) Target hw_device connection</param>
+		/// <param name="disable_done_check">(Optional) Disable done check for boot device</param>
+		/// <param name="timeout">(Optional) Time out for boot (seconds) Default: default</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL boot_hw_device(string hw_device, bool? disable_done_check = null, string timeout = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: boot_hw_device [-disable_done_check] [-timeout <arg>] [-quiet] [-verbose] <hw_device>
-			_tcl.Add(
-				new SimpleTCLCommand("boot_hw_device")
-					.Flag("disable_done_check", disable_done_check)
-					.OptionalNamedString("timeout", timeout)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_device)
-			);
+			_tcl.Entry(_builder.boot_hw_device(hw_device, disable_done_check, timeout, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Close the hardware tool
@@ -240,22 +171,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 135
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void close_hw_manager(bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL close_hw_manager(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: close_hw_manager [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("close_hw_manager")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.close_hw_manager(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Close a hardware target
@@ -275,27 +197,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 137
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_target">
-		/// Optional
-		/// hardware target Default: current hardware target
-		/// </param>
-		public void close_hw_target(bool? quiet = null, bool? verbose = null, string hw_target = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_target">(Optional) hardware target Default: current hardware target</param>
+		public TTCL close_hw_target(bool? quiet = null, bool? verbose = null, string hw_target = null)
 		{
 			// TCL Syntax: close_hw_target [-quiet] [-verbose] [<hw_target>]
-			_tcl.Add(
-				new SimpleTCLCommand("close_hw_target")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_target)
-			);
+			_tcl.Entry(_builder.close_hw_target(quiet, verbose, hw_target));
+			return _tcl;
 		}
 		/// <summary>
 		/// Commit the property changes of the current hardware object. Inputs can be HBM or device
@@ -319,27 +228,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 149
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void commit_hw_hbm(string hw_objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL commit_hw_hbm(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: commit_hw_hbm [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("commit_hw_hbm")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.commit_hw_hbm(hw_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Commit the property changes of the current hardware object. Inputs can be any mig, device,
@@ -360,27 +256,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 151
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void commit_hw_mig(string hw_objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL commit_hw_mig(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: commit_hw_mig [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("commit_hw_mig")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.commit_hw_mig(hw_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Commit the property changes of the current hardware object. Inputs can be any serial I/O
@@ -403,27 +286,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 153
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void commit_hw_sio(string hw_objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL commit_hw_sio(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: commit_hw_sio [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("commit_hw_sio")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.commit_hw_sio(hw_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Commit the property changes of the current hardware object. Inputs can be hw_server,
@@ -440,27 +310,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 155
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void commit_hw_sysmon(string hw_objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL commit_hw_sysmon(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: commit_hw_sysmon [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("commit_hw_sysmon")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.commit_hw_sysmon(hw_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write hardware VIO probe OUTPUT_VALUE properties values to VIO core(s).
@@ -482,27 +339,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 157
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// List of hardware VIO and hardware probe objects.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void commit_hw_vio(string hw_objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) List of hardware VIO and hardware probe objects.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL commit_hw_vio(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: commit_hw_vio [-quiet] [-verbose] <hw_objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("commit_hw_vio")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.commit_hw_vio(hw_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Configure the device GTs for the specified device.
@@ -512,33 +356,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 171
 		/// </summary>
-		/// <param name="hw_device">
-		/// Required
-		/// hardware device object
-		/// </param>
+		/// <param name="hw_device">(Required) hardware device object</param>
 		/// <param name="dict">
-		/// Optional
+		/// (Optional)
 		/// list of name/value pairs of GT settings and values to use to
 		/// configure GTs
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void config_hw_sio_gts(string hw_device, string dict = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL config_hw_sio_gts(string hw_device, string dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: config_hw_sio_gts [-dict <args>] [-quiet] [-verbose] <hw_device>
-			_tcl.Add(
-				new SimpleTCLCommand("config_hw_sio_gts")
-					.OptionalNamedString("dict", dict)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_device)
-			);
+			_tcl.Entry(_builder.config_hw_sio_gts(hw_device, dict, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Open a connection to a hardware server
@@ -572,35 +402,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 198
 		/// </summary>
-		/// <param name="url">
-		/// Optional
-		/// hw_server url Default: localhost:3121
-		/// </param>
+		/// <param name="url">(Optional) hw_server url Default: localhost:3121</param>
 		/// <param name="cs_url">
-		/// Optional
+		/// (Optional)
 		/// Url to use for cs_server. If default url is used and no server is
 		/// running there, cs_server will be automatically launched on
 		/// the default url. Default: TCP:localhost:3042
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>hardware server</returns>
-		public void connect_hw_server(string url = null, string cs_url = null, bool? quiet = null, bool? verbose = null)
+		public TTCL connect_hw_server(string url = null, string cs_url = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: connect_hw_server [-url <arg>] [-cs_url <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("connect_hw_server")
-					.OptionalNamedString("url", url)
-					.OptionalNamedString("cs_url", cs_url)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.connect_hw_server(url, cs_url, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create hardware AXI transaction object
@@ -624,80 +440,33 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 276
 		/// </summary>
-		/// <param name="type">
-		/// Required
-		/// READ or WRITE transaction.
-		/// </param>
-		/// <param name="name">
-		/// Required
-		/// Name of new object.
-		/// </param>
-		/// <param name="hw_axi">
-		/// Required
-		/// Associated hardware AXI core object.
-		/// </param>
-		/// <param name="address">
-		/// Optional
-		/// AXI read or write address. Default: Address zero
-		/// </param>
-		/// <param name="data">
-		/// Optional
-		/// Transaction data. Default: All zeroes
-		/// </param>
+		/// <param name="type">(Required) READ or WRITE transaction.</param>
+		/// <param name="name">(Required) Name of new object.</param>
+		/// <param name="hw_axi">(Required) Associated hardware AXI core object.</param>
+		/// <param name="address">(Optional) AXI read or write address. Default: Address zero</param>
+		/// <param name="data">(Optional) Transaction data. Default: All zeroes</param>
 		/// <param name="size">
-		/// Optional
+		/// (Optional)
 		/// Deprecated. Data word size in bits. This is now automatically
 		/// set based on the IP core properties.
 		/// </param>
-		/// <param name="len">
-		/// Optional
-		/// Length of the transaction in data words. Default: 1
-		/// </param>
-		/// <param name="burst">
-		/// Optional
-		/// Burst type: INCR,FIXED or WRAP. Default: INCR
-		/// </param>
-		/// <param name="cache">
-		/// Optional
-		/// AXI cache type. Default: 3
-		/// </param>
-		/// <param name="id">
-		/// Optional
-		/// Address ID. Default: 0
-		/// </param>
+		/// <param name="len">(Optional) Length of the transaction in data words. Default: 1</param>
+		/// <param name="burst">(Optional) Burst type: INCR,FIXED or WRAP. Default: INCR</param>
+		/// <param name="cache">(Optional) AXI cache type. Default: 3</param>
+		/// <param name="id">(Optional) Address ID. Default: 0</param>
 		/// <param name="force">
-		/// Optional
+		/// (Optional)
 		/// Overwrite an existing transaction with the specified name if
 		/// it exists, otherwise create a new transaction. Default: 0
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>New hardware AXI transaction object.</returns>
-		public void create_hw_axi_txn(string type, string name, string hw_axi, string address = null, string data = null, string size = null, string len = null, string burst = null, string cache = null, string id = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_hw_axi_txn(string type, string name, string hw_axi, string address = null, string data = null, string size = null, string len = null, string burst = null, string cache = null, string id = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_hw_axi_txn [-address <arg>] [-data <arg>] [-size <arg>] -type <arg> [-len <arg>] [-burst <arg>] [-cache <arg>] [-id <arg>] [-force] [-quiet] [-verbose] <name> <hw_axi>
-			_tcl.Add(
-				new SimpleTCLCommand("create_hw_axi_txn")
-					.OptionalNamedString("address", address)
-					.OptionalNamedString("data", data)
-					.OptionalNamedString("size", size)
-					.RequiredNamedString("type", type)
-					.OptionalNamedString("len", len)
-					.OptionalNamedString("burst", burst)
-					.OptionalNamedString("cache", cache)
-					.OptionalNamedString("id", id)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(hw_axi)
-			);
+			_tcl.Entry(_builder.create_hw_axi_txn(type, name, hw_axi, address, data, size, len, burst, cache, id, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read bitstream file into memory
@@ -724,47 +493,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 280
 		/// </summary>
-		/// <param name="hw_device">
-		/// Required
-		/// Target hw_device connection
-		/// </param>
-		/// <param name="file">
-		/// Required
-		/// Bitstream filename
-		/// </param>
-		/// <param name="mask">
-		/// Optional
-		/// Mask file for hw device
-		/// </param>
-		/// <param name="nky">
-		/// Optional
-		/// Encryption file for hw device
-		/// </param>
-		/// <param name="detect_partial">
-		/// Optional
-		/// detects partial bitstream
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_hw_bitstream(string hw_device, string file, string mask = null, string nky = null, bool? detect_partial = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_device">(Required) Target hw_device connection</param>
+		/// <param name="file">(Required) Bitstream filename</param>
+		/// <param name="mask">(Optional) Mask file for hw device</param>
+		/// <param name="nky">(Optional) Encryption file for hw device</param>
+		/// <param name="detect_partial">(Optional) detects partial bitstream</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_hw_bitstream(string hw_device, string file, string mask = null, string nky = null, bool? detect_partial = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_hw_bitstream -hw_device <arg> [-mask <arg>] [-nky <arg>] [-detect_partial] [-quiet] [-verbose] [<file>]
-			_tcl.Add(
-				new SimpleTCLCommand("create_hw_bitstream")
-					.RequiredNamedString("hw_device", hw_device)
-					.OptionalNamedString("mask", mask)
-					.OptionalNamedString("nky", nky)
-					.Flag("detect_partial", detect_partial)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.create_hw_bitstream(hw_device, file, mask, nky, detect_partial, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read cfgmem file into memory
@@ -793,33 +533,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 283
 		/// </summary>
-		/// <param name="hw_device">
-		/// Required
-		/// hw_device object with which to associate hw_cfgmem object
-		/// </param>
-		/// <param name="mem_device">
-		/// Required
-		/// name of flash memory device as returned by
-		/// get_cfgmem_parts
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_hw_cfgmem(string hw_device, string mem_device, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_device">(Required) hw_device object with which to associate hw_cfgmem object</param>
+		/// <param name="mem_device">(Required) name of flash memory device as returned by get_cfgmem_parts</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_hw_cfgmem(string hw_device, string mem_device, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_hw_cfgmem -hw_device <arg> [-quiet] [-verbose] <mem_device>
-			_tcl.Add(
-				new SimpleTCLCommand("create_hw_cfgmem")
-					.RequiredNamedString("hw_device", hw_device)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(mem_device)
-			);
+			_tcl.Entry(_builder.create_hw_cfgmem(hw_device, mem_device, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a hw_device (jtag chain) on an open target
@@ -888,42 +610,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 286
 		/// </summary>
-		/// <param name="idcode">
-		/// Optional
-		/// hexadecimal device id code
-		/// </param>
-		/// <param name="irlength">
-		/// Optional
-		/// decimal device ir length
-		/// </param>
-		/// <param name="mask">
-		/// Optional
-		/// hexadecimal device mask value
-		/// </param>
-		/// <param name="part">
-		/// Optional
-		/// part type of device to create
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_hw_device(string idcode = null, string irlength = null, string mask = null, string part = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="idcode">(Optional) hexadecimal device id code</param>
+		/// <param name="irlength">(Optional) decimal device ir length</param>
+		/// <param name="mask">(Optional) hexadecimal device mask value</param>
+		/// <param name="part">(Optional) part type of device to create</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_hw_device(string idcode = null, string irlength = null, string mask = null, string part = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_hw_device [-idcode <arg>] [-irlength <arg>] [-mask <arg>] [-part <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("create_hw_device")
-					.OptionalNamedString("idcode", idcode)
-					.OptionalNamedString("irlength", irlength)
-					.OptionalNamedString("mask", mask)
-					.OptionalNamedString("part", part)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.create_hw_device(idcode, irlength, mask, part, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create hardware probe object
@@ -956,43 +653,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 289
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of new object. Bus probes have range appended.
-		/// </param>
-		/// <param name="core">
-		/// Required
-		/// Associated hardware ILA core object.
-		/// </param>
-		/// <param name="no_gui_update">
-		/// Optional
-		/// Defer GUI update.
-		/// </param>
-		/// <param name="map">
-		/// Optional
-		/// Declaration of bits. Default: 0
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Required) Name of new object. Bus probes have range appended.</param>
+		/// <param name="core">(Required) Associated hardware ILA core object.</param>
+		/// <param name="no_gui_update">(Optional) Defer GUI update.</param>
+		/// <param name="map">(Optional) Declaration of bits. Default: 0</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>New hardware probe object.</returns>
-		public void create_hw_probe(string name, string core, bool? no_gui_update = null, string map = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_hw_probe(string name, string core, bool? no_gui_update = null, string map = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_hw_probe [-no_gui_update] [-map <arg>] [-quiet] [-verbose] <name> <core>
-			_tcl.Add(
-				new SimpleTCLCommand("create_hw_probe")
-					.Flag("no_gui_update", no_gui_update)
-					.OptionalNamedString("map", map)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(core)
-			);
+			_tcl.Entry(_builder.create_hw_probe(name, core, no_gui_update, map, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new link between hardware RX and TX endpoints. There must be at least one hardware
@@ -1014,38 +686,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 292
 		/// </summary>
-		/// <param name="description">
-		/// Optional
-		/// Description of link. Default: Link object name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_sio_rx">
-		/// Optional
-		/// RX endpoint. Default: None
-		/// </param>
-		/// <param name="hw_sio_tx">
-		/// Optional
-		/// TX endpoint. Default: None
-		/// </param>
+		/// <param name="description">(Optional) Description of link. Default: Link object name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_sio_rx">(Optional) RX endpoint. Default: None</param>
+		/// <param name="hw_sio_tx">(Optional) TX endpoint. Default: None</param>
 		/// <returns>The new hardware SIO link</returns>
-		public void create_hw_sio_link(string description = null, bool? quiet = null, bool? verbose = null, string hw_sio_rx = null, string hw_sio_tx = null)
+		public TTCL create_hw_sio_link(string description = null, bool? quiet = null, bool? verbose = null, string hw_sio_rx = null, string hw_sio_tx = null)
 		{
 			// TCL Syntax: create_hw_sio_link [-description <arg>] [-quiet] [-verbose] [<hw_sio_rx>] [<hw_sio_tx>]
-			_tcl.Add(
-				new SimpleTCLCommand("create_hw_sio_link")
-					.OptionalNamedString("description", description)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_sio_rx)
-					.OptionalString(hw_sio_tx)
-			);
+			_tcl.Entry(_builder.create_hw_sio_link(description, quiet, verbose, hw_sio_rx, hw_sio_tx));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new hardware SIO link group.
@@ -1064,33 +715,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 294
 		/// </summary>
-		/// <param name="hw_sio_links">
-		/// Required
-		/// hardware SIO links
-		/// </param>
-		/// <param name="description">
-		/// Optional
-		/// Description of link group. Default: Link group object name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="hw_sio_links">(Required) hardware SIO links</param>
+		/// <param name="description">(Optional) Description of link group. Default: Link group object name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The new hardware SIO link group</returns>
-		public void create_hw_sio_linkgroup(string hw_sio_links, string description = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_hw_sio_linkgroup(string hw_sio_links, string description = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_hw_sio_linkgroup [-description <arg>] [-quiet] [-verbose] <hw_sio_links>
-			_tcl.Add(
-				new SimpleTCLCommand("create_hw_sio_linkgroup")
-					.OptionalNamedString("description", description)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_sio_links)
-			);
+			_tcl.Entry(_builder.create_hw_sio_linkgroup(hw_sio_links, description, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new hardware SIO scan. If a Link object is passed in, it must have a RX Endpoint object.
@@ -1111,44 +745,22 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 296
 		/// </summary>
-		/// <param name="scan_type">
-		/// Required
-		/// Scan Type Options: 1d_bathtub, 2d_full_eye
-		/// </param>
-		/// <param name="hw_sio_object">
-		/// Required
-		/// RX endpoint or Link object to perform scan on.
-		/// </param>
-		/// <param name="description">
-		/// Optional
-		/// Description of scan Default: Scan object name
-		/// </param>
+		/// <param name="scan_type">(Required) Scan Type Options: 1d_bathtub, 2d_full_eye</param>
+		/// <param name="hw_sio_object">(Required) RX endpoint or Link object to perform scan on.</param>
+		/// <param name="description">(Optional) Description of scan Default: Scan object name</param>
 		/// <param name="link_settings">
-		/// Optional
+		/// (Optional)
 		/// List of Link properties and values to set before running the
 		/// scan. Default: None
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The new hardware SIO scan</returns>
-		public void create_hw_sio_scan(string scan_type, string hw_sio_object, string description = null, string link_settings = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_hw_sio_scan(string scan_type, string hw_sio_object, string description = null, string link_settings = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_hw_sio_scan [-description <arg>] [-link_settings <arg>] [-quiet] [-verbose] <scan_type> <hw_sio_object>
-			_tcl.Add(
-				new SimpleTCLCommand("create_hw_sio_scan")
-					.OptionalNamedString("description", description)
-					.OptionalNamedString("link_settings", link_settings)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(scan_type)
-					.RequiredString(hw_sio_object)
-			);
+			_tcl.Entry(_builder.create_hw_sio_scan(scan_type, hw_sio_object, description, link_settings, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new hardware SIO sweep. If a Link object is passed in, it must have a RX Endpoint
@@ -1172,44 +784,22 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 299
 		/// </summary>
-		/// <param name="scan_type">
-		/// Required
-		/// Sweep Type Options: 1d_bathtub, 2d_full_eye
-		/// </param>
-		/// <param name="description">
-		/// Optional
-		/// Description of sweep Default: Sweep object name
-		/// </param>
+		/// <param name="scan_type">(Required) Sweep Type Options: 1d_bathtub, 2d_full_eye</param>
+		/// <param name="description">(Optional) Description of sweep Default: Sweep object name</param>
 		/// <param name="iteration_settings">
-		/// Optional
+		/// (Optional)
 		/// List of LINK_SETTINGS for each scan to set before running
 		/// the sweep. Default: None
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_sio_link">
-		/// Optional
-		/// Link object to perform sweep on. Default: None
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_sio_link">(Optional) Link object to perform sweep on. Default: None</param>
 		/// <returns>The new hardware SIO sweep</returns>
-		public void create_hw_sio_sweep(string scan_type, string description = null, string iteration_settings = null, bool? quiet = null, bool? verbose = null, string hw_sio_link = null)
+		public TTCL create_hw_sio_sweep(string scan_type, string description = null, string iteration_settings = null, bool? quiet = null, bool? verbose = null, string hw_sio_link = null)
 		{
 			// TCL Syntax: create_hw_sio_sweep [-description <arg>] [-iteration_settings <arg>] [-quiet] [-verbose] <scan_type> [<hw_sio_link>]
-			_tcl.Add(
-				new SimpleTCLCommand("create_hw_sio_sweep")
-					.OptionalNamedString("description", description)
-					.OptionalNamedString("iteration_settings", iteration_settings)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(scan_type)
-					.OptionalString(hw_sio_link)
-			);
+			_tcl.Entry(_builder.create_hw_sio_sweep(scan_type, description, iteration_settings, quiet, verbose, hw_sio_link));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a hw_target (jtag chain) and set its name
@@ -1261,33 +851,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 302
 		/// </summary>
-		/// <param name="target_name">
-		/// Required
-		/// name of hardware target to create
-		/// </param>
-		/// <param name="copy">
-		/// Optional
-		/// hardware target copy Default: copy of existing target
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="target_name">(Required) name of hardware target to create</param>
+		/// <param name="copy">(Optional) hardware target copy Default: copy of existing target</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>hardware targets</returns>
-		public void create_hw_target(string target_name, string copy = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_hw_target(string target_name, string copy = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_hw_target [-copy <arg>] [-quiet] [-verbose] <target_name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_hw_target")
-					.OptionalNamedString("copy", copy)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(target_name)
-			);
+			_tcl.Entry(_builder.create_hw_target(target_name, copy, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get or set the current hardware cfgmem
@@ -1310,34 +883,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 382
 		/// </summary>
-		/// <param name="hw_device">
-		/// Optional
-		/// list of hardware devices
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_cfgmem">
-		/// Optional
-		/// list of hardware cfgmems Default: current hardware
-		/// cfgmem
-		/// </param>
+		/// <param name="hw_device">(Optional) list of hardware devices</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_cfgmem">(Optional) list of hardware cfgmems Default: current hardware cfgmem</param>
 		/// <returns>hardware cfgmem</returns>
-		public void current_hw_cfgmem(string hw_device = null, bool? quiet = null, bool? verbose = null, string hw_cfgmem = null)
+		public TTCL current_hw_cfgmem(string hw_device = null, bool? quiet = null, bool? verbose = null, string hw_cfgmem = null)
 		{
 			// TCL Syntax: current_hw_cfgmem [-hw_device <args>] [-quiet] [-verbose] [<hw_cfgmem>]
-			_tcl.Add(
-				new SimpleTCLCommand("current_hw_cfgmem")
-					.OptionalNamedString("hw_device", hw_device)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_cfgmem)
-			);
+			_tcl.Entry(_builder.current_hw_cfgmem(hw_device, quiet, verbose, hw_cfgmem));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get or set the current hardware device
@@ -1375,28 +930,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 384
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_device">
-		/// Optional
-		/// hardware device to set as current; optional
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_device">(Optional) hardware device to set as current; optional</param>
 		/// <returns>hardware device</returns>
-		public void current_hw_device(bool? quiet = null, bool? verbose = null, string hw_device = null)
+		public TTCL current_hw_device(bool? quiet = null, bool? verbose = null, string hw_device = null)
 		{
 			// TCL Syntax: current_hw_device [-quiet] [-verbose] [<hw_device>]
-			_tcl.Add(
-				new SimpleTCLCommand("current_hw_device")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_device)
-			);
+			_tcl.Entry(_builder.current_hw_device(quiet, verbose, hw_device));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get or set the current hardware ILA
@@ -1424,28 +966,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 387
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_ila">
-		/// Optional
-		/// hardware ILA
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_ila">(Optional) hardware ILA</param>
 		/// <returns>hardware ILA</returns>
-		public void current_hw_ila(bool? quiet = null, bool? verbose = null, string hw_ila = null)
+		public TTCL current_hw_ila(bool? quiet = null, bool? verbose = null, string hw_ila = null)
 		{
 			// TCL Syntax: current_hw_ila [-quiet] [-verbose] [<hw_ila>]
-			_tcl.Add(
-				new SimpleTCLCommand("current_hw_ila")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_ila)
-			);
+			_tcl.Entry(_builder.current_hw_ila(quiet, verbose, hw_ila));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get or set the current hardware ILA data
@@ -1469,28 +998,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 389
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_ila_data">
-		/// Optional
-		/// hardware ILA data
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_ila_data">(Optional) hardware ILA data</param>
 		/// <returns>hardware ILA data</returns>
-		public void current_hw_ila_data(bool? quiet = null, bool? verbose = null, string hw_ila_data = null)
+		public TTCL current_hw_ila_data(bool? quiet = null, bool? verbose = null, string hw_ila_data = null)
 		{
 			// TCL Syntax: current_hw_ila_data [-quiet] [-verbose] [<hw_ila_data>]
-			_tcl.Add(
-				new SimpleTCLCommand("current_hw_ila_data")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_ila_data)
-			);
+			_tcl.Entry(_builder.current_hw_ila_data(quiet, verbose, hw_ila_data));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get or set the current hardware server
@@ -1521,28 +1037,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 391
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_server">
-		/// Optional
-		/// hardware server
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_server">(Optional) hardware server</param>
 		/// <returns>hardware server</returns>
-		public void current_hw_server(bool? quiet = null, bool? verbose = null, string hw_server = null)
+		public TTCL current_hw_server(bool? quiet = null, bool? verbose = null, string hw_server = null)
 		{
 			// TCL Syntax: current_hw_server [-quiet] [-verbose] [<hw_server>]
-			_tcl.Add(
-				new SimpleTCLCommand("current_hw_server")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_server)
-			);
+			_tcl.Entry(_builder.current_hw_server(quiet, verbose, hw_server));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get or set the current hardware target
@@ -1577,28 +1080,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 393
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_target">
-		/// Optional
-		/// hardware target
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_target">(Optional) hardware target</param>
 		/// <returns>hardware target</returns>
-		public void current_hw_target(bool? quiet = null, bool? verbose = null, string hw_target = null)
+		public TTCL current_hw_target(bool? quiet = null, bool? verbose = null, string hw_target = null)
 		{
 			// TCL Syntax: current_hw_target [-quiet] [-verbose] [<hw_target>]
-			_tcl.Add(
-				new SimpleTCLCommand("current_hw_target")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_target)
-			);
+			_tcl.Entry(_builder.current_hw_target(quiet, verbose, hw_target));
+			return _tcl;
 		}
 		/// <summary>
 		/// Delete hardware AXI Transaction objects
@@ -1615,27 +1105,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 434
 		/// </summary>
-		/// <param name="hw_axi_txns">
-		/// Required
-		/// hardware AXI Transaction object to delete
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_hw_axi_txn(string hw_axi_txns, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_axi_txns">(Required) hardware AXI Transaction object to delete</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_hw_axi_txn(string hw_axi_txns, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_hw_axi_txn [-quiet] [-verbose] <hw_axi_txns>...
-			_tcl.Add(
-				new SimpleTCLCommand("delete_hw_axi_txn")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_axi_txns)
-			);
+			_tcl.Entry(_builder.delete_hw_axi_txn(hw_axi_txns, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Removes the HW Bitstream object from a list of hardware devices.
@@ -1649,28 +1126,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 436
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'hw_bitstream' objects of these types: 'hw_device'.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="of_objects">(Optional) Get 'hw_bitstream' objects of these types: 'hw_device'.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>hardware devices</returns>
-		public void delete_hw_bitstream(string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_hw_bitstream(string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_hw_bitstream [-of_objects <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("delete_hw_bitstream")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.delete_hw_bitstream(of_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Removes hw_cfgmem object from memory
@@ -1682,27 +1146,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 438
 		/// </summary>
-		/// <param name="cfgmem">
-		/// Required
-		/// Valid hw_cfgmem object
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_hw_cfgmem(string cfgmem, bool? quiet = null, bool? verbose = null)
+		/// <param name="cfgmem">(Required) Valid hw_cfgmem object</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_hw_cfgmem(string cfgmem, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_hw_cfgmem [-quiet] [-verbose] <cfgmem>
-			_tcl.Add(
-				new SimpleTCLCommand("delete_hw_cfgmem")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(cfgmem)
-			);
+			_tcl.Entry(_builder.delete_hw_cfgmem(cfgmem, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Delete hardware probe objects
@@ -1719,27 +1170,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 440
 		/// </summary>
-		/// <param name="hw_probes">
-		/// Required
-		/// hardware probe objects to delete
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_hw_probe(string hw_probes, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_probes">(Required) hardware probe objects to delete</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_hw_probe(string hw_probes, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_hw_probe [-quiet] [-verbose] <hw_probes>...
-			_tcl.Add(
-				new SimpleTCLCommand("delete_hw_probe")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_probes)
-			);
+			_tcl.Entry(_builder.delete_hw_probe(hw_probes, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Delete a hw_target
@@ -1757,27 +1195,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 442
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="target_object">
-		/// Optional
-		/// hardware target object to delete Default: current_hw_target
-		/// </param>
-		public void delete_hw_target(bool? quiet = null, bool? verbose = null, string target_object = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="target_object">(Optional) hardware target object to delete Default: current_hw_target</param>
+		public TTCL delete_hw_target(bool? quiet = null, bool? verbose = null, string target_object = null)
 		{
 			// TCL Syntax: delete_hw_target [-quiet] [-verbose] [<target_object>]
-			_tcl.Add(
-				new SimpleTCLCommand("delete_hw_target")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(target_object)
-			);
+			_tcl.Entry(_builder.delete_hw_target(quiet, verbose, target_object));
+			return _tcl;
 		}
 		/// <summary>
 		/// Automatically detect links between RX and TX endpoints. Create a new link group to contain the
@@ -1802,28 +1227,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 476
 		/// </summary>
-		/// <param name="force">
-		/// Optional
-		/// Remove all existing links before detecting links
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="force">(Optional) Remove all existing links before detecting links</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>A new hardware SIO link group of found links</returns>
-		public void detect_hw_sio_links(bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL detect_hw_sio_links(bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: detect_hw_sio_links [-force] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("detect_hw_sio_links")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.detect_hw_sio_links(force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Close a connection to a hardware server
@@ -1840,27 +1252,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 484
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_server">
-		/// Optional
-		/// hardware server Default: current hardware server
-		/// </param>
-		public void disconnect_hw_server(bool? quiet = null, bool? verbose = null, string hw_server = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_server">(Optional) hardware server Default: current hardware server</param>
+		public TTCL disconnect_hw_server(bool? quiet = null, bool? verbose = null, string hw_server = null)
 		{
 			// TCL Syntax: disconnect_hw_server [-quiet] [-verbose] [<hw_server>]
-			_tcl.Add(
-				new SimpleTCLCommand("disconnect_hw_server")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_server)
-			);
+			_tcl.Entry(_builder.disconnect_hw_server(quiet, verbose, hw_server));
+			return _tcl;
 		}
 		/// <summary>
 		/// Display hardware ILA data in viewer
@@ -1885,38 +1284,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 489
 		/// </summary>
-		/// <param name="wcfg">
-		/// Optional
-		/// Import alternate wave config file
-		/// </param>
-		/// <param name="reset">
-		/// Optional
-		/// Force reset wave config file to default configuration
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_ila_data">
-		/// Optional
-		/// List of hardware ILA data objects. Default: Current hardware
-		/// ILA data
-		/// </param>
-		public void display_hw_ila_data(string wcfg = null, bool? reset = null, bool? quiet = null, bool? verbose = null, string hw_ila_data = null)
+		/// <param name="wcfg">(Optional) Import alternate wave config file</param>
+		/// <param name="reset">(Optional) Force reset wave config file to default configuration</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_ila_data">(Optional) List of hardware ILA data objects. Default: Current hardware ILA data</param>
+		public TTCL display_hw_ila_data(string wcfg = null, bool? reset = null, bool? quiet = null, bool? verbose = null, string hw_ila_data = null)
 		{
 			// TCL Syntax: display_hw_ila_data [-wcfg <arg>] [-reset] [-quiet] [-verbose] [<hw_ila_data>...]
-			_tcl.Add(
-				new SimpleTCLCommand("display_hw_ila_data")
-					.OptionalNamedString("wcfg", wcfg)
-					.Flag("reset", reset)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_ila_data)
-			);
+			_tcl.Entry(_builder.display_hw_ila_data(wcfg, reset, quiet, verbose, hw_ila_data));
+			return _tcl;
 		}
 		/// <summary>
 		/// Display an existing hardware SIO scan.
@@ -1933,27 +1310,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 491
 		/// </summary>
-		/// <param name="hw_sio_scans">
-		/// Required
-		/// hardware SIO scans
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void display_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_sio_scans">(Required) hardware SIO scans</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL display_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: display_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
-			_tcl.Add(
-				new SimpleTCLCommand("display_hw_sio_scan")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_sio_scans)
-			);
+			_tcl.Entry(_builder.display_hw_sio_scan(hw_sio_scans, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Execute SVF file on current_hw_target
@@ -1984,27 +1348,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 500
 		/// </summary>
-		/// <param name="file_name">
-		/// Required
-		/// SVF filename
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void execute_hw_svf(string file_name, bool? quiet = null, bool? verbose = null)
+		/// <param name="file_name">(Required) SVF filename</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL execute_hw_svf(string file_name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: execute_hw_svf [-quiet] [-verbose] <file_name>
-			_tcl.Add(
-				new SimpleTCLCommand("execute_hw_svf")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file_name)
-			);
+			_tcl.Entry(_builder.execute_hw_svf(file_name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of cfgmem_parts available in the software
@@ -2036,50 +1387,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 640
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'cfgmem_part' objects of these types: 'part hw_device'.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'cfgmem_part' objects against patterns. Default:
-		/// *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) Get 'cfgmem_part' objects of these types: 'part hw_device'.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'cfgmem_part' objects against patterns. Default: *</param>
 		/// <returns>list of cfgmem_part objects</returns>
-		public void get_cfgmem_parts(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_cfgmem_parts(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_cfgmem_parts [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_cfgmem_parts")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_cfgmem_parts(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of hardware AXI transactions.
@@ -2106,49 +1426,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 692
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'hw_axi_txn' objects of these types: 'hw_axi'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_axi_txn' objects against patterns. Default: *
-		/// </param>
+		/// <param name="of_objects">(Optional) Get 'hw_axi_txn' objects of these types: 'hw_axi'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_axi_txn' objects against patterns. Default: *</param>
 		/// <returns>hw_axi_txns</returns>
-		public void get_hw_axi_txns(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_axi_txns(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_axi_txns [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_axi_txns")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_axi_txns(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of hardware AXI objects.
@@ -2177,49 +1467,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 695
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'hw_axi' objects of these types: 'hw_device'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_axi' objects against patterns. Default: *
-		/// </param>
+		/// <param name="of_objects">(Optional) Get 'hw_axi' objects of these types: 'hw_device'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_axi' objects against patterns. Default: *</param>
 		/// <returns>hw_axi</returns>
-		public void get_hw_axis(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_axis(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_axis [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_axis")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_axis(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of hardware cfgmems.
@@ -2242,44 +1502,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 698
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_cfgmem' objects against patterns. Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_cfgmem' objects against patterns. Default: *</param>
 		/// <returns>hardware cfgmems</returns>
-		public void get_hw_cfgmems(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_cfgmems(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_cfgmems [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_cfgmems")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_cfgmems(regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get list of Versal integrated and soft DDRMC cores.
@@ -2304,49 +1538,22 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 701
 		/// </summary>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// Get 'hw_ddrmc' objects of these types: 'hw_server
 		/// hw_target hw_device'.
 		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_ddrmc' objects against patterns. Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_ddrmc' objects against patterns. Default: *</param>
 		/// <returns>integrated and soft DDRMC cores</returns>
-		public void get_hw_ddrmcs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_ddrmcs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_ddrmcs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_ddrmcs")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_ddrmcs(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of hardware devices.
@@ -2361,49 +1568,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 704
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'hw_device' objects of these types: 'hw_target'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_device' objects against patterns. Default: *
-		/// </param>
+		/// <param name="of_objects">(Optional) Get 'hw_device' objects of these types: 'hw_target'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_device' objects against patterns. Default: *</param>
 		/// <returns>hardware devices</returns>
-		public void get_hw_devices(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_devices(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_devices [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_devices")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_devices(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get list of hardware HBM cores.
@@ -2429,50 +1606,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 707
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'hw_hbm' objects of these types: 'hw_server hw_target
-		/// hw_device'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_hbm' objects against patterns. Default: *
-		/// </param>
+		/// <param name="of_objects">(Optional) Get 'hw_hbm' objects of these types: 'hw_server hw_target hw_device'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_hbm' objects against patterns. Default: *</param>
 		/// <returns>hardware HBM cores</returns>
-		public void get_hw_hbms(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_hbms(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_hbms [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_hbms")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_hbms(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of hardware ILA data objects.
@@ -2492,49 +1638,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 710
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'hw_ila_data' objects of these types: 'hw_ila hw_device'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_ila_data' objects against patterns. Default: *
-		/// </param>
+		/// <param name="of_objects">(Optional) Get 'hw_ila_data' objects of these types: 'hw_ila hw_device'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_ila_data' objects against patterns. Default: *</param>
 		/// <returns>hardware ILA data</returns>
-		public void get_hw_ila_datas(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_ila_datas(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_ila_datas [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_ila_datas")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_ila_datas(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of hardware ILA.
@@ -2578,49 +1694,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 713
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'hw_ila' objects of these types: 'hw_device'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_ila' objects against patterns. Default: *
-		/// </param>
+		/// <param name="of_objects">(Optional) Get 'hw_ila' objects of these types: 'hw_device'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_ila' objects against patterns. Default: *</param>
 		/// <returns>hardware ILAs</returns>
-		public void get_hw_ilas(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_ilas(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_ilas [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_ilas")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_ilas(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get list of hardware Migs cores.
@@ -2652,50 +1738,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 717
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'hw_mig' objects of these types: 'hw_server hw_target
-		/// hw_device'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_mig' objects against patterns. Default: *
-		/// </param>
+		/// <param name="of_objects">(Optional) Get 'hw_mig' objects of these types: 'hw_server hw_target hw_device'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_mig' objects against patterns. Default: *</param>
 		/// <returns>hardware migs cores</returns>
-		public void get_hw_migs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_migs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_migs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_migs")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_migs(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of hardware probes.
@@ -2723,50 +1778,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 721
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'hw_probe' objects of these types: 'hw_interface hw_ila
-		/// hw_vio'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_probe' objects against patterns. Default: *
-		/// </param>
+		/// <param name="of_objects">(Optional) Get 'hw_probe' objects of these types: 'hw_interface hw_ila hw_vio'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_probe' objects against patterns. Default: *</param>
 		/// <returns>hardware probes</returns>
-		public void get_hw_probes(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_probes(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_probes [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_probes")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_probes(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of hardware servers.
@@ -2786,44 +1810,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 725
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_server' objects against patterns. Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_server' objects against patterns. Default: *</param>
 		/// <returns>hardware servers</returns>
-		public void get_hw_servers(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_servers(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_servers [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_servers")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_servers(regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get list of hardware SIO GT commons.
@@ -2845,51 +1843,23 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 728
 		/// </summary>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// Get 'hw_sio_common' objects of these types: 'hw_server
 		/// hw_target hw_device hw_sio_ibert hw_sio_gtgroup
 		/// hw_sio_pll'.
 		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_sio_common' objects against patterns.
-		/// Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_sio_common' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO GT commons</returns>
-		public void get_hw_sio_commons(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_commons(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_commons [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_sio_commons")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_sio_commons(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get list of hardware SIO GT groups.
@@ -2914,51 +1884,23 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 731
 		/// </summary>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// Get 'hw_sio_gtgroup' objects of these types: 'hw_server
 		/// hw_target hw_device hw_sio_ibert hw_sio_common
 		/// hw_sio_pll hw_sio_gt hw_sio_tx hw_sio_rx'.
 		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_sio_gtgroup' objects against patterns.
-		/// Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_sio_gtgroup' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO GT groups.</returns>
-		public void get_hw_sio_gtgroups(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_gtgroups(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_gtgroups [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_sio_gtgroups")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_sio_gtgroups(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get list of hardware SIO GTs.
@@ -2983,50 +1925,23 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 735
 		/// </summary>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// Get 'hw_sio_gt' objects of these types: 'hw_server hw_target
 		/// hw_device hw_sio_ibert hw_sio_gtgroup hw_sio_pll hw_sio_tx
 		/// hw_sio_rx hw_sio_link'.
 		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_sio_gt' objects against patterns. Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_sio_gt' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO GTs</returns>
-		public void get_hw_sio_gts(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_gts(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_gts [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_sio_gts")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_sio_gts(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get list of hardware SIO IBERT cores.
@@ -3057,50 +1972,23 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 738
 		/// </summary>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// Get 'hw_sio_ibert' objects of these types: 'hw_server
 		/// hw_target hw_device hw_sio_gtgroup hw_sio_gt
 		/// hw_sio_common hw_sio_pll hw_sio_tx hw_sio_rx hw_sio_link'.
 		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_sio_ibert' objects against patterns. Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_sio_ibert' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO IBERT cores.</returns>
-		public void get_hw_sio_iberts(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_iberts(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_iberts [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_sio_iberts")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_sio_iberts(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get list of hardware SIO link groups.
@@ -3118,50 +2006,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 742
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'hw_sio_linkgroup' objects of these types: 'hw_sio_link'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_sio_linkgroup' objects against patterns.
-		/// Default: *
-		/// </param>
+		/// <param name="of_objects">(Optional) Get 'hw_sio_linkgroup' objects of these types: 'hw_sio_link'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_sio_linkgroup' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO link groups</returns>
-		public void get_hw_sio_linkgroups(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_linkgroups(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_linkgroups [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_sio_linkgroups")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_sio_linkgroups(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get list of hardware SIO links.
@@ -3180,50 +2037,23 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 745
 		/// </summary>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// Get 'hw_sio_link' objects of these types: 'hw_server
 		/// hw_target hw_device hw_sio_ibert hw_sio_gtgroup hw_sio_gt
 		/// hw_sio_tx hw_sio_rx hw_sio_linkgroup'.
 		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_sio_link' objects against patterns. Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_sio_link' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO links</returns>
-		public void get_hw_sio_links(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_links(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_links [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_sio_links")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_sio_links(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get list of hardware SIO PLLs.
@@ -3245,50 +2075,23 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 748
 		/// </summary>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// Get 'hw_sio_pll' objects of these types: 'hw_server hw_target
 		/// hw_device hw_sio_ibert hw_sio_gtgroup hw_sio_gt
 		/// hw_sio_common'.
 		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_sio_pll' objects against patterns. Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_sio_pll' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO PLLs</returns>
-		public void get_hw_sio_plls(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_plls(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_plls [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_sio_plls")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_sio_plls(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get list of hardware SIO RXs.
@@ -3306,50 +2109,23 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 751
 		/// </summary>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// Get 'hw_sio_rx' objects of these types: 'hw_server hw_target
 		/// hw_device hw_sio_ibert hw_sio_gtgroup hw_sio_gt
 		/// hw_sio_link'.
 		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_sio_rx' objects against patterns. Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_sio_rx' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO RXs</returns>
-		public void get_hw_sio_rxs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_rxs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_rxs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_sio_rxs")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_sio_rxs(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get list of hardware SIO scans.
@@ -3366,49 +2142,22 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 754
 		/// </summary>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// Get 'hw_sio_scan' objects of these types: 'hw_sio_rx
 		/// hw_sio_link hw_sio_sweep'.
 		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_sio_scan' objects against patterns. Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_sio_scan' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO scans</returns>
-		public void get_hw_sio_scans(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_scans(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_scans [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_sio_scans")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_sio_scans(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get list of hardware SIO sweeps.
@@ -3431,51 +2180,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 757
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'hw_sio_sweep' objects of these types: 'hw_sio_link
-		/// hw_sio_scan'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_sio_sweep' objects against patterns. Default:
-		/// *
-		/// </param>
+		/// <param name="of_objects">(Optional) Get 'hw_sio_sweep' objects of these types: 'hw_sio_link hw_sio_scan'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_sio_sweep' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO sweeps</returns>
-		public void get_hw_sio_sweeps(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_sweeps(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_sweeps [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_sio_sweeps")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_sio_sweeps(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get list of hardware SIO TXs.
@@ -3493,50 +2210,23 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 761
 		/// </summary>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// Get 'hw_sio_tx' objects of these types: 'hw_server hw_target
 		/// hw_device hw_sio_ibert hw_sio_gtgroup hw_sio_gt
 		/// hw_sio_link'.
 		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_sio_tx' objects against patterns. Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_sio_tx' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO TXs</returns>
-		public void get_hw_sio_txs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_txs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_txs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_sio_txs")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_sio_txs(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get the system monitor register value
@@ -3571,33 +2261,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 764
 		/// </summary>
-		/// <param name="hw_sysmon">
-		/// Required
-		/// hw_sysmon object
-		/// </param>
-		/// <param name="hexaddress">
-		/// Required
-		/// Hex address to read from
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="hw_sysmon">(Required) hw_sysmon object</param>
+		/// <param name="hexaddress">(Required) Hex address to read from</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Register value in Hex.</returns>
-		public void get_hw_sysmon_reg(string hw_sysmon, string hexaddress, bool? quiet = null, bool? verbose = null)
+		public TTCL get_hw_sysmon_reg(string hw_sysmon, string hexaddress, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_hw_sysmon_reg [-quiet] [-verbose] <hw_sysmon> <hexaddress>
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_sysmon_reg")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_sysmon)
-					.RequiredString(hexaddress)
-			);
+			_tcl.Entry(_builder.get_hw_sysmon_reg(hw_sysmon, hexaddress, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get list of hardware SysMons.
@@ -3633,49 +2306,22 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 767
 		/// </summary>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// Get 'hw_sysmon' objects of these types: 'hw_server
 		/// hw_target hw_device'.
 		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_sysmon' objects against patterns. Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_sysmon' objects against patterns. Default: *</param>
 		/// <returns>hardware sysmons</returns>
-		public void get_hw_sysmons(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sysmons(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sysmons [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_sysmons")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_sysmons(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of hardware targets.
@@ -3700,49 +2346,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 771
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'hw_target' objects of these types: 'hw_server'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_target' objects against patterns. Default: *
-		/// </param>
+		/// <param name="of_objects">(Optional) Get 'hw_target' objects of these types: 'hw_server'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_target' objects against patterns. Default: *</param>
 		/// <returns>hardware targets</returns>
-		public void get_hw_targets(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_targets(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_targets [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_targets")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_targets(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of hardware VIOs.
@@ -3768,49 +2384,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 774
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'hw_vio' objects of these types: 'hw_device'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'hw_vio' objects against patterns. Default: *
-		/// </param>
+		/// <param name="of_objects">(Optional) Get 'hw_vio' objects of these types: 'hw_device'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match the 'hw_vio' objects against patterns. Default: *</param>
 		/// <returns>hardware VIOs</returns>
-		public void get_hw_vios(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_vios(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_vios [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hw_vios")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_hw_vios(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Return probe sample values
@@ -3848,28 +2434,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1007
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_probe">
-		/// Optional
-		/// hw_probe object
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_probe">(Optional) hw_probe object</param>
 		/// <returns>samples</returns>
-		public void list_hw_samples(bool? quiet = null, bool? verbose = null, string hw_probe = null)
+		public TTCL list_hw_samples(bool? quiet = null, bool? verbose = null, string hw_probe = null)
 		{
 			// TCL Syntax: list_hw_samples [-quiet] [-verbose] [<hw_probe>]
-			_tcl.Add(
-				new SimpleTCLCommand("list_hw_samples")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_probe)
-			);
+			_tcl.Entry(_builder.list_hw_samples(quiet, verbose, hw_probe));
+			return _tcl;
 		}
 		/// <summary>
 		/// Open the hardware tool
@@ -3915,22 +2488,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1056
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void open_hw_manager(bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL open_hw_manager(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_hw_manager [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("open_hw_manager")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.open_hw_manager(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Open a connection to a hardware target on the hardware server
@@ -3960,43 +2524,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1061
 		/// </summary>
-		/// <param name="jtag_mode">
-		/// Optional
-		/// Open target in JTAG mode
-		/// </param>
-		/// <param name="xvc_url">
-		/// Optional
-		/// Open target connection to XVC server
-		/// </param>
-		/// <param name="auto_calibrate">
-		/// Optional
-		/// Auto-calibrate target for optimal frequency (SmartLynq
-		/// cable only)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_target">
-		/// Optional
-		/// hardware target Default: current hardware target
-		/// </param>
-		public void open_hw_target(string jtag_mode = null, string xvc_url = null, bool? auto_calibrate = null, bool? quiet = null, bool? verbose = null, string hw_target = null)
+		/// <param name="jtag_mode">(Optional) Open target in JTAG mode</param>
+		/// <param name="xvc_url">(Optional) Open target connection to XVC server</param>
+		/// <param name="auto_calibrate">(Optional) Auto-calibrate target for optimal frequency (SmartLynq cable only)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_target">(Optional) hardware target Default: current hardware target</param>
+		public TTCL open_hw_target(string jtag_mode = null, string xvc_url = null, bool? auto_calibrate = null, bool? quiet = null, bool? verbose = null, string hw_target = null)
 		{
 			// TCL Syntax: open_hw_target [-jtag_mode <arg>] [-xvc_url <arg>] [-auto_calibrate] [-quiet] [-verbose] [<hw_target>]
-			_tcl.Add(
-				new SimpleTCLCommand("open_hw_target")
-					.OptionalNamedString("jtag_mode", jtag_mode)
-					.OptionalNamedString("xvc_url", xvc_url)
-					.Flag("auto_calibrate", auto_calibrate)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_target)
-			);
+			_tcl.Entry(_builder.open_hw_target(jtag_mode, xvc_url, auto_calibrate, quiet, verbose, hw_target));
+			return _tcl;
 		}
 		/// <summary>
 		/// Pause Activity Monitor runs for the specified hardware HBM(s)
@@ -4013,27 +2551,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1089
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void pause_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL pause_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: pause_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("pause_hw_hbm_amon")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.pause_hw_hbm_amon(hw_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Program Cfgmem object
@@ -4080,43 +2605,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1120
 		/// </summary>
-		/// <param name="hw_cfgmem">
-		/// Required
-		/// list of hardware cfgmems Default: current hardware
-		/// cfgmem
-		/// </param>
-		/// <param name="svf_file">
-		/// Optional
-		/// svf file to be generated
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// overwrite svf_file if it already exists
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// append to svf file
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void program_hw_cfgmem(string hw_cfgmem, string svf_file = null, bool? force = null, bool? append = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_cfgmem">(Required) list of hardware cfgmems Default: current hardware cfgmem</param>
+		/// <param name="svf_file">(Optional) svf file to be generated</param>
+		/// <param name="force">(Optional) overwrite svf_file if it already exists</param>
+		/// <param name="append">(Optional) append to svf file</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL program_hw_cfgmem(string hw_cfgmem, string svf_file = null, bool? force = null, bool? append = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: program_hw_cfgmem [-svf_file <arg>] [-force] [-append] [-quiet] [-verbose] [<hw_cfgmem>...]
-			_tcl.Add(
-				new SimpleTCLCommand("program_hw_cfgmem")
-					.OptionalNamedString("svf_file", svf_file)
-					.Flag("force", force)
-					.Flag("append", append)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_cfgmem)
-			);
+			_tcl.Entry(_builder.program_hw_cfgmem(hw_cfgmem, svf_file, force, append, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Program hardware devices
@@ -4167,110 +2666,31 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1123
 		/// </summary>
-		/// <param name="key">
-		/// Optional
-		/// key option value for encryption programming:
-		/// efuse,bbr,none
-		/// </param>
-		/// <param name="clear">
-		/// Optional
-		/// clear bbr registers, only valid for bbr
-		/// </param>
-		/// <param name="skip_program_keys">
-		/// Optional
-		/// skip programming keys specified in NKY file, if any
-		/// </param>
-		/// <param name="skip_program_rsa">
-		/// Optional
-		/// skip programming RSA key specified in NKY file, if any
-		/// </param>
-		/// <param name="user_efuse">
-		/// Optional
-		/// hex user fuse value for encryption programming
-		/// </param>
-		/// <param name="user_efuse_128">
-		/// Optional
-		/// hex user fuse 128 bit value for encryption programming
-		/// </param>
-		/// <param name="control_efuse">
-		/// Optional
-		/// hex control fuse value for encryption programming
-		/// </param>
-		/// <param name="security_efuse">
-		/// Optional
-		/// hex security fuse value for encryption programming
-		/// </param>
-		/// <param name="only_export_efuse">
-		/// Optional
-		/// do not program eFUSE; just export settings to
-		/// efuse_export_file
-		/// </param>
-		/// <param name="svf_file">
-		/// Optional
-		/// svf file used to program device
-		/// </param>
-		/// <param name="efuse_export_file">
-		/// Optional
-		/// output file to store programmed eFUSE settings
-		/// </param>
-		/// <param name="disable_eos_check">
-		/// Optional
-		/// Disables End of Startup check after programming
-		/// </param>
-		/// <param name="skip_reset">
-		/// Optional
-		/// Skips resetting the device before programming
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// overwrites svf file and creates empty file
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// append to svf file
-		/// </param>
-		/// <param name="type">
-		/// Optional
-		/// bitstream file type to be used for programming: bit,bin,rbt
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_device">
-		/// Optional
-		/// list of hardware devices Default: current hardware device
-		/// </param>
+		/// <param name="key">(Optional) key option value for encryption programming: efuse,bbr,none</param>
+		/// <param name="clear">(Optional) clear bbr registers, only valid for bbr</param>
+		/// <param name="skip_program_keys">(Optional) skip programming keys specified in NKY file, if any</param>
+		/// <param name="skip_program_rsa">(Optional) skip programming RSA key specified in NKY file, if any</param>
+		/// <param name="user_efuse">(Optional) hex user fuse value for encryption programming</param>
+		/// <param name="user_efuse_128">(Optional) hex user fuse 128 bit value for encryption programming</param>
+		/// <param name="control_efuse">(Optional) hex control fuse value for encryption programming</param>
+		/// <param name="security_efuse">(Optional) hex security fuse value for encryption programming</param>
+		/// <param name="only_export_efuse">(Optional) do not program eFUSE; just export settings to efuse_export_file</param>
+		/// <param name="svf_file">(Optional) svf file used to program device</param>
+		/// <param name="efuse_export_file">(Optional) output file to store programmed eFUSE settings</param>
+		/// <param name="disable_eos_check">(Optional) Disables End of Startup check after programming</param>
+		/// <param name="skip_reset">(Optional) Skips resetting the device before programming</param>
+		/// <param name="force">(Optional) overwrites svf file and creates empty file</param>
+		/// <param name="append">(Optional) append to svf file</param>
+		/// <param name="type">(Optional) bitstream file type to be used for programming: bit,bin,rbt</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_device">(Optional) list of hardware devices Default: current hardware device</param>
 		/// <returns>hardware devices</returns>
-		public void program_hw_devices(string key = null, bool? clear = null, bool? skip_program_keys = null, bool? skip_program_rsa = null, string user_efuse = null, string user_efuse_128 = null, string control_efuse = null, string security_efuse = null, bool? only_export_efuse = null, string svf_file = null, string efuse_export_file = null, bool? disable_eos_check = null, bool? skip_reset = null, bool? force = null, bool? append = null, string type = null, bool? quiet = null, bool? verbose = null, string hw_device = null)
+		public TTCL program_hw_devices(string key = null, bool? clear = null, bool? skip_program_keys = null, bool? skip_program_rsa = null, string user_efuse = null, string user_efuse_128 = null, string control_efuse = null, string security_efuse = null, bool? only_export_efuse = null, string svf_file = null, string efuse_export_file = null, bool? disable_eos_check = null, bool? skip_reset = null, bool? force = null, bool? append = null, string type = null, bool? quiet = null, bool? verbose = null, string hw_device = null)
 		{
 			// TCL Syntax: program_hw_devices [-key <arg>] [-clear] [-skip_program_keys] [-skip_program_rsa] [-user_efuse <arg>] [-user_efuse_128 <arg>] [-control_efuse <arg>] [-security_efuse <arg>] [-only_export_efuse] [-svf_file <arg>] [-efuse_export_file <arg>] [-disable_eos_check] [-skip_reset] [-force] [-append] [-type <arg>] [-quiet] [-verbose] [<hw_device>...]
-			_tcl.Add(
-				new SimpleTCLCommand("program_hw_devices")
-					.OptionalNamedString("key", key)
-					.Flag("clear", clear)
-					.Flag("skip_program_keys", skip_program_keys)
-					.Flag("skip_program_rsa", skip_program_rsa)
-					.OptionalNamedString("user_efuse", user_efuse)
-					.OptionalNamedString("user_efuse_128", user_efuse_128)
-					.OptionalNamedString("control_efuse", control_efuse)
-					.OptionalNamedString("security_efuse", security_efuse)
-					.Flag("only_export_efuse", only_export_efuse)
-					.OptionalNamedString("svf_file", svf_file)
-					.OptionalNamedString("efuse_export_file", efuse_export_file)
-					.Flag("disable_eos_check", disable_eos_check)
-					.Flag("skip_reset", skip_reset)
-					.Flag("force", force)
-					.Flag("append", append)
-					.OptionalNamedString("type", type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_device)
-			);
+			_tcl.Entry(_builder.program_hw_devices(key, clear, skip_program_keys, skip_program_rsa, user_efuse, user_efuse_128, control_efuse, security_efuse, only_export_efuse, svf_file, efuse_export_file, disable_eos_check, skip_reset, force, append, type, quiet, verbose, hw_device));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read hardware ILA data from a file
@@ -4293,28 +2713,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1140
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// hardware ILA data file name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="file">(Required) hardware ILA data file name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Name of the output file</returns>
-		public void read_hw_ila_data(string file, bool? quiet = null, bool? verbose = null)
+		public TTCL read_hw_ila_data(string file, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_hw_ila_data [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("read_hw_ila_data")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.read_hw_ila_data(file, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read hardware SIO scan data from a file. A hardware SIO scan object will be created if not
@@ -4335,33 +2742,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1142
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// hardware SIO scan file name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_sio_scan">
-		/// Optional
-		/// hardware SIO scan data object Default: None
-		/// </param>
+		/// <param name="file">(Required) hardware SIO scan file name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_sio_scan">(Optional) hardware SIO scan data object Default: None</param>
 		/// <returns>hardware SIO scan object</returns>
-		public void read_hw_sio_scan(string file, bool? quiet = null, bool? verbose = null, string hw_sio_scan = null)
+		public TTCL read_hw_sio_scan(string file, bool? quiet = null, bool? verbose = null, string hw_sio_scan = null)
 		{
 			// TCL Syntax: read_hw_sio_scan [-quiet] [-verbose] <file> [<hw_sio_scan>]
-			_tcl.Add(
-				new SimpleTCLCommand("read_hw_sio_scan")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-					.OptionalString(hw_sio_scan)
-			);
+			_tcl.Entry(_builder.read_hw_sio_scan(file, quiet, verbose, hw_sio_scan));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read hardware SIO sweep data from a directory. A hardware SIO sweep object will be created if
@@ -4383,33 +2773,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1144
 		/// </summary>
-		/// <param name="directory">
-		/// Required
-		/// hardware SIO sweep directory name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_sio_sweep">
-		/// Optional
-		/// hardware SIO sweep data object Default: None
-		/// </param>
+		/// <param name="directory">(Required) hardware SIO sweep directory name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_sio_sweep">(Optional) hardware SIO sweep data object Default: None</param>
 		/// <returns>hardware SIO sweep object</returns>
-		public void read_hw_sio_sweep(string directory, bool? quiet = null, bool? verbose = null, string hw_sio_sweep = null)
+		public TTCL read_hw_sio_sweep(string directory, bool? quiet = null, bool? verbose = null, string hw_sio_sweep = null)
 		{
 			// TCL Syntax: read_hw_sio_sweep [-quiet] [-verbose] <directory> [<hw_sio_sweep>]
-			_tcl.Add(
-				new SimpleTCLCommand("read_hw_sio_sweep")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(directory)
-					.OptionalString(hw_sio_sweep)
-			);
+			_tcl.Entry(_builder.read_hw_sio_sweep(directory, quiet, verbose, hw_sio_sweep));
+			return _tcl;
 		}
 		/// <summary>
 		/// Readback data from the hw_cfgmem object
@@ -4428,64 +2801,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1168
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// File to write readback to
-		/// </param>
-		/// <param name="checksum">
-		/// Optional
-		/// readback and calculate checksum; cannot be used with -file
-		/// option
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// force write of file
-		/// </param>
-		/// <param name="all">
-		/// Optional
-		/// specify readback of all memory locations
-		/// </param>
-		/// <param name="offset">
-		/// Optional
-		/// memory offset value Default: 0x0
-		/// </param>
-		/// <param name="format">
-		/// Optional
-		/// File format of readback file
-		/// </param>
-		/// <param name="datacount">
-		/// Optional
-		/// number of data units to readback Default: 0x0
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_cfgmem">
-		/// Optional
-		/// list of hardware cfgmems Default: current hardware
-		/// cfgmem
-		/// </param>
-		public void readback_hw_cfgmem(string file, bool? checksum = null, bool? force = null, bool? all = null, string offset = null, string format = null, string datacount = null, bool? quiet = null, bool? verbose = null, string hw_cfgmem = null)
+		/// <param name="file">(Required) File to write readback to</param>
+		/// <param name="checksum">(Optional) readback and calculate checksum; cannot be used with -file option</param>
+		/// <param name="force">(Optional) force write of file</param>
+		/// <param name="all">(Optional) specify readback of all memory locations</param>
+		/// <param name="offset">(Optional) memory offset value Default: 0x0</param>
+		/// <param name="format">(Optional) File format of readback file</param>
+		/// <param name="datacount">(Optional) number of data units to readback Default: 0x0</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_cfgmem">(Optional) list of hardware cfgmems Default: current hardware cfgmem</param>
+		public TTCL readback_hw_cfgmem(string file, bool? checksum = null, bool? force = null, bool? all = null, string offset = null, string format = null, string datacount = null, bool? quiet = null, bool? verbose = null, string hw_cfgmem = null)
 		{
 			// TCL Syntax: readback_hw_cfgmem [-checksum] [-force] [-all] [-offset <arg>] -file <arg> [-format <arg>] [-datacount <arg>] [-quiet] [-verbose] [<hw_cfgmem>...]
-			_tcl.Add(
-				new SimpleTCLCommand("readback_hw_cfgmem")
-					.Flag("checksum", checksum)
-					.Flag("force", force)
-					.Flag("all", all)
-					.OptionalNamedString("offset", offset)
-					.RequiredNamedString("file", file)
-					.OptionalNamedString("format", format)
-					.OptionalNamedString("datacount", datacount)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_cfgmem)
-			);
+			_tcl.Entry(_builder.readback_hw_cfgmem(file, checksum, force, all, offset, format, datacount, quiet, verbose, hw_cfgmem));
+			return _tcl;
 		}
 		/// <summary>
 		/// Readback hardware devices
@@ -4502,48 +2832,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1172
 		/// </summary>
-		/// <param name="force">
-		/// Optional
-		/// force write of file
-		/// </param>
-		/// <param name="capture">
-		/// Optional
-		/// capture configuration readback data (ultrascale only)
-		/// </param>
-		/// <param name="readback_file">
-		/// Optional
-		/// readback file for rbd file output
-		/// </param>
-		/// <param name="bin_file">
-		/// Optional
-		/// bin file for bin file output
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_device">
-		/// Optional
-		/// list of hardware devices Default: current hardware device
-		/// </param>
+		/// <param name="force">(Optional) force write of file</param>
+		/// <param name="capture">(Optional) capture configuration readback data (ultrascale only)</param>
+		/// <param name="readback_file">(Optional) readback file for rbd file output</param>
+		/// <param name="bin_file">(Optional) bin file for bin file output</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_device">(Optional) list of hardware devices Default: current hardware device</param>
 		/// <returns>hardware devices</returns>
-		public void readback_hw_device(bool? force = null, bool? capture = null, string readback_file = null, string bin_file = null, bool? quiet = null, bool? verbose = null, string hw_device = null)
+		public TTCL readback_hw_device(bool? force = null, bool? capture = null, string readback_file = null, string bin_file = null, bool? quiet = null, bool? verbose = null, string hw_device = null)
 		{
 			// TCL Syntax: readback_hw_device [-force] [-capture] [-readback_file <arg>] [-bin_file <arg>] [-quiet] [-verbose] [<hw_device>...]
-			_tcl.Add(
-				new SimpleTCLCommand("readback_hw_device")
-					.Flag("force", force)
-					.Flag("capture", capture)
-					.OptionalNamedString("readback_file", readback_file)
-					.OptionalNamedString("bin_file", bin_file)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_device)
-			);
+			_tcl.Entry(_builder.readback_hw_device(force, capture, readback_file, bin_file, quiet, verbose, hw_device));
+			return _tcl;
 		}
 		/// <summary>
 		/// Refresh hardware AXI object status.
@@ -4563,27 +2864,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1179
 		/// </summary>
-		/// <param name="hw_axis">
-		/// Required
-		/// List of hardware AXI objects.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void refresh_hw_axi(string hw_axis, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_axis">(Required) List of hardware AXI objects.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL refresh_hw_axi(string hw_axis, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_axi [-quiet] [-verbose] [<hw_axis>...]
-			_tcl.Add(
-				new SimpleTCLCommand("refresh_hw_axi")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_axis)
-			);
+			_tcl.Entry(_builder.refresh_hw_axi(hw_axis, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Refresh the status of the current hardware object. Inputs need to be any DDRMC object. At least
@@ -4611,37 +2899,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1181
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware DDRMC objects
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Properties list contains full regular expressions
-		/// </param>
-		/// <param name="properties">
-		/// Optional
-		/// List of properties to refresh Default: All properties in object
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void refresh_hw_ddrmc(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware DDRMC objects</param>
+		/// <param name="regexp">(Optional) Properties list contains full regular expressions</param>
+		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL refresh_hw_ddrmc(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_ddrmc [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("refresh_hw_ddrmc")
-					.Flag("regexp", regexp)
-					.OptionalNamedString("properties", properties)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.refresh_hw_ddrmc(hw_objects, regexp, properties, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Refresh a hardware device. Read device and core information from device.
@@ -4659,42 +2926,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1183
 		/// </summary>
-		/// <param name="update_hw_probes">
-		/// Optional
-		/// Update hardware probe information, read from probes file
-		/// </param>
-		/// <param name="disable_done_check">
-		/// Optional
-		/// Disable done check for refresh device
-		/// </param>
-		/// <param name="force_poll">
-		/// Optional
-		/// Force poll of all targets
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_device">
-		/// Optional
-		/// hardware device Default: current hardware device
-		/// </param>
-		public void refresh_hw_device(string update_hw_probes = null, bool? disable_done_check = null, bool? force_poll = null, bool? quiet = null, bool? verbose = null, string hw_device = null)
+		/// <param name="update_hw_probes">(Optional) Update hardware probe information, read from probes file</param>
+		/// <param name="disable_done_check">(Optional) Disable done check for refresh device</param>
+		/// <param name="force_poll">(Optional) Force poll of all targets</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_device">(Optional) hardware device Default: current hardware device</param>
+		public TTCL refresh_hw_device(string update_hw_probes = null, bool? disable_done_check = null, bool? force_poll = null, bool? quiet = null, bool? verbose = null, string hw_device = null)
 		{
 			// TCL Syntax: refresh_hw_device [-update_hw_probes <arg>] [-disable_done_check] [-force_poll] [-quiet] [-verbose] [<hw_device>]
-			_tcl.Add(
-				new SimpleTCLCommand("refresh_hw_device")
-					.OptionalNamedString("update_hw_probes", update_hw_probes)
-					.Flag("disable_done_check", disable_done_check)
-					.Flag("force_poll", force_poll)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_device)
-			);
+			_tcl.Entry(_builder.refresh_hw_device(update_hw_probes, disable_done_check, force_poll, quiet, verbose, hw_device));
+			return _tcl;
 		}
 		/// <summary>
 		/// Refresh the status of the current hardware object. Inputs can be HBM or device hardware object.
@@ -4724,37 +2966,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1185
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware objects
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Properties list contains full regular expressions
-		/// </param>
-		/// <param name="properties">
-		/// Optional
-		/// List of properties to refresh Default: All properties in object
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void refresh_hw_hbm(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware objects</param>
+		/// <param name="regexp">(Optional) Properties list contains full regular expressions</param>
+		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL refresh_hw_hbm(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_hbm [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("refresh_hw_hbm")
-					.Flag("regexp", regexp)
-					.OptionalNamedString("properties", properties)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.refresh_hw_hbm(hw_objects, regexp, properties, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Refresh the status of the current hardware object. Inputs can be any mig, device, target, or server
@@ -4776,37 +2997,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1187
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware objects
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Properties list contains full regular expressions
-		/// </param>
-		/// <param name="properties">
-		/// Optional
-		/// List of properties to refresh Default: All properties in object
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void refresh_hw_mig(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware objects</param>
+		/// <param name="regexp">(Optional) Properties list contains full regular expressions</param>
+		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL refresh_hw_mig(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_mig [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("refresh_hw_mig")
-					.Flag("regexp", regexp)
-					.OptionalNamedString("properties", properties)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.refresh_hw_mig(hw_objects, regexp, properties, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Refresh a connection to a hardware server
@@ -4820,32 +3020,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1189
 		/// </summary>
-		/// <param name="force_poll">
-		/// Optional
-		/// Force poll of all targets
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_server">
-		/// Optional
-		/// hardware server
-		/// </param>
-		public void refresh_hw_server(bool? force_poll = null, bool? quiet = null, bool? verbose = null, string hw_server = null)
+		/// <param name="force_poll">(Optional) Force poll of all targets</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_server">(Optional) hardware server</param>
+		public TTCL refresh_hw_server(bool? force_poll = null, bool? quiet = null, bool? verbose = null, string hw_server = null)
 		{
 			// TCL Syntax: refresh_hw_server [-force_poll] [-quiet] [-verbose] [<hw_server>]
-			_tcl.Add(
-				new SimpleTCLCommand("refresh_hw_server")
-					.Flag("force_poll", force_poll)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_server)
-			);
+			_tcl.Entry(_builder.refresh_hw_server(force_poll, quiet, verbose, hw_server));
+			return _tcl;
 		}
 		/// <summary>
 		/// Refresh the status of the specified hardware objects. Inputs can be any serial I/O (except scan
@@ -4867,37 +3050,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1191
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware objects
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Properties list contains full regular expressions
-		/// </param>
-		/// <param name="properties">
-		/// Optional
-		/// List of properties to refresh Default: All properties in object
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void refresh_hw_sio(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware objects</param>
+		/// <param name="regexp">(Optional) Properties list contains full regular expressions</param>
+		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL refresh_hw_sio(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_sio [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("refresh_hw_sio")
-					.Flag("regexp", regexp)
-					.OptionalNamedString("properties", properties)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.refresh_hw_sio(hw_objects, regexp, properties, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Refresh the status of the current hardware object. Inputs can be hw_server, hw_target,
@@ -4919,37 +3081,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1193
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware objects
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Properties list contains full regular expressions
-		/// </param>
-		/// <param name="properties">
-		/// Optional
-		/// List of properties to refresh Default: All properties in object
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void refresh_hw_sysmon(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware objects</param>
+		/// <param name="regexp">(Optional) Properties list contains full regular expressions</param>
+		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL refresh_hw_sysmon(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_sysmon [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("refresh_hw_sysmon")
-					.Flag("regexp", regexp)
-					.OptionalNamedString("properties", properties)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.refresh_hw_sysmon(hw_objects, regexp, properties, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Refresh a hardware target
@@ -4977,32 +3118,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1195
 		/// </summary>
-		/// <param name="force_poll">
-		/// Optional
-		/// Force poll of all targets
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_target">
-		/// Optional
-		/// hardware target
-		/// </param>
-		public void refresh_hw_target(bool? force_poll = null, bool? quiet = null, bool? verbose = null, string hw_target = null)
+		/// <param name="force_poll">(Optional) Force poll of all targets</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_target">(Optional) hardware target</param>
+		public TTCL refresh_hw_target(bool? force_poll = null, bool? quiet = null, bool? verbose = null, string hw_target = null)
 		{
 			// TCL Syntax: refresh_hw_target [-force_poll] [-quiet] [-verbose] [<hw_target>]
-			_tcl.Add(
-				new SimpleTCLCommand("refresh_hw_target")
-					.Flag("force_poll", force_poll)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_target)
-			);
+			_tcl.Entry(_builder.refresh_hw_target(force_poll, quiet, verbose, hw_target));
+			return _tcl;
 		}
 		/// <summary>
 		/// Update hardware probe INPUT_VALUE and ACTIVITY_VALUE properties with values read from
@@ -5024,33 +3148,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1197
 		/// </summary>
-		/// <param name="hw_vios">
-		/// Required
-		/// List of hardware VIO objects.
-		/// </param>
+		/// <param name="hw_vios">(Required) List of hardware VIO objects.</param>
 		/// <param name="update_output_values">
-		/// Optional
+		/// (Optional)
 		/// Update hardware probe OUTPUT_VALUE property with
 		/// values read from VIO core(s).
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void refresh_hw_vio(string hw_vios, bool? update_output_values = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL refresh_hw_vio(string hw_vios, bool? update_output_values = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_vio [-update_output_values] [-quiet] [-verbose] <hw_vios>...
-			_tcl.Add(
-				new SimpleTCLCommand("refresh_hw_vio")
-					.Flag("update_output_values", update_output_values)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_vios)
-			);
+			_tcl.Entry(_builder.refresh_hw_vio(hw_vios, update_output_values, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// De-select Pseudo Channel from Activity Monitor on the specified hardware HBM(s). Must
@@ -5071,37 +3181,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1229
 		/// </summary>
-		/// <param name="mc_num">
-		/// Required
-		/// Memory Controller number to de-select: 0 to 7
-		/// </param>
-		/// <param name="pc_num">
-		/// Required
-		/// Pseudo Channel number to de-select: 0 or 1
-		/// </param>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void remove_hw_hbm_pc(string mc_num, string pc_num, string hw_objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="mc_num">(Required) Memory Controller number to de-select: 0 to 7</param>
+		/// <param name="pc_num">(Required) Pseudo Channel number to de-select: 0 or 1</param>
+		/// <param name="hw_objects">(Required) hardware objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL remove_hw_hbm_pc(string mc_num, string pc_num, string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_hw_hbm_pc [-quiet] [-verbose] <mc_num> <pc_num> <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("remove_hw_hbm_pc")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(mc_num)
-					.RequiredString(pc_num)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.remove_hw_hbm_pc(mc_num, pc_num, hw_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Remove enumerated name-value pairs from a hw_probe enumeration.
@@ -5121,43 +3210,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1231
 		/// </summary>
-		/// <param name="hw_probe">
-		/// Required
-		/// ILA hardware probe object.
-		/// </param>
-		/// <param name="no_gui_update">
-		/// Optional
-		/// Defer GUI update.
-		/// </param>
-		/// <param name="list">
-		/// Optional
-		/// List of enumerated names to remove.
-		/// </param>
-		/// <param name="remove_all">
-		/// Optional
-		/// Remove the whole enumeration for a hardware probe.
-		/// Default: 0
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void remove_hw_probe_enum(string hw_probe, bool? no_gui_update = null, string list = null, bool? remove_all = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_probe">(Required) ILA hardware probe object.</param>
+		/// <param name="no_gui_update">(Optional) Defer GUI update.</param>
+		/// <param name="list">(Optional) List of enumerated names to remove.</param>
+		/// <param name="remove_all">(Optional) Remove the whole enumeration for a hardware probe. Default: 0</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL remove_hw_probe_enum(string hw_probe, bool? no_gui_update = null, string list = null, bool? remove_all = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_hw_probe_enum [-no_gui_update] [-list <args>] [-remove_all] [-quiet] [-verbose] <hw_probe>
-			_tcl.Add(
-				new SimpleTCLCommand("remove_hw_probe_enum")
-					.Flag("no_gui_update", no_gui_update)
-					.OptionalNamedString("list", list)
-					.Flag("remove_all", remove_all)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_probe)
-			);
+			_tcl.Entry(_builder.remove_hw_probe_enum(hw_probe, no_gui_update, list, remove_all, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Remove an existing hardware SIO link.
@@ -5175,27 +3238,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1233
 		/// </summary>
-		/// <param name="hw_sio_links">
-		/// Required
-		/// hardware SIO links
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void remove_hw_sio_link(string hw_sio_links, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_sio_links">(Required) hardware SIO links</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL remove_hw_sio_link(string hw_sio_links, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_hw_sio_link [-quiet] [-verbose] <hw_sio_links>
-			_tcl.Add(
-				new SimpleTCLCommand("remove_hw_sio_link")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_sio_links)
-			);
+			_tcl.Entry(_builder.remove_hw_sio_link(hw_sio_links, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Remove an existing hardware SIO link group.
@@ -5215,27 +3265,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1235
 		/// </summary>
-		/// <param name="hw_sio_linkgroups">
-		/// Required
-		/// hardware SIO linkgroups
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void remove_hw_sio_linkgroup(string hw_sio_linkgroups, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_sio_linkgroups">(Required) hardware SIO linkgroups</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL remove_hw_sio_linkgroup(string hw_sio_linkgroups, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_hw_sio_linkgroup [-quiet] [-verbose] <hw_sio_linkgroups>
-			_tcl.Add(
-				new SimpleTCLCommand("remove_hw_sio_linkgroup")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_sio_linkgroups)
-			);
+			_tcl.Entry(_builder.remove_hw_sio_linkgroup(hw_sio_linkgroups, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Remove an existing hardware SIO scan.
@@ -5248,27 +3285,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1237
 		/// </summary>
-		/// <param name="hw_sio_scans">
-		/// Required
-		/// hardware SIO scans
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void remove_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_sio_scans">(Required) hardware SIO scans</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL remove_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
-			_tcl.Add(
-				new SimpleTCLCommand("remove_hw_sio_scan")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_sio_scans)
-			);
+			_tcl.Entry(_builder.remove_hw_sio_scan(hw_sio_scans, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Remove an existing hardware SIO sweep.
@@ -5281,27 +3305,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1239
 		/// </summary>
-		/// <param name="hw_sio_sweeps">
-		/// Required
-		/// hardware SIO sweeps
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void remove_hw_sio_sweep(string hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_sio_sweeps">(Required) hardware SIO sweeps</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL remove_hw_sio_sweep(string hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_hw_sio_sweep [-quiet] [-verbose] <hw_sio_sweeps>
-			_tcl.Add(
-				new SimpleTCLCommand("remove_hw_sio_sweep")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_sio_sweeps)
-			);
+			_tcl.Entry(_builder.remove_hw_sio_sweep(hw_sio_sweeps, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report formatted hardware AXI Transaction data
@@ -5320,41 +3331,23 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1342
 		/// </summary>
-		/// <param name="hw_axi_txns">
-		/// Required
-		/// hardware AXI Transaction object to report
-		/// </param>
-		/// <param name="w">
-		/// Optional
-		/// Output data bytes per output line. Default: 8
-		/// </param>
+		/// <param name="hw_axi_txns">(Required) hardware AXI Transaction object to report</param>
+		/// <param name="w">(Optional) Output data bytes per output line. Default: 8</param>
 		/// <param name="t">
-		/// Optional
+		/// (Optional)
 		/// d[SIZE] signed decimal, SIZE bytes per integer, b[SIZE]
 		/// binary, SIZE bytes per integer, o[SIZE] octal, SIZE bytes per
 		/// integer, u[SIZE] unsigned decimal, SIZE bytes per integer,
 		/// x[SIZE] hexadecimal, SIZE bytes per integer Default: x4 (4-
 		/// bytes in hex)
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_hw_axi_txn(string hw_axi_txns, string w = null, string t = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_hw_axi_txn(string hw_axi_txns, string w = null, string t = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_hw_axi_txn [-w <arg>] [-t <arg>] [-quiet] [-verbose] <hw_axi_txns>...
-			_tcl.Add(
-				new SimpleTCLCommand("report_hw_axi_txn")
-					.OptionalNamedString("w", w)
-					.OptionalNamedString("t", t)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_axi_txns)
-			);
+			_tcl.Entry(_builder.report_hw_axi_txn(hw_axi_txns, w, t, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Formatted report on Versal integrated and soft Memory Controllers' (DDRMCs) memory
@@ -5380,42 +3373,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1345
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware DDRMC objects
-		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// file name (including full path) to output the report results to
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// set this option to append the report results to a file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// set this option to have report results returned as a string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_hw_ddrmc(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware DDRMC objects</param>
+		/// <param name="file">(Optional) file name (including full path) to output the report results to</param>
+		/// <param name="append">(Optional) set this option to append the report results to a file</param>
+		/// <param name="return_string">(Optional) set this option to have report results returned as a string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_hw_ddrmc(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_hw_ddrmc [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("report_hw_ddrmc")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.report_hw_ddrmc(hw_objects, file, append, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report formatted hardware MIG calibration status and margin data
@@ -5440,42 +3408,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1347
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware mig objects
-		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// file name (including full path) to output the report results to
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// set this option to append the report results to a file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// set this option to have report results return as a string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_hw_mig(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware mig objects</param>
+		/// <param name="file">(Optional) file name (including full path) to output the report results to</param>
+		/// <param name="append">(Optional) set this option to append the report results to a file</param>
+		/// <param name="return_string">(Optional) set this option to have report results return as a string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_hw_mig(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_hw_mig [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("report_hw_mig")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.report_hw_mig(hw_objects, file, append, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report properties on hardware objects
@@ -5499,23 +3442,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1349
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>hardware objects</returns>
-		public void report_hw_targets(bool? quiet = null, bool? verbose = null)
+		public TTCL report_hw_targets(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_hw_targets [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_hw_targets")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_hw_targets(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reset hardware AXI core state.
@@ -5536,27 +3470,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1453
 		/// </summary>
-		/// <param name="hw_axis">
-		/// Required
-		/// List of hardware AXI objects.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_hw_axi(string hw_axis, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_axis">(Required) List of hardware AXI objects.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_hw_axi(string hw_axis, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_hw_axi [-quiet] [-verbose] [<hw_axis>...]
-			_tcl.Add(
-				new SimpleTCLCommand("reset_hw_axi")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_axis)
-			);
+			_tcl.Entry(_builder.reset_hw_axi(hw_axis, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reset hardware ILA control properties to default values.
@@ -5587,32 +3508,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1455
 		/// </summary>
-		/// <param name="reset_compare_values">
-		/// Optional
-		/// Reset associated hardware probe compare values.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_ilas">
-		/// Optional
-		/// List of hardware ILA objects. Default: Current hardware ILA
-		/// </param>
-		public void reset_hw_ila(string reset_compare_values = null, bool? quiet = null, bool? verbose = null, string hw_ilas = null)
+		/// <param name="reset_compare_values">(Optional) Reset associated hardware probe compare values.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_ilas">(Optional) List of hardware ILA objects. Default: Current hardware ILA</param>
+		public TTCL reset_hw_ila(string reset_compare_values = null, bool? quiet = null, bool? verbose = null, string hw_ilas = null)
 		{
 			// TCL Syntax: reset_hw_ila [-reset_compare_values <arg>] [-quiet] [-verbose] [<hw_ilas>...]
-			_tcl.Add(
-				new SimpleTCLCommand("reset_hw_ila")
-					.OptionalNamedString("reset_compare_values", reset_compare_values)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_ilas)
-			);
+			_tcl.Entry(_builder.reset_hw_ila(reset_compare_values, quiet, verbose, hw_ilas));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reset hardware VIO ACTIVITY_VALUE properties, for hardware probes associated with specified
@@ -5632,27 +3536,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1457
 		/// </summary>
-		/// <param name="hw_vios">
-		/// Required
-		/// List of hardware VIO objects.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_hw_vio_activity(string hw_vios, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_vios">(Required) List of hardware VIO objects.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_hw_vio_activity(string hw_vios, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_hw_vio_activity [-quiet] [-verbose] <hw_vios>...
-			_tcl.Add(
-				new SimpleTCLCommand("reset_hw_vio_activity")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_vios)
-			);
+			_tcl.Entry(_builder.reset_hw_vio_activity(hw_vios, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reset hardware VIO core outputs to initial values.
@@ -5674,27 +3565,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1459
 		/// </summary>
-		/// <param name="hw_vios">
-		/// Required
-		/// List of hardware VIO objects.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_hw_vio_outputs(string hw_vios, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_vios">(Required) List of hardware VIO objects.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_hw_vio_outputs(string hw_vios, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_hw_vio_outputs [-quiet] [-verbose] <hw_vios>...
-			_tcl.Add(
-				new SimpleTCLCommand("reset_hw_vio_outputs")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_vios)
-			);
+			_tcl.Entry(_builder.reset_hw_vio_outputs(hw_vios, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Resume Activity Monitor runs after paused for the specified hardware HBM(s)
@@ -5711,27 +3589,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1504
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void resume_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL resume_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: resume_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("resume_hw_hbm_amon")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.resume_hw_hbm_amon(hw_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Run hardware AXI read/write transaction(s)and update transaction status in hw_axi object..
@@ -5746,32 +3611,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1514
 		/// </summary>
-		/// <param name="hw_axi_txns">
-		/// Required
-		/// hardware AXI Transaction object to execute on the AXI bus.
-		/// </param>
-		/// <param name="queue">
-		/// Optional
-		/// Queue Transaction. Default: 0
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void run_hw_axi(string hw_axi_txns, bool? queue = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_axi_txns">(Required) hardware AXI Transaction object to execute on the AXI bus.</param>
+		/// <param name="queue">(Optional) Queue Transaction. Default: 0</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL run_hw_axi(string hw_axi_txns, bool? queue = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: run_hw_axi [-queue] [-quiet] [-verbose] <hw_axi_txns>...
-			_tcl.Add(
-				new SimpleTCLCommand("run_hw_axi")
-					.Flag("queue", queue)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_axi_txns)
-			);
+			_tcl.Entry(_builder.run_hw_axi(hw_axi_txns, queue, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Enable Activity Monitor runs for the specified hardware HBM(s)
@@ -5798,27 +3646,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1516
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void run_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL run_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: run_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("run_hw_hbm_amon")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.run_hw_hbm_amon(hw_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Arm hardware ILAs.
@@ -5962,49 +3797,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1518
 		/// </summary>
-		/// <param name="trigger_now">
-		/// Optional
-		/// Trigger and capture immediately.
-		/// </param>
-		/// <param name="compile_only">
-		/// Optional
-		/// Test only compile trigger state machine file but do not
-		/// upload.
-		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// Trigger at startup file name. Command will not arm ILA
-		/// core.
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_ilas">
-		/// Optional
-		/// hardware ILAs Default: Current hardware ILA
-		/// </param>
-		public void run_hw_ila(bool? trigger_now = null, bool? compile_only = null, string file = null, bool? force = null, bool? quiet = null, bool? verbose = null, string hw_ilas = null)
+		/// <param name="trigger_now">(Optional) Trigger and capture immediately.</param>
+		/// <param name="compile_only">(Optional) Test only compile trigger state machine file but do not upload.</param>
+		/// <param name="file">(Optional) Trigger at startup file name. Command will not arm ILA core.</param>
+		/// <param name="force">(Optional) Overwrite existing file</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_ilas">(Optional) hardware ILAs Default: Current hardware ILA</param>
+		public TTCL run_hw_ila(bool? trigger_now = null, bool? compile_only = null, string file = null, bool? force = null, bool? quiet = null, bool? verbose = null, string hw_ilas = null)
 		{
 			// TCL Syntax: run_hw_ila [-trigger_now] [-compile_only] [-file <arg>] [-force] [-quiet] [-verbose] [<hw_ilas>...]
-			_tcl.Add(
-				new SimpleTCLCommand("run_hw_ila")
-					.Flag("trigger_now", trigger_now)
-					.Flag("compile_only", compile_only)
-					.OptionalNamedString("file", file)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_ilas)
-			);
+			_tcl.Entry(_builder.run_hw_ila(trigger_now, compile_only, file, force, quiet, verbose, hw_ilas));
+			return _tcl;
 		}
 		/// <summary>
 		/// Run hardware SIO scans.
@@ -6028,27 +3832,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1524
 		/// </summary>
-		/// <param name="hw_sio_scans">
-		/// Required
-		/// hardware SIO scans
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void run_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_sio_scans">(Required) hardware SIO scans</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL run_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: run_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
-			_tcl.Add(
-				new SimpleTCLCommand("run_hw_sio_scan")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_sio_scans)
-			);
+			_tcl.Entry(_builder.run_hw_sio_scan(hw_sio_scans, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Run hardware SIO sweeps.
@@ -6071,27 +3862,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1526
 		/// </summary>
-		/// <param name="hw_sio_sweeps">
-		/// Required
-		/// hardware SIO sweeps
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void run_hw_sio_sweep(string hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_sio_sweeps">(Required) hardware SIO sweeps</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL run_hw_sio_sweep(string hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: run_hw_sio_sweep [-quiet] [-verbose] <hw_sio_sweeps>
-			_tcl.Add(
-				new SimpleTCLCommand("run_hw_sio_sweep")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_sio_sweeps)
-			);
+			_tcl.Entry(_builder.run_hw_sio_sweep(hw_sio_sweeps, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// change to a stable state of a specified transition
@@ -6143,33 +3921,19 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1528
 		/// </summary>
 		/// <param name="stable_state">
-		/// Required
+		/// (Required)
 		/// valid stable_state - valid stable states IDLE, RESET, IRPAUSE,
 		/// and DRPAUSE
 		/// </param>
-		/// <param name="state">
-		/// Optional
-		/// valid state path sequence to stable_state
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="state">(Optional) valid state path sequence to stable_state</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>hardware JTAG</returns>
-		public void run_state_hw_jtag(string stable_state, string state = null, bool? quiet = null, bool? verbose = null)
+		public TTCL run_state_hw_jtag(string stable_state, string state = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: run_state_hw_jtag [-state <args>] [-quiet] [-verbose] <stable_state>
-			_tcl.Add(
-				new SimpleTCLCommand("run_state_hw_jtag")
-					.OptionalNamedString("state", state)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(stable_state)
-			);
+			_tcl.Entry(_builder.run_state_hw_jtag(stable_state, state, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Forces IEEE 1149.1 TAP state machine to a stable state for a specified wait period
@@ -6197,50 +3961,29 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1531
 		/// </summary>
 		/// <param name="wait_state">
-		/// Optional
+		/// (Optional)
 		/// valid stable_state - valid stable states IDLE, RESET, IRPAUSE,
 		/// and DRPAUSE
 		/// </param>
 		/// <param name="end_state">
-		/// Optional
+		/// (Optional)
 		/// valid stable_state - valid stable states IDLE, RESET, IRPAUSE,
 		/// and DRPAUSE
 		/// </param>
-		/// <param name="sec">
-		/// Optional
-		/// Number of seconds to wait in wait_state
-		/// </param>
-		/// <param name="max_wait">
-		/// Optional
-		/// Maximum Number of seconds to wait in wait_state - max
-		/// timeout
-		/// </param>
+		/// <param name="sec">(Optional) Number of seconds to wait in wait_state</param>
+		/// <param name="max_wait">(Optional) Maximum Number of seconds to wait in wait_state - max timeout</param>
 		/// <param name="tck">
-		/// Optional
+		/// (Optional)
 		/// Number of TCK cycles to wait in wait_state Default: Number
 		/// of TCK cycles to wait in wait_state
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void runtest_hw_jtag(string wait_state = null, string end_state = null, string sec = null, string max_wait = null, string tck = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL runtest_hw_jtag(string wait_state = null, string end_state = null, string sec = null, string max_wait = null, string tck = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: runtest_hw_jtag [-wait_state <arg>] [-end_state <arg>] [-sec <arg>] [-max_wait <arg>] [-tck <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("runtest_hw_jtag")
-					.OptionalNamedString("wait_state", wait_state)
-					.OptionalNamedString("end_state", end_state)
-					.OptionalNamedString("sec", sec)
-					.OptionalNamedString("max_wait", max_wait)
-					.OptionalNamedString("tck", tck)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.runtest_hw_jtag(wait_state, end_state, sec, max_wait, tck, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Perform shift DR on 'hw_jtag'.
@@ -6285,48 +4028,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1547
 		/// </summary>
-		/// <param name="length">
-		/// Required
-		/// Number of bits to be scanned.
-		/// </param>
-		/// <param name="tdi">
-		/// Optional
-		/// Hex value to be scanned into the target
-		/// </param>
-		/// <param name="tdo">
-		/// Optional
-		/// Hex value to be compared against the scanned value
-		/// </param>
-		/// <param name="mask">
-		/// Optional
-		/// Hex value mask applied when comparing TDO values
-		/// </param>
-		/// <param name="smask">
-		/// Optional
-		/// Hex value mask applied to TDI value
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="length">(Required) Number of bits to be scanned.</param>
+		/// <param name="tdi">(Optional) Hex value to be scanned into the target</param>
+		/// <param name="tdo">(Optional) Hex value to be compared against the scanned value</param>
+		/// <param name="mask">(Optional) Hex value mask applied when comparing TDO values</param>
+		/// <param name="smask">(Optional) Hex value mask applied to TDI value</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>hardware TDO</returns>
-		public void scan_dr_hw_jtag(string length, string tdi = null, string tdo = null, string mask = null, string smask = null, bool? quiet = null, bool? verbose = null)
+		public TTCL scan_dr_hw_jtag(string length, string tdi = null, string tdo = null, string mask = null, string smask = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: scan_dr_hw_jtag [-tdi <arg>] [-tdo <arg>] [-mask <arg>] [-smask <arg>] [-quiet] [-verbose] <length>
-			_tcl.Add(
-				new SimpleTCLCommand("scan_dr_hw_jtag")
-					.OptionalNamedString("tdi", tdi)
-					.OptionalNamedString("tdo", tdo)
-					.OptionalNamedString("mask", mask)
-					.OptionalNamedString("smask", smask)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(length)
-			);
+			_tcl.Entry(_builder.scan_dr_hw_jtag(length, tdi, tdo, mask, smask, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Perform shift IR on 'hw_jtag'.
@@ -6369,48 +4083,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1551
 		/// </summary>
-		/// <param name="length">
-		/// Required
-		/// Number of bits to be scanned.
-		/// </param>
-		/// <param name="tdi">
-		/// Optional
-		/// Hex value to be scanned into the target
-		/// </param>
-		/// <param name="tdo">
-		/// Optional
-		/// Hex value to be compared against the scanned value
-		/// </param>
-		/// <param name="mask">
-		/// Optional
-		/// Hex value mask applied when comparing TDO values
-		/// </param>
-		/// <param name="smask">
-		/// Optional
-		/// Hex value mask applied to TDI value
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="length">(Required) Number of bits to be scanned.</param>
+		/// <param name="tdi">(Optional) Hex value to be scanned into the target</param>
+		/// <param name="tdo">(Optional) Hex value to be compared against the scanned value</param>
+		/// <param name="mask">(Optional) Hex value mask applied when comparing TDO values</param>
+		/// <param name="smask">(Optional) Hex value mask applied to TDI value</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>hardware TDO</returns>
-		public void scan_ir_hw_jtag(string length, string tdi = null, string tdo = null, string mask = null, string smask = null, bool? quiet = null, bool? verbose = null)
+		public TTCL scan_ir_hw_jtag(string length, string tdi = null, string tdo = null, string mask = null, string smask = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: scan_ir_hw_jtag [-tdi <arg>] [-tdo <arg>] [-mask <arg>] [-smask <arg>] [-quiet] [-verbose] <length>
-			_tcl.Add(
-				new SimpleTCLCommand("scan_ir_hw_jtag")
-					.OptionalNamedString("tdi", tdi)
-					.OptionalNamedString("tdo", tdo)
-					.OptionalNamedString("mask", mask)
-					.OptionalNamedString("smask", smask)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(length)
-			);
+			_tcl.Entry(_builder.scan_ir_hw_jtag(length, tdi, tdo, mask, smask, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set the system monitor register value
@@ -6442,37 +4127,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1590
 		/// </summary>
-		/// <param name="hw_sysmon">
-		/// Required
-		/// hw_sysmon object
-		/// </param>
-		/// <param name="hexaddress">
-		/// Required
-		/// Hex address to write to
-		/// </param>
-		/// <param name="hexdata">
-		/// Required
-		/// Hex write value
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_hw_sysmon_reg(string hw_sysmon, string hexaddress, string hexdata, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_sysmon">(Required) hw_sysmon object</param>
+		/// <param name="hexaddress">(Required) Hex address to write to</param>
+		/// <param name="hexdata">(Required) Hex write value</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_hw_sysmon_reg(string hw_sysmon, string hexaddress, string hexdata, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_hw_sysmon_reg [-quiet] [-verbose] <hw_sysmon> <hexaddress> <hexdata>
-			_tcl.Add(
-				new SimpleTCLCommand("set_hw_sysmon_reg")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_sysmon)
-					.RequiredString(hexaddress)
-					.RequiredString(hexdata)
-			);
+			_tcl.Entry(_builder.set_hw_sysmon_reg(hw_sysmon, hexaddress, hexdata, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Disable Activity Monitor runs for the specified hardware HBM(s)
@@ -6489,27 +4153,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1690
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void stop_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL stop_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: stop_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("stop_hw_hbm_amon")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.stop_hw_hbm_amon(hw_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Stop hardware SIO scans.
@@ -6528,27 +4179,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1692
 		/// </summary>
-		/// <param name="hw_sio_scans">
-		/// Required
-		/// hardware SIO scans
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void stop_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_sio_scans">(Required) hardware SIO scans</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL stop_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: stop_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
-			_tcl.Add(
-				new SimpleTCLCommand("stop_hw_sio_scan")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_sio_scans)
-			);
+			_tcl.Entry(_builder.stop_hw_sio_scan(hw_sio_scans, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Stop hardware SIO sweeps.
@@ -6569,27 +4207,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1694
 		/// </summary>
-		/// <param name="hw_sio_sweeps">
-		/// Required
-		/// hardware SIO sweeps
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void stop_hw_sio_sweep(string hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_sio_sweeps">(Required) hardware SIO sweeps</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL stop_hw_sio_sweep(string hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: stop_hw_sio_sweep [-quiet] [-verbose] <hw_sio_sweeps>
-			_tcl.Add(
-				new SimpleTCLCommand("stop_hw_sio_sweep")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_sio_sweeps)
-			);
+			_tcl.Entry(_builder.stop_hw_sio_sweep(hw_sio_sweeps, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Update the SmartLynq firmware image
@@ -6599,61 +4224,32 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1736
 		/// </summary>
-		/// <param name="file_path">
-		/// Optional
-		/// Optional path to BOOT.BIN file Default: Use default
-		/// BOOT.BIN
-		/// </param>
-		/// <param name="config_path">
-		/// Optional
-		/// Optional path to config.ini file Default: No config.ini updated
-		/// </param>
-		/// <param name="skip_update">
-		/// Optional
-		/// Skip writing the BOOT.BIN to the SmartLynq
-		/// </param>
+		/// <param name="file_path">(Optional) Optional path to BOOT.BIN file Default: Use default BOOT.BIN</param>
+		/// <param name="config_path">(Optional) Optional path to config.ini file Default: No config.ini updated</param>
+		/// <param name="skip_update">(Optional) Skip writing the BOOT.BIN to the SmartLynq</param>
 		/// <param name="reset">
-		/// Optional
+		/// (Optional)
 		/// Reset the SmartLynq cable after any other operations to
 		/// complete the update and disconnects the hw_server
 		/// </param>
 		/// <param name="format">
-		/// Optional
+		/// (Optional)
 		/// Format the SmartLynq cable EMMC prior to any other
 		/// operations. Any files on SmartLynq cable will be lost.
 		/// </param>
 		/// <param name="flash">
-		/// Optional
+		/// (Optional)
 		/// Flash the SmartLynq cable QSPI. This updates the primary
 		/// FSBL and Safe Mode images.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_server">
-		/// Optional
-		/// hardware server Default: current hardware server
-		/// </param>
-		public void update_hw_firmware(string file_path = null, string config_path = null, bool? skip_update = null, bool? reset = null, bool? format = null, bool? flash = null, bool? quiet = null, bool? verbose = null, string hw_server = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_server">(Optional) hardware server Default: current hardware server</param>
+		public TTCL update_hw_firmware(string file_path = null, string config_path = null, bool? skip_update = null, bool? reset = null, bool? format = null, bool? flash = null, bool? quiet = null, bool? verbose = null, string hw_server = null)
 		{
 			// TCL Syntax: update_hw_firmware [-file_path <arg>] [-config_path <arg>] [-skip_update] [-reset] [-format] [-flash] [-quiet] [-verbose] [<hw_server>]
-			_tcl.Add(
-				new SimpleTCLCommand("update_hw_firmware")
-					.OptionalNamedString("file_path", file_path)
-					.OptionalNamedString("config_path", config_path)
-					.Flag("skip_update", skip_update)
-					.Flag("reset", reset)
-					.Flag("format", format)
-					.Flag("flash", flash)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_server)
-			);
+			_tcl.Entry(_builder.update_hw_firmware(file_path, config_path, skip_update, reset, format, flash, quiet, verbose, hw_server));
+			return _tcl;
 		}
 		/// <summary>
 		/// Update the SmartLynq GPIO PMOD pin values
@@ -6663,40 +4259,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1737
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="output_enable_mask">
-		/// Optional
+		/// (Optional)
 		/// 8 bit hex mask to enable output pins on GPIO Default: All
 		/// output pins disabled
 		/// </param>
-		/// <param name="output_pin_values">
-		/// Optional
-		/// 8 bit hex value of output pins Default: All output pins driven
-		/// low
-		/// </param>
-		/// <param name="hw_server">
-		/// Optional
-		/// hardware server Default: current hardware server
-		/// </param>
+		/// <param name="output_pin_values">(Optional) 8 bit hex value of output pins Default: All output pins driven low</param>
+		/// <param name="hw_server">(Optional) hardware server Default: current hardware server</param>
 		/// <returns>All GPIO PMOD pin values</returns>
-		public void update_hw_gpio(bool? quiet = null, bool? verbose = null, string output_enable_mask = null, string output_pin_values = null, string hw_server = null)
+		public TTCL update_hw_gpio(bool? quiet = null, bool? verbose = null, string output_enable_mask = null, string output_pin_values = null, string hw_server = null)
 		{
 			// TCL Syntax: update_hw_gpio [-quiet] [-verbose] [<output_enable_mask>] [<output_pin_values>] [<hw_server>]
-			_tcl.Add(
-				new SimpleTCLCommand("update_hw_gpio")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(output_enable_mask)
-					.OptionalString(output_pin_values)
-					.OptionalString(hw_server)
-			);
+			_tcl.Entry(_builder.update_hw_gpio(quiet, verbose, output_enable_mask, output_pin_values, hw_server));
+			return _tcl;
 		}
 		/// <summary>
 		/// Stop capturing. Upload any captured hardware ILA data.
@@ -6729,28 +4306,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1757
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_ilas">
-		/// Optional
-		/// List of hardware ILA objects. Default: Current hardware ILA
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_ilas">(Optional) List of hardware ILA objects. Default: Current hardware ILA</param>
 		/// <returns>hardware ILA data objects</returns>
-		public void upload_hw_ila_data(bool? quiet = null, bool? verbose = null, string hw_ilas = null)
+		public TTCL upload_hw_ila_data(bool? quiet = null, bool? verbose = null, string hw_ilas = null)
 		{
 			// TCL Syntax: upload_hw_ila_data [-quiet] [-verbose] [<hw_ilas>...]
-			_tcl.Add(
-				new SimpleTCLCommand("upload_hw_ila_data")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_ilas)
-			);
+			_tcl.Entry(_builder.upload_hw_ila_data(quiet, verbose, hw_ilas));
+			return _tcl;
 		}
 		/// <summary>
 		/// Verify hardware devices
@@ -6773,48 +4337,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1766
 		/// </summary>
-		/// <param name="key">
-		/// Optional
-		/// option value for key verification: efuse
-		/// </param>
-		/// <param name="user_efuse">
-		/// Optional
-		/// hex user fuse value for verification
-		/// </param>
-		/// <param name="control_efuse">
-		/// Optional
-		/// hex control fuse value for verification
-		/// </param>
-		/// <param name="security_efuse">
-		/// Optional
-		/// hex security fuse value for verification
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Shows fuse values during verification
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="hw_device">
-		/// Optional
-		/// list of hardware devices Default: current hardware device
-		/// </param>
+		/// <param name="key">(Optional) option value for key verification: efuse</param>
+		/// <param name="user_efuse">(Optional) hex user fuse value for verification</param>
+		/// <param name="control_efuse">(Optional) hex control fuse value for verification</param>
+		/// <param name="security_efuse">(Optional) hex security fuse value for verification</param>
+		/// <param name="verbose">(Optional) Shows fuse values during verification</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="hw_device">(Optional) list of hardware devices Default: current hardware device</param>
 		/// <returns>hardware devices</returns>
-		public void verify_hw_devices(string key = null, string user_efuse = null, string control_efuse = null, string security_efuse = null, bool? verbose = null, bool? quiet = null, string hw_device = null)
+		public TTCL verify_hw_devices(string key = null, string user_efuse = null, string control_efuse = null, string security_efuse = null, bool? verbose = null, bool? quiet = null, string hw_device = null)
 		{
 			// TCL Syntax: verify_hw_devices [-key <arg>] [-user_efuse <arg>] [-control_efuse <arg>] [-security_efuse <arg>] [-verbose] [-quiet] [<hw_device>...]
-			_tcl.Add(
-				new SimpleTCLCommand("verify_hw_devices")
-					.OptionalNamedString("key", key)
-					.OptionalNamedString("user_efuse", user_efuse)
-					.OptionalNamedString("control_efuse", control_efuse)
-					.OptionalNamedString("security_efuse", security_efuse)
-					.Flag("verbose", verbose)
-					.Flag("quiet", quiet)
-					.OptionalString(hw_device)
-			);
+			_tcl.Entry(_builder.verify_hw_devices(key, user_efuse, control_efuse, security_efuse, verbose, quiet, hw_device));
+			return _tcl;
 		}
 		/// <summary>
 		/// Wait until all hardware ILA data has been captured.
@@ -6834,33 +4369,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1771
 		/// </summary>
-		/// <param name="timeout">
-		/// Optional
-		/// Timeout in minutes. Decimal value allowed Default: No
-		/// timeout
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_ilas">
-		/// Optional
-		/// hardware ILA objects. Default: Current hardware ILA
-		/// </param>
-		public void wait_on_hw_ila(string timeout = null, bool? quiet = null, bool? verbose = null, string hw_ilas = null)
+		/// <param name="timeout">(Optional) Timeout in minutes. Decimal value allowed Default: No timeout</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_ilas">(Optional) hardware ILA objects. Default: Current hardware ILA</param>
+		public TTCL wait_on_hw_ila(string timeout = null, bool? quiet = null, bool? verbose = null, string hw_ilas = null)
 		{
 			// TCL Syntax: wait_on_hw_ila [-timeout <arg>] [-quiet] [-verbose] [<hw_ilas>...]
-			_tcl.Add(
-				new SimpleTCLCommand("wait_on_hw_ila")
-					.OptionalNamedString("timeout", timeout)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(hw_ilas)
-			);
+			_tcl.Entry(_builder.wait_on_hw_ila(timeout, quiet, verbose, hw_ilas));
+			return _tcl;
 		}
 		/// <summary>
 		/// Wait until hardware SIO scan has completed.
@@ -6877,33 +4394,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1773
 		/// </summary>
-		/// <param name="hw_sio_scans">
-		/// Required
-		/// List of hardware SIO scan objects.
-		/// </param>
-		/// <param name="timeout">
-		/// Optional
-		/// Timeout in minutes. Decimal value allowed Default: No
-		/// timeout
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void wait_on_hw_sio_scan(string hw_sio_scans, string timeout = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_sio_scans">(Required) List of hardware SIO scan objects.</param>
+		/// <param name="timeout">(Optional) Timeout in minutes. Decimal value allowed Default: No timeout</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL wait_on_hw_sio_scan(string hw_sio_scans, string timeout = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: wait_on_hw_sio_scan [-timeout <arg>] [-quiet] [-verbose] <hw_sio_scans>...
-			_tcl.Add(
-				new SimpleTCLCommand("wait_on_hw_sio_scan")
-					.OptionalNamedString("timeout", timeout)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_sio_scans)
-			);
+			_tcl.Entry(_builder.wait_on_hw_sio_scan(hw_sio_scans, timeout, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Wait until hardware SIO sweep has completed.
@@ -6920,33 +4419,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1775
 		/// </summary>
-		/// <param name="hw_sio_sweeps">
-		/// Required
-		/// List of hardware SIO sweep objects.
-		/// </param>
-		/// <param name="timeout">
-		/// Optional
-		/// Timeout in minutes. Decimal value allowed Default: No
-		/// timeout
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void wait_on_hw_sio_sweep(string hw_sio_sweeps, string timeout = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_sio_sweeps">(Required) List of hardware SIO sweep objects.</param>
+		/// <param name="timeout">(Optional) Timeout in minutes. Decimal value allowed Default: No timeout</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL wait_on_hw_sio_sweep(string hw_sio_sweeps, string timeout = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: wait_on_hw_sio_sweep [-timeout <arg>] [-quiet] [-verbose] <hw_sio_sweeps>...
-			_tcl.Add(
-				new SimpleTCLCommand("wait_on_hw_sio_sweep")
-					.OptionalNamedString("timeout", timeout)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_sio_sweeps)
-			);
+			_tcl.Entry(_builder.wait_on_hw_sio_sweep(hw_sio_sweeps, timeout, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write hardware ILA data to a file
@@ -6966,54 +4447,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1810
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// hardware ILA data file name
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file
-		/// </param>
-		/// <param name="csv_file">
-		/// Optional
-		/// Export CSV format file only
-		/// </param>
-		/// <param name="vcd_file">
-		/// Optional
-		/// Export VCD format file only
-		/// </param>
-		/// <param name="legacy_csv_file">
-		/// Optional
-		/// Export csv file without radix information.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="hw_ila_data">
-		/// Optional
-		/// hardware ILA data object Default: Current hardware ILA
-		/// data
-		/// </param>
+		/// <param name="file">(Required) hardware ILA data file name</param>
+		/// <param name="force">(Optional) Overwrite existing file</param>
+		/// <param name="csv_file">(Optional) Export CSV format file only</param>
+		/// <param name="vcd_file">(Optional) Export VCD format file only</param>
+		/// <param name="legacy_csv_file">(Optional) Export csv file without radix information.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="hw_ila_data">(Optional) hardware ILA data object Default: Current hardware ILA data</param>
 		/// <returns>Name of the output file</returns>
-		public void write_hw_ila_data(string file, bool? force = null, bool? csv_file = null, bool? vcd_file = null, bool? legacy_csv_file = null, bool? quiet = null, bool? verbose = null, string hw_ila_data = null)
+		public TTCL write_hw_ila_data(string file, bool? force = null, bool? csv_file = null, bool? vcd_file = null, bool? legacy_csv_file = null, bool? quiet = null, bool? verbose = null, string hw_ila_data = null)
 		{
 			// TCL Syntax: write_hw_ila_data [-force] [-csv_file] [-vcd_file] [-legacy_csv_file] [-quiet] [-verbose] <file> [<hw_ila_data>] [<hw_ila_data>]
-			_tcl.Add(
-				new SimpleTCLCommand("write_hw_ila_data")
-					.Flag("force", force)
-					.Flag("csv_file", csv_file)
-					.Flag("vcd_file", vcd_file)
-					.Flag("legacy_csv_file", legacy_csv_file)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-					.OptionalString(hw_ila_data)
-			);
+			_tcl.Entry(_builder.write_hw_ila_data(file, force, csv_file, vcd_file, legacy_csv_file, quiet, verbose, hw_ila_data));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write scan data to a file.
@@ -7031,38 +4478,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1817
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// hardware SIO_scan file name
-		/// </param>
-		/// <param name="hw_sio_scan">
-		/// Required
-		/// hardware SIO scan data object
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="file">(Required) hardware SIO_scan file name</param>
+		/// <param name="hw_sio_scan">(Required) hardware SIO scan data object</param>
+		/// <param name="force">(Optional) Overwrite existing file</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Name of the output file</returns>
-		public void write_hw_sio_scan(string file, string hw_sio_scan, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_hw_sio_scan(string file, string hw_sio_scan, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_hw_sio_scan [-force] [-quiet] [-verbose] <file> <hw_sio_scan>
-			_tcl.Add(
-				new SimpleTCLCommand("write_hw_sio_scan")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-					.RequiredString(hw_sio_scan)
-			);
+			_tcl.Entry(_builder.write_hw_sio_scan(file, hw_sio_scan, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write sweep data to a directory.
@@ -7083,38 +4509,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1819
 		/// </summary>
-		/// <param name="directory">
-		/// Required
-		/// hardware SIO_sweep directory path
-		/// </param>
-		/// <param name="hw_sio_sweep">
-		/// Required
-		/// hardware SIO sweep data object
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing directory
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="directory">(Required) hardware SIO_sweep directory path</param>
+		/// <param name="hw_sio_sweep">(Required) hardware SIO sweep data object</param>
+		/// <param name="force">(Optional) Overwrite existing directory</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Name of the output directory</returns>
-		public void write_hw_sio_sweep(string directory, string hw_sio_sweep, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_hw_sio_sweep(string directory, string hw_sio_sweep, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_hw_sio_sweep [-force] [-quiet] [-verbose] <directory> <hw_sio_sweep>
-			_tcl.Add(
-				new SimpleTCLCommand("write_hw_sio_sweep")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(directory)
-					.RequiredString(hw_sio_sweep)
-			);
+			_tcl.Entry(_builder.write_hw_sio_sweep(directory, hw_sio_sweep, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Generate SVF file for current_hw_target
@@ -7192,32 +4597,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1821
 		/// </summary>
-		/// <param name="file_name">
-		/// Required
-		/// SVF filename
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// overwrite svf file if it exists
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void write_hw_svf(string file_name, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="file_name">(Required) SVF filename</param>
+		/// <param name="force">(Optional) overwrite svf file if it exists</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL write_hw_svf(string file_name, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_hw_svf [-force] [-quiet] [-verbose] <file_name>
-			_tcl.Add(
-				new SimpleTCLCommand("write_hw_svf")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file_name)
-			);
+			_tcl.Entry(_builder.write_hw_svf(file_name, force, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

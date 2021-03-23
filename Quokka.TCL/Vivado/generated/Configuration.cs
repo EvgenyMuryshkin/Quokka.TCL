@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class ConfigurationCommands
+	public partial class ConfigurationCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public ConfigurationCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public ConfigurationCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Configure Implementation
@@ -28,27 +30,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 172
 		/// </summary>
-		/// <param name="list">
-		/// Required
-		/// list of config params which need to be configured
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void config_implementation(string list, bool? quiet = null, bool? verbose = null)
+		/// <param name="list">(Required) list of config params which need to be configured</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL config_implementation(string list, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: config_implementation [-quiet] [-verbose] [<list>]
-			_tcl.Add(
-				new SimpleTCLCommand("config_implementation")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(list)
-			);
+			_tcl.Entry(_builder.config_implementation(list, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

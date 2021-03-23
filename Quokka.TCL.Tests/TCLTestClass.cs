@@ -1,7 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Quokka.Rollout;
 using Quokka.TCL.Tools;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Quokka.TCL.Tests
 {
@@ -21,6 +23,13 @@ namespace Quokka.TCL.Tests
         protected void SaveTCL(TCLFile tcl)
         {
             File.WriteAllText(Path.Combine(TestOutputFolder, $"script.tcl"), tcl.ToString());
+        }
+
+        protected List<string> LoadTCLLines()
+        {
+            return File.ReadAllLines(Path.Combine(TestOutputFolder, $"script.tcl"))
+                .Where(l => !string.IsNullOrWhiteSpace(l))
+                .ToList();
         }
     }
 }

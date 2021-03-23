@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class PropertyAndParameterCommands
+	public partial class PropertyAndParameterCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public PropertyAndParameterCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public PropertyAndParameterCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Create property for class of objects(s)
@@ -32,65 +34,30 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 337
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of property to create
-		/// </param>
+		/// <param name="name">(Required) Name of property to create</param>
 		/// <param name="@class">
-		/// Required
+		/// (Required)
 		/// Object type to create property for; valid values are: design,
 		/// net, cell, pin, port, pblock, interface, fileset
 		/// </param>
-		/// <param name="description">
-		/// Optional
-		/// Description of property
-		/// </param>
+		/// <param name="description">(Optional) Description of property</param>
 		/// <param name="type">
-		/// Optional
+		/// (Optional)
 		/// Type of property to create; valid values are: string, int, long,
 		/// double, bool, enum, file Default: string
 		/// </param>
-		/// <param name="enum_values">
-		/// Optional
-		/// Enumeration values
-		/// </param>
-		/// <param name="default_value">
-		/// Optional
-		/// Default value of type string
-		/// </param>
-		/// <param name="file_types">
-		/// Optional
-		/// File type extensions (without the dot)
-		/// </param>
-		/// <param name="display_text">
-		/// Optional
-		/// Text to display when selecting the file in file browser
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="enum_values">(Optional) Enumeration values</param>
+		/// <param name="default_value">(Optional) Default value of type string</param>
+		/// <param name="file_types">(Optional) File type extensions (without the dot)</param>
+		/// <param name="display_text">(Optional) Text to display when selecting the file in file browser</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The property that was created if success, "" if failure</returns>
-		public void create_property(string name, string @class, string description = null, string type = null, string enum_values = null, string default_value = null, string file_types = null, string display_text = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_property(string name, string @class, string description = null, string type = null, string enum_values = null, string default_value = null, string file_types = null, string display_text = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_property [-description <arg>] [-type <arg>] [-enum_values <args>] [-default_value <arg>] [-file_types <args>] [-display_text <arg>] [-quiet] [-verbose] <name> <class>
-			_tcl.Add(
-				new SimpleTCLCommand("create_property")
-					.OptionalNamedString("description", description)
-					.OptionalNamedString("type", type)
-					.OptionalNamedString("enum_values", enum_values)
-					.OptionalNamedString("default_value", default_value)
-					.OptionalNamedString("file_types", file_types)
-					.OptionalNamedString("display_text", display_text)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(@class)
-			);
+			_tcl.Entry(_builder.create_property(name, @class, description, type, enum_values, default_value, file_types, display_text, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Filter a list, resulting in new list
@@ -113,44 +80,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 515
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Operators =~ and !~ use regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="objects">
-		/// Optional
-		/// List of objects to filter
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
+		/// <param name="regexp">(Optional) Operators =~ and !~ use regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="objects">(Optional) List of objects to filter</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <returns>new list</returns>
-		public void filter(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string objects = null, string filter = null)
+		public TTCL filter(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string objects = null, string filter = null)
 		{
 			// TCL Syntax: filter [-regexp] [-nocase] [-quiet] [-verbose] [<objects>] [<filter>]
-			_tcl.Add(
-				new SimpleTCLCommand("filter")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(objects)
-					.OptionalString(filter)
-			);
+			_tcl.Entry(_builder.filter(regexp, nocase, quiet, verbose, objects, filter));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a parameter value
@@ -167,28 +108,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 838
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Parameter name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Required) Parameter name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>parameter value</returns>
-		public void get_param(string name, bool? quiet = null, bool? verbose = null)
+		public TTCL get_param(string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_param [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("get_param")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.get_param(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get properties of object
@@ -225,43 +153,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 880
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of property whose value is to be retrieved
-		/// </param>
-		/// <param name="@object">
-		/// Required
-		/// Object to query for properties
-		/// </param>
-		/// <param name="min">
-		/// Optional
-		/// Return only the minimum value
-		/// </param>
-		/// <param name="max">
-		/// Optional
-		/// Return only the maximum value
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Required) Name of property whose value is to be retrieved</param>
+		/// <param name="@object">(Required) Object to query for properties</param>
+		/// <param name="min">(Optional) Return only the minimum value</param>
+		/// <param name="max">(Optional) Return only the maximum value</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>property value</returns>
-		public void get_property(string name, string @object, bool? min = null, bool? max = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_property(string name, string @object, bool? min = null, bool? max = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_property [-min] [-max] [-quiet] [-verbose] <name> <object>
-			_tcl.Add(
-				new SimpleTCLCommand("get_property")
-					.Flag("min", min)
-					.Flag("max", max)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(@object)
-			);
+			_tcl.Entry(_builder.get_property(name, @object, min, max, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get all parameter names
@@ -279,23 +182,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1009
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list</returns>
-		public void list_param(bool? quiet = null, bool? verbose = null)
+		public TTCL list_param(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: list_param [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("list_param")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.list_param(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// List properties of object
@@ -315,44 +209,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1011
 		/// </summary>
-		/// <param name="@class">
-		/// Optional
-		/// Object type to query for properties. Ignored if object is
-		/// specified.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Pattern is treated as a regular expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="@object">
-		/// Optional
-		/// Object to query for properties
-		/// </param>
-		/// <param name="pattern">
-		/// Optional
-		/// Pattern to match properties against Default: *
-		/// </param>
+		/// <param name="@class">(Optional) Object type to query for properties. Ignored if object is specified.</param>
+		/// <param name="regexp">(Optional) Pattern is treated as a regular expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="@object">(Optional) Object to query for properties</param>
+		/// <param name="pattern">(Optional) Pattern to match properties against Default: *</param>
 		/// <returns>list of property names</returns>
-		public void list_property(string @class = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, string @object = null, string pattern = null)
+		public TTCL list_property(string @class = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, string @object = null, string pattern = null)
 		{
 			// TCL Syntax: list_property [-class <arg>] [-regexp] [-quiet] [-verbose] [<object>] [<pattern>]
-			_tcl.Add(
-				new SimpleTCLCommand("list_property")
-					.OptionalNamedString("class", @class)
-					.Flag("regexp", regexp)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(@object)
-					.OptionalString(pattern)
-			);
+			_tcl.Entry(_builder.list_property(@class, regexp, quiet, verbose, @object, pattern));
+			return _tcl;
 		}
 		/// <summary>
 		/// List legal property values of object
@@ -377,44 +245,22 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1013
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of property whose legal values is to be retrieved
-		/// </param>
-		/// <param name="@default">
-		/// Optional
-		/// Show only the default value.
-		/// </param>
+		/// <param name="name">(Required) Name of property whose legal values is to be retrieved</param>
+		/// <param name="@default">(Optional) Show only the default value.</param>
 		/// <param name="@class">
-		/// Optional
+		/// (Optional)
 		/// Object type to query for legal property values. Ignored if
 		/// object is specified.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="@object">
-		/// Optional
-		/// Object to query for legal properties values
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="@object">(Optional) Object to query for legal properties values</param>
 		/// <returns>list of property values</returns>
-		public void list_property_value(string name, bool? @default = null, string @class = null, bool? quiet = null, bool? verbose = null, string @object = null)
+		public TTCL list_property_value(string name, bool? @default = null, string @class = null, bool? quiet = null, bool? verbose = null, string @object = null)
 		{
 			// TCL Syntax: list_property_value [-default] [-class <arg>] [-quiet] [-verbose] <name> [<object>]
-			_tcl.Add(
-				new SimpleTCLCommand("list_property_value")
-					.Flag("default", @default)
-					.OptionalNamedString("class", @class)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.OptionalString(@object)
-			);
+			_tcl.Entry(_builder.list_property_value(name, @default, @class, quiet, verbose, @object));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get information about all parameters
@@ -434,48 +280,22 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1368
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="non_default">
-		/// Optional
-		/// Report only params that are set to a non default value
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="pattern">
-		/// Optional
-		/// Display params matching pattern Default: *
-		/// </param>
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="non_default">(Optional) Report only params that are set to a non default value</param>
+		/// <param name="return_string">(Optional) Return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="pattern">(Optional) Display params matching pattern Default: *</param>
 		/// <returns>param report</returns>
-		public void report_param(string file = null, bool? append = null, bool? non_default = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, string pattern = null)
+		public TTCL report_param(string file = null, bool? append = null, bool? non_default = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, string pattern = null)
 		{
 			// TCL Syntax: report_param [-file <arg>] [-append] [-non_default] [-return_string] [-quiet] [-verbose] [<pattern>]
-			_tcl.Add(
-				new SimpleTCLCommand("report_param")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("non_default", non_default)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(pattern)
-			);
+			_tcl.Entry(_builder.report_param(file, append, non_default, return_string, quiet, verbose, pattern));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report properties of object
@@ -513,65 +333,30 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1384
 		/// </summary>
-		/// <param name="all">
-		/// Optional
-		/// Report all properties of object even if not set
-		/// </param>
-		/// <param name="@class">
-		/// Optional
-		/// Object type to query for properties. Not valid with <object>
-		/// </param>
+		/// <param name="all">(Optional) Report all properties of object even if not set</param>
+		/// <param name="@class">(Optional) Object type to query for properties. Not valid with <object></param>
 		/// <param name="return_string">
-		/// Optional
+		/// (Optional)
 		/// Set the result of running report_property in the Tcl
 		/// interpreter's result variable
 		/// </param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output result to. Send output to console if -file
 		/// is not used
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Pattern is treated as a regular expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="@object">
-		/// Optional
-		/// Object to query for properties
-		/// </param>
-		/// <param name="pattern">
-		/// Optional
-		/// Pattern to match properties against Default: *
-		/// </param>
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="regexp">(Optional) Pattern is treated as a regular expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="@object">(Optional) Object to query for properties</param>
+		/// <param name="pattern">(Optional) Pattern to match properties against Default: *</param>
 		/// <returns>property report</returns>
-		public void report_property(bool? all = null, string @class = null, bool? return_string = null, string file = null, bool? append = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, string @object = null, string pattern = null)
+		public TTCL report_property(bool? all = null, string @class = null, bool? return_string = null, string file = null, bool? append = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, string @object = null, string pattern = null)
 		{
 			// TCL Syntax: report_property [-all] [-class <arg>] [-return_string] [-file <arg>] [-append] [-regexp] [-quiet] [-verbose] [<object>] [<pattern>]
-			_tcl.Add(
-				new SimpleTCLCommand("report_property")
-					.Flag("all", all)
-					.OptionalNamedString("class", @class)
-					.Flag("return_string", return_string)
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("regexp", regexp)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(@object)
-					.OptionalString(pattern)
-			);
+			_tcl.Entry(_builder.report_property(all, @class, return_string, file, append, regexp, quiet, verbose, @object, pattern));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reset a parameter
@@ -588,28 +373,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1474
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Parameter name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Required) Parameter name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>original value</returns>
-		public void reset_param(string name, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_param(string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_param [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("reset_param")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.reset_param(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reset property on object(s)
@@ -629,33 +401,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1478
 		/// </summary>
-		/// <param name="property_name">
-		/// Required
-		/// Name of property to reset
-		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// Objects to set properties
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="property_name">(Required) Name of property to reset</param>
+		/// <param name="objects">(Required) Objects to set properties</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The value that was set if success, "" if failure</returns>
-		public void reset_property(string property_name, string objects, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_property(string property_name, string objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_property [-quiet] [-verbose] <property_name> <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("reset_property")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(property_name)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.reset_property(property_name, objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set a parameter value
@@ -695,33 +450,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1639
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Parameter name
-		/// </param>
-		/// <param name="value">
-		/// Required
-		/// Parameter value
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Required) Parameter name</param>
+		/// <param name="value">(Required) Parameter value</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>newly set parameter value</returns>
-		public void set_param(string name, string value, bool? quiet = null, bool? verbose = null)
+		public TTCL set_param(string name, string value, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_param [-quiet] [-verbose] <name> <value>
-			_tcl.Add(
-				new SimpleTCLCommand("set_param")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(value)
-			);
+			_tcl.Entry(_builder.set_param(name, value, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Sets the part on the current project. If no project is open, then a diskless project is created.
@@ -749,27 +487,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1642
 		/// </summary>
-		/// <param name="part">
-		/// Required
-		/// Set current project's part to this part.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_part(string part, bool? quiet = null, bool? verbose = null)
+		/// <param name="part">(Required) Set current project's part to this part.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_part(string part, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_part [-quiet] [-verbose] <part>
-			_tcl.Add(
-				new SimpleTCLCommand("set_part")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(part)
-			);
+			_tcl.Entry(_builder.set_part(part, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set property on object(s)
@@ -841,42 +566,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1649
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of property to set. Not valid with -dict option
-		/// </param>
-		/// <param name="value">
-		/// Required
-		/// Value of property to set. Not valid with -dict option
-		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// Objects to set properties on
-		/// </param>
-		/// <param name="dict">
-		/// Optional
-		/// list of name/value pairs of properties to set
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_property(string name, string value, string objects, string dict = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Required) Name of property to set. Not valid with -dict option</param>
+		/// <param name="value">(Required) Value of property to set. Not valid with -dict option</param>
+		/// <param name="objects">(Required) Objects to set properties on</param>
+		/// <param name="dict">(Optional) list of name/value pairs of properties to set</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_property(string name, string value, string objects, string dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_property [-dict <args>] [-quiet] [-verbose] <name> <value> <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("set_property")
-					.OptionalNamedString("dict", dict)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(value)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.set_property(name, value, objects, dict, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

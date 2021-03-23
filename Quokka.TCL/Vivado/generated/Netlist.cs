@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class NetlistCommands
+	public partial class NetlistCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public NetlistCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public NetlistCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Connect a net to pins or ports
@@ -35,34 +37,28 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 201
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// List of pin and port objects to connect
-		/// </param>
+		/// <param name="objects">(Required) List of pin and port objects to connect</param>
 		/// <param name="hierarchical">
-		/// Optional
+		/// (Optional)
 		/// Allow hierarchical connection, creating nets and pins as
 		/// needed (see -basename).
 		/// </param>
 		/// <param name="basename">
-		/// Optional
+		/// (Optional)
 		/// base name to use for net / pin names needed when doing
 		/// hierarchical connection (see -hier). Default value is inferred
 		/// from the name of the net being connected (see -net).
 		/// </param>
-		/// <param name="net">
-		/// Optional
-		/// Net to connect to given objects.
-		/// </param>
+		/// <param name="net">(Optional) Net to connect to given objects.</param>
 		/// <param name="net_object_list">
-		/// Optional
+		/// (Optional)
 		/// optional, a list of net and pin/port list pairs, each pin or port
 		/// list element is connected to the corresponding net, e.g.
 		/// { net_a { pin_b port_c } net_d pin_e }. Cannot be used with -
 		/// net, -objects list is ignored when -net_object_list is used.
 		/// </param>
 		/// <param name="dict">
-		/// Optional
+		/// (Optional)
 		/// alternative to -net_object_list, faster, but requires a list of
 		/// net and pin/port object pairs (must be a list of objects, not
 		/// names or other TCL objects), each pin or port list element is
@@ -70,28 +66,13 @@ namespace Quokka.TCL.Vivado
 		/// $net_2 $pin_2 }. Cannot be used with -net, -objects list is
 		/// ignored when -dict is used.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void connect_net(string objects, bool? hierarchical = null, string basename = null, string net = null, string net_object_list = null, string dict = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL connect_net(string objects, bool? hierarchical = null, string basename = null, string net = null, string net_object_list = null, string dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: connect_net [-hierarchical] [-basename <arg>] [-net <args>] [-objects <args>] [-net_object_list <args>] [-dict <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("connect_net")
-					.Flag("hierarchical", hierarchical)
-					.OptionalNamedString("basename", basename)
-					.OptionalNamedString("net", net)
-					.RequiredNamedString("objects", objects)
-					.OptionalNamedString("net_object_list", net_object_list)
-					.OptionalNamedString("dict", dict)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.connect_net(objects, hierarchical, basename, net, net_object_list, dict, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create cells in the current design
@@ -123,37 +104,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 238
 		/// </summary>
-		/// <param name="reference">
-		/// Required
-		/// Library cell or design which cells reference
-		/// </param>
-		/// <param name="cells">
-		/// Required
-		/// Names of cells to create
-		/// </param>
-		/// <param name="black_box">
-		/// Optional
-		/// Create black box instance
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_cell(string reference, string cells, bool? black_box = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="reference">(Required) Library cell or design which cells reference</param>
+		/// <param name="cells">(Required) Names of cells to create</param>
+		/// <param name="black_box">(Optional) Create black box instance</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_cell(string reference, string cells, bool? black_box = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_cell -reference <arg> [-black_box] [-quiet] [-verbose] <cells>...
-			_tcl.Add(
-				new SimpleTCLCommand("create_cell")
-					.RequiredNamedString("reference", reference)
-					.Flag("black_box", black_box)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(cells)
-			);
+			_tcl.Entry(_builder.create_cell(reference, cells, black_box, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create nets in the current design
@@ -180,37 +140,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 314
 		/// </summary>
-		/// <param name="nets">
-		/// Required
-		/// Names of nets to create
-		/// </param>
-		/// <param name="from">
-		/// Optional
-		/// Starting bus index
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// Ending bus index
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_net(string nets, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="nets">(Required) Names of nets to create</param>
+		/// <param name="from">(Optional) Starting bus index</param>
+		/// <param name="to">(Optional) Ending bus index</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_net(string nets, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_net [-from <arg>] [-to <arg>] [-quiet] [-verbose] <nets>...
-			_tcl.Add(
-				new SimpleTCLCommand("create_net")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(nets)
-			);
+			_tcl.Entry(_builder.create_net(nets, from, to, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create pins in the current design
@@ -244,42 +183,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 323
 		/// </summary>
-		/// <param name="direction">
-		/// Required
-		/// Pin direction Values: IN, OUT, INOUT
-		/// </param>
-		/// <param name="pins">
-		/// Required
-		/// Names of pins to create
-		/// </param>
-		/// <param name="from">
-		/// Optional
-		/// Starting bus index
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// Ending bus index
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_pin(string direction, string pins, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="direction">(Required) Pin direction Values: IN, OUT, INOUT</param>
+		/// <param name="pins">(Required) Names of pins to create</param>
+		/// <param name="from">(Optional) Starting bus index</param>
+		/// <param name="to">(Optional) Ending bus index</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_pin(string direction, string pins, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_pin [-from <arg>] [-to <arg>] -direction <arg> [-quiet] [-verbose] <pins>...
-			_tcl.Add(
-				new SimpleTCLCommand("create_pin")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.RequiredNamedString("direction", direction)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(pins)
-			);
+			_tcl.Entry(_builder.create_pin(direction, pins, from, to, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Disconnect a net from pins or ports
@@ -298,47 +212,31 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 486
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// List of pins or ports to disconnect
-		/// </param>
+		/// <param name="objects">(Required) List of pins or ports to disconnect</param>
 		/// <param name="prune">
-		/// Optional
+		/// (Optional)
 		/// When performing disconnect, remove the net and any
 		/// pin/net chain up to the pin on any primitive instance as long
 		/// as each object in the chain has only 1 remaining connection.
 		/// </param>
 		/// <param name="net">
-		/// Optional
+		/// (Optional)
 		/// Net to disconnect - optional, net attached to first pin or port
 		/// object is used if not specified.
 		/// </param>
 		/// <param name="pinlist">
-		/// Optional
+		/// (Optional)
 		/// List of pin and port objects to disconnect (names of objects
 		/// supported, but not as flexibly as with -objects, faster than -
 		/// objects.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void disconnect_net(string objects, bool? prune = null, string net = null, string pinlist = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL disconnect_net(string objects, bool? prune = null, string net = null, string pinlist = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: disconnect_net [-prune] [-net <arg>] [-objects <args>] [-pinlist <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("disconnect_net")
-					.Flag("prune", prune)
-					.OptionalNamedString("net", net)
-					.RequiredNamedString("objects", objects)
-					.OptionalNamedString("pinlist", pinlist)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.disconnect_net(objects, prune, net, pinlist, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get the routed or estimated delays in picoseconds on a net from the driver to each load pin.
@@ -373,60 +271,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 818
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get 'net_delay' objects of these types: 'net'.
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching. (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match the 'net_delay' objects against patterns. Default: *
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// Get the delay of the net to the given terminal(s) or port(s).
-		/// </param>
+		/// <param name="of_objects">(Required) Get 'net_delay' objects of these types: 'net'.</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
+		/// <param name="patterns">(Optional) Match the 'net_delay' objects against patterns. Default: *</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="to">(Optional) Get the delay of the net to the given terminal(s) or port(s).</param>
 		/// <param name="interconnect_only">
-		/// Optional
+		/// (Optional)
 		/// Include only interconnect delays. The default is to include
 		/// the intra-site delay.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>net_delays</returns>
-		public void get_net_delays(string of_objects, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, string to = null, bool? interconnect_only = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_net_delays(string of_objects, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, string to = null, bool? interconnect_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_net_delays -of_objects <args> [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-to <args>] [-interconnect_only] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("get_net_delays")
-					.RequiredNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("patterns", patterns)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("to", to)
-					.Flag("interconnect_only", interconnect_only)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.get_net_delays(of_objects, regexp, nocase, patterns, filter, to, interconnect_only, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Remove cells from the current design
@@ -449,27 +312,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1211
 		/// </summary>
-		/// <param name="cells">
-		/// Required
-		/// List of cells to remove
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void remove_cell(string cells, bool? quiet = null, bool? verbose = null)
+		/// <param name="cells">(Required) List of cells to remove</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL remove_cell(string cells, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_cell [-quiet] [-verbose] <cells>...
-			_tcl.Add(
-				new SimpleTCLCommand("remove_cell")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(cells)
-			);
+			_tcl.Entry(_builder.remove_cell(cells, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Remove nets from the current design
@@ -491,34 +341,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1241
 		/// </summary>
-		/// <param name="nets">
-		/// Required
-		/// List of nets to remove
-		/// </param>
+		/// <param name="nets">(Required) List of nets to remove</param>
 		/// <param name="prune">
-		/// Optional
+		/// (Optional)
 		/// When performing net removal, remove pins and ports which
 		/// are left unconnected as a result of the remove_net
 		/// operation.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void remove_net(string nets, bool? prune = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL remove_net(string nets, bool? prune = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_net [-prune] [-quiet] [-verbose] <nets>...
-			_tcl.Add(
-				new SimpleTCLCommand("remove_net")
-					.Flag("prune", prune)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(nets)
-			);
+			_tcl.Entry(_builder.remove_net(nets, prune, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Remove pins from the current design
@@ -544,27 +380,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1243
 		/// </summary>
-		/// <param name="pins">
-		/// Required
-		/// List of pins to remove
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void remove_pin(string pins, bool? quiet = null, bool? verbose = null)
+		/// <param name="pins">(Required) List of pins to remove</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL remove_pin(string pins, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_pin [-quiet] [-verbose] <pins>...
-			_tcl.Add(
-				new SimpleTCLCommand("remove_pin")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(pins)
-			);
+			_tcl.Entry(_builder.remove_pin(pins, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// rename a cell
@@ -591,32 +414,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1248
 		/// </summary>
-		/// <param name="to">
-		/// Required
-		/// New name
-		/// </param>
-		/// <param name="cell">
-		/// Required
-		/// Cell to rename
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void rename_cell(string to, string cell, bool? quiet = null, bool? verbose = null)
+		/// <param name="to">(Required) New name</param>
+		/// <param name="cell">(Required) Cell to rename</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL rename_cell(string to, string cell, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: rename_cell -to <arg> [-quiet] [-verbose] <cell>...
-			_tcl.Add(
-				new SimpleTCLCommand("rename_cell")
-					.RequiredNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(cell)
-			);
+			_tcl.Entry(_builder.rename_cell(to, cell, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// rename a net
@@ -645,32 +451,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1250
 		/// </summary>
-		/// <param name="to">
-		/// Required
-		/// New name
-		/// </param>
-		/// <param name="net">
-		/// Required
-		/// Net to rename
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void rename_net(string to, string net, bool? quiet = null, bool? verbose = null)
+		/// <param name="to">(Required) New name</param>
+		/// <param name="net">(Required) Net to rename</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL rename_net(string to, string net, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: rename_net -to <arg> [-quiet] [-verbose] <net>...
-			_tcl.Add(
-				new SimpleTCLCommand("rename_net")
-					.RequiredNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(net)
-			);
+			_tcl.Entry(_builder.rename_net(to, net, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// rename a pin
@@ -707,32 +496,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1252
 		/// </summary>
-		/// <param name="to">
-		/// Required
-		/// New name
-		/// </param>
-		/// <param name="pin">
-		/// Required
-		/// Pin to rename
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void rename_pin(string to, string pin, bool? quiet = null, bool? verbose = null)
+		/// <param name="to">(Required) New name</param>
+		/// <param name="pin">(Required) Pin to rename</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL rename_pin(string to, string pin, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: rename_pin -to <arg> [-quiet] [-verbose] <pin>...
-			_tcl.Add(
-				new SimpleTCLCommand("rename_pin")
-					.RequiredNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(pin)
-			);
+			_tcl.Entry(_builder.rename_pin(to, pin, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// rename a port
@@ -759,32 +531,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1255
 		/// </summary>
-		/// <param name="to">
-		/// Required
-		/// New name
-		/// </param>
-		/// <param name="port">
-		/// Required
-		/// Port to rename
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void rename_port(string to, string port, bool? quiet = null, bool? verbose = null)
+		/// <param name="to">(Required) New name</param>
+		/// <param name="port">(Required) Port to rename</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL rename_port(string to, string port, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: rename_port -to <arg> [-quiet] [-verbose] <port>...
-			_tcl.Add(
-				new SimpleTCLCommand("rename_port")
-					.RequiredNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(port)
-			);
+			_tcl.Entry(_builder.rename_port(to, port, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// rename a cell ref
@@ -809,39 +564,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1257
 		/// </summary>
-		/// <param name="@ref">
-		/// Optional
-		/// Cell ref to rename
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// New name
-		/// </param>
+		/// <param name="@ref">(Optional) Cell ref to rename</param>
+		/// <param name="to">(Optional) New name</param>
 		/// <param name="prefix_all">
-		/// Optional
+		/// (Optional)
 		/// Rename all eligible hierarchical cell refs in the current
 		/// design. Construct the new name using the given prefix plus
 		/// the original name
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void rename_ref(string @ref = null, string to = null, string prefix_all = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL rename_ref(string @ref = null, string to = null, string prefix_all = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: rename_ref [-ref <arg>] [-to <arg>] [-prefix_all <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("rename_ref")
-					.OptionalNamedString("ref", @ref)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("prefix_all", prefix_all)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.rename_ref(@ref, to, prefix_all, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Resize net bus in the current design
@@ -869,37 +606,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1492
 		/// </summary>
-		/// <param name="net_bus_name">
-		/// Required
-		/// Name of the net bus to resize
-		/// </param>
-		/// <param name="from">
-		/// Optional
-		/// New starting bus index
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// New ending bus index
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void resize_net_bus(string net_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="net_bus_name">(Required) Name of the net bus to resize</param>
+		/// <param name="from">(Optional) New starting bus index</param>
+		/// <param name="to">(Optional) New ending bus index</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL resize_net_bus(string net_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: resize_net_bus [-from <arg>] [-to <arg>] [-quiet] [-verbose] <net_bus_name>...
-			_tcl.Add(
-				new SimpleTCLCommand("resize_net_bus")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(net_bus_name)
-			);
+			_tcl.Entry(_builder.resize_net_bus(net_bus_name, from, to, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Resize pin bus in the current design
@@ -935,37 +651,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1497
 		/// </summary>
-		/// <param name="pin_bus_name">
-		/// Required
-		/// Name of the pin bus to resize
-		/// </param>
-		/// <param name="from">
-		/// Optional
-		/// New starting bus index
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// New ending bus index
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void resize_pin_bus(string pin_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="pin_bus_name">(Required) Name of the pin bus to resize</param>
+		/// <param name="from">(Optional) New starting bus index</param>
+		/// <param name="to">(Optional) New ending bus index</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL resize_pin_bus(string pin_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: resize_pin_bus [-from <arg>] [-to <arg>] [-quiet] [-verbose] <pin_bus_name>...
-			_tcl.Add(
-				new SimpleTCLCommand("resize_pin_bus")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(pin_bus_name)
-			);
+			_tcl.Entry(_builder.resize_pin_bus(pin_bus_name, from, to, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Tie off unused cell pins
@@ -980,27 +675,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1711
 		/// </summary>
-		/// <param name="of_objects">
-		/// Optional
-		/// tie unused pins of specified cell(s)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void tie_unused_pins(string of_objects = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="of_objects">(Optional) tie unused pins of specified cell(s)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL tie_unused_pins(string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: tie_unused_pins [-of_objects <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("tie_unused_pins")
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.tie_unused_pins(of_objects, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

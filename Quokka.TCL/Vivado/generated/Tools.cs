@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class ToolsCommands
+	public partial class ToolsCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public ToolsCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public ToolsCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Interactive phys_opt_design.
@@ -55,135 +57,35 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 982
 		/// </summary>
-		/// <param name="cluster">
-		/// Required
-		/// Clusters of load pins
-		/// </param>
-		/// <param name="place_cell">
-		/// Required
-		/// Place cell or cell connecting to pin to loc
-		/// </param>
-		/// <param name="fanout_opt">
-		/// Optional
-		/// Fanout optimization including very high fanout
-		/// optimizations
-		/// </param>
-		/// <param name="critical_cell_opt">
-		/// Optional
-		/// Do cell-duplication based optimization on timing critical
-		/// nets
-		/// </param>
-		/// <param name="placement_opt">
-		/// Optional
-		/// Move cells to reduce delay on timing-critical nets
-		/// </param>
-		/// <param name="rewire">
-		/// Optional
-		/// Do rewiring optimization
-		/// </param>
-		/// <param name="net">
-		/// Optional
-		/// net to be optimized
-		/// </param>
-		/// <param name="place">
-		/// Optional
-		/// Replay placement of the transformation
-		/// </param>
-		/// <param name="dsp_register_opt">
-		/// Optional
-		/// DSP register optimization
-		/// </param>
-		/// <param name="bram_register_opt">
-		/// Optional
-		/// BRAM register optimization
-		/// </param>
-		/// <param name="uram_register_opt">
-		/// Optional
-		/// UltraRAM register optimization
-		/// </param>
-		/// <param name="shift_register_opt">
-		/// Optional
-		/// Shift register optimization
-		/// </param>
-		/// <param name="cell">
-		/// Optional
-		/// cell to be optimized
-		/// </param>
-		/// <param name="packing">
-		/// Optional
-		/// Packing in DSP/BRAM
-		/// </param>
-		/// <param name="unpacking">
-		/// Optional
-		/// Unpacking in DSP/BRAM
-		/// </param>
-		/// <param name="port">
-		/// Optional
-		/// Port in DSP/BRAM that is optimized
-		/// </param>
-		/// <param name="critical_pin_opt">
-		/// Optional
-		/// Pin Swap optimization
-		/// </param>
-		/// <param name="skipped_optimization">
-		/// Optional
-		/// The change is not committed
-		/// </param>
-		/// <param name="insert_negative_edge_ffs">
-		/// Optional
-		/// Inserting negative edge triggered FFs for high hold
-		/// mitigation
-		/// </param>
-		/// <param name="hold_fix">
-		/// Optional
-		/// Inserting buffers for hold fix optimization
-		/// </param>
-		/// <param name="slr_crossing_opt">
-		/// Optional
-		/// Optimize slr crossing nets
-		/// </param>
-		/// <param name="auto_pipeline">
-		/// Optional
-		/// Auto pipeline
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void iphys_opt_design(string cluster, string place_cell, bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, string net = null, bool? place = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, string cell = null, bool? packing = null, bool? unpacking = null, string port = null, bool? critical_pin_opt = null, bool? skipped_optimization = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? auto_pipeline = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="cluster">(Required) Clusters of load pins</param>
+		/// <param name="place_cell">(Required) Place cell or cell connecting to pin to loc</param>
+		/// <param name="fanout_opt">(Optional) Fanout optimization including very high fanout optimizations</param>
+		/// <param name="critical_cell_opt">(Optional) Do cell-duplication based optimization on timing critical nets</param>
+		/// <param name="placement_opt">(Optional) Move cells to reduce delay on timing-critical nets</param>
+		/// <param name="rewire">(Optional) Do rewiring optimization</param>
+		/// <param name="net">(Optional) net to be optimized</param>
+		/// <param name="place">(Optional) Replay placement of the transformation</param>
+		/// <param name="dsp_register_opt">(Optional) DSP register optimization</param>
+		/// <param name="bram_register_opt">(Optional) BRAM register optimization</param>
+		/// <param name="uram_register_opt">(Optional) UltraRAM register optimization</param>
+		/// <param name="shift_register_opt">(Optional) Shift register optimization</param>
+		/// <param name="cell">(Optional) cell to be optimized</param>
+		/// <param name="packing">(Optional) Packing in DSP/BRAM</param>
+		/// <param name="unpacking">(Optional) Unpacking in DSP/BRAM</param>
+		/// <param name="port">(Optional) Port in DSP/BRAM that is optimized</param>
+		/// <param name="critical_pin_opt">(Optional) Pin Swap optimization</param>
+		/// <param name="skipped_optimization">(Optional) The change is not committed</param>
+		/// <param name="insert_negative_edge_ffs">(Optional) Inserting negative edge triggered FFs for high hold mitigation</param>
+		/// <param name="hold_fix">(Optional) Inserting buffers for hold fix optimization</param>
+		/// <param name="slr_crossing_opt">(Optional) Optimize slr crossing nets</param>
+		/// <param name="auto_pipeline">(Optional) Auto pipeline</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL iphys_opt_design(string cluster, string place_cell, bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, string net = null, bool? place = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, string cell = null, bool? packing = null, bool? unpacking = null, string port = null, bool? critical_pin_opt = null, bool? skipped_optimization = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? auto_pipeline = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: iphys_opt_design [-fanout_opt] [-critical_cell_opt] [-placement_opt] [-rewire] [-net <arg>] -cluster <args> -place_cell <args> [-place] [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-shift_register_opt] [-cell <arg>] [-packing] [-unpacking] [-port <arg>] [-critical_pin_opt] [-skipped_optimization] [-insert_negative_edge_ffs] [-hold_fix] [-slr_crossing_opt] [-auto_pipeline] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("iphys_opt_design")
-					.Flag("fanout_opt", fanout_opt)
-					.Flag("critical_cell_opt", critical_cell_opt)
-					.Flag("placement_opt", placement_opt)
-					.Flag("rewire", rewire)
-					.OptionalNamedString("net", net)
-					.RequiredNamedString("cluster", cluster)
-					.RequiredNamedString("place_cell", place_cell)
-					.Flag("place", place)
-					.Flag("dsp_register_opt", dsp_register_opt)
-					.Flag("bram_register_opt", bram_register_opt)
-					.Flag("uram_register_opt", uram_register_opt)
-					.Flag("shift_register_opt", shift_register_opt)
-					.OptionalNamedString("cell", cell)
-					.Flag("packing", packing)
-					.Flag("unpacking", unpacking)
-					.OptionalNamedString("port", port)
-					.Flag("critical_pin_opt", critical_pin_opt)
-					.Flag("skipped_optimization", skipped_optimization)
-					.Flag("insert_negative_edge_ffs", insert_negative_edge_ffs)
-					.Flag("hold_fix", hold_fix)
-					.Flag("slr_crossing_opt", slr_crossing_opt)
-					.Flag("auto_pipeline", auto_pipeline)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.iphys_opt_design(cluster, place_cell, fanout_opt, critical_cell_opt, placement_opt, rewire, net, place, dsp_register_opt, bram_register_opt, uram_register_opt, shift_register_opt, cell, packing, unpacking, port, critical_pin_opt, skipped_optimization, insert_negative_edge_ffs, hold_fix, slr_crossing_opt, auto_pipeline, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Open a netlist design
@@ -217,71 +119,23 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1001
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// Design name
-		/// </param>
-		/// <param name="part">
-		/// Optional
-		/// Target part
-		/// </param>
-		/// <param name="constrset">
-		/// Optional
-		/// Constraint fileset to use
-		/// </param>
-		/// <param name="top">
-		/// Optional
-		/// Specify the top module name when the structural netlist is
-		/// Verilog
-		/// </param>
-		/// <param name="mode">
-		/// Optional
-		/// The design mode. Values: default, out_of_context Default:
-		/// default
-		/// </param>
-		/// <param name="pr_config">
-		/// Optional
-		/// PR Configuration to apply while opening the design
-		/// </param>
-		/// <param name="reconfig_partitions">
-		/// Optional
-		/// List of reconfigurable partitions to load while opening the
-		/// design
-		/// </param>
-		/// <param name="partitions">
-		/// Optional
-		/// List of partitions to load while opening the design
-		/// </param>
-		/// <param name="ignore_timing">
-		/// Optional
-		/// open a netlist design without the timing constraints.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Optional) Design name</param>
+		/// <param name="part">(Optional) Target part</param>
+		/// <param name="constrset">(Optional) Constraint fileset to use</param>
+		/// <param name="top">(Optional) Specify the top module name when the structural netlist is Verilog</param>
+		/// <param name="mode">(Optional) The design mode. Values: default, out_of_context Default: default</param>
+		/// <param name="pr_config">(Optional) PR Configuration to apply while opening the design</param>
+		/// <param name="reconfig_partitions">(Optional) List of reconfigurable partitions to load while opening the design</param>
+		/// <param name="partitions">(Optional) List of partitions to load while opening the design</param>
+		/// <param name="ignore_timing">(Optional) open a netlist design without the timing constraints.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>design object</returns>
-		public void link_design(string name = null, string part = null, string constrset = null, string top = null, string mode = null, string pr_config = null, string reconfig_partitions = null, string partitions = null, bool? ignore_timing = null, bool? quiet = null, bool? verbose = null)
+		public TTCL link_design(string name = null, string part = null, string constrset = null, string top = null, string mode = null, string pr_config = null, string reconfig_partitions = null, string partitions = null, bool? ignore_timing = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: link_design [-name <arg>] [-part <arg>] [-constrset <arg>] [-top <arg>] [-mode <arg>] [-pr_config <arg>] [-reconfig_partitions <args>] [-partitions <args>] [-ignore_timing] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("link_design")
-					.OptionalNamedString("name", name)
-					.OptionalNamedString("part", part)
-					.OptionalNamedString("constrset", constrset)
-					.OptionalNamedString("top", top)
-					.OptionalNamedString("mode", mode)
-					.OptionalNamedString("pr_config", pr_config)
-					.OptionalNamedString("reconfig_partitions", reconfig_partitions)
-					.OptionalNamedString("partitions", partitions)
-					.Flag("ignore_timing", ignore_timing)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.link_design(name, part, constrset, top, mode, pr_config, reconfig_partitions, partitions, ignore_timing, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// List available features.
@@ -302,22 +156,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1005
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void list_features(bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL list_features(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: list_features [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("list_features")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.list_features(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Load Tcl commands for a specified feature.
@@ -345,28 +190,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1017
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="features">
-		/// Optional
+		/// (Optional)
 		/// Feature(s) to load, use list_features for a list of available
 		/// features.
 		/// </param>
-		public void load_features(bool? quiet = null, bool? verbose = null, string features = null)
+		public TTCL load_features(bool? quiet = null, bool? verbose = null, string features = null)
 		{
 			// TCL Syntax: load_features [-quiet] [-verbose] [<features>...]
-			_tcl.Add(
-				new SimpleTCLCommand("load_features")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(features)
-			);
+			_tcl.Entry(_builder.load_features(quiet, verbose, features));
+			return _tcl;
 		}
 		/// <summary>
 		/// Optimize the current netlist. This will perform the retarget, propconst, sweep and
@@ -437,124 +272,38 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1082
 		/// </summary>
-		/// <param name="retarget">
-		/// Optional
-		/// Retarget
-		/// </param>
-		/// <param name="propconst">
-		/// Optional
-		/// Propagate constants across leaf-level instances
-		/// </param>
-		/// <param name="sweep">
-		/// Optional
-		/// Remove unconnected leaf-level instances
-		/// </param>
-		/// <param name="bram_power_opt">
-		/// Optional
-		/// Perform Block RAM power optimizations
-		/// </param>
-		/// <param name="remap">
-		/// Optional
-		/// Remap logic optimally in LUTs
-		/// </param>
-		/// <param name="aggressive_remap">
-		/// Optional
-		/// High effort remap optimization
-		/// </param>
-		/// <param name="resynth_area">
-		/// Optional
-		/// Resynthesis
-		/// </param>
-		/// <param name="resynth_seq_area">
-		/// Optional
-		/// Resynthesis (with Sequential optimizations)
-		/// </param>
+		/// <param name="retarget">(Optional) Retarget</param>
+		/// <param name="propconst">(Optional) Propagate constants across leaf-level instances</param>
+		/// <param name="sweep">(Optional) Remove unconnected leaf-level instances</param>
+		/// <param name="bram_power_opt">(Optional) Perform Block RAM power optimizations</param>
+		/// <param name="remap">(Optional) Remap logic optimally in LUTs</param>
+		/// <param name="aggressive_remap">(Optional) High effort remap optimization</param>
+		/// <param name="resynth_area">(Optional) Resynthesis</param>
+		/// <param name="resynth_seq_area">(Optional) Resynthesis (with Sequential optimizations)</param>
 		/// <param name="directive">
-		/// Optional
+		/// (Optional)
 		/// Mode of behavior (directive) for this command. Please refer
 		/// to Arguments section of this help for values for this option
 		/// Default: Default
 		/// </param>
-		/// <param name="muxf_remap">
-		/// Optional
-		/// Optimize all MuxFx cells to LUT3
-		/// </param>
-		/// <param name="hier_fanout_limit">
-		/// Optional
-		/// Replicate by module with threshold N
-		/// </param>
-		/// <param name="bufg_opt">
-		/// Optional
-		/// Insert, Merge and Split BUFGs
-		/// </param>
-		/// <param name="shift_register_opt">
-		/// Optional
-		/// Pull register stage from shift register
-		/// </param>
-		/// <param name="dsp_register_opt">
-		/// Optional
-		/// Push/Pull Registers out of a DSP
-		/// </param>
-		/// <param name="srl_remap_modes">
-		/// Optional
-		/// remap shift registers to flops or flops to shift registers
-		/// </param>
-		/// <param name="control_set_merge">
-		/// Optional
-		/// Merge all equivalent control set drivers to a single driver
-		/// </param>
-		/// <param name="merge_equivalent_drivers">
-		/// Optional
-		/// Merge all LUT,Flop equivalent driver replications
-		/// </param>
-		/// <param name="carry_remap">
-		/// Optional
-		/// reamp carries into luts
-		/// </param>
-		/// <param name="debug_log">
-		/// Optional
-		/// show debug message
-		/// </param>
-		/// <param name="property_opt_only">
-		/// Optional
-		/// Do targeted optimizations on tagged cells
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void opt_design(bool? retarget = null, bool? propconst = null, bool? sweep = null, bool? bram_power_opt = null, bool? remap = null, bool? aggressive_remap = null, bool? resynth_area = null, bool? resynth_seq_area = null, string directive = null, bool? muxf_remap = null, string hier_fanout_limit = null, bool? bufg_opt = null, bool? shift_register_opt = null, bool? dsp_register_opt = null, string srl_remap_modes = null, bool? control_set_merge = null, bool? merge_equivalent_drivers = null, bool? carry_remap = null, bool? debug_log = null, bool? property_opt_only = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="muxf_remap">(Optional) Optimize all MuxFx cells to LUT3</param>
+		/// <param name="hier_fanout_limit">(Optional) Replicate by module with threshold N</param>
+		/// <param name="bufg_opt">(Optional) Insert, Merge and Split BUFGs</param>
+		/// <param name="shift_register_opt">(Optional) Pull register stage from shift register</param>
+		/// <param name="dsp_register_opt">(Optional) Push/Pull Registers out of a DSP</param>
+		/// <param name="srl_remap_modes">(Optional) remap shift registers to flops or flops to shift registers</param>
+		/// <param name="control_set_merge">(Optional) Merge all equivalent control set drivers to a single driver</param>
+		/// <param name="merge_equivalent_drivers">(Optional) Merge all LUT,Flop equivalent driver replications</param>
+		/// <param name="carry_remap">(Optional) reamp carries into luts</param>
+		/// <param name="debug_log">(Optional) show debug message</param>
+		/// <param name="property_opt_only">(Optional) Do targeted optimizations on tagged cells</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL opt_design(bool? retarget = null, bool? propconst = null, bool? sweep = null, bool? bram_power_opt = null, bool? remap = null, bool? aggressive_remap = null, bool? resynth_area = null, bool? resynth_seq_area = null, string directive = null, bool? muxf_remap = null, string hier_fanout_limit = null, bool? bufg_opt = null, bool? shift_register_opt = null, bool? dsp_register_opt = null, string srl_remap_modes = null, bool? control_set_merge = null, bool? merge_equivalent_drivers = null, bool? carry_remap = null, bool? debug_log = null, bool? property_opt_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: opt_design [-retarget] [-propconst] [-sweep] [-bram_power_opt] [-remap] [-aggressive_remap] [-resynth_area] [-resynth_seq_area] [-directive <arg>] [-muxf_remap] [-hier_fanout_limit <arg>] [-bufg_opt] [-shift_register_opt] [-dsp_register_opt] [-srl_remap_modes <arg>] [-control_set_merge] [-merge_equivalent_drivers] [-carry_remap] [-debug_log] [-property_opt_only] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("opt_design")
-					.Flag("retarget", retarget)
-					.Flag("propconst", propconst)
-					.Flag("sweep", sweep)
-					.Flag("bram_power_opt", bram_power_opt)
-					.Flag("remap", remap)
-					.Flag("aggressive_remap", aggressive_remap)
-					.Flag("resynth_area", resynth_area)
-					.Flag("resynth_seq_area", resynth_seq_area)
-					.OptionalNamedString("directive", directive)
-					.Flag("muxf_remap", muxf_remap)
-					.OptionalNamedString("hier_fanout_limit", hier_fanout_limit)
-					.Flag("bufg_opt", bufg_opt)
-					.Flag("shift_register_opt", shift_register_opt)
-					.Flag("dsp_register_opt", dsp_register_opt)
-					.OptionalNamedString("srl_remap_modes", srl_remap_modes)
-					.Flag("control_set_merge", control_set_merge)
-					.Flag("merge_equivalent_drivers", merge_equivalent_drivers)
-					.Flag("carry_remap", carry_remap)
-					.Flag("debug_log", debug_log)
-					.Flag("property_opt_only", property_opt_only)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.opt_design(retarget, propconst, sweep, bram_power_opt, remap, aggressive_remap, resynth_area, resynth_seq_area, directive, muxf_remap, hier_fanout_limit, bufg_opt, shift_register_opt, dsp_register_opt, srl_remap_modes, control_set_merge, merge_equivalent_drivers, carry_remap, debug_log, property_opt_only, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Optimize the current placed netlist.
@@ -622,138 +371,47 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1091
 		/// </summary>
 		/// <param name="fanout_opt">
-		/// Optional
+		/// (Optional)
 		/// Do cell-duplication based optimization on high-fanout
 		/// timing critical nets
 		/// </param>
-		/// <param name="placement_opt">
-		/// Optional
-		/// Do placement based optimization on timing critical nets
-		/// </param>
-		/// <param name="routing_opt">
-		/// Optional
-		/// Do routing based optimization on timing critical nets
-		/// </param>
-		/// <param name="slr_crossing_opt">
-		/// Optional
-		/// Do placement optimization of SLR-crossing timing critical
-		/// nets
-		/// </param>
-		/// <param name="rewire">
-		/// Optional
-		/// Do rewiring optimization
-		/// </param>
-		/// <param name="insert_negative_edge_ffs">
-		/// Optional
-		/// Insert negative edge triggered FFs for hold optimization
-		/// </param>
-		/// <param name="critical_cell_opt">
-		/// Optional
-		/// Do cell-duplication based optimization on timing critical
-		/// nets
-		/// </param>
-		/// <param name="dsp_register_opt">
-		/// Optional
-		/// Do DSP register optimization
-		/// </param>
-		/// <param name="bram_register_opt">
-		/// Optional
-		/// Do BRAM register optimization
-		/// </param>
-		/// <param name="uram_register_opt">
-		/// Optional
-		/// Do UltraRAM register optimization
-		/// </param>
-		/// <param name="bram_enable_opt">
-		/// Optional
-		/// Do BRAM enable optimization
-		/// </param>
-		/// <param name="shift_register_opt">
-		/// Optional
-		/// Do Shift register optimization
-		/// </param>
-		/// <param name="hold_fix">
-		/// Optional
-		/// Attempt to improve slack of high hold violators
-		/// </param>
-		/// <param name="aggressive_hold_fix">
-		/// Optional
-		/// Attempt to aggressively improve slack of high hold violators
-		/// </param>
-		/// <param name="retime">
-		/// Optional
-		/// Do retiming optimization
-		/// </param>
-		/// <param name="force_replication_on_nets">
-		/// Optional
-		/// Force replication optimization on nets
-		/// </param>
+		/// <param name="placement_opt">(Optional) Do placement based optimization on timing critical nets</param>
+		/// <param name="routing_opt">(Optional) Do routing based optimization on timing critical nets</param>
+		/// <param name="slr_crossing_opt">(Optional) Do placement optimization of SLR-crossing timing critical nets</param>
+		/// <param name="rewire">(Optional) Do rewiring optimization</param>
+		/// <param name="insert_negative_edge_ffs">(Optional) Insert negative edge triggered FFs for hold optimization</param>
+		/// <param name="critical_cell_opt">(Optional) Do cell-duplication based optimization on timing critical nets</param>
+		/// <param name="dsp_register_opt">(Optional) Do DSP register optimization</param>
+		/// <param name="bram_register_opt">(Optional) Do BRAM register optimization</param>
+		/// <param name="uram_register_opt">(Optional) Do UltraRAM register optimization</param>
+		/// <param name="bram_enable_opt">(Optional) Do BRAM enable optimization</param>
+		/// <param name="shift_register_opt">(Optional) Do Shift register optimization</param>
+		/// <param name="hold_fix">(Optional) Attempt to improve slack of high hold violators</param>
+		/// <param name="aggressive_hold_fix">(Optional) Attempt to aggressively improve slack of high hold violators</param>
+		/// <param name="retime">(Optional) Do retiming optimization</param>
+		/// <param name="force_replication_on_nets">(Optional) Force replication optimization on nets</param>
 		/// <param name="directive">
-		/// Optional
+		/// (Optional)
 		/// Mode of behavior (directive) for this command. Please refer
 		/// to Arguments section of this help for values for this option
 		/// Default: Default
 		/// </param>
-		/// <param name="critical_pin_opt">
-		/// Optional
-		/// Do pin-swapping based optimization on timing critical nets
-		/// </param>
-		/// <param name="clock_opt">
-		/// Optional
-		/// Do clock skew optimization in post-route optimization
-		/// </param>
-		/// <param name="path_groups">
-		/// Optional
-		/// Work only on specified path groups
-		/// </param>
+		/// <param name="critical_pin_opt">(Optional) Do pin-swapping based optimization on timing critical nets</param>
+		/// <param name="clock_opt">(Optional) Do clock skew optimization in post-route optimization</param>
+		/// <param name="path_groups">(Optional) Work only on specified path groups</param>
 		/// <param name="tns_cleanup">
-		/// Optional
+		/// (Optional)
 		/// Work on all nets in the design that meet criteria for the
 		/// specified optimizations to improve design tns
 		/// </param>
-		/// <param name="sll_reg_hold_fix">
-		/// Optional
-		/// Do hold fixing on SLL Tx-Rx paths
-		/// Name Description
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void phys_opt_design(bool? fanout_opt = null, bool? placement_opt = null, bool? routing_opt = null, bool? slr_crossing_opt = null, bool? rewire = null, bool? insert_negative_edge_ffs = null, bool? critical_cell_opt = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? bram_enable_opt = null, bool? shift_register_opt = null, bool? hold_fix = null, bool? aggressive_hold_fix = null, bool? retime = null, string force_replication_on_nets = null, string directive = null, bool? critical_pin_opt = null, bool? clock_opt = null, string path_groups = null, bool? tns_cleanup = null, bool? sll_reg_hold_fix = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="sll_reg_hold_fix">(Optional) Do hold fixing on SLL Tx-Rx paths Name Description</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL phys_opt_design(bool? fanout_opt = null, bool? placement_opt = null, bool? routing_opt = null, bool? slr_crossing_opt = null, bool? rewire = null, bool? insert_negative_edge_ffs = null, bool? critical_cell_opt = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? bram_enable_opt = null, bool? shift_register_opt = null, bool? hold_fix = null, bool? aggressive_hold_fix = null, bool? retime = null, string force_replication_on_nets = null, string directive = null, bool? critical_pin_opt = null, bool? clock_opt = null, string path_groups = null, bool? tns_cleanup = null, bool? sll_reg_hold_fix = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: phys_opt_design [-fanout_opt] [-placement_opt] [-routing_opt] [-slr_crossing_opt] [-rewire] [-insert_negative_edge_ffs] [-critical_cell_opt] [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-bram_enable_opt] [-shift_register_opt] [-hold_fix] [-aggressive_hold_fix] [-retime] [-force_replication_on_nets <args>] [-directive <arg>] [-critical_pin_opt] [-clock_opt] [-path_groups <args>] [-tns_cleanup] [-sll_reg_hold_fix] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("phys_opt_design")
-					.Flag("fanout_opt", fanout_opt)
-					.Flag("placement_opt", placement_opt)
-					.Flag("routing_opt", routing_opt)
-					.Flag("slr_crossing_opt", slr_crossing_opt)
-					.Flag("rewire", rewire)
-					.Flag("insert_negative_edge_ffs", insert_negative_edge_ffs)
-					.Flag("critical_cell_opt", critical_cell_opt)
-					.Flag("dsp_register_opt", dsp_register_opt)
-					.Flag("bram_register_opt", bram_register_opt)
-					.Flag("uram_register_opt", uram_register_opt)
-					.Flag("bram_enable_opt", bram_enable_opt)
-					.Flag("shift_register_opt", shift_register_opt)
-					.Flag("hold_fix", hold_fix)
-					.Flag("aggressive_hold_fix", aggressive_hold_fix)
-					.Flag("retime", retime)
-					.OptionalNamedString("force_replication_on_nets", force_replication_on_nets)
-					.OptionalNamedString("directive", directive)
-					.Flag("critical_pin_opt", critical_pin_opt)
-					.Flag("clock_opt", clock_opt)
-					.OptionalNamedString("path_groups", path_groups)
-					.Flag("tns_cleanup", tns_cleanup)
-					.Flag("sll_reg_hold_fix", sll_reg_hold_fix)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.phys_opt_design(fanout_opt, placement_opt, routing_opt, slr_crossing_opt, rewire, insert_negative_edge_ffs, critical_cell_opt, dsp_register_opt, bram_register_opt, uram_register_opt, bram_enable_opt, shift_register_opt, hold_fix, aggressive_hold_fix, retime, force_replication_on_nets, directive, critical_pin_opt, clock_opt, path_groups, tns_cleanup, sll_reg_hold_fix, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Automatically place ports and leaf-level instances
@@ -802,60 +460,28 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1101
 		/// </summary>
 		/// <param name="directive">
-		/// Optional
+		/// (Optional)
 		/// Mode of behavior (directive) for this command. Please refer
 		/// to Arguments section of this help for values for this option.
 		/// Default: Default
 		/// </param>
-		/// <param name="no_timing_driven">
-		/// Optional
-		/// Do not run in timing driven mode
-		/// </param>
-		/// <param name="timing_summary">
-		/// Optional
-		/// Enable accurate post-placement timing summary.
-		/// </param>
-		/// <param name="unplace">
-		/// Optional
-		/// Unplace all the instances which are not locked by
-		/// Constraints.
-		/// </param>
-		/// <param name="post_place_opt">
-		/// Optional
-		/// Run only the post commit optimizer
-		/// </param>
+		/// <param name="no_timing_driven">(Optional) Do not run in timing driven mode</param>
+		/// <param name="timing_summary">(Optional) Enable accurate post-placement timing summary.</param>
+		/// <param name="unplace">(Optional) Unplace all the instances which are not locked by Constraints.</param>
+		/// <param name="post_place_opt">(Optional) Run only the post commit optimizer</param>
 		/// <param name="no_psip">
-		/// Optional
+		/// (Optional)
 		/// Disable PSIP (Physical Synthesis In Placer) optimization
 		/// during placement.
 		/// </param>
-		/// <param name="no_bufg_opt">
-		/// Optional
-		/// Disable global buffer insertion during placement
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void place_design(string directive = null, bool? no_timing_driven = null, bool? timing_summary = null, bool? unplace = null, bool? post_place_opt = null, bool? no_psip = null, bool? no_bufg_opt = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="no_bufg_opt">(Optional) Disable global buffer insertion during placement</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL place_design(string directive = null, bool? no_timing_driven = null, bool? timing_summary = null, bool? unplace = null, bool? post_place_opt = null, bool? no_psip = null, bool? no_bufg_opt = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: place_design [-directive <arg>] [-no_timing_driven] [-timing_summary] [-unplace] [-post_place_opt] [-no_psip] [-no_bufg_opt] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("place_design")
-					.OptionalNamedString("directive", directive)
-					.Flag("no_timing_driven", no_timing_driven)
-					.Flag("timing_summary", timing_summary)
-					.Flag("unplace", unplace)
-					.Flag("post_place_opt", post_place_opt)
-					.Flag("no_psip", no_psip)
-					.Flag("no_bufg_opt", no_bufg_opt)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.place_design(directive, no_timing_driven, timing_summary, unplace, post_place_opt, no_psip, no_bufg_opt, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// load iPhysOpt script and run it.
@@ -890,105 +516,29 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1148
 		/// </summary>
-		/// <param name="input">
-		/// Required
-		/// iPhysOpt.tcl file
-		/// </param>
-		/// <param name="fanout_opt">
-		/// Optional
-		/// Fanout optimization including very high fanout
-		/// optimizations
-		/// </param>
-		/// <param name="critical_cell_opt">
-		/// Optional
-		/// Do cell-duplication based optimization on timing critical
-		/// nets
-		/// </param>
-		/// <param name="placement_opt">
-		/// Optional
-		/// Move cells to reduce delay on timing-critical nets
-		/// </param>
-		/// <param name="rewire">
-		/// Optional
-		/// Do rewiring optimization
-		/// </param>
-		/// <param name="dsp_register_opt">
-		/// Optional
-		/// DSP register optimization
-		/// </param>
-		/// <param name="bram_register_opt">
-		/// Optional
-		/// BRAM register optimization
-		/// </param>
-		/// <param name="uram_register_opt">
-		/// Optional
-		/// UltraRAM register optimization
-		/// </param>
-		/// <param name="shift_register_opt">
-		/// Optional
-		/// Shift register optimization
-		/// </param>
-		/// <param name="auto_pipeline">
-		/// Optional
-		/// Auto pipeline
-		/// </param>
-		/// <param name="critical_pin_opt">
-		/// Optional
-		/// Pin Swap optimization
-		/// </param>
-		/// <param name="include_skipped_optimizations">
-		/// Optional
-		/// Apply undo changes
-		/// </param>
-		/// <param name="place">
-		/// Optional
-		/// Replay placement of the transformation
-		/// </param>
-		/// <param name="insert_negative_edge_ffs">
-		/// Optional
-		/// Inserting negative edge triggered FFs for high hold
-		/// mitigation
-		/// </param>
-		/// <param name="hold_fix">
-		/// Optional
-		/// Inserting buffers for hold fix optimization
-		/// </param>
-		/// <param name="slr_crossing_opt">
-		/// Optional
-		/// Optimize slr crossing nets
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void read_iphys_opt_tcl(string input, bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, bool? auto_pipeline = null, bool? critical_pin_opt = null, bool? include_skipped_optimizations = null, bool? place = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="input">(Required) iPhysOpt.tcl file</param>
+		/// <param name="fanout_opt">(Optional) Fanout optimization including very high fanout optimizations</param>
+		/// <param name="critical_cell_opt">(Optional) Do cell-duplication based optimization on timing critical nets</param>
+		/// <param name="placement_opt">(Optional) Move cells to reduce delay on timing-critical nets</param>
+		/// <param name="rewire">(Optional) Do rewiring optimization</param>
+		/// <param name="dsp_register_opt">(Optional) DSP register optimization</param>
+		/// <param name="bram_register_opt">(Optional) BRAM register optimization</param>
+		/// <param name="uram_register_opt">(Optional) UltraRAM register optimization</param>
+		/// <param name="shift_register_opt">(Optional) Shift register optimization</param>
+		/// <param name="auto_pipeline">(Optional) Auto pipeline</param>
+		/// <param name="critical_pin_opt">(Optional) Pin Swap optimization</param>
+		/// <param name="include_skipped_optimizations">(Optional) Apply undo changes</param>
+		/// <param name="place">(Optional) Replay placement of the transformation</param>
+		/// <param name="insert_negative_edge_ffs">(Optional) Inserting negative edge triggered FFs for high hold mitigation</param>
+		/// <param name="hold_fix">(Optional) Inserting buffers for hold fix optimization</param>
+		/// <param name="slr_crossing_opt">(Optional) Optimize slr crossing nets</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL read_iphys_opt_tcl(string input, bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, bool? auto_pipeline = null, bool? critical_pin_opt = null, bool? include_skipped_optimizations = null, bool? place = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_iphys_opt_tcl [-fanout_opt] [-critical_cell_opt] [-placement_opt] [-rewire] [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-shift_register_opt] [-auto_pipeline] [-critical_pin_opt] [-include_skipped_optimizations] [-place] [-insert_negative_edge_ffs] [-hold_fix] [-slr_crossing_opt] [-quiet] [-verbose] [<input>]
-			_tcl.Add(
-				new SimpleTCLCommand("read_iphys_opt_tcl")
-					.Flag("fanout_opt", fanout_opt)
-					.Flag("critical_cell_opt", critical_cell_opt)
-					.Flag("placement_opt", placement_opt)
-					.Flag("rewire", rewire)
-					.Flag("dsp_register_opt", dsp_register_opt)
-					.Flag("bram_register_opt", bram_register_opt)
-					.Flag("uram_register_opt", uram_register_opt)
-					.Flag("shift_register_opt", shift_register_opt)
-					.Flag("auto_pipeline", auto_pipeline)
-					.Flag("critical_pin_opt", critical_pin_opt)
-					.Flag("include_skipped_optimizations", include_skipped_optimizations)
-					.Flag("place", place)
-					.Flag("insert_negative_edge_ffs", insert_negative_edge_ffs)
-					.Flag("hold_fix", hold_fix)
-					.Flag("slr_crossing_opt", slr_crossing_opt)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(input)
-			);
+			_tcl.Entry(_builder.read_iphys_opt_tcl(input, fanout_opt, critical_cell_opt, placement_opt, rewire, dsp_register_opt, bram_register_opt, uram_register_opt, shift_register_opt, auto_pipeline, critical_pin_opt, include_skipped_optimizations, place, insert_negative_edge_ffs, hold_fix, slr_crossing_opt, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Register a Tcl proc with Vivado.
@@ -1033,34 +583,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1202
 		/// </summary>
-		/// <param name="proc">
-		/// Required
-		/// Name of proc to register. Proc must be known to Tcl
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="proc">(Required) Name of proc to register. Proc must be known to Tcl</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="tasknm">
-		/// Optional
+		/// (Optional)
 		/// Name of Tcl task that wraps the proc. Default: Register the
 		/// proc using the root name proc (no namespaces).
 		/// </param>
 		/// <returns>Nothing</returns>
-		public void register_proc(string proc, bool? quiet = null, bool? verbose = null, string tasknm = null)
+		public TTCL register_proc(string proc, bool? quiet = null, bool? verbose = null, string tasknm = null)
 		{
 			// TCL Syntax: register_proc [-quiet] [-verbose] <proc> [<tasknm>]
-			_tcl.Add(
-				new SimpleTCLCommand("register_proc")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(proc)
-					.OptionalString(tasknm)
-			);
+			_tcl.Entry(_builder.register_proc(proc, quiet, verbose, tasknm));
+			return _tcl;
 		}
 		/// <summary>
 		/// Perform pipeline register insertion analysis and display report.
@@ -1089,64 +625,32 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1372
 		/// </summary>
 		/// <param name="cells">
-		/// Optional
+		/// (Optional)
 		/// Analyze each of the specified hierarchical cells separately
 		/// and ignore feedback loops external to the cells.
 		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="clocks">
-		/// Optional
-		/// Filter report output to show only the specified clocks
-		/// </param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="clocks">(Optional) Filter report output to show only the specified clocks</param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="include_paths_to_pipeline">
-		/// Optional
-		/// Report paths to cut. (only available if -file is used)
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append to existing file
-		/// </param>
+		/// <param name="include_paths_to_pipeline">(Optional) Report paths to cut. (only available if -file is used)</param>
+		/// <param name="append">(Optional) Append to existing file</param>
 		/// <param name="max_added_latency">
-		/// Optional
+		/// (Optional)
 		/// Maximum extra latency that can be inserted into the system
 		/// (0 = unlimited). Default: 100
 		/// </param>
-		/// <param name="report_loops">
-		/// Optional
-		/// Report loop information as well
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		public void report_pipeline_analysis(string cells = null, bool? verbose = null, string clocks = null, string file = null, bool? include_paths_to_pipeline = null, bool? append = null, string max_added_latency = null, bool? report_loops = null, bool? return_string = null, bool? quiet = null)
+		/// <param name="report_loops">(Optional) Report loop information as well</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		public TTCL report_pipeline_analysis(string cells = null, bool? verbose = null, string clocks = null, string file = null, bool? include_paths_to_pipeline = null, bool? append = null, string max_added_latency = null, bool? report_loops = null, bool? return_string = null, bool? quiet = null)
 		{
 			// TCL Syntax: report_pipeline_analysis [-cells <args>] [-verbose] [-clocks <args>] [-file <arg>] [-include_paths_to_pipeline] [-append] [-max_added_latency <arg>] [-report_loops] [-return_string] [-quiet]
-			_tcl.Add(
-				new SimpleTCLCommand("report_pipeline_analysis")
-					.OptionalNamedString("cells", cells)
-					.Flag("verbose", verbose)
-					.OptionalNamedString("clocks", clocks)
-					.OptionalNamedString("file", file)
-					.Flag("include_paths_to_pipeline", include_paths_to_pipeline)
-					.Flag("append", append)
-					.OptionalNamedString("max_added_latency", max_added_latency)
-					.Flag("report_loops", report_loops)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-			);
+			_tcl.Entry(_builder.report_pipeline_analysis(cells, verbose, clocks, file, include_paths_to_pipeline, append, max_added_latency, report_loops, return_string, quiet));
+			return _tcl;
 		}
 		/// <summary>
 		/// Route the current design
@@ -1201,108 +705,45 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1506
 		/// </summary>
 		/// <param name="max_delay">
-		/// Required
+		/// (Required)
 		/// Use with -pins option to specify the max_delay constraint on
 		/// the pins.When specified -delay is implicit.
 		/// </param>
 		/// <param name="min_delay">
-		/// Required
+		/// (Required)
 		/// Use with -pins option to specify the max_delay constraint on
 		/// the pins.When specified -delay is implicit.
 		/// </param>
 		/// <param name="unroute">
-		/// Optional
+		/// (Optional)
 		/// Unroute whole design or the given nets/pins if used with -
 		/// nets or -pins.
 		/// </param>
-		/// <param name="release_memory">
-		/// Optional
-		/// Release Router memory. Not compatible with any other
-		/// options.
-		/// </param>
-		/// <param name="nets">
-		/// Optional
-		/// Operate on the given nets.
-		/// </param>
-		/// <param name="physical_nets">
-		/// Optional
-		/// Operate on all physical nets.
-		/// </param>
-		/// <param name="pins">
-		/// Optional
-		/// Operate on the given pins.
-		/// </param>
+		/// <param name="release_memory">(Optional) Release Router memory. Not compatible with any other options.</param>
+		/// <param name="nets">(Optional) Operate on the given nets.</param>
+		/// <param name="physical_nets">(Optional) Operate on all physical nets.</param>
+		/// <param name="pins">(Optional) Operate on the given pins.</param>
 		/// <param name="directive">
-		/// Optional
+		/// (Optional)
 		/// Mode of behavior (directive) for this command. Please refer
 		/// to Arguments section of this help for values for this option.
 		/// Default: Default
 		/// </param>
-		/// <param name="tns_cleanup">
-		/// Optional
-		/// Do optional TNS clean up.
-		/// </param>
-		/// <param name="no_timing_driven">
-		/// Optional
-		/// Do not run in timing driven mode.
-		/// </param>
-		/// <param name="preserve">
-		/// Optional
-		/// Preserve existing routing.
-		/// </param>
-		/// <param name="delay">
-		/// Optional
-		/// Use with -nets or -pins option to route in delay driven mode.
-		/// </param>
-		/// <param name="auto_delay">
-		/// Optional
-		/// Use with -nets or -pins option to route in constraint driven
-		/// mode.
-		/// </param>
-		/// <param name="timing_summary">
-		/// Optional
-		/// Enable post-router signoff timing summary.
-		/// </param>
-		/// <param name="finalize">
-		/// Optional
-		/// finalize route_design in interactive mode.
-		/// </param>
-		/// <param name="ultrathreads">
-		/// Optional
-		/// Enable Turbo mode routing.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void route_design(string max_delay, string min_delay, bool? unroute = null, bool? release_memory = null, string nets = null, bool? physical_nets = null, string pins = null, string directive = null, bool? tns_cleanup = null, bool? no_timing_driven = null, bool? preserve = null, bool? delay = null, bool? auto_delay = null, bool? timing_summary = null, bool? finalize = null, bool? ultrathreads = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="tns_cleanup">(Optional) Do optional TNS clean up.</param>
+		/// <param name="no_timing_driven">(Optional) Do not run in timing driven mode.</param>
+		/// <param name="preserve">(Optional) Preserve existing routing.</param>
+		/// <param name="delay">(Optional) Use with -nets or -pins option to route in delay driven mode.</param>
+		/// <param name="auto_delay">(Optional) Use with -nets or -pins option to route in constraint driven mode.</param>
+		/// <param name="timing_summary">(Optional) Enable post-router signoff timing summary.</param>
+		/// <param name="finalize">(Optional) finalize route_design in interactive mode.</param>
+		/// <param name="ultrathreads">(Optional) Enable Turbo mode routing.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL route_design(string max_delay, string min_delay, bool? unroute = null, bool? release_memory = null, string nets = null, bool? physical_nets = null, string pins = null, string directive = null, bool? tns_cleanup = null, bool? no_timing_driven = null, bool? preserve = null, bool? delay = null, bool? auto_delay = null, bool? timing_summary = null, bool? finalize = null, bool? ultrathreads = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: route_design [-unroute] [-release_memory] [-nets <args>] [-physical_nets] [-pins <arg>] [-directive <arg>] [-tns_cleanup] [-no_timing_driven] [-preserve] [-delay] [-auto_delay] -max_delay <arg> -min_delay <arg> [-timing_summary] [-finalize] [-ultrathreads] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("route_design")
-					.Flag("unroute", unroute)
-					.Flag("release_memory", release_memory)
-					.OptionalNamedString("nets", nets)
-					.Flag("physical_nets", physical_nets)
-					.OptionalNamedString("pins", pins)
-					.OptionalNamedString("directive", directive)
-					.Flag("tns_cleanup", tns_cleanup)
-					.Flag("no_timing_driven", no_timing_driven)
-					.Flag("preserve", preserve)
-					.Flag("delay", delay)
-					.Flag("auto_delay", auto_delay)
-					.RequiredNamedString("max_delay", max_delay)
-					.RequiredNamedString("min_delay", min_delay)
-					.Flag("timing_summary", timing_summary)
-					.Flag("finalize", finalize)
-					.Flag("ultrathreads", ultrathreads)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.route_design(max_delay, min_delay, unroute, release_memory, nets, physical_nets, pins, directive, tns_cleanup, no_timing_driven, preserve, delay, auto_delay, timing_summary, finalize, ultrathreads, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Synthesize a design using Vivado Synthesis and open that design
@@ -1342,163 +783,126 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1700
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// Design name
-		/// </param>
-		/// <param name="part">
-		/// Optional
-		/// Target part
-		/// </param>
-		/// <param name="constrset">
-		/// Optional
-		/// Constraint fileset to use
-		/// </param>
-		/// <param name="top">
-		/// Optional
-		/// Specify the top module name
-		/// </param>
-		/// <param name="include_dirs">
-		/// Optional
-		/// Specify verilog search directories
-		/// </param>
+		/// <param name="name">(Optional) Design name</param>
+		/// <param name="part">(Optional) Target part</param>
+		/// <param name="constrset">(Optional) Constraint fileset to use</param>
+		/// <param name="top">(Optional) Specify the top module name</param>
+		/// <param name="include_dirs">(Optional) Specify verilog search directories</param>
 		/// <param name="generic">
-		/// Optional
+		/// (Optional)
 		/// Specify generic parameters. Syntax: -generic
 		/// <name>=<value> -generic <name>=<value> ...
 		/// </param>
 		/// <param name="verilog_define">
-		/// Optional
+		/// (Optional)
 		/// Specify verilog defines. Syntax: -verilog_define
 		/// <macro_name>[=<macro_text>] -verilog_define
 		/// <macro_name>[=<macro_text>] ...
 		/// </param>
 		/// <param name="flatten_hierarchy">
-		/// Optional
+		/// (Optional)
 		/// Flatten hierarchy during LUT mapping. Values: full, none,
 		/// rebuilt Default: rebuilt
 		/// </param>
 		/// <param name="gated_clock_conversion">
-		/// Optional
+		/// (Optional)
 		/// Convert clock gating logic to flop enable. Values: off, on,
 		/// auto Default: off
 		/// </param>
 		/// <param name="directive">
-		/// Optional
+		/// (Optional)
 		/// Synthesis directive. Values: default, RuntimeOptimized,
 		/// AreaOptimized_high,
 		/// AreaOptimized_medium,AlternateRoutability,
 		/// AreaMapLargeShiftRegToBRAM, AreaMultThresholdDSP,
 		/// FewerCarryChains,Perfor manceOptimized Default: default
 		/// </param>
-		/// <param name="rtl">
-		/// Optional
-		/// Elaborate and open an rtl design
-		/// </param>
-		/// <param name="bufg">
-		/// Optional
-		/// Max number of global clock buffers used by synthesis
-		/// Default: 12
-		/// </param>
+		/// <param name="rtl">(Optional) Elaborate and open an rtl design</param>
+		/// <param name="bufg">(Optional) Max number of global clock buffers used by synthesis Default: 12</param>
 		/// <param name="no_lc">
-		/// Optional
+		/// (Optional)
 		/// Disable LUT combining. Do not allow combining LUT pairs
 		/// into single dual output LUTs.
 		/// Name Description
 		/// </param>
 		/// <param name="fanout_limit">
-		/// Optional
+		/// (Optional)
 		/// Fanout limit. This switch does not impact control signals
 		/// (such as set,reset, clock enable) use MAX_FANOUT to
 		/// replicate these signals if needed. Default: 10000
 		/// </param>
-		/// <param name="shreg_min_size">
-		/// Optional
-		/// Minimum length for chain of registers to be mapped onto
-		/// SRL Default: 3
-		/// </param>
-		/// <param name="mode">
-		/// Optional
-		/// The design mode. Values: default, out_of_context Default:
-		/// default
-		/// </param>
+		/// <param name="shreg_min_size">(Optional) Minimum length for chain of registers to be mapped onto SRL Default: 3</param>
+		/// <param name="mode">(Optional) The design mode. Values: default, out_of_context Default: default</param>
 		/// <param name="fsm_extraction">
-		/// Optional
+		/// (Optional)
 		/// FSM Extraction Encoding. Values: off, one_hot, sequential,
 		/// johnson, gray, user_encoding, auto Default: auto
 		/// </param>
 		/// <param name="rtl_skip_ip">
-		/// Optional
+		/// (Optional)
 		/// Exclude subdesign checkpoints in the RTL elaboration of the
 		/// design; requires -rtl option.
 		/// </param>
 		/// <param name="rtl_skip_constraints">
-		/// Optional
+		/// (Optional)
 		/// Do not load and validate constraints against elaborated
 		/// design; requires -rtl option.
 		/// </param>
 		/// <param name="keep_equivalent_registers">
-		/// Optional
+		/// (Optional)
 		/// Prevents registers sourced by the same logic from being
 		/// merged. (Note that the merging can otherwise be
 		/// prevented using the synthesis KEEP attribute)
 		/// </param>
-		/// <param name="resource_sharing">
-		/// Optional
-		/// Sharing arithmetic operators. Value: auto, on, off Default:
-		/// auto
-		/// </param>
+		/// <param name="resource_sharing">(Optional) Sharing arithmetic operators. Value: auto, on, off Default: auto</param>
 		/// <param name="cascade_dsp">
-		/// Optional
+		/// (Optional)
 		/// Controls how adders summing DSP block outputs will be
 		/// implemented. Value: auto, tree, force Default: auto
 		/// </param>
 		/// <param name="control_set_opt_threshold">
-		/// Optional
+		/// (Optional)
 		/// Threshold for synchronous control set optimization to lower
 		/// number of control sets. Valid values are 'auto' and non￾negative integers. The higher the number, the more control
 		/// set optimization will be performed and fewer control sets
 		/// will result. To disable control set optimization completely,
 		/// set to 0. Default: auto
 		/// </param>
-		/// <param name="incremental">
-		/// Optional
-		/// dcp file for incremental flowvalue of this is the file name
-		/// </param>
+		/// <param name="incremental">(Optional) dcp file for incremental flowvalue of this is the file name</param>
 		/// <param name="max_bram">
-		/// Optional
+		/// (Optional)
 		/// Maximum number of block RAM allowed in design. (Note -1
 		/// means that the tool will choose the max number allowed for
 		/// the part in question) Default: -1
 		/// </param>
 		/// <param name="max_uram">
-		/// Optional
+		/// (Optional)
 		/// Maximum number of Ultra RAM blocks allowed in design.
 		/// (Note -1 means that the tool will choose the max number
 		/// allowed for the part in question) Default: -1
 		/// </param>
 		/// <param name="max_dsp">
-		/// Optional
+		/// (Optional)
 		/// Maximum number of block DSP allowed in design. (Note -1
 		/// means that the tool will choose the max number allowed for
 		/// the part in question) Default: -1
 		/// </param>
 		/// <param name="max_bram_cascade_height">
-		/// Optional
+		/// (Optional)
 		/// Controls the maximum number of BRAM that can be
 		/// cascaded by the tool. (Note -1 means that the tool will
 		/// choose the max number allowed for the part in question)
 		/// Default: -1
 		/// </param>
 		/// <param name="max_uram_cascade_height">
-		/// Optional
+		/// (Optional)
 		/// Controls the maximum number of URAM that can be
 		/// cascaded by the tool. (Note -1 means that the tool will
 		/// choose the max number allowed for the part in question)
 		/// Default: -1
 		/// </param>
 		/// <param name="retiming">
-		/// Optional
+		/// (Optional)
 		/// Seeks to improve circuit performance for intra-clock
 		/// sequential paths by automatically moving registers (register
 		/// balancing) across combinatorial gates or LUTs. It maintains
@@ -1506,76 +910,27 @@ namespace Quokka.TCL.Vivado
 		/// require changes to the RTL sources.
 		/// </param>
 		/// <param name="no_srlextract">
-		/// Optional
+		/// (Optional)
 		/// Prevents the extraction of shift registers so that they get
 		/// implemented as simple registers
 		/// </param>
 		/// <param name="assert">
-		/// Optional
+		/// (Optional)
 		/// Enable VHDL assert statements to be evaluated. A severity
 		/// level of failure will stop the synthesis flow and produce an
 		/// error.
 		/// Name Description
 		/// </param>
-		/// <param name="no_timing_driven">
-		/// Optional
-		/// Do not run in timing driven mode
-		/// </param>
-		/// <param name="sfcu">
-		/// Optional
-		/// Run in single-file compilation unit mode
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="no_timing_driven">(Optional) Do not run in timing driven mode</param>
+		/// <param name="sfcu">(Optional) Run in single-file compilation unit mode</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>design object</returns>
-		public void synth_design(string name = null, string part = null, string constrset = null, string top = null, string include_dirs = null, string generic = null, string verilog_define = null, string flatten_hierarchy = null, string gated_clock_conversion = null, string directive = null, bool? rtl = null, string bufg = null, bool? no_lc = null, string fanout_limit = null, string shreg_min_size = null, string mode = null, string fsm_extraction = null, bool? rtl_skip_ip = null, bool? rtl_skip_constraints = null, bool? keep_equivalent_registers = null, string resource_sharing = null, string cascade_dsp = null, string control_set_opt_threshold = null, string incremental = null, string max_bram = null, string max_uram = null, string max_dsp = null, string max_bram_cascade_height = null, string max_uram_cascade_height = null, bool? retiming = null, bool? no_srlextract = null, bool? assert = null, bool? no_timing_driven = null, bool? sfcu = null, bool? quiet = null, bool? verbose = null)
+		public TTCL synth_design(string name = null, string part = null, string constrset = null, string top = null, string include_dirs = null, string generic = null, string verilog_define = null, string flatten_hierarchy = null, string gated_clock_conversion = null, string directive = null, bool? rtl = null, string bufg = null, bool? no_lc = null, string fanout_limit = null, string shreg_min_size = null, string mode = null, string fsm_extraction = null, bool? rtl_skip_ip = null, bool? rtl_skip_constraints = null, bool? keep_equivalent_registers = null, string resource_sharing = null, string cascade_dsp = null, string control_set_opt_threshold = null, string incremental = null, string max_bram = null, string max_uram = null, string max_dsp = null, string max_bram_cascade_height = null, string max_uram_cascade_height = null, bool? retiming = null, bool? no_srlextract = null, bool? assert = null, bool? no_timing_driven = null, bool? sfcu = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: synth_design [-name <arg>] [-part <arg>] [-constrset <arg>] [-top <arg>] [-include_dirs <args>] [-generic <args>] [-verilog_define <args>] [-flatten_hierarchy <arg>] [-gated_clock_conversion <arg>] [-directive <arg>] [-rtl] [-bufg <arg>] [-no_lc] [-fanout_limit <arg>] [-shreg_min_size <arg>] [-mode <arg>] [-fsm_extraction <arg>] [-rtl_skip_ip] [-rtl_skip_constraints] [-keep_equivalent_registers] [-resource_sharing <arg>] [-cascade_dsp <arg>] [-control_set_opt_threshold <arg>] [-incremental <arg>] [-max_bram <arg>] [-max_uram <arg>] [-max_dsp <arg>] [-max_bram_cascade_height <arg>] [-max_uram_cascade_height <arg>] [-retiming] [-no_srlextract] [-assert] [-no_timing_driven] [-sfcu] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("synth_design")
-					.OptionalNamedString("name", name)
-					.OptionalNamedString("part", part)
-					.OptionalNamedString("constrset", constrset)
-					.OptionalNamedString("top", top)
-					.OptionalNamedString("include_dirs", include_dirs)
-					.OptionalNamedString("generic", generic)
-					.OptionalNamedString("verilog_define", verilog_define)
-					.OptionalNamedString("flatten_hierarchy", flatten_hierarchy)
-					.OptionalNamedString("gated_clock_conversion", gated_clock_conversion)
-					.OptionalNamedString("directive", directive)
-					.Flag("rtl", rtl)
-					.OptionalNamedString("bufg", bufg)
-					.Flag("no_lc", no_lc)
-					.OptionalNamedString("fanout_limit", fanout_limit)
-					.OptionalNamedString("shreg_min_size", shreg_min_size)
-					.OptionalNamedString("mode", mode)
-					.OptionalNamedString("fsm_extraction", fsm_extraction)
-					.Flag("rtl_skip_ip", rtl_skip_ip)
-					.Flag("rtl_skip_constraints", rtl_skip_constraints)
-					.Flag("keep_equivalent_registers", keep_equivalent_registers)
-					.OptionalNamedString("resource_sharing", resource_sharing)
-					.OptionalNamedString("cascade_dsp", cascade_dsp)
-					.OptionalNamedString("control_set_opt_threshold", control_set_opt_threshold)
-					.OptionalNamedString("incremental", incremental)
-					.OptionalNamedString("max_bram", max_bram)
-					.OptionalNamedString("max_uram", max_uram)
-					.OptionalNamedString("max_dsp", max_dsp)
-					.OptionalNamedString("max_bram_cascade_height", max_bram_cascade_height)
-					.OptionalNamedString("max_uram_cascade_height", max_uram_cascade_height)
-					.Flag("retiming", retiming)
-					.Flag("no_srlextract", no_srlextract)
-					.Flag("assert", assert)
-					.Flag("no_timing_driven", no_timing_driven)
-					.Flag("sfcu", sfcu)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.synth_design(name, part, constrset, top, include_dirs, generic, verilog_define, flatten_hierarchy, gated_clock_conversion, directive, rtl, bufg, no_lc, fanout_limit, shreg_min_size, mode, fsm_extraction, rtl_skip_ip, rtl_skip_constraints, keep_equivalent_registers, resource_sharing, cascade_dsp, control_set_opt_threshold, incremental, max_bram, max_uram, max_dsp, max_bram_cascade_height, max_uram_cascade_height, retiming, no_srlextract, assert, no_timing_driven, sfcu, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Unregister a previously registered Tcl proc.
@@ -1587,29 +942,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1723
 		/// </summary>
-		/// <param name="tasknm">
-		/// Required
-		/// Name of Tcl task to unregister. The task must be wrapping a
-		/// proc.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="tasknm">(Required) Name of Tcl task to unregister. The task must be wrapping a proc.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Nothing</returns>
-		public void unregister_proc(string tasknm, bool? quiet = null, bool? verbose = null)
+		public TTCL unregister_proc(string tasknm, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: unregister_proc [-quiet] [-verbose] <tasknm>
-			_tcl.Add(
-				new SimpleTCLCommand("unregister_proc")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(tasknm)
-			);
+			_tcl.Entry(_builder.unregister_proc(tasknm, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Update clock routing on global clocks if they are modified after placement
@@ -1659,22 +1000,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1727
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void update_clock_routing(bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL update_clock_routing(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: update_clock_routing [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("update_clock_routing")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.update_clock_routing(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Update the NoC solution
@@ -1684,27 +1016,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1747
 		/// </summary>
-		/// <param name="force">
-		/// Optional
-		/// Force update even if the existing solution is invalid
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void update_noc_qos(bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="force">(Optional) Force update even if the existing solution is invalid</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL update_noc_qos(bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: update_noc_qos [-force] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("update_noc_qos")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.update_noc_qos(force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write iPhysOpt script.
@@ -1741,37 +1060,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1834
 		/// </summary>
-		/// <param name="output">
-		/// Required
-		/// tcl file containing iPhysOpt script
-		/// </param>
-		/// <param name="place">
-		/// Optional
-		/// write out placement information
-		/// </param>
-		/// <param name="binary">
-		/// Optional
-		/// write out in binary format
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void write_iphys_opt_tcl(string output, bool? place = null, bool? binary = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="output">(Required) tcl file containing iPhysOpt script</param>
+		/// <param name="place">(Optional) write out placement information</param>
+		/// <param name="binary">(Optional) write out in binary format</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL write_iphys_opt_tcl(string output, bool? place = null, bool? binary = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_iphys_opt_tcl [-place] [-binary] [-quiet] [-verbose] [<output>]
-			_tcl.Add(
-				new SimpleTCLCommand("write_iphys_opt_tcl")
-					.Flag("place", place)
-					.Flag("binary", binary)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(output)
-			);
+			_tcl.Entry(_builder.write_iphys_opt_tcl(output, place, binary, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

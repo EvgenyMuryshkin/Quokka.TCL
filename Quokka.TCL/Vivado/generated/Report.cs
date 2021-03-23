@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class ReportCommands
+	public partial class ReportCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public ReportCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public ReportCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Calculate device configuration time (ms)
@@ -39,61 +41,33 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 117
 		/// </summary>
-		/// <param name="verbose">
-		/// Optional
-		/// Print out calculation parameters
-		/// </param>
-		/// <param name="max">
-		/// Optional
-		/// Calculate Maximum Configuration Time
-		/// </param>
-		/// <param name="min">
-		/// Optional
-		/// Calculate Minimum Configuration Time
-		/// </param>
-		/// <param name="typical">
-		/// Optional
-		/// Calculate Typical Configuration Time
-		/// </param>
+		/// <param name="verbose">(Optional) Print out calculation parameters</param>
+		/// <param name="max">(Optional) Calculate Maximum Configuration Time</param>
+		/// <param name="min">(Optional) Calculate Minimum Configuration Time</param>
+		/// <param name="typical">(Optional) Calculate Typical Configuration Time</param>
 		/// <param name="por_used">
-		/// Optional
+		/// (Optional)
 		/// (Deprecated) Specify if Power On Reset (POR) is used by
 		/// using a non-zero por_ramp
 		/// </param>
 		/// <param name="por_ramp">
-		/// Optional
+		/// (Optional)
 		/// Specify a Power On Reset (POR) ramp rate as 1 ms to 50 ms
 		/// Default: 0 ms
 		/// </param>
 		/// <param name="clk_freq">
-		/// Optional
+		/// (Optional)
 		/// Specify a clock frequency for Slave mode, or for Master
 		/// mode if using external master clock (MHz) Default: 0 MHz
 		/// </param>
-		/// <param name="bitstream_size">
-		/// Optional
-		/// Specify a bitstream size to override the default Default: 0
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
+		/// <param name="bitstream_size">(Optional) Specify a bitstream size to override the default Default: 0</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <returns>Report</returns>
-		public void calc_config_time(bool? verbose = null, bool? max = null, bool? min = null, bool? typical = null, bool? por_used = null, string por_ramp = null, string clk_freq = null, string bitstream_size = null, bool? quiet = null)
+		public TTCL calc_config_time(bool? verbose = null, bool? max = null, bool? min = null, bool? typical = null, bool? por_used = null, string por_ramp = null, string clk_freq = null, string bitstream_size = null, bool? quiet = null)
 		{
 			// TCL Syntax: calc_config_time [-verbose] [-max] [-min] [-typical] [-por_used] [-por_ramp <arg>] [-clk_freq <arg>] [-bitstream_size <arg>] [-quiet]
-			_tcl.Add(
-				new SimpleTCLCommand("calc_config_time")
-					.Flag("verbose", verbose)
-					.Flag("max", max)
-					.Flag("min", min)
-					.Flag("typical", typical)
-					.Flag("por_used", por_used)
-					.OptionalNamedString("por_ramp", por_ramp)
-					.OptionalNamedString("clk_freq", clk_freq)
-					.OptionalNamedString("bitstream_size", bitstream_size)
-					.Flag("quiet", quiet)
-			);
+			_tcl.Entry(_builder.calc_config_time(verbose, max, min, typical, por_used, por_ramp, clk_freq, bitstream_size, quiet));
+			return _tcl;
 		}
 		/// <summary>
 		/// Check the design for possible timing problems
@@ -170,81 +144,35 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 124
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="no_header">
-		/// Optional
-		/// do not generate a report header
-		/// </param>
-		/// <param name="loop_limit">
-		/// Optional
-		/// Limit the number of loops reported for loops check Default:
-		/// 100
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="override_defaults">
-		/// Optional
-		/// Overrides the checks in the default timing checks listed
-		/// below
-		/// </param>
+		/// <param name="no_header">(Optional) do not generate a report header</param>
+		/// <param name="loop_limit">(Optional) Limit the number of loops reported for loops check Default: 100</param>
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="override_defaults">(Optional) Overrides the checks in the default timing checks listed below</param>
 		/// <param name="include">
-		/// Optional
+		/// (Optional)
 		/// Add this list of checks to be performed along with default
 		/// timing checks listed below
 		/// </param>
 		/// <param name="exclude">
-		/// Optional
+		/// (Optional)
 		/// Exclude this list of checks to be performed from the default
 		/// timing checks listed below
 		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="rpx">
-		/// Optional
-		/// Filename to output interactive results to.
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// run check_timing on the specified cell(s)
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Return a detailed list of all timing problems found
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		public void check_timing(string file = null, bool? no_header = null, string loop_limit = null, bool? append = null, string name = null, string override_defaults = null, string include = null, string exclude = null, bool? return_string = null, string rpx = null, string cells = null, bool? verbose = null, bool? quiet = null)
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
+		/// <param name="cells">(Optional) run check_timing on the specified cell(s)</param>
+		/// <param name="verbose">(Optional) Return a detailed list of all timing problems found</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		public TTCL check_timing(string file = null, bool? no_header = null, string loop_limit = null, bool? append = null, string name = null, string override_defaults = null, string include = null, string exclude = null, bool? return_string = null, string rpx = null, string cells = null, bool? verbose = null, bool? quiet = null)
 		{
 			// TCL Syntax: check_timing [-file <arg>] [-no_header] [-loop_limit <arg>] [-append] [-name <arg>] [-override_defaults <args>] [-include <args>] [-exclude <args>] [-return_string] [-rpx <arg>] [-cells <args>] [-verbose] [-quiet]
-			_tcl.Add(
-				new SimpleTCLCommand("check_timing")
-					.OptionalNamedString("file", file)
-					.Flag("no_header", no_header)
-					.OptionalNamedString("loop_limit", loop_limit)
-					.Flag("append", append)
-					.OptionalNamedString("name", name)
-					.OptionalNamedString("override_defaults", override_defaults)
-					.OptionalNamedString("include", include)
-					.OptionalNamedString("exclude", exclude)
-					.Flag("return_string", return_string)
-					.OptionalNamedString("rpx", rpx)
-					.OptionalNamedString("cells", cells)
-					.Flag("verbose", verbose)
-					.Flag("quiet", quiet)
-			);
+			_tcl.Entry(_builder.check_timing(file, no_header, loop_limit, append, name, override_defaults, include, exclude, return_string, rpx, cells, verbose, quiet));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a DRC violation
@@ -320,45 +248,29 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 260
 		/// </summary>
 		/// <param name="name">
-		/// Required
+		/// (Required)
 		/// Specify the name for this rule. This is the typically a 4-6
 		/// letter specification for your rule.
 		/// </param>
 		/// <param name="severity">
-		/// Optional
+		/// (Optional)
 		/// Specify severity level for a DRC rule. Default: WARNING.
 		/// Values: FATAL, ERROR, CRITICAL WARNING, WARNING,
 		/// ADVISORY.
 		/// </param>
-		/// <param name="msg">
-		/// Optional
-		/// Specify your message string for this DRC rule.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="msg">(Optional) Specify your message string for this DRC rule.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">
-		/// Optional
+		/// (Optional)
 		/// Cells, ports, pins, nets, clock regions, sites, package banks to
 		/// query.
 		/// </param>
-		public void create_drc_violation(string name, string severity = null, string msg = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public TTCL create_drc_violation(string name, string severity = null, string msg = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: create_drc_violation -name <arg> [-severity <arg>] [-msg <arg>] [-quiet] [-verbose] [<objects>...]
-			_tcl.Add(
-				new SimpleTCLCommand("create_drc_violation")
-					.RequiredNamedString("name", name)
-					.OptionalNamedString("severity", severity)
-					.OptionalNamedString("msg", msg)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(objects)
-			);
+			_tcl.Entry(_builder.create_drc_violation(name, severity, msg, quiet, verbose, objects));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create Configurable Report objects.
@@ -399,56 +311,32 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 343
 		/// </summary>
-		/// <param name="steps">
-		/// Required
-		/// List of run step(s) for object(s) created
-		/// </param>
-		/// <param name="runs">
-		/// Required
-		/// List of run(s) for object(s) created
-		/// </param>
+		/// <param name="steps">(Required) List of run step(s) for object(s) created</param>
+		/// <param name="runs">(Required) List of run(s) for object(s) created</param>
 		/// <param name="report_name">
-		/// Optional
+		/// (Optional)
 		/// Name of configurable report object created. Can not be
 		/// used when creating multiple objects
 		/// </param>
 		/// <param name="report_type">
-		/// Optional
+		/// (Optional)
 		/// Type of configurable report object(s) created. Not required
 		/// with '-copy_of'
 		/// </param>
 		/// <param name="options">
-		/// Optional
+		/// (Optional)
 		/// options for report command to be set at creation of
 		/// configurable report object, except with '-copy_of'
 		/// </param>
-		/// <param name="copy_of">
-		/// Optional
-		/// configurable report object to be copied
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="copy_of">(Optional) configurable report object to be copied</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>List of configurable report objects</returns>
-		public void create_report_config(string steps, string runs, string report_name = null, string report_type = null, string options = null, string copy_of = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_report_config(string steps, string runs, string report_name = null, string report_type = null, string options = null, string copy_of = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_report_config [-report_name <arg>] [-report_type <arg>] -steps <args> -runs <args> [-options <arg>] [-copy_of <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("create_report_config")
-					.OptionalNamedString("report_name", report_name)
-					.OptionalNamedString("report_type", report_type)
-					.RequiredNamedString("steps", steps)
-					.RequiredNamedString("runs", runs)
-					.OptionalNamedString("options", options)
-					.OptionalNamedString("copy_of", copy_of)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.create_report_config(steps, runs, report_name, report_type, options, copy_of, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create histogram
@@ -465,78 +353,28 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 352
 		/// </summary>
-		/// <param name="to">
-		/// Optional
-		/// To clock
-		/// </param>
-		/// <param name="delay_type">
-		/// Optional
-		/// Type of path delay: Values: max, min, min_max Default: max
-		/// </param>
-		/// <param name="num_bins">
-		/// Optional
-		/// Maximum number of bins: Valid Range (1-100) Default: 10
-		/// </param>
-		/// <param name="slack_less_than">
-		/// Optional
-		/// Display paths with slack less than this Default: 1e+30
-		/// </param>
-		/// <param name="slack_greater_than">
-		/// Optional
-		/// Display paths with slack greater than this Default: -1e+30
-		/// </param>
-		/// <param name="group">
-		/// Optional
-		/// Limit report to paths in this group(s)
-		/// </param>
-		/// <param name="report_unconstrained">
-		/// Optional
-		/// Report unconstrained end points
-		/// </param>
-		/// <param name="significant_digits">
-		/// Optional
-		/// Number of digits to display: Range: 0 to 3 Default: 3
-		/// </param>
+		/// <param name="to">(Optional) To clock</param>
+		/// <param name="delay_type">(Optional) Type of path delay: Values: max, min, min_max Default: max</param>
+		/// <param name="num_bins">(Optional) Maximum number of bins: Valid Range (1-100) Default: 10</param>
+		/// <param name="slack_less_than">(Optional) Display paths with slack less than this Default: 1e+30</param>
+		/// <param name="slack_greater_than">(Optional) Display paths with slack greater than this Default: -1e+30</param>
+		/// <param name="group">(Optional) Limit report to paths in this group(s)</param>
+		/// <param name="report_unconstrained">(Optional) Report unconstrained end points</param>
+		/// <param name="significant_digits">(Optional) Number of digits to display: Range: 0 to 3 Default: 3</param>
 		/// <param name="scale">
-		/// Optional
+		/// (Optional)
 		/// Type of scale on which to draw the histogram; Values:
 		/// linear, logarithmic Default: linear
 		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// run create_slack_histogram on the specified cell(s)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_slack_histogram(string to = null, string delay_type = null, string num_bins = null, string slack_less_than = null, string slack_greater_than = null, string group = null, bool? report_unconstrained = null, string significant_digits = null, string scale = null, string name = null, string cells = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="cells">(Optional) run create_slack_histogram on the specified cell(s)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_slack_histogram(string to = null, string delay_type = null, string num_bins = null, string slack_less_than = null, string slack_greater_than = null, string group = null, bool? report_unconstrained = null, string significant_digits = null, string scale = null, string name = null, string cells = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_slack_histogram [-to <args>] [-delay_type <arg>] [-num_bins <arg>] [-slack_less_than <arg>] [-slack_greater_than <arg>] [-group <args>] [-report_unconstrained] [-significant_digits <arg>] [-scale <arg>] [-name <arg>] [-cells <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("create_slack_histogram")
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("delay_type", delay_type)
-					.OptionalNamedString("num_bins", num_bins)
-					.OptionalNamedString("slack_less_than", slack_less_than)
-					.OptionalNamedString("slack_greater_than", slack_greater_than)
-					.OptionalNamedString("group", group)
-					.Flag("report_unconstrained", report_unconstrained)
-					.OptionalNamedString("significant_digits", significant_digits)
-					.OptionalNamedString("scale", scale)
-					.OptionalNamedString("name", name)
-					.OptionalNamedString("cells", cells)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.create_slack_histogram(to, delay_type, num_bins, slack_less_than, slack_greater_than, group, report_unconstrained, significant_digits, scale, name, cells, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Clear a set of clock networks results from memory
@@ -551,27 +389,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 419
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name for the set of results to clear
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_clock_networks_results(string name, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Required) Name for the set of results to clear</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_clock_networks_results(string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_clock_networks_results [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("delete_clock_networks_results")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.delete_clock_networks_results(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Delete a set of existing configurable report objects
@@ -588,27 +413,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 462
 		/// </summary>
-		/// <param name="report_configs">
-		/// Required
-		/// List of configurable report objects to delete
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_report_configs(string report_configs, bool? quiet = null, bool? verbose = null)
+		/// <param name="report_configs">(Required) List of configurable report objects to delete</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_report_configs(string report_configs, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_report_configs [-quiet] [-verbose] <report_configs>...
-			_tcl.Add(
-				new SimpleTCLCommand("delete_report_configs")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(report_configs)
-			);
+			_tcl.Entry(_builder.delete_report_configs(report_configs, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Clear a set of timing results from memory
@@ -624,35 +436,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 468
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name for the set of results to clear
-		/// </param>
+		/// <param name="name">(Required) Name for the set of results to clear</param>
 		/// <param name="type">
-		/// Optional
+		/// (Optional)
 		/// Type of timing results to clear; Values: bus_skew,
 		/// check_timing, clock_interaction, clock_domain_crossings,
 		/// config_timing, datasheet, pulse_width, slack_histogram,
 		/// timing_path, timing_summary
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_timing_results(string name, string type = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_timing_results(string name, string type = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_timing_results [-type <arg>] [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("delete_timing_results")
-					.OptionalNamedString("type", type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.delete_timing_results(name, type, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Delete utilization results that were stored in memory under a given name.
@@ -667,27 +465,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 470
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name for the set of results to clear
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_utilization_results(string name, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Required) Name for the set of results to clear</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_utilization_results(string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_utilization_results -name <arg> [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("delete_utilization_results")
-					.RequiredNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.delete_utilization_results(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Generate a set of configurable report objects
@@ -707,32 +492,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 535
 		/// </summary>
-		/// <param name="report_configs">
-		/// Required
-		/// List of configurable report objects to generate
-		/// </param>
-		/// <param name="jobs">
-		/// Optional
-		/// Number of jobs Default: 1
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void generate_reports(string report_configs, string jobs = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="report_configs">(Required) List of configurable report objects to generate</param>
+		/// <param name="jobs">(Optional) Number of jobs Default: 1</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL generate_reports(string report_configs, string jobs = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_reports [-jobs <arg>] [-quiet] [-verbose] <report_configs>...
-			_tcl.Add(
-				new SimpleTCLCommand("generate_reports")
-					.OptionalNamedString("jobs", jobs)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(report_configs)
-			);
+			_tcl.Entry(_builder.generate_reports(report_configs, jobs, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Returns the current message count, limit, or the message configuration rules previously defined
@@ -783,51 +551,37 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 815
 		/// </summary>
 		/// <param name="id">
-		/// Optional
+		/// (Optional)
 		/// The message id to match. Should be used in conjunction
 		/// with -limit or -count Default: empty
 		/// </param>
 		/// <param name="severity">
-		/// Optional
+		/// (Optional)
 		/// The message severity to match. Should be used in
 		/// conjunction with -limit or -count Default: empty
 		/// </param>
 		/// <param name="rules">
-		/// Optional
+		/// (Optional)
 		/// Show a table displaying all message control rules for the
 		/// current project
 		/// </param>
 		/// <param name="limit">
-		/// Optional
+		/// (Optional)
 		/// Show the limit for the number of messages matching either
 		/// -id or -severity that will be displayed
 		/// </param>
 		/// <param name="count">
-		/// Optional
+		/// (Optional)
 		/// Show the number of messages matching either -id or -
 		/// severity that have been displayed
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void get_msg_config(string id = null, string severity = null, bool? rules = null, bool? limit = null, bool? count = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL get_msg_config(string id = null, string severity = null, bool? rules = null, bool? limit = null, bool? count = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_msg_config [-id <arg>] [-severity <arg>] [-rules] [-limit] [-count] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("get_msg_config")
-					.OptionalNamedString("id", id)
-					.OptionalNamedString("severity", severity)
-					.Flag("rules", rules)
-					.Flag("limit", limit)
-					.Flag("count", count)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.get_msg_config(id, severity, rules, limit, count, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Internal TCL task for reporting PPLOCs on pins or nets
@@ -837,56 +591,24 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 870
 		/// </summary>
-		/// <param name="nets">
-		/// Required
-		/// List of nets to report its PPLOCs
-		/// </param>
-		/// <param name="pins">
-		/// Required
-		/// List of pins to report its PPLOCs
-		/// </param>
-		/// <param name="count">
-		/// Optional
-		/// Count number of PPLOCs;; Do not report PPLOC or node
-		/// names.
-		/// </param>
-		/// <param name="unlocked">
-		/// Optional
-		/// Report unlocked/unfixed PPLOCs only
-		/// </param>
-		/// <param name="locked">
-		/// Optional
-		/// Report locked/fixed PPLOCs only; use -level to specify locked
-		/// level.
-		/// </param>
+		/// <param name="nets">(Required) List of nets to report its PPLOCs</param>
+		/// <param name="pins">(Required) List of pins to report its PPLOCs</param>
+		/// <param name="count">(Optional) Count number of PPLOCs;; Do not report PPLOC or node names.</param>
+		/// <param name="unlocked">(Optional) Report unlocked/unfixed PPLOCs only</param>
+		/// <param name="locked">(Optional) Report locked/fixed PPLOCs only; use -level to specify locked level.</param>
 		/// <param name="level">
-		/// Optional
+		/// (Optional)
 		/// Specify locked level; Valid values are placement and routing.
 		/// Default: placement
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>PPLOC nodes or number of PPLOCs</returns>
-		public void get_pplocs(string nets, string pins, bool? count = null, bool? unlocked = null, bool? locked = null, string level = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_pplocs(string nets, string pins, bool? count = null, bool? unlocked = null, bool? locked = null, string level = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_pplocs -nets <args> -pins <args> [-count] [-unlocked] [-locked] [-level <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("get_pplocs")
-					.RequiredNamedString("nets", nets)
-					.RequiredNamedString("pins", pins)
-					.Flag("count", count)
-					.Flag("unlocked", unlocked)
-					.Flag("locked", locked)
-					.OptionalNamedString("level", level)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.get_pplocs(nets, pins, count, unlocked, locked, level, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of Configurable Report objects
@@ -906,49 +628,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 888
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'report' objects of these types: 'run'.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match report names against patterns Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) Get 'report' objects of these types: 'run'.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match report names against patterns Default: *</param>
 		/// <returns>list of Configurable Report objects</returns>
-		public void get_report_configs(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_report_configs(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_report_configs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_report_configs")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_report_configs(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Open report from .rpx file
@@ -972,52 +664,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1068
 		/// </summary>
-		/// <param name="rpx">
-		/// Required
-		/// Report data file to be read
-		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// Filename to output results to
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="console">
-		/// Optional
-		/// Send output to console
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void open_report(string rpx, string file = null, bool? append = null, bool? console = null, string name = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="rpx">(Required) Report data file to be read</param>
+		/// <param name="file">(Optional) Filename to output results to</param>
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="console">(Optional) Send output to console</param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="return_string">(Optional) Return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL open_report(string rpx, string file = null, bool? append = null, bool? console = null, string name = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_report [-file <arg>] [-append] [-console] [-name <arg>] [-return_string] [-quiet] [-verbose] <rpx>
-			_tcl.Add(
-				new SimpleTCLCommand("open_report")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("console", console)
-					.OptionalNamedString("name", name)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(rpx)
-			);
+			_tcl.Entry(_builder.open_report(rpx, file, append, console, name, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report timing paths
@@ -1042,121 +701,59 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1270
 		/// </summary>
-		/// <param name="delay_type">
-		/// Optional
-		/// Type of path delay: Values: max, min, min_max Default:
-		/// min_max
-		/// </param>
+		/// <param name="delay_type">(Optional) Type of path delay: Values: max, min, min_max Default: min_max</param>
 		/// <param name="setup">
-		/// Optional
+		/// (Optional)
 		/// Report max delay endpoint timing paths (equivalent to -
 		/// delay_type max)
 		/// </param>
 		/// <param name="hold">
-		/// Optional
+		/// (Optional)
 		/// Report min delay endpoint timing paths (equivalent to -
 		/// delay_type min)
 		/// </param>
-		/// <param name="no_detailed_paths">
-		/// Optional
-		/// Only report top level summary table
-		/// </param>
+		/// <param name="no_detailed_paths">(Optional) Only report top level summary table</param>
 		/// <param name="max_paths">
-		/// Optional
+		/// (Optional)
 		/// Maximum number of paths to output per bus skew
 		/// constraint: Value >=1 Default: 1
 		/// </param>
 		/// <param name="nworst">
-		/// Optional
+		/// (Optional)
 		/// List up to N worst paths per endpoint per constraint: Value
 		/// >=1 Default: 1
 		/// </param>
 		/// <param name="unique_pins">
-		/// Optional
+		/// (Optional)
 		/// For each unique set of pins, show at most 1 path per bus
 		/// skew constraint
 		/// </param>
 		/// <param name="path_type">
-		/// Optional
+		/// (Optional)
 		/// Format for path report: Values: short, full, full_clock,
 		/// full_clock_expanded Default: full_clock_expanded
 		/// </param>
-		/// <param name="sort_by_slack">
-		/// Optional
-		/// Sort summary and per-constraint sections by slack
-		/// </param>
-		/// <param name="input_pins">
-		/// Optional
-		/// Show input pins in path
-		/// </param>
-		/// <param name="no_header">
-		/// Optional
-		/// Do not generate a report header
-		/// </param>
-		/// <param name="significant_digits">
-		/// Optional
-		/// Number of digits to display: Range: 0 to 3 Default: 3
-		/// </param>
+		/// <param name="sort_by_slack">(Optional) Sort summary and per-constraint sections by slack</param>
+		/// <param name="input_pins">(Optional) Show input pins in path</param>
+		/// <param name="no_header">(Optional) Do not generate a report header</param>
+		/// <param name="significant_digits">(Optional) Number of digits to display: Range: 0 to 3 Default: 3</param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report as string
-		/// </param>
-		/// <param name="warn_on_violation">
-		/// Optional
-		/// Issue a critical warning when the report contains a timing
-		/// violation
-		/// </param>
-		/// <param name="rpx">
-		/// Optional
-		/// Filename to output interactive results to.
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// run report_bus_skew on the specified hierarchical cell(s)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_bus_skew(string delay_type = null, bool? setup = null, bool? hold = null, bool? no_detailed_paths = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? sort_by_slack = null, bool? input_pins = null, bool? no_header = null, string significant_digits = null, string file = null, bool? append = null, bool? return_string = null, bool? warn_on_violation = null, string rpx = null, string cells = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="return_string">(Optional) Return report as string</param>
+		/// <param name="warn_on_violation">(Optional) Issue a critical warning when the report contains a timing violation</param>
+		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
+		/// <param name="cells">(Optional) run report_bus_skew on the specified hierarchical cell(s)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_bus_skew(string delay_type = null, bool? setup = null, bool? hold = null, bool? no_detailed_paths = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? sort_by_slack = null, bool? input_pins = null, bool? no_header = null, string significant_digits = null, string file = null, bool? append = null, bool? return_string = null, bool? warn_on_violation = null, string rpx = null, string cells = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_bus_skew [-delay_type <arg>] [-setup] [-hold] [-no_detailed_paths] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-path_type <arg>] [-sort_by_slack] [-input_pins] [-no_header] [-significant_digits <arg>] [-file <arg>] [-append] [-return_string] [-warn_on_violation] [-rpx <arg>] [-cells <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_bus_skew")
-					.OptionalNamedString("delay_type", delay_type)
-					.Flag("setup", setup)
-					.Flag("hold", hold)
-					.Flag("no_detailed_paths", no_detailed_paths)
-					.OptionalNamedString("max_paths", max_paths)
-					.OptionalNamedString("nworst", nworst)
-					.Flag("unique_pins", unique_pins)
-					.OptionalNamedString("path_type", path_type)
-					.Flag("sort_by_slack", sort_by_slack)
-					.Flag("input_pins", input_pins)
-					.Flag("no_header", no_header)
-					.OptionalNamedString("significant_digits", significant_digits)
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("warn_on_violation", warn_on_violation)
-					.OptionalNamedString("rpx", rpx)
-					.OptionalNamedString("cells", cells)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_bus_skew(delay_type, setup, hold, no_detailed_paths, max_paths, nworst, unique_pins, path_type, sort_by_slack, input_pins, no_header, significant_digits, file, append, return_string, warn_on_violation, rpx, cells, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report carry chains
@@ -1176,49 +773,22 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1274
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append to existing file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="cell">
-		/// Optional
-		/// Report Carry Chains only for given cell
-		/// </param>
-		/// <param name="max_chains">
-		/// Optional
-		/// Number of chains for which report is to be generated
-		/// Default: 1
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="append">(Optional) Append to existing file</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="cell">(Optional) Report Carry Chains only for given cell</param>
+		/// <param name="max_chains">(Optional) Number of chains for which report is to be generated Default: 1</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Report</returns>
-		public void report_carry_chains(string file = null, bool? append = null, bool? return_string = null, string cell = null, string max_chains = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_carry_chains(string file = null, bool? append = null, bool? return_string = null, string cell = null, string max_chains = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_carry_chains [-file <arg>] [-append] [-return_string] [-cell <args>] [-max_chains <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_carry_chains")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.OptionalNamedString("cell", cell)
-					.OptionalNamedString("max_chains", max_chains)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_carry_chains(file, append, return_string, cell, max_chains, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report the clock domain crossing (CDC) paths in the current design.
@@ -1265,98 +835,32 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1276
 		/// </summary>
-		/// <param name="from">
-		/// Optional
-		/// From clocks
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// To clocks
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// run report_cdc on the cells
-		/// </param>
-		/// <param name="details">
-		/// Optional
-		/// report the detail of the CDC timing paths not safely timed
-		/// </param>
-		/// <param name="summary">
-		/// Optional
-		/// report a summary by clocks of the CDC
-		/// </param>
-		/// <param name="all_checks_per_endpoint">
-		/// Optional
-		/// report all checks per endpoint
-		/// </param>
-		/// <param name="severity">
-		/// Optional
-		/// report only the severity specified (Info, Warning or Critical)
-		/// </param>
-		/// <param name="no_header">
-		/// Optional
-		/// Do not generate a report header
-		/// </param>
-		/// <param name="show_waiver">
-		/// Optional
-		/// Show the waived paths
-		/// </param>
-		/// <param name="no_waiver">
-		/// Optional
-		/// Ignore the waiver
-		/// </param>
-		/// <param name="waived">
-		/// Optional
-		/// Show only the waived paths
-		/// </param>
+		/// <param name="from">(Optional) From clocks</param>
+		/// <param name="to">(Optional) To clocks</param>
+		/// <param name="cells">(Optional) run report_cdc on the cells</param>
+		/// <param name="details">(Optional) report the detail of the CDC timing paths not safely timed</param>
+		/// <param name="summary">(Optional) report a summary by clocks of the CDC</param>
+		/// <param name="all_checks_per_endpoint">(Optional) report all checks per endpoint</param>
+		/// <param name="severity">(Optional) report only the severity specified (Info, Warning or Critical)</param>
+		/// <param name="no_header">(Optional) Do not generate a report header</param>
+		/// <param name="show_waiver">(Optional) Show the waived paths</param>
+		/// <param name="no_waiver">(Optional) Ignore the waiver</param>
+		/// <param name="waived">(Optional) Show only the waived paths</param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_cdc(string from = null, string to = null, string cells = null, bool? details = null, bool? summary = null, bool? all_checks_per_endpoint = null, string severity = null, bool? no_header = null, bool? show_waiver = null, bool? no_waiver = null, bool? waived = null, string file = null, bool? append = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_cdc(string from = null, string to = null, string cells = null, bool? details = null, bool? summary = null, bool? all_checks_per_endpoint = null, string severity = null, bool? no_header = null, bool? show_waiver = null, bool? no_waiver = null, bool? waived = null, string file = null, bool? append = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_cdc [-from <args>] [-to <args>] [-cells <args>] [-details] [-summary] [-all_checks_per_endpoint] [-severity <arg>] [-no_header] [-show_waiver] [-no_waiver] [-waived] [-file <arg>] [-append] [-return_string] [-name <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_cdc")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("cells", cells)
-					.Flag("details", details)
-					.Flag("summary", summary)
-					.Flag("all_checks_per_endpoint", all_checks_per_endpoint)
-					.OptionalNamedString("severity", severity)
-					.Flag("no_header", no_header)
-					.Flag("show_waiver", show_waiver)
-					.Flag("no_waiver", no_waiver)
-					.Flag("waived", waived)
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_cdc(from, to, cells, details, summary, all_checks_per_endpoint, severity, no_header, show_waiver, no_waiver, waived, file, append, return_string, name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report on clock timing paths and unclocked registers
@@ -1383,75 +887,27 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1280
 		/// </summary>
-		/// <param name="delay_type">
-		/// Optional
-		/// Type of path delay: Values: max, min, min_max Default: max
-		/// </param>
-		/// <param name="setup">
-		/// Optional
-		/// Consider max delay timing paths (equivalent to -delay_type
-		/// max)
-		/// </param>
-		/// <param name="hold">
-		/// Optional
-		/// Consider min delay timing paths (equivalent to -delay_type
-		/// min)
-		/// </param>
-		/// <param name="significant_digits">
-		/// Optional
-		/// Number of digits to display: Range: 0 to 3 Default: 2
-		/// </param>
-		/// <param name="no_header">
-		/// Optional
-		/// do not generate a report header
-		/// </param>
+		/// <param name="delay_type">(Optional) Type of path delay: Values: max, min, min_max Default: max</param>
+		/// <param name="setup">(Optional) Consider max delay timing paths (equivalent to -delay_type max)</param>
+		/// <param name="hold">(Optional) Consider min delay timing paths (equivalent to -delay_type min)</param>
+		/// <param name="significant_digits">(Optional) Number of digits to display: Range: 0 to 3 Default: 2</param>
+		/// <param name="no_header">(Optional) do not generate a report header</param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report as string
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// run report_clock_interaction on the specified cell(s)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_clock_interaction(string delay_type = null, bool? setup = null, bool? hold = null, string significant_digits = null, bool? no_header = null, string file = null, bool? append = null, string name = null, bool? return_string = null, string cells = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="return_string">(Optional) Return report as string</param>
+		/// <param name="cells">(Optional) run report_clock_interaction on the specified cell(s)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_clock_interaction(string delay_type = null, bool? setup = null, bool? hold = null, string significant_digits = null, bool? no_header = null, string file = null, bool? append = null, string name = null, bool? return_string = null, string cells = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_clock_interaction [-delay_type <arg>] [-setup] [-hold] [-significant_digits <arg>] [-no_header] [-file <arg>] [-append] [-name <arg>] [-return_string] [-cells <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_clock_interaction")
-					.OptionalNamedString("delay_type", delay_type)
-					.Flag("setup", setup)
-					.Flag("hold", hold)
-					.OptionalNamedString("significant_digits", significant_digits)
-					.Flag("no_header", no_header)
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.OptionalNamedString("name", name)
-					.Flag("return_string", return_string)
-					.OptionalNamedString("cells", cells)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_clock_interaction(delay_type, setup, hold, significant_digits, no_header, file, append, name, return_string, cells, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report clock networks
@@ -1475,82 +931,54 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1283
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="endpoints_only">
-		/// Optional
+		/// (Optional)
 		/// dump clock network endpoints only; Not to be used in
 		/// conjunction with -levels option
 		/// </param>
 		/// <param name="levels">
-		/// Optional
+		/// (Optional)
 		/// expands clock network upto n levels of instances, Value: n >
 		/// 0; Not to be used in conjunction with -endpoints_only option
 		/// Default: 0
 		/// </param>
 		/// <param name="expand_buckets">
-		/// Optional
+		/// (Optional)
 		/// expands bucketed endpoints and displays pins; By default,
 		/// endpoint pins are bucketed by celltype; This option only
 		/// works in conjunction with -levels option or -endpoints_only
 		/// option
 		/// </param>
 		/// <param name="suppress_endpoints">
-		/// Optional
+		/// (Optional)
 		/// suppress paths to clock or nonclock endpoint pins; Values:
 		/// clock, nonclock
 		/// </param>
 		/// <param name="clocks">
-		/// Optional
+		/// (Optional)
 		/// List of clocks for clock network dump; if not specified, all
 		/// clock networks are dumped
 		/// </param>
 		/// <param name="unconstrained_roots">
-		/// Optional
+		/// (Optional)
 		/// List of unconstrained root pins/ports for clock network
 		/// dump; if not specified, all unconstrained clock roots are
 		/// dumped
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_clock_networks(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? endpoints_only = null, string levels = null, bool? expand_buckets = null, string suppress_endpoints = null, string clocks = null, string unconstrained_roots = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_clock_networks(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? endpoints_only = null, string levels = null, bool? expand_buckets = null, string suppress_endpoints = null, string clocks = null, string unconstrained_roots = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_clock_networks [-file <arg>] [-append] [-name <arg>] [-return_string] [-endpoints_only] [-levels <arg>] [-expand_buckets] [-suppress_endpoints <arg>] [-clocks <args>] [-unconstrained_roots <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_clock_networks")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.OptionalNamedString("name", name)
-					.Flag("return_string", return_string)
-					.Flag("endpoints_only", endpoints_only)
-					.OptionalNamedString("levels", levels)
-					.Flag("expand_buckets", expand_buckets)
-					.OptionalNamedString("suppress_endpoints", suppress_endpoints)
-					.OptionalNamedString("clocks", clocks)
-					.OptionalNamedString("unconstrained_roots", unconstrained_roots)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_clock_networks(file, append, name, return_string, endpoints_only, levels, expand_buckets, suppress_endpoints, clocks, unconstrained_roots, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report information about clock nets in design
@@ -1582,58 +1010,24 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1286
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append to existing file
-		/// </param>
-		/// <param name="write_xdc">
-		/// Optional
-		/// file to output clock constraint. File name must be given.
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// Cells/bel_instances for which to report clock utilization
-		/// </param>
-		/// <param name="clock_roots_only">
-		/// Optional
-		/// Report only the Clock Root Assignments
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="append">(Optional) Append to existing file</param>
+		/// <param name="write_xdc">(Optional) file to output clock constraint. File name must be given.</param>
+		/// <param name="cells">(Optional) Cells/bel_instances for which to report clock utilization</param>
+		/// <param name="clock_roots_only">(Optional) Report only the Clock Root Assignments</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Report</returns>
-		public void report_clock_utilization(string file = null, bool? append = null, string write_xdc = null, string cells = null, bool? clock_roots_only = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_clock_utilization(string file = null, bool? append = null, string write_xdc = null, string cells = null, bool? clock_roots_only = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_clock_utilization [-file <arg>] [-append] [-write_xdc <arg>] [-cells <args>] [-clock_roots_only] [-return_string] [-name <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_clock_utilization")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.OptionalNamedString("write_xdc", write_xdc)
-					.OptionalNamedString("cells", cells)
-					.Flag("clock_roots_only", clock_roots_only)
-					.Flag("return_string", return_string)
-					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_clock_utilization(file, append, write_xdc, cells, clock_roots_only, return_string, name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report clocks
@@ -1657,42 +1051,20 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1289
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="clocks">
-		/// Optional
-		/// List of clocks Default: *
-		/// </param>
-		public void report_clocks(string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, string clocks = null)
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="clocks">(Optional) List of clocks Default: *</param>
+		public TTCL report_clocks(string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, string clocks = null)
 		{
 			// TCL Syntax: report_clocks [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] [<clocks>]
-			_tcl.Add(
-				new SimpleTCLCommand("report_clocks")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(clocks)
-			);
+			_tcl.Entry(_builder.report_clocks(file, append, return_string, quiet, verbose, clocks));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report Implementation flow Config param
@@ -1712,43 +1084,21 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1296
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. Send output to console if -file
 		/// is not used.
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append to existing file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="force">(Optional) Overwrite existing file</param>
+		/// <param name="append">(Optional) Append to existing file</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Report</returns>
-		public void report_config_implementation(string file = null, bool? force = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_config_implementation(string file = null, bool? force = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_config_implementation [-file <arg>] [-force] [-append] [-return_string] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_config_implementation")
-					.OptionalNamedString("file", file)
-					.Flag("force", force)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_config_implementation(file, force, append, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report settings affecting timing analysis
@@ -1767,58 +1117,24 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1298
 		/// </summary>
-		/// <param name="file">
-		/// Optional
-		/// Output the results to file
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
+		/// <param name="file">(Optional) Output the results to file</param>
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="all">
-		/// Optional
+		/// (Optional)
 		/// report all configuration settings (by default, only the
 		/// typically important settings are reported
 		/// </param>
-		/// <param name="no_header">
-		/// Optional
-		/// do not generate a report header
-		/// </param>
-		/// <param name="rpx">
-		/// Optional
-		/// Filename to output interactive results to.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_config_timing(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? all = null, bool? no_header = null, string rpx = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="no_header">(Optional) do not generate a report header</param>
+		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_config_timing(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? all = null, bool? no_header = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_config_timing [-file <arg>] [-append] [-name <arg>] [-return_string] [-all] [-no_header] [-rpx <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_config_timing")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.OptionalNamedString("name", name)
-					.Flag("return_string", return_string)
-					.Flag("all", all)
-					.Flag("no_header", no_header)
-					.OptionalNamedString("rpx", rpx)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_config_timing(file, append, name, return_string, all, no_header, rpx, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report the unique control sets in design
@@ -1845,61 +1161,29 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1301
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append to existing file
-		/// </param>
-		/// <param name="hierarchical">
-		/// Optional
-		/// Generates text-based hierarchical report.
-		/// </param>
-		/// <param name="hierarchical_depth">
-		/// Optional
-		/// Specifies the depth level for textual hierarchical report
-		/// Default: 0
-		/// </param>
+		/// <param name="append">(Optional) Append to existing file</param>
+		/// <param name="hierarchical">(Optional) Generates text-based hierarchical report.</param>
+		/// <param name="hierarchical_depth">(Optional) Specifies the depth level for textual hierarchical report Default: 0</param>
 		/// <param name="sort_by">
-		/// Optional
+		/// (Optional)
 		/// Sort criterion: can be used only when -verbose is used.
 		/// Options are clk, clkEn, set. Ex: report_control_sets -verbose -
 		/// sort_by {clk clkEn}
 		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// Cells/bel_instances for which to report control sets
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="cells">(Optional) Cells/bel_instances for which to report control sets</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Report</returns>
-		public void report_control_sets(string file = null, bool? append = null, bool? hierarchical = null, string hierarchical_depth = null, string sort_by = null, string cells = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_control_sets(string file = null, bool? append = null, bool? hierarchical = null, string hierarchical_depth = null, string sort_by = null, string cells = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_control_sets [-file <arg>] [-append] [-hierarchical] [-hierarchical_depth <arg>] [-sort_by <args>] [-cells <args>] [-return_string] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_control_sets")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("hierarchical", hierarchical)
-					.OptionalNamedString("hierarchical_depth", hierarchical_depth)
-					.OptionalNamedString("sort_by", sort_by)
-					.OptionalNamedString("cells", cells)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_control_sets(file, append, hierarchical, hierarchical_depth, sort_by, cells, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report data sheet
@@ -1931,73 +1215,27 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1304
 		/// </summary>
-		/// <param name="significant_digits">
-		/// Optional
-		/// Number of digits to display: Range: 0 to 3 Default: 3
-		/// </param>
+		/// <param name="significant_digits">(Optional) Number of digits to display: Range: 0 to 3 Default: 3</param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="sort_by">
-		/// Optional
-		/// Sorting order: Values: clock, port Default: clock
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="show_all_corners">
-		/// Optional
-		/// provide all corners
-		/// </param>
-		/// <param name="show_oe_timing">
-		/// Optional
-		/// show output enable (tristate) timing
-		/// </param>
-		/// <param name="group">
-		/// Optional
-		/// List of output ports for skew calculation
-		/// </param>
-		/// <param name="rpx">
-		/// Optional
-		/// Filename to output interactive results to.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_datasheet(string significant_digits = null, string file = null, bool? append = null, bool? return_string = null, string sort_by = null, string name = null, bool? show_all_corners = null, bool? show_oe_timing = null, string group = null, string rpx = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="sort_by">(Optional) Sorting order: Values: clock, port Default: clock</param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="show_all_corners">(Optional) provide all corners</param>
+		/// <param name="show_oe_timing">(Optional) show output enable (tristate) timing</param>
+		/// <param name="group">(Optional) List of output ports for skew calculation</param>
+		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_datasheet(string significant_digits = null, string file = null, bool? append = null, bool? return_string = null, string sort_by = null, string name = null, bool? show_all_corners = null, bool? show_oe_timing = null, string group = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_datasheet [-significant_digits <arg>] [-file <arg>] [-append] [-return_string] [-sort_by <arg>] [-name <arg>] [-show_all_corners] [-show_oe_timing] [-group <args>] [-rpx <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_datasheet")
-					.OptionalNamedString("significant_digits", significant_digits)
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.OptionalNamedString("sort_by", sort_by)
-					.OptionalNamedString("name", name)
-					.Flag("show_all_corners", show_all_corners)
-					.Flag("show_oe_timing", show_oe_timing)
-					.OptionalNamedString("group", group)
-					.OptionalNamedString("rpx", rpx)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_datasheet(significant_digits, file, append, return_string, sort_by, name, show_all_corners, show_oe_timing, group, rpx, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report details on debug cores
@@ -2018,42 +1256,20 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1307
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report as a string
-		/// </param>
-		/// <param name="full_path">
-		/// Optional
-		/// Display full hierarchical net path in report
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_debug_core(string file = null, bool? append = null, bool? return_string = null, bool? full_path = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="return_string">(Optional) Return report as a string</param>
+		/// <param name="full_path">(Optional) Display full hierarchical net path in report</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_debug_core(string file = null, bool? append = null, bool? return_string = null, bool? full_path = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_debug_core [-file <arg>] [-append] [-return_string] [-full_path] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_debug_core")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("full_path", full_path)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_debug_core(file, append, return_string, full_path, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report Design Analysis
@@ -2203,183 +1419,82 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1309
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report as string
-		/// </param>
-		/// <param name="complexity">
-		/// Optional
-		/// Finds the interconnection complexity (Rent) of the design
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// Report analysis information for given list of cells
-		/// </param>
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="return_string">(Optional) Return report as string</param>
+		/// <param name="complexity">(Optional) Finds the interconnection complexity (Rent) of the design</param>
+		/// <param name="cells">(Optional) Report analysis information for given list of cells</param>
 		/// <param name="bounding_boxes">
-		/// Optional
+		/// (Optional)
 		/// Report interconnection complexity (Rent) for given list of
 		/// bounding boxes Default: empty
 		/// </param>
-		/// <param name="hierarchical_depth">
-		/// Optional
-		/// Hierarchical depth option for -complexity Default: 1
-		/// </param>
-		/// <param name="congestion">
-		/// Optional
-		/// Reports congestion of the design
-		/// </param>
+		/// <param name="hierarchical_depth">(Optional) Hierarchical depth option for -complexity Default: 1</param>
+		/// <param name="congestion">(Optional) Reports congestion of the design</param>
 		/// <param name="min_congestion_level">
-		/// Optional
+		/// (Optional)
 		/// Minimum congestion level for reporting router congestion,
 		/// integer value between 3 and 8 Default: 5
 		/// </param>
-		/// <param name="timing">
-		/// Optional
-		/// Reports characteristics of critical path
-		/// </param>
-		/// <param name="setup">
-		/// Optional
-		/// Reports characteristics of critical SETUP path
-		/// </param>
-		/// <param name="hold">
-		/// Optional
-		/// Reports characteristics of critical HOLD path
-		/// </param>
-		/// <param name="show_all">
-		/// Optional
-		/// Adds more characteristics to the timing characteristics
-		/// report
-		/// </param>
-		/// <param name="full_logical_pin">
-		/// Optional
-		/// Display hierarchical pin names in the report
-		/// </param>
-		/// <param name="routed_vs_estimated">
-		/// Optional
-		/// Reports relevant characteristics of critical path in estimated
-		/// mode
-		/// </param>
-		/// <param name="logic_level_distribution">
-		/// Optional
-		/// Reports logic level distribution
-		/// </param>
+		/// <param name="timing">(Optional) Reports characteristics of critical path</param>
+		/// <param name="setup">(Optional) Reports characteristics of critical SETUP path</param>
+		/// <param name="hold">(Optional) Reports characteristics of critical HOLD path</param>
+		/// <param name="show_all">(Optional) Adds more characteristics to the timing characteristics report</param>
+		/// <param name="full_logical_pin">(Optional) Display hierarchical pin names in the report</param>
+		/// <param name="routed_vs_estimated">(Optional) Reports relevant characteristics of critical path in estimated mode</param>
+		/// <param name="logic_level_distribution">(Optional) Reports logic level distribution</param>
 		/// <param name="logic_level_dist_paths">
-		/// Optional
+		/// (Optional)
 		/// Number of critical paths for analyzing logic level distribution
 		/// used along with -logic_level_distribution Default: 1000
 		/// </param>
 		/// <param name="min_level">
-		/// Optional
+		/// (Optional)
 		/// Group all paths with logic levels <min_level-1> and below
 		/// into a single bin, value passed must be at least 1 Default:
 		/// Not Used
 		/// Name Description
 		/// </param>
 		/// <param name="max_level">
-		/// Optional
+		/// (Optional)
 		/// Group all paths with logic levels <max_level+1> and above
 		/// into a single bin, where <max_level> must be the greater of
 		/// zero or <min_level + 1> if -min_level is used Default: Not
 		/// Used
 		/// </param>
-		/// <param name="return_timing_paths">
-		/// Optional
-		/// Returns timing path objects
-		/// </param>
-		/// <param name="of_timing_paths">
-		/// Optional
-		/// Reports characteristics for these paths
-		/// </param>
-		/// <param name="max_paths">
-		/// Optional
-		/// Number of paths to consider for -timing option Default: 1
-		/// </param>
+		/// <param name="return_timing_paths">(Optional) Returns timing path objects</param>
+		/// <param name="of_timing_paths">(Optional) Reports characteristics for these paths</param>
+		/// <param name="max_paths">(Optional) Number of paths to consider for -timing option Default: 1</param>
 		/// <param name="extend">
-		/// Optional
+		/// (Optional)
 		/// Reports characteristics of worst path before the start point
 		/// of critical path and worst path after the end of the critical
 		/// path
 		/// </param>
-		/// <param name="routes">
-		/// Optional
-		/// Reports distribution with respect to Routes instead of logic
-		/// levels
-		/// </param>
+		/// <param name="routes">(Optional) Reports distribution with respect to Routes instead of logic levels</param>
 		/// <param name="end_point_clock">
-		/// Optional
+		/// (Optional)
 		/// Returns timing path objects filtered by a particular endpoint
 		/// clock name as passed to this option
 		/// </param>
 		/// <param name="logic_levels">
-		/// Optional
+		/// (Optional)
 		/// Returns timing path objects bucketed under the bin name
 		/// as passed to this option
 		/// </param>
-		/// <param name="qor_summary">
-		/// Optional
-		/// Design Flow summary
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="no_pr_attribute">
-		/// Optional
-		/// Report without PR attributes
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_design_analysis(string file = null, bool? append = null, bool? return_string = null, bool? complexity = null, string cells = null, string bounding_boxes = null, string hierarchical_depth = null, bool? congestion = null, string min_congestion_level = null, bool? timing = null, bool? setup = null, bool? hold = null, bool? show_all = null, bool? full_logical_pin = null, bool? routed_vs_estimated = null, bool? logic_level_distribution = null, string logic_level_dist_paths = null, string min_level = null, string max_level = null, bool? return_timing_paths = null, string of_timing_paths = null, string max_paths = null, bool? extend = null, bool? routes = null, string end_point_clock = null, string logic_levels = null, bool? qor_summary = null, string name = null, bool? no_pr_attribute = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="qor_summary">(Optional) Design Flow summary</param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="no_pr_attribute">(Optional) Report without PR attributes</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_design_analysis(string file = null, bool? append = null, bool? return_string = null, bool? complexity = null, string cells = null, string bounding_boxes = null, string hierarchical_depth = null, bool? congestion = null, string min_congestion_level = null, bool? timing = null, bool? setup = null, bool? hold = null, bool? show_all = null, bool? full_logical_pin = null, bool? routed_vs_estimated = null, bool? logic_level_distribution = null, string logic_level_dist_paths = null, string min_level = null, string max_level = null, bool? return_timing_paths = null, string of_timing_paths = null, string max_paths = null, bool? extend = null, bool? routes = null, string end_point_clock = null, string logic_levels = null, bool? qor_summary = null, string name = null, bool? no_pr_attribute = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_design_analysis [-file <arg>] [-append] [-return_string] [-complexity] [-cells <args>] [-bounding_boxes <args>] [-hierarchical_depth <arg>] [-congestion] [-min_congestion_level <arg>] [-timing] [-setup] [-hold] [-show_all] [-full_logical_pin] [-routed_vs_estimated] [-logic_level_distribution] [-logic_level_dist_paths <arg>] [-min_level <arg>] [-max_level <arg>] [-return_timing_paths] [-of_timing_paths <args>] [-max_paths <arg>] [-extend] [-routes] [-end_point_clock <arg>] [-logic_levels <arg>] [-qor_summary] [-name <arg>] [-no_pr_attribute] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_design_analysis")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("complexity", complexity)
-					.OptionalNamedString("cells", cells)
-					.OptionalNamedString("bounding_boxes", bounding_boxes)
-					.OptionalNamedString("hierarchical_depth", hierarchical_depth)
-					.Flag("congestion", congestion)
-					.OptionalNamedString("min_congestion_level", min_congestion_level)
-					.Flag("timing", timing)
-					.Flag("setup", setup)
-					.Flag("hold", hold)
-					.Flag("show_all", show_all)
-					.Flag("full_logical_pin", full_logical_pin)
-					.Flag("routed_vs_estimated", routed_vs_estimated)
-					.Flag("logic_level_distribution", logic_level_distribution)
-					.OptionalNamedString("logic_level_dist_paths", logic_level_dist_paths)
-					.OptionalNamedString("min_level", min_level)
-					.OptionalNamedString("max_level", max_level)
-					.Flag("return_timing_paths", return_timing_paths)
-					.OptionalNamedString("of_timing_paths", of_timing_paths)
-					.OptionalNamedString("max_paths", max_paths)
-					.Flag("extend", extend)
-					.Flag("routes", routes)
-					.OptionalNamedString("end_point_clock", end_point_clock)
-					.OptionalNamedString("logic_levels", logic_levels)
-					.Flag("qor_summary", qor_summary)
-					.OptionalNamedString("name", name)
-					.Flag("no_pr_attribute", no_pr_attribute)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_design_analysis(file, append, return_string, complexity, cells, bounding_boxes, hierarchical_depth, congestion, min_congestion_level, timing, setup, hold, show_all, full_logical_pin, routed_vs_estimated, logic_level_distribution, logic_level_dist_paths, min_level, max_level, return_timing_paths, of_timing_paths, max_paths, extend, routes, end_point_clock, logic_levels, qor_summary, name, no_pr_attribute, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report disabled timing arcs
@@ -2409,54 +1524,27 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1319
 		/// </summary>
-		/// <param name="user_disabled">
-		/// Optional
-		/// report only user disabled arcs
-		/// </param>
+		/// <param name="user_disabled">(Optional) report only user disabled arcs</param>
 		/// <param name="column_style">
-		/// Optional
+		/// (Optional)
 		/// style for path report columns: Values: variable_width,
 		/// anchor_left Default: variable_width
 		/// </param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// run report_disable_timing on the specified cell(s)
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_disable_timing(bool? user_disabled = null, string column_style = null, string file = null, bool? append = null, string cells = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="cells">(Optional) run report_disable_timing on the specified cell(s)</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_disable_timing(bool? user_disabled = null, string column_style = null, string file = null, bool? append = null, string cells = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_disable_timing [-user_disabled] [-column_style <arg>] [-file <arg>] [-append] [-cells <args>] [-return_string] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_disable_timing")
-					.Flag("user_disabled", user_disabled)
-					.OptionalNamedString("column_style", column_style)
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.OptionalNamedString("cells", cells)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_disable_timing(user_disabled, column_style, file, append, cells, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Run DRC
@@ -2508,74 +1596,31 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1322
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="upgrade_cw">
-		/// Optional
+		/// (Optional)
 		/// Specifies if report_drc should upgrade all
 		/// CRITICAL_WARNING violations to ERROR.
 		/// </param>
-		/// <param name="checks">
-		/// Optional
-		/// DRC checks (see get_drc_checks for available checks)
-		/// </param>
-		/// <param name="ruledecks">
-		/// Optional
-		/// Containers of DRC rule checks Default: default
-		/// </param>
+		/// <param name="checks">(Optional) DRC checks (see get_drc_checks for available checks)</param>
+		/// <param name="ruledecks">(Optional) Containers of DRC rule checks Default: default</param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="rpx">
-		/// Optional
-		/// Report filename for persisted results.
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, do not overwrite the results file
-		/// </param>
-		/// <param name="waived">
-		/// Optional
-		/// Output result is Waived checks
-		/// </param>
-		/// <param name="no_waivers">
-		/// Optional
-		/// Disable waivers for checks
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_drc(string name = null, bool? upgrade_cw = null, string checks = null, string ruledecks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="rpx">(Optional) Report filename for persisted results.</param>
+		/// <param name="append">(Optional) Append the results to file, do not overwrite the results file</param>
+		/// <param name="waived">(Optional) Output result is Waived checks</param>
+		/// <param name="no_waivers">(Optional) Disable waivers for checks</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_drc(string name = null, bool? upgrade_cw = null, string checks = null, string ruledecks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_drc [-name <arg>] [-upgrade_cw] [-checks <args>] [-ruledecks <args>] [-file <arg>] [-rpx <arg>] [-append] [-waived] [-no_waivers] [-return_string] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_drc")
-					.OptionalNamedString("name", name)
-					.Flag("upgrade_cw", upgrade_cw)
-					.OptionalNamedString("checks", checks)
-					.OptionalNamedString("ruledecks", ruledecks)
-					.OptionalNamedString("file", file)
-					.OptionalNamedString("rpx", rpx)
-					.Flag("append", append)
-					.Flag("waived", waived)
-					.Flag("no_waivers", no_waivers)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_drc(name, upgrade_cw, checks, ruledecks, file, rpx, append, waived, no_waivers, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report system information.
@@ -2594,44 +1639,22 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1329
 		/// </summary>
-		/// <param name="file">
-		/// Optional
-		/// Write system information to specified file.
-		/// </param>
+		/// <param name="file">(Optional) Write system information to specified file.</param>
 		/// <param name="format">
-		/// Optional
+		/// (Optional)
 		/// Specifies how to format the report. Default is 'text', another
 		/// option is 'xml'. Only applies if -file is used. If xml output is
 		/// used, -append is not allowed. Default: text
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append report to existing file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report content as a string value
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_environment(string file = null, string format = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="append">(Optional) Append report to existing file</param>
+		/// <param name="return_string">(Optional) Return report content as a string value</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_environment(string file = null, string format = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_environment [-file <arg>] [-format <arg>] [-append] [-return_string] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_environment")
-					.OptionalNamedString("file", file)
-					.OptionalNamedString("format", format)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_environment(file, format, append, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report timing exceptions
@@ -2653,128 +1676,38 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1331
 		/// </summary>
-		/// <param name="from">
-		/// Optional
-		/// From pins, ports, cells or clocks
-		/// </param>
-		/// <param name="rise_from">
-		/// Optional
-		/// Rising from pins, ports, cells or clocks
-		/// </param>
-		/// <param name="fall_from">
-		/// Optional
-		/// Falling from pins, ports, cells or clocks
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// To pins, ports, cells or clocks
-		/// </param>
-		/// <param name="rise_to">
-		/// Optional
-		/// Rising to pins, ports, cells or clocks
-		/// </param>
-		/// <param name="fall_to">
-		/// Optional
-		/// Falling to pins, ports, cells or clocks
-		/// </param>
-		/// <param name="through">
-		/// Optional
-		/// Through pins, ports, cells or nets
-		/// </param>
-		/// <param name="rise_through">
-		/// Optional
-		/// Rising through pins, ports, cells or nets
-		/// </param>
-		/// <param name="fall_through">
-		/// Optional
-		/// Falling through pins, ports, cells or nets
-		/// </param>
-		/// <param name="ignored">
-		/// Optional
-		/// Only report exceptions which are ignored
-		/// </param>
-		/// <param name="summary">
-		/// Optional
-		/// Report a summary of all exceptions
-		/// </param>
-		/// <param name="coverage">
-		/// Optional
-		/// Report the coverage of all timing exceptions
-		/// </param>
-		/// <param name="ignored_objects">
-		/// Optional
-		/// Report the list of ignored startpoints and endpoints
-		/// </param>
-		/// <param name="count_objects">
-		/// Optional
-		/// Report the number of objects in the timing exceptions
-		/// </param>
-		/// <param name="write_merged_exceptions">
-		/// Optional
-		/// Write merged timing exceptions
-		/// </param>
-		/// <param name="write_valid_exceptions">
-		/// Optional
-		/// Write timing exceptions with the valid objects only
-		/// </param>
-		/// <param name="no_header">
-		/// Optional
-		/// Do not generate a report header
-		/// </param>
+		/// <param name="from">(Optional) From pins, ports, cells or clocks</param>
+		/// <param name="rise_from">(Optional) Rising from pins, ports, cells or clocks</param>
+		/// <param name="fall_from">(Optional) Falling from pins, ports, cells or clocks</param>
+		/// <param name="to">(Optional) To pins, ports, cells or clocks</param>
+		/// <param name="rise_to">(Optional) Rising to pins, ports, cells or clocks</param>
+		/// <param name="fall_to">(Optional) Falling to pins, ports, cells or clocks</param>
+		/// <param name="through">(Optional) Through pins, ports, cells or nets</param>
+		/// <param name="rise_through">(Optional) Rising through pins, ports, cells or nets</param>
+		/// <param name="fall_through">(Optional) Falling through pins, ports, cells or nets</param>
+		/// <param name="ignored">(Optional) Only report exceptions which are ignored</param>
+		/// <param name="summary">(Optional) Report a summary of all exceptions</param>
+		/// <param name="coverage">(Optional) Report the coverage of all timing exceptions</param>
+		/// <param name="ignored_objects">(Optional) Report the list of ignored startpoints and endpoints</param>
+		/// <param name="count_objects">(Optional) Report the number of objects in the timing exceptions</param>
+		/// <param name="write_merged_exceptions">(Optional) Write merged timing exceptions</param>
+		/// <param name="write_valid_exceptions">(Optional) Write timing exceptions with the valid objects only</param>
+		/// <param name="no_header">(Optional) Do not generate a report header</param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report as string
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_exceptions(string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? ignored = null, bool? summary = null, bool? coverage = null, bool? ignored_objects = null, bool? count_objects = null, bool? write_merged_exceptions = null, bool? write_valid_exceptions = null, bool? no_header = null, string file = null, bool? append = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="return_string">(Optional) Return report as string</param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_exceptions(string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? ignored = null, bool? summary = null, bool? coverage = null, bool? ignored_objects = null, bool? count_objects = null, bool? write_merged_exceptions = null, bool? write_valid_exceptions = null, bool? no_header = null, string file = null, bool? append = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_exceptions [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-ignored] [-summary] [-coverage] [-ignored_objects] [-count_objects] [-write_merged_exceptions] [-write_valid_exceptions] [-no_header] [-file <arg>] [-append] [-return_string] [-name <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_exceptions")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
-					.OptionalNamedString("through", through)
-					.OptionalNamedString("rise_through", rise_through)
-					.OptionalNamedString("fall_through", fall_through)
-					.Flag("ignored", ignored)
-					.Flag("summary", summary)
-					.Flag("coverage", coverage)
-					.Flag("ignored_objects", ignored_objects)
-					.Flag("count_objects", count_objects)
-					.Flag("write_merged_exceptions", write_merged_exceptions)
-					.Flag("write_valid_exceptions", write_valid_exceptions)
-					.Flag("no_header", no_header)
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_exceptions(from, rise_from, fall_from, to, rise_to, fall_to, through, rise_through, fall_through, ignored, summary, coverage, ignored_objects, count_objects, write_merged_exceptions, write_valid_exceptions, no_header, file, append, return_string, name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report high fanout nets
@@ -2800,108 +1733,46 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1338
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
 		/// <param name="format">
-		/// Optional
+		/// (Optional)
 		/// Specifies how to format the report: text, xml. Default is
 		/// 'text'. Only applies if -file is used. If xml output is used, -
 		/// append is not allowed. Default: text
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append to existing file
-		/// </param>
-		/// <param name="ascending">
-		/// Optional
-		/// Report nets in ascending order
-		/// </param>
-		/// <param name="timing">
-		/// Optional
-		/// Report worst slack and worst delay values on nets
-		/// </param>
-		/// <param name="histogram">
-		/// Optional
-		/// Report histogram for high fanout nets
-		/// </param>
-		/// <param name="load_types">
-		/// Optional
-		/// Report load details
-		/// </param>
-		/// <param name="clock_regions">
-		/// Optional
-		/// Report clock region wise load distribution
-		/// </param>
-		/// <param name="slr">
-		/// Optional
-		/// Report SLR wise load distribution
-		/// </param>
-		/// <param name="max_nets">
-		/// Optional
-		/// Number of nets for which report is to be generated Default:
-		/// 10
-		/// </param>
+		/// <param name="append">(Optional) Append to existing file</param>
+		/// <param name="ascending">(Optional) Report nets in ascending order</param>
+		/// <param name="timing">(Optional) Report worst slack and worst delay values on nets</param>
+		/// <param name="histogram">(Optional) Report histogram for high fanout nets</param>
+		/// <param name="load_types">(Optional) Report load details</param>
+		/// <param name="clock_regions">(Optional) Report clock region wise load distribution</param>
+		/// <param name="slr">(Optional) Report SLR wise load distribution</param>
+		/// <param name="max_nets">(Optional) Number of nets for which report is to be generated Default: 10</param>
 		/// <param name="fanout_greater_than">
-		/// Optional
+		/// (Optional)
 		/// Report nets that have fanout greater than the specified
 		/// integer, default 0 Default: 0
 		/// </param>
 		/// <param name="fanout_lesser_than">
-		/// Optional
+		/// (Optional)
 		/// Report nets that have fanout less than the specified integer,
 		/// default INT_MAX Default: INT_MAX
 		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// Report the nets of the specified cells
-		/// </param>
-		/// <param name="clocks">
-		/// Optional
-		/// Report the nets of the specified clocks
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="cells">(Optional) Report the nets of the specified cells</param>
+		/// <param name="clocks">(Optional) Report the nets of the specified clocks</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Report</returns>
-		public void report_high_fanout_nets(string file = null, string format = null, bool? append = null, bool? ascending = null, bool? timing = null, bool? histogram = null, bool? load_types = null, bool? clock_regions = null, bool? slr = null, string max_nets = null, string fanout_greater_than = null, string fanout_lesser_than = null, string name = null, string cells = null, string clocks = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_high_fanout_nets(string file = null, string format = null, bool? append = null, bool? ascending = null, bool? timing = null, bool? histogram = null, bool? load_types = null, bool? clock_regions = null, bool? slr = null, string max_nets = null, string fanout_greater_than = null, string fanout_lesser_than = null, string name = null, string cells = null, string clocks = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_high_fanout_nets [-file <arg>] [-format <arg>] [-append] [-ascending] [-timing] [-histogram] [-load_types] [-clock_regions] [-slr] [-max_nets <arg>] [-fanout_greater_than <arg>] [-fanout_lesser_than <arg>] [-name <arg>] [-cells <args>] [-clocks <args>] [-return_string] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_high_fanout_nets")
-					.OptionalNamedString("file", file)
-					.OptionalNamedString("format", format)
-					.Flag("append", append)
-					.Flag("ascending", ascending)
-					.Flag("timing", timing)
-					.Flag("histogram", histogram)
-					.Flag("load_types", load_types)
-					.Flag("clock_regions", clock_regions)
-					.Flag("slr", slr)
-					.OptionalNamedString("max_nets", max_nets)
-					.OptionalNamedString("fanout_greater_than", fanout_greater_than)
-					.OptionalNamedString("fanout_lesser_than", fanout_lesser_than)
-					.OptionalNamedString("name", name)
-					.OptionalNamedString("cells", cells)
-					.OptionalNamedString("clocks", clocks)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_high_fanout_nets(file, format, append, ascending, timing, histogram, load_types, clock_regions, slr, max_nets, fanout_greater_than, fanout_lesser_than, name, cells, clocks, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Formatted report on Versal integrated and soft Memory Controllers' (DDRMCs) memory
@@ -2927,42 +1798,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1345
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware DDRMC objects
-		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// file name (including full path) to output the report results to
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// set this option to append the report results to a file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// set this option to have report results returned as a string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_hw_ddrmc(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware DDRMC objects</param>
+		/// <param name="file">(Optional) file name (including full path) to output the report results to</param>
+		/// <param name="append">(Optional) set this option to append the report results to a file</param>
+		/// <param name="return_string">(Optional) set this option to have report results returned as a string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_hw_ddrmc(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_hw_ddrmc [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("report_hw_ddrmc")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.report_hw_ddrmc(hw_objects, file, append, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report formatted hardware MIG calibration status and margin data
@@ -2987,42 +1833,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1347
 		/// </summary>
-		/// <param name="hw_objects">
-		/// Required
-		/// hardware mig objects
-		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// file name (including full path) to output the report results to
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// set this option to append the report results to a file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// set this option to have report results return as a string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_hw_mig(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hw_objects">(Required) hardware mig objects</param>
+		/// <param name="file">(Optional) file name (including full path) to output the report results to</param>
+		/// <param name="append">(Optional) set this option to append the report results to a file</param>
+		/// <param name="return_string">(Optional) set this option to have report results return as a string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_hw_mig(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_hw_mig [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] <hw_objects>
-			_tcl.Add(
-				new SimpleTCLCommand("report_hw_mig")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
-			);
+			_tcl.Entry(_builder.report_hw_mig(hw_objects, file, append, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Compute achievable incremental reuse for the given design-checkpoint and report
@@ -3054,53 +1875,26 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1351
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append to existing file
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// Report incremental reuse of given list of cells
-		/// </param>
-		/// <param name="hierarchical">
-		/// Optional
-		/// Generates text-based hierarchical incremental reuse report.
-		/// </param>
+		/// <param name="append">(Optional) Append to existing file</param>
+		/// <param name="cells">(Optional) Report incremental reuse of given list of cells</param>
+		/// <param name="hierarchical">(Optional) Generates text-based hierarchical incremental reuse report.</param>
 		/// <param name="hierarchical_depth">
-		/// Optional
+		/// (Optional)
 		/// Specifies the depth level for textual hierachical incremental
 		/// reuse report Default: 0
 		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_incremental_reuse(string file = null, bool? append = null, string cells = null, bool? hierarchical = null, string hierarchical_depth = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="return_string">(Optional) Return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_incremental_reuse(string file = null, bool? append = null, string cells = null, bool? hierarchical = null, string hierarchical_depth = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_incremental_reuse [-file <arg>] [-append] [-cells <args>] [-hierarchical] [-hierarchical_depth <arg>] [-return_string] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_incremental_reuse")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.OptionalNamedString("cells", cells)
-					.Flag("hierarchical", hierarchical)
-					.OptionalNamedString("hierarchical_depth", hierarchical_depth)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_incremental_reuse(file, append, cells, hierarchical, hierarchical_depth, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Display information about all the IO sites on the device
@@ -3119,50 +1913,27 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1354
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. Send output to console if -file
 		/// is not used.
 		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append to existing file
-		/// </param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="append">(Optional) Append to existing file</param>
 		/// <param name="format">
-		/// Optional
+		/// (Optional)
 		/// Specifies how to format the report: text, xml. Default is
 		/// 'text'. Only applies if -file is used. If xml output is used, -
 		/// append is not allowed. Default: text
 		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Report</returns>
-		public void report_io(string file = null, string name = null, bool? append = null, string format = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_io(string file = null, string name = null, bool? append = null, string format = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_io [-file <arg>] [-name <arg>] [-append] [-format <arg>] [-return_string] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_io")
-					.OptionalNamedString("file", file)
-					.OptionalNamedString("name", name)
-					.Flag("append", append)
-					.OptionalNamedString("format", format)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_io(file, name, append, format, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Methodology Checks
@@ -3201,75 +1972,31 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1359
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// Run report_methodology on the specified cell(s).
-		/// </param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="cells">(Optional) Run report_methodology on the specified cell(s).</param>
 		/// <param name="checks">
-		/// Optional
+		/// (Optional)
 		/// Report Methodology checks (see get_methodology_checks
 		/// for available checks)
 		/// </param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="rpx">
-		/// Optional
-		/// Report filename for persisted results.
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, do not overwrite the results file
-		/// </param>
-		/// <param name="waived">
-		/// Optional
-		/// Output result is Waived checks
-		/// </param>
-		/// <param name="no_waivers">
-		/// Optional
-		/// Disable waivers for checks
-		/// </param>
-		/// <param name="slack_lesser_than">
-		/// Optional
-		/// Set SYNTH rules Slack Threshold value in 'ns' (float) Default:
-		/// 2.0
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_methodology(string name = null, string cells = null, string checks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, string slack_lesser_than = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="rpx">(Optional) Report filename for persisted results.</param>
+		/// <param name="append">(Optional) Append the results to file, do not overwrite the results file</param>
+		/// <param name="waived">(Optional) Output result is Waived checks</param>
+		/// <param name="no_waivers">(Optional) Disable waivers for checks</param>
+		/// <param name="slack_lesser_than">(Optional) Set SYNTH rules Slack Threshold value in 'ns' (float) Default: 2.0</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_methodology(string name = null, string cells = null, string checks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, string slack_lesser_than = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_methodology [-name <arg>] [-cells <args>] [-checks <args>] [-file <arg>] [-rpx <arg>] [-append] [-waived] [-no_waivers] [-slack_lesser_than <arg>] [-return_string] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_methodology")
-					.OptionalNamedString("name", name)
-					.OptionalNamedString("cells", cells)
-					.OptionalNamedString("checks", checks)
-					.OptionalNamedString("file", file)
-					.OptionalNamedString("rpx", rpx)
-					.Flag("append", append)
-					.Flag("waived", waived)
-					.Flag("no_waivers", no_waivers)
-					.OptionalNamedString("slack_lesser_than", slack_lesser_than)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_methodology(name, cells, checks, file, rpx, append, waived, no_waivers, slack_lesser_than, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get operating conditions values for power estimation
@@ -3293,114 +2020,35 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1365
 		/// </summary>
-		/// <param name="voltage">
-		/// Optional
-		/// Gets voltage value. Supported voltage supplies vary by
-		/// family.
-		/// </param>
-		/// <param name="grade">
-		/// Optional
-		/// Temperature grade. Supported values vary by family.
-		/// </param>
-		/// <param name="process">
-		/// Optional
-		/// Gets process
-		/// </param>
-		/// <param name="junction_temp">
-		/// Optional
-		/// Junction Temperature (C): auto|degC
-		/// </param>
-		/// <param name="ambient_temp">
-		/// Optional
-		/// Ambient Temperature (C): default|degC
-		/// </param>
-		/// <param name="thetaja">
-		/// Optional
-		/// ThetaJA (C/W): auto|degC/W
-		/// </param>
-		/// <param name="thetasa">
-		/// Optional
-		/// Gets ThetaSA
-		/// </param>
-		/// <param name="airflow">
-		/// Optional
-		/// Airflow (LFM): 0 to 750
-		/// </param>
-		/// <param name="heatsink">
-		/// Optional
-		/// Gets dimensions of heatsink
-		/// </param>
-		/// <param name="thetajb">
-		/// Optional
-		/// Gets ThetaJB
-		/// </param>
-		/// <param name="board">
-		/// Optional
-		/// Board type: jedec, small, medium, large, custom
-		/// </param>
-		/// <param name="board_temp">
-		/// Optional
-		/// Board Temperature degC
-		/// </param>
-		/// <param name="board_layers">
-		/// Optional
-		/// Board layers: 4to7, 8to11, 12to15, 16+
-		/// </param>
-		/// <param name="design_power_budget">
-		/// Optional
-		/// Design Power Budget (W)
-		/// </param>
-		/// <param name="all">
-		/// Optional
-		/// Gets all operating conditions listed in this help message
-		/// </param>
+		/// <param name="voltage">(Optional) Gets voltage value. Supported voltage supplies vary by family.</param>
+		/// <param name="grade">(Optional) Temperature grade. Supported values vary by family.</param>
+		/// <param name="process">(Optional) Gets process</param>
+		/// <param name="junction_temp">(Optional) Junction Temperature (C): auto|degC</param>
+		/// <param name="ambient_temp">(Optional) Ambient Temperature (C): default|degC</param>
+		/// <param name="thetaja">(Optional) ThetaJA (C/W): auto|degC/W</param>
+		/// <param name="thetasa">(Optional) Gets ThetaSA</param>
+		/// <param name="airflow">(Optional) Airflow (LFM): 0 to 750</param>
+		/// <param name="heatsink">(Optional) Gets dimensions of heatsink</param>
+		/// <param name="thetajb">(Optional) Gets ThetaJB</param>
+		/// <param name="board">(Optional) Board type: jedec, small, medium, large, custom</param>
+		/// <param name="board_temp">(Optional) Board Temperature degC</param>
+		/// <param name="board_layers">(Optional) Board layers: 4to7, 8to11, 12to15, 16+</param>
+		/// <param name="design_power_budget">(Optional) Design Power Budget (W)</param>
+		/// <param name="all">(Optional) Gets all operating conditions listed in this help message</param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return operating conditions as string
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// append operating conditions to end of file
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_operating_conditions(string voltage = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, bool? all = null, string file = null, bool? return_string = null, bool? append = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="return_string">(Optional) return operating conditions as string</param>
+		/// <param name="append">(Optional) append operating conditions to end of file</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_operating_conditions(string voltage = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, bool? all = null, string file = null, bool? return_string = null, bool? append = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_operating_conditions [-voltage <args>] [-grade] [-process] [-junction_temp] [-ambient_temp] [-thetaja] [-thetasa] [-airflow] [-heatsink] [-thetajb] [-board] [-board_temp] [-board_layers] [-design_power_budget] [-all] [-file <arg>] [-return_string] [-append] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_operating_conditions")
-					.OptionalNamedString("voltage", voltage)
-					.Flag("grade", grade)
-					.Flag("process", process)
-					.Flag("junction_temp", junction_temp)
-					.Flag("ambient_temp", ambient_temp)
-					.Flag("thetaja", thetaja)
-					.Flag("thetasa", thetasa)
-					.Flag("airflow", airflow)
-					.Flag("heatsink", heatsink)
-					.Flag("thetajb", thetajb)
-					.Flag("board", board)
-					.Flag("board_temp", board_temp)
-					.Flag("board_layers", board_layers)
-					.Flag("design_power_budget", design_power_budget)
-					.Flag("all", all)
-					.OptionalNamedString("file", file)
-					.Flag("return_string", return_string)
-					.Flag("append", append)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_operating_conditions(voltage, grade, process, junction_temp, ambient_temp, thetaja, thetasa, airflow, heatsink, thetajb, board, board_temp, board_layers, design_power_budget, all, file, return_string, append, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get information about all parameters
@@ -3420,48 +2068,22 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1368
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="non_default">
-		/// Optional
-		/// Report only params that are set to a non default value
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="pattern">
-		/// Optional
-		/// Display params matching pattern Default: *
-		/// </param>
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="non_default">(Optional) Report only params that are set to a non default value</param>
+		/// <param name="return_string">(Optional) Return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="pattern">(Optional) Display params matching pattern Default: *</param>
 		/// <returns>param report</returns>
-		public void report_param(string file = null, bool? append = null, bool? non_default = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, string pattern = null)
+		public TTCL report_param(string file = null, bool? append = null, bool? non_default = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, string pattern = null)
 		{
 			// TCL Syntax: report_param [-file <arg>] [-append] [-non_default] [-return_string] [-quiet] [-verbose] [<pattern>]
-			_tcl.Add(
-				new SimpleTCLCommand("report_param")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("non_default", non_default)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(pattern)
-			);
+			_tcl.Entry(_builder.report_param(file, append, non_default, return_string, quiet, verbose, pattern));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report details of Physical Synthesis transformations.
@@ -3478,37 +2100,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1370
 		/// </summary>
-		/// <param name="file">
-		/// Optional
-		/// Output file
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_phys_opt(string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="file">(Optional) Output file</param>
+		/// <param name="append">(Optional) Append the results to file</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_phys_opt(string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_phys_opt [-file <arg>] [-append] [-return_string] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_phys_opt")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_phys_opt(file, append, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Run power estimation and display report
@@ -3534,91 +2135,37 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1375
 		/// </summary>
 		/// <param name="no_propagation">
-		/// Optional
+		/// (Optional)
 		/// Disables the propagation engine to estimate the switching
 		/// activity of nets.
 		/// </param>
-		/// <param name="hier">
-		/// Optional
-		/// Hierarchy report style (logic, power, or all) Default: power
-		/// </param>
-		/// <param name="hierarchical_depth">
-		/// Optional
-		/// Specifies the depth level for textual hierarchical report
-		/// Default: 4
-		/// </param>
-		/// <param name="vid">
-		/// Optional
-		/// Voltage ID (VID) of device is used
-		/// </param>
-		/// <param name="advisory">
-		/// Optional
-		/// Dump power advisory text report
-		/// </param>
+		/// <param name="hier">(Optional) Hierarchy report style (logic, power, or all) Default: power</param>
+		/// <param name="hierarchical_depth">(Optional) Specifies the depth level for textual hierarchical report Default: 4</param>
+		/// <param name="vid">(Optional) Voltage ID (VID) of device is used</param>
+		/// <param name="advisory">(Optional) Dump power advisory text report</param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="format">
-		/// Optional
-		/// Format for the power estimation report: text, xml Default:
-		/// text
-		/// </param>
-		/// <param name="xpe">
-		/// Optional
-		/// Output the results to XML file for importing into XPE
-		/// </param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="format">(Optional) Format for the power estimation report: text, xml Default: text</param>
+		/// <param name="xpe">(Optional) Output the results to XML file for importing into XPE</param>
 		/// <param name="l">
-		/// Optional
+		/// (Optional)
 		/// Maximum number of lines to report in detailed reports (l >=
 		/// 0) Default: 10
 		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// append power report to end of file
-		/// </param>
-		/// <param name="rpx">
-		/// Optional
-		/// Filename to output interactive results to.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_power(bool? no_propagation = null, string hier = null, string hierarchical_depth = null, bool? vid = null, bool? advisory = null, string file = null, string name = null, string format = null, string xpe = null, string l = null, bool? return_string = null, bool? append = null, string rpx = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="append">(Optional) append power report to end of file</param>
+		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_power(bool? no_propagation = null, string hier = null, string hierarchical_depth = null, bool? vid = null, bool? advisory = null, string file = null, string name = null, string format = null, string xpe = null, string l = null, bool? return_string = null, bool? append = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_power [-no_propagation] [-hier <arg>] [-hierarchical_depth <arg>] [-vid] [-advisory] [-file <arg>] [-name <arg>] [-format <arg>] [-xpe <arg>] [-l <arg>] [-return_string] [-append] [-rpx <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_power")
-					.Flag("no_propagation", no_propagation)
-					.OptionalNamedString("hier", hier)
-					.OptionalNamedString("hierarchical_depth", hierarchical_depth)
-					.Flag("vid", vid)
-					.Flag("advisory", advisory)
-					.OptionalNamedString("file", file)
-					.OptionalNamedString("name", name)
-					.OptionalNamedString("format", format)
-					.OptionalNamedString("xpe", xpe)
-					.OptionalNamedString("l", l)
-					.Flag("return_string", return_string)
-					.Flag("append", append)
-					.OptionalNamedString("rpx", rpx)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_power(no_propagation, hier, hierarchical_depth, vid, advisory, file, name, format, xpe, l, return_string, append, rpx, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report reconfigurable partition analysis across multiple configurations
@@ -3642,65 +2189,33 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1381
 		/// </summary>
-		/// <param name="complexity">
-		/// Optional
-		/// Run complexity analysis
-		/// </param>
-		/// <param name="clocking">
-		/// Optional
-		/// Run clocking analysis
-		/// </param>
-		/// <param name="timing">
-		/// Optional
-		/// Run boundary net timing analysis
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// List of reconfigurable cell names
-		/// </param>
+		/// <param name="complexity">(Optional) Run complexity analysis</param>
+		/// <param name="clocking">(Optional) Run clocking analysis</param>
+		/// <param name="timing">(Optional) Run boundary net timing analysis</param>
+		/// <param name="cells">(Optional) List of reconfigurable cell names</param>
 		/// <param name="dcps">
-		/// Optional
+		/// (Optional)
 		/// List of design checkpoints for each reconfigurable cell. The
 		/// order of dcps must match that of the -cells option.
 		/// </param>
 		/// <param name="rent">
-		/// Optional
+		/// (Optional)
 		/// Compute Rents component as part of complexity analysis.
 		/// Runtime intensive for large designs.
 		/// </param>
-		/// <param name="nworst">
-		/// Optional
-		/// Specifies the N worst boundary paths. Default: 10
-		/// </param>
+		/// <param name="nworst">(Optional) Specifies the N worst boundary paths. Default: 10</param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_pr_configuration_analysis(bool? complexity = null, bool? clocking = null, bool? timing = null, string cells = null, string dcps = null, bool? rent = null, string nworst = null, string file = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_pr_configuration_analysis(bool? complexity = null, bool? clocking = null, bool? timing = null, string cells = null, string dcps = null, bool? rent = null, string nworst = null, string file = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_pr_configuration_analysis [-complexity] [-clocking] [-timing] [-cells <args>] [-dcps <args>] [-rent] [-nworst <arg>] [-file <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_pr_configuration_analysis")
-					.Flag("complexity", complexity)
-					.Flag("clocking", clocking)
-					.Flag("timing", timing)
-					.OptionalNamedString("cells", cells)
-					.OptionalNamedString("dcps", dcps)
-					.Flag("rent", rent)
-					.OptionalNamedString("nworst", nworst)
-					.OptionalNamedString("file", file)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_pr_configuration_analysis(complexity, clocking, timing, cells, dcps, rent, nworst, file, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report properties of object
@@ -3738,65 +2253,30 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1384
 		/// </summary>
-		/// <param name="all">
-		/// Optional
-		/// Report all properties of object even if not set
-		/// </param>
-		/// <param name="@class">
-		/// Optional
-		/// Object type to query for properties. Not valid with <object>
-		/// </param>
+		/// <param name="all">(Optional) Report all properties of object even if not set</param>
+		/// <param name="@class">(Optional) Object type to query for properties. Not valid with <object></param>
 		/// <param name="return_string">
-		/// Optional
+		/// (Optional)
 		/// Set the result of running report_property in the Tcl
 		/// interpreter's result variable
 		/// </param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output result to. Send output to console if -file
 		/// is not used
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Pattern is treated as a regular expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="@object">
-		/// Optional
-		/// Object to query for properties
-		/// </param>
-		/// <param name="pattern">
-		/// Optional
-		/// Pattern to match properties against Default: *
-		/// </param>
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="regexp">(Optional) Pattern is treated as a regular expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="@object">(Optional) Object to query for properties</param>
+		/// <param name="pattern">(Optional) Pattern to match properties against Default: *</param>
 		/// <returns>property report</returns>
-		public void report_property(bool? all = null, string @class = null, bool? return_string = null, string file = null, bool? append = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, string @object = null, string pattern = null)
+		public TTCL report_property(bool? all = null, string @class = null, bool? return_string = null, string file = null, bool? append = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, string @object = null, string pattern = null)
 		{
 			// TCL Syntax: report_property [-all] [-class <arg>] [-return_string] [-file <arg>] [-append] [-regexp] [-quiet] [-verbose] [<object>] [<pattern>]
-			_tcl.Add(
-				new SimpleTCLCommand("report_property")
-					.Flag("all", all)
-					.OptionalNamedString("class", @class)
-					.Flag("return_string", return_string)
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("regexp", regexp)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(@object)
-					.OptionalString(pattern)
-			);
+			_tcl.Entry(_builder.report_property(all, @class, return_string, file, append, regexp, quiet, verbose, @object, pattern));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report pulse width check
@@ -3825,115 +2305,38 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1388
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Results name in which to store output
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="warn_on_violation">
-		/// Optional
-		/// issue a critical warning when the report contains a timing
-		/// violation
-		/// </param>
-		/// <param name="all_violators">
-		/// Optional
-		/// Only report pins/ports where check violations occur
-		/// </param>
-		/// <param name="significant_digits">
-		/// Optional
-		/// Number of digits to display: Range: 0 to 3 Default: 3
-		/// </param>
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="name">(Optional) Results name in which to store output</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="warn_on_violation">(Optional) issue a critical warning when the report contains a timing violation</param>
+		/// <param name="all_violators">(Optional) Only report pins/ports where check violations occur</param>
+		/// <param name="significant_digits">(Optional) Number of digits to display: Range: 0 to 3 Default: 3</param>
 		/// <param name="limit">
-		/// Optional
+		/// (Optional)
 		/// Number of checks of a particular type to report per clock:
 		/// Default is 1 Default: 1
 		/// </param>
-		/// <param name="min_period">
-		/// Optional
-		/// Only report min period checks
-		/// </param>
-		/// <param name="max_period">
-		/// Optional
-		/// Only report max period checks
-		/// </param>
-		/// <param name="low_pulse">
-		/// Optional
-		/// Only report min low pulse width checks
-		/// </param>
-		/// <param name="high_pulse">
-		/// Optional
-		/// Only report min high pulse width checks
-		/// </param>
-		/// <param name="max_skew">
-		/// Optional
-		/// Only report max skew checks
-		/// </param>
-		/// <param name="clocks">
-		/// Optional
-		/// List of clocks for which to report min pulse width/min period
-		/// checks
-		/// </param>
-		/// <param name="no_header">
-		/// Optional
-		///
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// run report_pulse_width on the specified cell(s)
-		/// </param>
-		/// <param name="rpx">
-		/// Optional
-		/// Filename to output interactive results to.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="objects">
-		/// Optional
-		/// List of objects to check min pulse width with
-		/// </param>
-		public void report_pulse_width(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? warn_on_violation = null, bool? all_violators = null, string significant_digits = null, string limit = null, bool? min_period = null, bool? max_period = null, bool? low_pulse = null, bool? high_pulse = null, bool? max_skew = null, string clocks = null, bool? no_header = null, string cells = null, string rpx = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		/// <param name="min_period">(Optional) Only report min period checks</param>
+		/// <param name="max_period">(Optional) Only report max period checks</param>
+		/// <param name="low_pulse">(Optional) Only report min low pulse width checks</param>
+		/// <param name="high_pulse">(Optional) Only report min high pulse width checks</param>
+		/// <param name="max_skew">(Optional) Only report max skew checks</param>
+		/// <param name="clocks">(Optional) List of clocks for which to report min pulse width/min period checks</param>
+		/// <param name="no_header">(Optional) </param>
+		/// <param name="cells">(Optional) run report_pulse_width on the specified cell(s)</param>
+		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="objects">(Optional) List of objects to check min pulse width with</param>
+		public TTCL report_pulse_width(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? warn_on_violation = null, bool? all_violators = null, string significant_digits = null, string limit = null, bool? min_period = null, bool? max_period = null, bool? low_pulse = null, bool? high_pulse = null, bool? max_skew = null, string clocks = null, bool? no_header = null, string cells = null, string rpx = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: report_pulse_width [-file <arg>] [-append] [-name <arg>] [-return_string] [-warn_on_violation] [-all_violators] [-significant_digits <arg>] [-limit <arg>] [-min_period] [-max_period] [-low_pulse] [-high_pulse] [-max_skew] [-clocks <args>] [-no_header] [-cells <args>] [-rpx <arg>] [-quiet] [-verbose] [<objects>]
-			_tcl.Add(
-				new SimpleTCLCommand("report_pulse_width")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.OptionalNamedString("name", name)
-					.Flag("return_string", return_string)
-					.Flag("warn_on_violation", warn_on_violation)
-					.Flag("all_violators", all_violators)
-					.OptionalNamedString("significant_digits", significant_digits)
-					.OptionalNamedString("limit", limit)
-					.Flag("min_period", min_period)
-					.Flag("max_period", max_period)
-					.Flag("low_pulse", low_pulse)
-					.Flag("high_pulse", high_pulse)
-					.Flag("max_skew", max_skew)
-					.OptionalNamedString("clocks", clocks)
-					.Flag("no_header", no_header)
-					.OptionalNamedString("cells", cells)
-					.OptionalNamedString("rpx", rpx)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(objects)
-			);
+			_tcl.Entry(_builder.report_pulse_width(file, append, name, return_string, warn_on_violation, all_violators, significant_digits, limit, min_period, max_period, low_pulse, high_pulse, max_skew, clocks, no_header, cells, rpx, quiet, verbose, objects));
+			return _tcl;
 		}
 		/// <summary>
 		/// Feasibility Checks
@@ -3970,38 +2373,19 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1392
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="max_paths">
-		/// Optional
-		/// Number of paths to consider for suggestion analysis
-		/// Default: 100
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, do not overwrite the results file
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_qor_assessment(string file = null, string max_paths = null, bool? append = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="max_paths">(Optional) Number of paths to consider for suggestion analysis Default: 100</param>
+		/// <param name="append">(Optional) Append the results to file, do not overwrite the results file</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_qor_assessment(string file = null, string max_paths = null, bool? append = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_qor_assessment [-file <arg>] [-max_paths <arg>] [-append] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_qor_assessment")
-					.OptionalNamedString("file", file)
-					.OptionalNamedString("max_paths", max_paths)
-					.Flag("append", append)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_qor_assessment(file, max_paths, append, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Recommend QoR Suggestions
@@ -4045,80 +2429,32 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1395
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report as string
-		/// </param>
-		/// <param name="max_strategies">
-		/// Optional
-		/// Number of strategies to suggest Default: 3
-		/// </param>
-		/// <param name="max_paths">
-		/// Optional
-		/// Number of paths to consider for suggestion analysis
-		/// Default: 100
-		/// </param>
-		/// <param name="evaluate_pipelining">
-		/// Optional
-		/// Generate DSP/BRAM pipelining xdc file
-		/// </param>
-		/// <param name="no_split">
-		/// Optional
-		/// Report without spliting the lines in tables
-		/// </param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="return_string">(Optional) Return report as string</param>
+		/// <param name="max_strategies">(Optional) Number of strategies to suggest Default: 3</param>
+		/// <param name="max_paths">(Optional) Number of paths to consider for suggestion analysis Default: 100</param>
+		/// <param name="evaluate_pipelining">(Optional) Generate DSP/BRAM pipelining xdc file</param>
+		/// <param name="no_split">(Optional) Report without spliting the lines in tables</param>
 		/// <param name="models_dir">
-		/// Optional
+		/// (Optional)
 		/// Path to the directory which consists of the models Default: /
 		/// proj/rdi-xco/builds/HEAD/nightly/RUNNING_ BUILD/
 		/// packages/customer/vivado/data/deca/models_dir
 		/// </param>
-		/// <param name="cell">
-		/// Optional
-		/// Report QOR suggestions for a given cell
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// List of QoR suggestion objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_qor_suggestions(string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? evaluate_pipelining = null, bool? no_split = null, string models_dir = null, string cell = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="cell">(Optional) Report QOR suggestions for a given cell</param>
+		/// <param name="of_objects">(Optional) List of QoR suggestion objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_qor_suggestions(string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? evaluate_pipelining = null, bool? no_split = null, string models_dir = null, string cell = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_qor_suggestions [-file <arg>] [-name <arg>] [-append] [-return_string] [-max_strategies <arg>] [-max_paths <arg>] [-evaluate_pipelining] [-no_split] [-models_dir <arg>] [-cell <args>] [-of_objects <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_qor_suggestions")
-					.OptionalNamedString("file", file)
-					.OptionalNamedString("name", name)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.OptionalNamedString("max_strategies", max_strategies)
-					.OptionalNamedString("max_paths", max_paths)
-					.Flag("evaluate_pipelining", evaluate_pipelining)
-					.Flag("no_split", no_split)
-					.OptionalNamedString("models_dir", models_dir)
-					.OptionalNamedString("cell", cell)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_qor_suggestions(file, name, append, return_string, max_strategies, max_paths, evaluate_pipelining, no_split, models_dir, cell, of_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report configuration about RAMs in design
@@ -4179,57 +2515,33 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1399
 		/// </summary>
-		/// <param name="append">
-		/// Optional
-		/// Append to existing file
-		/// </param>
+		/// <param name="append">(Optional) Append to existing file</param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
+		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="cells">
-		/// Optional
+		/// (Optional)
 		/// Limits the reporting to only those memory arrays that are
 		/// contained within the specified cells.
 		/// </param>
-		/// <param name="include_path_info">
-		/// Optional
-		/// Adds path info to the RAM inputs/outputs
-		/// </param>
+		/// <param name="include_path_info">(Optional) Adds path info to the RAM inputs/outputs</param>
 		/// <param name="detail">
-		/// Optional
+		/// (Optional)
 		/// When specified, the report will include information on
 		/// primitives that are either not inferred or have been inferred
 		/// with prior versions of Vivado Synthesis.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Report</returns>
-		public void report_ram_utilization(bool? append = null, string file = null, bool? return_string = null, string cells = null, bool? include_path_info = null, bool? detail = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_ram_utilization(bool? append = null, string file = null, bool? return_string = null, string cells = null, bool? include_path_info = null, bool? detail = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_ram_utilization [-append] [-file <arg>] [-return_string] [-cells <args>] [-include_path_info] [-detail] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_ram_utilization")
-					.Flag("append", append)
-					.OptionalNamedString("file", file)
-					.Flag("return_string", return_string)
-					.OptionalNamedString("cells", cells)
-					.Flag("include_path_info", include_path_info)
-					.Flag("detail", detail)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_ram_utilization(append, file, return_string, cells, include_path_info, detail, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report on status of the routing.
@@ -4247,54 +2559,48 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1402
 		/// </summary>
 		/// <param name="return_string">
-		/// Optional
+		/// (Optional)
 		/// Set the result of running the report in the Tcl interpreter's
 		/// result variable
 		/// </param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Report detailed routing for these routes
-		/// </param>
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="of_objects">(Optional) Report detailed routing for these routes</param>
 		/// <param name="route_type">
-		/// Optional
+		/// (Optional)
 		/// Only show routes with the given status: UNPLACED|
 		/// NOLOADS|NODRIVER|UNROUTED|ANTENNAS|
 		/// CONFLICTS|PAR TIAL|INTRASITE|HIERPORT|ROUTED
 		/// (ignored if -of_objects is used)
 		/// </param>
 		/// <param name="list_all_nets">
-		/// Optional
+		/// (Optional)
 		/// list full route information for every net in the design
 		/// (ignored if -of_objects is used)
 		/// </param>
 		/// <param name="show_all">
-		/// Optional
+		/// (Optional)
 		/// list all relevant pins for routes marked as UNPLACED or
 		/// PARTIAL routes and list all relevant nodes for routes marked
 		/// as ANTENNAS or CONFLICTS routes (by default only the first
 		/// 15 pins or nodes are listed for a route)
 		/// </param>
 		/// <param name="dump_routes">
-		/// Optional
+		/// (Optional)
 		/// show the full routing tree for every routed net in the design.
 		/// This is VERY VERBOSE.
 		/// </param>
 		/// <param name="has_routing">
-		/// Optional
+		/// (Optional)
 		/// returns 0 if there is no routing currently stored for this
 		/// design and 1 if there is. All other options are ignored.
 		/// </param>
 		/// <param name="boolean_check">
-		/// Optional
+		/// (Optional)
 		/// returns 1 if the given flag is true and 0 if it is not. Value flags
 		/// that can be checked are: PLACED_FULLY|
 		/// PARTIALLY_ROUTED|ROUTED_FULLY|ERRORS_IN_ROUT ES.
@@ -4302,37 +2608,17 @@ namespace Quokka.TCL.Vivado
 		/// has_routing).
 		/// </param>
 		/// <param name="ignore_cache">
-		/// Optional
+		/// (Optional)
 		/// throw away all cached information and recalculate the route
 		/// status for the entire design (slow)
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_route_status(bool? return_string = null, string file = null, bool? append = null, string of_objects = null, string route_type = null, bool? list_all_nets = null, bool? show_all = null, bool? dump_routes = null, bool? has_routing = null, string boolean_check = null, bool? ignore_cache = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_route_status(bool? return_string = null, string file = null, bool? append = null, string of_objects = null, string route_type = null, bool? list_all_nets = null, bool? show_all = null, bool? dump_routes = null, bool? has_routing = null, string boolean_check = null, bool? ignore_cache = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_route_status [-return_string] [-file <arg>] [-append] [-of_objects <args>] [-route_type <arg>] [-list_all_nets] [-show_all] [-dump_routes] [-has_routing] [-boolean_check <arg>] [-ignore_cache] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_route_status")
-					.Flag("return_string", return_string)
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.OptionalNamedString("of_objects", of_objects)
-					.OptionalNamedString("route_type", route_type)
-					.Flag("list_all_nets", list_all_nets)
-					.Flag("show_all", show_all)
-					.Flag("dump_routes", dump_routes)
-					.Flag("has_routing", has_routing)
-					.OptionalNamedString("boolean_check", boolean_check)
-					.Flag("ignore_cache", ignore_cache)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_route_status(return_string, file, append, of_objects, route_type, list_all_nets, show_all, dump_routes, has_routing, boolean_check, ignore_cache, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report the list of correct SIM_DEVICE attribute values for cell types in the target part
@@ -4342,43 +2628,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1408
 		/// </summary>
-		/// <param name="part">
-		/// Optional
-		/// Part
-		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// Output file
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="part">(Optional) Part</param>
+		/// <param name="file">(Optional) Output file</param>
+		/// <param name="append">(Optional) Append the results to file</param>
+		/// <param name="return_string">(Optional) Return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Report</returns>
-		public void report_sim_device(string part = null, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_sim_device(string part = null, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_sim_device [-part <arg>] [-file <arg>] [-append] [-return_string] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_sim_device")
-					.OptionalNamedString("part", part)
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_sim_device(part, file, append, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Run SSN analysis on the current package and pinout
@@ -4424,55 +2685,24 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1411
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report as string
-		/// </param>
-		/// <param name="format">
-		/// Optional
-		/// Report format. Valid arguments are CSV, HTML, TXT Default:
-		/// csv
-		/// </param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="return_string">(Optional) Return report as string</param>
+		/// <param name="format">(Optional) Report format. Valid arguments are CSV, HTML, TXT Default: csv</param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the report to the specified file
-		/// </param>
-		/// <param name="phase">
-		/// Optional
-		/// Account for multi-clock phase in the analysis
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="append">(Optional) Append the report to the specified file</param>
+		/// <param name="phase">(Optional) Account for multi-clock phase in the analysis</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>ssn report</returns>
-		public void report_ssn(string name = null, bool? return_string = null, string format = null, string file = null, bool? append = null, bool? phase = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_ssn(string name = null, bool? return_string = null, string format = null, string file = null, bool? append = null, bool? phase = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_ssn [-name <arg>] [-return_string] [-format <arg>] [-file <arg>] [-append] [-phase] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_ssn")
-					.OptionalNamedString("name", name)
-					.Flag("return_string", return_string)
-					.OptionalNamedString("format", format)
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("phase", phase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_ssn(name, return_string, format, file, append, phase, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get switching activity on specified objects
@@ -4496,86 +2726,38 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1416
 		/// </summary>
-		/// <param name="static_probability">
-		/// Optional
-		/// report static probability
-		/// </param>
-		/// <param name="signal_rate">
-		/// Optional
-		/// report signal rate
-		/// </param>
-		/// <param name="toggle_rate">
-		/// Optional
-		/// report toggle rate
-		/// </param>
-		/// <param name="default_static_probability">
-		/// Optional
-		/// report default static probability
-		/// </param>
-		/// <param name="default_toggle_rate">
-		/// Optional
-		/// report default toggle rate
-		/// </param>
+		/// <param name="static_probability">(Optional) report static probability</param>
+		/// <param name="signal_rate">(Optional) report signal rate</param>
+		/// <param name="toggle_rate">(Optional) report toggle rate</param>
+		/// <param name="default_static_probability">(Optional) report default static probability</param>
+		/// <param name="default_toggle_rate">(Optional) report default toggle rate</param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return switching activity as string
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// append switching activity to end of file
-		/// </param>
+		/// <param name="return_string">(Optional) return switching activity as string</param>
+		/// <param name="append">(Optional) append switching activity to end of file</param>
 		/// <param name="hier">
-		/// Optional
+		/// (Optional)
 		/// Hierarchically reports the switching activity on nets within a
 		/// hierarchical instance provided via <objects> option.
 		/// </param>
-		/// <param name="all">
-		/// Optional
-		/// Report switching activities for all nets for the design.
-		/// </param>
+		/// <param name="all">(Optional) Report switching activities for all nets for the design.</param>
 		/// <param name="type">
-		/// Optional
+		/// (Optional)
 		/// Specify nodes in a specific category. List of valid type values:
 		/// io_output, io_bidir_enable, register, lut_ram, lut, dsp,
 		/// bram_enable, bram_wr_enable, gt_txdata, gt_rxdata.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="objects">
-		/// Optional
-		/// objects
-		/// </param>
-		public void report_switching_activity(bool? static_probability = null, bool? signal_rate = null, bool? toggle_rate = null, bool? default_static_probability = null, bool? default_toggle_rate = null, string file = null, bool? return_string = null, bool? append = null, bool? hier = null, bool? all = null, string type = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="objects">(Optional) objects</param>
+		public TTCL report_switching_activity(bool? static_probability = null, bool? signal_rate = null, bool? toggle_rate = null, bool? default_static_probability = null, bool? default_toggle_rate = null, string file = null, bool? return_string = null, bool? append = null, bool? hier = null, bool? all = null, string type = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: report_switching_activity [-static_probability] [-signal_rate] [-toggle_rate] [-default_static_probability] [-default_toggle_rate] [-file <arg>] [-return_string] [-append] [-hier] [-all] [-type <args>] [-quiet] [-verbose] [<objects>...]
-			_tcl.Add(
-				new SimpleTCLCommand("report_switching_activity")
-					.Flag("static_probability", static_probability)
-					.Flag("signal_rate", signal_rate)
-					.Flag("toggle_rate", toggle_rate)
-					.Flag("default_static_probability", default_static_probability)
-					.Flag("default_toggle_rate", default_toggle_rate)
-					.OptionalNamedString("file", file)
-					.Flag("return_string", return_string)
-					.Flag("append", append)
-					.Flag("hier", hier)
-					.Flag("all", all)
-					.OptionalNamedString("type", type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(objects)
-			);
+			_tcl.Entry(_builder.report_switching_activity(static_probability, signal_rate, toggle_rate, default_static_probability, default_toggle_rate, file, return_string, append, hier, all, type, quiet, verbose, objects));
+			return _tcl;
 		}
 		/// <summary>
 		/// Compute mean time between failures and display report
@@ -4656,53 +2838,23 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1420
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return the report output as a string
-		/// </param>
-		/// <param name="warn_if_mtbf_below">
-		/// Optional
-		/// Default: 1e+12
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="no_header">
-		/// Optional
-		/// Report without the header
-		/// </param>
-		/// <param name="report_endpoints">
-		/// Optional
-		/// Report cdc path end points
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="return_string">(Optional) Return the report output as a string</param>
+		/// <param name="warn_if_mtbf_below">(Optional) Default: 1e+12</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="no_header">(Optional) Report without the header</param>
+		/// <param name="report_endpoints">(Optional) Report cdc path end points</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Report</returns>
-		public void report_synchronizer_mtbf(string file = null, bool? append = null, bool? return_string = null, string warn_if_mtbf_below = null, bool? quiet = null, bool? no_header = null, bool? report_endpoints = null, bool? verbose = null)
+		public TTCL report_synchronizer_mtbf(string file = null, bool? append = null, bool? return_string = null, string warn_if_mtbf_below = null, bool? quiet = null, bool? no_header = null, bool? report_endpoints = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_synchronizer_mtbf [-file <arg>] [-append] [-return_string] [-warn_if_mtbf_below <arg>] [-quiet] [-no_header] [-report_endpoints] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_synchronizer_mtbf")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.OptionalNamedString("warn_if_mtbf_below", warn_if_mtbf_below)
-					.Flag("quiet", quiet)
-					.Flag("no_header", no_header)
-					.Flag("report_endpoints", report_endpoints)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_synchronizer_mtbf(file, append, return_string, warn_if_mtbf_below, quiet, no_header, report_endpoints, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report timing paths
@@ -4738,221 +2890,83 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1424
 		/// </summary>
-		/// <param name="from">
-		/// Optional
-		/// From pins, ports, cells or clocks
-		/// </param>
-		/// <param name="rise_from">
-		/// Optional
-		/// Rising from pins, ports, cells or clocks
-		/// </param>
-		/// <param name="fall_from">
-		/// Optional
-		/// Falling from pins, ports, cells or clocks
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// To pins, ports, cells or clocks
-		/// </param>
-		/// <param name="rise_to">
-		/// Optional
-		/// Rising to pins, ports, cells or clocks
-		/// </param>
-		/// <param name="fall_to">
-		/// Optional
-		/// Falling to pins, ports, cells or clocks
-		/// </param>
-		/// <param name="through">
-		/// Optional
-		/// Through pins, ports, cells or nets
-		/// </param>
-		/// <param name="rise_through">
-		/// Optional
-		/// Rising through pins, ports, cells or nets
-		/// </param>
-		/// <param name="fall_through">
-		/// Optional
-		/// Falling through pins, ports, cells or nets
-		/// </param>
+		/// <param name="from">(Optional) From pins, ports, cells or clocks</param>
+		/// <param name="rise_from">(Optional) Rising from pins, ports, cells or clocks</param>
+		/// <param name="fall_from">(Optional) Falling from pins, ports, cells or clocks</param>
+		/// <param name="to">(Optional) To pins, ports, cells or clocks</param>
+		/// <param name="rise_to">(Optional) Rising to pins, ports, cells or clocks</param>
+		/// <param name="fall_to">(Optional) Falling to pins, ports, cells or clocks</param>
+		/// <param name="through">(Optional) Through pins, ports, cells or nets</param>
+		/// <param name="rise_through">(Optional) Rising through pins, ports, cells or nets</param>
+		/// <param name="fall_through">(Optional) Falling through pins, ports, cells or nets</param>
 		/// <param name="delay_type">
-		/// Optional
+		/// (Optional)
 		/// Type of path delay: Values: max, min, min_max, max_rise,
 		/// max_fall, min_rise, min_fall Default: max
 		/// </param>
-		/// <param name="setup">
-		/// Optional
-		/// Report max delay timing paths (equivalent to -delay_type
-		/// max)
-		/// </param>
-		/// <param name="hold">
-		/// Optional
-		/// Report min delay timing paths (equivalent to -delay_type
-		/// min)
-		/// </param>
+		/// <param name="setup">(Optional) Report max delay timing paths (equivalent to -delay_type max)</param>
+		/// <param name="hold">(Optional) Report min delay timing paths (equivalent to -delay_type min)</param>
 		/// <param name="max_paths">
-		/// Optional
+		/// (Optional)
 		/// Maximum number of paths to output when sorted by slack,
 		/// or per path group when sorted by group: Value >=1 Default:
 		/// 1
 		/// </param>
-		/// <param name="nworst">
-		/// Optional
-		/// List up to N worst paths to endpoint: Value >=1 Default: 1
-		/// </param>
-		/// <param name="unique_pins">
-		/// Optional
-		/// for each unique set of pins, show at most 1 path per path
-		/// group
-		/// </param>
+		/// <param name="nworst">(Optional) List up to N worst paths to endpoint: Value >=1 Default: 1</param>
+		/// <param name="unique_pins">(Optional) for each unique set of pins, show at most 1 path per path group</param>
 		/// <param name="path_type">
-		/// Optional
+		/// (Optional)
 		/// Format for path report: Values: end, summary, short, full,
 		/// full_clock, full_clock_expanded Default: full_clock_expanded
 		/// </param>
-		/// <param name="input_pins">
-		/// Optional
-		/// Show input pins in path
-		/// </param>
-		/// <param name="no_header">
-		/// Optional
-		/// Do not generate a report header
-		/// </param>
-		/// <param name="no_reused_label">
-		/// Optional
-		/// Do not label reuse status on pins in the report
-		/// Name Description
-		/// </param>
-		/// <param name="slack_lesser_than">
-		/// Optional
-		/// Display paths with slack less than this Default: 1e+30
-		/// </param>
-		/// <param name="slack_greater_than">
-		/// Optional
-		/// Display paths with slack greater than this Default: -1e+30
-		/// </param>
-		/// <param name="group">
-		/// Optional
-		/// Limit report to paths in this group(s)
-		/// </param>
-		/// <param name="sort_by">
-		/// Optional
-		/// Sorting order of paths: Values: group, slack Default: slack
-		/// </param>
-		/// <param name="no_report_unconstrained">
-		/// Optional
-		/// Do not report infinite slack paths
-		/// </param>
+		/// <param name="input_pins">(Optional) Show input pins in path</param>
+		/// <param name="no_header">(Optional) Do not generate a report header</param>
+		/// <param name="no_reused_label">(Optional) Do not label reuse status on pins in the report Name Description</param>
+		/// <param name="slack_lesser_than">(Optional) Display paths with slack less than this Default: 1e+30</param>
+		/// <param name="slack_greater_than">(Optional) Display paths with slack greater than this Default: -1e+30</param>
+		/// <param name="group">(Optional) Limit report to paths in this group(s)</param>
+		/// <param name="sort_by">(Optional) Sorting order of paths: Values: group, slack Default: slack</param>
+		/// <param name="no_report_unconstrained">(Optional) Do not report infinite slack paths</param>
 		/// <param name="user_ignored">
-		/// Optional
+		/// (Optional)
 		/// Only report paths which have infinite slack because of
 		/// set_false_path or set_clock_groups timing constraints
 		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Report timing for these paths
-		/// </param>
-		/// <param name="significant_digits">
-		/// Optional
-		/// Number of digits to display: Range: 0 to 3 Default: 3
-		/// </param>
+		/// <param name="of_objects">(Optional) Report timing for these paths</param>
+		/// <param name="significant_digits">(Optional) Number of digits to display: Range: 0 to 3 Default: 3</param>
 		/// <param name="column_style">
-		/// Optional
+		/// (Optional)
 		/// style for path report columns: Values: variable_width,
 		/// anchor_left, fixed_width Default: anchor_left
 		/// </param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="no_pr_attribute">
-		/// Optional
+		/// (Optional)
 		/// for partial reconfiguration designs, do not report whether
 		/// netlist resources are in the static or reconfigurable regions
 		/// </param>
 		/// <param name="routable_nets">
-		/// Optional
+		/// (Optional)
 		/// store the number of routable nets traversed as a property
 		/// on timing paths.
 		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="warn_on_violation">
-		/// Optional
-		/// issue a critical warning when the report contains a timing
-		/// violation
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// run report_timing on the specified cell(s)
-		/// </param>
-		/// <param name="rpx">
-		/// Optional
-		/// Filename to output interactive results to.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_timing(string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, string delay_type = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? input_pins = null, bool? no_header = null, bool? no_reused_label = null, string slack_lesser_than = null, string slack_greater_than = null, string group = null, string sort_by = null, bool? no_report_unconstrained = null, bool? user_ignored = null, string of_objects = null, string significant_digits = null, string column_style = null, string file = null, bool? append = null, string name = null, bool? no_pr_attribute = null, bool? routable_nets = null, bool? return_string = null, bool? warn_on_violation = null, string cells = null, string rpx = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="warn_on_violation">(Optional) issue a critical warning when the report contains a timing violation</param>
+		/// <param name="cells">(Optional) run report_timing on the specified cell(s)</param>
+		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_timing(string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, string delay_type = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? input_pins = null, bool? no_header = null, bool? no_reused_label = null, string slack_lesser_than = null, string slack_greater_than = null, string group = null, string sort_by = null, bool? no_report_unconstrained = null, bool? user_ignored = null, string of_objects = null, string significant_digits = null, string column_style = null, string file = null, bool? append = null, string name = null, bool? no_pr_attribute = null, bool? routable_nets = null, bool? return_string = null, bool? warn_on_violation = null, string cells = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_timing [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-delay_type <arg>] [-setup] [-hold] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-path_type <arg>] [-input_pins] [-no_header] [-no_reused_label] [-slack_lesser_than <arg>] [-slack_greater_than <arg>] [-group <args>] [-sort_by <arg>] [-no_report_unconstrained] [-user_ignored] [-of_objects <args>] [-significant_digits <arg>] [-column_style <arg>] [-file <arg>] [-append] [-name <arg>] [-no_pr_attribute] [-routable_nets] [-return_string] [-warn_on_violation] [-cells <args>] [-rpx <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_timing")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
-					.OptionalNamedString("through", through)
-					.OptionalNamedString("rise_through", rise_through)
-					.OptionalNamedString("fall_through", fall_through)
-					.OptionalNamedString("delay_type", delay_type)
-					.Flag("setup", setup)
-					.Flag("hold", hold)
-					.OptionalNamedString("max_paths", max_paths)
-					.OptionalNamedString("nworst", nworst)
-					.Flag("unique_pins", unique_pins)
-					.OptionalNamedString("path_type", path_type)
-					.Flag("input_pins", input_pins)
-					.Flag("no_header", no_header)
-					.Flag("no_reused_label", no_reused_label)
-					.OptionalNamedString("slack_lesser_than", slack_lesser_than)
-					.OptionalNamedString("slack_greater_than", slack_greater_than)
-					.OptionalNamedString("group", group)
-					.OptionalNamedString("sort_by", sort_by)
-					.Flag("no_report_unconstrained", no_report_unconstrained)
-					.Flag("user_ignored", user_ignored)
-					.OptionalNamedString("of_objects", of_objects)
-					.OptionalNamedString("significant_digits", significant_digits)
-					.OptionalNamedString("column_style", column_style)
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.OptionalNamedString("name", name)
-					.Flag("no_pr_attribute", no_pr_attribute)
-					.Flag("routable_nets", routable_nets)
-					.Flag("return_string", return_string)
-					.Flag("warn_on_violation", warn_on_violation)
-					.OptionalNamedString("cells", cells)
-					.OptionalNamedString("rpx", rpx)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_timing(from, rise_from, fall_from, to, rise_to, fall_to, through, rise_through, fall_through, delay_type, setup, hold, max_paths, nworst, unique_pins, path_type, input_pins, no_header, no_reused_label, slack_lesser_than, slack_greater_than, group, sort_by, no_report_unconstrained, user_ignored, of_objects, significant_digits, column_style, file, append, name, no_pr_attribute, routable_nets, return_string, warn_on_violation, cells, rpx, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report timing summary
@@ -5000,159 +3014,65 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1431
 		/// </summary>
 		/// <param name="check_timing_verbose">
-		/// Optional
+		/// (Optional)
 		/// produce a verbose report when checking the design for
 		/// potential timing problems
 		/// </param>
-		/// <param name="delay_type">
-		/// Optional
-		/// Type of path delay: Values: max, min, min_max Default:
-		/// min_max
-		/// </param>
-		/// <param name="no_detailed_paths">
-		/// Optional
-		/// do not report timing paths for each clock and path group
-		/// analyzed
-		/// </param>
-		/// <param name="setup">
-		/// Optional
-		/// Report max delay timing paths (equivalent to -delay_type
-		/// max)
-		/// </param>
-		/// <param name="hold">
-		/// Optional
-		/// Report min delay timing paths (equivalent to -delay_type
-		/// min)
-		/// </param>
+		/// <param name="delay_type">(Optional) Type of path delay: Values: max, min, min_max Default: min_max</param>
+		/// <param name="no_detailed_paths">(Optional) do not report timing paths for each clock and path group analyzed</param>
+		/// <param name="setup">(Optional) Report max delay timing paths (equivalent to -delay_type max)</param>
+		/// <param name="hold">(Optional) Report min delay timing paths (equivalent to -delay_type min)</param>
 		/// <param name="max_paths">
-		/// Optional
+		/// (Optional)
 		/// Maximum number of paths to report per clock or path
 		/// group: Value >=1 Default: 1
 		/// </param>
-		/// <param name="nworst">
-		/// Optional
-		/// List up to N worst paths to endpoint: Value >=1 Default: 1
-		/// </param>
-		/// <param name="unique_pins">
-		/// Optional
-		/// for each unique set of pins, show at most 1 path per path
-		/// group
-		/// </param>
+		/// <param name="nworst">(Optional) List up to N worst paths to endpoint: Value >=1 Default: 1</param>
+		/// <param name="unique_pins">(Optional) for each unique set of pins, show at most 1 path per path group</param>
 		/// <param name="path_type">
-		/// Optional
+		/// (Optional)
 		/// Format for path report: Values: end summary short full
 		/// full_clock full_clock_expanded Default: full_clock_expanded
 		/// </param>
-		/// <param name="no_reused_label">
-		/// Optional
-		/// Do not label reuse status on pins in the report
-		/// </param>
-		/// <param name="input_pins">
-		/// Optional
-		/// Show input pins in path
-		/// </param>
+		/// <param name="no_reused_label">(Optional) Do not label reuse status on pins in the report</param>
+		/// <param name="input_pins">(Optional) Show input pins in path</param>
 		/// <param name="no_pr_attribute">
-		/// Optional
+		/// (Optional)
 		/// for partial reconfiguration designs, do not report whether
 		/// netlist resources are in the static or reconfigurable regions
 		/// </param>
 		/// <param name="routable_nets">
-		/// Optional
+		/// (Optional)
 		/// store the number of routable nets traversed as a property
 		/// on timing paths.
 		/// </param>
-		/// <param name="slack_lesser_than">
-		/// Optional
-		/// Display paths with slack less than this Default: 1e+30
-		/// </param>
-		/// <param name="report_unconstrained">
-		/// Optional
-		/// report unconstrained and user ignored paths
-		/// </param>
-		/// <param name="significant_digits">
-		/// Optional
-		/// Number of digits to display: Range: 0 to 3 Default: 3
-		/// </param>
-		/// <param name="no_header">
-		/// Optional
-		/// do not generate a report header
-		/// </param>
+		/// <param name="slack_lesser_than">(Optional) Display paths with slack less than this Default: 1e+30</param>
+		/// <param name="report_unconstrained">(Optional) report unconstrained and user ignored paths</param>
+		/// <param name="significant_digits">(Optional) Number of digits to display: Range: 0 to 3 Default: 3</param>
+		/// <param name="no_header">(Optional) do not generate a report header</param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
 		/// <param name="append">
-		/// Optional
+		/// (Optional)
 		/// Append the results to file, don't overwrite the results file
 		/// Name Description
 		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="warn_on_violation">
-		/// Optional
-		/// issue a critical warning when the report contains a timing
-		/// violation
-		/// </param>
-		/// <param name="datasheet">
-		/// Optional
-		/// Include data sheet report
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// run report_timing_summary on the specified cell(s)
-		/// </param>
-		/// <param name="rpx">
-		/// Optional
-		/// Filename to output interactive results to.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_timing_summary(bool? check_timing_verbose = null, string delay_type = null, bool? no_detailed_paths = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? no_reused_label = null, bool? input_pins = null, bool? no_pr_attribute = null, bool? routable_nets = null, string slack_lesser_than = null, bool? report_unconstrained = null, string significant_digits = null, bool? no_header = null, string file = null, bool? append = null, string name = null, bool? return_string = null, bool? warn_on_violation = null, bool? datasheet = null, string cells = null, string rpx = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="warn_on_violation">(Optional) issue a critical warning when the report contains a timing violation</param>
+		/// <param name="datasheet">(Optional) Include data sheet report</param>
+		/// <param name="cells">(Optional) run report_timing_summary on the specified cell(s)</param>
+		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_timing_summary(bool? check_timing_verbose = null, string delay_type = null, bool? no_detailed_paths = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? no_reused_label = null, bool? input_pins = null, bool? no_pr_attribute = null, bool? routable_nets = null, string slack_lesser_than = null, bool? report_unconstrained = null, string significant_digits = null, bool? no_header = null, string file = null, bool? append = null, string name = null, bool? return_string = null, bool? warn_on_violation = null, bool? datasheet = null, string cells = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_timing_summary [-check_timing_verbose] [-delay_type <arg>] [-no_detailed_paths] [-setup] [-hold] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-path_type <arg>] [-no_reused_label] [-input_pins] [-no_pr_attribute] [-routable_nets] [-slack_lesser_than <arg>] [-report_unconstrained] [-significant_digits <arg>] [-no_header] [-file <arg>] [-append] [-name <arg>] [-return_string] [-warn_on_violation] [-datasheet] [-cells <args>] [-rpx <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_timing_summary")
-					.Flag("check_timing_verbose", check_timing_verbose)
-					.OptionalNamedString("delay_type", delay_type)
-					.Flag("no_detailed_paths", no_detailed_paths)
-					.Flag("setup", setup)
-					.Flag("hold", hold)
-					.OptionalNamedString("max_paths", max_paths)
-					.OptionalNamedString("nworst", nworst)
-					.Flag("unique_pins", unique_pins)
-					.OptionalNamedString("path_type", path_type)
-					.Flag("no_reused_label", no_reused_label)
-					.Flag("input_pins", input_pins)
-					.Flag("no_pr_attribute", no_pr_attribute)
-					.Flag("routable_nets", routable_nets)
-					.OptionalNamedString("slack_lesser_than", slack_lesser_than)
-					.Flag("report_unconstrained", report_unconstrained)
-					.OptionalNamedString("significant_digits", significant_digits)
-					.Flag("no_header", no_header)
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.OptionalNamedString("name", name)
-					.Flag("return_string", return_string)
-					.Flag("warn_on_violation", warn_on_violation)
-					.Flag("datasheet", datasheet)
-					.OptionalNamedString("cells", cells)
-					.OptionalNamedString("rpx", rpx)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_timing_summary(check_timing_verbose, delay_type, no_detailed_paths, setup, hold, max_paths, nworst, unique_pins, path_type, no_reused_label, input_pins, no_pr_attribute, routable_nets, slack_lesser_than, report_unconstrained, significant_digits, no_header, file, append, name, return_string, warn_on_violation, datasheet, cells, rpx, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report details of Unisim primitive transformations.
@@ -5172,37 +3092,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1437
 		/// </summary>
-		/// <param name="file">
-		/// Optional
-		/// Output file
-		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// return report as string
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_transformed_primitives(string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="file">(Optional) Output file</param>
+		/// <param name="append">(Optional) Append the results to file</param>
+		/// <param name="return_string">(Optional) return report as string</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_transformed_primitives(string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_transformed_primitives [-file <arg>] [-append] [-return_string] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_transformed_primitives")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_transformed_primitives(file, append, return_string, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Compute utilization of device and display report
@@ -5234,124 +3133,52 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1439
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="pblocks">
-		/// Optional
-		/// Report utilization of given list of pblocks
-		/// </param>
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="pblocks">(Optional) Report utilization of given list of pblocks</param>
 		/// <param name="evaluate_pblock">
-		/// Optional
+		/// (Optional)
 		/// Report utilization with demand as specified cells and supply
 		/// as specified pblock area
 		/// </param>
-		/// <param name="exclude_child_pblocks">
-		/// Optional
-		/// Report utilization with out child pblocks
-		/// </param>
-		/// <param name="exclude_non_assigned">
-		/// Optional
-		/// Pblock utilization with out Non-assigned Cells
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// Report utilization of given list of cells
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report as string
-		/// </param>
-		/// <param name="slr">
-		/// Optional
-		/// SLR wise utilization of resources
-		/// </param>
-		/// <param name="packthru">
-		/// Optional
-		/// Reports LUTs used exclusively as pack-thru
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Output the results to GUI panel with this name
-		/// </param>
-		/// <param name="no_primitives">
-		/// Optional
-		/// Removes "Primitives Section" from report_utilization o/p.
-		/// </param>
-		/// <param name="omit_locs">
-		/// Optional
-		/// Removes "Loced" column from report_utilization o/p.
-		/// </param>
-		/// <param name="hierarchical">
-		/// Optional
-		/// Generates text-based hierarchical report.
-		/// </param>
+		/// <param name="exclude_child_pblocks">(Optional) Report utilization with out child pblocks</param>
+		/// <param name="exclude_non_assigned">(Optional) Pblock utilization with out Non-assigned Cells</param>
+		/// <param name="cells">(Optional) Report utilization of given list of cells</param>
+		/// <param name="return_string">(Optional) Return report as string</param>
+		/// <param name="slr">(Optional) SLR wise utilization of resources</param>
+		/// <param name="packthru">(Optional) Reports LUTs used exclusively as pack-thru</param>
+		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
+		/// <param name="no_primitives">(Optional) Removes "Primitives Section" from report_utilization o/p.</param>
+		/// <param name="omit_locs">(Optional) Removes "Loced" column from report_utilization o/p.</param>
+		/// <param name="hierarchical">(Optional) Generates text-based hierarchical report.</param>
 		/// <param name="spreadsheet_file">
-		/// Optional
+		/// (Optional)
 		/// Specify file for exporting utilization tables as spreadsheets.
 		/// This feature is available only in GUI mode.
 		/// </param>
 		/// <param name="spreadsheet_table">
-		/// Optional
+		/// (Optional)
 		/// Choose a particular utilization table to export as
 		/// spreadsheet file. Default value : Hierarchy
 		/// </param>
 		/// <param name="spreadsheet_depth">
-		/// Optional
+		/// (Optional)
 		/// Specifies the depth level for spreadsheet. Default value : 8
 		/// Default: 8
 		/// </param>
-		/// <param name="hierarchical_depth">
-		/// Optional
-		/// Specifies the depth level for textual hierarchical report
-		/// Default: 0
-		/// </param>
-		/// <param name="hierarchical_percentages">
-		/// Optional
-		/// Report percentages in textual hierarchical report
-		/// Name Description
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="hierarchical_depth">(Optional) Specifies the depth level for textual hierarchical report Default: 0</param>
+		/// <param name="hierarchical_percentages">(Optional) Report percentages in textual hierarchical report Name Description</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Report</returns>
-		public void report_utilization(string file = null, bool? append = null, string pblocks = null, bool? evaluate_pblock = null, bool? exclude_child_pblocks = null, bool? exclude_non_assigned = null, string cells = null, bool? return_string = null, bool? slr = null, bool? packthru = null, string name = null, bool? no_primitives = null, bool? omit_locs = null, bool? hierarchical = null, string spreadsheet_file = null, string spreadsheet_table = null, string spreadsheet_depth = null, string hierarchical_depth = null, bool? hierarchical_percentages = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_utilization(string file = null, bool? append = null, string pblocks = null, bool? evaluate_pblock = null, bool? exclude_child_pblocks = null, bool? exclude_non_assigned = null, string cells = null, bool? return_string = null, bool? slr = null, bool? packthru = null, string name = null, bool? no_primitives = null, bool? omit_locs = null, bool? hierarchical = null, string spreadsheet_file = null, string spreadsheet_table = null, string spreadsheet_depth = null, string hierarchical_depth = null, bool? hierarchical_percentages = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_utilization [-file <arg>] [-append] [-pblocks <args>] [-evaluate_pblock] [-exclude_child_pblocks] [-exclude_non_assigned] [-cells <args>] [-return_string] [-slr] [-packthru] [-name <arg>] [-no_primitives] [-omit_locs] [-hierarchical] [-spreadsheet_file <arg>] [-spreadsheet_table <arg>] [-spreadsheet_depth <arg>] [-hierarchical_depth <arg>] [-hierarchical_percentages] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_utilization")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.OptionalNamedString("pblocks", pblocks)
-					.Flag("evaluate_pblock", evaluate_pblock)
-					.Flag("exclude_child_pblocks", exclude_child_pblocks)
-					.Flag("exclude_non_assigned", exclude_non_assigned)
-					.OptionalNamedString("cells", cells)
-					.Flag("return_string", return_string)
-					.Flag("slr", slr)
-					.Flag("packthru", packthru)
-					.OptionalNamedString("name", name)
-					.Flag("no_primitives", no_primitives)
-					.Flag("omit_locs", omit_locs)
-					.Flag("hierarchical", hierarchical)
-					.OptionalNamedString("spreadsheet_file", spreadsheet_file)
-					.OptionalNamedString("spreadsheet_table", spreadsheet_table)
-					.OptionalNamedString("spreadsheet_depth", spreadsheet_depth)
-					.OptionalNamedString("hierarchical_depth", hierarchical_depth)
-					.Flag("hierarchical_percentages", hierarchical_percentages)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_utilization(file, append, pblocks, evaluate_pblock, exclude_child_pblocks, exclude_non_assigned, cells, return_string, slr, packthru, name, no_primitives, omit_locs, hierarchical, spreadsheet_file, spreadsheet_table, spreadsheet_depth, hierarchical_depth, hierarchical_percentages, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report status of DRC/METHODOLOGY/CDC message waivers
@@ -5369,62 +3196,33 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1446
 		/// </summary>
-		/// <param name="file">
-		/// Optional
-		/// Name of file to report waivers
-		/// </param>
-		/// <param name="type">
-		/// Optional
-		/// Type of waiver - ALL, DRC, METHODOLOGY, CDC
-		/// </param>
+		/// <param name="file">(Optional) Name of file to report waivers</param>
+		/// <param name="type">(Optional) Type of waiver - ALL, DRC, METHODOLOGY, CDC</param>
 		/// <param name="write_valid_waivers">
-		/// Optional
+		/// (Optional)
 		/// (special) Specifies writing out the specific waivers which
 		/// were used in the last report_drc/methodology/cdc run(s)
 		/// </param>
 		/// <param name="write_ignored_waivers">
-		/// Optional
+		/// (Optional)
 		/// (special) Specifies writing out the specific waivers which
 		/// were NOT used in the last report_drc/methodology/cdc
 		/// run(s)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the current report results to the file specified with -
-		/// file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report results as a string object
-		/// </param>
+		/// <param name="append">(Optional) Append the current report results to the file specified with - file</param>
+		/// <param name="return_string">(Optional) Return report results as a string object</param>
 		/// <param name="show_msgs_with_no_waivers">
-		/// Optional
+		/// (Optional)
 		/// also list report_drc/methodology/cdc messages which have
 		/// no defined waivers
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_waivers(string file = null, string type = null, bool? write_valid_waivers = null, bool? write_ignored_waivers = null, bool? append = null, bool? return_string = null, bool? show_msgs_with_no_waivers = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_waivers(string file = null, string type = null, bool? write_valid_waivers = null, bool? write_ignored_waivers = null, bool? append = null, bool? return_string = null, bool? show_msgs_with_no_waivers = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_waivers [-file <arg>] [-type <arg>] [-write_valid_waivers] [-write_ignored_waivers] [-append] [-return_string] [-show_msgs_with_no_waivers] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_waivers")
-					.OptionalNamedString("file", file)
-					.OptionalNamedString("type", type)
-					.Flag("write_valid_waivers", write_valid_waivers)
-					.Flag("write_ignored_waivers", write_ignored_waivers)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("show_msgs_with_no_waivers", show_msgs_with_no_waivers)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_waivers(file, type, write_valid_waivers, write_ignored_waivers, append, return_string, show_msgs_with_no_waivers, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Remove DRC report
@@ -5440,27 +3238,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1449
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// DRC result name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_drc(string name = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Optional) DRC result name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_drc(string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_drc [-name <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("reset_drc")
-					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.reset_drc(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Remove Methodology report
@@ -5476,27 +3261,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1461
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// Methodology result name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_methodology(string name = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Optional) Methodology result name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_methodology(string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_methodology [-name <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("reset_methodology")
-					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.reset_methodology(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Resets or removes a message control rule previously defined by the set_msg_config command.
@@ -5540,32 +3312,32 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1465
 		/// </summary>
 		/// <param name="@string">
-		/// Optional
+		/// (Optional)
 		/// A qualifier, only a rule created with a matching string
 		/// qualifier will be reset/removed Default: empty
 		/// </param>
 		/// <param name="id">
-		/// Optional
+		/// (Optional)
 		/// A qualifier, only a rule created with a matching id qualifier
 		/// will be reset/removed
 		/// </param>
 		/// <param name="severity">
-		/// Optional
+		/// (Optional)
 		/// A qualifier, only a rule created with a matching severity
 		/// qualifier will be reset/removed
 		/// </param>
 		/// <param name="limit">
-		/// Optional
+		/// (Optional)
 		/// reset the limit values for message controls that match the
 		/// given qualifiers for the current project
 		/// </param>
 		/// <param name="suppress">
-		/// Optional
+		/// (Optional)
 		/// stop suppressing messages that match the given qualifiers
 		/// for the current project
 		/// </param>
 		/// <param name="count">
-		/// Optional
+		/// (Optional)
 		/// reset the count of messages for all message controls that
 		/// match the given qualifiers for the current project. This will
 		/// prevent messages from being suppressed by a -limit control
@@ -5573,39 +3345,19 @@ namespace Quokka.TCL.Vivado
 		/// limit.
 		/// </param>
 		/// <param name="default_severity">
-		/// Optional
+		/// (Optional)
 		/// reset the message severity of all messages controls for the
 		/// current project that match the given qualifiers to their
 		/// default value
 		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// The values used for -string are full regular expressions
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_msg_config(string @string = null, string id = null, string severity = null, bool? limit = null, bool? suppress = null, bool? count = null, bool? default_severity = null, bool? regexp = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="regexp">(Optional) The values used for -string are full regular expressions</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_msg_config(string @string = null, string id = null, string severity = null, bool? limit = null, bool? suppress = null, bool? count = null, bool? default_severity = null, bool? regexp = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_msg_config [-string <args>] [-id <arg>] [-severity <arg>] [-limit] [-suppress] [-count] [-default_severity] [-regexp] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("reset_msg_config")
-					.OptionalNamedString("string", @string)
-					.OptionalNamedString("id", id)
-					.OptionalNamedString("severity", severity)
-					.Flag("limit", limit)
-					.Flag("suppress", suppress)
-					.Flag("count", count)
-					.Flag("default_severity", default_severity)
-					.Flag("regexp", regexp)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.reset_msg_config(@string, id, severity, limit, suppress, count, default_severity, regexp, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reset message count
@@ -5631,28 +3383,18 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1469
 		/// </summary>
 		/// <param name="id">
-		/// Required
+		/// (Required)
 		/// Unique message Id to be reset, e.g. "Common 17-99".
 		/// "reset_msg_count -id *" reset all counters
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>new message count</returns>
-		public void reset_msg_count(string id, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_msg_count(string id, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_msg_count [-quiet] [-verbose] <id>
-			_tcl.Add(
-				new SimpleTCLCommand("reset_msg_count")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(id)
-			);
+			_tcl.Entry(_builder.reset_msg_count(id, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Clear a SSN results set from memory
@@ -5667,27 +3409,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1483
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of the set of results
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_ssn(string name, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Required) Name of the set of results</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_ssn(string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_ssn [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("reset_ssn")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.reset_ssn(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Resets the timing information on the current design
@@ -5711,33 +3440,22 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1490
 		/// </summary>
 		/// <param name="invalid">
-		/// Optional
+		/// (Optional)
 		/// Resets invalid timing constraints in addition to valid timing
 		/// constraints.
 		/// </param>
 		/// <param name="clock_reservation">
-		/// Optional
+		/// (Optional)
 		/// Resets clock name reservations for auto-derived clocks in
 		/// addition to valid timing constraints.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_timing(bool? invalid = null, bool? clock_reservation = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_timing(bool? invalid = null, bool? clock_reservation = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_timing [-invalid] [-clock_reservation] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("reset_timing")
-					.Flag("invalid", invalid)
-					.Flag("clock_reservation", clock_reservation)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.reset_timing(invalid, clock_reservation, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Configure how the Vivado tool will display and manage specific messages, based on message ID,
@@ -5825,65 +3543,46 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1619
 		/// </summary>
 		/// <param name="id">
-		/// Optional
+		/// (Optional)
 		/// A qualifier, apply the selected operation only to messages
 		/// that match given message id. Example: '-id {Common
 		/// 17-35}'. Default: match any id
 		/// </param>
 		/// <param name="@string">
-		/// Optional
+		/// (Optional)
 		/// A qualifier, apply the selected operation only to messages
 		/// that contain the given list of strings. Default: none
 		/// </param>
 		/// <param name="severity">
-		/// Optional
+		/// (Optional)
 		/// A qualifier, apply the selected operation only to messages at
 		/// the given severity level. Example: '-severity INFO' Default:
 		/// match any severity
 		/// </param>
 		/// <param name="limit">
-		/// Optional
+		/// (Optional)
 		/// for the messages that match the qualifiers, limit the number
 		/// of messages displayed to the given integer value. Can only
 		/// be used in conjunction with one of -id or -severity.
 		/// </param>
 		/// <param name="new_severity">
-		/// Optional
+		/// (Optional)
 		/// for the messages that match the qualifiers, change the
 		/// severity to the given value for the current project
 		/// </param>
 		/// <param name="suppress">
-		/// Optional
+		/// (Optional)
 		/// for the messages that match the qualifiers, suppress (do not
 		/// display) any messages for the current project
 		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// The values used for -string are full regular expressions
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_msg_config(string id = null, string @string = null, string severity = null, string limit = null, string new_severity = null, bool? suppress = null, bool? regexp = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="regexp">(Optional) The values used for -string are full regular expressions</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_msg_config(string id = null, string @string = null, string severity = null, string limit = null, string new_severity = null, bool? suppress = null, bool? regexp = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_msg_config [-id <arg>] [-string <args>] [-severity <arg>] [-limit <arg>] [-new_severity <arg>] [-suppress] [-regexp] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("set_msg_config")
-					.OptionalNamedString("id", id)
-					.OptionalNamedString("string", @string)
-					.OptionalNamedString("severity", severity)
-					.OptionalNamedString("limit", limit)
-					.OptionalNamedString("new_severity", new_severity)
-					.Flag("suppress", suppress)
-					.Flag("regexp", regexp)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.set_msg_config(id, @string, severity, limit, new_severity, suppress, regexp, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Returns the build for Vivado and the build date
@@ -5899,29 +3598,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1769
 		/// </summary>
-		/// <param name="@short">
-		/// Optional
-		/// Return only the numeric version number
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="@short">(Optional) Return only the numeric version number</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>
 		/// </returns>
-		public void version(bool? @short = null, bool? quiet = null, bool? verbose = null)
+		public TTCL version(bool? @short = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: version [-short] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("version")
-					.Flag("short", @short)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.version(@short, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

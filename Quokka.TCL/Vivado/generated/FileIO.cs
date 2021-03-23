@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class FileIOCommands
+	public partial class FileIOCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public FileIOCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public FileIOCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Auto detect the XPM Libraries that are used in the design and set the XPM_LIBRARIES project
@@ -35,22 +37,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 112
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void auto_detect_xpm(bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL auto_detect_xpm(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: auto_detect_xpm [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("auto_detect_xpm")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.auto_detect_xpm(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Enable/disable WebTalk to send software, IP and device usage statistics to Xilinx. Note: WebTalk
@@ -85,42 +78,27 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 187
 		/// </summary>
-		/// <param name="info">
-		/// Optional
-		/// Show whether WebTalk is currently enabled or disabled
-		/// </param>
+		/// <param name="info">(Optional) Show whether WebTalk is currently enabled or disabled</param>
 		/// <param name="user">
-		/// Optional
+		/// (Optional)
 		/// Enable/disable WebTalk for the current user. Specify either
 		/// 'on' to enable or 'off' to disable. Default: empty
 		/// </param>
 		/// <param name="install">
-		/// Optional
+		/// (Optional)
 		/// Enable/disable WebTalk for all users of the current
 		/// installation. Specify either 'on' to enable or 'off' to disable.
 		/// If you specify 'off', individual users will not be able to enable
 		/// WebTalk using the -user option. You may need
 		/// administrator rights to use this option. Default: empty
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void config_webtalk(bool? info = null, string user = null, string install = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL config_webtalk(bool? info = null, string user = null, string install = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: config_webtalk [-info] [-user <arg>] [-install <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("config_webtalk")
-					.Flag("info", info)
-					.OptionalNamedString("user", user)
-					.OptionalNamedString("install", install)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.config_webtalk(info, user, install, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Generate a port on a given reconfigurable cell
@@ -130,51 +108,26 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 329
 		/// </summary>
-		/// <param name="cell">
-		/// Optional
-		/// (Required) specify the HD.RECONFIGURABLE cell name for
-		/// port punching
-		/// </param>
+		/// <param name="cell">(Optional) (Required) specify the HD.RECONFIGURABLE cell name for port punching</param>
 		/// <param name="port">
-		/// Optional
+		/// (Optional)
 		/// (Required) specify the newly added port name on given
 		/// HD.RECONFIGURABLE cell
 		/// </param>
 		/// <param name="direction">
-		/// Optional
+		/// (Optional)
 		/// (Required) specify the direction of ports, it could be either
 		/// INPUT, OUTPUT or INOUT
 		/// </param>
-		/// <param name="from">
-		/// Optional
-		/// (Optional) specify the lower boundary of port bus Default: -1
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// (Optional) specify the higher boundary of port bus Default:
-		/// -1
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_port_on_reconfigurable_module(string cell = null, string port = null, string direction = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="from">(Optional) (Optional) specify the lower boundary of port bus Default: -1</param>
+		/// <param name="to">(Optional) (Optional) specify the higher boundary of port bus Default: -1</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_port_on_reconfigurable_module(string cell = null, string port = null, string direction = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_port_on_reconfigurable_module [-cell <arg>] [-port <arg>] [-direction <arg>] [-from <arg>] [-to <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("create_port_on_reconfigurable_module")
-					.OptionalNamedString("cell", cell)
-					.OptionalNamedString("port", port)
-					.OptionalNamedString("direction", direction)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.create_port_on_reconfigurable_module(cell, port, direction, from, to, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Decrypt an AES-GCM encrypted bitstream
@@ -193,42 +146,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 415
 		/// </summary>
-		/// <param name="encrypted_file">
-		/// Required
-		/// Input AES-GCM encrypted bitstream (.bit or .rbt)
-		/// </param>
-		/// <param name="keyfile">
-		/// Required
-		/// File containing encryption keys
-		/// </param>
-		/// <param name="file">
-		/// Required
-		/// Output decrypted bitstream (.bit, .bin or .rbt)
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void decrypt_bitstream(string encrypted_file, string keyfile, string file, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="encrypted_file">(Required) Input AES-GCM encrypted bitstream (.bit or .rbt)</param>
+		/// <param name="keyfile">(Required) File containing encryption keys</param>
+		/// <param name="file">(Required) Output decrypted bitstream (.bit, .bin or .rbt)</param>
+		/// <param name="force">(Optional) Overwrite existing file</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL decrypt_bitstream(string encrypted_file, string keyfile, string file, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: decrypt_bitstream -encrypted_file <arg> -keyfile <arg> [-force] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("decrypt_bitstream")
-					.RequiredNamedString("encrypted_file", encrypted_file)
-					.RequiredNamedString("keyfile", keyfile)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.decrypt_bitstream(encrypted_file, keyfile, file, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Encrypt files in place with a language specific key file in IEEE 1735. no default
@@ -247,43 +175,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 493
 		/// </summary>
-		/// <param name="lang">
-		/// Required
-		/// HDL language of the input/output file
-		/// </param>
-		/// <param name="files">
-		/// Required
-		/// Files to be encrypted in place
-		/// </param>
-		/// <param name="key">
-		/// Optional
-		/// key file to be used to encrypt; if absent, use embedded keys
-		/// </param>
+		/// <param name="lang">(Required) HDL language of the input/output file</param>
+		/// <param name="files">(Required) Files to be encrypted in place</param>
+		/// <param name="key">(Optional) key file to be used to encrypt; if absent, use embedded keys</param>
 		/// <param name="ext">
-		/// Optional
+		/// (Optional)
 		/// extension to use for encrypted file; the original source files
 		/// will be preserved.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void encrypt(string lang, string files, string key = null, string ext = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL encrypt(string lang, string files, string key = null, string ext = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: encrypt [-key <arg>] -lang <arg> [-ext <arg>] [-quiet] [-verbose] <files>...
-			_tcl.Add(
-				new SimpleTCLCommand("encrypt")
-					.OptionalNamedString("key", key)
-					.RequiredNamedString("lang", lang)
-					.OptionalNamedString("ext", ext)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.encrypt(lang, files, key, ext, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Generate a base platform based on a given routed checkpoint
@@ -293,44 +199,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 528
 		/// </summary>
-		/// <param name="source">
-		/// Optional
-		/// (Required) Specify routed checkpoint path
-		/// </param>
-		/// <param name="reconfig_platform">
-		/// Optional
-		/// (Required) Specify reconfigurable platform module name
-		/// </param>
+		/// <param name="source">(Optional) (Required) Specify routed checkpoint path</param>
+		/// <param name="reconfig_platform">(Optional) (Required) Specify reconfigurable platform module name</param>
 		/// <param name="base_platform">
-		/// Optional
+		/// (Optional)
 		/// (Optional) Specify the output file name, the default file
 		/// name is 'base_platform'
 		/// </param>
 		/// <param name="reconfig_platform_prefix">
-		/// Optional
+		/// (Optional)
 		/// (Optional) Specify wrapper port name prefix from
 		/// reconfigurable platform module, the default prefix is 'RL_'
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void generate_base_platform(string source = null, string reconfig_platform = null, string base_platform = null, string reconfig_platform_prefix = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL generate_base_platform(string source = null, string reconfig_platform = null, string base_platform = null, string reconfig_platform_prefix = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_base_platform [-source <arg>] [-reconfig_platform <arg>] [-base_platform <arg>] [-reconfig_platform_prefix <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("generate_base_platform")
-					.OptionalNamedString("source", source)
-					.OptionalNamedString("reconfig_platform", reconfig_platform)
-					.OptionalNamedString("base_platform", base_platform)
-					.OptionalNamedString("reconfig_platform_prefix", reconfig_platform_prefix)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.generate_base_platform(source, reconfig_platform, base_platform, reconfig_platform_prefix, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write all the simulation .mem files.
@@ -353,33 +240,19 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 529
 		/// </summary>
 		/// <param name="directory">
-		/// Required
+		/// (Required)
 		/// Directory for exporting .mem files. Values: A directory with
 		/// alphanumeric characters.
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing .mem files
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="force">(Optional) Overwrite existing .mem files</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The name of the directory</returns>
-		public void generate_mem_files(string directory, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL generate_mem_files(string directory, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_mem_files [-force] [-quiet] [-verbose] <directory>
-			_tcl.Add(
-				new SimpleTCLCommand("generate_mem_files")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(directory)
-			);
+			_tcl.Entry(_builder.generate_mem_files(directory, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Generate PBLOCK by exclude static
@@ -389,45 +262,29 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 531
 		/// </summary>
-		/// <param name="cell">
-		/// Optional
-		/// Specify cell to add to pblock.
-		/// </param>
+		/// <param name="cell">(Optional) Specify cell to add to pblock.</param>
 		/// <param name="inverse_pblock">
-		/// Optional
+		/// (Optional)
 		/// Specify name of the inverse pblock. The pblock will cover
 		/// everything that the static pblock does not.
 		/// </param>
 		/// <param name="nested_pblock">
-		/// Optional
+		/// (Optional)
 		/// Specify name of nested pblock inside inverse_pblock left
 		/// adjacent to static pblock.
 		/// </param>
 		/// <param name="nested_width">
-		/// Optional
+		/// (Optional)
 		/// Specify the width of the nested pblock. The nested pblock
 		/// height is the same as the adjacent static pblock. Default: 3
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void generate_pblock(string cell = null, string inverse_pblock = null, string nested_pblock = null, string nested_width = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL generate_pblock(string cell = null, string inverse_pblock = null, string nested_pblock = null, string nested_width = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_pblock [-cell <arg>] [-inverse_pblock <arg>] [-nested_pblock <arg>] [-nested_width <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("generate_pblock")
-					.OptionalNamedString("cell", cell)
-					.OptionalNamedString("inverse_pblock", inverse_pblock)
-					.OptionalNamedString("nested_pblock", nested_pblock)
-					.OptionalNamedString("nested_width", nested_width)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.generate_pblock(cell, inverse_pblock, nested_pblock, nested_width, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Generate new platform based on base platform and wrapper module
@@ -437,43 +294,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 537
 		/// </summary>
-		/// <param name="use_source">
-		/// Optional
-		/// Specify wrapper checkpoint path
-		/// </param>
-		/// <param name="reconfig_platform">
-		/// Optional
-		/// (Required) Specify reconfigurable platform module name
-		/// </param>
-		/// <param name="base_platform">
-		/// Optional
-		/// (Required) Specify base platform checkpoint path
-		/// </param>
+		/// <param name="use_source">(Optional) Specify wrapper checkpoint path</param>
+		/// <param name="reconfig_platform">(Optional) (Required) Specify reconfigurable platform module name</param>
+		/// <param name="base_platform">(Optional) (Required) Specify base platform checkpoint path</param>
 		/// <param name="platform">
-		/// Optional
+		/// (Optional)
 		/// (Optional) Specify new platform checkpoint path, the default
 		/// file name is 'rl_platform.dcp'
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void generate_rl_platform(string use_source = null, string reconfig_platform = null, string base_platform = null, string platform = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL generate_rl_platform(string use_source = null, string reconfig_platform = null, string base_platform = null, string platform = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_rl_platform [-use_source <arg>] [-reconfig_platform <arg>] [-base_platform <arg>] [-platform <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("generate_rl_platform")
-					.OptionalNamedString("use_source", use_source)
-					.OptionalNamedString("reconfig_platform", reconfig_platform)
-					.OptionalNamedString("base_platform", base_platform)
-					.OptionalNamedString("platform", platform)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.generate_rl_platform(use_source, reconfig_platform, base_platform, platform, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Move HD.RECONFIGURABLE and related properties to sub-cells
@@ -483,42 +318,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 538
 		/// </summary>
-		/// <param name="base_platform">
-		/// Optional
-		/// Specify Base Platform DCP path.
-		/// </param>
-		/// <param name="wrapper">
-		/// Optional
-		/// Specify wrapper DCP path
-		/// </param>
-		/// <param name="output">
-		/// Optional
-		/// Specify output DCP name.
-		/// </param>
-		/// <param name="reconfig_platform">
-		/// Optional
-		/// Specify reconfigurable platform name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void generate_shx_platform(string base_platform = null, string wrapper = null, string output = null, string reconfig_platform = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="base_platform">(Optional) Specify Base Platform DCP path.</param>
+		/// <param name="wrapper">(Optional) Specify wrapper DCP path</param>
+		/// <param name="output">(Optional) Specify output DCP name.</param>
+		/// <param name="reconfig_platform">(Optional) Specify reconfigurable platform name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL generate_shx_platform(string base_platform = null, string wrapper = null, string output = null, string reconfig_platform = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_shx_platform [-base_platform <arg>] [-wrapper <arg>] [-output <arg>] [-reconfig_platform <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("generate_shx_platform")
-					.OptionalNamedString("base_platform", base_platform)
-					.OptionalNamedString("wrapper", wrapper)
-					.OptionalNamedString("output", output)
-					.OptionalNamedString("reconfig_platform", reconfig_platform)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.generate_shx_platform(base_platform, wrapper, output, reconfig_platform, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Infer differential pairs, typically for ports just imported from a CSV or XDC file
@@ -555,32 +365,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 975
 		/// </summary>
-		/// <param name="file_type">
-		/// Optional
-		/// Input file type: 'csv' or 'xdc' Default: file type
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// Pin Planning CSV or XDC file Default: file
-		/// </param>
-		public void infer_diff_pairs(string file_type = null, bool? quiet = null, bool? verbose = null, string file = null)
+		/// <param name="file_type">(Optional) Input file type: 'csv' or 'xdc' Default: file type</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="file">(Optional) Pin Planning CSV or XDC file Default: file</param>
+		public TTCL infer_diff_pairs(string file_type = null, bool? quiet = null, bool? verbose = null, string file = null)
 		{
 			// TCL Syntax: infer_diff_pairs [-file_type <arg>] [-quiet] [-verbose] [<file>...]
-			_tcl.Add(
-				new SimpleTCLCommand("infer_diff_pairs")
-					.OptionalNamedString("file_type", file_type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(file)
-			);
+			_tcl.Entry(_builder.infer_diff_pairs(file_type, quiet, verbose, file));
+			return _tcl;
 		}
 		/// <summary>
 		/// Open the Xilinx Shell Archive
@@ -600,33 +393,19 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1059
 		/// </summary>
 		/// <param name="file">
-		/// Required
+		/// (Required)
 		/// Xilinx Shell Archive file Values: A filename with alphanumeric
 		/// characters and .dsa/.xsa extension.
 		/// </param>
-		/// <param name="auto_upgrade">
-		/// Optional
-		/// Automatically upgrade the BD
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="auto_upgrade">(Optional) Automatically upgrade the BD</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The name of the shell file</returns>
-		public void open_hw_platform(string file, bool? auto_upgrade = null, bool? quiet = null, bool? verbose = null)
+		public TTCL open_hw_platform(string file, bool? auto_upgrade = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_hw_platform [-auto_upgrade] [-quiet] [-verbose] [<file>]
-			_tcl.Add(
-				new SimpleTCLCommand("open_hw_platform")
-					.Flag("auto_upgrade", auto_upgrade)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.open_hw_platform(file, auto_upgrade, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Re-establish a parent cell as a Reconfigurable Partition while removing a lower-level
@@ -637,27 +416,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1115
 		/// </summary>
-		/// <param name="cell">
-		/// Optional
-		/// (Required) Specify reconfigurable container module name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void pr_recombine(string cell = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="cell">(Optional) (Required) Specify reconfigurable container module name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL pr_recombine(string cell = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: pr_recombine [-cell <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("pr_recombine")
-					.OptionalNamedString("cell", cell)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.pr_recombine(cell, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Subdivide a Reconfigurable Partition into one or more lower-level Reconfigurable Partitions when
@@ -668,40 +434,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1116
 		/// </summary>
-		/// <param name="cell">
-		/// Optional
-		/// (Required) Specify parent reconfigurable partition module
-		/// name
-		/// </param>
-		/// <param name="subcells">
-		/// Optional
-		/// (Required) Specify child reconfigurable partition module
-		/// names
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="cell">(Optional) (Required) Specify parent reconfigurable partition module name</param>
+		/// <param name="subcells">(Optional) (Required) Specify child reconfigurable partition module names</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="from_dcp">
-		/// Optional
+		/// (Optional)
 		/// (Required) Specify OOC synthesized checkpoint path for the
 		/// reconfigurable module specified by option -cell
 		/// </param>
-		public void pr_subdivide(string cell = null, string subcells = null, bool? quiet = null, bool? verbose = null, string from_dcp = null)
+		public TTCL pr_subdivide(string cell = null, string subcells = null, bool? quiet = null, bool? verbose = null, string from_dcp = null)
 		{
 			// TCL Syntax: pr_subdivide [-cell <arg>] [-subcells <arg>] [-quiet] [-verbose] [<from_dcp>]
-			_tcl.Add(
-				new SimpleTCLCommand("pr_subdivide")
-					.OptionalNamedString("cell", cell)
-					.OptionalNamedString("subcells", subcells)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(from_dcp)
-			);
+			_tcl.Entry(_builder.pr_subdivide(cell, subcells, quiet, verbose, from_dcp));
+			return _tcl;
 		}
 		/// <summary>
 		/// Verify whether the design check points are replaceable on board. This command supports these
@@ -740,60 +486,28 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1117
 		/// </summary>
 		/// <param name="full_check">
-		/// Optional
+		/// (Optional)
 		/// Default behavior is to report the first difference only; if this
 		/// option is set to true, pr_verify will report complete
 		/// difference in placement or routing
 		/// </param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. Send output to console if -file
 		/// is not used.
 		/// </param>
-		/// <param name="initial">
-		/// Optional
-		/// Initial checkpoint (.dcp)
-		/// </param>
-		/// <param name="additional">
-		/// Optional
-		/// Additional checkpoints (.dcp)
-		/// </param>
-		/// <param name="in_memory">
-		/// Optional
-		/// use in-memory design for comparison, combined with -
-		/// additional option
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="file1">
-		/// Optional
-		/// Design checkpoint (.dcp) file one
-		/// </param>
-		/// <param name="file2">
-		/// Optional
-		/// Design checkpoint (.dcp) file two
-		/// </param>
-		public void pr_verify(bool? full_check = null, string file = null, string initial = null, string additional = null, bool? in_memory = null, bool? quiet = null, bool? verbose = null, string file1 = null, string file2 = null)
+		/// <param name="initial">(Optional) Initial checkpoint (.dcp)</param>
+		/// <param name="additional">(Optional) Additional checkpoints (.dcp)</param>
+		/// <param name="in_memory">(Optional) use in-memory design for comparison, combined with - additional option</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="file1">(Optional) Design checkpoint (.dcp) file one</param>
+		/// <param name="file2">(Optional) Design checkpoint (.dcp) file two</param>
+		public TTCL pr_verify(bool? full_check = null, string file = null, string initial = null, string additional = null, bool? in_memory = null, bool? quiet = null, bool? verbose = null, string file1 = null, string file2 = null)
 		{
 			// TCL Syntax: pr_verify [-full_check] [-file <arg>] [-initial <arg>] [-additional <arg>] [-in_memory] [-quiet] [-verbose] [<file1>] [<file2>]
-			_tcl.Add(
-				new SimpleTCLCommand("pr_verify")
-					.Flag("full_check", full_check)
-					.OptionalNamedString("file", file)
-					.OptionalNamedString("initial", initial)
-					.OptionalNamedString("additional", additional)
-					.Flag("in_memory", in_memory)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(file1)
-					.OptionalString(file2)
-			);
+			_tcl.Entry(_builder.pr_verify(full_check, file, initial, additional, in_memory, quiet, verbose, file1, file2));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read one or more IPIntegrator design files
@@ -817,28 +531,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1130
 		/// </summary>
-		/// <param name="files">
-		/// Required
-		/// IPIntegrator design file name(s)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="files">(Required) IPIntegrator design file name(s)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of IPIntegrator design file objects that were added</returns>
-		public void read_bd(string files, bool? quiet = null, bool? verbose = null)
+		public TTCL read_bd(string files, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_bd [-quiet] [-verbose] <files>...
-			_tcl.Add(
-				new SimpleTCLCommand("read_bd")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.read_bd(files, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read a design checkpoint
@@ -879,63 +580,29 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1132
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Design checkpoint file
-		/// </param>
-		/// <param name="cell">
-		/// Optional
-		/// Replace this cell with the checkpoint. The cell must be a
-		/// black box.
-		/// </param>
-		/// <param name="incremental">
-		/// Optional
-		/// Input design checkpoint file to be used for re-using
-		/// implementation.
-		/// </param>
+		/// <param name="file">(Required) Design checkpoint file</param>
+		/// <param name="cell">(Optional) Replace this cell with the checkpoint. The cell must be a black box.</param>
+		/// <param name="incremental">(Optional) Input design checkpoint file to be used for re-using implementation.</param>
 		/// <param name="directive">
-		/// Optional
+		/// (Optional)
 		/// Mode of behavior (directive) for this command. Please refer
 		/// to Arguments section of this help for values for this option.
 		/// Default: RuntimeOptimized
 		/// </param>
-		/// <param name="reuse_objects">
-		/// Optional
-		/// Reuse only given list of cells, clock regions, SLRs and
-		/// Designs
-		/// </param>
-		/// <param name="fix_objects">
-		/// Optional
-		/// Fix only given list of cells, clock regions, SLRs or Design
-		/// </param>
+		/// <param name="reuse_objects">(Optional) Reuse only given list of cells, clock regions, SLRs and Designs</param>
+		/// <param name="fix_objects">(Optional) Fix only given list of cells, clock regions, SLRs or Design</param>
 		/// <param name="dcp_cell_list">
-		/// Optional
+		/// (Optional)
 		/// A list of cell/dcp pairs, e.g. {<cell1> <dcp1> <cell2> <dcp2>}.
 		/// The option value should be in curly braces.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void read_checkpoint(string file, string cell = null, bool? incremental = null, string directive = null, string reuse_objects = null, string fix_objects = null, string dcp_cell_list = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL read_checkpoint(string file, string cell = null, bool? incremental = null, string directive = null, string reuse_objects = null, string fix_objects = null, string dcp_cell_list = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_checkpoint [-cell <arg>] [-incremental] [-directive <arg>] [-reuse_objects <args>] [-fix_objects <args>] [-dcp_cell_list <args>] [-quiet] [-verbose] [<file>]
-			_tcl.Add(
-				new SimpleTCLCommand("read_checkpoint")
-					.OptionalNamedString("cell", cell)
-					.Flag("incremental", incremental)
-					.OptionalNamedString("directive", directive)
-					.OptionalNamedString("reuse_objects", reuse_objects)
-					.OptionalNamedString("fix_objects", fix_objects)
-					.OptionalNamedString("dcp_cell_list", dcp_cell_list)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.read_checkpoint(file, cell, incremental, directive, reuse_objects, fix_objects, dcp_cell_list, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Import package pin and port placement information
@@ -967,33 +634,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1136
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Pin Planning CSV file
-		/// </param>
+		/// <param name="file">(Required) Pin Planning CSV file</param>
 		/// <param name="quiet_diff_pairs">
-		/// Optional
+		/// (Optional)
 		/// Suppress warnings about differential pair inference when
 		/// importing I/O ports
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void read_csv(string file, bool? quiet_diff_pairs = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL read_csv(string file, bool? quiet_diff_pairs = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_csv [-quiet_diff_pairs] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("read_csv")
-					.Flag("quiet_diff_pairs", quiet_diff_pairs)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.read_csv(file, quiet_diff_pairs, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read one or more EDIF or NGC files
@@ -1012,28 +665,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1138
 		/// </summary>
-		/// <param name="files">
-		/// Required
-		/// EDIF or NGC file name(s)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="files">(Required) EDIF or NGC file name(s)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of file objects that were added</returns>
-		public void read_edif(string files, bool? quiet = null, bool? verbose = null)
+		public TTCL read_edif(string files, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_edif [-quiet] [-verbose] <files>
-			_tcl.Add(
-				new SimpleTCLCommand("read_edif")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.read_edif(files, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read one or more IP files
@@ -1062,28 +702,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1146
 		/// </summary>
-		/// <param name="files">
-		/// Required
-		/// IP file name(s)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="files">(Required) IP file name(s)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of IP file objects that were added</returns>
-		public void read_ip(string files, bool? quiet = null, bool? verbose = null)
+		public TTCL read_ip(string files, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_ip [-quiet] [-verbose] <files>
-			_tcl.Add(
-				new SimpleTCLCommand("read_ip")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.read_ip(files, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read one or more data files (.mem .mif .dat).
@@ -1101,28 +728,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1151
 		/// </summary>
-		/// <param name="files">
-		/// Required
-		/// Data (.mem .coe .dat) file name(s)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="files">(Required) Data (.mem .coe .dat) file name(s)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of file objects that were added</returns>
-		public void read_mem(string files, bool? quiet = null, bool? verbose = null)
+		public TTCL read_mem(string files, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_mem [-quiet] [-verbose] <files>...
-			_tcl.Add(
-				new SimpleTCLCommand("read_mem")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.read_mem(files, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read QoR Suggestions from the given file
@@ -1141,27 +755,17 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1153
 		/// </summary>
 		/// <param name="file">
-		/// Required
+		/// (Required)
 		/// QoR suggestions file Values: Path to the QoR suggestions
 		/// file, typically ending with .rqs.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void read_qor_suggestions(string file, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL read_qor_suggestions(string file, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_qor_suggestions [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("read_qor_suggestions")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.read_qor_suggestions(file, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Import simulation data in saif format
@@ -1181,44 +785,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1155
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Specifies the name of the SAIF file to be read
-		/// </param>
+		/// <param name="file">(Required) Specifies the name of the SAIF file to be read</param>
 		/// <param name="strip_path">
-		/// Optional
+		/// (Optional)
 		/// Specifies the name of the instance of the current design as
 		/// it appears in the SAIF file
 		/// </param>
-		/// <param name="no_strip">
-		/// Optional
-		/// Do not strip first two levels of hierarchy from SAIF file
-		/// </param>
+		/// <param name="no_strip">(Optional) Do not strip first two levels of hierarchy from SAIF file</param>
 		/// <param name="out_file">
-		/// Optional
+		/// (Optional)
 		/// Specifies the name of the output file that contains nets that
 		/// could not be matched
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void read_saif(string file, string strip_path = null, bool? no_strip = null, string out_file = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL read_saif(string file, string strip_path = null, bool? no_strip = null, string out_file = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_saif [-strip_path <arg>] [-no_strip] [-out_file <arg>] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("read_saif")
-					.OptionalNamedString("strip_path", strip_path)
-					.Flag("no_strip", no_strip)
-					.OptionalNamedString("out_file", out_file)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.read_saif(file, strip_path, no_strip, out_file, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Import schematic
@@ -1231,33 +816,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1157
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Input file
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Schematic window title
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="file">(Required) Input file</param>
+		/// <param name="name">(Optional) Schematic window title</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>name of the file previously exported</returns>
-		public void read_schematic(string file, string name = null, bool? quiet = null, bool? verbose = null)
+		public TTCL read_schematic(string file, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_schematic [-name <arg>] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("read_schematic")
-					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.read_schematic(file, name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read timing results from Trace STA tool
@@ -1276,44 +844,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1159
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name for the set of results
-		/// </param>
-		/// <param name="file">
-		/// Required
-		/// Name of the Trace import file
-		/// </param>
-		/// <param name="cell">
-		/// Optional
-		/// Interpret names in the report file as relative to the specified
-		/// cell
-		/// </param>
-		/// <param name="pblock">
-		/// Optional
-		/// Interpret names in the report file as relative to the specified
-		/// pblock
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void read_twx(string name, string file, string cell = null, string pblock = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Required) Name for the set of results</param>
+		/// <param name="file">(Required) Name of the Trace import file</param>
+		/// <param name="cell">(Optional) Interpret names in the report file as relative to the specified cell</param>
+		/// <param name="pblock">(Optional) Interpret names in the report file as relative to the specified pblock</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL read_twx(string name, string file, string cell = null, string pblock = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_twx [-cell <arg>] [-pblock <arg>] [-quiet] [-verbose] <name> <file>
-			_tcl.Add(
-				new SimpleTCLCommand("read_twx")
-					.OptionalNamedString("cell", cell)
-					.OptionalNamedString("pblock", pblock)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.read_twx(name, file, cell, pblock, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read one or more Verilog files
@@ -1345,39 +886,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1161
 		/// </summary>
-		/// <param name="files">
-		/// Required
-		/// Verilog file name(s)
-		/// </param>
-		/// <param name="library">
-		/// Optional
-		/// Library name (ignored by Vivado synthesis) Default: default
-		/// lib
-		/// </param>
-		/// <param name="sv">
-		/// Optional
-		/// Enable system verilog compilation
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="files">(Required) Verilog file name(s)</param>
+		/// <param name="library">(Optional) Library name (ignored by Vivado synthesis) Default: default lib</param>
+		/// <param name="sv">(Optional) Enable system verilog compilation</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of file objects that were added</returns>
-		public void read_verilog(string files, string library = null, bool? sv = null, bool? quiet = null, bool? verbose = null)
+		public TTCL read_verilog(string files, string library = null, bool? sv = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_verilog [-library <arg>] [-sv] [-quiet] [-verbose] <files>...
-			_tcl.Add(
-				new SimpleTCLCommand("read_verilog")
-					.OptionalNamedString("library", library)
-					.Flag("sv", sv)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.read_verilog(files, library, sv, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read one or more VHDL files
@@ -1400,38 +919,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1163
 		/// </summary>
-		/// <param name="library">
-		/// Required
-		/// VHDL library
-		/// </param>
-		/// <param name="files">
-		/// Required
-		/// VHDL file name(s)
-		/// </param>
-		/// <param name="vhdl2008">
-		/// Optional
-		/// VHDL file is version 2008.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="library">(Required) VHDL library</param>
+		/// <param name="files">(Required) VHDL file name(s)</param>
+		/// <param name="vhdl2008">(Optional) VHDL file is version 2008.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of file objects that were added</returns>
-		public void read_vhdl(string library, string files, bool? vhdl2008 = null, bool? quiet = null, bool? verbose = null)
+		public TTCL read_vhdl(string library, string files, bool? vhdl2008 = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_vhdl -library <arg> [-vhdl2008] [-quiet] [-verbose] <files>
-			_tcl.Add(
-				new SimpleTCLCommand("read_vhdl")
-					.RequiredNamedString("library", library)
-					.Flag("vhdl2008", vhdl2008)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.read_vhdl(library, files, vhdl2008, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// read physical and timing constraints from one of more files.
@@ -1467,60 +965,29 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1165
 		/// </summary>
-		/// <param name="files">
-		/// Required
-		/// Input file(s) to read
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// Import constraints for these cells
-		/// </param>
-		/// <param name="@ref">
-		/// Optional
-		/// Import constraints for this ref
-		/// </param>
+		/// <param name="files">(Required) Input file(s) to read</param>
+		/// <param name="cells">(Optional) Import constraints for these cells</param>
+		/// <param name="@ref">(Optional) Import constraints for this ref</param>
 		/// <param name="quiet_diff_pairs">
-		/// Optional
+		/// (Optional)
 		/// Suppress warnings about differential pair inference when
 		/// importing I/O ports
 		/// </param>
 		/// <param name="mode">
-		/// Optional
+		/// (Optional)
 		/// Import constraints as out_of_context. Values: default,
 		/// out_of_context Default: default
 		/// </param>
-		/// <param name="unmanaged">
-		/// Optional
-		/// treat this file as unmanaged constraints file
-		/// </param>
-		/// <param name="no_add">
-		/// Optional
-		/// don't add this file to constraints fileset
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="unmanaged">(Optional) treat this file as unmanaged constraints file</param>
+		/// <param name="no_add">(Optional) don't add this file to constraints fileset</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of files</returns>
-		public void read_xdc(string files, string cells = null, string @ref = null, bool? quiet_diff_pairs = null, string mode = null, bool? unmanaged = null, bool? no_add = null, bool? quiet = null, bool? verbose = null)
+		public TTCL read_xdc(string files, string cells = null, string @ref = null, bool? quiet_diff_pairs = null, string mode = null, bool? unmanaged = null, bool? no_add = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_xdc [-cells <args>] [-ref <arg>] [-quiet_diff_pairs] [-mode <arg>] [-unmanaged] [-no_add] [-quiet] [-verbose] <files>
-			_tcl.Add(
-				new SimpleTCLCommand("read_xdc")
-					.OptionalNamedString("cells", cells)
-					.OptionalNamedString("ref", @ref)
-					.Flag("quiet_diff_pairs", quiet_diff_pairs)
-					.OptionalNamedString("mode", mode)
-					.Flag("unmanaged", unmanaged)
-					.Flag("no_add", no_add)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.read_xdc(files, cells, @ref, quiet_diff_pairs, mode, unmanaged, no_add, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Update and initialize the BRAM initialization strings with contents of elf files.
@@ -1530,22 +997,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1199
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void refresh_meminit(bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL refresh_meminit(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_meminit [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("refresh_meminit")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.refresh_meminit(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write an abstract shell checkpoint of the current design
@@ -1555,39 +1013,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1779
 		/// </summary>
-		/// <param name="cell">
-		/// Required
-		/// Create an abstract shell for this reconfigurable cell
-		/// </param>
+		/// <param name="cell">(Required) Create an abstract shell for this reconfigurable cell</param>
 		/// <param name="file">
-		/// Required
+		/// (Required)
 		/// Design checkpoint file Values: A filename with alphanumeric
 		/// characters and .dcp extension.
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing checkpoint file
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="force">(Optional) Overwrite existing checkpoint file</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The name of the checkpoint file</returns>
-		public void write_abstract_shell(string cell, string file, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_abstract_shell(string cell, string file, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_abstract_shell -cell <arg> [-force] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_abstract_shell")
-					.RequiredNamedString("cell", cell)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_abstract_shell(cell, file, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Export layout in native, pdf or svg
@@ -1609,54 +1049,24 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1780
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Output file
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file
-		/// </param>
+		/// <param name="file">(Required) Output file</param>
+		/// <param name="force">(Optional) Overwrite existing file</param>
 		/// <param name="format">
-		/// Optional
+		/// (Optional)
 		/// Values: native, pdf or svg. regenerate_bd_layout -layout_file
 		/// can be used with native layout. Default: native
 		/// </param>
-		/// <param name="orientation">
-		/// Optional
-		/// Values: landscape or portrait
-		/// </param>
-		/// <param name="scope">
-		/// Optional
-		/// Values: visible or all Default: all
-		/// </param>
-		/// <param name="hierarchy">
-		/// Optional
-		/// Hierarchy block
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="orientation">(Optional) Values: landscape or portrait</param>
+		/// <param name="scope">(Optional) Values: visible or all Default: all</param>
+		/// <param name="hierarchy">(Optional) Hierarchy block</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>name of the output file</returns>
-		public void write_bd_layout(string file, bool? force = null, string format = null, string orientation = null, string scope = null, string hierarchy = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_bd_layout(string file, bool? force = null, string format = null, string orientation = null, string scope = null, string hierarchy = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_bd_layout [-force] [-format <arg>] [-orientation <arg>] [-scope <arg>] [-hierarchy <arg>] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_bd_layout")
-					.Flag("force", force)
-					.OptionalNamedString("format", format)
-					.OptionalNamedString("orientation", orientation)
-					.OptionalNamedString("scope", scope)
-					.OptionalNamedString("hierarchy", hierarchy)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_bd_layout(file, force, format, orientation, scope, hierarchy, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write a bitstream for the current design
@@ -1727,78 +1137,24 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1787
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// The name of the .bit file to generate
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Print write_bitstream options
-		/// </param>
-		/// <param name="raw_bitfile">
-		/// Optional
-		/// Write raw bit file (.rbt)
-		/// </param>
-		/// <param name="no_binary_bitfile">
-		/// Optional
-		/// Do not write binary bit file (.bit)
-		/// </param>
-		/// <param name="mask_file">
-		/// Optional
-		/// Write mask file (.msk)
-		/// </param>
-		/// <param name="readback_file">
-		/// Optional
-		/// Write readback files (.rbd, .msd)
-		/// </param>
-		/// <param name="logic_location_file">
-		/// Optional
-		/// Write logic location file (.ll)
-		/// </param>
-		/// <param name="bin_file">
-		/// Optional
-		/// Write binary bit file without header (.bin)
-		/// </param>
-		/// <param name="reference_bitfile">
-		/// Optional
-		/// Reference bitfile to be used for generating partial bitstream
-		/// </param>
-		/// <param name="cell">
-		/// Optional
-		/// Create only partial bitstream for named cell
-		/// </param>
-		/// <param name="no_partial_bitfile">
-		/// Optional
-		/// Do not write partial bit files for a partial reconfiguration
-		/// design
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		public void write_bitstream(string file, bool? force = null, bool? verbose = null, bool? raw_bitfile = null, bool? no_binary_bitfile = null, bool? mask_file = null, bool? readback_file = null, bool? logic_location_file = null, bool? bin_file = null, string reference_bitfile = null, string cell = null, bool? no_partial_bitfile = null, bool? quiet = null)
+		/// <param name="file">(Required) The name of the .bit file to generate</param>
+		/// <param name="force">(Optional) Overwrite existing file</param>
+		/// <param name="verbose">(Optional) Print write_bitstream options</param>
+		/// <param name="raw_bitfile">(Optional) Write raw bit file (.rbt)</param>
+		/// <param name="no_binary_bitfile">(Optional) Do not write binary bit file (.bit)</param>
+		/// <param name="mask_file">(Optional) Write mask file (.msk)</param>
+		/// <param name="readback_file">(Optional) Write readback files (.rbd, .msd)</param>
+		/// <param name="logic_location_file">(Optional) Write logic location file (.ll)</param>
+		/// <param name="bin_file">(Optional) Write binary bit file without header (.bin)</param>
+		/// <param name="reference_bitfile">(Optional) Reference bitfile to be used for generating partial bitstream</param>
+		/// <param name="cell">(Optional) Create only partial bitstream for named cell</param>
+		/// <param name="no_partial_bitfile">(Optional) Do not write partial bit files for a partial reconfiguration design</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		public TTCL write_bitstream(string file, bool? force = null, bool? verbose = null, bool? raw_bitfile = null, bool? no_binary_bitfile = null, bool? mask_file = null, bool? readback_file = null, bool? logic_location_file = null, bool? bin_file = null, string reference_bitfile = null, string cell = null, bool? no_partial_bitfile = null, bool? quiet = null)
 		{
 			// TCL Syntax: write_bitstream [-force] [-verbose] [-raw_bitfile] [-no_binary_bitfile] [-mask_file] [-readback_file] [-logic_location_file] [-bin_file] [-reference_bitfile <arg>] [-cell <arg>] [-no_partial_bitfile] [-quiet] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_bitstream")
-					.Flag("force", force)
-					.Flag("verbose", verbose)
-					.Flag("raw_bitfile", raw_bitfile)
-					.Flag("no_binary_bitfile", no_binary_bitfile)
-					.Flag("mask_file", mask_file)
-					.Flag("readback_file", readback_file)
-					.Flag("logic_location_file", logic_location_file)
-					.Flag("bin_file", bin_file)
-					.OptionalNamedString("reference_bitfile", reference_bitfile)
-					.OptionalNamedString("cell", cell)
-					.Flag("no_partial_bitfile", no_partial_bitfile)
-					.Flag("quiet", quiet)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_bitstream(file, force, verbose, raw_bitfile, no_binary_bitfile, mask_file, readback_file, logic_location_file, bin_file, reference_bitfile, cell, no_partial_bitfile, quiet));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write a bmm file
@@ -1817,33 +1173,19 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1792
 		/// </summary>
 		/// <param name="file">
-		/// Required
+		/// (Required)
 		/// Design bmm file Values: A filename with alphanumeric
 		/// characters and .bmm extension.
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing BMM file.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="force">(Optional) Overwrite existing BMM file.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The name of the bmm file</returns>
-		public void write_bmm(string file, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_bmm(string file, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_bmm [-force] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_bmm")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_bmm(file, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Generate a design specific post-configuration BSDL file (.bsd).
@@ -1865,38 +1207,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1794
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Output file name. The .bsd extension is optional.
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing .bsd file
-		/// </param>
-		/// <param name="bsd">
-		/// Optional
-		/// Specify an updated generic BSDL file.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="file">(Required) Output file name. The .bsd extension is optional.</param>
+		/// <param name="force">(Optional) Overwrite existing .bsd file</param>
+		/// <param name="bsd">(Optional) Specify an updated generic BSDL file.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>name of the output file</returns>
-		public void write_bsdl(string file, bool? force = null, string bsd = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_bsdl(string file, bool? force = null, string bsd = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_bsdl [-force] [-bsd <arg>] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_bsdl")
-					.Flag("force", force)
-					.OptionalNamedString("bsd", bsd)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_bsdl(file, force, bsd, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create file(s) for programming flash memory.
@@ -1930,70 +1251,27 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1796
 		/// </summary>
-		/// <param name="format">
-		/// Required
-		/// Format of the file to generate
-		/// </param>
-		/// <param name="size">
-		/// Required
-		/// Size of memory that is being targeted in M Bytes (must be
-		/// power of 2).
-		/// </param>
-		/// <param name="file">
-		/// Required
-		/// The name of the file to generate
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file
-		/// </param>
-		/// <param name="@interface">
-		/// Optional
-		/// Interface used to program device. Default: SMAPx8
-		/// </param>
+		/// <param name="format">(Required) Format of the file to generate</param>
+		/// <param name="size">(Required) Size of memory that is being targeted in M Bytes (must be power of 2).</param>
+		/// <param name="file">(Required) The name of the file to generate</param>
+		/// <param name="force">(Optional) Overwrite existing file</param>
+		/// <param name="@interface">(Optional) Interface used to program device. Default: SMAPx8</param>
 		/// <param name="checksum">
-		/// Optional
+		/// (Optional)
 		/// Calculate a 32-bit checksum for each file. Memory will be
 		/// filed with value of 0xFF unless a different byte value is
 		/// specified. Default: 0xFF
 		/// </param>
-		/// <param name="disablebitswap">
-		/// Optional
-		/// Disable bit swapping in a byte for bitfiles.
-		/// </param>
-		/// <param name="loadbit">
-		/// Optional
-		/// Load bit files into memory from given address.
-		/// </param>
-		/// <param name="loaddata">
-		/// Optional
-		/// Load data into memory from given address.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void write_cfgmem(string format, string size, string file, bool? force = null, string @interface = null, bool? checksum = null, bool? disablebitswap = null, string loadbit = null, string loaddata = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="disablebitswap">(Optional) Disable bit swapping in a byte for bitfiles.</param>
+		/// <param name="loadbit">(Optional) Load bit files into memory from given address.</param>
+		/// <param name="loaddata">(Optional) Load data into memory from given address.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL write_cfgmem(string format, string size, string file, bool? force = null, string @interface = null, bool? checksum = null, bool? disablebitswap = null, string loadbit = null, string loaddata = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_cfgmem [-force] -format <arg> -size <arg> [-interface <arg>] [-checksum] [-disablebitswap] [-loadbit <arg>] [-loaddata <arg>] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_cfgmem")
-					.Flag("force", force)
-					.RequiredNamedString("format", format)
-					.RequiredNamedString("size", size)
-					.OptionalNamedString("interface", @interface)
-					.Flag("checksum", checksum)
-					.Flag("disablebitswap", disablebitswap)
-					.OptionalNamedString("loadbit", loadbit)
-					.OptionalNamedString("loaddata", loaddata)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_cfgmem(format, size, file, force, @interface, checksum, disablebitswap, loadbit, loaddata, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write a checkpoint of the current design
@@ -2019,62 +1297,32 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1800
 		/// </summary>
 		/// <param name="file">
-		/// Required
+		/// (Required)
 		/// Design checkpoint file Values: A filename with alphanumeric
 		/// characters and .dcp extension.
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing checkpoint file
-		/// </param>
-		/// <param name="cell">
-		/// Optional
-		/// Write a checkpoint of this cell
-		/// </param>
+		/// <param name="force">(Optional) Overwrite existing checkpoint file</param>
+		/// <param name="cell">(Optional) Write a checkpoint of this cell</param>
 		/// <param name="logic_function_stripped">
-		/// Optional
+		/// (Optional)
 		/// Convert INIT strings on LUTs & RAMBs to fixed values. Note
 		/// that the resulting netlist will be nonfunctional.
 		/// </param>
-		/// <param name="encrypt">
-		/// Optional
-		/// Encrypt unprotected modules using IEEE 1735 IP security
-		/// version 2
-		/// </param>
+		/// <param name="encrypt">(Optional) Encrypt unprotected modules using IEEE 1735 IP security version 2</param>
 		/// <param name="key">
-		/// Optional
+		/// (Optional)
 		/// Key file to be used with -encrypt option; Otherwise, use
 		/// Xilinx public key
 		/// </param>
-		/// <param name="incremental_synth">
-		/// Optional
-		/// export synthesis archive file to be used for re-using
-		/// implementation.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="incremental_synth">(Optional) export synthesis archive file to be used for re-using implementation.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The name of the checkpoint file</returns>
-		public void write_checkpoint(string file, bool? force = null, string cell = null, bool? logic_function_stripped = null, bool? encrypt = null, string key = null, bool? incremental_synth = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_checkpoint(string file, bool? force = null, string cell = null, bool? logic_function_stripped = null, bool? encrypt = null, string key = null, bool? incremental_synth = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_checkpoint [-force] [-cell <arg>] [-logic_function_stripped] [-encrypt] [-key <arg>] [-incremental_synth] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_checkpoint")
-					.Flag("force", force)
-					.OptionalNamedString("cell", cell)
-					.Flag("logic_function_stripped", logic_function_stripped)
-					.Flag("encrypt", encrypt)
-					.OptionalNamedString("key", key)
-					.Flag("incremental_synth", incremental_synth)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_checkpoint(file, force, cell, logic_function_stripped, encrypt, key, incremental_synth, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Export package pin and port placement information
@@ -2091,33 +1339,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1803
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Pin Planning CSV file
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="file">(Required) Pin Planning CSV file</param>
+		/// <param name="force">(Optional) Overwrite existing file</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>name of the output file</returns>
-		public void write_csv(string file, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_csv(string file, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_csv [-force] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_csv")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_csv(file, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write debug probes to a file
@@ -2139,43 +1370,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1805
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Debug probes file name (default extension is .ltx)
-		/// </param>
-		/// <param name="cell">
-		/// Optional
-		/// Hierarchical name of the Reconfigurable Partition Cell
-		/// </param>
-		/// <param name="no_partial_ltxfile">
-		/// Optional
-		/// Do not generate partial LTX files
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="file">(Required) Debug probes file name (default extension is .ltx)</param>
+		/// <param name="cell">(Optional) Hierarchical name of the Reconfigurable Partition Cell</param>
+		/// <param name="no_partial_ltxfile">(Optional) Do not generate partial LTX files</param>
+		/// <param name="force">(Optional) Overwrite existing file</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>name of the output file</returns>
-		public void write_debug_probes(string file, string cell = null, bool? no_partial_ltxfile = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_debug_probes(string file, string cell = null, bool? no_partial_ltxfile = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_debug_probes [-cell <arg>] [-no_partial_ltxfile] [-force] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_debug_probes")
-					.OptionalNamedString("cell", cell)
-					.Flag("no_partial_ltxfile", no_partial_ltxfile)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_debug_probes(file, cell, no_partial_ltxfile, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Export the current netlist as an EDIF file
@@ -2198,55 +1404,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1807
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Output file (directory with -pblocks or -cell)
-		/// </param>
-		/// <param name="pblocks">
-		/// Optional
-		/// Export netlist for these pblocks (not valid with -cell)
-		/// </param>
-		/// <param name="cell">
-		/// Optional
-		/// Export netlist for this cell (not valid with -pblocks)
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file
-		/// </param>
+		/// <param name="file">(Required) Output file (directory with -pblocks or -cell)</param>
+		/// <param name="pblocks">(Optional) Export netlist for these pblocks (not valid with -cell)</param>
+		/// <param name="cell">(Optional) Export netlist for this cell (not valid with -pblocks)</param>
+		/// <param name="force">(Optional) Overwrite existing file</param>
 		/// <param name="security_mode">
-		/// Optional
+		/// (Optional)
 		/// If set to 'all', and some of design needs encryption then
 		/// whole of design will be written to a single encrypted file
 		/// Default: multifile
 		/// </param>
-		/// <param name="logic_function_stripped">
-		/// Optional
-		/// Convert INIT strings on LUTs & RAMBs to fixed values
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="logic_function_stripped">(Optional) Convert INIT strings on LUTs & RAMBs to fixed values</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>the name of the output file or directory</returns>
-		public void write_edif(string file, string pblocks = null, string cell = null, bool? force = null, string security_mode = null, bool? logic_function_stripped = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_edif(string file, string pblocks = null, string cell = null, bool? force = null, string security_mode = null, bool? logic_function_stripped = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_edif [-pblocks <args>] [-cell <arg>] [-force] [-security_mode <arg>] [-logic_function_stripped] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_edif")
-					.OptionalNamedString("pblocks", pblocks)
-					.OptionalNamedString("cell", cell)
-					.Flag("force", force)
-					.OptionalNamedString("security_mode", security_mode)
-					.Flag("logic_function_stripped", logic_function_stripped)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_edif(file, pblocks, cell, force, security_mode, logic_function_stripped, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write the Xilinx Shell Archive for the current design
@@ -2270,54 +1446,23 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1813
 		/// </summary>
 		/// <param name="file">
-		/// Required
+		/// (Required)
 		/// Device Support Archive file Values: A filename with
 		/// alphanumeric characters and .xsa extension.
 		/// </param>
-		/// <param name="@fixed">
-		/// Optional
-		/// Write fixed Shell.
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing Xilinx Shell Archive file
-		/// </param>
-		/// <param name="include_bit">
-		/// Optional
-		/// Include bit file(s) in the Shell.
-		/// </param>
-		/// <param name="include_emulation">
-		/// Optional
-		/// Generate and include hardware emulation support in the
-		/// Shell.
-		/// </param>
-		/// <param name="minimal">
-		/// Optional
-		/// Add only minimal files in the Shell.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="@fixed">(Optional) Write fixed Shell.</param>
+		/// <param name="force">(Optional) Overwrite existing Xilinx Shell Archive file</param>
+		/// <param name="include_bit">(Optional) Include bit file(s) in the Shell.</param>
+		/// <param name="include_emulation">(Optional) Generate and include hardware emulation support in the Shell.</param>
+		/// <param name="minimal">(Optional) Add only minimal files in the Shell.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The name of the Shell file</returns>
-		public void write_hw_platform(string file, bool? @fixed = null, bool? force = null, bool? include_bit = null, bool? include_emulation = null, bool? minimal = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_hw_platform(string file, bool? @fixed = null, bool? force = null, bool? include_bit = null, bool? include_emulation = null, bool? minimal = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_hw_platform [-fixed] [-force] [-include_bit] [-include_emulation] [-minimal] [-quiet] [-verbose] [<file>]
-			_tcl.Add(
-				new SimpleTCLCommand("write_hw_platform")
-					.Flag("fixed", @fixed)
-					.Flag("force", force)
-					.Flag("include_bit", include_bit)
-					.Flag("include_emulation", include_emulation)
-					.Flag("minimal", minimal)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_hw_platform(file, @fixed, force, include_bit, include_emulation, minimal, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write the unified JSON metadata file for the current design
@@ -2334,28 +1479,18 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1815
 		/// </summary>
 		/// <param name="file">
-		/// Required
+		/// (Required)
 		/// Unified JSON metadata file Values: A filename with
 		/// alphanumeric characters and .json extension.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The name of the unified JSON metadata file</returns>
-		public void write_hw_platform_metadata(string file, bool? quiet = null, bool? verbose = null)
+		public TTCL write_hw_platform_metadata(string file, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_hw_platform_metadata [-quiet] [-verbose] [<file>]
-			_tcl.Add(
-				new SimpleTCLCommand("write_hw_platform_metadata")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_hw_platform_metadata(file, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write IBIS models for current floorplan
@@ -2375,22 +1510,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1826
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Output file name. The .ibs extension is optional.
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing .ibs file
-		/// </param>
+		/// <param name="file">(Required) Output file name. The .ibs extension is optional.</param>
+		/// <param name="force">(Optional) Overwrite existing .ibs file</param>
 		/// <param name="allmodels">
-		/// Optional
+		/// (Optional)
 		/// Include all available buffer models for this architecture. By
 		/// default, only buffer models used by the floorplan are
 		/// included.
 		/// </param>
 		/// <param name="nopin">
-		/// Optional
+		/// (Optional)
 		/// Disable inclusion of the per-pin modeling of the package
 		/// (path from the die pad to the package pin). Package is
 		/// reduced to a single RLC transmission line model applied to
@@ -2400,12 +1529,12 @@ namespace Quokka.TCL.Vivado
 		/// section if this data is available.
 		/// </param>
 		/// <param name="no_pin_mapping">
-		/// Optional
+		/// (Optional)
 		/// Do not output the [Pin Mapping] section for ultrascale,
 		/// ultrascale plus, and versal.
 		/// </param>
 		/// <param name="truncate">
-		/// Optional
+		/// (Optional)
 		/// Maximum length for a signal name in the output file. Names
 		/// longer than this will be truncated. This property can be set
 		/// to truncate signal name length to 20, 40, or 0 (unlimited).
@@ -2414,44 +1543,20 @@ namespace Quokka.TCL.Vivado
 		/// 40
 		/// </param>
 		/// <param name="component_name">
-		/// Optional
+		/// (Optional)
 		/// Specify a new component name for use in multiple FPGA
 		/// designs to replace the default.
 		/// </param>
-		/// <param name="ibs">
-		/// Optional
-		/// Specify an updated generic IBIS models file.
-		/// </param>
-		/// <param name="pkg">
-		/// Optional
-		/// Specify an updated per pin parasitic package data file.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="ibs">(Optional) Specify an updated generic IBIS models file.</param>
+		/// <param name="pkg">(Optional) Specify an updated per pin parasitic package data file.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>name of the output file</returns>
-		public void write_ibis(string file, bool? force = null, bool? allmodels = null, bool? nopin = null, bool? no_pin_mapping = null, string truncate = null, string component_name = null, string ibs = null, string pkg = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_ibis(string file, bool? force = null, bool? allmodels = null, bool? nopin = null, bool? no_pin_mapping = null, string truncate = null, string component_name = null, string ibs = null, string pkg = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_ibis [-force] [-allmodels] [-nopin] [-no_pin_mapping] [-truncate <arg>] [-component_name <arg>] [-ibs <arg>] [-pkg <arg>] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_ibis")
-					.Flag("force", force)
-					.Flag("allmodels", allmodels)
-					.Flag("nopin", nopin)
-					.Flag("no_pin_mapping", no_pin_mapping)
-					.OptionalNamedString("truncate", truncate)
-					.OptionalNamedString("component_name", component_name)
-					.OptionalNamedString("ibs", ibs)
-					.OptionalNamedString("pkg", pkg)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_ibis(file, force, allmodels, nopin, no_pin_mapping, truncate, component_name, ibs, pkg, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write file with inferred xdc timing constraints
@@ -2488,93 +1593,42 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1829
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Filename to write constraints into
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file.
-		/// </param>
+		/// <param name="file">(Required) Filename to write constraints into</param>
+		/// <param name="force">(Optional) Overwrite existing file.</param>
 		/// <param name="all">
-		/// Optional
+		/// (Optional)
 		/// Generate all constraints except missing clocks which are
 		/// generated with the -clocks option
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the constraints to file, don't overwrite the
-		/// constraints file
-		/// </param>
-		/// <param name="async_clocks">
-		/// Optional
-		/// Find asynchronous clock groups
-		/// </param>
+		/// <param name="append">(Optional) Append the constraints to file, don't overwrite the constraints file</param>
+		/// <param name="async_clocks">(Optional) Find asynchronous clock groups</param>
 		/// <param name="all_async_reg">
-		/// Optional
+		/// (Optional)
 		/// Find the missing ASYNC_REG property for safe and unsafe
 		/// Clock Domain Crossing
 		/// </param>
 		/// <param name="clock_groups">
-		/// Optional
+		/// (Optional)
 		/// Find asynchronous and exclusive clock groups, equivalent to
 		/// options -async_clocks -excl_clocks
 		/// </param>
-		/// <param name="clocks">
-		/// Optional
-		/// Find missing clock definitions
-		/// </param>
-		/// <param name="excl_clocks">
-		/// Optional
-		/// Find logically and physically exclusive clock groups
-		/// </param>
-		/// <param name="exceptions">
-		/// Optional
-		/// Find missing exceptions
-		/// </param>
-		/// <param name="io_constraints">
-		/// Optional
-		/// Find missing input and output delays
-		/// </param>
-		/// <param name="merge_existing_constraints">
-		/// Optional
-		/// Add existing user defined constraints to the generated
-		/// constraints
-		/// </param>
+		/// <param name="clocks">(Optional) Find missing clock definitions</param>
+		/// <param name="excl_clocks">(Optional) Find logically and physically exclusive clock groups</param>
+		/// <param name="exceptions">(Optional) Find missing exceptions</param>
+		/// <param name="io_constraints">(Optional) Find missing input and output delays</param>
+		/// <param name="merge_existing_constraints">(Optional) Add existing user defined constraints to the generated constraints</param>
 		/// <param name="name">
-		/// Optional
+		/// (Optional)
 		/// Start constraints wizard in a GUI panel with this name. Do
 		/// other command options can be combined with -name.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void write_inferred_xdc(string file, bool? force = null, bool? all = null, bool? append = null, bool? async_clocks = null, bool? all_async_reg = null, bool? clock_groups = null, bool? clocks = null, bool? excl_clocks = null, bool? exceptions = null, bool? io_constraints = null, bool? merge_existing_constraints = null, string name = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL write_inferred_xdc(string file, bool? force = null, bool? all = null, bool? append = null, bool? async_clocks = null, bool? all_async_reg = null, bool? clock_groups = null, bool? clocks = null, bool? excl_clocks = null, bool? exceptions = null, bool? io_constraints = null, bool? merge_existing_constraints = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_inferred_xdc [-force] [-all] [-append] [-async_clocks] [-all_async_reg] [-clock_groups] [-clocks] [-excl_clocks] [-exceptions] [-io_constraints] [-merge_existing_constraints] [-name <arg>] [-quiet] [-verbose] [<file>]
-			_tcl.Add(
-				new SimpleTCLCommand("write_inferred_xdc")
-					.Flag("force", force)
-					.Flag("all", all)
-					.Flag("append", append)
-					.Flag("async_clocks", async_clocks)
-					.Flag("all_async_reg", all_async_reg)
-					.Flag("clock_groups", clock_groups)
-					.Flag("clocks", clocks)
-					.Flag("excl_clocks", excl_clocks)
-					.Flag("exceptions", exceptions)
-					.Flag("io_constraints", io_constraints)
-					.Flag("merge_existing_constraints", merge_existing_constraints)
-					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_inferred_xdc(file, force, all, append, async_clocks, all_async_reg, clock_groups, clocks, excl_clocks, exceptions, io_constraints, merge_existing_constraints, name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write the Memory Map Info of the design to a .mmi file.
@@ -2599,33 +1653,19 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1836
 		/// </summary>
 		/// <param name="file">
-		/// Required
+		/// (Required)
 		/// Design mem info file Values: A filename with alphanumeric
 		/// characters and .mmi extension.
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing mem info xml file
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="force">(Optional) Overwrite existing mem info xml file</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The name of the .mmi file</returns>
-		public void write_mem_info(string file, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_mem_info(string file, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_mem_info [-force] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_mem_info")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_mem_info(file, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write QoR Suggestions to the given file
@@ -2662,50 +1702,30 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1845
 		/// </summary>
 		/// <param name="file">
-		/// Required
+		/// (Required)
 		/// QoR suggestions file Values: A filename with alphanumeric
 		/// characters and .rqs extension.
 		/// </param>
 		/// <param name="strategy_dir">
-		/// Optional
+		/// (Optional)
 		/// Directory to create Strategy RQS & TCL files Values: If
 		/// passed a directory path, for each strategy suggested one set
 		/// of RQS and TCL files will be generated.
 		/// </param>
 		/// <param name="tcl_output_dir">
-		/// Optional
+		/// (Optional)
 		/// Directory to create TCL files Values: TCL files for the QoR
 		/// suggestions will be generated in the provided directory.
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing suggestions file
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// List of QoR suggestion objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void write_qor_suggestions(string file, string strategy_dir = null, string tcl_output_dir = null, bool? force = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="force">(Optional) Overwrite existing suggestions file</param>
+		/// <param name="of_objects">(Optional) List of QoR suggestion objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL write_qor_suggestions(string file, string strategy_dir = null, string tcl_output_dir = null, bool? force = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_qor_suggestions [-strategy_dir <arg>] [-tcl_output_dir <arg>] [-force] [-of_objects <args>] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_qor_suggestions")
-					.OptionalNamedString("strategy_dir", strategy_dir)
-					.OptionalNamedString("tcl_output_dir", tcl_output_dir)
-					.Flag("force", force)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_qor_suggestions(file, strategy_dir, tcl_output_dir, force, of_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Export schematic
@@ -2721,54 +1741,24 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1848
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Output file
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file
-		/// </param>
+		/// <param name="file">(Required) Output file</param>
+		/// <param name="force">(Optional) Overwrite existing file</param>
 		/// <param name="format">
-		/// Optional
+		/// (Optional)
 		/// Values: native or pdf. read_schematic can be used to view
 		/// native format. Default: native
 		/// </param>
-		/// <param name="orientation">
-		/// Optional
-		/// Values: landscape or portrait
-		/// </param>
-		/// <param name="scope">
-		/// Optional
-		/// Values: current_page, visible or all Default: current_page
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Schematic window title
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="orientation">(Optional) Values: landscape or portrait</param>
+		/// <param name="scope">(Optional) Values: current_page, visible or all Default: current_page</param>
+		/// <param name="name">(Optional) Schematic window title</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>name of the output file</returns>
-		public void write_schematic(string file, bool? force = null, string format = null, string orientation = null, string scope = null, string name = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_schematic(string file, bool? force = null, string format = null, string orientation = null, string scope = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_schematic [-force] [-format <arg>] [-orientation <arg>] [-scope <arg>] [-name <arg>] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_schematic")
-					.Flag("force", force)
-					.OptionalNamedString("format", format)
-					.OptionalNamedString("orientation", orientation)
-					.OptionalNamedString("scope", scope)
-					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_schematic(file, force, format, orientation, scope, name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// write_sdf command generates flat sdf delay files for event simulation
@@ -2785,61 +1775,32 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1851
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// File name
-		/// </param>
+		/// <param name="file">(Required) File name</param>
 		/// <param name="process_corner">
-		/// Optional
+		/// (Optional)
 		/// Specify process corner for which SDF delays are required;
 		/// Values: slow, fast Default: slow
 		/// </param>
-		/// <param name="cell">
-		/// Optional
-		/// Root of the design to write, e.g. des.subblk.cpu Default:
-		/// whole design
-		/// </param>
+		/// <param name="cell">(Optional) Root of the design to write, e.g. des.subblk.cpu Default: whole design</param>
 		/// <param name="rename_top">
-		/// Optional
+		/// (Optional)
 		/// Replace name of top module with custom name e.g. netlist
 		/// Default: new top module name
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing SDF file
-		/// </param>
+		/// <param name="force">(Optional) Overwrite existing SDF file</param>
 		/// <param name="mode">
-		/// Optional
+		/// (Optional)
 		/// Specify sta (Static Timing Analysis) or timesim (Timing
 		/// Simulation) mode for SDF Default: timesim
 		/// </param>
-		/// <param name="gzip">
-		/// Optional
-		/// write gzipped SDF
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void write_sdf(string file, string process_corner = null, string cell = null, string rename_top = null, bool? force = null, string mode = null, bool? gzip = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="gzip">(Optional) write gzipped SDF</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL write_sdf(string file, string process_corner = null, string cell = null, string rename_top = null, bool? force = null, string mode = null, bool? gzip = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_sdf [-process_corner <arg>] [-cell <arg>] [-rename_top <arg>] [-force] [-mode <arg>] [-gzip] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_sdf")
-					.OptionalNamedString("process_corner", process_corner)
-					.OptionalNamedString("cell", cell)
-					.OptionalNamedString("rename_top", rename_top)
-					.Flag("force", force)
-					.OptionalNamedString("mode", mode)
-					.Flag("gzip", gzip)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_sdf(file, process_corner, cell, rename_top, force, mode, gzip, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Export the current netlist in Verilog format
@@ -2868,95 +1829,51 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1853
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Which file to write
-		/// </param>
-		/// <param name="cell">
-		/// Optional
-		/// Root of the design to write, e.g. des.subblk.cpu Default:
-		/// whole design
-		/// </param>
+		/// <param name="file">(Required) Which file to write</param>
+		/// <param name="cell">(Optional) Root of the design to write, e.g. des.subblk.cpu Default: whole design</param>
 		/// <param name="mode">
-		/// Optional
+		/// (Optional)
 		/// Values: design, pin_planning, synth_stub, sta, funcsim,
 		/// timesim Default: design
 		/// </param>
-		/// <param name="lib">
-		/// Optional
-		/// Write each library into a separate file
-		/// </param>
-		/// <param name="port_diff_buffers">
-		/// Optional
-		/// Output differential buffers when writing in -port mode
-		/// </param>
+		/// <param name="lib">(Optional) Write each library into a separate file</param>
+		/// <param name="port_diff_buffers">(Optional) Output differential buffers when writing in -port mode</param>
 		/// <param name="write_all_overrides">
-		/// Optional
+		/// (Optional)
 		/// Write parameter overrides on Xilinx primitives even if the
 		/// override value is the same as the default value
 		/// </param>
 		/// <param name="keep_vcc_gnd">
-		/// Optional
+		/// (Optional)
 		/// Don't replace VCC/GND instances by literal constants on
 		/// load terminals. For simulation modes only.
 		/// </param>
 		/// <param name="rename_top">
-		/// Optional
+		/// (Optional)
 		/// Replace top module name with custom name e.g. netlist
 		/// Default: new top module name
 		/// </param>
-		/// <param name="sdf_anno">
-		/// Optional
-		/// Specify if sdf_annotate system task statement is generated
-		/// </param>
-		/// <param name="sdf_file">
-		/// Optional
-		/// Full path to sdf file location Default: <file>.sdf
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file
-		/// </param>
+		/// <param name="sdf_anno">(Optional) Specify if sdf_annotate system task statement is generated</param>
+		/// <param name="sdf_file">(Optional) Full path to sdf file location Default: <file>.sdf</param>
+		/// <param name="force">(Optional) Overwrite existing file</param>
 		/// <param name="include_xilinx_libs">
-		/// Optional
+		/// (Optional)
 		/// Include simulation models directly in netlist instead of
 		/// linking to library
 		/// </param>
 		/// <param name="logic_function_stripped">
-		/// Optional
+		/// (Optional)
 		/// Convert INIT strings on LUTs & RAMBs to fixed values.
 		/// Resulting netlist will not behave correctly.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>the name of the output file or directory</returns>
-		public void write_verilog(string file, string cell = null, string mode = null, bool? lib = null, bool? port_diff_buffers = null, bool? write_all_overrides = null, bool? keep_vcc_gnd = null, string rename_top = null, string sdf_anno = null, string sdf_file = null, bool? force = null, bool? include_xilinx_libs = null, bool? logic_function_stripped = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_verilog(string file, string cell = null, string mode = null, bool? lib = null, bool? port_diff_buffers = null, bool? write_all_overrides = null, bool? keep_vcc_gnd = null, string rename_top = null, string sdf_anno = null, string sdf_file = null, bool? force = null, bool? include_xilinx_libs = null, bool? logic_function_stripped = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_verilog [-cell <arg>] [-mode <arg>] [-lib] [-port_diff_buffers] [-write_all_overrides] [-keep_vcc_gnd] [-rename_top <arg>] [-sdf_anno <arg>] [-sdf_file <arg>] [-force] [-include_xilinx_libs] [-logic_function_stripped] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_verilog")
-					.OptionalNamedString("cell", cell)
-					.OptionalNamedString("mode", mode)
-					.Flag("lib", lib)
-					.Flag("port_diff_buffers", port_diff_buffers)
-					.Flag("write_all_overrides", write_all_overrides)
-					.Flag("keep_vcc_gnd", keep_vcc_gnd)
-					.OptionalNamedString("rename_top", rename_top)
-					.OptionalNamedString("sdf_anno", sdf_anno)
-					.OptionalNamedString("sdf_file", sdf_file)
-					.Flag("force", force)
-					.Flag("include_xilinx_libs", include_xilinx_libs)
-					.Flag("logic_function_stripped", logic_function_stripped)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_verilog(file, cell, mode, lib, port_diff_buffers, write_all_overrides, keep_vcc_gnd, rename_top, sdf_anno, sdf_file, force, include_xilinx_libs, logic_function_stripped, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Export the current netlist in VHDL format
@@ -2979,85 +1896,49 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1857
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Which file to write
-		/// </param>
-		/// <param name="cell">
-		/// Optional
-		/// Root of the design to write, e.g. des.subblk.cpu Default:
-		/// whole design
-		/// </param>
+		/// <param name="file">(Required) Which file to write</param>
+		/// <param name="cell">(Optional) Root of the design to write, e.g. des.subblk.cpu Default: whole design</param>
 		/// <param name="mode">
-		/// Optional
+		/// (Optional)
 		/// Output mode. Valid values: funcsim, pin_planning,
 		/// synth_stub Default: funcsim
 		/// </param>
-		/// <param name="lib">
-		/// Optional
-		/// Write each library into a separate file
-		/// </param>
-		/// <param name="port_diff_buffers">
-		/// Optional
-		/// Output differential buffers when writing in -port mode
-		/// </param>
+		/// <param name="lib">(Optional) Write each library into a separate file</param>
+		/// <param name="port_diff_buffers">(Optional) Output differential buffers when writing in -port mode</param>
 		/// <param name="write_all_overrides">
-		/// Optional
+		/// (Optional)
 		/// Write parameter overrides on Xilinx primitives even if the
 		/// same as the default value
 		/// </param>
 		/// <param name="keep_vcc_gnd">
-		/// Optional
+		/// (Optional)
 		/// Don't replace VCC/GND instances by literal constants on
 		/// load terminals. For simulation modes only.
 		/// </param>
 		/// <param name="rename_top">
-		/// Optional
+		/// (Optional)
 		/// Replace top module name with custom name e.g. netlist
 		/// Default: new top module name
 		/// </param>
 		/// <param name="arch_only">
-		/// Optional
+		/// (Optional)
 		/// Write only the architecture, not the entity declaration for the
 		/// top cell
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file
-		/// </param>
+		/// <param name="force">(Optional) Overwrite existing file</param>
 		/// <param name="include_xilinx_libs">
-		/// Optional
+		/// (Optional)
 		/// Include simulation models directly in netlist instead of
 		/// linking to library
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>the name of the output file or directory</returns>
-		public void write_vhdl(string file, string cell = null, string mode = null, bool? lib = null, bool? port_diff_buffers = null, bool? write_all_overrides = null, bool? keep_vcc_gnd = null, string rename_top = null, bool? arch_only = null, bool? force = null, bool? include_xilinx_libs = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_vhdl(string file, string cell = null, string mode = null, bool? lib = null, bool? port_diff_buffers = null, bool? write_all_overrides = null, bool? keep_vcc_gnd = null, string rename_top = null, bool? arch_only = null, bool? force = null, bool? include_xilinx_libs = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_vhdl [-cell <arg>] [-mode <arg>] [-lib] [-port_diff_buffers] [-write_all_overrides] [-keep_vcc_gnd] [-rename_top <arg>] [-arch_only] [-force] [-include_xilinx_libs] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_vhdl")
-					.OptionalNamedString("cell", cell)
-					.OptionalNamedString("mode", mode)
-					.Flag("lib", lib)
-					.Flag("port_diff_buffers", port_diff_buffers)
-					.Flag("write_all_overrides", write_all_overrides)
-					.Flag("keep_vcc_gnd", keep_vcc_gnd)
-					.OptionalNamedString("rename_top", rename_top)
-					.Flag("arch_only", arch_only)
-					.Flag("force", force)
-					.Flag("include_xilinx_libs", include_xilinx_libs)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_vhdl(file, cell, mode, lib, port_diff_buffers, write_all_overrides, keep_vcc_gnd, rename_top, arch_only, force, include_xilinx_libs, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Writes constraints to a Xilinx Design Constraints (XDC) file. The default file extension for a XDC
@@ -3093,89 +1974,47 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1862
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Output constraints to the specified XDC file.
-		/// </param>
+		/// <param name="file">(Required) Output constraints to the specified XDC file.</param>
 		/// <param name="no_fixed_only">
-		/// Optional
+		/// (Optional)
 		/// Export fixed and non-fixed placement (by default only fixed
 		/// placement is exported)
 		/// </param>
 		/// <param name="constraints">
-		/// Optional
+		/// (Optional)
 		/// Include constraints that are flagged invalid Values: valid,
 		/// invalid, all Default: valid
 		/// </param>
-		/// <param name="cell">
-		/// Optional
-		/// Hierarchical cell for which constraints are exported.
-		/// </param>
-		/// <param name="sdc">
-		/// Optional
-		/// Export all timing constriants in SDC compatible format.
-		/// </param>
+		/// <param name="cell">(Optional) Hierarchical cell for which constraints are exported.</param>
+		/// <param name="sdc">(Optional) Export all timing constriants in SDC compatible format.</param>
 		/// <param name="no_tool_comments">
-		/// Optional
+		/// (Optional)
 		/// Don't write verbose tool generated comments to the xdc
 		/// when translating from ucf.
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file.
-		/// </param>
-		/// <param name="exclude_timing">
-		/// Optional
-		/// Don't export timing constraints.
-		/// </param>
-		/// <param name="exclude_physical">
-		/// Optional
-		/// Don't export physical constraints.
-		/// </param>
-		/// <param name="add_netlist_placement">
-		/// Optional
-		/// Export netlist placement constraints.
-		/// </param>
+		/// <param name="force">(Optional) Overwrite existing file.</param>
+		/// <param name="exclude_timing">(Optional) Don't export timing constraints.</param>
+		/// <param name="exclude_physical">(Optional) Don't export physical constraints.</param>
+		/// <param name="add_netlist_placement">(Optional) Export netlist placement constraints.</param>
 		/// <param name="logic_function_stripped">
-		/// Optional
+		/// (Optional)
 		/// Write disable_timing constraints which are associated with
 		/// having previously run write_edif with its -
 		/// logic_function_stripped option.
 		/// </param>
 		/// <param name="type">
-		/// Optional
+		/// (Optional)
 		/// Types of constraint to export. Values: timing, io, misc, waiver
 		/// and physical. If not specified, all constraints will be
 		/// exported.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void write_xdc(string file, bool? no_fixed_only = null, string constraints = null, string cell = null, bool? sdc = null, bool? no_tool_comments = null, bool? force = null, bool? exclude_timing = null, bool? exclude_physical = null, bool? add_netlist_placement = null, bool? logic_function_stripped = null, string type = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL write_xdc(string file, bool? no_fixed_only = null, string constraints = null, string cell = null, bool? sdc = null, bool? no_tool_comments = null, bool? force = null, bool? exclude_timing = null, bool? exclude_physical = null, bool? add_netlist_placement = null, bool? logic_function_stripped = null, string type = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_xdc [-no_fixed_only] [-constraints <arg>] [-cell <arg>] [-sdc] [-no_tool_comments] [-force] [-exclude_timing] [-exclude_physical] [-add_netlist_placement] [-logic_function_stripped] [-type <args>] [-quiet] [-verbose] [<file>]
-			_tcl.Add(
-				new SimpleTCLCommand("write_xdc")
-					.Flag("no_fixed_only", no_fixed_only)
-					.OptionalNamedString("constraints", constraints)
-					.OptionalNamedString("cell", cell)
-					.Flag("sdc", sdc)
-					.Flag("no_tool_comments", no_tool_comments)
-					.Flag("force", force)
-					.Flag("exclude_timing", exclude_timing)
-					.Flag("exclude_physical", exclude_physical)
-					.Flag("add_netlist_placement", add_netlist_placement)
-					.Flag("logic_function_stripped", logic_function_stripped)
-					.OptionalNamedString("type", type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_xdc(file, no_fixed_only, constraints, cell, sdc, no_tool_comments, force, exclude_timing, exclude_physical, add_netlist_placement, logic_function_stripped, type, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

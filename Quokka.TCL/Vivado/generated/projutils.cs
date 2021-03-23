@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class projutilsCommands
+	public partial class projutilsCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public projutilsCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public projutilsCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// (User-written application) Convert all provided NGC files to a supported format
@@ -30,52 +32,35 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 208
 		/// </summary>
-		/// <param name="files">
-		/// Required
-		/// A list of NGC files to convert
-		/// </param>
+		/// <param name="files">(Required) A list of NGC files to convert</param>
 		/// <param name="output_dir">
-		/// Optional
+		/// (Optional)
 		/// Directory to place all output, else the output is placed at
 		/// location of NGC file Default: Script output directory path
 		/// </param>
 		/// <param name="format">
-		/// Optional
+		/// (Optional)
 		/// Accepts 'Verilog' or 'EDIF' (Default: EDIF), specifies the
 		/// desired output format Default: EDIF
 		/// </param>
 		/// <param name="add_to_project">
-		/// Optional
+		/// (Optional)
 		/// Adds the output files to the current project, if no project is
 		/// open, then this option does nothing
 		/// </param>
 		/// <param name="force">
-		/// Optional
+		/// (Optional)
 		/// Force overwriting of files that already exist on disk, replaces
 		/// files in project if add_to_project switch was specified
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>None</returns>
-		public void convert_ngc(string files, string output_dir = null, string format = null, bool? add_to_project = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL convert_ngc(string files, string output_dir = null, string format = null, bool? add_to_project = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: convert_ngc [-output_dir <arg>] [-format <arg>] [-add_to_project] [-force] [-quiet] [-verbose] <files>
-			_tcl.Add(
-				new SimpleTCLCommand("convert_ngc")
-					.OptionalNamedString("output_dir", output_dir)
-					.OptionalNamedString("format", format)
-					.Flag("add_to_project", add_to_project)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.convert_ngc(files, output_dir, format, add_to_project, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// (User-written application) Copy a run from an already existing run, source-run, to a new copy of
@@ -94,40 +79,22 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 215
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Specify the name of the new run
-		/// </param>
-		/// <param name="run">
-		/// Required
-		/// The run to be copied, accepts name or run object
-		/// </param>
+		/// <param name="name">(Required) Specify the name of the new run</param>
+		/// <param name="run">(Required) The run to be copied, accepts name or run object</param>
 		/// <param name="parent_run">
-		/// Optional
+		/// (Optional)
 		/// Specify the synthesis run for the new implementation run,
 		/// accepts name or run object (Default: same as source run)
 		/// Default: None
 		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Print detailed information as the copy progresses
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
+		/// <param name="verbose">(Optional) Print detailed information as the copy progresses</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <returns>The new run object</returns>
-		public void copy_run(string name, string run, string parent_run = null, bool? verbose = null, bool? quiet = null)
+		public TTCL copy_run(string name, string run, string parent_run = null, bool? verbose = null, bool? quiet = null)
 		{
 			// TCL Syntax: copy_run [-parent_run <arg>] [-verbose] -name <arg> [-quiet] <run>
-			_tcl.Add(
-				new SimpleTCLCommand("copy_run")
-					.OptionalNamedString("parent_run", parent_run)
-					.Flag("verbose", verbose)
-					.RequiredNamedString("name", name)
-					.Flag("quiet", quiet)
-					.RequiredString(run)
-			);
+			_tcl.Entry(_builder.copy_run(name, run, parent_run, verbose, quiet));
+			return _tcl;
 		}
 		/// <summary>
 		/// (User-written application) Creates and launches a new run based on the suggestions by
@@ -168,55 +135,38 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 346
 		/// </summary>
 		/// <param name="dir">
-		/// Required
+		/// (Required)
 		/// Specify the directory from where the xdc files and tcl files
 		/// need to fetched.
 		/// </param>
-		/// <param name="new_name">
-		/// Required
-		/// Specify the name of the new run
-		/// </param>
+		/// <param name="new_name">(Required) Specify the name of the new run</param>
 		/// <param name="synth_name">
-		/// Optional
+		/// (Optional)
 		/// Specify the name of the already existing synth run. This run
 		/// will be the parent run for the newly created impl run
 		/// Default: None
 		/// Name Description
 		/// </param>
 		/// <param name="opt_more_options">
-		/// Optional
+		/// (Optional)
 		/// optional argument. Specify the value for opt_design step's
 		/// more option property which will be set on newly created
 		/// run. Default: None
 		/// </param>
 		/// <param name="place_more_options">
-		/// Optional
+		/// (Optional)
 		/// Specify the value for place_design step's more option
 		/// property which will be set on newly created run. Default:
 		/// None
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>None</returns>
-		public void create_rqs_run(string dir, string new_name, string synth_name = null, string opt_more_options = null, string place_more_options = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_rqs_run(string dir, string new_name, string synth_name = null, string opt_more_options = null, string place_more_options = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_rqs_run -dir <arg> -new_name <arg> [-synth_name <arg>] [-opt_more_options <arg>] [-place_more_options <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("create_rqs_run")
-					.RequiredNamedString("dir", dir)
-					.RequiredNamedString("new_name", new_name)
-					.OptionalNamedString("synth_name", synth_name)
-					.OptionalNamedString("opt_more_options", opt_more_options)
-					.OptionalNamedString("place_more_options", place_more_options)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.create_rqs_run(dir, new_name, synth_name, opt_more_options, place_more_options, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// (User-written application) Create and write a single design checkpoint and stub files for a Block
@@ -236,38 +186,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 503
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// The Block Design file to write a synthesized checkpoint for
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing design checkpoint and stub files
-		/// </param>
-		/// <param name="keep">
-		/// Optional
-		/// Keep the temporary directory and project
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Print verbose messaging
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
+		/// <param name="file">(Required) The Block Design file to write a synthesized checkpoint for</param>
+		/// <param name="force">(Optional) Overwrite existing design checkpoint and stub files</param>
+		/// <param name="keep">(Optional) Keep the temporary directory and project</param>
+		/// <param name="verbose">(Optional) Print verbose messaging</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <returns>(none) An error will be thrown if the command is not successful</returns>
-		public void export_bd_synth(string file, bool? force = null, bool? keep = null, bool? verbose = null, bool? quiet = null)
+		public TTCL export_bd_synth(string file, bool? force = null, bool? keep = null, bool? verbose = null, bool? quiet = null)
 		{
 			// TCL Syntax: export_bd_synth [-force] [-keep] [-verbose] [-quiet] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("export_bd_synth")
-					.Flag("force", force)
-					.Flag("keep", keep)
-					.Flag("verbose", verbose)
-					.Flag("quiet", quiet)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.export_bd_synth(file, force, keep, verbose, quiet));
+			return _tcl;
 		}
 		/// <summary>
 		/// (User-written application) Export Tcl script for re-creating the current project
@@ -332,92 +261,47 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1840
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Name of the tcl script file to generate
-		/// </param>
+		/// <param name="file">(Required) Name of the tcl script file to generate</param>
 		/// <param name="paths_relative_to">
-		/// Optional
+		/// (Optional)
 		/// Override the reference directory variable for source file
 		/// relative paths Default: Script output directory path
 		/// </param>
 		/// <param name="origin_dir_override">
-		/// Optional
+		/// (Optional)
 		/// Set 'origin_dir' directory variable to the specified value
 		/// (Default is value specified with the -paths_relative_to switch)
 		/// Default: None
 		/// </param>
 		/// <param name="target_proj_dir">
-		/// Optional
+		/// (Optional)
 		/// Directory where the project needs to be restored Default:
 		/// Current project directory path
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing tcl script file
-		/// </param>
-		/// <param name="all_properties">
-		/// Optional
-		/// Write all properties (default & non-default) for the project
-		/// object(s)
-		/// </param>
+		/// <param name="force">(Optional) Overwrite existing tcl script file</param>
+		/// <param name="all_properties">(Optional) Write all properties (default & non-default) for the project object(s)</param>
 		/// <param name="no_copy_sources">
-		/// Optional
+		/// (Optional)
 		/// Do not import sources even if they were local in the original
 		/// project Default: 1
 		/// </param>
 		/// <param name="no_ip_version">
-		/// Optional
+		/// (Optional)
 		/// Flag to not include the IP version as part of the IP VLNV in
 		/// create_bd_cell commands. Default: 1
 		/// </param>
-		/// <param name="absolute_path">
-		/// Optional
-		/// Make all file paths absolute wrt the original project directory
-		/// </param>
-		/// <param name="dump_project_info">
-		/// Optional
-		/// Write object values
-		/// </param>
-		/// <param name="use_bd_files">
-		/// Optional
-		/// Use BD sources directly instead of writing out procs to
-		/// create them
-		/// </param>
-		/// <param name="@internal">
-		/// Optional
-		/// Print basic header information in the generated tcl script
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Execute the command quietly, returning no messages from
-		/// the command.
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="absolute_path">(Optional) Make all file paths absolute wrt the original project directory</param>
+		/// <param name="dump_project_info">(Optional) Write object values</param>
+		/// <param name="use_bd_files">(Optional) Use BD sources directly instead of writing out procs to create them</param>
+		/// <param name="@internal">(Optional) Print basic header information in the generated tcl script</param>
+		/// <param name="quiet">(Optional) Execute the command quietly, returning no messages from the command.</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>true (0) if success, false (1) otherwise</returns>
-		public void write_project_tcl(string file, string paths_relative_to = null, string origin_dir_override = null, string target_proj_dir = null, bool? force = null, bool? all_properties = null, bool? no_copy_sources = null, bool? no_ip_version = null, bool? absolute_path = null, bool? dump_project_info = null, bool? use_bd_files = null, bool? @internal = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_project_tcl(string file, string paths_relative_to = null, string origin_dir_override = null, string target_proj_dir = null, bool? force = null, bool? all_properties = null, bool? no_copy_sources = null, bool? no_ip_version = null, bool? absolute_path = null, bool? dump_project_info = null, bool? use_bd_files = null, bool? @internal = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_project_tcl [-paths_relative_to <arg>] [-origin_dir_override <arg>] [-target_proj_dir <arg>] [-force] [-all_properties] [-no_copy_sources] [-no_ip_version] [-absolute_path] [-dump_project_info] [-use_bd_files] [-internal] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_project_tcl")
-					.OptionalNamedString("paths_relative_to", paths_relative_to)
-					.OptionalNamedString("origin_dir_override", origin_dir_override)
-					.OptionalNamedString("target_proj_dir", target_proj_dir)
-					.Flag("force", force)
-					.Flag("all_properties", all_properties)
-					.Flag("no_copy_sources", no_copy_sources)
-					.Flag("no_ip_version", no_ip_version)
-					.Flag("absolute_path", absolute_path)
-					.Flag("dump_project_info", dump_project_info)
-					.Flag("use_bd_files", use_bd_files)
-					.Flag("internal", @internal)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_project_tcl(file, paths_relative_to, origin_dir_override, target_proj_dir, force, all_properties, no_copy_sources, no_ip_version, absolute_path, dump_project_info, use_bd_files, @internal, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

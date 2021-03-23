@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class FloorplanCommands
+	public partial class FloorplanCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public FloorplanCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public FloorplanCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Add cells to a Pblock
@@ -31,51 +33,31 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 33
 		/// </summary>
-		/// <param name="pblock">
-		/// Required
-		/// Pblock to add cells to
-		/// </param>
+		/// <param name="pblock">(Required) Pblock to add cells to</param>
 		/// <param name="top">
-		/// Optional
+		/// (Optional)
 		/// Add the top level instance; This option can't be used with -
 		/// cells, or -add_primitives options. You must specify either -
 		/// cells or -top option.
 		/// </param>
 		/// <param name="add_primitives">
-		/// Optional
+		/// (Optional)
 		/// Assign to the pblock only primitive cells from the specified
 		/// list of cells.
 		/// </param>
-		/// <param name="clear_locs">
-		/// Optional
-		/// Clear instance location constraints
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="clear_locs">(Optional) Clear instance location constraints</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="cells">
-		/// Optional
+		/// (Optional)
 		/// Cells to add. You can't use this option with -top option. You
 		/// must specify either -cells or -top option.
 		/// </param>
-		public void add_cells_to_pblock(string pblock, bool? top = null, bool? add_primitives = null, bool? clear_locs = null, bool? quiet = null, bool? verbose = null, string cells = null)
+		public TTCL add_cells_to_pblock(string pblock, bool? top = null, bool? add_primitives = null, bool? clear_locs = null, bool? quiet = null, bool? verbose = null, string cells = null)
 		{
 			// TCL Syntax: add_cells_to_pblock [-top] [-add_primitives] [-clear_locs] [-quiet] [-verbose] <pblock> [<cells>...]
-			_tcl.Add(
-				new SimpleTCLCommand("add_cells_to_pblock")
-					.Flag("top", top)
-					.Flag("add_primitives", add_primitives)
-					.Flag("clear_locs", clear_locs)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(pblock)
-					.OptionalString(cells)
-			);
+			_tcl.Entry(_builder.add_cells_to_pblock(pblock, top, add_primitives, clear_locs, quiet, verbose, cells));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new Pblock
@@ -105,28 +87,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 318
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of the new pblock
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Required) Name of the new pblock</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>new pblock object</returns>
-		public void create_pblock(string name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_pblock(string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_pblock [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_pblock")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.create_pblock(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Remove Pblock
@@ -142,32 +111,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 452
 		/// </summary>
-		/// <param name="pblocks">
-		/// Required
-		/// Pblocks to delete
-		/// </param>
-		/// <param name="hier">
-		/// Optional
-		/// Also delete all the children of Pblock
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_pblocks(string pblocks, bool? hier = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="pblocks">(Required) Pblocks to delete</param>
+		/// <param name="hier">(Optional) Also delete all the children of Pblock</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_pblocks(string pblocks, bool? hier = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_pblocks [-hier] [-quiet] [-verbose] <pblocks>...
-			_tcl.Add(
-				new SimpleTCLCommand("delete_pblocks")
-					.Flag("hier", hier)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(pblocks)
-			);
+			_tcl.Entry(_builder.delete_pblocks(pblocks, hier, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Delete an RPM
@@ -189,27 +141,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 464
 		/// </summary>
-		/// <param name="rpm">
-		/// Required
-		/// RPM to delete
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_rpm(string rpm, bool? quiet = null, bool? verbose = null)
+		/// <param name="rpm">(Required) RPM to delete</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_rpm(string rpm, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_rpm [-quiet] [-verbose] <rpm>
-			_tcl.Add(
-				new SimpleTCLCommand("delete_rpm")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(rpm)
-			);
+			_tcl.Entry(_builder.delete_rpm(rpm, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of Pblocks in the current design
@@ -235,54 +174,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 848
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get Pblocks of these cells
-		/// </param>
-		/// <param name="include_nested_pblock">
-		/// Optional
-		/// Display the the list of nested pblocks
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match Pblock names against patterns Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) Get Pblocks of these cells</param>
+		/// <param name="include_nested_pblock">(Optional) Display the the list of nested pblocks</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match Pblock names against patterns Default: *</param>
 		/// <returns>list of Pblock objects</returns>
-		public void get_pblocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_nested_pblock = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_pblocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_nested_pblock = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblock] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_pblocks")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("include_nested_pblock", include_nested_pblock)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_pblocks(regexp, nocase, filter, of_objects, include_nested_pblock, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Move or place one or more instances to new locations. Sites and cells are required to be listed in
@@ -327,27 +232,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1098
 		/// </summary>
-		/// <param name="cell_site_list">
-		/// Required
-		/// a list of cells and sites in the interleaved order
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void place_cell(string cell_site_list, bool? quiet = null, bool? verbose = null)
+		/// <param name="cell_site_list">(Required) a list of cells and sites in the interleaved order</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL place_cell(string cell_site_list, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: place_cell [-quiet] [-verbose] <cell_site_list>...
-			_tcl.Add(
-				new SimpleTCLCommand("place_cell")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(cell_site_list)
-			);
+			_tcl.Entry(_builder.place_cell(cell_site_list, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Resize Pblocks according to SLICE demand and re-position them according to connectivity
@@ -367,38 +259,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1106
 		/// </summary>
-		/// <param name="pblocks">
-		/// Required
-		/// List of Pblocks to place
-		/// </param>
+		/// <param name="pblocks">(Required) List of Pblocks to place</param>
 		/// <param name="effort">
-		/// Optional
+		/// (Optional)
 		/// Placer effort level (per Pblock) Values: LOW, MEDIUM, HIGH
 		/// Default: HIGH
 		/// </param>
-		/// <param name="utilization">
-		/// Optional
-		/// Placer utilization (per Pblock)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void place_pblocks(string pblocks, string effort = null, string utilization = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="utilization">(Optional) Placer utilization (per Pblock)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL place_pblocks(string pblocks, string effort = null, string utilization = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: place_pblocks [-effort <arg>] [-utilization <arg>] [-quiet] [-verbose] <pblocks>...
-			_tcl.Add(
-				new SimpleTCLCommand("place_pblocks")
-					.OptionalNamedString("effort", effort)
-					.OptionalNamedString("utilization", utilization)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(pblocks)
-			);
+			_tcl.Entry(_builder.place_pblocks(pblocks, effort, utilization, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Remove cells from a Pblock
@@ -416,32 +290,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1213
 		/// </summary>
-		/// <param name="pblock">
-		/// Required
-		/// Pblock to remove cells from
-		/// </param>
-		/// <param name="cells">
-		/// Required
-		/// Cells to remove
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void remove_cells_from_pblock(string pblock, string cells, bool? quiet = null, bool? verbose = null)
+		/// <param name="pblock">(Required) Pblock to remove cells from</param>
+		/// <param name="cells">(Required) Cells to remove</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL remove_cells_from_pblock(string pblock, string cells, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_cells_from_pblock [-quiet] [-verbose] <pblock> <cells>...
-			_tcl.Add(
-				new SimpleTCLCommand("remove_cells_from_pblock")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(pblock)
-					.RequiredString(cells)
-			);
+			_tcl.Entry(_builder.remove_cells_from_pblock(pblock, cells, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Move, resize, add and remove Pblock site-range constraints
@@ -474,57 +331,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1494
 		/// </summary>
-		/// <param name="pblock">
-		/// Required
-		/// Pblock to resize
-		/// </param>
-		/// <param name="add">
-		/// Optional
-		/// Add site ranges(s)
-		/// </param>
-		/// <param name="remove">
-		/// Optional
-		/// Remove site ranges(s)
-		/// </param>
-		/// <param name="from">
-		/// Optional
-		/// Site range(s) to move
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// Site range destination(s)
-		/// </param>
-		/// <param name="replace">
-		/// Optional
-		/// Remove all existing ranges
-		/// </param>
-		/// <param name="locs">
-		/// Optional
-		/// LOC treatment Default: keep_all
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void resize_pblock(string pblock, string add = null, string remove = null, string from = null, string to = null, bool? replace = null, string locs = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="pblock">(Required) Pblock to resize</param>
+		/// <param name="add">(Optional) Add site ranges(s)</param>
+		/// <param name="remove">(Optional) Remove site ranges(s)</param>
+		/// <param name="from">(Optional) Site range(s) to move</param>
+		/// <param name="to">(Optional) Site range destination(s)</param>
+		/// <param name="replace">(Optional) Remove all existing ranges</param>
+		/// <param name="locs">(Optional) LOC treatment Default: keep_all</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL resize_pblock(string pblock, string add = null, string remove = null, string from = null, string to = null, bool? replace = null, string locs = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: resize_pblock [-add <args>] [-remove <args>] [-from <args>] [-to <args>] [-replace] [-locs <arg>] [-quiet] [-verbose] <pblock>
-			_tcl.Add(
-				new SimpleTCLCommand("resize_pblock")
-					.OptionalNamedString("add", add)
-					.OptionalNamedString("remove", remove)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.Flag("replace", replace)
-					.OptionalNamedString("locs", locs)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(pblock)
-			);
+			_tcl.Entry(_builder.resize_pblock(pblock, add, remove, from, to, replace, locs, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Swap two locations
@@ -544,34 +364,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1698
 		/// </summary>
-		/// <param name="aloc">
-		/// Required
-		/// First location (port/cell/site - should be of same type as
-		/// 'bloc')
-		/// </param>
-		/// <param name="bloc">
-		/// Required
-		/// Second location (port/cell/site - should be of same type as
-		/// 'aloc')
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void swap_locs(string aloc, string bloc, bool? quiet = null, bool? verbose = null)
+		/// <param name="aloc">(Required) First location (port/cell/site - should be of same type as 'bloc')</param>
+		/// <param name="bloc">(Required) Second location (port/cell/site - should be of same type as 'aloc')</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL swap_locs(string aloc, string bloc, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: swap_locs [-quiet] [-verbose] <aloc> <bloc>
-			_tcl.Add(
-				new SimpleTCLCommand("swap_locs")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(aloc)
-					.RequiredString(bloc)
-			);
+			_tcl.Entry(_builder.swap_locs(aloc, bloc, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Unplace one or more instances.
@@ -590,27 +391,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1721
 		/// </summary>
-		/// <param name="cell_list">
-		/// Required
-		/// a list of cells to be unplaced
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void unplace_cell(string cell_list, bool? quiet = null, bool? verbose = null)
+		/// <param name="cell_list">(Required) a list of cells to be unplaced</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL unplace_cell(string cell_list, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: unplace_cell [-quiet] [-verbose] <cell_list>...
-			_tcl.Add(
-				new SimpleTCLCommand("unplace_cell")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(cell_list)
-			);
+			_tcl.Entry(_builder.unplace_cell(cell_list, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

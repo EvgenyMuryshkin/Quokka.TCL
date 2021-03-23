@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class IPFlowCommands
+	public partial class IPFlowCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public IPFlowCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public IPFlowCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Add a new bus interface to a peripheral.
@@ -21,43 +23,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 55
 		/// </summary>
-		/// <param name="interface_mode">
-		/// Required
-		/// Mode of an interface, supported option - master,slave.
-		/// </param>
-		/// <param name="axi_type">
-		/// Required
-		/// Type of a axi interface, supported option - lite,full,stream.
-		/// </param>
-		/// <param name="name">
-		/// Required
-		/// Name to initialize the newly added element e.g S1_AXI,
-		/// M1_AXI
-		/// </param>
-		/// <param name="peripheral">
-		/// Required
-		/// Peripheral object
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void add_peripheral_interface(string interface_mode, string axi_type, string name, string peripheral, bool? quiet = null, bool? verbose = null)
+		/// <param name="interface_mode">(Required) Mode of an interface, supported option - master,slave.</param>
+		/// <param name="axi_type">(Required) Type of a axi interface, supported option - lite,full,stream.</param>
+		/// <param name="name">(Required) Name to initialize the newly added element e.g S1_AXI, M1_AXI</param>
+		/// <param name="peripheral">(Required) Peripheral object</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL add_peripheral_interface(string interface_mode, string axi_type, string name, string peripheral, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: add_peripheral_interface -interface_mode <arg> -axi_type <arg> [-quiet] [-verbose] <name> <peripheral>
-			_tcl.Add(
-				new SimpleTCLCommand("add_peripheral_interface")
-					.RequiredNamedString("interface_mode", interface_mode)
-					.RequiredNamedString("axi_type", axi_type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(peripheral)
-			);
+			_tcl.Entry(_builder.add_peripheral_interface(interface_mode, axi_type, name, peripheral, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Compile C code into RTL
@@ -78,32 +54,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 159
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// The objects which need C to RTL conversion
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Force generate product state regeneration
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void compile_c(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="objects">(Required) The objects which need C to RTL conversion</param>
+		/// <param name="force">(Optional) Force generate product state regeneration</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL compile_c(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: compile_c [-force] [-quiet] [-verbose] <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("compile_c")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.compile_c(objects, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Manage the IP instance Synthesis cache. Lists out the IP Cache entries if no options are specified.
@@ -147,180 +106,114 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 174
 		/// </summary>
-		/// <param name="use_cache_location">
-		/// Optional
-		/// Set current project properties to use the specified cache
-		/// location
-		/// </param>
+		/// <param name="use_cache_location">(Optional) Set current project properties to use the specified cache location</param>
 		/// <param name="use_project_cache">
-		/// Optional
+		/// (Optional)
 		/// Set current project properties to use the default project IP
 		/// cache location
 		/// </param>
-		/// <param name="disable_cache">
-		/// Optional
-		/// Disable cache use.
-		/// </param>
+		/// <param name="disable_cache">(Optional) Disable cache use.</param>
 		/// <param name="clear_output_repo">
-		/// Optional
+		/// (Optional)
 		/// Delete from disk and in memory all cache entries that exist
 		/// in the current project's designated cache (local or remote).
 		/// </param>
 		/// <param name="clear_local_cache">
-		/// Optional
+		/// (Optional)
 		/// Delete from disk and in memory all local cache entries for
 		/// this project.
 		/// </param>
 		/// <param name="cache_has_match">
-		/// Optional
+		/// (Optional)
 		/// Returns the cache-ID of the cache entry that would work for
 		/// this IP instance; else ''.
 		/// </param>
 		/// <param name="cache_was_used">
-		/// Optional
+		/// (Optional)
 		/// Returns '1' if the cache was used to obtain the IP's current
 		/// synthesis results; else '0'.
 		/// </param>
-		/// <param name="get_id">
-		/// Optional
-		/// Calculate and return IP cache ID string for specified <ip>
-		/// </param>
+		/// <param name="get_id">(Optional) Calculate and return IP cache ID string for specified <ip></param>
 		/// <param name="remove">
-		/// Optional
+		/// (Optional)
 		/// Remove the corresponding cache entry for the specified IP
 		/// instance or specified cachedInst; return cache ID string if
 		/// successful, otherwise blank.
 		/// </param>
 		/// <param name="vlnv">
-		/// Optional
+		/// (Optional)
 		/// Used with -purge or -get_resource_data, specifies the VLNV
 		/// of the cache entries to delete or find. May use a wildcard
 		/// ('*') in one or more fields in the VLNV.
 		/// </param>
 		/// <param name="old_swvers">
-		/// Optional
+		/// (Optional)
 		/// Used with -purge to delete cache entries created with old
 		/// Vivado SW Versions.
 		/// </param>
-		/// <param name="unused">
-		/// Optional
-		/// Used with -purge to delete cache entries that have never
-		/// been used.
-		/// </param>
+		/// <param name="unused">(Optional) Used with -purge to delete cache entries that have never been used.</param>
 		/// <param name="swver">
-		/// Optional
+		/// (Optional)
 		/// Used with -purge to delete any cache entries created from
 		/// this specific Vivado SW Version (i.e., '2017.1').
 		/// </param>
 		/// <param name="num_days_old">
-		/// Optional
+		/// (Optional)
 		/// Used with -purge to delete any cache entries that are this
 		/// number of days old or older.
 		/// </param>
 		/// <param name="num_days_unused">
-		/// Optional
+		/// (Optional)
 		/// Used with -purge to delete any cache entries that have not
 		/// been used for this number of days or longer.
 		/// </param>
 		/// <param name="obs_synth_crc">
-		/// Optional
+		/// (Optional)
 		/// Used with -purge to delete cache entries whose component
 		/// synth checksum is not the same as the IP Catalog's current
 		/// component synthesis checksum.
 		/// Name Description
 		/// </param>
 		/// <param name="disk_usage_output_repo">
-		/// Optional
+		/// (Optional)
 		/// Return total disk usage in MB for all cache entries in the
 		/// current project's ip_output_repo.
 		/// </param>
 		/// <param name="report">
-		/// Optional
+		/// (Optional)
 		/// Report cache statistics for the specified IP or cache object,
 		/// or for the current cache location if none specified. If -rptfile
 		/// is specified, write statistics to that file. If -dir is specified,
 		/// write statistics for cache entries found under that directory.
 		/// </param>
 		/// <param name="rptfile">
-		/// Optional
+		/// (Optional)
 		/// Used with -report, specifies the text file to write the cache
 		/// statistics to.
 		/// </param>
 		/// <param name="csvfile">
-		/// Optional
+		/// (Optional)
 		/// Used with -report, specifies the csv file to write the cache
 		/// statistics to, in csv format.
 		/// </param>
-		/// <param name="import_from_project">
-		/// Optional
-		/// Import existing synthesized IP from the project into the
-		/// cache.
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter result of '-list'
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Use regular expressions instead of globs in '-filter'
-		/// argument(s)
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Use case insensitive matching in '-filter' argument(s)
-		/// </param>
+		/// <param name="import_from_project">(Optional) Import existing synthesized IP from the project into the cache.</param>
+		/// <param name="filter">(Optional) Filter result of '-list'</param>
+		/// <param name="regexp">(Optional) Use regular expressions instead of globs in '-filter' argument(s)</param>
+		/// <param name="nocase">(Optional) Use case insensitive matching in '-filter' argument(s)</param>
 		/// <param name="purge">
-		/// Optional
+		/// (Optional)
 		/// Delete all cache entries that match the specified type(s): -
 		/// vlnv, -obs_swvers, -obs_synth_crc, and/or -swver. Returns
 		/// the number of entries deleted.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="ip">
-		/// Optional
-		/// IP instance object, IP file, or IP name pattern
-		/// </param>
-		public void config_ip_cache(string use_cache_location = null, bool? use_project_cache = null, bool? disable_cache = null, bool? clear_output_repo = null, bool? clear_local_cache = null, bool? cache_has_match = null, bool? cache_was_used = null, bool? get_id = null, bool? remove = null, string vlnv = null, bool? old_swvers = null, bool? unused = null, string swver = null, string num_days_old = null, string num_days_unused = null, bool? obs_synth_crc = null, bool? disk_usage_output_repo = null, bool? report = null, string rptfile = null, string csvfile = null, bool? import_from_project = null, string filter = null, bool? regexp = null, bool? nocase = null, bool? purge = null, bool? quiet = null, bool? verbose = null, string ip = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="ip">(Optional) IP instance object, IP file, or IP name pattern</param>
+		public TTCL config_ip_cache(string use_cache_location = null, bool? use_project_cache = null, bool? disable_cache = null, bool? clear_output_repo = null, bool? clear_local_cache = null, bool? cache_has_match = null, bool? cache_was_used = null, bool? get_id = null, bool? remove = null, string vlnv = null, bool? old_swvers = null, bool? unused = null, string swver = null, string num_days_old = null, string num_days_unused = null, bool? obs_synth_crc = null, bool? disk_usage_output_repo = null, bool? report = null, string rptfile = null, string csvfile = null, bool? import_from_project = null, string filter = null, bool? regexp = null, bool? nocase = null, bool? purge = null, bool? quiet = null, bool? verbose = null, string ip = null)
 		{
 			// TCL Syntax: config_ip_cache [-use_cache_location <arg>] [-use_project_cache] [-disable_cache] [-clear_output_repo] [-clear_local_cache] [-cache_has_match] [-cache_was_used] [-get_id] [-remove] [-vlnv <arg>] [-old_swvers] [-unused] [-swver <arg>] [-num_days_old <arg>] [-num_days_unused <arg>] [-obs_synth_crc] [-disk_usage_output_repo] [-report] [-rptfile <arg>] [-csvfile <arg>] [-import_from_project] [-filter <arg>] [-regexp] [-nocase] [-purge] [-quiet] [-verbose] [<ip>]
-			_tcl.Add(
-				new SimpleTCLCommand("config_ip_cache")
-					.OptionalNamedString("use_cache_location", use_cache_location)
-					.Flag("use_project_cache", use_project_cache)
-					.Flag("disable_cache", disable_cache)
-					.Flag("clear_output_repo", clear_output_repo)
-					.Flag("clear_local_cache", clear_local_cache)
-					.Flag("cache_has_match", cache_has_match)
-					.Flag("cache_was_used", cache_was_used)
-					.Flag("get_id", get_id)
-					.Flag("remove", remove)
-					.OptionalNamedString("vlnv", vlnv)
-					.Flag("old_swvers", old_swvers)
-					.Flag("unused", unused)
-					.OptionalNamedString("swver", swver)
-					.OptionalNamedString("num_days_old", num_days_old)
-					.OptionalNamedString("num_days_unused", num_days_unused)
-					.Flag("obs_synth_crc", obs_synth_crc)
-					.Flag("disk_usage_output_repo", disk_usage_output_repo)
-					.Flag("report", report)
-					.OptionalNamedString("rptfile", rptfile)
-					.OptionalNamedString("csvfile", csvfile)
-					.Flag("import_from_project", import_from_project)
-					.OptionalNamedString("filter", filter)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("purge", purge)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(ip)
-			);
+			_tcl.Entry(_builder.config_ip_cache(use_cache_location, use_project_cache, disable_cache, clear_output_repo, clear_local_cache, cache_has_match, cache_was_used, get_id, remove, vlnv, old_swvers, unused, swver, num_days_old, num_days_unused, obs_synth_crc, disk_usage_output_repo, report, rptfile, csvfile, import_from_project, filter, regexp, nocase, purge, quiet, verbose, ip));
+			return _tcl;
 		}
 		/// <summary>
 		/// Convert specified IP to or from core container format.
@@ -359,42 +252,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 205
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// Input objects for the IP. May IP or source file objects
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Force conversion even if the IP is locked.
-		/// </param>
-		/// <param name="to_core_container">
-		/// Optional
-		/// Convert IP to core container format.
-		/// </param>
-		/// <param name="from_core_container">
-		/// Optional
-		/// Convert IP to non core container format.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void convert_ips(string objects, bool? force = null, bool? to_core_container = null, bool? from_core_container = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="objects">(Required) Input objects for the IP. May IP or source file objects</param>
+		/// <param name="force">(Optional) Force conversion even if the IP is locked.</param>
+		/// <param name="to_core_container">(Optional) Convert IP to core container format.</param>
+		/// <param name="from_core_container">(Optional) Convert IP to non core container format.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL convert_ips(string objects, bool? force = null, bool? to_core_container = null, bool? from_core_container = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: convert_ips [-force] [-to_core_container] [-from_core_container] [-quiet] [-verbose] <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("convert_ips")
-					.Flag("force", force)
-					.Flag("to_core_container", to_core_container)
-					.Flag("from_core_container", from_core_container)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.convert_ips(objects, force, to_core_container, from_core_container, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Copy an existing IP
@@ -406,39 +274,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 213
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of copied IP
-		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// IP to be copied
-		/// </param>
+		/// <param name="name">(Required) Name of copied IP</param>
+		/// <param name="objects">(Required) IP to be copied</param>
 		/// <param name="dir">
-		/// Optional
+		/// (Optional)
 		/// Directory path for remote IP to be created and managed
 		/// outside the project
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>IP file object that was added to the project</returns>
-		public void copy_ip(string name, string objects, string dir = null, bool? quiet = null, bool? verbose = null)
+		public TTCL copy_ip(string name, string objects, string dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: copy_ip -name <arg> [-dir <arg>] [-quiet] [-verbose] <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("copy_ip")
-					.RequiredNamedString("name", name)
-					.OptionalNamedString("dir", dir)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.copy_ip(name, objects, dir, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create an instance of a configurable IP and add it to the fileset
@@ -481,75 +331,32 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 307
 		/// </summary>
-		/// <param name="module_name">
-		/// Required
-		/// Name for the new IP that will be added to the project
-		/// </param>
+		/// <param name="module_name">(Required) Name for the new IP that will be added to the project</param>
 		/// <param name="vlnv">
-		/// Optional
+		/// (Optional)
 		/// VLNV string for the Catalog IP from which the new IP will be
 		/// created (colon delimited Vendor, Library, Name, Version)
 		/// </param>
 		/// <param name="dir">
-		/// Optional
+		/// (Optional)
 		/// Directory path for remote IP to be created and managed
 		/// outside the project
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing IP instance; allowed only with -dir option
-		/// </param>
-		/// <param name="allow_hidden">
-		/// Optional
-		/// Allow hidden cores to be instantiated
-		/// </param>
-		/// <param name="vendor">
-		/// Optional
-		/// IP Vendor name
-		/// </param>
-		/// <param name="library">
-		/// Optional
-		/// IP Library name
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// IP Name
-		/// </param>
-		/// <param name="version">
-		/// Optional
-		/// IP Version
-		/// </param>
-		/// <param name="revision">
-		/// Optional
-		/// (Optional) IP core revision
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="force">(Optional) Overwrite existing IP instance; allowed only with -dir option</param>
+		/// <param name="allow_hidden">(Optional) Allow hidden cores to be instantiated</param>
+		/// <param name="vendor">(Optional) IP Vendor name</param>
+		/// <param name="library">(Optional) IP Library name</param>
+		/// <param name="name">(Optional) IP Name</param>
+		/// <param name="version">(Optional) IP Version</param>
+		/// <param name="revision">(Optional) (Optional) IP core revision</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of file objects that were added</returns>
-		public void create_ip(string module_name, string vlnv = null, string dir = null, bool? force = null, bool? allow_hidden = null, string vendor = null, string library = null, string name = null, string version = null, string revision = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_ip(string module_name, string vlnv = null, string dir = null, bool? force = null, bool? allow_hidden = null, string vendor = null, string library = null, string name = null, string version = null, string revision = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_ip [-vlnv <arg>] -module_name <arg> [-dir <arg>] [-force] [-allow_hidden] [-vendor <arg>] [-library <arg>] [-name <arg>] [-version <arg>] [-revision <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("create_ip")
-					.OptionalNamedString("vlnv", vlnv)
-					.RequiredNamedString("module_name", module_name)
-					.OptionalNamedString("dir", dir)
-					.Flag("force", force)
-					.Flag("allow_hidden", allow_hidden)
-					.OptionalNamedString("vendor", vendor)
-					.OptionalNamedString("library", library)
-					.OptionalNamedString("name", name)
-					.OptionalNamedString("version", version)
-					.OptionalNamedString("revision", revision)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.create_ip(module_name, vlnv, dir, force, allow_hidden, vendor, library, name, version, revision, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Creates a run for the given IP.
@@ -573,32 +380,18 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 310
 		/// </summary>
 		/// <param name="objects">
-		/// Required
+		/// (Required)
 		/// All of the IP objects (from get_ips or get_files) for which a
 		/// run needs to be generated for.
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Force regeneration of products of the given IP.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_ip_run(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="force">(Optional) Force regeneration of products of the given IP.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_ip_run(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_ip_run [-force] [-quiet] [-verbose] <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("create_ip_run")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.create_ip_run(objects, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a peripheral with a VLNV.
@@ -613,48 +406,22 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 320
 		/// </summary>
-		/// <param name="vendor">
-		/// Required
-		/// Vendor, for example xilinx.com
-		/// </param>
-		/// <param name="library">
-		/// Required
-		/// Library, for example ip
-		/// </param>
-		/// <param name="name">
-		/// Required
-		/// Name, for example myip
-		/// </param>
-		/// <param name="version">
-		/// Required
-		/// Version, for example 1.4
-		/// </param>
+		/// <param name="vendor">(Required) Vendor, for example xilinx.com</param>
+		/// <param name="library">(Required) Library, for example ip</param>
+		/// <param name="name">(Required) Name, for example myip</param>
+		/// <param name="version">(Required) Version, for example 1.4</param>
 		/// <param name="dir">
-		/// Optional
+		/// (Optional)
 		/// Directory path for remote Peripheral to be created and
 		/// managed outside the project
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_peripheral(string vendor, string library, string name, string version, string dir = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_peripheral(string vendor, string library, string name, string version, string dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_peripheral [-dir <arg>] [-quiet] [-verbose] <vendor> <library> <name> <version>
-			_tcl.Add(
-				new SimpleTCLCommand("create_peripheral")
-					.OptionalNamedString("dir", dir)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(vendor)
-					.RequiredString(library)
-					.RequiredString(name)
-					.RequiredString(version)
-			);
+			_tcl.Entry(_builder.create_peripheral(vendor, library, name, version, dir, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Deletes the block fileset and run associated with a given IP.
@@ -679,32 +446,18 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 446
 		/// </summary>
 		/// <param name="objects">
-		/// Required
+		/// (Required)
 		/// All of the IP objects (from get_ips or get_files) for which the
 		/// block fileset and run will be deleted.
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Force the deletion of the block fileset and run.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_ip_run(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="force">(Optional) Force the deletion of the block fileset and run.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_ip_run(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_ip_run [-force] [-quiet] [-verbose] <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("delete_ip_run")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.delete_ip_run(objects, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Extract files from a core container to disk
@@ -724,48 +477,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 513
 		/// </summary>
-		/// <param name="files">
-		/// Required
-		/// Name of the file(s) to be extracted
-		/// </param>
-		/// <param name="base_dir">
-		/// Optional
-		/// Base directory for extracted files Default: ip_files
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing files
-		/// </param>
-		/// <param name="no_ip_dir">
-		/// Optional
-		/// Don't include the IP dir as part of the extract directory
-		/// </param>
-		/// <param name="no_paths">
-		/// Optional
-		/// Don't include directories when extracting files
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="files">(Required) Name of the file(s) to be extracted</param>
+		/// <param name="base_dir">(Optional) Base directory for extracted files Default: ip_files</param>
+		/// <param name="force">(Optional) Overwrite existing files</param>
+		/// <param name="no_ip_dir">(Optional) Don't include the IP dir as part of the extract directory</param>
+		/// <param name="no_paths">(Optional) Don't include directories when extracting files</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of files that were extracted with the new paths</returns>
-		public void extract_files(string files, string base_dir = null, bool? force = null, bool? no_ip_dir = null, bool? no_paths = null, bool? quiet = null, bool? verbose = null)
+		public TTCL extract_files(string files, string base_dir = null, bool? force = null, bool? no_ip_dir = null, bool? no_paths = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: extract_files [-base_dir <arg>] [-force] [-no_ip_dir] [-no_paths] [-quiet] [-verbose] <files>...
-			_tcl.Add(
-				new SimpleTCLCommand("extract_files")
-					.OptionalNamedString("base_dir", base_dir)
-					.Flag("force", force)
-					.Flag("no_ip_dir", no_ip_dir)
-					.Flag("no_paths", no_paths)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.extract_files(files, base_dir, force, no_ip_dir, no_paths, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Generate output products for peripheral object.
@@ -779,57 +503,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 532
 		/// </summary>
-		/// <param name="peripheral">
-		/// Required
-		/// peripheral object
-		/// </param>
-		/// <param name="driver">
-		/// Optional
-		/// Generate driver for peripheral.
-		/// </param>
-		/// <param name="example_design">
-		/// Optional
-		/// Generate all supported example designs for peripheral.
-		/// </param>
-		/// <param name="bfm_example_design">
-		/// Optional
-		/// Generate bfm simulation example design for peripheral.
-		/// </param>
-		/// <param name="debug_hw_example_design">
-		/// Optional
-		/// Generate debug hardware example design for peripheral.
-		/// </param>
-		/// <param name="enable_interrupt">
-		/// Optional
-		/// Generate peripheral with interrupt suppport.
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite the existing IP in the repository.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void generate_peripheral(string peripheral, bool? driver = null, bool? example_design = null, bool? bfm_example_design = null, bool? debug_hw_example_design = null, bool? enable_interrupt = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="peripheral">(Required) peripheral object</param>
+		/// <param name="driver">(Optional) Generate driver for peripheral.</param>
+		/// <param name="example_design">(Optional) Generate all supported example designs for peripheral.</param>
+		/// <param name="bfm_example_design">(Optional) Generate bfm simulation example design for peripheral.</param>
+		/// <param name="debug_hw_example_design">(Optional) Generate debug hardware example design for peripheral.</param>
+		/// <param name="enable_interrupt">(Optional) Generate peripheral with interrupt suppport.</param>
+		/// <param name="force">(Optional) Overwrite the existing IP in the repository.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL generate_peripheral(string peripheral, bool? driver = null, bool? example_design = null, bool? bfm_example_design = null, bool? debug_hw_example_design = null, bool? enable_interrupt = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_peripheral [-driver] [-example_design] [-bfm_example_design] [-debug_hw_example_design] [-enable_interrupt] [-force] [-quiet] [-verbose] <peripheral>
-			_tcl.Add(
-				new SimpleTCLCommand("generate_peripheral")
-					.Flag("driver", driver)
-					.Flag("example_design", example_design)
-					.Flag("bfm_example_design", bfm_example_design)
-					.Flag("debug_hw_example_design", debug_hw_example_design)
-					.Flag("enable_interrupt", enable_interrupt)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(peripheral)
-			);
+			_tcl.Entry(_builder.generate_peripheral(peripheral, driver, example_design, bfm_example_design, debug_hw_example_design, enable_interrupt, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Generate target data for the specified source
@@ -868,37 +555,19 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 539
 		/// </summary>
 		/// <param name="name">
-		/// Required
+		/// (Required)
 		/// List of targets to be generated, or 'all' to generate all
 		/// supported targets
 		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// The objects for which data needs to be generated
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Force target data regeneration
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void generate_target(string name, string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="objects">(Required) The objects for which data needs to be generated</param>
+		/// <param name="force">(Optional) Force target data regeneration</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL generate_target(string name, string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_target [-force] [-quiet] [-verbose] <name> <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("generate_target")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.generate_target(name, objects, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of results for IP upgrades during the current project
@@ -917,36 +586,25 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 786
 		/// </summary>
 		/// <param name="srcset">
-		/// Optional
+		/// (Optional)
 		/// (Optional) Specifies the source file set containing the
 		/// upgraded IP Default: The current source fileset Values:
 		/// Source set name
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">
-		/// Optional
+		/// (Optional)
 		/// IP to be upgraded Values: IP instance(s) within the design,
 		/// as returned by 'get_ips <instance name>' or 'get_bd_cells
 		/// <cell name>'
 		/// </param>
 		/// <returns>list of IP upgrade results</returns>
-		public void get_ip_upgrade_results(string srcset = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public TTCL get_ip_upgrade_results(string srcset = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: get_ip_upgrade_results [-srcset <arg>] [-quiet] [-verbose] [<objects>...]
-			_tcl.Add(
-				new SimpleTCLCommand("get_ip_upgrade_results")
-					.OptionalNamedString("srcset", srcset)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(objects)
-			);
+			_tcl.Entry(_builder.get_ip_upgrade_results(srcset, quiet, verbose, objects));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of IP from the current IP Catalog
@@ -981,60 +639,26 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 788
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// Match the pattern against IP display name instead of VLNV
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get the IPDefs of the objects specified: IP inst or XCI file.
-		/// </param>
-		/// <param name="all">
-		/// Optional
-		/// Return hidden IP
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Optional) Match the pattern against IP display name instead of VLNV</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) Get the IPDefs of the objects specified: IP inst or XCI file.</param>
+		/// <param name="all">(Optional) Return hidden IP</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">
-		/// Optional
+		/// (Optional)
 		/// The patterns to match against Default: * Values: The default
 		/// search pattern is the wildcard *, or .* when -regexp is
 		/// specified.
 		/// </param>
 		/// <returns>List of Catalog IP objects</returns>
-		public void get_ipdefs(bool? name = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? all = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_ipdefs(bool? name = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? all = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_ipdefs [-name] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-all] [-quiet] [-verbose] [<patterns>...]
-			_tcl.Add(
-				new SimpleTCLCommand("get_ipdefs")
-					.Flag("name", name)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("all", all)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_ipdefs(name, regexp, nocase, filter, of_objects, all, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of IPs in the current design
@@ -1054,60 +678,26 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 792
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching
-		/// </param>
-		/// <param name="all">
-		/// Optional
-		/// Include subcore IP in search
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="exclude_bd_ips">
-		/// Optional
-		/// Exclude all IP owned by a block design.
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'ip' objects of these types: 'ip file'.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
+		/// <param name="all">(Optional) Include subcore IP in search</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="exclude_bd_ips">(Optional) Exclude all IP owned by a block design.</param>
+		/// <param name="of_objects">(Optional) Get 'ip' objects of these types: 'ip file'.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">
-		/// Optional
+		/// (Optional)
 		/// Match IP names against patterns Default: * Values: The
 		/// default search pattern is the wildcard *, or .* when -regexp
 		/// is specified.
 		/// </param>
 		/// <returns>list of IP objects</returns>
-		public void get_ips(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? exclude_bd_ips = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_ips(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? exclude_bd_ips = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_ips [-regexp] [-nocase] [-all] [-filter <arg>] [-exclude_bd_ips] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
-			_tcl.Add(
-				new SimpleTCLCommand("get_ips")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("all", all)
-					.OptionalNamedString("filter", filter)
-					.Flag("exclude_bd_ips", exclude_bd_ips)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_ips(regexp, nocase, all, filter, exclude_bd_ips, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Import an IP file and add it to the fileset
@@ -1129,43 +719,31 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 965
 		/// </summary>
 		/// <param name="srcset">
-		/// Optional
+		/// (Optional)
 		/// (Optional) Specifies the source file set containing the objects
 		/// to be upgraded Default: The current source fileset Values:
 		/// Source set name
 		/// </param>
 		/// <param name="name">
-		/// Optional
+		/// (Optional)
 		/// (Optional) Specifies a replacement name for the imported
 		/// IP; may not be used with multiple files. Default: The current
 		/// name for the imported IP Values: The new name for the
 		/// imported IP
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="files">
-		/// Optional
+		/// (Optional)
 		/// Names of the IP files to be imported Values: A list of XCI
 		/// (and/or XCO) file name(s)
 		/// </param>
 		/// <returns>list of file objects that were added</returns>
-		public void import_ip(string srcset = null, string name = null, bool? quiet = null, bool? verbose = null, string files = null)
+		public TTCL import_ip(string srcset = null, string name = null, bool? quiet = null, bool? verbose = null, string files = null)
 		{
 			// TCL Syntax: import_ip [-srcset <arg>] [-name <arg>] [-quiet] [-verbose] [<files>]
-			_tcl.Add(
-				new SimpleTCLCommand("import_ip")
-					.OptionalNamedString("srcset", srcset)
-					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(files)
-			);
+			_tcl.Entry(_builder.import_ip(srcset, name, quiet, verbose, files));
+			return _tcl;
 		}
 		/// <summary>
 		/// Open the example project for the indicated IP
@@ -1182,43 +760,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1054
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// The objects whose example projects will be opened
-		/// </param>
-		/// <param name="dir">
-		/// Optional
-		/// Path to directory where example project will be created
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite an example project if it exists
-		/// </param>
-		/// <param name="in_process">
-		/// Optional
-		/// Open the example project in the same process
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="objects">(Required) The objects whose example projects will be opened</param>
+		/// <param name="dir">(Optional) Path to directory where example project will be created</param>
+		/// <param name="force">(Optional) Overwrite an example project if it exists</param>
+		/// <param name="in_process">(Optional) Open the example project in the same process</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The Project that was opened</returns>
-		public void open_example_project(string objects, string dir = null, bool? force = null, bool? in_process = null, bool? quiet = null, bool? verbose = null)
+		public TTCL open_example_project(string objects, string dir = null, bool? force = null, bool? in_process = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_example_project [-dir <arg>] [-force] [-in_process] [-quiet] [-verbose] <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("open_example_project")
-					.OptionalNamedString("dir", dir)
-					.Flag("force", force)
-					.Flag("in_process", in_process)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.open_example_project(objects, dir, force, in_process, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read one or more IP files
@@ -1247,28 +800,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1146
 		/// </summary>
-		/// <param name="files">
-		/// Required
-		/// IP file name(s)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="files">(Required) IP file name(s)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of IP file objects that were added</returns>
-		public void read_ip(string files, bool? quiet = null, bool? verbose = null)
+		public TTCL read_ip(string files, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_ip [-quiet] [-verbose] <files>
-			_tcl.Add(
-				new SimpleTCLCommand("read_ip")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.read_ip(files, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report on the status of the IP instances in the project.
@@ -1304,55 +844,27 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1356
 		/// </summary>
 		/// <param name="name">
-		/// Optional
+		/// (Optional)
 		/// Output the results to GUI panel with this name Values: The
 		/// name of the GUI dialog
 		/// </param>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to (send output to console if -file
 		/// is not used) Values: The report filename
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append to existing file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report as string
-		/// </param>
-		/// <param name="license_status">
-		/// Optional
-		/// Report the license status of the generated outputs for each
-		/// IP
-		/// </param>
-		/// <param name="resource_data">
-		/// Optional
-		/// Report the resource data usage for each IP instance
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="append">(Optional) Append to existing file</param>
+		/// <param name="return_string">(Optional) Return report as string</param>
+		/// <param name="license_status">(Optional) Report the license status of the generated outputs for each IP</param>
+		/// <param name="resource_data">(Optional) Report the resource data usage for each IP instance</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>True for success</returns>
-		public void report_ip_status(string name = null, string file = null, bool? append = null, bool? return_string = null, bool? license_status = null, bool? resource_data = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_ip_status(string name = null, string file = null, bool? append = null, bool? return_string = null, bool? license_status = null, bool? resource_data = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_ip_status [-name <arg>] [-file <arg>] [-append] [-return_string] [-license_status] [-resource_data] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_ip_status")
-					.OptionalNamedString("name", name)
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("license_status", license_status)
-					.Flag("resource_data", resource_data)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_ip_status(name, file, append, return_string, license_status, resource_data, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Reset target data for the specified source
@@ -1369,33 +881,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1488
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// List of targets to be reset, or 'all' to reset all generated
-		/// targets
-		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// The objects for which data needs to be reset
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void reset_target(string name, string objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Required) List of targets to be reset, or 'all' to reset all generated targets</param>
+		/// <param name="objects">(Required) The objects for which data needs to be reset</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL reset_target(string name, string objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_target [-quiet] [-verbose] <name> <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("reset_target")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.reset_target(name, objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Generate a synthesis netlist for an IP
@@ -1423,32 +917,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1709
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// All the objects for which a netlist needs to be generated for.
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Force regeneration of the netlist.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void synth_ip(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="objects">(Required) All the objects for which a netlist needs to be generated for.</param>
+		/// <param name="force">(Optional) Force regeneration of the netlist.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL synth_ip(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: synth_ip [-force] [-quiet] [-verbose] <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("synth_ip")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.synth_ip(objects, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Update the IP Catalog. Before executing this command optionally use the following to set
@@ -1484,85 +961,59 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1738
 		/// </summary>
 		/// <param name="rebuild">
-		/// Optional
+		/// (Optional)
 		/// Trigger a rebuild of the specified repository's index file or
 		/// rebuild all repositories if none specified
 		/// </param>
 		/// <param name="add_ip">
-		/// Optional
+		/// (Optional)
 		/// Add the specified IP into the specified repository Values:
 		/// Either a path to the IP's component.xml or to a zip file
 		/// containing the IP
 		/// </param>
 		/// <param name="delete_ip">
-		/// Optional
+		/// (Optional)
 		/// Remove the specified IP from the specified repository
 		/// Values: Either a path to the IP's component.xml or its VLNV
 		/// </param>
 		/// <param name="delete_mult_ip">
-		/// Optional
+		/// (Optional)
 		/// Remove the specified IPs from the specified repository
 		/// Values: A list of IPs; either paths to the component.xml files
 		/// or their VLNVs
 		/// </param>
 		/// <param name="disable_ip">
-		/// Optional
+		/// (Optional)
 		/// Disable the specified IP from the specified repository
 		/// Values: Either a path to the IP's component.xml or its VLNV
 		/// </param>
 		/// <param name="enable_ip">
-		/// Optional
+		/// (Optional)
 		/// Enable the specified disabled IP from the specified
 		/// repository Values: Either a path to the IP's component.xml
 		/// or its VLNV
 		/// </param>
 		/// <param name="add_interface">
-		/// Optional
+		/// (Optional)
 		/// Add the specified interface into the specified repository
 		/// Values: A path to the interface's xml file
 		/// </param>
-		/// <param name="create_index">
-		/// Optional
-		/// Cache the specified repository's data on disk, to improve
-		/// load time.
-		/// </param>
+		/// <param name="create_index">(Optional) Cache the specified repository's data on disk, to improve load time.</param>
 		/// <param name="repo_path">
-		/// Optional
+		/// (Optional)
 		/// Used in conjunction with rebuild, add_ip, delete_ip,
 		/// delete_mult_ip, disable_ip or create_index to specify the path
 		/// of the repository on which to operate
 		/// </param>
-		/// <param name="update_module_ref">
-		/// Optional
-		/// Update module reference from their source (e.g. HDL file)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="update_module_ref">(Optional) Update module reference from their source (e.g. HDL file)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>True for success</returns>
-		public void update_ip_catalog(bool? rebuild = null, string add_ip = null, string delete_ip = null, string delete_mult_ip = null, string disable_ip = null, string enable_ip = null, string add_interface = null, bool? create_index = null, string repo_path = null, bool? update_module_ref = null, bool? quiet = null, bool? verbose = null)
+		public TTCL update_ip_catalog(bool? rebuild = null, string add_ip = null, string delete_ip = null, string delete_mult_ip = null, string disable_ip = null, string enable_ip = null, string add_interface = null, bool? create_index = null, string repo_path = null, bool? update_module_ref = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: update_ip_catalog [-rebuild] [-add_ip <arg>] [-delete_ip <arg>] [-delete_mult_ip <args>] [-disable_ip <arg>] [-enable_ip <arg>] [-add_interface <arg>] [-create_index] [-repo_path <arg>] [-update_module_ref] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("update_ip_catalog")
-					.Flag("rebuild", rebuild)
-					.OptionalNamedString("add_ip", add_ip)
-					.OptionalNamedString("delete_ip", delete_ip)
-					.OptionalNamedString("delete_mult_ip", delete_mult_ip)
-					.OptionalNamedString("disable_ip", disable_ip)
-					.OptionalNamedString("enable_ip", enable_ip)
-					.OptionalNamedString("add_interface", add_interface)
-					.Flag("create_index", create_index)
-					.OptionalNamedString("repo_path", repo_path)
-					.Flag("update_module_ref", update_module_ref)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.update_ip_catalog(rebuild, add_ip, delete_ip, delete_mult_ip, disable_ip, enable_ip, add_interface, create_index, repo_path, update_module_ref, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Refresh module reference definition and instance(s)
@@ -1582,29 +1033,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1745
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="ips">
-		/// Optional
+		/// (Optional)
 		/// module reference to be upgraded Values: IP instance
 		/// name(s) within the design
 		/// </param>
 		/// <returns>A return code indicating success or failure.</returns>
-		public void update_module_reference(bool? quiet = null, bool? verbose = null, string ips = null)
+		public TTCL update_module_reference(bool? quiet = null, bool? verbose = null, string ips = null)
 		{
 			// TCL Syntax: update_module_reference [-quiet] [-verbose] [<ips>...]
-			_tcl.Add(
-				new SimpleTCLCommand("update_module_reference")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(ips)
-			);
+			_tcl.Entry(_builder.update_module_reference(quiet, verbose, ips));
+			return _tcl;
 		}
 		/// <summary>
 		/// Upgrade a configurable IP to a later version
@@ -1626,19 +1067,19 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1754
 		/// </summary>
 		/// <param name="objects">
-		/// Required
+		/// (Required)
 		/// IP to be upgraded Values: IP instance(s) within the design,
 		/// as returned by 'get_ips <instance name>' or 'get_bd_cells
 		/// <cell name>'
 		/// </param>
 		/// <param name="srcset">
-		/// Optional
+		/// (Optional)
 		/// (Optional) Specifies the source file set containing the IP to
 		/// be upgraded Default: The current source fileset Values:
 		/// Source set name
 		/// </param>
 		/// <param name="vlnv">
-		/// Optional
+		/// (Optional)
 		/// (Optional) Identifies the Catalog IP to which the IP will be
 		/// upgraded. The VLNV string maps to the IPDEF property on
 		/// the IP core. This is a strict comparison, and the upgrade will
@@ -1647,34 +1088,21 @@ namespace Quokka.TCL.Vivado
 		/// '<vendor>:<library>:<name>:<versio n>'
 		/// </param>
 		/// <param name="log">
-		/// Optional
+		/// (Optional)
 		/// (Optional) Identifies the log file to which the IP upgrade
 		/// report will be concatenated. Default: An empty string,
 		/// indicating that no log will be written Values: A file path to an
 		/// existing writable file, or a non-existent file location in a
 		/// writable directory
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>A return code indicating success or failure.</returns>
-		public void upgrade_ip(string objects, string srcset = null, string vlnv = null, string log = null, bool? quiet = null, bool? verbose = null)
+		public TTCL upgrade_ip(string objects, string srcset = null, string vlnv = null, string log = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: upgrade_ip [-srcset <arg>] [-vlnv <arg>] [-log <arg>] [-quiet] [-verbose] <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("upgrade_ip")
-					.OptionalNamedString("srcset", srcset)
-					.OptionalNamedString("vlnv", vlnv)
-					.OptionalNamedString("log", log)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.upgrade_ip(objects, srcset, vlnv, log, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// This command applies any pending set_property commands and returns parameter validation
@@ -1692,32 +1120,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1764
 		/// </summary>
-		/// <param name="save_ip">
-		/// Optional
-		/// Write IP files on the disk
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="ips">
-		/// Optional
-		/// IPs to be validated
-		/// </param>
-		public void validate_ip(bool? save_ip = null, bool? quiet = null, bool? verbose = null, string ips = null)
+		/// <param name="save_ip">(Optional) Write IP files on the disk</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="ips">(Optional) IPs to be validated</param>
+		public TTCL validate_ip(bool? save_ip = null, bool? quiet = null, bool? verbose = null, string ips = null)
 		{
 			// TCL Syntax: validate_ip [-save_ip] [-quiet] [-verbose] [<ips>]
-			_tcl.Add(
-				new SimpleTCLCommand("validate_ip")
-					.Flag("save_ip", save_ip)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(ips)
-			);
+			_tcl.Entry(_builder.validate_ip(save_ip, quiet, verbose, ips));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write a tcl script on disk that will recreate a given IP.
@@ -1727,65 +1138,39 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1833
 		/// </summary>
-		/// <param name="force">
-		/// Optional
-		/// Flag to overwrite existing file.
-		/// </param>
+		/// <param name="force">(Optional) Flag to overwrite existing file.</param>
 		/// <param name="no_ip_version">
-		/// Optional
+		/// (Optional)
 		/// Flag to not include the IP version in the IP VLNV in create_ip
 		/// commands. NOTE - this may have implications if there are
 		/// major IP version changes.
 		/// </param>
 		/// <param name="ip_name">
-		/// Optional
+		/// (Optional)
 		/// Set the name of the IP. This argument is not supported for
 		/// multiple IP.
 		/// </param>
-		/// <param name="show_defaults">
-		/// Optional
-		/// Add a comment containing the default parameter values of
-		/// the IP.
-		/// </param>
-		/// <param name="multiple_files">
-		/// Optional
-		/// Flag to create a .tcl file for each IP supplied as an argument
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="show_defaults">(Optional) Add a comment containing the default parameter values of the IP.</param>
+		/// <param name="multiple_files">(Optional) Flag to create a .tcl file for each IP supplied as an argument</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">
-		/// Optional
+		/// (Optional)
 		/// IP(s) to be written to disk Values: IP instance(s) as returned
 		/// by 'get_ips <instance name>'
 		/// </param>
 		/// <param name="tcl_filename">
-		/// Optional
+		/// (Optional)
 		/// File path to the exported tcl file. If the path is a directory and
 		/// multiple IP are given as an argument, a file for each IP will
 		/// be created. Default: ./
 		/// </param>
 		/// <returns>IP TCL file</returns>
-		public void write_ip_tcl(bool? force = null, bool? no_ip_version = null, string ip_name = null, bool? show_defaults = null, bool? multiple_files = null, bool? quiet = null, bool? verbose = null, string objects = null, string tcl_filename = null)
+		public TTCL write_ip_tcl(bool? force = null, bool? no_ip_version = null, string ip_name = null, bool? show_defaults = null, bool? multiple_files = null, bool? quiet = null, bool? verbose = null, string objects = null, string tcl_filename = null)
 		{
 			// TCL Syntax: write_ip_tcl [-force] [-no_ip_version] [-ip_name <arg>] [-show_defaults] [-multiple_files] [-quiet] [-verbose] [<objects>] [<tcl_filename>...]
-			_tcl.Add(
-				new SimpleTCLCommand("write_ip_tcl")
-					.Flag("force", force)
-					.Flag("no_ip_version", no_ip_version)
-					.OptionalNamedString("ip_name", ip_name)
-					.Flag("show_defaults", show_defaults)
-					.Flag("multiple_files", multiple_files)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(objects)
-					.OptionalString(tcl_filename)
-			);
+			_tcl.Entry(_builder.write_ip_tcl(force, no_ip_version, ip_name, show_defaults, multiple_files, quiet, verbose, objects, tcl_filename));
+			return _tcl;
 		}
 		/// <summary>
 		/// Save peripheral component to the disk.
@@ -1799,27 +1184,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1838
 		/// </summary>
-		/// <param name="peripheral">
-		/// Required
-		/// Peripheral object
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void write_peripheral(string peripheral, bool? quiet = null, bool? verbose = null)
+		/// <param name="peripheral">(Required) Peripheral object</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL write_peripheral(string peripheral, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_peripheral [-quiet] [-verbose] <peripheral>
-			_tcl.Add(
-				new SimpleTCLCommand("write_peripheral")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(peripheral)
-			);
+			_tcl.Entry(_builder.write_peripheral(peripheral, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

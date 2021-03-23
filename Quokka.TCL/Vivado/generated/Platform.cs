@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class PlatformCommands
+	public partial class PlatformCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public PlatformCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public PlatformCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Open the Xilinx Shell Archive
@@ -29,33 +31,19 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1059
 		/// </summary>
 		/// <param name="file">
-		/// Required
+		/// (Required)
 		/// Xilinx Shell Archive file Values: A filename with alphanumeric
 		/// characters and .dsa/.xsa extension.
 		/// </param>
-		/// <param name="auto_upgrade">
-		/// Optional
-		/// Automatically upgrade the BD
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="auto_upgrade">(Optional) Automatically upgrade the BD</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The name of the shell file</returns>
-		public void open_hw_platform(string file, bool? auto_upgrade = null, bool? quiet = null, bool? verbose = null)
+		public TTCL open_hw_platform(string file, bool? auto_upgrade = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_hw_platform [-auto_upgrade] [-quiet] [-verbose] [<file>]
-			_tcl.Add(
-				new SimpleTCLCommand("open_hw_platform")
-					.Flag("auto_upgrade", auto_upgrade)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.open_hw_platform(file, auto_upgrade, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Validate the specified harware platform
@@ -73,28 +61,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1762
 		/// </summary>
-		/// <param name="verbose">
-		/// Optional
-		/// Dump verbose information
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// Xilinx Shell Archive file Values: Path to shell file.
-		/// </param>
+		/// <param name="verbose">(Optional) Dump verbose information</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="file">(Optional) Xilinx Shell Archive file Values: Path to shell file.</param>
 		/// <returns>The name of the shell file</returns>
-		public void validate_hw_platform(bool? verbose = null, bool? quiet = null, string file = null)
+		public TTCL validate_hw_platform(bool? verbose = null, bool? quiet = null, string file = null)
 		{
 			// TCL Syntax: validate_hw_platform [-verbose] [-quiet] [<file>]
-			_tcl.Add(
-				new SimpleTCLCommand("validate_hw_platform")
-					.Flag("verbose", verbose)
-					.Flag("quiet", quiet)
-					.OptionalString(file)
-			);
+			_tcl.Entry(_builder.validate_hw_platform(verbose, quiet, file));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write the Xilinx Shell Archive for the current design
@@ -118,54 +93,23 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1813
 		/// </summary>
 		/// <param name="file">
-		/// Required
+		/// (Required)
 		/// Device Support Archive file Values: A filename with
 		/// alphanumeric characters and .xsa extension.
 		/// </param>
-		/// <param name="@fixed">
-		/// Optional
-		/// Write fixed Shell.
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing Xilinx Shell Archive file
-		/// </param>
-		/// <param name="include_bit">
-		/// Optional
-		/// Include bit file(s) in the Shell.
-		/// </param>
-		/// <param name="include_emulation">
-		/// Optional
-		/// Generate and include hardware emulation support in the
-		/// Shell.
-		/// </param>
-		/// <param name="minimal">
-		/// Optional
-		/// Add only minimal files in the Shell.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="@fixed">(Optional) Write fixed Shell.</param>
+		/// <param name="force">(Optional) Overwrite existing Xilinx Shell Archive file</param>
+		/// <param name="include_bit">(Optional) Include bit file(s) in the Shell.</param>
+		/// <param name="include_emulation">(Optional) Generate and include hardware emulation support in the Shell.</param>
+		/// <param name="minimal">(Optional) Add only minimal files in the Shell.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The name of the Shell file</returns>
-		public void write_hw_platform(string file, bool? @fixed = null, bool? force = null, bool? include_bit = null, bool? include_emulation = null, bool? minimal = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_hw_platform(string file, bool? @fixed = null, bool? force = null, bool? include_bit = null, bool? include_emulation = null, bool? minimal = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_hw_platform [-fixed] [-force] [-include_bit] [-include_emulation] [-minimal] [-quiet] [-verbose] [<file>]
-			_tcl.Add(
-				new SimpleTCLCommand("write_hw_platform")
-					.Flag("fixed", @fixed)
-					.Flag("force", force)
-					.Flag("include_bit", include_bit)
-					.Flag("include_emulation", include_emulation)
-					.Flag("minimal", minimal)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_hw_platform(file, @fixed, force, include_bit, include_emulation, minimal, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write the unified JSON metadata file for the current design
@@ -182,28 +126,18 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1815
 		/// </summary>
 		/// <param name="file">
-		/// Required
+		/// (Required)
 		/// Unified JSON metadata file Values: A filename with
 		/// alphanumeric characters and .json extension.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The name of the unified JSON metadata file</returns>
-		public void write_hw_platform_metadata(string file, bool? quiet = null, bool? verbose = null)
+		public TTCL write_hw_platform_metadata(string file, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_hw_platform_metadata [-quiet] [-verbose] [<file>]
-			_tcl.Add(
-				new SimpleTCLCommand("write_hw_platform_metadata")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_hw_platform_metadata(file, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

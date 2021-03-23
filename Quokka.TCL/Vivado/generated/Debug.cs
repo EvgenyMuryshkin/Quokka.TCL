@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class DebugCommands
+	public partial class DebugCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public DebugCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public DebugCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Apply trigger at startup init values to an ILA core in the design
@@ -46,32 +48,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 102
 		/// </summary>
-		/// <param name="ila_cell">
-		/// Optional
-		/// Apply trigger settings to this ila cell
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// ILA startup trigger settings file
-		/// </param>
-		public void apply_hw_ila_trigger(string ila_cell = null, bool? quiet = null, bool? verbose = null, string file = null)
+		/// <param name="ila_cell">(Optional) Apply trigger settings to this ila cell</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="file">(Optional) ILA startup trigger settings file</param>
+		public TTCL apply_hw_ila_trigger(string ila_cell = null, bool? quiet = null, bool? verbose = null, string file = null)
 		{
 			// TCL Syntax: apply_hw_ila_trigger [-ila_cell <arg>] [-quiet] [-verbose] [<file>]
-			_tcl.Add(
-				new SimpleTCLCommand("apply_hw_ila_trigger")
-					.OptionalNamedString("ila_cell", ila_cell)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(file)
-			);
+			_tcl.Entry(_builder.apply_hw_ila_trigger(ila_cell, quiet, verbose, file));
+			return _tcl;
 		}
 		/// <summary>
 		/// Connect debug slave instances to the master instance. A valid master is a debug bridge or debug
@@ -105,35 +90,24 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 193
 		/// </summary>
 		/// <param name="master">
-		/// Required
+		/// (Required)
 		/// A valid debug bridge or debug hub instance configured in
 		/// "From BSCAN To DebugHUB" mode. Only one master
 		/// instance is allowed.
 		/// </param>
 		/// <param name="slaves">
-		/// Required
+		/// (Required)
 		/// List of valid slave instances. A valid slave instance is any of
 		/// the following debug cores (Ex: ILA, VIO, JTAG_to_AXI)
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>debug master and slave instances</returns>
-		public void connect_debug_cores(string master, string slaves, bool? quiet = null, bool? verbose = null)
+		public TTCL connect_debug_cores(string master, string slaves, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: connect_debug_cores -master <args> -slaves <args> [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("connect_debug_cores")
-					.RequiredNamedString("master", master)
-					.RequiredNamedString("slaves", slaves)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.connect_debug_cores(master, slaves, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Connect nets and pins to debug port channels
@@ -166,37 +140,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 196
 		/// </summary>
-		/// <param name="port">
-		/// Required
-		/// Debug port name
-		/// </param>
-		/// <param name="nets">
-		/// Required
-		/// List of nets or pins
-		/// </param>
-		/// <param name="channel_start_index">
-		/// Optional
-		/// Connect nets starting at channel index
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void connect_debug_port(string port, string nets, string channel_start_index = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="port">(Required) Debug port name</param>
+		/// <param name="nets">(Required) List of nets or pins</param>
+		/// <param name="channel_start_index">(Optional) Connect nets starting at channel index</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL connect_debug_port(string port, string nets, string channel_start_index = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: connect_debug_port [-channel_start_index <arg>] [-quiet] [-verbose] <port> <nets>...
-			_tcl.Add(
-				new SimpleTCLCommand("connect_debug_port")
-					.OptionalNamedString("channel_start_index", channel_start_index)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(port)
-					.RequiredString(nets)
-			);
+			_tcl.Entry(_builder.connect_debug_port(port, nets, channel_start_index, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new Integrated Logic Analyzer debug core
@@ -267,33 +220,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 247
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of the new debug core instance
-		/// </param>
-		/// <param name="type">
-		/// Required
-		/// Type of the new debug core
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Required) Name of the new debug core instance</param>
+		/// <param name="type">(Required) Type of the new debug core</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>new debug_core object</returns>
-		public void create_debug_core(string name, string type, bool? quiet = null, bool? verbose = null)
+		public TTCL create_debug_core(string name, string type, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_debug_core [-quiet] [-verbose] <name> <type>
-			_tcl.Add(
-				new SimpleTCLCommand("create_debug_core")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(type)
-			);
+			_tcl.Entry(_builder.create_debug_core(name, type, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new debug port
@@ -329,33 +265,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 250
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of the debug core instance
-		/// </param>
-		/// <param name="type">
-		/// Required
-		/// Type of the new debug port
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Required) Name of the debug core instance</param>
+		/// <param name="type">(Required) Type of the new debug port</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>new debug_port object</returns>
-		public void create_debug_port(string name, string type, bool? quiet = null, bool? verbose = null)
+		public TTCL create_debug_port(string name, string type, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_debug_port [-quiet] [-verbose] <name> <type>
-			_tcl.Add(
-				new SimpleTCLCommand("create_debug_port")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(type)
-			);
+			_tcl.Entry(_builder.create_debug_port(name, type, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Delete a debug core
@@ -374,27 +293,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 423
 		/// </summary>
-		/// <param name="cores">
-		/// Required
-		/// Debug cores to delete
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_debug_core(string cores, bool? quiet = null, bool? verbose = null)
+		/// <param name="cores">(Required) Debug cores to delete</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_debug_core(string cores, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_debug_core [-quiet] [-verbose] <cores>...
-			_tcl.Add(
-				new SimpleTCLCommand("delete_debug_core")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(cores)
-			);
+			_tcl.Entry(_builder.delete_debug_core(cores, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Delete debug port
@@ -418,27 +324,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 425
 		/// </summary>
-		/// <param name="ports">
-		/// Required
-		/// Debug ports to delete
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_debug_port(string ports, bool? quiet = null, bool? verbose = null)
+		/// <param name="ports">(Required) Debug ports to delete</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_debug_port(string ports, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_debug_port [-quiet] [-verbose] <ports>...
-			_tcl.Add(
-				new SimpleTCLCommand("delete_debug_port")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(ports)
-			);
+			_tcl.Entry(_builder.delete_debug_port(ports, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Disconnect nets and pins from debug port channels
@@ -465,32 +358,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 482
 		/// </summary>
-		/// <param name="port">
-		/// Required
-		/// Debug port name
-		/// </param>
-		/// <param name="channel_index">
-		/// Optional
-		/// Disconnect the net at channel index
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void disconnect_debug_port(string port, string channel_index = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="port">(Required) Debug port name</param>
+		/// <param name="channel_index">(Optional) Disconnect the net at channel index</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL disconnect_debug_port(string port, string channel_index = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: disconnect_debug_port [-channel_index <arg>] [-quiet] [-verbose] <port>
-			_tcl.Add(
-				new SimpleTCLCommand("disconnect_debug_port")
-					.OptionalNamedString("channel_index", channel_index)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(port)
-			);
+			_tcl.Entry(_builder.disconnect_debug_port(port, channel_index, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of debug cores in the current design
@@ -518,49 +394,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 653
 		/// </summary>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get cores of these debug ports or nets
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match debug cores against patterns Default: *
-		/// </param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) Get cores of these debug ports or nets</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match debug cores against patterns Default: *</param>
 		/// <returns>list of debug_core objects</returns>
-		public void get_debug_cores(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_debug_cores(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_debug_cores [-filter <arg>] [-of_objects <args>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_debug_cores")
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_debug_cores(filter, of_objects, regexp, nocase, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of debug ports in the current design
@@ -587,49 +433,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 656
 		/// </summary>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get ports of these debug cores
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match debug ports against patterns Default: *
-		/// </param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) Get ports of these debug cores</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match debug ports against patterns Default: *</param>
 		/// <returns>list of debug_port objects</returns>
-		public void get_debug_ports(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_debug_ports(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_debug_ports [-filter <arg>] [-of_objects <args>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_debug_ports")
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_debug_ports(filter, of_objects, regexp, nocase, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Implement debug core
@@ -657,27 +473,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 957
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="cores">
-		/// Optional
-		/// Debug core
-		/// </param>
-		public void implement_debug_core(bool? quiet = null, bool? verbose = null, string cores = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="cores">(Optional) Debug core</param>
+		public TTCL implement_debug_core(bool? quiet = null, bool? verbose = null, string cores = null)
 		{
 			// TCL Syntax: implement_debug_core [-quiet] [-verbose] [<cores>...]
-			_tcl.Add(
-				new SimpleTCLCommand("implement_debug_core")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(cores)
-			);
+			_tcl.Entry(_builder.implement_debug_core(quiet, verbose, cores));
+			return _tcl;
 		}
 		/// <summary>
 		/// Modify routed probe connections to debug cores.
@@ -707,27 +510,17 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1041
 		/// </summary>
 		/// <param name="probes">
-		/// Required
+		/// (Required)
 		/// List of probes to be connected: debug core pin, channel
 		/// index, and logical net for each probe connection.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void modify_debug_ports(string probes, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL modify_debug_ports(string probes, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: modify_debug_ports [-probes <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("modify_debug_ports")
-					.RequiredNamedString("probes", probes)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.modify_debug_ports(probes, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report details on debug cores
@@ -748,42 +541,20 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1307
 		/// </summary>
 		/// <param name="file">
-		/// Optional
+		/// (Optional)
 		/// Filename to output results to. (send output to console if -file
 		/// is not used)
 		/// </param>
-		/// <param name="append">
-		/// Optional
-		/// Append the results to file, don't overwrite the results file
-		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// Return report as a string
-		/// </param>
-		/// <param name="full_path">
-		/// Optional
-		/// Display full hierarchical net path in report
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void report_debug_core(string file = null, bool? append = null, bool? return_string = null, bool? full_path = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
+		/// <param name="return_string">(Optional) Return report as a string</param>
+		/// <param name="full_path">(Optional) Display full hierarchical net path in report</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL report_debug_core(string file = null, bool? append = null, bool? return_string = null, bool? full_path = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_debug_core [-file <arg>] [-append] [-return_string] [-full_path] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("report_debug_core")
-					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("full_path", full_path)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.report_debug_core(file, append, return_string, full_path, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Write debug probes to a file
@@ -805,43 +576,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1805
 		/// </summary>
-		/// <param name="file">
-		/// Required
-		/// Debug probes file name (default extension is .ltx)
-		/// </param>
-		/// <param name="cell">
-		/// Optional
-		/// Hierarchical name of the Reconfigurable Partition Cell
-		/// </param>
-		/// <param name="no_partial_ltxfile">
-		/// Optional
-		/// Do not generate partial LTX files
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="file">(Required) Debug probes file name (default extension is .ltx)</param>
+		/// <param name="cell">(Optional) Hierarchical name of the Reconfigurable Partition Cell</param>
+		/// <param name="no_partial_ltxfile">(Optional) Do not generate partial LTX files</param>
+		/// <param name="force">(Optional) Overwrite existing file</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>name of the output file</returns>
-		public void write_debug_probes(string file, string cell = null, bool? no_partial_ltxfile = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_debug_probes(string file, string cell = null, bool? no_partial_ltxfile = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_debug_probes [-cell <arg>] [-no_partial_ltxfile] [-force] [-quiet] [-verbose] <file>
-			_tcl.Add(
-				new SimpleTCLCommand("write_debug_probes")
-					.OptionalNamedString("cell", cell)
-					.Flag("no_partial_ltxfile", no_partial_ltxfile)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(file)
-			);
+			_tcl.Entry(_builder.write_debug_probes(file, cell, no_partial_ltxfile, force, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

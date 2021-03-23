@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class PartitionCommands
+	public partial class PartitionCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public PartitionCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public PartitionCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Create new PartitionDef
@@ -34,37 +36,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 316
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of the PartitionDef
-		/// </param>
-		/// <param name="module">
-		/// Required
-		/// Module name of the PartitionDef
-		/// </param>
-		/// <param name="library">
-		/// Optional
-		/// Library name of the module of PartitionDef
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_partition_def(string name, string module, string library = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Required) Name of the PartitionDef</param>
+		/// <param name="module">(Required) Module name of the PartitionDef</param>
+		/// <param name="library">(Optional) Library name of the module of PartitionDef</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_partition_def(string name, string module, string library = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_partition_def -name <arg> -module <arg> [-library <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("create_partition_def")
-					.RequiredNamedString("name", name)
-					.RequiredNamedString("module", module)
-					.OptionalNamedString("library", library)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.create_partition_def(name, module, library, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create new Configuration
@@ -91,44 +72,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 330
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of the Configuration
-		/// </param>
-		/// <param name="partitions">
-		/// Optional
-		/// List of partition instances and reconfig modules pairs
-		/// </param>
-		/// <param name="greyboxes">
-		/// Optional
-		/// List of instances to which buffers need to be inserted for all
-		/// ports
-		/// </param>
+		/// <param name="name">(Required) Name of the Configuration</param>
+		/// <param name="partitions">(Optional) List of partition instances and reconfig modules pairs</param>
+		/// <param name="greyboxes">(Optional) List of instances to which buffers need to be inserted for all ports</param>
 		/// <param name="use_netlist">
-		/// Optional
+		/// (Optional)
 		/// Use netlist for getting instances of partition_defs to creating
 		/// configurations
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_pr_configuration(string name, string partitions = null, string greyboxes = null, bool? use_netlist = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_pr_configuration(string name, string partitions = null, string greyboxes = null, bool? use_netlist = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_pr_configuration -name <arg> [-partitions <args>] [-greyboxes <args>] [-use_netlist] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("create_pr_configuration")
-					.RequiredNamedString("name", name)
-					.OptionalNamedString("partitions", partitions)
-					.OptionalNamedString("greyboxes", greyboxes)
-					.Flag("use_netlist", use_netlist)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.create_pr_configuration(name, partitions, greyboxes, use_netlist, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create new reconfig Module
@@ -158,55 +116,23 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 340
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of the Reconfig Module
-		/// </param>
-		/// <param name="partition_def">
-		/// Required
-		/// PartitionDef in which reconfig module will be created
-		/// </param>
-		/// <param name="top">
-		/// Optional
-		/// module name of the top module
-		/// </param>
-		/// <param name="gate_level">
-		/// Optional
-		/// Create Reconfig Module whcih alllows adding DCP/EDIF files
-		/// only
-		/// </param>
-		/// <param name="define_from">
-		/// Optional
-		/// Name of the module in the source fileset to be the top of
-		/// the blockset
-		/// </param>
+		/// <param name="name">(Required) Name of the Reconfig Module</param>
+		/// <param name="partition_def">(Required) PartitionDef in which reconfig module will be created</param>
+		/// <param name="top">(Optional) module name of the top module</param>
+		/// <param name="gate_level">(Optional) Create Reconfig Module whcih alllows adding DCP/EDIF files only</param>
+		/// <param name="define_from">(Optional) Name of the module in the source fileset to be the top of the blockset</param>
 		/// <param name="define_from_file">
-		/// Optional
+		/// (Optional)
 		/// full path of the top source file in the source fileset for which
 		/// reconfigurable module to be created.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void create_reconfig_module(string name, string partition_def, string top = null, bool? gate_level = null, string define_from = null, string define_from_file = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL create_reconfig_module(string name, string partition_def, string top = null, bool? gate_level = null, string define_from = null, string define_from_file = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_reconfig_module -name <arg> [-top <arg>] [-gate_level] -partition_def <arg> [-define_from <arg>] [-define_from_file <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("create_reconfig_module")
-					.RequiredNamedString("name", name)
-					.OptionalNamedString("top", top)
-					.Flag("gate_level", gate_level)
-					.RequiredNamedString("partition_def", partition_def)
-					.OptionalNamedString("define_from", define_from)
-					.OptionalNamedString("define_from_file", define_from_file)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.create_reconfig_module(name, partition_def, top, gate_level, define_from, define_from_file, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of PartitionDefs
@@ -229,29 +155,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 399
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="config">
-		/// Optional
-		/// Specify the PR configuration to be set as current (active);
-		/// optional
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="config">(Optional) Specify the PR configuration to be set as current (active); optional</param>
 		/// <returns>list of PartitionDef objects</returns>
-		public void current_pr_configuration(bool? quiet = null, bool? verbose = null, string config = null)
+		public TTCL current_pr_configuration(bool? quiet = null, bool? verbose = null, string config = null)
 		{
 			// TCL Syntax: current_pr_configuration [-quiet] [-verbose] [<config>...]
-			_tcl.Add(
-				new SimpleTCLCommand("current_pr_configuration")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(config)
-			);
+			_tcl.Entry(_builder.current_pr_configuration(quiet, verbose, config));
+			return _tcl;
 		}
 		/// <summary>
 		/// Delete existing PartitionDefs
@@ -265,33 +177,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 450
 		/// </summary>
-		/// <param name="partition_defs">
-		/// Required
-		/// List of PartitionDefs to delete
-		/// </param>
+		/// <param name="partition_defs">(Required) List of PartitionDefs to delete</param>
 		/// <param name="merge">
-		/// Optional
+		/// (Optional)
 		/// Fileset to merge files into from the default RM of deleted
 		/// Partition Def
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_partition_defs(string partition_defs, string merge = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_partition_defs(string partition_defs, string merge = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_partition_defs [-merge <arg>] [-quiet] [-verbose] <partition_defs>
-			_tcl.Add(
-				new SimpleTCLCommand("delete_partition_defs")
-					.OptionalNamedString("merge", merge)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(partition_defs)
-			);
+			_tcl.Entry(_builder.delete_partition_defs(partition_defs, merge, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Delete existing configurations
@@ -304,27 +202,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 456
 		/// </summary>
-		/// <param name="configs">
-		/// Required
-		/// List of Configurations to delete
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_pr_configurations(string configs, bool? quiet = null, bool? verbose = null)
+		/// <param name="configs">(Required) List of Configurations to delete</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_pr_configurations(string configs, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_pr_configurations [-quiet] [-verbose] <configs>
-			_tcl.Add(
-				new SimpleTCLCommand("delete_pr_configurations")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(configs)
-			);
+			_tcl.Entry(_builder.delete_pr_configurations(configs, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Delete existing reconfig modules
@@ -337,32 +222,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 460
 		/// </summary>
-		/// <param name="rms">
-		/// Required
-		/// List of Reconfig Modules to delete
-		/// </param>
-		/// <param name="merge">
-		/// Optional
-		/// Fileset to merge files into from the deleted Reconfig Module
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void delete_reconfig_modules(string rms, string merge = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="rms">(Required) List of Reconfig Modules to delete</param>
+		/// <param name="merge">(Optional) Fileset to merge files into from the deleted Reconfig Module</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_reconfig_modules(string rms, string merge = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_reconfig_modules [-merge <arg>] [-quiet] [-verbose] <rms>
-			_tcl.Add(
-				new SimpleTCLCommand("delete_reconfig_modules")
-					.OptionalNamedString("merge", merge)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(rms)
-			);
+			_tcl.Entry(_builder.delete_reconfig_modules(rms, merge, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of PartitionDefs
@@ -385,44 +253,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 840
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match partition definition names against patterns Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match partition definition names against patterns Default: *</param>
 		/// <returns>list of PartitionDef objects</returns>
-		public void get_partition_defs(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_partition_defs(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_partition_defs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_partition_defs")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_partition_defs(regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of partition configurations
@@ -442,45 +284,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 871
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match partition configuration names against patterns
-		/// Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match partition configuration names against patterns Default: *</param>
 		/// <returns>list of Configuration objects</returns>
-		public void get_pr_configurations(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_pr_configurations(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_pr_configurations [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_pr_configurations")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_pr_configurations(regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of ReconfigModules
@@ -494,51 +309,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 885
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get 'reconfig_module' objects of these types:
-		/// 'partition_def'.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match reconfigurable module names against patterns
-		/// Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) Get 'reconfig_module' objects of these types: 'partition_def'.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match reconfigurable module names against patterns Default: *</param>
 		/// <returns>list of ReconfigModule objects</returns>
-		public void get_reconfig_modules(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_reconfig_modules(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_reconfig_modules [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_reconfig_modules")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_reconfig_modules(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Creates minimum PR Configurations and Child Impl runs automatically based on the combination
@@ -562,46 +345,30 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1671
 		/// </summary>
-		/// <param name="partitions">
-		/// Optional
-		/// List of partition instances and reconfig modules pairs
-		/// </param>
+		/// <param name="partitions">(Optional) List of partition instances and reconfig modules pairs</param>
 		/// <param name="use_netlist">
-		/// Optional
+		/// (Optional)
 		/// Use netlist for getting instances of partition_defs to creating
 		/// PR Configurations
 		/// </param>
 		/// <param name="force">
-		/// Optional
+		/// (Optional)
 		/// Using force deletes active parent impl run's PR
 		/// Configuration and it's child runs and PR Configurations, and
 		/// then creates new PR Configurations and runs
 		/// </param>
 		/// <param name="run">
-		/// Optional
+		/// (Optional)
 		/// Parent impl run to which child impl runs and PR
 		/// Configurations need to be created
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void setup_pr_configurations(string partitions = null, bool? use_netlist = null, bool? force = null, string run = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL setup_pr_configurations(string partitions = null, bool? use_netlist = null, bool? force = null, string run = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: setup_pr_configurations [-partitions <args>] [-use_netlist] [-force] [-run <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("setup_pr_configurations")
-					.OptionalNamedString("partitions", partitions)
-					.Flag("use_netlist", use_netlist)
-					.Flag("force", force)
-					.OptionalNamedString("run", run)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.setup_pr_configurations(partitions, use_netlist, force, run, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

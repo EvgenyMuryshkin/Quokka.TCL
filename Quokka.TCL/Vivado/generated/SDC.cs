@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class SDCCommands
+	public partial class SDCCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public SDCCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public SDCCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Get a list of all clocks in the current design
@@ -32,23 +34,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 69
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of clock objects</returns>
-		public void all_clocks(bool? quiet = null, bool? verbose = null)
+		public TTCL all_clocks(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: all_clocks [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("all_clocks")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.all_clocks(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of all input ports in the current design
@@ -74,23 +67,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 85
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of port objects</returns>
-		public void all_inputs(bool? quiet = null, bool? verbose = null)
+		public TTCL all_inputs(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: all_inputs [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("all_inputs")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.all_inputs(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of all output ports in the current design
@@ -112,23 +96,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 89
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of port objects</returns>
-		public void all_outputs(bool? quiet = null, bool? verbose = null)
+		public TTCL all_outputs(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: all_outputs [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("all_outputs")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.all_outputs(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of register cells or pins in the current design
@@ -157,78 +132,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 93
 		/// </summary>
-		/// <param name="clock">
-		/// Optional
-		/// Consider registers of this clock
-		/// </param>
-		/// <param name="rise_clock">
-		/// Optional
-		/// Consider registers triggered by clock rising edge
-		/// </param>
-		/// <param name="fall_clock">
-		/// Optional
-		/// Consider registers triggered by clock falling edge
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// Return list of cells (default)
-		/// </param>
-		/// <param name="data_pins">
-		/// Optional
-		/// Return list of register data pins
-		/// </param>
-		/// <param name="clock_pins">
-		/// Optional
-		/// Return list of register clock pins
-		/// </param>
-		/// <param name="async_pins">
-		/// Optional
-		/// Return list of async preset/clear pins
-		/// </param>
-		/// <param name="output_pins">
-		/// Optional
-		/// Return list of register output pins
-		/// </param>
-		/// <param name="level_sensitive">
-		/// Optional
-		/// Only consider level-sensitive latches
-		/// </param>
-		/// <param name="edge_triggered">
-		/// Optional
-		/// Only consider edge-triggered flip-flops
-		/// </param>
-		/// <param name="no_hierarchy">
-		/// Optional
-		/// Only search the current instance
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="clock">(Optional) Consider registers of this clock</param>
+		/// <param name="rise_clock">(Optional) Consider registers triggered by clock rising edge</param>
+		/// <param name="fall_clock">(Optional) Consider registers triggered by clock falling edge</param>
+		/// <param name="cells">(Optional) Return list of cells (default)</param>
+		/// <param name="data_pins">(Optional) Return list of register data pins</param>
+		/// <param name="clock_pins">(Optional) Return list of register clock pins</param>
+		/// <param name="async_pins">(Optional) Return list of async preset/clear pins</param>
+		/// <param name="output_pins">(Optional) Return list of register output pins</param>
+		/// <param name="level_sensitive">(Optional) Only consider level-sensitive latches</param>
+		/// <param name="edge_triggered">(Optional) Only consider edge-triggered flip-flops</param>
+		/// <param name="no_hierarchy">(Optional) Only search the current instance</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of cell or pin objects</returns>
-		public void all_registers(string clock = null, string rise_clock = null, string fall_clock = null, bool? cells = null, bool? data_pins = null, bool? clock_pins = null, bool? async_pins = null, bool? output_pins = null, bool? level_sensitive = null, bool? edge_triggered = null, bool? no_hierarchy = null, bool? quiet = null, bool? verbose = null)
+		public TTCL all_registers(string clock = null, string rise_clock = null, string fall_clock = null, bool? cells = null, bool? data_pins = null, bool? clock_pins = null, bool? async_pins = null, bool? output_pins = null, bool? level_sensitive = null, bool? edge_triggered = null, bool? no_hierarchy = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: all_registers [-clock <args>] [-rise_clock <args>] [-fall_clock <args>] [-cells] [-data_pins] [-clock_pins] [-async_pins] [-output_pins] [-level_sensitive] [-edge_triggered] [-no_hierarchy] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("all_registers")
-					.OptionalNamedString("clock", clock)
-					.OptionalNamedString("rise_clock", rise_clock)
-					.OptionalNamedString("fall_clock", fall_clock)
-					.Flag("cells", cells)
-					.Flag("data_pins", data_pins)
-					.Flag("clock_pins", clock_pins)
-					.Flag("async_pins", async_pins)
-					.Flag("output_pins", output_pins)
-					.Flag("level_sensitive", level_sensitive)
-					.Flag("edge_triggered", edge_triggered)
-					.Flag("no_hierarchy", no_hierarchy)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.all_registers(clock, rise_clock, fall_clock, cells, data_pins, clock_pins, async_pins, output_pins, level_sensitive, edge_triggered, no_hierarchy, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a clock object
@@ -271,48 +193,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 241
 		/// </summary>
-		/// <param name="period">
-		/// Required
-		/// Clock period: Value > 0
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Clock name
-		/// </param>
-		/// <param name="waveform">
-		/// Optional
-		/// Clock edge specification
-		/// </param>
-		/// <param name="add">
-		/// Optional
-		/// Add to the existing clock in source_objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="objects">
-		/// Optional
-		/// List of clock source ports, pins or nets
-		/// </param>
+		/// <param name="period">(Required) Clock period: Value > 0</param>
+		/// <param name="name">(Optional) Clock name</param>
+		/// <param name="waveform">(Optional) Clock edge specification</param>
+		/// <param name="add">(Optional) Add to the existing clock in source_objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="objects">(Optional) List of clock source ports, pins or nets</param>
 		/// <returns>new clock object</returns>
-		public void create_clock(string period, string name = null, string waveform = null, bool? add = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public TTCL create_clock(string period, string name = null, string waveform = null, bool? add = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: create_clock -period <arg> [-name <arg>] [-waveform <args>] [-add] [-quiet] [-verbose] [<objects>]
-			_tcl.Add(
-				new SimpleTCLCommand("create_clock")
-					.RequiredNamedString("period", period)
-					.OptionalNamedString("name", name)
-					.OptionalNamedString("waveform", waveform)
-					.Flag("add", add)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(objects)
-			);
+			_tcl.Entry(_builder.create_clock(period, name, waveform, add, quiet, verbose, objects));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a generated clock object
@@ -373,83 +266,26 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 267
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// List of clock source ports, pins, or nets
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Generated clock name
-		/// </param>
-		/// <param name="source">
-		/// Optional
-		/// Master clock source object pin/port
-		/// </param>
-		/// <param name="edges">
-		/// Optional
-		/// Edge Specification
-		/// </param>
-		/// <param name="divide_by">
-		/// Optional
-		/// Period division factor: Value >= 1 Default: 1
-		/// </param>
-		/// <param name="multiply_by">
-		/// Optional
-		/// Period multiplication factor: Value >= 1 Default: 1
-		/// </param>
-		/// <param name="combinational">
-		/// Optional
-		/// Create a divide_by 1 clock through combinational logic
-		/// </param>
-		/// <param name="duty_cycle">
-		/// Optional
-		/// Duty cycle of clock period: Range: 0.0 to 100.0 Default: 50.0
-		/// </param>
-		/// <param name="invert">
-		/// Optional
-		/// Invert the signal
-		/// </param>
-		/// <param name="edge_shift">
-		/// Optional
-		/// Edge shift specification
-		/// </param>
-		/// <param name="add">
-		/// Optional
-		/// Add to the existing clock in source_objects
-		/// </param>
-		/// <param name="master_clock">
-		/// Optional
-		/// Use this clock if multiple clocks present at master pin
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="objects">(Required) List of clock source ports, pins, or nets</param>
+		/// <param name="name">(Optional) Generated clock name</param>
+		/// <param name="source">(Optional) Master clock source object pin/port</param>
+		/// <param name="edges">(Optional) Edge Specification</param>
+		/// <param name="divide_by">(Optional) Period division factor: Value >= 1 Default: 1</param>
+		/// <param name="multiply_by">(Optional) Period multiplication factor: Value >= 1 Default: 1</param>
+		/// <param name="combinational">(Optional) Create a divide_by 1 clock through combinational logic</param>
+		/// <param name="duty_cycle">(Optional) Duty cycle of clock period: Range: 0.0 to 100.0 Default: 50.0</param>
+		/// <param name="invert">(Optional) Invert the signal</param>
+		/// <param name="edge_shift">(Optional) Edge shift specification</param>
+		/// <param name="add">(Optional) Add to the existing clock in source_objects</param>
+		/// <param name="master_clock">(Optional) Use this clock if multiple clocks present at master pin</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>new clock object</returns>
-		public void create_generated_clock(string objects, string name = null, string source = null, string edges = null, string divide_by = null, string multiply_by = null, bool? combinational = null, string duty_cycle = null, bool? invert = null, string edge_shift = null, bool? add = null, string master_clock = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_generated_clock(string objects, string name = null, string source = null, string edges = null, string divide_by = null, string multiply_by = null, bool? combinational = null, string duty_cycle = null, bool? invert = null, string edge_shift = null, bool? add = null, string master_clock = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_generated_clock [-name <arg>] [-source <args>] [-edges <args>] [-divide_by <arg>] [-multiply_by <arg>] [-combinational] [-duty_cycle <arg>] [-invert] [-edge_shift <args>] [-add] [-master_clock <args>] [-quiet] [-verbose] <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("create_generated_clock")
-					.OptionalNamedString("name", name)
-					.OptionalNamedString("source", source)
-					.OptionalNamedString("edges", edges)
-					.OptionalNamedString("divide_by", divide_by)
-					.OptionalNamedString("multiply_by", multiply_by)
-					.Flag("combinational", combinational)
-					.OptionalNamedString("duty_cycle", duty_cycle)
-					.Flag("invert", invert)
-					.OptionalNamedString("edge_shift", edge_shift)
-					.Flag("add", add)
-					.OptionalNamedString("master_clock", master_clock)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.create_generated_clock(objects, name, source, edges, divide_by, multiply_by, combinational, duty_cycle, invert, edge_shift, add, master_clock, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set or get the current design.
@@ -469,28 +305,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 375
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="design">
-		/// Optional
-		/// Name of current design to be set
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="design">(Optional) Name of current design to be set</param>
 		/// <returns>design object</returns>
-		public void current_design(bool? quiet = null, bool? verbose = null, string design = null)
+		public TTCL current_design(bool? quiet = null, bool? verbose = null, string design = null)
 		{
 			// TCL Syntax: current_design [-quiet] [-verbose] [<design>]
-			_tcl.Add(
-				new SimpleTCLCommand("current_design")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(design)
-			);
+			_tcl.Entry(_builder.current_design(quiet, verbose, design));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set or get the current instance
@@ -533,28 +356,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 396
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="instance">
-		/// Optional
-		/// Name of instance
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="instance">(Optional) Name of instance</param>
 		/// <returns>instance name</returns>
-		public void current_instance(bool? quiet = null, bool? verbose = null, string instance = null)
+		public TTCL current_instance(bool? quiet = null, bool? verbose = null, string instance = null)
 		{
 			// TCL Syntax: current_instance [-quiet] [-verbose] [<instance>]
-			_tcl.Add(
-				new SimpleTCLCommand("current_instance")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(instance)
-			);
+			_tcl.Entry(_builder.current_instance(quiet, verbose, instance));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of cells in the current design
@@ -614,71 +424,31 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 635
 		/// </summary>
-		/// <param name="hsc">
-		/// Optional
-		/// Hierarchy separator Default: /
-		/// </param>
-		/// <param name="hierarchical">
-		/// Optional
-		/// Search level-by-level in current instance
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
+		/// <param name="hsc">(Optional) Hierarchy separator Default: /</param>
+		/// <param name="hierarchical">(Optional) Search level-by-level in current instance</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// Get cells of these pins, timing paths, nets, bels, clock
 		/// regions, sites, or drc violations
 		/// </param>
-		/// <param name="match_style">
-		/// Optional
-		/// Style of pattern matching Default: sdc Values: ucf, sdc
-		/// </param>
+		/// <param name="match_style">(Optional) Style of pattern matching Default: sdc Values: ucf, sdc</param>
 		/// <param name="include_replicated_objects">
-		/// Optional
+		/// (Optional)
 		/// Include replicated objects when searching for patterns. This
 		/// option is valid only when patterns is specified.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match cell names against patterns Default: *
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match cell names against patterns Default: *</param>
 		/// <returns>list of cell objects</returns>
-		public void get_cells(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_cells(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_cells [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_replicated_objects] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_cells")
-					.OptionalNamedString("hsc", hsc)
-					.Flag("hierarchical", hierarchical)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.OptionalNamedString("match_style", match_style)
-					.Flag("include_replicated_objects", include_replicated_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_cells(hsc, hierarchical, regexp, nocase, filter, of_objects, match_style, include_replicated_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of clocks in the current design
@@ -707,60 +477,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 647
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get clocks of these pins, nets, or cells
-		/// </param>
-		/// <param name="match_style">
-		/// Optional
-		/// Style of pattern matching, valid values are ucf, sdc Default:
-		/// sdc
-		/// </param>
-		/// <param name="include_generated_clocks">
-		/// Optional
-		/// Include auto-inferred/generated_clocks also.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match clock names against patterns Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) Get clocks of these pins, nets, or cells</param>
+		/// <param name="match_style">(Optional) Style of pattern matching, valid values are ucf, sdc Default: sdc</param>
+		/// <param name="include_generated_clocks">(Optional) Include auto-inferred/generated_clocks also.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match clock names against patterns Default: *</param>
 		/// <returns>list of clocks</returns>
-		public void get_clocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? include_generated_clocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_clocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? include_generated_clocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_clocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_generated_clocks] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_clocks")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.OptionalNamedString("match_style", match_style)
-					.Flag("include_generated_clocks", include_generated_clocks)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_clocks(regexp, nocase, filter, of_objects, match_style, include_generated_clocks, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get hierarchical separator character
@@ -776,22 +507,13 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 689
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void get_hierarchy_separator(bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL get_hierarchy_separator(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_hierarchy_separator [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("get_hierarchy_separator")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.get_hierarchy_separator(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of nets in the current design
@@ -841,85 +563,39 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 822
 		/// </summary>
-		/// <param name="hsc">
-		/// Optional
-		/// Hierarchy separator Default: /
-		/// </param>
-		/// <param name="hierarchical">
-		/// Optional
-		/// Search level-by-level in current instance
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
+		/// <param name="hsc">(Optional) Hierarchy separator Default: /</param>
+		/// <param name="hierarchical">(Optional) Search level-by-level in current instance</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// Get nets of these pins, ports, cells, timing paths or clocks,
 		/// drc violations
 		/// </param>
-		/// <param name="match_style">
-		/// Optional
-		/// Style of pattern matching, valid values are ucf, sdc Default:
-		/// sdc
-		/// </param>
+		/// <param name="match_style">(Optional) Style of pattern matching, valid values are ucf, sdc Default: sdc</param>
 		/// <param name="top_net_of_hierarchical_group">
-		/// Optional
+		/// (Optional)
 		/// Return net segment(s) which belong(s) to the high level of a
 		/// hierarchical net
 		/// </param>
-		/// <param name="segments">
-		/// Optional
-		/// Return all segments of a net across the hierarchy
-		/// </param>
+		/// <param name="segments">(Optional) Return all segments of a net across the hierarchy</param>
 		/// <param name="boundary_type">
-		/// Optional
+		/// (Optional)
 		/// Return net segment connected to a hierarchical pin which
 		/// resides at the same level as the pin (upper) or at the level
 		/// below (lower), or both. Valid values are : upper, lower, both
 		/// Default: upper
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match net names against patterns Default: *
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match net names against patterns Default: *</param>
 		/// <returns>list of net objects</returns>
-		public void get_nets(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? top_net_of_hierarchical_group = null, bool? segments = null, string boundary_type = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_nets(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? top_net_of_hierarchical_group = null, bool? segments = null, string boundary_type = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_nets [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-top_net_of_hierarchical_group] [-segments] [-boundary_type <arg>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_nets")
-					.OptionalNamedString("hsc", hsc)
-					.Flag("hierarchical", hierarchical)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.OptionalNamedString("match_style", match_style)
-					.Flag("top_net_of_hierarchical_group", top_net_of_hierarchical_group)
-					.Flag("segments", segments)
-					.OptionalNamedString("boundary_type", boundary_type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_nets(hsc, hierarchical, regexp, nocase, filter, of_objects, match_style, top_net_of_hierarchical_group, segments, boundary_type, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of pins in the current design
@@ -973,77 +649,28 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 851
 		/// </summary>
-		/// <param name="hsc">
-		/// Optional
-		/// Hierarchy separator Default: /
-		/// </param>
-		/// <param name="hierarchical">
-		/// Optional
-		/// Search level-by-level in current instance
-		/// </param>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="leaf">
-		/// Optional
-		/// Get leaf/global pins of nets with -of_objects
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get pins of these cells, nets, timing paths, clocks, drc
-		/// violations
-		/// </param>
-		/// <param name="match_style">
-		/// Optional
-		/// Style of pattern matching, valid values are ucf, sdc Default:
-		/// sdc
-		/// </param>
+		/// <param name="hsc">(Optional) Hierarchy separator Default: /</param>
+		/// <param name="hierarchical">(Optional) Search level-by-level in current instance</param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="leaf">(Optional) Get leaf/global pins of nets with -of_objects</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) Get pins of these cells, nets, timing paths, clocks, drc violations</param>
+		/// <param name="match_style">(Optional) Style of pattern matching, valid values are ucf, sdc Default: sdc</param>
 		/// <param name="include_replicated_objects">
-		/// Optional
+		/// (Optional)
 		/// Include replicated objects when searching for patterns. This
 		/// option is valid only when patterns is specified.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match pin names against patterns Default: *
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match pin names against patterns Default: *</param>
 		/// <returns>list of pin objects</returns>
-		public void get_pins(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, bool? leaf = null, string filter = null, string of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_pins(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, bool? leaf = null, string filter = null, string of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_pins [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-leaf] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_replicated_objects] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_pins")
-					.OptionalNamedString("hsc", hsc)
-					.Flag("hierarchical", hierarchical)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("leaf", leaf)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.OptionalNamedString("match_style", match_style)
-					.Flag("include_replicated_objects", include_replicated_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_pins(hsc, hierarchical, regexp, nocase, leaf, filter, of_objects, match_style, include_replicated_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of ports in the current design
@@ -1075,73 +702,35 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 866
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching (valid only when -regexp
-		/// specified)
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// Get ports of these nets, instances, sites, clocks, timing paths,
 		/// io standards, io banks, package pins, drc violations
 		/// </param>
-		/// <param name="match_style">
-		/// Optional
-		/// Style of pattern matching, valid values are ucf, sdc Default:
-		/// sdc
-		/// </param>
+		/// <param name="match_style">(Optional) Style of pattern matching, valid values are ucf, sdc Default: sdc</param>
 		/// <param name="scoped_to_current_instance">
-		/// Optional
+		/// (Optional)
 		/// Match patterns on instance pins specified using current
 		/// instance, and then find top level connected ports.
 		/// </param>
-		/// <param name="no_traverse">
-		/// Optional
-		/// Do not traverse to find top level terminals.
-		/// </param>
+		/// <param name="no_traverse">(Optional) Do not traverse to find top level terminals.</param>
 		/// <param name="prop_thru_buffers">
-		/// Optional
+		/// (Optional)
 		/// Allow propagate through buffers when traversing to find
 		/// top level terminals connected to pins of scoped instance.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match port names against patterns Default: *
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match port names against patterns Default: *</param>
 		/// <returns>list of port objects</returns>
-		public void get_ports(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? scoped_to_current_instance = null, bool? no_traverse = null, bool? prop_thru_buffers = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_ports(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? scoped_to_current_instance = null, bool? no_traverse = null, bool? prop_thru_buffers = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_ports [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-scoped_to_current_instance] [-no_traverse] [-prop_thru_buffers] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_ports")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.OptionalNamedString("match_style", match_style)
-					.Flag("scoped_to_current_instance", scoped_to_current_instance)
-					.Flag("no_traverse", no_traverse)
-					.Flag("prop_thru_buffers", prop_thru_buffers)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_ports(regexp, nocase, filter, of_objects, match_style, scoped_to_current_instance, no_traverse, prop_thru_buffers, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Groups paths for cost function calculations
@@ -1181,52 +770,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 948
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// The name of group, can be multiple names
-		/// </param>
-		/// <param name="weight">
-		/// Optional
-		/// Cost function Weight, Valid values are 1, 2 Default: 1.0
-		/// </param>
-		/// <param name="@default">
-		/// Optional
-		/// Restore path to its default group
-		/// </param>
-		/// <param name="from">
-		/// Optional
-		/// Filter by paths starting at these path startpoints
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// Filter by paths terminating at these path endpoints
-		/// </param>
-		/// <param name="through">
-		/// Optional
-		/// Consider paths through pins, cells or nets
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void group_path(string name = null, string weight = null, bool? @default = null, string from = null, string to = null, string through = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Optional) The name of group, can be multiple names</param>
+		/// <param name="weight">(Optional) Cost function Weight, Valid values are 1, 2 Default: 1.0</param>
+		/// <param name="@default">(Optional) Restore path to its default group</param>
+		/// <param name="from">(Optional) Filter by paths starting at these path startpoints</param>
+		/// <param name="to">(Optional) Filter by paths terminating at these path endpoints</param>
+		/// <param name="through">(Optional) Consider paths through pins, cells or nets</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL group_path(string name = null, string weight = null, bool? @default = null, string from = null, string to = null, string through = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: group_path [-name <args>] [-weight <arg>] [-default] [-from <args>] [-to <args>] [-through <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("group_path")
-					.OptionalNamedString("name", name)
-					.OptionalNamedString("weight", weight)
-					.Flag("default", @default)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("through", through)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.group_path(name, weight, @default, from, to, through, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Specify that an input is 1, 0, rising or falling
@@ -1253,32 +809,18 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1563
 		/// </summary>
 		/// <param name="value">
-		/// Required
+		/// (Required)
 		/// Logic value on the pin: Values: 0, 1, rising, falling, zero, one,
 		/// rise, fall
 		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// List of ports or pins
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_case_analysis(string value, string objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="objects">(Required) List of ports or pins</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_case_analysis(string value, string objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_case_analysis [-quiet] [-verbose] <value> <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("set_case_analysis")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(value)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.set_case_analysis(value, objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set exclusive or asynchronous clock groups
@@ -1319,47 +861,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1565
 		/// </summary>
-		/// <param name="name">
-		/// Optional
-		/// Name for clock grouping
-		/// </param>
-		/// <param name="logically_exclusive">
-		/// Optional
-		/// Specify logically exclusive clock groups
-		/// </param>
-		/// <param name="physically_exclusive">
-		/// Optional
-		/// Specify physically exclusive clock groups
-		/// </param>
-		/// <param name="asynchronous">
-		/// Optional
-		/// Specify asynchronous clock groups
-		/// </param>
-		/// <param name="group">
-		/// Optional
-		/// Clocks List
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_clock_groups(string name = null, bool? logically_exclusive = null, bool? physically_exclusive = null, bool? asynchronous = null, string group = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="name">(Optional) Name for clock grouping</param>
+		/// <param name="logically_exclusive">(Optional) Specify logically exclusive clock groups</param>
+		/// <param name="physically_exclusive">(Optional) Specify physically exclusive clock groups</param>
+		/// <param name="asynchronous">(Optional) Specify asynchronous clock groups</param>
+		/// <param name="group">(Optional) Clocks List</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_clock_groups(string name = null, bool? logically_exclusive = null, bool? physically_exclusive = null, bool? asynchronous = null, string group = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_clock_groups [-name <arg>] [-logically_exclusive] [-physically_exclusive] [-asynchronous] [-group <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("set_clock_groups")
-					.OptionalNamedString("name", name)
-					.Flag("logically_exclusive", logically_exclusive)
-					.Flag("physically_exclusive", physically_exclusive)
-					.Flag("asynchronous", asynchronous)
-					.OptionalNamedString("group", group)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.set_clock_groups(name, logically_exclusive, physically_exclusive, asynchronous, group, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Capture actual or predicted clock latency
@@ -1382,72 +895,23 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1568
 		/// </summary>
-		/// <param name="latency">
-		/// Required
-		/// Latency value
-		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// List of clocks, ports or pins
-		/// </param>
-		/// <param name="clock">
-		/// Optional
-		/// List of relative clocks
-		/// </param>
-		/// <param name="rise">
-		/// Optional
-		/// Specify clock rise latency
-		/// </param>
-		/// <param name="fall">
-		/// Optional
-		/// Specify clock fall latency
-		/// </param>
-		/// <param name="min">
-		/// Optional
-		/// Specify clock rise and fall min condition latency
-		/// </param>
-		/// <param name="max">
-		/// Optional
-		/// Specify clock rise and fall max condition latency
-		/// </param>
-		/// <param name="source">
-		/// Optional
-		/// Specify clock rise and fall source latency
-		/// </param>
-		/// <param name="late">
-		/// Optional
-		/// Specify clock rise and fall late source latency
-		/// </param>
-		/// <param name="early">
-		/// Optional
-		/// Specify clock rise and fall early source latency
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_clock_latency(string latency, string objects, string clock = null, bool? rise = null, bool? fall = null, bool? min = null, bool? max = null, bool? source = null, bool? late = null, bool? early = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="latency">(Required) Latency value</param>
+		/// <param name="objects">(Required) List of clocks, ports or pins</param>
+		/// <param name="clock">(Optional) List of relative clocks</param>
+		/// <param name="rise">(Optional) Specify clock rise latency</param>
+		/// <param name="fall">(Optional) Specify clock fall latency</param>
+		/// <param name="min">(Optional) Specify clock rise and fall min condition latency</param>
+		/// <param name="max">(Optional) Specify clock rise and fall max condition latency</param>
+		/// <param name="source">(Optional) Specify clock rise and fall source latency</param>
+		/// <param name="late">(Optional) Specify clock rise and fall late source latency</param>
+		/// <param name="early">(Optional) Specify clock rise and fall early source latency</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_clock_latency(string latency, string objects, string clock = null, bool? rise = null, bool? fall = null, bool? min = null, bool? max = null, bool? source = null, bool? late = null, bool? early = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_clock_latency [-clock <args>] [-rise] [-fall] [-min] [-max] [-source] [-late] [-early] [-quiet] [-verbose] <latency> <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("set_clock_latency")
-					.OptionalNamedString("clock", clock)
-					.Flag("rise", rise)
-					.Flag("fall", fall)
-					.Flag("min", min)
-					.Flag("max", max)
-					.Flag("source", source)
-					.Flag("late", late)
-					.Flag("early", early)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(latency)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.set_clock_latency(latency, objects, clock, rise, fall, min, max, source, late, early, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set clock sense on ports or pins
@@ -1468,47 +932,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1571
 		/// </summary>
-		/// <param name="pins">
-		/// Required
-		/// List of port and/or pins
-		/// </param>
-		/// <param name="positive">
-		/// Optional
-		/// Specify positive unate (non_inverting) clock sense
-		/// </param>
-		/// <param name="negative">
-		/// Optional
-		/// Specify negative unate (inverting) clock sense
-		/// </param>
-		/// <param name="stop_propagation">
-		/// Optional
-		/// Stop clock propagation from specified pins
-		/// </param>
-		/// <param name="clocks">
-		/// Optional
-		/// List of clocks
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_clock_sense(string pins, bool? positive = null, bool? negative = null, bool? stop_propagation = null, string clocks = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="pins">(Required) List of port and/or pins</param>
+		/// <param name="positive">(Optional) Specify positive unate (non_inverting) clock sense</param>
+		/// <param name="negative">(Optional) Specify negative unate (inverting) clock sense</param>
+		/// <param name="stop_propagation">(Optional) Stop clock propagation from specified pins</param>
+		/// <param name="clocks">(Optional) List of clocks</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_clock_sense(string pins, bool? positive = null, bool? negative = null, bool? stop_propagation = null, string clocks = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_clock_sense [-positive] [-negative] [-stop_propagation] [-clocks <args>] [-quiet] [-verbose] <pins>
-			_tcl.Add(
-				new SimpleTCLCommand("set_clock_sense")
-					.Flag("positive", positive)
-					.Flag("negative", negative)
-					.Flag("stop_propagation", stop_propagation)
-					.OptionalNamedString("clocks", clocks)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(pins)
-			);
+			_tcl.Entry(_builder.set_clock_sense(pins, positive, negative, stop_propagation, clocks, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// set clock uncertainty
@@ -1560,74 +995,23 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1573
 		/// </summary>
-		/// <param name="uncertainty">
-		/// Required
-		/// Uncertainty of clock network
-		/// </param>
-		/// <param name="setup">
-		/// Optional
-		/// Specify clock uncertainty for setup checks
-		/// </param>
-		/// <param name="hold">
-		/// Optional
-		/// Specify clock uncertainty for hold checks
-		/// </param>
-		/// <param name="from">
-		/// Optional
-		/// Specify inter-clock uncertainty source clock
-		/// </param>
-		/// <param name="rise_from">
-		/// Optional
-		/// Specify inter-clock uncertainty source clock with rising edge
-		/// </param>
-		/// <param name="fall_from">
-		/// Optional
-		/// Specify inter-clock uncertainty source clock with falling edge
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// Specify inter-clock uncertainty destination clock
-		/// </param>
-		/// <param name="rise_to">
-		/// Optional
-		/// Specify inter-clock uncertainty destination clock with rising
-		/// edge
-		/// </param>
-		/// <param name="fall_to">
-		/// Optional
-		/// Specify inter-clock uncertainty destination clock with falling
-		/// edge
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="objects">
-		/// Optional
-		/// List of clocks, ports or pins
-		/// </param>
-		public void set_clock_uncertainty(string uncertainty, bool? setup = null, bool? hold = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		/// <param name="uncertainty">(Required) Uncertainty of clock network</param>
+		/// <param name="setup">(Optional) Specify clock uncertainty for setup checks</param>
+		/// <param name="hold">(Optional) Specify clock uncertainty for hold checks</param>
+		/// <param name="from">(Optional) Specify inter-clock uncertainty source clock</param>
+		/// <param name="rise_from">(Optional) Specify inter-clock uncertainty source clock with rising edge</param>
+		/// <param name="fall_from">(Optional) Specify inter-clock uncertainty source clock with falling edge</param>
+		/// <param name="to">(Optional) Specify inter-clock uncertainty destination clock</param>
+		/// <param name="rise_to">(Optional) Specify inter-clock uncertainty destination clock with rising edge</param>
+		/// <param name="fall_to">(Optional) Specify inter-clock uncertainty destination clock with falling edge</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="objects">(Optional) List of clocks, ports or pins</param>
+		public TTCL set_clock_uncertainty(string uncertainty, bool? setup = null, bool? hold = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: set_clock_uncertainty [-setup] [-hold] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-quiet] [-verbose] <uncertainty> [<objects>]
-			_tcl.Add(
-				new SimpleTCLCommand("set_clock_uncertainty")
-					.Flag("setup", setup)
-					.Flag("hold", hold)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(uncertainty)
-					.OptionalString(objects)
-			);
+			_tcl.Entry(_builder.set_clock_uncertainty(uncertainty, setup, hold, from, rise_from, fall_from, to, rise_to, fall_to, quiet, verbose, objects));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create data to data checks
@@ -1657,72 +1041,23 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1576
 		/// </summary>
-		/// <param name="value">
-		/// Required
-		/// Setup or hold time of the defined checks
-		/// </param>
-		/// <param name="from">
-		/// Optional
-		/// From pin/port of data to data check
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// To pin/port of the data to data check
-		/// </param>
-		/// <param name="rise_from">
-		/// Optional
-		/// Rise from pin/port of data to data check
-		/// </param>
-		/// <param name="fall_from">
-		/// Optional
-		/// Fall from pin/port of data to data check
-		/// </param>
-		/// <param name="rise_to">
-		/// Optional
-		/// Rise to pin/port of data to data check
-		/// </param>
-		/// <param name="fall_to">
-		/// Optional
-		/// Fall to pin/port of data to data check
-		/// </param>
-		/// <param name="setup">
-		/// Optional
-		/// Specify data check setup time
-		/// </param>
-		/// <param name="hold">
-		/// Optional
-		/// Specify data check hold time
-		/// </param>
-		/// <param name="clock">
-		/// Optional
-		/// Specify the clock domain at related pin/port of the checks
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_data_check(string value, string from = null, string to = null, string rise_from = null, string fall_from = null, string rise_to = null, string fall_to = null, bool? setup = null, bool? hold = null, string clock = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="value">(Required) Setup or hold time of the defined checks</param>
+		/// <param name="from">(Optional) From pin/port of data to data check</param>
+		/// <param name="to">(Optional) To pin/port of the data to data check</param>
+		/// <param name="rise_from">(Optional) Rise from pin/port of data to data check</param>
+		/// <param name="fall_from">(Optional) Fall from pin/port of data to data check</param>
+		/// <param name="rise_to">(Optional) Rise to pin/port of data to data check</param>
+		/// <param name="fall_to">(Optional) Fall to pin/port of data to data check</param>
+		/// <param name="setup">(Optional) Specify data check setup time</param>
+		/// <param name="hold">(Optional) Specify data check hold time</param>
+		/// <param name="clock">(Optional) Specify the clock domain at related pin/port of the checks</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_data_check(string value, string from = null, string to = null, string rise_from = null, string fall_from = null, string rise_to = null, string fall_to = null, bool? setup = null, bool? hold = null, string clock = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_data_check [-from <args>] [-to <args>] [-rise_from <args>] [-fall_from <args>] [-rise_to <args>] [-fall_to <args>] [-setup] [-hold] [-clock <args>] [-quiet] [-verbose] <value>
-			_tcl.Add(
-				new SimpleTCLCommand("set_data_check")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
-					.Flag("setup", setup)
-					.Flag("hold", hold)
-					.OptionalNamedString("clock", clock)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(value)
-			);
+			_tcl.Entry(_builder.set_data_check(value, from, to, rise_from, fall_from, rise_to, fall_to, setup, hold, clock, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Disable timing arcs
@@ -1756,37 +1091,19 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1581
 		/// </summary>
 		/// <param name="objects">
-		/// Required
+		/// (Required)
 		/// List of cells or pins, ports, lib-cells, lib-pins, libcell/cell
 		/// timing-arcs
 		/// </param>
-		/// <param name="from">
-		/// Optional
-		/// From pin on cell
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// To pin on cell
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_disable_timing(string objects, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="from">(Optional) From pin on cell</param>
+		/// <param name="to">(Optional) To pin on cell</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_disable_timing(string objects, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_disable_timing [-from <arg>] [-to <arg>] [-quiet] [-verbose] <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("set_disable_timing")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.set_disable_timing(objects, from, to, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Define false path
@@ -1808,94 +1125,27 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1585
 		/// </summary>
-		/// <param name="setup">
-		/// Optional
-		/// Eliminate setup timing analysis for paths
-		/// </param>
-		/// <param name="hold">
-		/// Optional
-		/// Eliminate hold timing analysis for paths
-		/// </param>
-		/// <param name="rise">
-		/// Optional
-		/// Eliminate only rising delays for the defined paths
-		/// </param>
-		/// <param name="fall">
-		/// Optional
-		/// Eliminate only falling delays for the defined paths
-		/// </param>
-		/// <param name="reset_path">
-		/// Optional
-		/// Reset this path before setting false path
-		/// </param>
-		/// <param name="from">
-		/// Optional
-		/// List of path startpoints or clocks
-		/// </param>
-		/// <param name="rise_from">
-		/// Optional
-		/// Apply to paths rising from the list of startpoints or clocks
-		/// </param>
-		/// <param name="fall_from">
-		/// Optional
-		/// Apply to paths falling from the list of startpoints or clocks
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// List of path endpoints or clocks
-		/// </param>
-		/// <param name="rise_to">
-		/// Optional
-		/// Apply to paths with rise transition at the list of endpoints or
-		/// clocks
-		/// </param>
-		/// <param name="fall_to">
-		/// Optional
-		/// Apply to paths with fall transition at the list of endpoints or
-		/// clocks
-		/// </param>
-		/// <param name="through">
-		/// Optional
-		/// List of through pins, cells or nets
-		/// </param>
-		/// <param name="rise_through">
-		/// Optional
-		/// Apply to paths rising through pins, cells or nets
-		/// </param>
-		/// <param name="fall_through">
-		/// Optional
-		/// Apply to paths falling through pins, cells or nets
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_false_path(bool? setup = null, bool? hold = null, bool? rise = null, bool? fall = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="setup">(Optional) Eliminate setup timing analysis for paths</param>
+		/// <param name="hold">(Optional) Eliminate hold timing analysis for paths</param>
+		/// <param name="rise">(Optional) Eliminate only rising delays for the defined paths</param>
+		/// <param name="fall">(Optional) Eliminate only falling delays for the defined paths</param>
+		/// <param name="reset_path">(Optional) Reset this path before setting false path</param>
+		/// <param name="from">(Optional) List of path startpoints or clocks</param>
+		/// <param name="rise_from">(Optional) Apply to paths rising from the list of startpoints or clocks</param>
+		/// <param name="fall_from">(Optional) Apply to paths falling from the list of startpoints or clocks</param>
+		/// <param name="to">(Optional) List of path endpoints or clocks</param>
+		/// <param name="rise_to">(Optional) Apply to paths with rise transition at the list of endpoints or clocks</param>
+		/// <param name="fall_to">(Optional) Apply to paths with fall transition at the list of endpoints or clocks</param>
+		/// <param name="through">(Optional) List of through pins, cells or nets</param>
+		/// <param name="rise_through">(Optional) Apply to paths rising through pins, cells or nets</param>
+		/// <param name="fall_through">(Optional) Apply to paths falling through pins, cells or nets</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_false_path(bool? setup = null, bool? hold = null, bool? rise = null, bool? fall = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_false_path [-setup] [-hold] [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("set_false_path")
-					.Flag("setup", setup)
-					.Flag("hold", hold)
-					.Flag("rise", rise)
-					.Flag("fall", fall)
-					.Flag("reset_path", reset_path)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
-					.OptionalNamedString("through", through)
-					.OptionalNamedString("rise_through", rise_through)
-					.OptionalNamedString("fall_through", fall_through)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.set_false_path(setup, hold, rise, fall, reset_path, from, rise_from, fall_from, to, rise_to, fall_to, through, rise_through, fall_through, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set hierarchical separator character
@@ -1913,27 +1163,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1588
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="separator">
-		/// Optional
-		/// Hierarchy separator character Default: /
-		/// </param>
-		public void set_hierarchy_separator(bool? quiet = null, bool? verbose = null, string separator = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="separator">(Optional) Hierarchy separator character Default: /</param>
+		public TTCL set_hierarchy_separator(bool? quiet = null, bool? verbose = null, string separator = null)
 		{
 			// TCL Syntax: set_hierarchy_separator [-quiet] [-verbose] [<separator>]
-			_tcl.Add(
-				new SimpleTCLCommand("set_hierarchy_separator")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(separator)
-			);
+			_tcl.Entry(_builder.set_hierarchy_separator(quiet, verbose, separator));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set input delay on ports
@@ -1990,82 +1227,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1593
 		/// </summary>
-		/// <param name="delay">
-		/// Required
-		/// Delay value
-		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// List of ports
-		/// </param>
-		/// <param name="clock">
-		/// Optional
-		/// Relative clock
-		/// </param>
-		/// <param name="reference_pin">
-		/// Optional
-		/// Relative pin or port
-		/// </param>
-		/// <param name="clock_fall">
-		/// Optional
-		/// Delay is relative to falling edge of clock
-		/// </param>
-		/// <param name="rise">
-		/// Optional
-		/// Specifies rising delay
-		/// </param>
-		/// <param name="fall">
-		/// Optional
-		/// Specifies falling delay
-		/// </param>
-		/// <param name="max">
-		/// Optional
-		/// Specifies maximum delay
-		/// </param>
-		/// <param name="min">
-		/// Optional
-		/// Specifies minimum delay
-		/// </param>
-		/// <param name="add_delay">
-		/// Optional
-		/// Don't remove existing input delay
-		/// </param>
-		/// <param name="network_latency_included">
-		/// Optional
-		/// Specifies network latency of clock already included
-		/// </param>
-		/// <param name="source_latency_included">
-		/// Optional
-		/// Specifies source latency of clock already included
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_input_delay(string delay, string objects, string clock = null, string reference_pin = null, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="delay">(Required) Delay value</param>
+		/// <param name="objects">(Required) List of ports</param>
+		/// <param name="clock">(Optional) Relative clock</param>
+		/// <param name="reference_pin">(Optional) Relative pin or port</param>
+		/// <param name="clock_fall">(Optional) Delay is relative to falling edge of clock</param>
+		/// <param name="rise">(Optional) Specifies rising delay</param>
+		/// <param name="fall">(Optional) Specifies falling delay</param>
+		/// <param name="max">(Optional) Specifies maximum delay</param>
+		/// <param name="min">(Optional) Specifies minimum delay</param>
+		/// <param name="add_delay">(Optional) Don't remove existing input delay</param>
+		/// <param name="network_latency_included">(Optional) Specifies network latency of clock already included</param>
+		/// <param name="source_latency_included">(Optional) Specifies source latency of clock already included</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_input_delay(string delay, string objects, string clock = null, string reference_pin = null, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_input_delay [-clock <args>] [-reference_pin <args>] [-clock_fall] [-rise] [-fall] [-max] [-min] [-add_delay] [-network_latency_included] [-source_latency_included] [-quiet] [-verbose] <delay> <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("set_input_delay")
-					.OptionalNamedString("clock", clock)
-					.OptionalNamedString("reference_pin", reference_pin)
-					.Flag("clock_fall", clock_fall)
-					.Flag("rise", rise)
-					.Flag("fall", fall)
-					.Flag("max", max)
-					.Flag("min", min)
-					.Flag("add_delay", add_delay)
-					.Flag("network_latency_included", network_latency_included)
-					.Flag("source_latency_included", source_latency_included)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(delay)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.set_input_delay(delay, objects, clock, reference_pin, clock_fall, rise, fall, max, min, add_delay, network_latency_included, source_latency_included, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set capacitance on ports and nets
@@ -2087,52 +1267,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1600
 		/// </summary>
-		/// <param name="capacitance">
-		/// Required
-		/// Capacitance value
-		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// List of ports or nets
-		/// </param>
-		/// <param name="rise">
-		/// Optional
-		/// Specify the rise capacitance value (for ports only)
-		/// </param>
-		/// <param name="fall">
-		/// Optional
-		/// Specify the fall capacitance value (for ports only)
-		/// </param>
-		/// <param name="max">
-		/// Optional
-		/// Specify the maximum capacitance value
-		/// </param>
-		/// <param name="min">
-		/// Optional
-		/// Specify the minimum capacitance value
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_load(string capacitance, string objects, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="capacitance">(Required) Capacitance value</param>
+		/// <param name="objects">(Required) List of ports or nets</param>
+		/// <param name="rise">(Optional) Specify the rise capacitance value (for ports only)</param>
+		/// <param name="fall">(Optional) Specify the fall capacitance value (for ports only)</param>
+		/// <param name="max">(Optional) Specify the maximum capacitance value</param>
+		/// <param name="min">(Optional) Specify the minimum capacitance value</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_load(string capacitance, string objects, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_load [-rise] [-fall] [-max] [-min] [-quiet] [-verbose] <capacitance> <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("set_load")
-					.Flag("rise", rise)
-					.Flag("fall", fall)
-					.Flag("max", max)
-					.Flag("min", min)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(capacitance)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.set_load(capacitance, objects, rise, fall, max, min, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Sets logic dc for port/pins
@@ -2149,27 +1296,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1602
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// List of ports or pins
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_logic_dc(string objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="objects">(Required) List of ports or pins</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_logic_dc(string objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_logic_dc [-quiet] [-verbose] <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("set_logic_dc")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.set_logic_dc(objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Sets logic one for port/pins
@@ -2190,27 +1324,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1604
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// List of ports or pins
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_logic_one(string objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="objects">(Required) List of ports or pins</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_logic_one(string objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_logic_one [-quiet] [-verbose] <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("set_logic_one")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.set_logic_one(objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Sets logic zero for port/pins
@@ -2227,27 +1348,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1608
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// List of ports or pins
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_logic_zero(string objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="objects">(Required) List of ports or pins</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_logic_zero(string objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_logic_zero [-quiet] [-verbose] <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("set_logic_zero")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.set_logic_zero(objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Specify maximum delay for timing paths
@@ -2288,94 +1396,27 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1610
 		/// </summary>
-		/// <param name="delay">
-		/// Required
-		/// Delay value
-		/// </param>
-		/// <param name="rise">
-		/// Optional
-		/// Delay value applies to rising path delays
-		/// </param>
-		/// <param name="fall">
-		/// Optional
-		/// Delay value applies to falling path delays
-		/// </param>
-		/// <param name="reset_path">
-		/// Optional
-		/// Reset this path before setting max delay
-		/// </param>
-		/// <param name="from">
-		/// Optional
-		/// List of path startpoints or clocks
-		/// </param>
-		/// <param name="rise_from">
-		/// Optional
-		/// Apply to paths rising from the list of startpoints or clocks
-		/// </param>
-		/// <param name="fall_from">
-		/// Optional
-		/// Apply to paths falling from the list of startpoints or clocks
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// List of path endpoints or clocks
-		/// </param>
-		/// <param name="rise_to">
-		/// Optional
-		/// Apply to paths with rise transition at the list of endpoints or
-		/// clocks
-		/// </param>
-		/// <param name="fall_to">
-		/// Optional
-		/// Apply to paths with fall transition at the list of endpoints or
-		/// clocks
-		/// </param>
-		/// <param name="through">
-		/// Optional
-		/// List of through pins, cells or nets
-		/// </param>
-		/// <param name="rise_through">
-		/// Optional
-		/// Apply to paths rising through pins, cells or nets
-		/// </param>
-		/// <param name="fall_through">
-		/// Optional
-		/// Apply to paths falling through pins, cells or nets
-		/// </param>
-		/// <param name="datapath_only">
-		/// Optional
-		/// Remove clock skew and jitter from calculation
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_max_delay(string delay, bool? rise = null, bool? fall = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? datapath_only = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="delay">(Required) Delay value</param>
+		/// <param name="rise">(Optional) Delay value applies to rising path delays</param>
+		/// <param name="fall">(Optional) Delay value applies to falling path delays</param>
+		/// <param name="reset_path">(Optional) Reset this path before setting max delay</param>
+		/// <param name="from">(Optional) List of path startpoints or clocks</param>
+		/// <param name="rise_from">(Optional) Apply to paths rising from the list of startpoints or clocks</param>
+		/// <param name="fall_from">(Optional) Apply to paths falling from the list of startpoints or clocks</param>
+		/// <param name="to">(Optional) List of path endpoints or clocks</param>
+		/// <param name="rise_to">(Optional) Apply to paths with rise transition at the list of endpoints or clocks</param>
+		/// <param name="fall_to">(Optional) Apply to paths with fall transition at the list of endpoints or clocks</param>
+		/// <param name="through">(Optional) List of through pins, cells or nets</param>
+		/// <param name="rise_through">(Optional) Apply to paths rising through pins, cells or nets</param>
+		/// <param name="fall_through">(Optional) Apply to paths falling through pins, cells or nets</param>
+		/// <param name="datapath_only">(Optional) Remove clock skew and jitter from calculation</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_max_delay(string delay, bool? rise = null, bool? fall = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? datapath_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_max_delay [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-datapath_only] [-quiet] [-verbose] <delay>
-			_tcl.Add(
-				new SimpleTCLCommand("set_max_delay")
-					.Flag("rise", rise)
-					.Flag("fall", fall)
-					.Flag("reset_path", reset_path)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
-					.OptionalNamedString("through", through)
-					.OptionalNamedString("rise_through", rise_through)
-					.OptionalNamedString("fall_through", fall_through)
-					.Flag("datapath_only", datapath_only)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(delay)
-			);
+			_tcl.Entry(_builder.set_max_delay(delay, rise, fall, reset_path, from, rise_from, fall_from, to, rise_to, fall_to, through, rise_through, fall_through, datapath_only, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Limit time borrowing for latches
@@ -2396,32 +1437,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1614
 		/// </summary>
-		/// <param name="delay">
-		/// Required
-		/// Delay value: Value >= 0
-		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// List of clocks, cells, data pins or clock pins
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_max_time_borrow(string delay, string objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="delay">(Required) Delay value: Value >= 0</param>
+		/// <param name="objects">(Required) List of clocks, cells, data pins or clock pins</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_max_time_borrow(string delay, string objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_max_time_borrow [-quiet] [-verbose] <delay> <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("set_max_time_borrow")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(delay)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.set_max_time_borrow(delay, objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Specify minimum delay for timing paths
@@ -2449,89 +1473,26 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1616
 		/// </summary>
-		/// <param name="delay">
-		/// Required
-		/// Delay value
-		/// </param>
-		/// <param name="rise">
-		/// Optional
-		/// Delay value applies to rising path delays
-		/// </param>
-		/// <param name="fall">
-		/// Optional
-		/// Delay value applies to falling path delays
-		/// </param>
-		/// <param name="reset_path">
-		/// Optional
-		/// Reset this path before setting min delay
-		/// </param>
-		/// <param name="from">
-		/// Optional
-		/// List of path startpoints or clocks
-		/// </param>
-		/// <param name="rise_from">
-		/// Optional
-		/// Apply to paths rising from the list of startpoints or clocks
-		/// </param>
-		/// <param name="fall_from">
-		/// Optional
-		/// Apply to paths falling from the list of startpoints or clocks
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// List of path endpoints or clocks
-		/// </param>
-		/// <param name="rise_to">
-		/// Optional
-		/// Apply to paths with rise transition at the list of endpoints or
-		/// clocks
-		/// </param>
-		/// <param name="fall_to">
-		/// Optional
-		/// Apply to paths with fall transition at the list of endpoints or
-		/// clocks
-		/// </param>
-		/// <param name="through">
-		/// Optional
-		/// List of through pins, cells or nets
-		/// </param>
-		/// <param name="rise_through">
-		/// Optional
-		/// Apply to paths rising through pins, cells or nets
-		/// </param>
-		/// <param name="fall_through">
-		/// Optional
-		/// Apply to paths falling through pins, cells or nets
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_min_delay(string delay, bool? rise = null, bool? fall = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="delay">(Required) Delay value</param>
+		/// <param name="rise">(Optional) Delay value applies to rising path delays</param>
+		/// <param name="fall">(Optional) Delay value applies to falling path delays</param>
+		/// <param name="reset_path">(Optional) Reset this path before setting min delay</param>
+		/// <param name="from">(Optional) List of path startpoints or clocks</param>
+		/// <param name="rise_from">(Optional) Apply to paths rising from the list of startpoints or clocks</param>
+		/// <param name="fall_from">(Optional) Apply to paths falling from the list of startpoints or clocks</param>
+		/// <param name="to">(Optional) List of path endpoints or clocks</param>
+		/// <param name="rise_to">(Optional) Apply to paths with rise transition at the list of endpoints or clocks</param>
+		/// <param name="fall_to">(Optional) Apply to paths with fall transition at the list of endpoints or clocks</param>
+		/// <param name="through">(Optional) List of through pins, cells or nets</param>
+		/// <param name="rise_through">(Optional) Apply to paths rising through pins, cells or nets</param>
+		/// <param name="fall_through">(Optional) Apply to paths falling through pins, cells or nets</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_min_delay(string delay, bool? rise = null, bool? fall = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_min_delay [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose] <delay>
-			_tcl.Add(
-				new SimpleTCLCommand("set_min_delay")
-					.Flag("rise", rise)
-					.Flag("fall", fall)
-					.Flag("reset_path", reset_path)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
-					.OptionalNamedString("through", through)
-					.OptionalNamedString("rise_through", rise_through)
-					.OptionalNamedString("fall_through", fall_through)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(delay)
-			);
+			_tcl.Entry(_builder.set_min_delay(delay, rise, fall, reset_path, from, rise_from, fall_from, to, rise_to, fall_to, through, rise_through, fall_through, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Define multicycle path
@@ -2586,109 +1547,30 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1625
 		/// </summary>
-		/// <param name="path_multiplier">
-		/// Required
-		/// Number of cycles
-		/// </param>
-		/// <param name="setup">
-		/// Optional
-		/// Only setup multiplier is set
-		/// </param>
-		/// <param name="hold">
-		/// Optional
-		/// Only hold multiplier is set
-		/// </param>
-		/// <param name="rise">
-		/// Optional
-		/// Multiplier valid for rising delays on path endpoint
-		/// </param>
-		/// <param name="fall">
-		/// Optional
-		/// Multiplier valid for falling delays on path endpoint
-		/// </param>
-		/// <param name="start">
-		/// Optional
-		/// Multiplier measured against path startpoint
-		/// </param>
-		/// <param name="end">
-		/// Optional
-		/// Multiplier measured against path endpoint
-		/// </param>
-		/// <param name="reset_path">
-		/// Optional
-		/// Reset this path before setting multicycle
-		/// </param>
-		/// <param name="from">
-		/// Optional
-		/// List of path startpoints or clocks
-		/// </param>
-		/// <param name="rise_from">
-		/// Optional
-		/// Apply to paths rising from the list of startpoints or clocks
-		/// </param>
-		/// <param name="fall_from">
-		/// Optional
-		/// Apply to paths falling from the list of startpoints or clocks
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// List of path endpoints or clocks
-		/// </param>
-		/// <param name="rise_to">
-		/// Optional
-		/// Apply to paths with rise transition at the list of endpoints or
-		/// clocks
-		/// </param>
-		/// <param name="fall_to">
-		/// Optional
-		/// Apply to paths with fall transition at the list of endpoints or
-		/// clocks
-		/// </param>
-		/// <param name="through">
-		/// Optional
-		/// List of through pins, cells or nets
-		/// </param>
-		/// <param name="rise_through">
-		/// Optional
-		/// Apply to paths rising through pins, cells or nets
-		/// </param>
-		/// <param name="fall_through">
-		/// Optional
-		/// Apply to paths falling through pins, cells or nets
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_multicycle_path(string path_multiplier, bool? setup = null, bool? hold = null, bool? rise = null, bool? fall = null, bool? start = null, bool? end = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="path_multiplier">(Required) Number of cycles</param>
+		/// <param name="setup">(Optional) Only setup multiplier is set</param>
+		/// <param name="hold">(Optional) Only hold multiplier is set</param>
+		/// <param name="rise">(Optional) Multiplier valid for rising delays on path endpoint</param>
+		/// <param name="fall">(Optional) Multiplier valid for falling delays on path endpoint</param>
+		/// <param name="start">(Optional) Multiplier measured against path startpoint</param>
+		/// <param name="end">(Optional) Multiplier measured against path endpoint</param>
+		/// <param name="reset_path">(Optional) Reset this path before setting multicycle</param>
+		/// <param name="from">(Optional) List of path startpoints or clocks</param>
+		/// <param name="rise_from">(Optional) Apply to paths rising from the list of startpoints or clocks</param>
+		/// <param name="fall_from">(Optional) Apply to paths falling from the list of startpoints or clocks</param>
+		/// <param name="to">(Optional) List of path endpoints or clocks</param>
+		/// <param name="rise_to">(Optional) Apply to paths with rise transition at the list of endpoints or clocks</param>
+		/// <param name="fall_to">(Optional) Apply to paths with fall transition at the list of endpoints or clocks</param>
+		/// <param name="through">(Optional) List of through pins, cells or nets</param>
+		/// <param name="rise_through">(Optional) Apply to paths rising through pins, cells or nets</param>
+		/// <param name="fall_through">(Optional) Apply to paths falling through pins, cells or nets</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_multicycle_path(string path_multiplier, bool? setup = null, bool? hold = null, bool? rise = null, bool? fall = null, bool? start = null, bool? end = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_multicycle_path [-setup] [-hold] [-rise] [-fall] [-start] [-end] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose] <path_multiplier>
-			_tcl.Add(
-				new SimpleTCLCommand("set_multicycle_path")
-					.Flag("setup", setup)
-					.Flag("hold", hold)
-					.Flag("rise", rise)
-					.Flag("fall", fall)
-					.Flag("start", start)
-					.Flag("end", end)
-					.Flag("reset_path", reset_path)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
-					.OptionalNamedString("through", through)
-					.OptionalNamedString("rise_through", rise_through)
-					.OptionalNamedString("fall_through", fall_through)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(path_multiplier)
-			);
+			_tcl.Entry(_builder.set_multicycle_path(path_multiplier, setup, hold, rise, fall, start, end, reset_path, from, rise_from, fall_from, to, rise_to, fall_to, through, rise_through, fall_through, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set operating conditions for power estimation
@@ -2719,95 +1601,38 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1630
 		/// </summary>
 		/// <param name="voltage">
-		/// Optional
+		/// (Optional)
 		/// List of voltage pairs, e.g., {name value}. Supported voltage
 		/// supplies vary by family.
 		/// </param>
 		/// <param name="grade">
-		/// Optional
+		/// (Optional)
 		/// Temperature grade. Supported values vary by family.
 		/// Default: commercial
 		/// </param>
-		/// <param name="process">
-		/// Optional
-		/// Process data: typical or maximum Default: typical
-		/// </param>
-		/// <param name="junction_temp">
-		/// Optional
-		/// Junction Temperature (C): auto|degC Default: auto
-		/// </param>
-		/// <param name="ambient_temp">
-		/// Optional
-		/// Ambient Temperature (C): default|degC Default: default
-		/// </param>
-		/// <param name="thetaja">
-		/// Optional
-		/// ThetaJA (C/W): auto|degC/W Default: auto
-		/// </param>
-		/// <param name="thetasa">
-		/// Optional
-		/// ThetaSA (C/W): auto|degC/W Default: auto
-		/// </param>
-		/// <param name="airflow">
-		/// Optional
-		/// Airflow (LFM): 0 to 750 Default: varies by family
-		/// </param>
+		/// <param name="process">(Optional) Process data: typical or maximum Default: typical</param>
+		/// <param name="junction_temp">(Optional) Junction Temperature (C): auto|degC Default: auto</param>
+		/// <param name="ambient_temp">(Optional) Ambient Temperature (C): default|degC Default: default</param>
+		/// <param name="thetaja">(Optional) ThetaJA (C/W): auto|degC/W Default: auto</param>
+		/// <param name="thetasa">(Optional) ThetaSA (C/W): auto|degC/W Default: auto</param>
+		/// <param name="airflow">(Optional) Airflow (LFM): 0 to 750 Default: varies by family</param>
 		/// <param name="heatsink">
-		/// Optional
+		/// (Optional)
 		/// Dimensions of heatsink: none, low, medium, high, custom
 		/// Default: medium
 		/// </param>
-		/// <param name="thetajb">
-		/// Optional
-		/// ThetaJB (C/W): auto|degC/W Default: auto
-		/// </param>
-		/// <param name="board">
-		/// Optional
-		/// Board type: jedec, small, medium, large, custom Default:
-		/// medium
-		/// </param>
-		/// <param name="board_temp">
-		/// Optional
-		/// Board Temperature degC
-		/// </param>
-		/// <param name="board_layers">
-		/// Optional
-		/// Board layers: 4to7, 8to11, 12to15, 16+ Default: 8to11
-		/// </param>
-		/// <param name="design_power_budget">
-		/// Optional
-		/// Design Power Budget (W) Default: Unspecified
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_operating_conditions(string voltage = null, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="thetajb">(Optional) ThetaJB (C/W): auto|degC/W Default: auto</param>
+		/// <param name="board">(Optional) Board type: jedec, small, medium, large, custom Default: medium</param>
+		/// <param name="board_temp">(Optional) Board Temperature degC</param>
+		/// <param name="board_layers">(Optional) Board layers: 4to7, 8to11, 12to15, 16+ Default: 8to11</param>
+		/// <param name="design_power_budget">(Optional) Design Power Budget (W) Default: Unspecified</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_operating_conditions(string voltage = null, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_operating_conditions [-voltage <args>] [-grade <arg>] [-process <arg>] [-junction_temp <arg>] [-ambient_temp <arg>] [-thetaja <arg>] [-thetasa <arg>] [-airflow <arg>] [-heatsink <arg>] [-thetajb <arg>] [-board <arg>] [-board_temp <arg>] [-board_layers <arg>] [-design_power_budget <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("set_operating_conditions")
-					.OptionalNamedString("voltage", voltage)
-					.OptionalNamedString("grade", grade)
-					.OptionalNamedString("process", process)
-					.OptionalNamedString("junction_temp", junction_temp)
-					.OptionalNamedString("ambient_temp", ambient_temp)
-					.OptionalNamedString("thetaja", thetaja)
-					.OptionalNamedString("thetasa", thetasa)
-					.OptionalNamedString("airflow", airflow)
-					.OptionalNamedString("heatsink", heatsink)
-					.OptionalNamedString("thetajb", thetajb)
-					.OptionalNamedString("board", board)
-					.OptionalNamedString("board_temp", board_temp)
-					.OptionalNamedString("board_layers", board_layers)
-					.OptionalNamedString("design_power_budget", design_power_budget)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.set_operating_conditions(voltage, grade, process, junction_temp, ambient_temp, thetaja, thetasa, airflow, heatsink, thetajb, board, board_temp, board_layers, design_power_budget, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set output delay on ports
@@ -2849,82 +1674,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1634
 		/// </summary>
-		/// <param name="delay">
-		/// Required
-		/// Delay value
-		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// List of ports
-		/// </param>
-		/// <param name="clock">
-		/// Optional
-		/// Relative clock
-		/// </param>
-		/// <param name="reference_pin">
-		/// Optional
-		/// Relative pin or port
-		/// </param>
-		/// <param name="clock_fall">
-		/// Optional
-		/// Delay is relative to falling edge of clock
-		/// </param>
-		/// <param name="rise">
-		/// Optional
-		/// Specifies rising delay
-		/// </param>
-		/// <param name="fall">
-		/// Optional
-		/// Specifies falling delay
-		/// </param>
-		/// <param name="max">
-		/// Optional
-		/// Specifies maximum delay
-		/// </param>
-		/// <param name="min">
-		/// Optional
-		/// Specifies minimum delay
-		/// </param>
-		/// <param name="add_delay">
-		/// Optional
-		/// Don't remove existing input delay
-		/// </param>
-		/// <param name="network_latency_included">
-		/// Optional
-		/// Specifies network latency of clock already included
-		/// </param>
-		/// <param name="source_latency_included">
-		/// Optional
-		/// Specifies source latency of clock already included
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_output_delay(string delay, string objects, string clock = null, string reference_pin = null, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="delay">(Required) Delay value</param>
+		/// <param name="objects">(Required) List of ports</param>
+		/// <param name="clock">(Optional) Relative clock</param>
+		/// <param name="reference_pin">(Optional) Relative pin or port</param>
+		/// <param name="clock_fall">(Optional) Delay is relative to falling edge of clock</param>
+		/// <param name="rise">(Optional) Specifies rising delay</param>
+		/// <param name="fall">(Optional) Specifies falling delay</param>
+		/// <param name="max">(Optional) Specifies maximum delay</param>
+		/// <param name="min">(Optional) Specifies minimum delay</param>
+		/// <param name="add_delay">(Optional) Don't remove existing input delay</param>
+		/// <param name="network_latency_included">(Optional) Specifies network latency of clock already included</param>
+		/// <param name="source_latency_included">(Optional) Specifies source latency of clock already included</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_output_delay(string delay, string objects, string clock = null, string reference_pin = null, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_output_delay [-clock <args>] [-reference_pin <args>] [-clock_fall] [-rise] [-fall] [-max] [-min] [-add_delay] [-network_latency_included] [-source_latency_included] [-quiet] [-verbose] <delay> <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("set_output_delay")
-					.OptionalNamedString("clock", clock)
-					.OptionalNamedString("reference_pin", reference_pin)
-					.Flag("clock_fall", clock_fall)
-					.Flag("rise", rise)
-					.Flag("fall", fall)
-					.Flag("max", max)
-					.Flag("min", min)
-					.Flag("add_delay", add_delay)
-					.Flag("network_latency_included", network_latency_included)
-					.Flag("source_latency_included", source_latency_included)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(delay)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.set_output_delay(delay, objects, clock, reference_pin, clock_fall, rise, fall, max, min, add_delay, network_latency_included, source_latency_included, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Specify propagated clock latency
@@ -2943,27 +1711,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1647
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// List of clocks, ports, or pins
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_propagated_clock(string objects, bool? quiet = null, bool? verbose = null)
+		/// <param name="objects">(Required) List of clocks, ports, or pins</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_propagated_clock(string objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_propagated_clock [-quiet] [-verbose] <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("set_propagated_clock")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.set_propagated_clock(objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set units for checking
@@ -2987,57 +1742,23 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1663
 		/// </summary>
-		/// <param name="capacitance">
-		/// Optional
-		/// Capacitance unit in farad. Valid values are from kF-fF.
-		/// Default: pF
-		/// </param>
-		/// <param name="current">
-		/// Optional
-		/// Current unit in ampere. Valid values are from kA-fA. Default:
-		/// mA
-		/// </param>
-		/// <param name="voltage">
-		/// Optional
-		/// Voltage unit in volt. Valid values are from kV-fV. Default: V
-		/// </param>
-		/// <param name="power">
-		/// Optional
-		/// Wattage unit in watts. Valid values are from kW-fW. Default:
-		/// mW
-		/// </param>
-		/// <param name="resistance">
-		/// Optional
-		/// Resistance unit in ohm. Valid values are from kOhm-fOhm.
-		/// Default: ohm
-		/// </param>
+		/// <param name="capacitance">(Optional) Capacitance unit in farad. Valid values are from kF-fF. Default: pF</param>
+		/// <param name="current">(Optional) Current unit in ampere. Valid values are from kA-fA. Default: mA</param>
+		/// <param name="voltage">(Optional) Voltage unit in volt. Valid values are from kV-fV. Default: V</param>
+		/// <param name="power">(Optional) Wattage unit in watts. Valid values are from kW-fW. Default: mW</param>
+		/// <param name="resistance">(Optional) Resistance unit in ohm. Valid values are from kOhm-fOhm. Default: ohm</param>
 		/// <param name="altitude">
-		/// Optional
+		/// (Optional)
 		/// Altitude in metric or standard units. Valid values are meters
 		/// and feet. Default: meters
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void set_units(string capacitance = null, string current = null, string voltage = null, string power = null, string resistance = null, string altitude = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL set_units(string capacitance = null, string current = null, string voltage = null, string power = null, string resistance = null, string altitude = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_units [-capacitance <arg>] [-current <arg>] [-voltage <arg>] [-power <arg>] [-resistance <arg>] [-altitude <arg>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("set_units")
-					.OptionalNamedString("capacitance", capacitance)
-					.OptionalNamedString("current", current)
-					.OptionalNamedString("voltage", voltage)
-					.OptionalNamedString("power", power)
-					.OptionalNamedString("resistance", resistance)
-					.OptionalNamedString("altitude", altitude)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.set_units(capacitance, current, voltage, power, resistance, altitude, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

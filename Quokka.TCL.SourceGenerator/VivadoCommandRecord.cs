@@ -21,6 +21,7 @@ namespace Quokka.TCL.SourceGenerator
     class VivadoCommandRecord
     {
         VivadoCommandLog _log;
+        public VivdoCommandTextLines CommandData;
         public string Name = "";
         public List<string> ShortDescription = new List<string>();
         public List<string> Description = new List<string>();
@@ -29,11 +30,15 @@ namespace Quokka.TCL.SourceGenerator
         public List<string> Examples = new List<string>();
         public string Syntax = "";
 
-        public VivadoCommandRecord(VivadoCommandLog log, string name, List<string> lines)
+        public List<VivadoCommandParameter> orderedParameters => Parameters.Where(c => c is VivadoCommandRequiredParameter).Concat(Parameters.Where(c => c is VivadoCommandOptionalParameter)).ToList();
+
+        public VivadoCommandRecord(VivadoCommandLog log, string name, VivdoCommandTextLines commandData)
         {
             _log = log;
 
+            CommandData = commandData;
             Name = name;
+            var lines = commandData.Lines;
 
             var orderedSections = new VivadoCommandRecordSection[]
             {

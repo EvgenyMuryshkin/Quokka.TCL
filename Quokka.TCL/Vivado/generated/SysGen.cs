@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class SysGenCommands
+	public partial class SysGenCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public SysGenCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public SysGenCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Create DSP source for Xilinx System Generator and add to the source fileset
@@ -34,28 +36,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 355
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Sub module name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Required) Sub module name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Name for the new sub module</returns>
-		public void create_sysgen(string name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_sysgen(string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_sysgen [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_sysgen")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.create_sysgen(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Generate HDL wrapper for the specified source
@@ -82,59 +71,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1036
 		/// </summary>
-		/// <param name="files">
-		/// Required
-		/// Source file for which the wrapper needs to be generated
-		/// </param>
-		/// <param name="top">
-		/// Optional
-		/// Create a top-level wrapper for the specified source
-		/// </param>
-		/// <param name="testbench">
-		/// Optional
-		/// Create a testbench for the specified source
-		/// </param>
+		/// <param name="files">(Required) Source file for which the wrapper needs to be generated</param>
+		/// <param name="top">(Optional) Create a top-level wrapper for the specified source</param>
+		/// <param name="testbench">(Optional) Create a testbench for the specified source</param>
 		/// <param name="inst_template">
-		/// Optional
+		/// (Optional)
 		/// Create an instantiation template for the specified source.
 		/// The template will not be added to the project and will be
 		/// generated for reference purposes only.
 		/// </param>
-		/// <param name="fileset">
-		/// Optional
-		/// Fileset name
-		/// </param>
-		/// <param name="import">
-		/// Optional
-		/// Import generated wrapper to the project
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing source(s)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void make_wrapper(string files, bool? top = null, bool? testbench = null, bool? inst_template = null, string fileset = null, bool? import = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="fileset">(Optional) Fileset name</param>
+		/// <param name="import">(Optional) Import generated wrapper to the project</param>
+		/// <param name="force">(Optional) Overwrite existing source(s)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL make_wrapper(string files, bool? top = null, bool? testbench = null, bool? inst_template = null, string fileset = null, bool? import = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: make_wrapper [-top] [-testbench] [-inst_template] [-fileset <arg>] [-import] [-force] [-quiet] [-verbose] <files>
-			_tcl.Add(
-				new SimpleTCLCommand("make_wrapper")
-					.Flag("top", top)
-					.Flag("testbench", testbench)
-					.Flag("inst_template", inst_template)
-					.OptionalNamedString("fileset", fileset)
-					.Flag("import", import)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.make_wrapper(files, top, testbench, inst_template, fileset, import, force, quiet, verbose));
+			return _tcl;
 		}
 	}
 }

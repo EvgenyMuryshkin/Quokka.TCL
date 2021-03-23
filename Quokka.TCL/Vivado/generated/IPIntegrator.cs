@@ -4,12 +4,14 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class IPIntegratorCommands
+	public partial class IPIntegratorCommands<TTCL> where TTCL : TCLFile
 	{
-		private readonly TCLFile<VivadoTCL> _tcl;
-		public IPIntegratorCommands(TCLFile<VivadoTCL> tcl)
+		private readonly TTCL _tcl;
+		private readonly VivadoTCLBuilder _builder;
+		public IPIntegratorCommands(TTCL tcl, VivadoTCLBuilder builder)
 		{
 			_tcl = tcl;
+			_builder = builder;
 		}
 		/// <summary>
 		/// Runs an automation rule on an IPI object.
@@ -37,49 +39,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 96
 		/// </summary>
-		/// <param name="rule">
-		/// Required
-		/// Rule ID string
-		/// </param>
-		/// <param name="dict">
-		/// Required
-		/// List of objects and corresponding parameter name-value
-		/// pairs.
-		/// </param>
-		/// <param name="opts">
-		/// Required
-		/// List of settings that apply to all objects in this rule.
-		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// The objects to run the automation rule on
-		/// </param>
-		/// <param name="config">
-		/// Optional
-		/// List of parameter value pairs
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="rule">(Required) Rule ID string</param>
+		/// <param name="dict">(Required) List of objects and corresponding parameter name-value pairs.</param>
+		/// <param name="opts">(Required) List of settings that apply to all objects in this rule.</param>
+		/// <param name="objects">(Required) The objects to run the automation rule on</param>
+		/// <param name="config">(Optional) List of parameter value pairs</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Returns success or failure</returns>
-		public void apply_bd_automation(string rule, string dict, string opts, string objects, string config = null, bool? quiet = null, bool? verbose = null)
+		public TTCL apply_bd_automation(string rule, string dict, string opts, string objects, string config = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: apply_bd_automation -rule <arg> [-config <args>] -dict <arg> -opts <arg> [-quiet] [-verbose] <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("apply_bd_automation")
-					.RequiredNamedString("rule", rule)
-					.OptionalNamedString("config", config)
-					.RequiredNamedString("dict", dict)
-					.RequiredNamedString("opts", opts)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.apply_bd_automation(rule, dict, opts, objects, config, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Applies board connections to given designs
@@ -113,39 +85,20 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 99
 		/// </summary>
 		/// <param name="ip_intf">
-		/// Required
+		/// (Required)
 		/// Full path of IP interface name to which board automation
 		/// need to be applied.
 		/// </param>
-		/// <param name="diagram">
-		/// Required
-		/// The IP Integrator design name.
-		/// </param>
-		/// <param name="board_interface">
-		/// Optional
-		/// Board interface name to which connection need to be
-		/// applied.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="diagram">(Required) The IP Integrator design name.</param>
+		/// <param name="board_interface">(Optional) Board interface name to which connection need to be applied.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>sucess/failure status of applied action.</returns>
-		public void apply_board_connection(string ip_intf, string diagram, string board_interface = null, bool? quiet = null, bool? verbose = null)
+		public TTCL apply_board_connection(string ip_intf, string diagram, string board_interface = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: apply_board_connection [-board_interface <arg>] -ip_intf <arg> -diagram <arg> [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("apply_board_connection")
-					.OptionalNamedString("board_interface", board_interface)
-					.RequiredNamedString("ip_intf", ip_intf)
-					.RequiredNamedString("diagram", diagram)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.apply_board_connection(ip_intf, diagram, board_interface, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Automatically assign addresses to unmapped IP
@@ -163,97 +116,60 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 108
 		/// </summary>
 		/// <param name="dict">
-		/// Required
+		/// (Required)
 		/// dictionary of offset range address pairs, e.g. {offset
 		/// 0x00000000 range 32K offset 0x20000000 range 32K} used to
 		/// map an external interface to more than one address
 		/// </param>
-		/// <param name="target_address_space">
-		/// Optional
-		/// Target address space to place segment into
-		/// </param>
+		/// <param name="target_address_space">(Optional) Target address space to place segment into</param>
 		/// <param name="boundary">
-		/// Optional
+		/// (Optional)
 		/// assign peripherals to the exported slave hierarchical
 		/// boundary of the design
 		/// </param>
 		/// <param name="master_boundary">
-		/// Optional
+		/// (Optional)
 		/// set hierarchical master boundary by assigning exported
 		/// master interface segments to internal masters
 		/// </param>
 		/// <param name="external">
-		/// Optional
+		/// (Optional)
 		/// allow an external master interface to be mapped to more
 		/// than one address
 		/// </param>
 		/// <param name="import_from_file">
-		/// Optional
+		/// (Optional)
 		/// import the addressing from file. When extension is csv,
 		/// format = <address space name>,<slave
 		/// segment>,<offset>,<range>
 		/// </param>
 		/// <param name="export_to_file">
-		/// Optional
+		/// (Optional)
 		/// export the address map to a file in csv format. format =
 		/// <address space name>,<slave segment>,<offset>,<range>
 		/// </param>
 		/// <param name="export_gui_to_file">
-		/// Optional
+		/// (Optional)
 		/// export the address map to a file in csv format. Structure is
 		/// same as Address Editor GUI
 		/// </param>
-		/// <param name="offset">
-		/// Optional
-		/// Offset of assignment. e.g. 0x00000000
-		/// </param>
-		/// <param name="range">
-		/// Optional
-		/// Range of assignment. e.g. 4096, 4K, 16M, 1G
-		/// </param>
+		/// <param name="offset">(Optional) Offset of assignment. e.g. 0x00000000</param>
+		/// <param name="range">(Optional) Range of assignment. e.g. 4096, 4K, 16M, 1G</param>
 		/// <param name="base_high">
-		/// Optional
+		/// (Optional)
 		/// colon separated base:high offsets of a range assignment.
 		/// e.g. 0x0000:0xFFFF
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// force the assignment, do not run any validity checks
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="objects">
-		/// Optional
-		/// The objects to assign
-		/// </param>
+		/// <param name="force">(Optional) force the assignment, do not run any validity checks</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="objects">(Optional) The objects to assign</param>
 		/// <returns>The newly mapped segments, "" if failed.</returns>
-		public void assign_bd_address(string dict, string target_address_space = null, bool? boundary = null, bool? master_boundary = null, bool? external = null, string import_from_file = null, string export_to_file = null, string export_gui_to_file = null, string offset = null, string range = null, string base_high = null, bool? force = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public TTCL assign_bd_address(string dict, string target_address_space = null, bool? boundary = null, bool? master_boundary = null, bool? external = null, string import_from_file = null, string export_to_file = null, string export_gui_to_file = null, string offset = null, string range = null, string base_high = null, bool? force = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: assign_bd_address [-target_address_space <arg>] [-boundary] [-master_boundary] [-external] -dict <arg> [-import_from_file <arg>] [-export_to_file <arg>] [-export_gui_to_file <arg>] [-offset <arg>] [-range <arg>] [-base_high <arg>] [-force] [-quiet] [-verbose] [<objects>...]
-			_tcl.Add(
-				new SimpleTCLCommand("assign_bd_address")
-					.OptionalNamedString("target_address_space", target_address_space)
-					.Flag("boundary", boundary)
-					.Flag("master_boundary", master_boundary)
-					.Flag("external", external)
-					.RequiredNamedString("dict", dict)
-					.OptionalNamedString("import_from_file", import_from_file)
-					.OptionalNamedString("export_to_file", export_to_file)
-					.OptionalNamedString("export_gui_to_file", export_gui_to_file)
-					.OptionalNamedString("offset", offset)
-					.OptionalNamedString("range", range)
-					.OptionalNamedString("base_high", base_high)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(objects)
-			);
+			_tcl.Entry(_builder.assign_bd_address(dict, target_address_space, boundary, master_boundary, external, import_from_file, export_to_file, export_gui_to_file, offset, range, base_high, force, quiet, verbose, objects));
+			return _tcl;
 		}
 		/// <summary>
 		/// Close a design.
@@ -268,28 +184,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 131
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of design to close
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Required) Name of design to close</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The design object, "" if failed.</returns>
-		public void close_bd_design(string name, bool? quiet = null, bool? verbose = null)
+		public TTCL close_bd_design(string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: close_bd_design [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("close_bd_design")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.close_bd_design(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Compile C code into RTL
@@ -310,32 +213,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 159
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// The objects which need C to RTL conversion
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Force generate product state regeneration
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void compile_c(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="objects">(Required) The objects which need C to RTL conversion</param>
+		/// <param name="force">(Optional) Force generate product state regeneration</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL compile_c(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: compile_c [-force] [-quiet] [-verbose] <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("compile_c")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.compile_c(objects, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Connect intf_port and intf_pin list.
@@ -353,51 +239,25 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 189
 		/// </summary>
-		/// <param name="object1">
-		/// Required
-		/// Name of intf_port or intf_pin to connect
-		/// </param>
-		/// <param name="object2">
-		/// Required
-		/// Name of intf_port or intf_pin to connect
-		/// </param>
-		/// <param name="intf_net">
-		/// Optional
-		/// The single intf_net that all objects connect to
-		/// </param>
+		/// <param name="object1">(Required) Name of intf_port or intf_pin to connect</param>
+		/// <param name="object2">(Required) Name of intf_port or intf_pin to connect</param>
+		/// <param name="intf_net">(Optional) The single intf_net that all objects connect to</param>
 		/// <param name="boundary_type">
-		/// Optional
+		/// (Optional)
 		/// Used when source object is on a hierarchical block's
 		/// interface pin. Valid values are 'upper', 'lower', or 'both'. If
 		/// 'lower' boundary, searches from the lower level of hierarchy
 		/// onwards. Default: both
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="auto">
-		/// Optional
-		/// Automatically connect associated pins
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="auto">(Optional) Automatically connect associated pins</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public void connect_bd_intf_net(string object1, string object2, string intf_net = null, string boundary_type = null, bool? quiet = null, bool? verbose = null, string auto = null)
+		public TTCL connect_bd_intf_net(string object1, string object2, string intf_net = null, string boundary_type = null, bool? quiet = null, bool? verbose = null, string auto = null)
 		{
 			// TCL Syntax: connect_bd_intf_net [-intf_net <arg>] [-boundary_type <arg>] [-quiet] [-verbose] <object1> <object2> [<auto>]
-			_tcl.Add(
-				new SimpleTCLCommand("connect_bd_intf_net")
-					.OptionalNamedString("intf_net", intf_net)
-					.OptionalNamedString("boundary_type", boundary_type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(object1)
-					.RequiredString(object2)
-					.OptionalString(auto)
-			);
+			_tcl.Entry(_builder.connect_bd_intf_net(object1, object2, intf_net, boundary_type, quiet, verbose, auto));
+			return _tcl;
 		}
 		/// <summary>
 		/// Connect port and pin object list.
@@ -427,41 +287,23 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 191
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// The objects connect to the net
-		/// </param>
-		/// <param name="net">
-		/// Optional
-		/// The single net that all objects connect to
-		/// </param>
+		/// <param name="objects">(Required) The objects connect to the net</param>
+		/// <param name="net">(Optional) The single net that all objects connect to</param>
 		/// <param name="boundary_type">
-		/// Optional
+		/// (Optional)
 		/// Used when source object is on a hierarchical block's pin.
 		/// Valid values are 'upper', 'lower', or 'both'. If 'lower'
 		/// boundary, searches from the lower level of hierarchy
 		/// onwards. Default: both
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public void connect_bd_net(string objects, string net = null, string boundary_type = null, bool? quiet = null, bool? verbose = null)
+		public TTCL connect_bd_net(string objects, string net = null, string boundary_type = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: connect_bd_net [-net <arg>] [-boundary_type <arg>] [-quiet] [-verbose] <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("connect_bd_net")
-					.OptionalNamedString("net", net)
-					.OptionalNamedString("boundary_type", boundary_type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.connect_bd_net(objects, net, boundary_type, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Make copies of the objects and add the copies to the given hierarchical cell.
@@ -484,43 +326,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 210
 		/// </summary>
-		/// <param name="parent_cell">
-		/// Required
-		/// Parent cell
-		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// The objects to copy
-		/// </param>
-		/// <param name="prefix">
-		/// Optional
-		/// Prefix name to add to cells
-		/// </param>
-		/// <param name="from_design">
-		/// Optional
-		/// The design to own the original objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="parent_cell">(Required) Parent cell</param>
+		/// <param name="objects">(Required) The objects to copy</param>
+		/// <param name="prefix">(Optional) Prefix name to add to cells</param>
+		/// <param name="from_design">(Optional) The design to own the original objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>0, "" if failed.</returns>
-		public void copy_bd_objs(string parent_cell, string objects, string prefix = null, string from_design = null, bool? quiet = null, bool? verbose = null)
+		public TTCL copy_bd_objs(string parent_cell, string objects, string prefix = null, string from_design = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: copy_bd_objs [-prefix <arg>] [-from_design <arg>] [-quiet] [-verbose] <parent_cell> <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("copy_bd_objs")
-					.OptionalNamedString("prefix", prefix)
-					.OptionalNamedString("from_design", from_design)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(parent_cell)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.copy_bd_objs(parent_cell, objects, prefix, from_design, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new segment.
@@ -535,48 +352,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 217
 		/// </summary>
-		/// <param name="range">
-		/// Required
-		/// Range of segment. e.g. 4096, 4K, 16M, 1G
-		/// </param>
-		/// <param name="offset">
-		/// Required
-		/// Offset of segment. e.g. 0x00000000
-		/// </param>
-		/// <param name="parent_addr_space">
-		/// Required
-		/// Parent address space of segment
-		/// </param>
-		/// <param name="slave_segment">
-		/// Required
-		/// Slave segment of the created segment
-		/// </param>
-		/// <param name="name">
-		/// Required
-		/// Name of segment to create
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="range">(Required) Range of segment. e.g. 4096, 4K, 16M, 1G</param>
+		/// <param name="offset">(Required) Offset of segment. e.g. 0x00000000</param>
+		/// <param name="parent_addr_space">(Required) Parent address space of segment</param>
+		/// <param name="slave_segment">(Required) Slave segment of the created segment</param>
+		/// <param name="name">(Required) Name of segment to create</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created segment object, "" if failed.</returns>
-		public void create_bd_addr_seg(string range, string offset, string parent_addr_space, string slave_segment, string name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_addr_seg(string range, string offset, string parent_addr_space, string slave_segment, string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_addr_seg -range <arg> -offset <arg> [-quiet] [-verbose] [<parent_addr_space>] [<slave_segment>] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_bd_addr_seg")
-					.RequiredNamedString("range", range)
-					.RequiredNamedString("offset", offset)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(parent_addr_space)
-					.RequiredString(slave_segment)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.create_bd_addr_seg(range, offset, parent_addr_space, slave_segment, name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Add an IP cell from the IP catalog, or add a new hierarchical block.
@@ -600,51 +388,27 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 219
 		/// </summary>
-		/// <param name="vlnv">
-		/// Required
-		/// Vendor:Library:Name:Version of the IP cell to add from the
-		/// IP catalog.
-		/// </param>
-		/// <param name="name">
-		/// Required
-		/// Name of cell to create
-		/// </param>
+		/// <param name="vlnv">(Required) Vendor:Library:Name:Version of the IP cell to add from the IP catalog.</param>
+		/// <param name="name">(Required) Name of cell to create</param>
 		/// <param name="type">
-		/// Optional
+		/// (Optional)
 		/// Type of cell to create. Valid values are IP, hier and module.
 		/// Default: IP
 		/// </param>
 		/// <param name="reference">
-		/// Optional
+		/// (Optional)
 		/// Top module-name or file-path of the module which is
 		/// referred to create the cell.
 		/// </param>
-		/// <param name="revision">
-		/// Optional
-		/// (Optional) Core revision Default: -1
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="revision">(Optional) (Optional) Core revision Default: -1</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created cell object. Returns nothing if the command fails.</returns>
-		public void create_bd_cell(string vlnv, string name, string type = null, string reference = null, string revision = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_cell(string vlnv, string name, string type = null, string reference = null, string revision = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_cell [-vlnv <arg>] [-type <arg>] [-reference <arg>] [-revision <arg>] [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_bd_cell")
-					.RequiredNamedString("vlnv", vlnv)
-					.OptionalNamedString("type", type)
-					.OptionalNamedString("reference", reference)
-					.OptionalNamedString("revision", revision)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.create_bd_cell(vlnv, name, type, reference, revision, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new design and its top level hierarchy cell with the same name.
@@ -662,40 +426,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 222
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of design to create
-		/// </param>
+		/// <param name="name">(Required) Name of design to create</param>
 		/// <param name="dir">
-		/// Optional
+		/// (Optional)
 		/// Directory path for remote BD to be created and managed
 		/// outside the project
 		/// </param>
-		/// <param name="cell">
-		/// Optional
-		/// hierarchical cell name which sub design to be copied into
-		/// new design
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="cell">(Optional) hierarchical cell name which sub design to be copied into new design</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created design object, "" if failed.</returns>
-		public void create_bd_design(string name, string dir = null, string cell = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_design(string name, string dir = null, string cell = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_design [-dir <arg>] [-cell <arg>] [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_bd_design")
-					.OptionalNamedString("dir", dir)
-					.OptionalNamedString("cell", cell)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.create_bd_design(name, dir, cell, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new intf_net.
@@ -709,28 +454,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 224
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of intf_net to create
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Required) Name of intf_net to create</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created intf_net object, "" if failed.</returns>
-		public void create_bd_intf_net(string name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_intf_net(string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_intf_net [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_bd_intf_net")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.create_bd_intf_net(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new intf_pin.
@@ -754,38 +486,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 226
 		/// </summary>
-		/// <param name="vlnv">
-		/// Required
-		/// Bus vlnv
-		/// </param>
-		/// <param name="mode">
-		/// Required
-		/// Bus interface mode
-		/// </param>
-		/// <param name="name">
-		/// Required
-		/// Name of intf_pin to create
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="vlnv">(Required) Bus vlnv</param>
+		/// <param name="mode">(Required) Bus interface mode</param>
+		/// <param name="name">(Required) Name of intf_pin to create</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created intf_pin object, "" if failed.</returns>
-		public void create_bd_intf_pin(string vlnv, string mode, string name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_intf_pin(string vlnv, string mode, string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_intf_pin -vlnv <arg> -mode <arg> [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_bd_intf_pin")
-					.RequiredNamedString("vlnv", vlnv)
-					.RequiredNamedString("mode", mode)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.create_bd_intf_pin(vlnv, mode, name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new interface port.
@@ -803,44 +514,22 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 228
 		/// </summary>
-		/// <param name="vlnv">
-		/// Required
-		/// Bus vlnv
-		/// </param>
-		/// <param name="mode">
-		/// Required
-		/// Bus interface mode
-		/// </param>
-		/// <param name="name">
-		/// Required
-		/// Name of port to create
-		/// </param>
+		/// <param name="vlnv">(Required) Bus vlnv</param>
+		/// <param name="mode">(Required) Bus interface mode</param>
+		/// <param name="name">(Required) Name of port to create</param>
 		/// <param name="board_intf">
-		/// Optional
+		/// (Optional)
 		/// Creates port-maps for this external bus-interface using the
 		/// specified interface of current board.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created interface port object, "" if failed.</returns>
-		public void create_bd_intf_port(string vlnv, string mode, string name, string board_intf = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_intf_port(string vlnv, string mode, string name, string board_intf = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_intf_port -vlnv <arg> -mode <arg> [-board_intf <arg>] [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_bd_intf_port")
-					.RequiredNamedString("vlnv", vlnv)
-					.RequiredNamedString("mode", mode)
-					.OptionalNamedString("board_intf", board_intf)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.create_bd_intf_port(vlnv, mode, name, board_intf, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new TLM interface port.
@@ -850,38 +539,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 230
 		/// </summary>
-		/// <param name="vlnv">
-		/// Required
-		/// TLM interface vlnv
-		/// </param>
-		/// <param name="mode">
-		/// Required
-		/// TLM interface mode
-		/// </param>
-		/// <param name="name">
-		/// Required
-		/// TLM interface name
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="vlnv">(Required) TLM interface vlnv</param>
+		/// <param name="mode">(Required) TLM interface mode</param>
+		/// <param name="name">(Required) TLM interface name</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created TLM interface port object, "" if failed.</returns>
-		public void create_bd_intf_tlm_port(string vlnv, string mode, string name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_intf_tlm_port(string vlnv, string mode, string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_intf_tlm_port -vlnv <arg> -mode <arg> [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_bd_intf_tlm_port")
-					.RequiredNamedString("vlnv", vlnv)
-					.RequiredNamedString("mode", mode)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.create_bd_intf_tlm_port(vlnv, mode, name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new net.
@@ -894,28 +562,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 231
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of net to create
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Required) Name of net to create</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created net object, "" if failed.</returns>
-		public void create_bd_net(string name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_net(string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_net [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_bd_net")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.create_bd_net(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new pin.
@@ -934,48 +589,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 233
 		/// </summary>
-		/// <param name="dir">
-		/// Required
-		/// Pin direction
-		/// </param>
-		/// <param name="name">
-		/// Required
-		/// Name of pin to create
-		/// </param>
-		/// <param name="from">
-		/// Optional
-		/// Begin index Default: Unspecified
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// End index Default: Unspecified
-		/// </param>
-		/// <param name="type">
-		/// Optional
-		/// Pin type
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="dir">(Required) Pin direction</param>
+		/// <param name="name">(Required) Name of pin to create</param>
+		/// <param name="from">(Optional) Begin index Default: Unspecified</param>
+		/// <param name="to">(Optional) End index Default: Unspecified</param>
+		/// <param name="type">(Optional) Pin type</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created pin object, "" if failed.</returns>
-		public void create_bd_pin(string dir, string name, string from = null, string to = null, string type = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_pin(string dir, string name, string from = null, string to = null, string type = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_pin [-from <arg>] [-to <arg>] -dir <arg> [-type <arg>] [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_bd_pin")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.RequiredNamedString("dir", dir)
-					.OptionalNamedString("type", type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.create_bd_pin(dir, name, from, to, type, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new port for an IP subsystem design.
@@ -997,53 +623,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 235
 		/// </summary>
-		/// <param name="dir">
-		/// Required
-		/// Port direction. Valid values are I, O, or IO.
-		/// </param>
-		/// <param name="name">
-		/// Required
-		/// Name of port to create
-		/// </param>
-		/// <param name="from">
-		/// Optional
-		/// Beginning index Default: Unspecified
-		/// </param>
-		/// <param name="to">
-		/// Optional
-		/// Ending index Default: Unspecified
-		/// </param>
-		/// <param name="type">
-		/// Optional
-		/// Port type. Valid values are clk, ce, rst, intr, data.
-		/// </param>
-		/// <param name="freq_hz">
-		/// Optional
-		/// Frequency in Hertz for clock ports Default: Unspecified
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="dir">(Required) Port direction. Valid values are I, O, or IO.</param>
+		/// <param name="name">(Required) Name of port to create</param>
+		/// <param name="from">(Optional) Beginning index Default: Unspecified</param>
+		/// <param name="to">(Optional) Ending index Default: Unspecified</param>
+		/// <param name="type">(Optional) Port type. Valid values are clk, ce, rst, intr, data.</param>
+		/// <param name="freq_hz">(Optional) Frequency in Hertz for clock ports Default: Unspecified</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created port object. Returns nothing if the command fails.</returns>
-		public void create_bd_port(string dir, string name, string from = null, string to = null, string type = null, string freq_hz = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_port(string dir, string name, string from = null, string to = null, string type = null, string freq_hz = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_port [-from <arg>] [-to <arg>] -dir <arg> [-type <arg>] [-freq_hz <arg>] [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_bd_port")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.RequiredNamedString("dir", dir)
-					.OptionalNamedString("type", type)
-					.OptionalNamedString("freq_hz", freq_hz)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.create_bd_port(dir, name, from, to, type, freq_hz, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a new TLM port for an IP subsystem design.
@@ -1053,28 +646,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 237
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of port to create
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Required) Name of port to create</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created TLM port object. Returns nothing if the command fails.</returns>
-		public void create_bd_tlm_port(string name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_tlm_port(string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_tlm_port [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("create_bd_tlm_port")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.create_bd_tlm_port(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set or get current design.
@@ -1101,28 +681,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 365
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="design">
-		/// Optional
-		/// Name of current design to be set
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="design">(Optional) Name of current design to be set</param>
 		/// <returns>The current design object, "" if failed.</returns>
-		public void current_bd_design(bool? quiet = null, bool? verbose = null, string design = null)
+		public TTCL current_bd_design(bool? quiet = null, bool? verbose = null, string design = null)
 		{
 			// TCL Syntax: current_bd_design [-quiet] [-verbose] [<design>]
-			_tcl.Add(
-				new SimpleTCLCommand("current_bd_design")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(design)
-			);
+			_tcl.Entry(_builder.current_bd_design(quiet, verbose, design));
+			return _tcl;
 		}
 		/// <summary>
 		/// Set or get current cell instance.
@@ -1146,28 +713,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 367
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="instance">
-		/// Optional
-		/// Name of current cell instance to be set
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="instance">(Optional) Name of current cell instance to be set</param>
 		/// <returns>The current cell instance object, "" if failed.</returns>
-		public void current_bd_instance(bool? quiet = null, bool? verbose = null, string instance = null)
+		public TTCL current_bd_instance(bool? quiet = null, bool? verbose = null, string instance = null)
 		{
 			// TCL Syntax: current_bd_instance [-quiet] [-verbose] [<instance>]
-			_tcl.Add(
-				new SimpleTCLCommand("current_bd_instance")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(instance)
-			);
+			_tcl.Entry(_builder.current_bd_instance(quiet, verbose, instance));
+			return _tcl;
 		}
 		/// <summary>
 		/// Delete specified objects.
@@ -1183,28 +737,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 417
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// The objects to be deleted
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="objects">(Required) The objects to be deleted</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Pass if successful in deleting objects</returns>
-		public void delete_bd_objs(string objects, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_bd_objs(string objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_bd_objs [-quiet] [-verbose] <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("delete_bd_objs")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.delete_bd_objs(objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Disconnect an intf_net.
@@ -1222,33 +763,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 478
 		/// </summary>
-		/// <param name="intf_net">
-		/// Required
-		/// The IntfNet that the objects connect to
-		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// The objects to disconnect from the intf_net
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="intf_net">(Required) The IntfNet that the objects connect to</param>
+		/// <param name="objects">(Required) The objects to disconnect from the intf_net</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public void disconnect_bd_intf_net(string intf_net, string objects, bool? quiet = null, bool? verbose = null)
+		public TTCL disconnect_bd_intf_net(string intf_net, string objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: disconnect_bd_intf_net [-quiet] [-verbose] <intf_net> <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("disconnect_bd_intf_net")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(intf_net)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.disconnect_bd_intf_net(intf_net, objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Disconnect a net from the object.
@@ -1264,33 +788,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 480
 		/// </summary>
-		/// <param name="net">
-		/// Required
-		/// The Net that the objects connect to
-		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// The objects to disconnect from the net
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="net">(Required) The Net that the objects connect to</param>
+		/// <param name="objects">(Required) The objects to disconnect from the net</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public void disconnect_bd_net(string net, string objects, bool? quiet = null, bool? verbose = null)
+		public TTCL disconnect_bd_net(string net, string objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: disconnect_bd_net [-quiet] [-verbose] <net> <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("disconnect_bd_net")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(net)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.disconnect_bd_net(net, objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Exclude segment from an address space.
@@ -1334,33 +841,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 497
 		/// </summary>
-		/// <param name="target_address_space">
-		/// Optional
-		/// Target address space to exclude the slave segment from
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="segment_to_exclude">
-		/// Optional
-		/// segment to exclude
-		/// </param>
+		/// <param name="target_address_space">(Optional) Target address space to exclude the slave segment from</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="segment_to_exclude">(Optional) segment to exclude</param>
 		/// <returns>The newly excluded segment object, "" if failed.</returns>
-		public void exclude_bd_addr_seg(string target_address_space = null, bool? quiet = null, bool? verbose = null, string segment_to_exclude = null)
+		public TTCL exclude_bd_addr_seg(string target_address_space = null, bool? quiet = null, bool? verbose = null, string segment_to_exclude = null)
 		{
 			// TCL Syntax: exclude_bd_addr_seg [-target_address_space <arg>] [-quiet] [-verbose] [<segment_to_exclude>]
-			_tcl.Add(
-				new SimpleTCLCommand("exclude_bd_addr_seg")
-					.OptionalNamedString("target_address_space", target_address_space)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(segment_to_exclude)
-			);
+			_tcl.Entry(_builder.exclude_bd_addr_seg(target_address_space, quiet, verbose, segment_to_exclude));
+			return _tcl;
 		}
 		/// <summary>
 		/// Export current design as a static example design
@@ -1370,44 +860,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 502
 		/// </summary>
-		/// <param name="vlnv">
-		/// Required
-		/// VLNV of the example design to be generated
-		/// </param>
-		/// <param name="directory">
-		/// Required
-		/// Destination directory in which example design needs to be
-		/// generated
-		/// </param>
+		/// <param name="vlnv">(Required) VLNV of the example design to be generated</param>
+		/// <param name="directory">(Required) Destination directory in which example design needs to be generated</param>
 		/// <param name="no_ip_version">
-		/// Optional
+		/// (Optional)
 		/// Flag to not include the IP version as part of the IP VLNV in
 		/// create_bd_cell commands.
 		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// create a directory if it does not exist
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void export_as_example_design(string vlnv, string directory, bool? no_ip_version = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="force">(Optional) create a directory if it does not exist</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL export_as_example_design(string vlnv, string directory, bool? no_ip_version = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: export_as_example_design -vlnv <arg> [-no_ip_version] [-force] [-quiet] [-verbose] -directory <arg>
-			_tcl.Add(
-				new SimpleTCLCommand("export_as_example_design")
-					.RequiredNamedString("vlnv", vlnv)
-					.Flag("no_ip_version", no_ip_version)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredNamedString("directory", directory)
-			);
+			_tcl.Entry(_builder.export_as_example_design(vlnv, directory, no_ip_version, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Find a list of pins, ports or interfaces with a given relationship to the given object.
@@ -1422,18 +889,15 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 518
 		/// </summary>
 		/// <param name="relation">
-		/// Required
+		/// (Required)
 		/// Relation to the input objs: connected_to, addressable_slave,
 		/// addressing_master. 'connected_to' will find corresponding
 		/// pins, ports or interfaces that are connected to the given
 		/// source objects, across hierarchy boundaries.
 		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// One or more source object to start finding from
-		/// </param>
+		/// <param name="objects">(Required) One or more source object to start finding from</param>
 		/// <param name="boundary_type">
-		/// Optional
+		/// (Optional)
 		/// Used when source object is an hierarchical block's pin or
 		/// interface pin. Valid values are empty string for same level
 		/// (default), 'lower', or 'all'. If 'lower' boundary, searches from
@@ -1441,18 +905,18 @@ namespace Quokka.TCL.Vivado
 		/// connected_to
 		/// </param>
 		/// <param name="thru_hier">
-		/// Optional
+		/// (Optional)
 		/// Flag used to ignore boundary of hierarchical blocks. If used
 		/// used with boundary_type 'lower', flag will only affect the
 		/// hierarchical blocks within parent hierarchical block.
 		/// </param>
 		/// <param name="stop_at_interconnect">
-		/// Optional
+		/// (Optional)
 		/// Flag used to stop at the axi_interconnect's boundary when -
 		/// thru_hier is used.
 		/// </param>
 		/// <param name="end_type">
-		/// Optional
+		/// (Optional)
 		/// Only to be used with objects that are pins or ports and bus
 		/// interface pins or ports. For pins/ports - Default is to return
 		/// the sink objects for a given source object and to return the
@@ -1465,29 +929,14 @@ namespace Quokka.TCL.Vivado
 		/// will return both end connection and monitor interfaces. This
 		/// option is only valid for relation: connected_to
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>List of pins, ports or interface objects, "" if failed.</returns>
-		public void find_bd_objs(string relation, string objects, string boundary_type = null, bool? thru_hier = null, bool? stop_at_interconnect = null, string end_type = null, bool? quiet = null, bool? verbose = null)
+		public TTCL find_bd_objs(string relation, string objects, string boundary_type = null, bool? thru_hier = null, bool? stop_at_interconnect = null, string end_type = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: find_bd_objs -relation <arg> [-boundary_type <arg>] [-thru_hier] [-stop_at_interconnect] [-end_type <arg>] [-quiet] [-verbose] <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("find_bd_objs")
-					.RequiredNamedString("relation", relation)
-					.OptionalNamedString("boundary_type", boundary_type)
-					.Flag("thru_hier", thru_hier)
-					.Flag("stop_at_interconnect", stop_at_interconnect)
-					.OptionalNamedString("end_type", end_type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.find_bd_objs(relation, objects, boundary_type, thru_hier, stop_at_interconnect, end_type, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Generate target data for the specified source
@@ -1526,37 +975,19 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 539
 		/// </summary>
 		/// <param name="name">
-		/// Required
+		/// (Required)
 		/// List of targets to be generated, or 'all' to generate all
 		/// supported targets
 		/// </param>
-		/// <param name="objects">
-		/// Required
-		/// The objects for which data needs to be generated
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Force target data regeneration
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void generate_target(string name, string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="objects">(Required) The objects for which data needs to be generated</param>
+		/// <param name="force">(Optional) Force target data regeneration</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL generate_target(string name, string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_target [-force] [-quiet] [-verbose] <name> <objects>
-			_tcl.Add(
-				new SimpleTCLCommand("generate_target")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.generate_target(name, objects, force, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of segments
@@ -1580,73 +1011,24 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 542
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="hierarchical">
-		/// Optional
-		/// Hierarchical cells included
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get segments of these segments, interfaces, or registers
-		/// </param>
-		/// <param name="excluded">
-		/// Optional
-		/// Get excluded mapped segments -of_objects
-		/// </param>
-		/// <param name="addressed">
-		/// Optional
-		/// Get addressed segments of given -of_objects
-		/// </param>
-		/// <param name="unaddressed">
-		/// Optional
-		/// Get unaddressed segments of given objects
-		/// </param>
-		/// <param name="addressing">
-		/// Optional
-		/// Get addressing segments of given -of_objects
-		/// </param>
-		/// <param name="addressables">
-		/// Optional
-		/// Get addressable segments of given -of_objects
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match engine names against patterns Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="hierarchical">(Optional) Hierarchical cells included</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) Get segments of these segments, interfaces, or registers</param>
+		/// <param name="excluded">(Optional) Get excluded mapped segments -of_objects</param>
+		/// <param name="addressed">(Optional) Get addressed segments of given -of_objects</param>
+		/// <param name="unaddressed">(Optional) Get unaddressed segments of given objects</param>
+		/// <param name="addressing">(Optional) Get addressing segments of given -of_objects</param>
+		/// <param name="addressables">(Optional) Get addressable segments of given -of_objects</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of segment objects, "" if failed.</returns>
-		public void get_bd_addr_segs(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? excluded = null, bool? addressed = null, bool? unaddressed = null, bool? addressing = null, bool? addressables = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_bd_addr_segs(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? excluded = null, bool? addressed = null, bool? unaddressed = null, bool? addressing = null, bool? addressables = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_addr_segs [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-excluded] [-addressed] [-unaddressed] [-addressing] [-addressables] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_bd_addr_segs")
-					.Flag("regexp", regexp)
-					.Flag("hierarchical", hierarchical)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("excluded", excluded)
-					.Flag("addressed", addressed)
-					.Flag("unaddressed", unaddressed)
-					.Flag("addressing", addressing)
-					.Flag("addressables", addressables)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_bd_addr_segs(regexp, hierarchical, filter, of_objects, excluded, addressed, unaddressed, addressing, addressables, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of addr_spaces
@@ -1692,48 +1074,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 546
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="hierarchical">
-		/// Optional
-		/// Hierarchical cells included
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get addr_spaces of these segments or interfaces
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match engine names against patterns Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="hierarchical">(Optional) Hierarchical cells included</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) Get addr_spaces of these segments or interfaces</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of addr_space objects, "" if failed.</returns>
-		public void get_bd_addr_spaces(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_bd_addr_spaces(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_addr_spaces [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_bd_addr_spaces")
-					.Flag("regexp", regexp)
-					.Flag("hierarchical", hierarchical)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_bd_addr_spaces(regexp, hierarchical, filter, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of block diagram cells
@@ -1760,48 +1113,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 550
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="hierarchical">
-		/// Optional
-		/// Hierarchical cells included
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get cells of these pins or nets
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match engine names against patterns Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="hierarchical">(Optional) Hierarchical cells included</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) Get cells of these pins or nets</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of block diagram cell objects, "" if failed.</returns>
-		public void get_bd_cells(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_bd_cells(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_cells [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_bd_cells")
-					.Flag("regexp", regexp)
-					.Flag("hierarchical", hierarchical)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_bd_cells(regexp, hierarchical, filter, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of designs
@@ -1821,43 +1145,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 554
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// Get diagrams of these bd-cells or pins or nets
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match engine names against patterns Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) Get diagrams of these bd-cells or pins or nets</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of design objects, "" if failed.</returns>
-		public void get_bd_designs(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_bd_designs(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_designs [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
-			_tcl.Add(
-				new SimpleTCLCommand("get_bd_designs")
-					.Flag("regexp", regexp)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_bd_designs(regexp, filter, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of intf_nets
@@ -1884,20 +1183,11 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 557
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="hierarchical">
-		/// Optional
-		/// Hierarchical cells included
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="hierarchical">(Optional) Hierarchical cells included</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <param name="boundary_type">
-		/// Optional
+		/// (Optional)
 		/// Used when source object is on a hierarchical block's
 		/// interface pin. Valid values are 'upper', 'lower', or 'both'. If
 		/// 'lower' boundary, searches from the lower level of hierarchy
@@ -1905,37 +1195,19 @@ namespace Quokka.TCL.Vivado
 		/// Default: upper
 		/// </param>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// One or a list of cells or interface pins/ports objects. List
 		/// must be of one object type.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match engine names against patterns Default: *
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of pin objects, "" if failed.</returns>
-		public void get_bd_intf_nets(bool? regexp = null, bool? hierarchical = null, string filter = null, string boundary_type = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_bd_intf_nets(bool? regexp = null, bool? hierarchical = null, string filter = null, string boundary_type = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_intf_nets [-regexp] [-hierarchical] [-filter <arg>] [-boundary_type <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_bd_intf_nets")
-					.Flag("regexp", regexp)
-					.Flag("hierarchical", hierarchical)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("boundary_type", boundary_type)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_bd_intf_nets(regexp, hierarchical, filter, boundary_type, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of intf_pins
@@ -1964,49 +1236,23 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 561
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="hierarchical">
-		/// Optional
-		/// Hierarchical cells included
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="hierarchical">(Optional) Hierarchical cells included</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// One or a list of cells, interface nets or pins objects. List must
 		/// be of one object type.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match engine names against patterns Default: *
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of pin objects, "" if failed.</returns>
-		public void get_bd_intf_pins(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_bd_intf_pins(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_intf_pins [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_bd_intf_pins")
-					.Flag("regexp", regexp)
-					.Flag("hierarchical", hierarchical)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_bd_intf_pins(regexp, hierarchical, filter, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of intf_ports
@@ -2034,43 +1280,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 565
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// One or a list of interface nets or ports objects.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match engine names against patterns Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) One or a list of interface nets or ports objects.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of port objects, "" if failed.</returns>
-		public void get_bd_intf_ports(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_bd_intf_ports(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_intf_ports [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_bd_intf_ports")
-					.Flag("regexp", regexp)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_bd_intf_ports(regexp, filter, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of nets
@@ -2096,20 +1317,11 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 568
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="hierarchical">
-		/// Optional
-		/// Hierarchical cells included
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="hierarchical">(Optional) Hierarchical cells included</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <param name="boundary_type">
-		/// Optional
+		/// (Optional)
 		/// Used when source object is on a hierarchical block's pin.
 		/// Valid values are 'upper', 'lower', or 'both'. If 'lower'
 		/// boundary, searches from the lower level of hierarchy
@@ -2117,37 +1329,19 @@ namespace Quokka.TCL.Vivado
 		/// Default: upper
 		/// </param>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// One or a list of cells or pins/ports objects. List must be of
 		/// one object type.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match engine names against patterns Default: *
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of pin objects, "" if failed.</returns>
-		public void get_bd_nets(bool? regexp = null, bool? hierarchical = null, string filter = null, string boundary_type = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_bd_nets(bool? regexp = null, bool? hierarchical = null, string filter = null, string boundary_type = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_nets [-regexp] [-hierarchical] [-filter <arg>] [-boundary_type <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_bd_nets")
-					.Flag("regexp", regexp)
-					.Flag("hierarchical", hierarchical)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("boundary_type", boundary_type)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_bd_nets(regexp, hierarchical, filter, boundary_type, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of pins
@@ -2176,49 +1370,23 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 572
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="hierarchical">
-		/// Optional
-		/// Hierarchical cells included
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="hierarchical">(Optional) Hierarchical cells included</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <param name="of_objects">
-		/// Optional
+		/// (Optional)
 		/// One or a list of cells, nets or interface pins objects. List must
 		/// be of one object type.
 		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match engine names against patterns Default: *
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of pin objects, "" if failed.</returns>
-		public void get_bd_pins(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_bd_pins(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_pins [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_bd_pins")
-					.Flag("regexp", regexp)
-					.Flag("hierarchical", hierarchical)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_bd_pins(regexp, hierarchical, filter, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of ports
@@ -2242,43 +1410,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 576
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="of_objects">
-		/// Optional
-		/// One or a list of nets or interface ports objects.
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="patterns">
-		/// Optional
-		/// Match engine names against patterns Default: *
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="of_objects">(Optional) One or a list of nets or interface ports objects.</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of port objects, "" if failed.</returns>
-		public void get_bd_ports(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_bd_ports(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_ports [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
-			_tcl.Add(
-				new SimpleTCLCommand("get_bd_ports")
-					.Flag("regexp", regexp)
-					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_bd_ports(regexp, filter, of_objects, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of registers
@@ -2317,29 +1460,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 579
 		/// </summary>
-		/// <param name="of_objects">
-		/// Required
-		/// Get registers of segments, interface pins, external interface
-		/// ports
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="of_objects">(Required) Get registers of segments, interface pins, external interface ports</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>List of register objects, "" if failed.</returns>
-		public void get_bd_regs(string of_objects, bool? quiet = null, bool? verbose = null)
+		public TTCL get_bd_regs(string of_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_bd_regs [-of_objects <args>] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("get_bd_regs")
-					.RequiredNamedString("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.get_bd_regs(of_objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of example designs
@@ -2362,45 +1491,23 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 672
 		/// </summary>
-		/// <param name="regexp">
-		/// Optional
-		/// Patterns are full regular expressions
-		/// </param>
-		/// <param name="nocase">
-		/// Optional
-		/// Perform case-insensitive matching
-		/// </param>
-		/// <param name="filter">
-		/// Optional
-		/// Filter list with expression
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">
-		/// Optional
+		/// (Optional)
 		/// The patterns to match against Default: * Values: The default
 		/// search pattern is the wildcard *, or .* when -regexp is
 		/// specified.
 		/// </param>
 		/// <returns>list of design objects</returns>
-		public void get_example_designs(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_example_designs(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_example_designs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
-			_tcl.Add(
-				new SimpleTCLCommand("get_example_designs")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(patterns)
-			);
+			_tcl.Entry(_builder.get_example_designs(regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
 		}
 		/// <summary>
 		/// Get a list of IPI example designs
@@ -2416,23 +1523,14 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 921
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of IPI design objects</returns>
-		public void get_template_bd_designs(bool? quiet = null, bool? verbose = null)
+		public TTCL get_template_bd_designs(bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_template_bd_designs [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("get_template_bd_designs")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.get_template_bd_designs(quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create a hierarchical cell, and then move the group of cells into the hierarchy cell. The
@@ -2456,38 +1554,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 946
 		/// </summary>
-		/// <param name="target_cell_name">
-		/// Required
-		/// Target cell
-		/// </param>
-		/// <param name="cells">
-		/// Required
-		/// Match engine names against cell names Default: *
-		/// </param>
-		/// <param name="prefix">
-		/// Optional
-		/// Prefix name to add to cells
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="target_cell_name">(Required) Target cell</param>
+		/// <param name="cells">(Required) Match engine names against cell names Default: *</param>
+		/// <param name="prefix">(Optional) Prefix name to add to cells</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>0 if success.</returns>
-		public void group_bd_cells(string target_cell_name, string cells, string prefix = null, bool? quiet = null, bool? verbose = null)
+		public TTCL group_bd_cells(string target_cell_name, string cells, string prefix = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: group_bd_cells [-prefix <arg>] [-quiet] [-verbose] [<target_cell_name>] [<cells>...]
-			_tcl.Add(
-				new SimpleTCLCommand("group_bd_cells")
-					.OptionalNamedString("prefix", prefix)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(target_cell_name)
-					.RequiredString(cells)
-			);
+			_tcl.Entry(_builder.group_bd_cells(target_cell_name, cells, prefix, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// include segment from an address space.
@@ -2513,28 +1590,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 973
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="segment_to_include">
-		/// Optional
-		/// Segment to include
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="segment_to_include">(Optional) Segment to include</param>
 		/// <returns>The newly included segment object, "" if failed.</returns>
-		public void include_bd_addr_seg(bool? quiet = null, bool? verbose = null, string segment_to_include = null)
+		public TTCL include_bd_addr_seg(bool? quiet = null, bool? verbose = null, string segment_to_include = null)
 		{
 			// TCL Syntax: include_bd_addr_seg [-quiet] [-verbose] [<segment_to_include>]
-			_tcl.Add(
-				new SimpleTCLCommand("include_bd_addr_seg")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(segment_to_include)
-			);
+			_tcl.Entry(_builder.include_bd_addr_seg(quiet, verbose, segment_to_include));
+			return _tcl;
 		}
 		/// <summary>
 		/// Creates an example design from a predefined template in an open project.
@@ -2576,53 +1640,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 977
 		/// </summary>
-		/// <param name="template">
-		/// Required
-		/// Configurable Design Name
-		/// </param>
-		/// <param name="design">
-		/// Optional
-		/// Block Design Name
-		/// </param>
-		/// <param name="hier">
-		/// Optional
-		/// Hierarchy Block
-		/// </param>
-		/// <param name="project">
-		/// Optional
-		/// Project Name
-		/// </param>
-		/// <param name="project_location">
-		/// Optional
-		/// Project location Default: .
-		/// </param>
-		/// <param name="options">
-		/// Optional
-		/// Configurable options
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="template">(Required) Configurable Design Name</param>
+		/// <param name="design">(Optional) Block Design Name</param>
+		/// <param name="hier">(Optional) Hierarchy Block</param>
+		/// <param name="project">(Optional) Project Name</param>
+		/// <param name="project_location">(Optional) Project location Default: .</param>
+		/// <param name="options">(Optional) Configurable options</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Returns the name of the template applied.</returns>
-		public void instantiate_example_design(string template, string design = null, string hier = null, string project = null, string project_location = null, string options = null, bool? quiet = null, bool? verbose = null)
+		public TTCL instantiate_example_design(string template, string design = null, string hier = null, string project = null, string project_location = null, string options = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: instantiate_example_design [-design <arg>] [-hier <arg>] [-project <arg>] [-project_location <arg>] [-options <args>] [-quiet] [-verbose] <template>
-			_tcl.Add(
-				new SimpleTCLCommand("instantiate_example_design")
-					.OptionalNamedString("design", design)
-					.OptionalNamedString("hier", hier)
-					.OptionalNamedString("project", project)
-					.OptionalNamedString("project_location", project_location)
-					.OptionalNamedString("options", options)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(template)
-			);
+			_tcl.Entry(_builder.instantiate_example_design(template, design, hier, project, project_location, options, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Creates a block design in IP integrator from a predefined template.
@@ -2643,43 +1674,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 980
 		/// </summary>
-		/// <param name="design">
-		/// Required
-		/// Block Design Name
-		/// </param>
-		/// <param name="template">
-		/// Required
-		/// Configurable Design Name
-		/// </param>
-		/// <param name="hier">
-		/// Optional
-		/// Hierarchy Block
-		/// </param>
-		/// <param name="options">
-		/// Optional
-		/// Configurable options
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="design">(Required) Block Design Name</param>
+		/// <param name="template">(Required) Configurable Design Name</param>
+		/// <param name="hier">(Optional) Hierarchy Block</param>
+		/// <param name="options">(Optional) Configurable options</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Returns the name of the template applied.</returns>
-		public void instantiate_template_bd_design(string design, string template, string hier = null, string options = null, bool? quiet = null, bool? verbose = null)
+		public TTCL instantiate_template_bd_design(string design, string template, string hier = null, string options = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: instantiate_template_bd_design -design <arg> [-hier <arg>] [-options <args>] [-quiet] [-verbose] <template>
-			_tcl.Add(
-				new SimpleTCLCommand("instantiate_template_bd_design")
-					.RequiredNamedString("design", design)
-					.OptionalNamedString("hier", hier)
-					.OptionalNamedString("options", options)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(template)
-			);
+			_tcl.Entry(_builder.instantiate_template_bd_design(design, template, hier, options, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create external port for the corresponding interface pins. If a cell is specified, create external
@@ -2706,28 +1712,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1030
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// The interface pins/cells to be made external
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="objects">(Required) The interface pins/cells to be made external</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Pass if successful in creating at least one interface port</returns>
-		public void make_bd_intf_pins_external(string objects, bool? quiet = null, bool? verbose = null)
+		public TTCL make_bd_intf_pins_external(string objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: make_bd_intf_pins_external [-quiet] [-verbose] <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("make_bd_intf_pins_external")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.make_bd_intf_pins_external(objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Create external port for the corresponding pin. If a cell is specified, create external ports for all
@@ -2753,28 +1746,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1032
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// The pins/cells to be made external
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="objects">(Required) The pins/cells to be made external</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Pass if successful in creating at least one port</returns>
-		public void make_bd_pins_external(string objects, bool? quiet = null, bool? verbose = null)
+		public TTCL make_bd_pins_external(string objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: make_bd_pins_external [-quiet] [-verbose] <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("make_bd_pins_external")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.make_bd_pins_external(objects, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Move cells into a hierarchy cell. The connections between these cells are maintained; the
@@ -2795,38 +1775,17 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1043
 		/// </summary>
-		/// <param name="prefix">
-		/// Optional
-		/// Prefix name to add to cells
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="parent_cell">
-		/// Optional
-		/// Parent cell
-		/// </param>
-		/// <param name="cells">
-		/// Optional
-		/// Match engine names against cell names Default: *
-		/// </param>
+		/// <param name="prefix">(Optional) Prefix name to add to cells</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="parent_cell">(Optional) Parent cell</param>
+		/// <param name="cells">(Optional) Match engine names against cell names Default: *</param>
 		/// <returns>0 if success.</returns>
-		public void move_bd_cells(string prefix = null, bool? quiet = null, bool? verbose = null, string parent_cell = null, string cells = null)
+		public TTCL move_bd_cells(string prefix = null, bool? quiet = null, bool? verbose = null, string parent_cell = null, string cells = null)
 		{
 			// TCL Syntax: move_bd_cells [-prefix <arg>] [-quiet] [-verbose] [<parent_cell>] [<cells>...]
-			_tcl.Add(
-				new SimpleTCLCommand("move_bd_cells")
-					.OptionalNamedString("prefix", prefix)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(parent_cell)
-					.OptionalString(cells)
-			);
+			_tcl.Entry(_builder.move_bd_cells(prefix, quiet, verbose, parent_cell, cells));
+			return _tcl;
 		}
 		/// <summary>
 		/// Open an existing IP subsystem design from disk file.
@@ -2845,28 +1804,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1050
 		/// </summary>
-		/// <param name="name">
-		/// Required
-		/// Name of IP subsystem design to open
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="name">(Required) Name of IP subsystem design to open</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The design object. Returns nothing if the command fails.</returns>
-		public void open_bd_design(string name, bool? quiet = null, bool? verbose = null)
+		public TTCL open_bd_design(string name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_bd_design [-quiet] [-verbose] <name>
-			_tcl.Add(
-				new SimpleTCLCommand("open_bd_design")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(name)
-			);
+			_tcl.Entry(_builder.open_bd_design(name, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Read one or more IPIntegrator design files
@@ -2890,28 +1836,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1130
 		/// </summary>
-		/// <param name="files">
-		/// Required
-		/// IPIntegrator design file name(s)
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="files">(Required) IPIntegrator design file name(s)</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of IPIntegrator design file objects that were added</returns>
-		public void read_bd(string files, bool? quiet = null, bool? verbose = null)
+		public TTCL read_bd(string files, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_bd [-quiet] [-verbose] <files>...
-			_tcl.Add(
-				new SimpleTCLCommand("read_bd")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(files)
-			);
+			_tcl.Entry(_builder.read_bd(files, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Regenerate layout.
@@ -2925,38 +1858,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1200
 		/// </summary>
-		/// <param name="hierarchy">
-		/// Optional
-		/// Hierarchy path to the window
-		/// </param>
-		/// <param name="layout_file">
-		/// Optional
-		/// layout file previously exported by write_bd_layout using
-		/// native format
-		/// </param>
-		/// <param name="routing">
-		/// Optional
-		/// Preserve placement of blocks and regenerate routing
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		public void regenerate_bd_layout(string hierarchy = null, string layout_file = null, bool? routing = null, bool? quiet = null, bool? verbose = null)
+		/// <param name="hierarchy">(Optional) Hierarchy path to the window</param>
+		/// <param name="layout_file">(Optional) layout file previously exported by write_bd_layout using native format</param>
+		/// <param name="routing">(Optional) Preserve placement of blocks and regenerate routing</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL regenerate_bd_layout(string hierarchy = null, string layout_file = null, bool? routing = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: regenerate_bd_layout [-hierarchy <arg>] [-layout_file <arg>] [-routing] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("regenerate_bd_layout")
-					.OptionalNamedString("hierarchy", hierarchy)
-					.OptionalNamedString("layout_file", layout_file)
-					.Flag("routing", routing)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.regenerate_bd_layout(hierarchy, layout_file, routing, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Replace cell1 with cell2 by disconnecting connections to cell1 and connecting those connections
@@ -2977,45 +1888,18 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1261
 		/// </summary>
-		/// <param name="cell1">
-		/// Required
-		/// Cell with connections that are to be disconnected.
-		/// </param>
-		/// <param name="preserve_name">
-		/// Optional
-		/// cell2 will rename as cell1's name, cell1 rename as
-		/// cell1name_old
-		/// </param>
-		/// <param name="preserve_configuration">
-		/// Optional
-		/// preserve configuration of cell1 on cell2
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="cell2">
-		/// Optional
-		/// Cell to be connected to connections that were disconnected
-		/// from cell1.
-		/// </param>
+		/// <param name="cell1">(Required) Cell with connections that are to be disconnected.</param>
+		/// <param name="preserve_name">(Optional) cell2 will rename as cell1's name, cell1 rename as cell1name_old</param>
+		/// <param name="preserve_configuration">(Optional) preserve configuration of cell1 on cell2</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="cell2">(Optional) Cell to be connected to connections that were disconnected from cell1.</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public void replace_bd_cell(string cell1, bool? preserve_name = null, bool? preserve_configuration = null, bool? quiet = null, bool? verbose = null, string cell2 = null)
+		public TTCL replace_bd_cell(string cell1, bool? preserve_name = null, bool? preserve_configuration = null, bool? quiet = null, bool? verbose = null, string cell2 = null)
 		{
 			// TCL Syntax: replace_bd_cell [-preserve_name] [-preserve_configuration] [-quiet] [-verbose] [<cell1>] [<cell2>...]
-			_tcl.Add(
-				new SimpleTCLCommand("replace_bd_cell")
-					.Flag("preserve_name", preserve_name)
-					.Flag("preserve_configuration", preserve_configuration)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(cell1)
-					.OptionalString(cell2)
-			);
+			_tcl.Entry(_builder.replace_bd_cell(cell1, preserve_name, preserve_configuration, quiet, verbose, cell2));
+			return _tcl;
 		}
 		/// <summary>
 		/// Report differences between two block designs. Note this TCL command may compare bus￾interface parameters from IP .xit files that are not reported in the stand-alone diffbd executable.
@@ -3048,98 +1932,42 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1264
 		/// </summary>
-		/// <param name="design1">
-		/// Required
-		/// Name or file path of first block design to compare
-		/// </param>
-		/// <param name="design2">
-		/// Required
-		/// Name or file path of second block design to compare
-		/// </param>
-		/// <param name="format">
-		/// Optional
-		/// Format: html or text Default: text
-		/// </param>
-		/// <param name="file">
-		/// Optional
-		/// Optional output file name. *.htm* implies HTML format
-		/// </param>
-		/// <param name="open_html">
-		/// Optional
-		/// Open HTML report in a browser. Sets format to HTML
-		/// </param>
-		/// <param name="brief">
-		/// Optional
-		/// Output only whether files differ. Don't write report
-		/// </param>
-		/// <param name="strict">
-		/// Optional
-		/// Non-functional changes are treated as functional changes
-		/// </param>
+		/// <param name="design1">(Required) Name or file path of first block design to compare</param>
+		/// <param name="design2">(Required) Name or file path of second block design to compare</param>
+		/// <param name="format">(Optional) Format: html or text Default: text</param>
+		/// <param name="file">(Optional) Optional output file name. *.htm* implies HTML format</param>
+		/// <param name="open_html">(Optional) Open HTML report in a browser. Sets format to HTML</param>
+		/// <param name="brief">(Optional) Output only whether files differ. Don't write report</param>
+		/// <param name="strict">(Optional) Non-functional changes are treated as functional changes</param>
 		/// <param name="fast">
-		/// Optional
+		/// (Optional)
 		/// Read BD JSON directly instead of creating in-memory BDs
 		/// when possible. Will not compare Bus-Interface parameters
 		/// from .XIT files (same as stand-alone diffbd)
 		/// </param>
-		/// <param name="return_string">
-		/// Optional
-		/// (Text only) Return the report as a string
-		/// </param>
+		/// <param name="return_string">(Optional) (Text only) Return the report as a string</param>
 		/// <param name="depth">
-		/// Optional
+		/// (Optional)
 		/// HTML Display Depth for equal items. Used to limit HTML file
 		/// size. Does not affect not-equal items. Implies HTML format.
 		/// Default: 4
 		/// </param>
 		/// <param name="crossprobe">
-		/// Optional
+		/// (Optional)
 		/// Enable links on HTML report to select Vivado objects.
 		/// Implies open_html
 		/// </param>
-		/// <param name="repository">
-		/// Optional
-		/// User repository for designs on disk
-		/// </param>
-		/// <param name="take_snapshot">
-		/// Optional
-		/// Take a snapshot of the current block design
-		/// </param>
-		/// <param name="diff_snapshot">
-		/// Optional
-		/// Compare the current block design against a snapshot
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="repository">(Optional) User repository for designs on disk</param>
+		/// <param name="take_snapshot">(Optional) Take a snapshot of the current block design</param>
+		/// <param name="diff_snapshot">(Optional) Compare the current block design against a snapshot</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>0 if no functional differences, >0 if different, -1 on error</returns>
-		public void report_bd_diffs(string design1, string design2, string format = null, string file = null, bool? open_html = null, bool? brief = null, bool? strict = null, bool? fast = null, bool? return_string = null, string depth = null, bool? crossprobe = null, string repository = null, bool? take_snapshot = null, bool? diff_snapshot = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_bd_diffs(string design1, string design2, string format = null, string file = null, bool? open_html = null, bool? brief = null, bool? strict = null, bool? fast = null, bool? return_string = null, string depth = null, bool? crossprobe = null, string repository = null, bool? take_snapshot = null, bool? diff_snapshot = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_bd_diffs [-format <arg>] [-file <arg>] [-open_html] [-brief] [-strict] [-fast] [-return_string] [-depth <arg>] [-crossprobe] [-repository <arg>] [-take_snapshot] [-diff_snapshot] [-quiet] [-verbose] <design1> <design2>
-			_tcl.Add(
-				new SimpleTCLCommand("report_bd_diffs")
-					.OptionalNamedString("format", format)
-					.OptionalNamedString("file", file)
-					.Flag("open_html", open_html)
-					.Flag("brief", brief)
-					.Flag("strict", strict)
-					.Flag("fast", fast)
-					.Flag("return_string", return_string)
-					.OptionalNamedString("depth", depth)
-					.Flag("crossprobe", crossprobe)
-					.OptionalNamedString("repository", repository)
-					.Flag("take_snapshot", take_snapshot)
-					.Flag("diff_snapshot", diff_snapshot)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(design1)
-					.RequiredString(design2)
-			);
+			_tcl.Entry(_builder.report_bd_diffs(design1, design2, format, file, open_html, brief, strict, fast, return_string, depth, crossprobe, repository, take_snapshot, diff_snapshot, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Save an existing IP subsystem design to disk file.
@@ -3156,28 +1984,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1534
 		/// </summary>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
-		/// <param name="name">
-		/// Optional
-		/// Name of design to save.
-		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="name">(Optional) Name of design to save.</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public void save_bd_design(bool? quiet = null, bool? verbose = null, string name = null)
+		public TTCL save_bd_design(bool? quiet = null, bool? verbose = null, string name = null)
 		{
 			// TCL Syntax: save_bd_design [-quiet] [-verbose] [<name>]
-			_tcl.Add(
-				new SimpleTCLCommand("save_bd_design")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(name)
-			);
+			_tcl.Entry(_builder.save_bd_design(quiet, verbose, name));
+			return _tcl;
 		}
 		/// <summary>
 		/// Save a copy of the existing IP subsystem design to specified disk file with a different name.
@@ -3199,44 +2014,25 @@ namespace Quokka.TCL.Vivado
 		/// See ug835-vivado-tcl-commands.pdf, page 1536
 		/// </summary>
 		/// <param name="dir">
-		/// Optional
+		/// (Optional)
 		/// Directory path for remote BD to be created and managed.
 		/// This is required if a name is not specified
 		/// </param>
-		/// <param name="ignore_comments">
-		/// Optional
-		/// Do not save user comments
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Overwrite existing file if present
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="ignore_comments">(Optional) Do not save user comments</param>
+		/// <param name="force">(Optional) Overwrite existing file if present</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="name">
-		/// Optional
+		/// (Optional)
 		/// Name of the design to create. This is required if a directory
 		/// is not specified
 		/// </param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public void save_bd_design_as(string dir = null, bool? ignore_comments = null, bool? force = null, bool? quiet = null, bool? verbose = null, string name = null)
+		public TTCL save_bd_design_as(string dir = null, bool? ignore_comments = null, bool? force = null, bool? quiet = null, bool? verbose = null, string name = null)
 		{
 			// TCL Syntax: save_bd_design_as [-dir <arg>] [-ignore_comments] [-force] [-quiet] [-verbose] [<name>]
-			_tcl.Add(
-				new SimpleTCLCommand("save_bd_design_as")
-					.OptionalNamedString("dir", dir)
-					.Flag("ignore_comments", ignore_comments)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.OptionalString(name)
-			);
+			_tcl.Entry(_builder.save_bd_design_as(dir, ignore_comments, force, quiet, verbose, name));
+			return _tcl;
 		}
 		/// <summary>
 		/// Move the group of cells inside a hierarchy cell to its parent cell, and then remove the hierarchical
@@ -3256,33 +2052,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1715
 		/// </summary>
-		/// <param name="cells">
-		/// Required
-		/// Match engine names against cell names Default: *
-		/// </param>
-		/// <param name="prefix">
-		/// Optional
-		/// Prefix name to add to cells
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="cells">(Required) Match engine names against cell names Default: *</param>
+		/// <param name="prefix">(Optional) Prefix name to add to cells</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>0 if success.</returns>
-		public void ungroup_bd_cells(string cells, string prefix = null, bool? quiet = null, bool? verbose = null)
+		public TTCL ungroup_bd_cells(string cells, string prefix = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: ungroup_bd_cells [-prefix <arg>] [-quiet] [-verbose] [<cells>...]
-			_tcl.Add(
-				new SimpleTCLCommand("ungroup_bd_cells")
-					.OptionalNamedString("prefix", prefix)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(cells)
-			);
+			_tcl.Entry(_builder.ungroup_bd_cells(cells, prefix, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Upgrade configurable IPIntegrator cell(s) to later version
@@ -3298,33 +2077,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1752
 		/// </summary>
-		/// <param name="objects">
-		/// Required
-		/// IPIntegrator cells to be upgraded
-		/// </param>
-		/// <param name="latest">
-		/// Optional
-		/// Upgrade the IPIntegrator block to the latest version
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="objects">(Required) IPIntegrator cells to be upgraded</param>
+		/// <param name="latest">(Optional) Upgrade the IPIntegrator block to the latest version</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>List of IPIntegrator cell names those were upgraded, "" if failed.</returns>
-		public void upgrade_bd_cells(string objects, string latest = null, bool? quiet = null, bool? verbose = null)
+		public TTCL upgrade_bd_cells(string objects, string latest = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: upgrade_bd_cells [-latest <arg>] [-quiet] [-verbose] <objects>...
-			_tcl.Add(
-				new SimpleTCLCommand("upgrade_bd_cells")
-					.OptionalNamedString("latest", latest)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(objects)
-			);
+			_tcl.Entry(_builder.upgrade_bd_cells(objects, latest, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Run Parameter Propagation for specified design or for a specific cell.
@@ -3340,39 +2102,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1760
 		/// </summary>
-		/// <param name="force">
-		/// Optional
-		/// Force re-run validation on the design
-		/// </param>
+		/// <param name="force">(Optional) Force re-run validation on the design</param>
 		/// <param name="design">
-		/// Optional
+		/// (Optional)
 		/// Design name. If not specified, run parameter propagation
 		/// on current design
 		/// </param>
-		/// <param name="include_pfm">
-		/// Optional
-		/// including validate pfm attributes on the design
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="include_pfm">(Optional) including validate pfm attributes on the design</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public void validate_bd_design(bool? force = null, string design = null, bool? include_pfm = null, bool? quiet = null, bool? verbose = null)
+		public TTCL validate_bd_design(bool? force = null, string design = null, bool? include_pfm = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: validate_bd_design [-force] [-design <arg>] [-include_pfm] [-quiet] [-verbose]
-			_tcl.Add(
-				new SimpleTCLCommand("validate_bd_design")
-					.Flag("force", force)
-					.OptionalNamedString("design", design)
-					.Flag("include_pfm", include_pfm)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-			);
+			_tcl.Entry(_builder.validate_bd_design(force, design, include_pfm, quiet, verbose));
+			return _tcl;
 		}
 		/// <summary>
 		/// Export the current design to a Tcl file on disk.
@@ -3393,33 +2137,27 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1783
 		/// </summary>
-		/// <param name="tcl_filename">
-		/// Required
-		/// Name of exported Tcl file
-		/// </param>
-		/// <param name="force">
-		/// Optional
-		/// Flag to overwrite existing file.
-		/// </param>
+		/// <param name="tcl_filename">(Required) Name of exported Tcl file</param>
+		/// <param name="force">(Optional) Flag to overwrite existing file.</param>
 		/// <param name="bd_name">
-		/// Optional
+		/// (Optional)
 		/// Name for block diagram. By default will use current block
 		/// diagram's name.
 		/// </param>
 		/// <param name="no_mig_contents">
-		/// Optional
+		/// (Optional)
 		/// Flag to not include MIG PRJ contents into generated Tcl
 		/// script, but instead will load PRJ from working directory.
 		/// Default is to include MIG PRJ contents in Tcl script.
 		/// </param>
 		/// <param name="no_ip_version">
-		/// Optional
+		/// (Optional)
 		/// Flag to not include the IP version as part of the IP VLNV in
 		/// create_bd_cell commands. NOTE - this may have
 		/// implications if there are major IP version changes.
 		/// </param>
 		/// <param name="ignore_minor_versions">
-		/// Optional
+		/// (Optional)
 		/// Use this flag to create the cells in the design using their
 		/// latest minor version. For example, a project contains
 		/// versions of blk_mem_gen IP like 7.3, 7.4, 8.3, 8.4. In the
@@ -3430,82 +2168,52 @@ namespace Quokka.TCL.Vivado
 		/// the latest blk_mem_gen_v7.
 		/// </param>
 		/// <param name="bd_folder">
-		/// Optional
+		/// (Optional)
 		/// Remote BD feature - Specify the folder where the design will
 		/// be generated when Tcl script is sourced.
 		/// </param>
 		/// <param name="check_ips">
-		/// Optional
+		/// (Optional)
 		/// By default value = true, therefore, will check if IPs/modules
 		/// exist in the IP catalog or project before continuing to
 		/// reconstruct the design. Valid values are (true/false), (yes/
 		/// no), or (1/0).
 		/// </param>
 		/// <param name="hier_blks">
-		/// Optional
+		/// (Optional)
 		/// Comma separated list of hierarchical blocks in the design
 		/// that will be generated by the Tcl script. Will include any sub￾hierachical blocks within the specified blocks too. This
 		/// option will not create the top-level design portion.
 		/// </param>
 		/// <param name="include_layout">
-		/// Optional
+		/// (Optional)
 		/// By default will NOT include the GUI layout of the design. Use
 		/// this argument to include the layout information in the
 		/// generated Tcl script.
 		/// </param>
 		/// <param name="exclude_layout">
-		/// Optional
+		/// (Optional)
 		/// NOTE - This flag will be obsolete in a near future release, but
 		/// is currently supported for backwards compatibility. Use this
 		/// argument to not include the layout information in the
 		/// generated Tcl script.
 		/// Name Description
 		/// </param>
-		/// <param name="make_local">
-		/// Optional
-		/// Use this flag when you want to write your remote BD out as
-		/// a local BD.
-		/// </param>
+		/// <param name="make_local">(Optional) Use this flag when you want to write your remote BD out as a local BD.</param>
 		/// <param name="no_project_wrapper">
-		/// Optional
+		/// (Optional)
 		/// This option is used to write the BD create TCL procs without
 		/// any project wrapper.
 		/// </param>
-		/// <param name="exclude_pfm">
-		/// Optional
-		/// Use this flag to exclude pfm attributes for this design
-		/// </param>
-		/// <param name="quiet">
-		/// Optional
-		/// Ignore command errors
-		/// </param>
-		/// <param name="verbose">
-		/// Optional
-		/// Suspend message limits during command execution
-		/// </param>
+		/// <param name="exclude_pfm">(Optional) Use this flag to exclude pfm attributes for this design</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public void write_bd_tcl(string tcl_filename, bool? force = null, string bd_name = null, bool? no_mig_contents = null, bool? no_ip_version = null, bool? ignore_minor_versions = null, string bd_folder = null, string check_ips = null, string hier_blks = null, bool? include_layout = null, bool? exclude_layout = null, bool? make_local = null, bool? no_project_wrapper = null, bool? exclude_pfm = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_bd_tcl(string tcl_filename, bool? force = null, string bd_name = null, bool? no_mig_contents = null, bool? no_ip_version = null, bool? ignore_minor_versions = null, string bd_folder = null, string check_ips = null, string hier_blks = null, bool? include_layout = null, bool? exclude_layout = null, bool? make_local = null, bool? no_project_wrapper = null, bool? exclude_pfm = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_bd_tcl [-force] [-bd_name <arg>] [-no_mig_contents] [-no_ip_version] [-ignore_minor_versions] [-bd_folder <arg>] [-check_ips <arg>] [-hier_blks <arg>] [-include_layout] [-exclude_layout] [-make_local] [-no_project_wrapper] [-exclude_pfm] [-quiet] [-verbose] <tcl_filename>
-			_tcl.Add(
-				new SimpleTCLCommand("write_bd_tcl")
-					.Flag("force", force)
-					.OptionalNamedString("bd_name", bd_name)
-					.Flag("no_mig_contents", no_mig_contents)
-					.Flag("no_ip_version", no_ip_version)
-					.Flag("ignore_minor_versions", ignore_minor_versions)
-					.OptionalNamedString("bd_folder", bd_folder)
-					.OptionalNamedString("check_ips", check_ips)
-					.OptionalNamedString("hier_blks", hier_blks)
-					.Flag("include_layout", include_layout)
-					.Flag("exclude_layout", exclude_layout)
-					.Flag("make_local", make_local)
-					.Flag("no_project_wrapper", no_project_wrapper)
-					.Flag("exclude_pfm", exclude_pfm)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
-					.RequiredString(tcl_filename)
-			);
+			_tcl.Entry(_builder.write_bd_tcl(tcl_filename, force, bd_name, no_mig_contents, no_ip_version, ignore_minor_versions, bd_folder, check_ips, hier_blks, include_layout, exclude_layout, make_local, no_project_wrapper, exclude_pfm, quiet, verbose));
+			return _tcl;
 		}
 	}
 }
