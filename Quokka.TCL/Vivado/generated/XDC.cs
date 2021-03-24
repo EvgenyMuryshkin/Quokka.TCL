@@ -31,7 +31,7 @@ namespace Quokka.TCL.Vivado
 		/// add_cells_to_pblock pb_cpuEngine [get_cells cpuEngine/*] \
 		/// -add_primitives -clear_locs
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 33
+		/// See ug835-vivado-tcl-commands.pdf, page 35
 		/// </summary>
 		/// <param name="pblock">(Required) Pblock to add cells to</param>
 		/// <param name="top">
@@ -60,6 +60,24 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
+		/// Add power sources to power Rail
+		///
+		///
+		/// TCL Syntax: add_to_power_rail [-power_sources <args>] [-quiet] [-verbose] <power_rail>
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 59
+		/// </summary>
+		/// <param name="power_rail">(Required) Power rail to add sources to</param>
+		/// <param name="power_sources">(Optional) List of power_sources to add. Can be power rails and/or power supplies</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL add_to_power_rail(string power_rail, string power_sources = null, bool? quiet = null, bool? verbose = null)
+		{
+			// TCL Syntax: add_to_power_rail [-power_sources <args>] [-quiet] [-verbose] <power_rail>
+			_tcl.Entry(_builder.add_to_power_rail(power_rail, power_sources, quiet, verbose));
+			return _tcl;
+		}
+		/// <summary>
 		/// Get a list of all clocks in the current design
 		///
 		///
@@ -78,7 +96,7 @@ namespace Quokka.TCL.Vivado
 		/// demonstrates how the returned list (all_clocks) can be passed to another command:
 		/// % set_propagated_clock [all_clocks]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 69
+		/// See ug835-vivado-tcl-commands.pdf, page 72
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -110,7 +128,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example shows how the list returned can be passed to another command:
 		/// set_false_path -from [all_cpus] -to [all_registers]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 71
+		/// See ug835-vivado-tcl-commands.pdf, page 74
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -141,7 +159,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example shows how the list returned can be passed to another command:
 		/// set_false_path -from [all_dsps] -to [all_registers]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 73
+		/// See ug835-vivado-tcl-commands.pdf, page 76
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -164,17 +182,19 @@ namespace Quokka.TCL.Vivado
 		/// instance is defined as the top level of the design, but can be changed by using the
 		/// current_instance command. To return the fan-in across all levels of the hierarchy, use the -
 		/// flat option.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example lists the timing fan-in of the led_pins output port:
 		/// all_fanin [get_ports led_pins[*] ]
 		/// The following example traces back from the clock pin of the specified flip- flop to the clock
 		/// source (an MMCM output pin in this example):
 		/// all_fanin -flat -startpoints_only [get_pins cmd_parse_i0/prescale_reg[7]/C]
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following examples returns the ports connected to the input pins of IDELAYs, ignoring the
 		/// hierarchy of the design:
 		/// all_fanin -flat -startpoints_only [get_pins IDELAY*/IDATAIN]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 75
+		/// See ug835-vivado-tcl-commands.pdf, page 78
 		/// </summary>
 		/// <param name="to">(Required) List of sink pins, ports, or nets</param>
 		/// <param name="startpoints_only">(Optional) Find only the timing startpoints</param>
@@ -204,13 +224,15 @@ namespace Quokka.TCL.Vivado
 		/// instance is defined as the top level of the design, but can be changed by using the
 		/// current_instance command. To return the fanout across all levels of the hierarchy, use the -
 		/// flat option.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets the fanout for all input ports in the design:
 		/// all_fanout [all_inputs]
 		/// This example gets the fanout for all inputs assigned to I/O Bank 15 in the current design:
 		/// all_fanout [filter [all_inputs] {IOBANK == 15}]
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 78
+		/// See ug835-vivado-tcl-commands.pdf, page 81
 		/// </summary>
 		/// <param name="from">(Required) List of source pins, ports, or nets</param>
 		/// <param name="endpoints_only">(Optional) Find only the timing endpoints</param>
@@ -256,7 +278,7 @@ namespace Quokka.TCL.Vivado
 		/// This example filters the results of all_ffs to return only the FDRE flops:
 		/// filter [all_ffs] {REF_NAME == FDRE}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 81
+		/// See ug835-vivado-tcl-commands.pdf, page 84
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -287,7 +309,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example shows how the list returned can be directly passed to another command:
 		/// set_false_path -from [all_hsios] -to [all_registers]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 83
+		/// See ug835-vivado-tcl-commands.pdf, page 86
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -320,7 +342,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example shows how the list returned can be passed to another command:
 		/// set_input_delay 5 -clock REFCLK [all_inputs]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 85
+		/// See ug835-vivado-tcl-commands.pdf, page 88
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -350,7 +372,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example shows how the list returned can be passed to another command:
 		/// set_false_path -from [all_mults] -to [all_latches]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 87
+		/// See ug835-vivado-tcl-commands.pdf, page 90
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -379,7 +401,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example sets the output delay for all outputs in the design:
 		/// set_output_delay 5 -clock REFCLK [all_outputs]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 89
+		/// See ug835-vivado-tcl-commands.pdf, page 92
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -416,7 +438,7 @@ namespace Quokka.TCL.Vivado
 		/// current_instance usbEngine0
 		/// all_rams
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 91
+		/// See ug835-vivado-tcl-commands.pdf, page 94
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -435,6 +457,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Returns a list of sequential register cells or register pins in the current design.
 		/// TIP: Returned objects includes DSPs and BRAMs as they contain internal registers.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The list of returned objects can be limited by the use of the arguments described below. You can
 		/// limit the list of registers returned to a specific clock or clocks, or to registers triggered by the
 		/// rising or falling edge of a specified clock.
@@ -452,7 +475,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example extracts all registers on clk_A with *meta* in the name:
 		/// filter [all_registers -clock clk_A] {name =~ *meta*}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 93
+		/// See ug835-vivado-tcl-commands.pdf, page 96
 		/// </summary>
 		/// <param name="clock">(Optional) Consider registers of this clock</param>
 		/// <param name="rise_clock">(Optional) Consider registers triggered by clock rising edge</param>
@@ -487,6 +510,7 @@ namespace Quokka.TCL.Vivado
 		/// Connect debug slave instances to the specified master instance. The command can add the
 		/// specified slaves into an existing debug chain, where the specified slaves will be connected to the
 		/// debug hub or bridge, without affecting debug slaves that are already in the connection chain.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Debug masters include both the Debug Hub and Debug Bridge. The Vivado Debug Hub core
 		/// provides an interface between the JTAG Boundary Scan (BSCAN) interface of the Xilinx device
 		/// and the Vivado Debug cores, including the Integrated Logic Analyzer (ILA), Virtual Input/Output
@@ -496,14 +520,15 @@ namespace Quokka.TCL.Vivado
 		/// JTAG cable, or remotely through Ethernet, PCIe, or other interfaces using a Xilinx Virtual Cable
 		/// (XVC), without the need for a JTAG cable. Refer to the Vivado Design Suite User Guide: Vivado
 		/// Programming and Debugging (UG908) for more information.
-		/// IMPORTANT! For Partial Reconfiguration (PR) designs, the connect_debug_cores command can only
-		/// connect master and slave instances that occur in the Static Region, or in the same Reconfigurable Partition.
+		/// IMPORTANT! For Partial Reconfiguration (PR) designs, the connect_debug_cores command can
+		/// only connect master and slave instances that occur in the Static Region, or in the same Reconfigurable
+		/// Partition.
 		///
 		/// The following example connects the specified ILA cores to the debug bridge:
 		/// connect_debug_cores -master [get_cells inst_count/debug_bridge_0] \
 		/// -slaves [list [get_cells inst_count/ila_0] [get_cells inst_count/ila_1] ]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 193
+		/// See ug835-vivado-tcl-commands.pdf, page 198
 		/// </summary>
 		/// <param name="master">
 		/// (Required)
@@ -543,6 +568,7 @@ namespace Quokka.TCL.Vivado
 		/// When the debug core has been defined and connected, you can implement the debug core as a
 		/// block for inclusion in the netlist design. Use the implement_debug_core command to
 		/// implement the core.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example creates a new PROBE port on the myCore debug core, increases the
 		/// PORT_WIDTH property of the port in order to prepare it to receive the number of signals to be
@@ -554,7 +580,7 @@ namespace Quokka.TCL.Vivado
 		/// Note: If you specify too many nets to connect to the available channels on the port, the tool will return an
 		/// error and will not connect the ports.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 196
+		/// See ug835-vivado-tcl-commands.pdf, page 201
 		/// </summary>
 		/// <param name="port">(Required) Debug port name</param>
 		/// <param name="nets">(Required) List of nets or pins</param>
@@ -573,22 +599,23 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: create_clock -period <arg> [-name <arg>] [-waveform <args>] [-add] [-quiet] [-verbose] [<objects>]
 		///
-		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado IDE
-		/// offer timing diagrams and additional details around defining specific timing constraints. You can refer to these
-		/// sources for additional information.
+		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado
+		/// IDE offer timing diagrams and additional details around defining specific timing constraints. You can refer
+		/// to these sources for additional information.
 		/// Create a clock object with the specified period or waveform defined in nanoseconds (ns). This
 		/// command defines primary clocks which are used by the timing engine as the delay propagation
 		/// starting point of any clock edge. The defined clock can be added to the definition of an existing
 		/// clock, or overwrite the existing clock.
 		/// A virtual clock can be created that has no source in the design. A virtual clock can be used as a
 		/// time reference for setting input and output delays but does not physically exist in the design.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// A clock can also be generated from an existing physical clock, and derive many of its properties
 		/// from the master clock. Use the create_generated_clock command to derive a clock from
 		/// an existing physical clock.
 		/// IMPORTANT! If you use create_clock to create a generated clock, instead of
-		/// create_generated_clock, the created clock does not inherit any of the properties of its source clock. The
-		/// insertion delay and jitter of the parent clock will not be propagated to the generated clock, causing incorrect
-		/// timing calculations.
+		/// create_generated_clock, the created clock does not inherit any of the properties of its source
+		/// clock. The insertion delay and jitter of the parent clock will not be propagated to the generated clock,
+		/// causing incorrect timing calculations.
 		/// The create_clock command returns the name of the clock object that is created.
 		///
 		/// The following example creates a physical clock called bftClk and defines the clock period:
@@ -597,8 +624,7 @@ namespace Quokka.TCL.Vivado
 		/// in the design rather than a physical clock.
 		/// The following example creates a clock named clk on the input port, bftClk, with a period of 10ns,
 		/// the rising edge at 2.4ns and the falling edge at 7.4ns:
-		/// create_clock -name clk -period 10.000 -waveform {2.4 7.4} [get_ports
-		/// bftClk]
+		/// create_clock -name clk -period 10.000 -waveform {2.4 7.4} [get_ports bftClk]
 		/// The following example creates a virtual clock since no clock source is specified:
 		/// create_clock -name virtual_clock -period 5.000
 		/// The following example creates a clock with the falling edge at 2ns and the rising edge at 7ns:
@@ -606,7 +632,7 @@ namespace Quokka.TCL.Vivado
 		/// Note: Because the falling edge is earlier than the rising edge in the -waveform definition, although it is
 		/// specified as arg2, it occurs first in the waveform.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 241
+		/// See ug835-vivado-tcl-commands.pdf, page 246
 		/// </summary>
 		/// <param name="period">(Required) Clock period: Value > 0</param>
 		/// <param name="name">(Optional) Clock name</param>
@@ -642,6 +668,7 @@ namespace Quokka.TCL.Vivado
 		/// each clock domain. The PROBE port provides a probe point for nets marked for debug with the
 		/// MARK_DEBUG property. The PROBE port offers multiple channels to probe multiple nets from a
 		/// single ILA core.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// You can add new ports to an existing ILA core with the create_debug_port command, and
 		/// connect signals to the ports using the connect_debug_port command.
 		///
@@ -664,6 +691,7 @@ namespace Quokka.TCL.Vivado
 		/// {control_reg[14]} {control_reg[15]} {control_reg[16]} {control_reg[17]}
 		/// \
 		/// {control_reg[18]} {control_reg[19]} {control_reg[20]} {control_reg[21]}
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// \
 		/// {control_reg[22]} {control_reg[23]} {control_reg[24]} {control_reg[25]}
 		/// \
@@ -689,7 +717,7 @@ namespace Quokka.TCL.Vivado
 		/// \
 		/// {control_reg[29]} {control_reg[30]} {control_reg[31]} ]]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 247
+		/// See ug835-vivado-tcl-commands.pdf, page 255
 		/// </summary>
 		/// <param name="name">(Required) Name of the new debug core instance</param>
 		/// <param name="type">(Required) Type of the new debug core</param>
@@ -723,6 +751,7 @@ namespace Quokka.TCL.Vivado
 		/// You can connect signals to ports using the connect_debug_port command, modify existing
 		/// probe connections using modify_debug_ports, and disconnect signals with the
 		/// disconnect_debug_port command.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example creates a new debug core, and then adds an additional probe port to the
 		/// core, then sets the width of that new port to 8, and connects signals to the probe port:
@@ -733,8 +762,9 @@ namespace Quokka.TCL.Vivado
 		/// {m1_cyc_i m1_ack_o m1_err_o m1_rty_o}
 		/// Note: Recall that the ILA core is created with a clk and probe port by default, so the new probe port is
 		/// automatically numbered as probe1.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 250
+		/// See ug835-vivado-tcl-commands.pdf, page 258
 		/// </summary>
 		/// <param name="name">(Required) Name of the debug core instance</param>
 		/// <param name="type">(Required) Type of the new debug port</param>
@@ -753,10 +783,11 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: create_generated_clock [-name <arg>] [-source <args>] [-edges <args>] [-divide_by <arg>] [-multiply_by <arg>] [-combinational] [-duty_cycle <arg>] [-invert] [-edge_shift <args>] [-add] [-master_clock <args>] [-quiet] [-verbose] <objects>
 		///
-		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado IDE
-		/// offer timing diagrams and additional details around defining specific timing constraints. You can refer to these
-		/// sources for additional information.
+		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado
+		/// IDE offer timing diagrams and additional details around defining specific timing constraints. You can refer
+		/// to these sources for additional information.
 		/// Generate a new clock object from an existing physical clock object in the design.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Clocks can be added to a design in one of three ways:
 		/// • Primary physical or virtual clocks defined with the create_clock command.
 		/// • Derived clocks defined with the create_generated_clock command generated from a
@@ -770,8 +801,8 @@ namespace Quokka.TCL.Vivado
 		/// and/or -master_clock to further identify the clock to rename when multiple clocks exist on
 		/// the source object. Refer to the Vivado Design Suite User Guide: Using Constraints (UG903) for more
 		/// information on renaming auto-derived clocks.
-		/// IMPORTANT! You cannot rename a clock that is already in use by other constraints at the time of renaming.
-		/// You must rename the clock prior to any other appearance or use of the clock in an XDC file.
+		/// IMPORTANT! You cannot rename a clock that is already in use by other constraints at the time of
+		/// renaming. You must rename the clock prior to any other appearance or use of the clock in an XDC file.
 		/// This command returns the name of the clock object that is created, or returns an error if it fails.
 		///
 		/// The following example defines a generated clock that is divided from the master clock found on
@@ -804,7 +835,7 @@ namespace Quokka.TCL.Vivado
 		/// Design Suite on the MMCM clock output:
 		/// create_generated_clock -name CLK_DIV2 [get_pins mmcm/CLKOUT1]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 267
+		/// See ug835-vivado-tcl-commands.pdf, page 275
 		/// </summary>
 		/// <param name="objects">(Required) List of clock source ports, pins, or nets</param>
 		/// <param name="name">(Optional) Generated clock name</param>
@@ -850,7 +881,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example creates a macro called usbMacro1:
 		/// create_macro usbMacro1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 312
+		/// See ug835-vivado-tcl-commands.pdf, page 321
 		/// </summary>
 		/// <param name="name">(Required) Macro to create.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -887,7 +918,7 @@ namespace Quokka.TCL.Vivado
 		/// create_pblock pb_usbTop
 		/// set_property PARENT pb_usbTop [get_pblocks {pb_usbEngine?}]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 318
+		/// See ug835-vivado-tcl-commands.pdf, page 327
 		/// </summary>
 		/// <param name="name">(Required) Name of the new pblock</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -897,6 +928,26 @@ namespace Quokka.TCL.Vivado
 		{
 			// TCL Syntax: create_pblock [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.create_pblock(name, quiet, verbose));
+			return _tcl;
+		}
+		/// <summary>
+		/// Create a new Power Rail
+		///
+		///
+		/// TCL Syntax: create_power_rail [-power_sources <args>] [-direct] [-quiet] [-verbose] <name>
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 339
+		/// </summary>
+		/// <param name="name">(Required) Name of the new power rail</param>
+		/// <param name="power_sources">(Optional) List of power sources. Can be power rails and/or power supplies</param>
+		/// <param name="direct">(Optional) Implies if the power is a direct rail</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <returns>new power_rail object</returns>
+		public TTCL create_power_rail(string name, string power_sources = null, bool? direct = null, bool? quiet = null, bool? verbose = null)
+		{
+			// TCL Syntax: create_power_rail [-power_sources <args>] [-direct] [-quiet] [-verbose] <name>
+			_tcl.Entry(_builder.create_power_rail(name, power_sources, direct, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -911,6 +962,7 @@ namespace Quokka.TCL.Vivado
 		/// class.
 		/// The report_property -all command will not report the newly created property for an
 		/// object of the specified class until the property has been assigned to that object.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example defines a property called PURPOSE for cell objects:
 		/// create_property PURPOSE cell
@@ -918,7 +970,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example creates a pin property called COUNT which holds an Integer value:
 		/// create_property -type int COUNT pin
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 337
+		/// See ug835-vivado-tcl-commands.pdf, page 347
 		/// </summary>
 		/// <param name="name">(Required) Name of property to create</param>
 		/// <param name="@class">
@@ -956,8 +1008,8 @@ namespace Quokka.TCL.Vivado
 		/// the design from progressing until they have been resolved or addressed in some way. The
 		/// create_waiver command lets you select individual violations or specific checks that can be
 		/// waived for a design, letting you move forward in the design flow.
-		/// IMPORTANT! Use caution when waiving violations. Waivers may let you proceed in the design flow, but also
-		/// let you create a design that is fundamentally flawed.
+		/// IMPORTANT! Use caution when waiving violations. Waivers may let you proceed in the design flow, but
+		/// also let you create a design that is fundamentally flawed.
 		/// The user creating the waiver is required to provide a user ID and description in the
 		/// create_waiver command in order to provide some history of the waiver.
 		/// A waiver must be specified for an individual DRC or methodology violation, or for a specific DRC
@@ -965,8 +1017,8 @@ namespace Quokka.TCL.Vivado
 		/// specific violation ID, or for paths using -from/-to arguments. The form of the
 		/// create_waiver command varies depending on the check, violation, or object being waived, as
 		/// shown in the examples below.
-		/// TIP: Although many of the arguments are described as optional, some form of identifier is required to associate
-		/// the waiver with its target.
+		/// TIP: Although many of the arguments are described as optional, some form of identifier is required to
+		/// associate the waiver with its target.
 		/// To save waivers from one design session to the next, you must use write_waivers to create
 		/// an XDC file of the waiver commands, and read_xdc to read those waivers back into the design
 		/// when it is reopened.
@@ -997,7 +1049,7 @@ namespace Quokka.TCL.Vivado
 		/// inst_xpm_grey/dest_graysync_ff_reg[0][9]/D \
 		/// inst_xpm_grey/dest_graysync_ff_reg[0][24]/D}] ]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 357
+		/// See ug835-vivado-tcl-commands.pdf, page 367
 		/// </summary>
 		/// <param name="description">(Required) Description string of the cause for the waiver</param>
 		/// <param name="type">(Optional) Type of waiver - DRC, METHODOLOGY, CDC</param>
@@ -1056,7 +1108,11 @@ namespace Quokka.TCL.Vivado
 		/// current_instance that is set
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
-		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="verbose">
+		/// (Optional)
+		/// Suspend message limits during command execution
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// </param>
 		/// <returns>waiver</returns>
 		public TTCL create_waiver(string description, string type = null, string id = null, string objects = null, string from = null, string to = null, string strings = null, string of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
 		{
@@ -1080,7 +1136,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example sets the design rtl_1 as the current design:
 		/// current_design rtl_1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 375
+		/// See ug835-vivado-tcl-commands.pdf, page 385
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -1102,8 +1158,8 @@ namespace Quokka.TCL.Vivado
 		/// current design. By default, current_instance points to the top module of the
 		/// current_design, which is not an instantiated cell object. You can also set
 		/// current_instance to reference an instantiated hierarchical cell in the design.
-		/// IMPORTANT! Since the top module is not an instantiated object, current_instance returns an empty
-		/// string rather than a design object, when set to the top-level of the current design.
+		/// IMPORTANT! Since the top module is not an instantiated object, current_instance returns an
+		/// empty string rather than a design object, when set to the top-level of the current design.
 		/// The current design and current instance are the target of most of the commands and design
 		/// changes you will make. The current design can be defined using the current_design
 		/// command.
@@ -1113,6 +1169,7 @@ namespace Quokka.TCL.Vivado
 		/// Use '..' to traverse up the hierarchical instance path when specifying the current instance.
 		/// This command returns the name of the design object of the current_instance, or returns nothing
 		/// when set to the top of current design.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example sets the current instance to the top module of the current design:
 		/// current_instance
@@ -1127,11 +1184,12 @@ namespace Quokka.TCL.Vivado
 		/// instance relative to the presently defined current instance:
 		/// set_hierarchy_separator |
 		/// current_instance ..|cpu_iwb_dat_o|buffer_fifo
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example returns the name of the presently defined current instance:
 		/// current_instance .
 		/// cpuEngine|cpu_iwb_dat_o|buffer_fifo
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 396
+		/// See ug835-vivado-tcl-commands.pdf, page 406
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -1153,8 +1211,9 @@ namespace Quokka.TCL.Vivado
 		///
 		/// The following example deletes a macro called usbMacro1:
 		/// delete_macros usbMacro1
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 448
+		/// See ug835-vivado-tcl-commands.pdf, page 459
 		/// </summary>
 		/// <param name="macros">(Required) Macros to delete</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -1177,7 +1236,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example deletes the specified Pblock as well as any Pblocks nested inside:
 		/// delete_pblocks -hier cpuEngine
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 452
+		/// See ug835-vivado-tcl-commands.pdf, page 463
 		/// </summary>
 		/// <param name="pblocks">(Required) Pblocks to delete</param>
 		/// <param name="hier">(Optional) Also delete all the children of Pblock</param>
@@ -1187,6 +1246,23 @@ namespace Quokka.TCL.Vivado
 		{
 			// TCL Syntax: delete_pblocks [-hier] [-quiet] [-verbose] <pblocks>...
 			_tcl.Entry(_builder.delete_pblocks(pblocks, hier, quiet, verbose));
+			return _tcl;
+		}
+		/// <summary>
+		/// Delete a Power Rail
+		///
+		///
+		/// TCL Syntax: delete_power_rails [-quiet] [-verbose] <power_rail>
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 465
+		/// </summary>
+		/// <param name="power_rail">(Required) power rail to delete</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_power_rails(string power_rail, bool? quiet = null, bool? verbose = null)
+		{
+			// TCL Syntax: delete_power_rails [-quiet] [-verbose] <power_rail>
+			_tcl.Entry(_builder.delete_power_rails(power_rail, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -1208,7 +1284,7 @@ namespace Quokka.TCL.Vivado
 		/// brackets:
 		/// filter -regexp [get_ports] {NAME =~ VStatus.*\[[0-9]+\]}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 515
+		/// See ug835-vivado-tcl-commands.pdf, page 526
 		/// </summary>
 		/// <param name="regexp">(Optional) Operators =~ and !~ use regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
@@ -1235,6 +1311,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example returns the pins of the specified BELs associated with the specified range
 		/// of sites on the device:
@@ -1243,7 +1320,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example returns the clock enable (CE) pins of all BELs on the device:
 		/// get_bel_pins *CE
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 581
+		/// See ug835-vivado-tcl-commands.pdf, page 594
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
@@ -1273,13 +1350,14 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example returns the total number of BELs on the target part:
 		/// llength [get_bels]
 		/// The following example returns the BELs associated with the specified site:
 		/// get_bels -of_objects [get_sites PHASER_IN_PHY_X0Y5]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 584
+		/// See ug835-vivado-tcl-commands.pdf, page 597
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
@@ -1307,6 +1385,7 @@ namespace Quokka.TCL.Vivado
 		/// current_instance command.
 		/// You can use the -hierarchical option to extract cells from the hierarchy of the current
 		/// design.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The get_cells command also includes an option to get all replicated cells that are added to a
 		/// design during physical optimization, or phys_opt_design. The use of the -
 		/// include_replicated_objects option returns the replicated cells of an object when the
@@ -1347,12 +1426,13 @@ namespace Quokka.TCL.Vivado
 		/// Note: The last two cells (GND and MMCM_Base) were not returned in the first example (without -
 		/// regexp) because the cell names do not match the search pattern, as it is applied to each level of the
 		/// hierarchy.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example runs the report_drc command on the current design, and returns any
 		/// cells associated with DRC violations:
 		/// report_drc -name drc_1
 		/// get_cells -of_objects [get_drc_violations]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 635
+		/// See ug835-vivado-tcl-commands.pdf, page 648
 		/// </summary>
 		/// <param name="hsc">(Optional) Hierarchy separator Default: /</param>
 		/// <param name="hierarchical">(Optional) Search level-by-level in current instance</param>
@@ -1391,6 +1471,7 @@ namespace Quokka.TCL.Vivado
 		/// Clocks can be created using the create_clock or the create_generated_clock
 		/// commands, or can be automatically generated by the tool, at the output of an MMCM for
 		/// instance.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Note: To improve memory and performance, the get_* commands return a container list of a single type
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
@@ -1402,10 +1483,11 @@ namespace Quokka.TCL.Vivado
 		/// The following example gets the master clock object, and all generated clocks derived from that
 		/// clock:
 		/// get_clocks -include_generated_clocks wbClk
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example gets all properties and property values attached to the specified clock:
 		/// report_property -all [get_clocks wbClk]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 647
+		/// See ug835-vivado-tcl-commands.pdf, page 660
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
@@ -1439,6 +1521,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following command gets a list of the Vivado Lab Edition debug cores in the current project:
 		/// get_debug_cores
@@ -1447,7 +1530,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example gets the properties of the specified debug core:
 		/// report_property [get_debug_cores myCore]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 653
+		/// See ug835-vivado-tcl-commands.pdf, page 669
 		/// </summary>
 		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <param name="of_objects">(Optional) Get cores of these debug ports or nets</param>
@@ -1478,6 +1561,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following command gets a list of the ports from the ILA debug cores in the current project,
 		/// with a PORT_WIDTH property of 8:
@@ -1486,7 +1570,7 @@ namespace Quokka.TCL.Vivado
 		/// report_property [get_debug_ports myCore/PROBE1]
 		/// Note: The debug port is defined by the core_name/port_name combination.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 656
+		/// See ug835-vivado-tcl-commands.pdf, page 672
 		/// </summary>
 		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <param name="of_objects">(Optional) Get ports of these debug cores</param>
@@ -1517,11 +1601,12 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets the names of all generated clocks in the current project:
 		/// get_generated_clocks
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 682
+		/// See ug835-vivado-tcl-commands.pdf, page 698
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
@@ -1550,7 +1635,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example gets the currently defined hierarchy separator:
 		/// get_hierarchy_separator
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 689
+		/// See ug835-vivado-tcl-commands.pdf, page 705
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -1572,13 +1657,14 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example returns the I/O Bank of the specified package pin:
 		/// get_iobanks -of_objects [get_package_pins H4]
 		/// This example returns the GT Banks on the device:
 		/// get_iobanks -filter {BANK_TYPE == BT_MGT}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 783
+		/// See ug835-vivado-tcl-commands.pdf, page 803
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
@@ -1610,13 +1696,14 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example returns the properties currently assigned to the macro matching the
 		/// specified search pattern:
 		/// report_property [get_macro *Macro1]
 		/// Note: If there are no macros matching the pattern you will get a warning.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 804
+		/// See ug835-vivado-tcl-commands.pdf, page 824
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
@@ -1657,6 +1744,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example returns a list of nets that have been marked for debug with the
 		/// connect_debug_port command:
 		/// get_nets -hier -filter {MARK_DEBUG==1}
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This example returns the net attached to the specified hierarchical pin object, then returns the
 		/// net segments attached to the pin object, then returns the top-level net segment attached to the
 		/// pin object:
@@ -1678,7 +1766,7 @@ namespace Quokka.TCL.Vivado
 		/// llength [filter [get_nets -segments] {IS_INTERNAL}]
 		/// 448
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 822
+		/// See ug835-vivado-tcl-commands.pdf, page 842
 		/// </summary>
 		/// <param name="hsc">(Optional) Hierarchy separator Default: /</param>
 		/// <param name="hierarchical">(Optional) Search level-by-level in current instance</param>
@@ -1722,6 +1810,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Returns a list of nodes on the device that match a specified search pattern in an open design.
 		/// The default command gets a list of all nodes on the device.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Note: To improve memory and performance, the get_* commands return a container list of a single type
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
@@ -1732,7 +1821,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example returns the nodes downhill from the specified node:
 		/// get_nodes -downhill -of_objects [get_nodes LIOB33_SING_X0Y199/IOB_PADOUT0]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 827
+		/// See ug835-vivado-tcl-commands.pdf, page 847
 		/// </summary>
 		/// <param name="of_objects">
 		/// (Optional)
@@ -1787,6 +1876,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets a list of the package pins associated with the specified bytegroup of
 		/// an UltraScale device:
@@ -1795,7 +1885,7 @@ namespace Quokka.TCL.Vivado
 		/// llength [get_package_pins -filter {IS_CLK_CAPABLE==1}]
 		/// Note: If there are no pins matching the pattern you will get a warning.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 835
+		/// See ug835-vivado-tcl-commands.pdf, page 855
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
@@ -1830,6 +1920,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets a list of all the path groups in the design.
 		/// get_path_groups
@@ -1837,7 +1928,7 @@ namespace Quokka.TCL.Vivado
 		/// get_path_groups *Clk*
 		/// Note: If no path groups match the pattern you will get a warning.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 846
+		/// See ug835-vivado-tcl-commands.pdf, page 866
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
@@ -1855,7 +1946,7 @@ namespace Quokka.TCL.Vivado
 		/// Get a list of Pblocks in the current design
 		///
 		///
-		/// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblock] [-quiet] [-verbose] [<patterns>]
+		/// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblocks] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of Pblocks defined in the current project that match a specific pattern. The default
 		/// command gets a list of all Pblocks in the project.
@@ -1863,6 +1954,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets a list of all Pblocks in the current project:
 		/// get_pblocks
@@ -1873,21 +1965,21 @@ namespace Quokka.TCL.Vivado
 		/// This example returns the specified Pblock, including any nested Pblocks:
 		/// get_pblocks -include_nested_pblocks usbTop
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 848
+		/// See ug835-vivado-tcl-commands.pdf, page 868
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
 		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <param name="of_objects">(Optional) Get Pblocks of these cells</param>
-		/// <param name="include_nested_pblock">(Optional) Display the the list of nested pblocks</param>
+		/// <param name="include_nested_pblocks">(Optional) Display the the list of nested pblocks</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match Pblock names against patterns Default: *</param>
 		/// <returns>list of Pblock objects</returns>
-		public TTCL get_pblocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_nested_pblock = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_pblocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_nested_pblocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblock] [-quiet] [-verbose] [<patterns>]
-			_tcl.Entry(_builder.get_pblocks(regexp, nocase, filter, of_objects, include_nested_pblock, quiet, verbose, patterns));
+			// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblocks] [-quiet] [-verbose] [<patterns>]
+			_tcl.Entry(_builder.get_pblocks(regexp, nocase, filter, of_objects, include_nested_pblocks, quiet, verbose, patterns));
 			return _tcl;
 		}
 		/// <summary>
@@ -1900,10 +1992,12 @@ namespace Quokka.TCL.Vivado
 		/// command gets a list of all pins in the current_instance of the open design, as specified by the
 		/// current_instance command. You can use the -hierarchical option to extract pins from
 		/// the hierarchy of the current design.
-		/// IMPORTANT! Because there are so many pins in the design, the get_pins command can cause performance
-		/// issues, and add significant time to processing design constraints. In many cases, a design constraint that is
-		/// written with the get_pins command can be rewritten using the get_cells command, as shown in the
-		/// examples, to significantly improve constraint processing and performance of the Vivado tool.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// IMPORTANT! Because there are so many pins in the design, the get_pins command can cause
+		/// performance issues, and add significant time to processing design constraints. In many cases, a design
+		/// constraint that is written with the get_pins command can be rewritten using the get_cells
+		/// command, as shown in the examples, to significantly improve constraint processing and performance of the
+		/// Vivado tool.
 		/// The get_pins command also includes an option to get all replicated pins that are added to a
 		/// design during physical optimization, or phys_opt_design. The use of the -
 		/// include_replicated_objects option returns the pins on replicated cells when the pins of
@@ -1935,12 +2029,13 @@ namespace Quokka.TCL.Vivado
 		/// \
 		/// -filter {REF_PIN_NAME == D}] -datapath_only
 		/// TIP: Although the second command syntax is more complex, the performance gains can be significant.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This example runs the report_drc command on the current design, and then returns any pins
 		/// associated with DRC violations:
 		/// report_drc -name drc_1
 		/// get_pins -of_objects [get_drc_violations]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 851
+		/// See ug835-vivado-tcl-commands.pdf, page 871
 		/// </summary>
 		/// <param name="hsc">(Optional) Hierarchy separator Default: /</param>
 		/// <param name="hierarchical">(Optional) Search level-by-level in current instance</param>
@@ -1974,6 +2069,7 @@ namespace Quokka.TCL.Vivado
 		/// Programmable interconnect points, or PIPs, provide the physical routing paths on the device used
 		/// to connect logic networks. This command returns a list of PIPs on the device that match a
 		/// specified search pattern. The command requires a design to be open.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The default command gets a list of all PIPs on the device. However, this is not a recommended
 		/// use of the command due to the number of pips on a device. You should specify the -
 		/// of_objects argument to limit the number of pips returned.
@@ -1985,7 +2081,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example returns the PIPs associated with the specified tile:
 		/// get_pips -of_object [get_tiles DSP_R_X9Y75]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 856
+		/// See ug835-vivado-tcl-commands.pdf, page 876
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
@@ -2030,6 +2126,7 @@ namespace Quokka.TCL.Vivado
 		/// • Each pkgpin_bytegroup has 2 nibbles, an upper and lower, and has 13 package pins.
 		/// • Each pkgpin_nibble has 6 or 7 pins, and is the upper or lower nibble of the pkgpin_bytegroup.
 		/// • A package_pin is one pin of an iobank, a pkgpin_bytegroup, or a pkgpin_nibble.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Note: To improve memory and performance, the get_* commands return a container list of a single type
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
@@ -2038,7 +2135,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example gets a list of all pins on the package of the target device:
 		/// get_pkgpin_bytegroups -of [get_iobanks 44]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 860
+		/// See ug835-vivado-tcl-commands.pdf, page 880
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
@@ -2069,6 +2166,7 @@ namespace Quokka.TCL.Vivado
 		/// • Each pkgpin_bytegroup has 2 nibbles, an upper and lower, and has 13 package pins.
 		/// • Each pkgpin_nibble has 6 or 7 pins, and is the upper or lower nibble of the pkgpin_bytegroup.
 		/// • A package_pin is one pin of an iobank, a pkgpin_bytegroup, or a pkgpin_nibble.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Note: To improve memory and performance, the get_* commands return a container list of a single type
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
@@ -2077,7 +2175,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example returns the Upper nibbles associated with the specified IO bank:
 		/// get_pkgpin_nibbles -of [get_iobanks 44] -filter {TYPE == U}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 863
+		/// See ug835-vivado-tcl-commands.pdf, page 883
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
@@ -2101,6 +2199,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Gets a list of port objects in the current design that match a specified search pattern. The default
 		/// command gets a list of all ports in the design.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Note: To improve memory and performance, the get_* commands return a container list of a single type
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
@@ -2109,6 +2208,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example gets a list of pins attached to the specified cell:
 		/// get_ports -of_objects [lindex [get_cells] 1]
 		/// Note: If there are no ports matching the pattern, the tool will return a warning.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example runs the report_drc command on the current design, returns the list of
 		/// violations in the specified DRC report, and then returns the ports associated with any violations
 		/// of the unspecified I/O Standard rule (NSTD):
@@ -2121,7 +2221,7 @@ namespace Quokka.TCL.Vivado
 		/// get_ports -scoped_to_current_instance
 		/// get_ports -scoped_to_current_instance -prop_thru_buffers
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 866
+		/// See ug835-vivado-tcl-commands.pdf, page 886
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
@@ -2154,6 +2254,27 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
+		/// Get a list of Power Rails in the current design
+		///
+		///
+		/// TCL Syntax: get_power_rails [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 890
+		/// </summary>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match Power rail names against patterns Default: *</param>
+		/// <returns>list of power rail objects</returns>
+		public TTCL get_power_rails(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		{
+			// TCL Syntax: get_power_rails [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Entry(_builder.get_power_rails(regexp, nocase, filter, quiet, verbose, patterns));
+			return _tcl;
+		}
+		/// <summary>
 		/// Get properties of object
 		///
 		///
@@ -2170,6 +2291,7 @@ namespace Quokka.TCL.Vivado
 		/// RECOMMENDED: For numeric properties, the min/max determination is based on numeric values. For all
 		/// other properties, the determination is based on string sorting.
 		/// This command returns a value, or list of values, or returns an error if it fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets the NAME property from the specified cell:
 		/// get_property NAME [lindex [get_cells] 3]
@@ -2185,8 +2307,9 @@ namespace Quokka.TCL.Vivado
 		/// IOB_X1Y98
 		/// Note: While IOB_X1Y125 is the largest site value on the port objects, the property value IOB_X1Y98 is
 		/// returned because of the sorting of the property values as strings.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 880
+		/// See ug835-vivado-tcl-commands.pdf, page 901
 		/// </summary>
 		/// <param name="name">(Required) Name of property whose value is to be retrieved</param>
 		/// <param name="@object">(Required) Object to query for properties</param>
@@ -2228,7 +2351,7 @@ namespace Quokka.TCL.Vivado
 		/// SLICE_X21Y92/CQ SLICE_X21Y92/D SLICE_X21Y92/DMUX
 		/// SLICE_X21Y92/DQ
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 902
+		/// See ug835-vivado-tcl-commands.pdf, page 923
 		/// </summary>
 		/// <param name="of_objects">
 		/// (Optional)
@@ -2263,12 +2386,13 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example returns the pins of the specified BELs associated with the specified range
 		/// of sites on the device:
 		/// get_site_pips -of_objects [get_sites SLICE_X21Y92]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 905
+		/// See ug835-vivado-tcl-commands.pdf, page 926
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
@@ -2296,6 +2420,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets a list of all sites available on the target device:
 		/// get_sites
@@ -2312,6 +2437,7 @@ namespace Quokka.TCL.Vivado
 		/// set prop [get_property SITE_TYPE $x]
 		/// if { [lsearch -exact $type $prop] == -1 } {
 		/// lappend type $prop
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// }
 		/// }
 		/// foreach y $type {
@@ -2325,7 +2451,7 @@ namespace Quokka.TCL.Vivado
 		/// get_sites -range {SLICE_X0Y0:SLICE_X1Y1}
 		/// SLICE_X0Y0 SLICE_X0Y1 SLICE_X1Y0 SLICE_X1Y1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 908
+		/// See ug835-vivado-tcl-commands.pdf, page 929
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="filter">(Optional) Filter list with expression</param>
@@ -2367,6 +2493,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example highlights each of the SLRs on the target device in a different color:
 		/// foreach x [get_slrs] {
@@ -2378,7 +2505,7 @@ namespace Quokka.TCL.Vivado
 		/// on the current device:
 		/// get_property NUM_SLLS [get_slrs SLR0]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 912
+		/// See ug835-vivado-tcl-commands.pdf, page 933
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
@@ -2411,6 +2538,7 @@ namespace Quokka.TCL.Vivado
 		/// The speed models include information on the delays in nanoseconds (ns) associated with device
 		/// resources like BELs and SITEs and routing resources. Speed models are used by the Vivado
 		/// timing engine to perform analysis of the current design in the context of the target part.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The objects returned are the speed models associated with specific physical resources like pips
 		/// and wires, drawn directly from the speed files. These can include capacitance and resistance
 		/// values and buffer models.
@@ -2436,13 +2564,14 @@ namespace Quokka.TCL.Vivado
 		/// SLOW_MIN double true 0.036
 		/// SPEED_INDEX int true 65535
 		/// TYPE string true bel_delay
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example returns the delays, in nanoseconds, for a specific A6LUT on the device,
 		/// followed by the delay name for the specified object:
 		/// set x [get_speed_models -of [get_bels SLICE_X0Y0/A6LUT]]
 		/// puts [format "%6.3f : %s" [get_property DELAY [lindex $x 0 ]] \
 		/// [get_property NAME [lindex $x 0 ]]]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 915
+		/// See ug835-vivado-tcl-commands.pdf, page 936
 		/// </summary>
 		/// <param name="of_objects">(Optional) Get 'speed_model' objects of these types: 'node bel pip cell'.</param>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
@@ -2471,6 +2600,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example returns the total number of tiles where the number of timing arcs is
 		/// greater than 100 and 150 respectively:
@@ -2479,7 +2609,7 @@ namespace Quokka.TCL.Vivado
 		/// llength [get_tiles -filter {NUM_ARCS>150} ]
 		/// 11691
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 922
+		/// See ug835-vivado-tcl-commands.pdf, page 943
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
@@ -2528,7 +2658,7 @@ namespace Quokka.TCL.Vivado
 		/// {count_reg[6]/C --> count_reg[6]/CE [setup] }
 		/// {count_reg[6]/CLR --> count_reg[6]/Q [Reg Set/Clr] }
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 925
+		/// See ug835-vivado-tcl-commands.pdf, page 946
 		/// </summary>
 		/// <param name="from">(Optional) List of pin or ports</param>
 		/// <param name="to">(Optional) List of pin or ports</param>
@@ -2551,6 +2681,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Returns a list of wires in the design that match a specified search pattern in an open design.
 		/// The default command gets a list of all wires in the design.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Note: To improve memory and performance, the get_* commands return a container list of a single type
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
@@ -2559,7 +2690,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example returns the wires associated with the specified tile:
 		/// get_wires -of_objects [get_tiles IO_INT_INTERFACE_L_X0Y198]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 943
+		/// See ug835-vivado-tcl-commands.pdf, page 964
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
@@ -2608,6 +2739,7 @@ namespace Quokka.TCL.Vivado
 		/// • For paths originally assigned by the tool to a clock path group, the -default option will
 		/// revert those paths to the clock path group instead of reverting them to the "default" path
 		/// group.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// • group_path -default and reset_path are completely independent commands. The
 		/// reset_path command doesn't affect path groups, and the group_path command doesn't
 		/// affect other timing exceptions .
@@ -2625,7 +2757,7 @@ namespace Quokka.TCL.Vivado
 		/// group:
 		/// group_path -to [get_pins *signal*reg/D -hierarchical] -default
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 948
+		/// See ug835-vivado-tcl-commands.pdf, page 969
 		/// </summary>
 		/// <param name="name">(Optional) The name of group, can be multiple names</param>
 		/// <param name="weight">(Optional) Cost function Weight, Valid values are 1, 2 Default: 1.0</param>
@@ -2650,13 +2782,13 @@ namespace Quokka.TCL.Vivado
 		/// Joins two existing ports to create a differential pair. The port directions, interfaces, and other
 		/// properties must match in order for the specified ports to be joined as a differential pair.
 		/// Otherwise an error will be returned.
-		/// IMPORTANT! The two ports must first be created, either by using the create_port command or by reading
-		/// in an XDC file, prior to making them into a differential pair.
+		/// IMPORTANT! The two ports must first be created, either by using the create_port command or by
+		/// reading in an XDC file, prior to making them into a differential pair.
 		///
 		/// The following example joins the two specified ports to create a differential pair:
 		/// make_diff_pair_ports port_Pos1 port_Neg1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1034
+		/// See ug835-vivado-tcl-commands.pdf, page 1057
 		/// </summary>
 		/// <param name="ports">(Required) Ports to join</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -2681,7 +2813,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example removes the specified cells from the pb_cpuEngine Pblock:
 		/// remove_cells_from_pblock pb_cpuEngine [get_cells cpuEngine/cpu_dwb_dat_o/*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1213
+		/// See ug835-vivado-tcl-commands.pdf, page 1237
 		/// </summary>
 		/// <param name="pblock">(Required) Pblock to remove cells from</param>
 		/// <param name="cells">(Required) Cells to remove</param>
@@ -2694,13 +2826,36 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
+		/// Remove power sources from Power Rail
+		///
+		///
+		/// TCL Syntax: remove_from_power_rail [-power_sources <args>] [-quiet] [-verbose] <power_rail>
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 1251
+		/// </summary>
+		/// <param name="power_rail">(Required) Power rail to remove power sources from</param>
+		/// <param name="power_sources">
+		/// (Optional)
+		/// List of power sources to remove. Can be power rails and/or
+		/// power supplies
+		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL remove_from_power_rail(string power_rail, string power_sources = null, bool? quiet = null, bool? verbose = null)
+		{
+			// TCL Syntax: remove_from_power_rail [-power_sources <args>] [-quiet] [-verbose] <power_rail>
+			_tcl.Entry(_builder.remove_from_power_rail(power_rail, power_sources, quiet, verbose));
+			return _tcl;
+		}
+		/// <summary>
 		/// Reset operating conditions to tool default for power estimation
 		///
 		///
-		/// TCL Syntax: reset_operating_conditions [-voltage <args>] [-grade] [-process] [-junction_temp] [-ambient_temp] [-thetaja] [-thetasa] [-airflow] [-heatsink] [-thetajb] [-board] [-board_temp] [-board_layers] [-design_power_budget] [-quiet] [-verbose]
+		/// TCL Syntax: reset_operating_conditions [-voltage <args>] [-grade] [-process] [-junction_temp] [-ambient_temp] [-thetaja] [-thetasa] [-airflow] [-heatsink] [-thetajb] [-board] [-board_temp] [-board_layers] [-design_power_budget] [-supply_current_budget <args>] [-quiet] [-verbose]
 		///
 		/// Resets the specified operating conditions to their default values. If no operating conditions are
 		/// specified, all operating conditions are reset to their default values.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Operating conditions can be set using the set_operating_conditions command. The
 		/// current values can be determined using the report_operating_conditions command. The
 		/// environmental operating conditions of the device are used for power analysis when running the
@@ -2715,7 +2870,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example resets the voltage supply Vccint to its default value:
 		/// reset_operating_conditions -voltage Vccint
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1471
+		/// See ug835-vivado-tcl-commands.pdf, page 1504
 		/// </summary>
 		/// <param name="voltage">(Optional) Resets voltage value. Supported voltage supplies vary by family.</param>
 		/// <param name="grade">(Optional) Resets temperature grade</param>
@@ -2731,12 +2886,17 @@ namespace Quokka.TCL.Vivado
 		/// <param name="board_temp">(Optional) Resets Board Temperature</param>
 		/// <param name="board_layers">(Optional) Resets Board layers</param>
 		/// <param name="design_power_budget">(Optional) Design Power Budget (W)</param>
+		/// <param name="supply_current_budget">
+		/// (Optional)
+		/// Resets list of supply current budget 'name value' pairs.
+		/// Supported voltage supplies vary by family.
+		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL reset_operating_conditions(string voltage = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_operating_conditions(string voltage = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, string supply_current_budget = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: reset_operating_conditions [-voltage <args>] [-grade] [-process] [-junction_temp] [-ambient_temp] [-thetaja] [-thetasa] [-airflow] [-heatsink] [-thetajb] [-board] [-board_temp] [-board_layers] [-design_power_budget] [-quiet] [-verbose]
-			_tcl.Entry(_builder.reset_operating_conditions(voltage, grade, process, junction_temp, ambient_temp, thetaja, thetasa, airflow, heatsink, thetajb, board, board_temp, board_layers, design_power_budget, quiet, verbose));
+			// TCL Syntax: reset_operating_conditions [-voltage <args>] [-grade] [-process] [-junction_temp] [-ambient_temp] [-thetaja] [-thetasa] [-airflow] [-heatsink] [-thetajb] [-board] [-board_temp] [-board_layers] [-design_power_budget] [-supply_current_budget <args>] [-quiet] [-verbose]
+			_tcl.Entry(_builder.reset_operating_conditions(voltage, grade, process, junction_temp, ambient_temp, thetaja, thetasa, airflow, heatsink, thetajb, board, board_temp, board_layers, design_power_budget, supply_current_budget, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -2754,11 +2914,12 @@ namespace Quokka.TCL.Vivado
 		/// set_switching_activity -default_toggle_rate or -default_static_probability to
 		/// change or reset the default values for the current design.
 		/// This command operates silently and does not return direct feedback of its operation.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example resets the signal_rate and static probability value on all output ports:
 		/// reset_switching_activity -default [all_outputs]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1485
+		/// See ug835-vivado-tcl-commands.pdf, page 1518
 		/// </summary>
 		/// <param name="@default">(Optional) Reset default static probability and default toggle rate</param>
 		/// <param name="type">
@@ -2816,7 +2977,7 @@ namespace Quokka.TCL.Vivado
 		/// resize_pblock block3 -add {SLICE_X6Y67:SLICE_X11Y71 \
 		/// RAMB18_X0Y2:RAMB18_X1Y4}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1494
+		/// See ug835-vivado-tcl-commands.pdf, page 1527
 		/// </summary>
 		/// <param name="pblock">(Required) Pblock to resize</param>
 		/// <param name="add">(Optional) Add site ranges(s)</param>
@@ -2845,6 +3006,7 @@ namespace Quokka.TCL.Vivado
 		/// constraints. Example uses of the bus skew constraint include clock domain crossing for gray￾coded pointers, MUX-controlled and MUX-data holding CDC buses.
 		/// TIP: Bus skew constraints are not overridden by clock groups, max delay, or false path, because
 		/// set_bus_skew is a constraint between the signals of a bus, rather than on a particular path.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The set_bus_skew constraint can be combined with the set_max_delay constraint for good
 		/// results. The set_bus_skew constraint does not care about the absolute datapath delay, but
 		/// only about the relative arrival times of data at the destination, taking into account source and
@@ -2872,8 +3034,9 @@ namespace Quokka.TCL.Vivado
 		/// The following example defines the bus skew between the gray-coded Read and Write pointers:
 		/// set_bus_skew -from [get_pins gray_coded_read_ptr[*]/C] \
 		/// -to [get_pins gray_coded_write_ptr[*]/D] 2.5
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1559
+		/// See ug835-vivado-tcl-commands.pdf, page 1592
 		/// </summary>
 		/// <param name="value">(Required) Constraint value</param>
 		/// <param name="from">(Optional) List of path startpoints or clocks</param>
@@ -2915,7 +3078,7 @@ namespace Quokka.TCL.Vivado
 		/// create_clock -name clk_B -period 15.0 [get_pins clock_sel/I1]
 		/// set_case_analysis 1 [get_pins clock_sel/S]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1563
+		/// See ug835-vivado-tcl-commands.pdf, page 1596
 		/// </summary>
 		/// <param name="value">
 		/// (Required)
@@ -2937,9 +3100,9 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: set_clock_groups [-name <arg>] [-logically_exclusive] [-physically_exclusive] [-asynchronous] [-group <args>] [-quiet] [-verbose]
 		///
-		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado IDE
-		/// offer timing diagrams and additional details around defining specific timing constraints. You can refer to these
-		/// sources for additional information.
+		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado
+		/// IDE offer timing diagrams and additional details around defining specific timing constraints. You can refer
+		/// to these sources for additional information.
 		/// Define clocks, or groups of clocks, that are exclusive with or asynchronous to other clocks in the
 		/// design. Exclusive clocks are not active at the same time, and paths between them can be ignored
 		/// during timing analysis. Asynchronous clocks are clocks with no known phase relationship, which
@@ -2951,6 +3114,7 @@ namespace Quokka.TCL.Vivado
 		/// If only one group is specified, the clocks in that group are asynchronous or exclusive to all other
 		/// clocks in the design, but not to each other. If a new clock is created after the
 		/// set_clock_groups command, it is asynchronous to that group as well.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This command can also be used for multiple clocks that are derived from a single BUFGMUX as
 		/// both of the clocks will not be active at the same time.
 		/// Note: This command operates silently and does not return direct feedback of its operation.
@@ -2958,6 +3122,7 @@ namespace Quokka.TCL.Vivado
 		/// Group all the elements driven by src_clk and sync_clk into separate clock groups. The clock
 		/// groups are asynchronous to each other:
 		/// set_clock_groups -group src_clk -group sync_clk -asynchronous
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example includes the generated clocks of the specified clocks, and adds those to
 		/// the clock group:
 		/// set_clock_groups -group [get_clocks -include_generated_clocks src_clk] \
@@ -2968,7 +3133,7 @@ namespace Quokka.TCL.Vivado
 		/// clocks in the design:
 		/// set_clock_groups -async -group [get_clocks {J_CLK U_CLK}]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1565
+		/// See ug835-vivado-tcl-commands.pdf, page 1598
 		/// </summary>
 		/// <param name="name">(Optional) Name for clock grouping</param>
 		/// <param name="logically_exclusive">(Optional) Specify logically exclusive clock groups</param>
@@ -2998,11 +3163,12 @@ namespace Quokka.TCL.Vivado
 		/// Network latency is the time a clock signal takes to propagate from its definition point in the
 		/// design to a register clock pin on the timing path. The total clock latency at a register clock pin is
 		/// the sum of a clock's source latency and network latency.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// This example will set an early latency on the rising edge of CLK_A.
 		/// set_clock_latency -source -rise -early 0.4 [get_ports CLK_A]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1568
+		/// See ug835-vivado-tcl-commands.pdf, page 1601
 		/// </summary>
 		/// <param name="latency">(Required) Latency value</param>
 		/// <param name="objects">(Required) List of clocks, ports or pins</param>
@@ -3039,7 +3205,7 @@ namespace Quokka.TCL.Vivado
 		/// output pin of the XOR gate as compared with the original clock.
 		/// set_clock_sense -positive [get_pins xor_a.z]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1571
+		/// See ug835-vivado-tcl-commands.pdf, page 1604
 		/// </summary>
 		/// <param name="pins">(Required) List of port and/or pins</param>
 		/// <param name="positive">(Optional) Specify positive unate (non_inverting) clock sense</param>
@@ -3067,6 +3233,7 @@ namespace Quokka.TCL.Vivado
 		/// setup and hold paths separately using the -setup and -hold options.
 		/// Clock uncertainty is the maximum variation, specified in nanoseconds (ns), between two clock
 		/// edges at registers within a single clock domain, or crossing between clock domains.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The clock uncertainty is used during setup and hold analysis, where uncertainty is calculated for
 		/// each timing path based on the clock edges used by the analysis and the clock tree topology. For
 		/// example, for a path where the startpoint and endpoint are connected to the same clock net, the
@@ -3091,8 +3258,8 @@ namespace Quokka.TCL.Vivado
 		/// • UU = User Uncertainty, which defines the user clock uncertainty specified by this
 		/// set_clock_uncertainty command.
 		/// TIP: SYSTEM_JITTER is reported as a property of clocks, although it applies to all clocks in the design.
-		/// INPUT_JITTER is also a property of primary clocks. These properties can be returned by the get_property or
-		/// report_property commands. Jitter and clock uncertainty are reported by the
+		/// INPUT_JITTER is also a property of primary clocks. These properties can be returned by the
+		/// get_property or report_property commands. Jitter and clock uncertainty are reported by the
 		/// report_timing_summary and report_timing commands.
 		/// This command returns nothing if successful, or returns an error if it fails.
 		///
@@ -3102,7 +3269,7 @@ namespace Quokka.TCL.Vivado
 		/// set_clock_uncertainty -setup 0.213 [get_clocks wbClk]
 		/// set_clock_uncertainty -hold 0.167 [get_clocks wbClk]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1573
+		/// See ug835-vivado-tcl-commands.pdf, page 1606
 		/// </summary>
 		/// <param name="uncertainty">(Required) Uncertainty of clock network</param>
 		/// <param name="setup">(Optional) Specify clock uncertainty for setup checks</param>
@@ -3137,6 +3304,7 @@ namespace Quokka.TCL.Vivado
 		/// between the two specified endpoints. The difference must be less than the set_data_check
 		/// <value> requirement in order to meet timing.
 		/// Limitations of the set_data_check command include:
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// • Variations in the destination clock delay are ignored.
 		/// • This command is used for timing purposes only, and is not considered by the Vivado placer or
 		/// router.
@@ -3148,7 +3316,7 @@ namespace Quokka.TCL.Vivado
 		/// constraint would do a setup check of C_IN with respect to A_IN. The data at C_IN should arrive
 		/// 2.0 ns prior to the edge of A_IN.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1576
+		/// See ug835-vivado-tcl-commands.pdf, page 1609
 		/// </summary>
 		/// <param name="value">(Required) Setup or hold time of the defined checks</param>
 		/// <param name="from">(Optional) From pin/port of data to data check</param>
@@ -3197,7 +3365,7 @@ namespace Quokka.TCL.Vivado
 		/// ldpc_dout360_channel/U_AP_FIFO_ldpc_dout360_channel_ram/mem_reg_0]]
 		/// set_disable_timing $arcs
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1581
+		/// See ug835-vivado-tcl-commands.pdf, page 1614
 		/// </summary>
 		/// <param name="objects">
 		/// (Required)
@@ -3220,9 +3388,9 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: set_external_delay -from <args> -to <args> [-min] [-max] [-add] [-quiet] [-verbose] <delay_value>
 		///
-		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado IDE
-		/// offer timing diagrams and additional details around defining specific timing constraints. You can refer to these
-		/// sources for additional information.
+		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado
+		/// IDE offer timing diagrams and additional details around defining specific timing constraints. You can refer
+		/// to these sources for additional information.
 		/// Sets the external (feedback) delay in nanoseconds (ns) between an output and input port. The
 		/// external delay is used in the calculation of the PLL/MMCM compensation delay for PLLs/
 		/// MMCMs with external feedback.
@@ -3234,7 +3402,7 @@ namespace Quokka.TCL.Vivado
 		/// ClkFb:
 		/// set_external_delay -from [get_ports ClkOut] -to [get_ports ClkFb] 1.0
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1583
+		/// See ug835-vivado-tcl-commands.pdf, page 1616
 		/// </summary>
 		/// <param name="from">(Required) Output port</param>
 		/// <param name="to">(Required) Input port</param>
@@ -3256,10 +3424,11 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: set_false_path [-setup] [-hold] [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose]
 		///
-		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado IDE
-		/// offer timing diagrams and additional details around defining specific timing constraints. You can refer to these
-		/// sources for additional information.
+		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado
+		/// IDE offer timing diagrams and additional details around defining specific timing constraints. You can refer
+		/// to these sources for additional information.
 		/// Sets false timing paths in the design that are ignored during timing analysis.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Note: This command operates silently and does not return direct feedback of its operation
 		///
 		/// The following example eliminates the setup timing for paths from the bftClk:
@@ -3268,7 +3437,7 @@ namespace Quokka.TCL.Vivado
 		/// set_false_path -from [get_clocks GT0_RXUSRCLK2_OUT] \
 		/// -to [get_clocks DRPCLK_OUT]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1585
+		/// See ug835-vivado-tcl-commands.pdf, page 1618
 		/// </summary>
 		/// <param name="setup">(Optional) Eliminate setup timing analysis for paths</param>
 		/// <param name="hold">(Optional) Eliminate hold timing analysis for paths</param>
@@ -3306,7 +3475,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example restores the default hierarchy separator, '/':
 		/// set_hierarchy_separator
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1588
+		/// See ug835-vivado-tcl-commands.pdf, page 1621
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -3323,19 +3492,20 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: set_input_delay [-clock <args>] [-reference_pin <args>] [-clock_fall] [-rise] [-fall] [-max] [-min] [-add_delay] [-network_latency_included] [-source_latency_included] [-quiet] [-verbose] <delay> <objects>
 		///
-		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado IDE
-		/// offer timing diagrams and additional details around defining specific timing constraints. You can refer to these
-		/// sources for additional information.
+		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado
+		/// IDE offer timing diagrams and additional details around defining specific timing constraints. You can refer
+		/// to these sources for additional information.
 		/// Specifies the external system-level path delay on a primary input port relative to a clock edge at
 		/// the interface of the design. The input delay value is specified in nanoseconds (ns), and can be
 		/// positive or negative, depending on the clock and data relative phase at the interface of the
 		/// device.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// To accurately model the system-level timing of your Xilinx FPGA design, you must assign timing
 		/// delays for objects external to the FPGA onto the primary input or output ports in your design.
 		/// These delays are defined by the set_input_delay and set_output_delay commands.
-		/// IMPORTANT! If the input port also has a set_max_delay constraint assigned, the specified input delay
-		/// value is considered part of the max_delay computation. That is, the input delay consumes a portion of the max
-		/// delay on the timing path that includes the input port.
+		/// IMPORTANT! If the input port also has a set_max_delay constraint assigned, the specified input
+		/// delay value is considered part of the max_delay computation. That is, the input delay consumes a portion
+		/// of the max delay on the timing path that includes the input port.
 		/// This command returns nothing if successful, or returns an error if it fails.
 		///
 		/// The following example specifies the input delay on port DIN. The input delay is 3 and is relative
@@ -3361,6 +3531,7 @@ namespace Quokka.TCL.Vivado
 		/// add_delay
 		/// Note: The use of the -add_delay option allows the new min and max delay constraints to exist alongside
 		/// the first delays on the same port.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example specifies the input delay on all non clock input ports of the design.
 		/// Although all_inputs returns all ports of the design, including clock ports, set_input_delay will skip
 		/// setting input delays on the clock ports. The input delay is 1 relative to the rising edge of the clock
@@ -3370,7 +3541,7 @@ namespace Quokka.TCL.Vivado
 		/// the ports reset and wbDataForInput:
 		/// set_input_delay -clock wbClk 4 [list reset wbDataForInput]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1593
+		/// See ug835-vivado-tcl-commands.pdf, page 1626
 		/// </summary>
 		/// <param name="delay">(Required) Delay value</param>
 		/// <param name="objects">(Required) List of ports</param>
@@ -3412,6 +3583,7 @@ namespace Quokka.TCL.Vivado
 		/// The set_input_jitter command is ignored during synthesis.
 		/// TIP: INPUT_JITTER is a property of primary clocks that can be returned by the get_property or
 		/// report_property commands.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This command returns nothing if successful, or returns an error if it fails.
 		///
 		/// The following example sets an input jitter value of 0.3 ns on two clocks, sysClk and procClk.
@@ -3429,7 +3601,7 @@ namespace Quokka.TCL.Vivado
 		/// Note: In this example sysClkDiv2 is generated by a divider implemented with flip-flops, so the input jitter is
 		/// propagated from the primary clock.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1597
+		/// See ug835-vivado-tcl-commands.pdf, page 1630
 		/// </summary>
 		/// <param name="clock">(Required) Clock</param>
 		/// <param name="input_jitter">(Required) Input jitter: Value >= 0</param>
@@ -3443,7 +3615,7 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Set capacitance on ports and nets
+		/// Set capacitance on output ports and output pins
 		///
 		///
 		/// TCL Syntax: set_load [-rise] [-fall] [-max] [-min] [-quiet] [-verbose] <capacitance> <objects>
@@ -3451,7 +3623,8 @@ namespace Quokka.TCL.Vivado
 		/// Sets the load capacitance on output ports to the specified value. The load capacitance is used
 		/// during power analysis when running the report_power command, but is not used during
 		/// timing analysis.
-		/// TIP: The default unit of capacitance is picofarads (pF), but can be changed using the set_units command.
+		/// TIP: The default unit of capacitance is picofarads (pF), but can be changed using the set_units
+		/// command.
 		/// This command operates silently and does not return direct feedback of its operation.
 		///
 		/// The following example sets the specified load capacitance value for all ports:
@@ -3460,10 +3633,10 @@ namespace Quokka.TCL.Vivado
 		/// ports:
 		/// set_load -rise -fall 8 [get_ports wbOutput*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1600
+		/// See ug835-vivado-tcl-commands.pdf, page 1633
 		/// </summary>
 		/// <param name="capacitance">(Required) Capacitance value</param>
-		/// <param name="objects">(Required) List of ports or nets</param>
+		/// <param name="objects">(Required) List of output ports and output pins</param>
 		/// <param name="rise">(Optional) Specify the rise capacitance value (for ports only)</param>
 		/// <param name="fall">(Optional) Specify the fall capacitance value (for ports only)</param>
 		/// <param name="max">(Optional) Specify the maximum capacitance value</param>
@@ -3477,7 +3650,7 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Sets logic dc for port/pins
+		/// Sets logic dc for input ports and input pins
 		///
 		///
 		/// TCL Syntax: set_logic_dc [-quiet] [-verbose] <objects>
@@ -3488,10 +3661,11 @@ namespace Quokka.TCL.Vivado
 		///
 		/// The following example sets the specified port to 'X':
 		/// set_logic_dc [get_ports reset]
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1602
+		/// See ug835-vivado-tcl-commands.pdf, page 1635
 		/// </summary>
-		/// <param name="objects">(Required) List of ports or pins</param>
+		/// <param name="objects">(Required) List of input ports and input pins</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		public TTCL set_logic_dc(string objects, bool? quiet = null, bool? verbose = null)
@@ -3501,7 +3675,7 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Sets logic one for port/pins
+		/// Sets logic one for input ports and input pins
 		///
 		///
 		/// TCL Syntax: set_logic_one [-quiet] [-verbose] <objects>
@@ -3512,14 +3686,15 @@ namespace Quokka.TCL.Vivado
 		///
 		/// The following example sets the specified input port to a logic one:
 		/// set_logic_one [get_ports reset]
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example sets the input ports reset and wbDataForInput to a logic one:
 		/// set_logic_one [list [get_ports reset] [get_ports wbDataForInput]]
 		/// The following example sets the input pin I on instance reset_IBUF to a logic one:
 		/// set_logic_one [get_pins reset_IBUF_inst/I]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1604
+		/// See ug835-vivado-tcl-commands.pdf, page 1637
 		/// </summary>
-		/// <param name="objects">(Required) List of ports or pins</param>
+		/// <param name="objects">(Required) List of input ports and input pins</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		public TTCL set_logic_one(string objects, bool? quiet = null, bool? verbose = null)
@@ -3529,7 +3704,7 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Sets logic unconnected for port/pins
+		/// Sets logic unconnected for output ports and output pins
 		///
 		///
 		/// TCL Syntax: set_logic_unconnected [-quiet] [-verbose] <objects>
@@ -3539,10 +3714,11 @@ namespace Quokka.TCL.Vivado
 		///
 		/// The following example sets the specified port to unconnected:
 		/// set_logic_unconnected [get_ports OUT1]
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1606
+		/// See ug835-vivado-tcl-commands.pdf, page 1639
 		/// </summary>
-		/// <param name="objects">(Required) List of ports or pins</param>
+		/// <param name="objects">(Required) List of output ports and output pins</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		public TTCL set_logic_unconnected(string objects, bool? quiet = null, bool? verbose = null)
@@ -3552,7 +3728,7 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Sets logic zero for port/pins
+		/// Sets logic zero for input ports and input pins
 		///
 		///
 		/// TCL Syntax: set_logic_zero [-quiet] [-verbose] <objects>
@@ -3563,10 +3739,11 @@ namespace Quokka.TCL.Vivado
 		///
 		/// The following example sets the specified port to logic state 0:
 		/// set_logic_zero [get_ports reset]
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1608
+		/// See ug835-vivado-tcl-commands.pdf, page 1641
 		/// </summary>
-		/// <param name="objects">(Required) List of ports or pins</param>
+		/// <param name="objects">(Required) List of input ports and input pins</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		public TTCL set_logic_zero(string objects, bool? quiet = null, bool? verbose = null)
@@ -3581,9 +3758,10 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: set_max_delay [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-datapath_only] [-quiet] [-verbose] <delay>
 		///
-		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado IDE
-		/// offer timing diagrams and additional details around defining specific timing constraints. You can refer to these
-		/// sources for additional information.
+		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado
+		/// IDE offer timing diagrams and additional details around defining specific timing constraints. You can refer
+		/// to these sources for additional information.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Sets the maximum delay allowed on a timing path, specified in nanoseconds (ns). The specified
 		/// delay value is assigned to both the rising and falling edges of the defined timing paths unless the
 		/// -rise or -fall arguments are specified.
@@ -3594,9 +3772,9 @@ namespace Quokka.TCL.Vivado
 		/// The delay value must be assigned to a timing path as defined by at least one -from, -through,
 		/// or -to argument. A general path delay such as -to endpoint will be over written by a more
 		/// specific path definition such as -from/-to, or -from/-through/-to path definition.
-		/// IMPORTANT! When assigned to a primary input or output port, any system-level delay consumes a portion of
-		/// the max delay on the timing path that includes the input or output port. That is, the delay specified by
-		/// set_input_delay or set_output_delay is considered part of the maximum delay.
+		/// IMPORTANT! When assigned to a primary input or output port, any system-level delay consumes a
+		/// portion of the max delay on the timing path that includes the input or output port. That is, the delay
+		/// specified by set_input_delay or set_output_delay is considered part of the maximum delay.
 		/// This command returns nothing if successful, or returns an error if it fails.
 		///
 		/// The following example defines a maximum delay of 60 ns between all the input and output ports
@@ -3605,14 +3783,14 @@ namespace Quokka.TCL.Vivado
 		/// The following example clears the existing max delay and specifies a new > maximum delay for
 		/// paths to endpoints clocked by the specified clock:
 		/// set_max_delay -reset_path 50 -to [get_clocks spi_clk]
-		/// The set_max_delay command is often used to define timing constraints for crossing clock
-		/// domains when a simple synchronizer is used. In the following example, two flops (FF1 and FF2)
-		/// are clocked by different clocks, and FF1/C connects directly to FF2/D through net1. To limit the
-		/// delay on this connection to 4.0 ns use one of the following constraints:
-		/// set_max_delay -from FF1 -to FF2 -datapath_only 4.0
+		/// The set_max_delay command is often used with -datapath_only to constrain asynchronous clock
+		/// domains crossing when a simple synchronizer is used on the destination clock domain. In the
+		/// following example, two flops (FF1 and FF2) are clocked by different clocks, and FF1/Q connects
+		/// directly to FF2/D through net1. To limit the delay on this connection to 4.0 ns use the following
+		/// constraints:
 		/// set_max_delay -from FF1/C -to FF2/D -datapath_only 4.0
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1610
+		/// See ug835-vivado-tcl-commands.pdf, page 1643
 		/// </summary>
 		/// <param name="delay">(Required) Delay value</param>
 		/// <param name="rise">(Optional) Delay value applies to rising path delays</param>
@@ -3653,7 +3831,7 @@ namespace Quokka.TCL.Vivado
 		/// of time borrowing:
 		/// set_max_time_borrow 20 {top/*}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1614
+		/// See ug835-vivado-tcl-commands.pdf, page 1647
 		/// </summary>
 		/// <param name="delay">(Required) Delay value: Value >= 0</param>
 		/// <param name="objects">(Required) List of clocks, cells, data pins or clock pins</param>
@@ -3674,9 +3852,10 @@ namespace Quokka.TCL.Vivado
 		/// Sets the minimum delay allowed on a timing path, specified in nanoseconds (ns). The specified
 		/// delay value is assigned to both the rising and falling edges of the defined timing paths unless the
 		/// -rise or -fall arguments are specified.
-		/// IMPORTANT! The minimum rising and falling delay cannot be greater than the maximum rising and falling
-		/// delay on the same path. If this happens, the first assigned delay value is removed from the timing path and reset
-		/// to 0.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// IMPORTANT! The minimum rising and falling delay cannot be greater than the maximum rising and
+		/// falling delay on the same path. If this happens, the first assigned delay value is removed from the timing
+		/// path and reset to 0.
 		/// The delay value must be assigned to a timing path as defined by at least one -from, -through,
 		/// or -to argument. A general path delay such as -to endpoint will be over written by a more
 		/// specific path definition such as -from/-to, or -from/-through/-to path definition.
@@ -3689,7 +3868,7 @@ namespace Quokka.TCL.Vivado
 		/// primary output ports:
 		/// set_min_delay 20 -to [get_ports -filter {DIRECTION == out}]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1616
+		/// See ug835-vivado-tcl-commands.pdf, page 1649
 		/// </summary>
 		/// <param name="delay">(Required) Delay value</param>
 		/// <param name="rise">(Optional) Delay value applies to rising path delays</param>
@@ -3752,6 +3931,7 @@ namespace Quokka.TCL.Vivado
 		/// path multiplier is applied with respect to the source clock. Use the -start or -end options to
 		/// change the default setup or hold analysis with respect to the source or destination clocks.
 		/// This command operates silently when successful, or returns an error if the command fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example establishes a path multiplier of 3 clock cycles for the setup check of the
 		/// timing path defined by the -from/-to options. A path multiplier of N-1, or 2 in this example, is
@@ -3762,8 +3942,9 @@ namespace Quokka.TCL.Vivado
 		/// -to [get_pins data1_reg/D]
 		/// Note: For more information on the relationship between the setup and hold analysis refer to the Vivado
 		/// Design Suite User Guide: Using Constraints (UG903).
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1625
+		/// See ug835-vivado-tcl-commands.pdf, page 1658
 		/// </summary>
 		/// <param name="path_multiplier">(Required) Number of cycles</param>
 		/// <param name="setup">(Optional) Only setup multiplier is set</param>
@@ -3794,7 +3975,7 @@ namespace Quokka.TCL.Vivado
 		/// Set operating conditions for power estimation
 		///
 		///
-		/// TCL Syntax: set_operating_conditions [-voltage <args>] [-grade <arg>] [-process <arg>] [-junction_temp <arg>] [-ambient_temp <arg>] [-thetaja <arg>] [-thetasa <arg>] [-airflow <arg>] [-heatsink <arg>] [-thetajb <arg>] [-board <arg>] [-board_temp <arg>] [-board_layers <arg>] [-design_power_budget <arg>] [-quiet] [-verbose]
+		/// TCL Syntax: set_operating_conditions [-voltage <args>] [-grade <arg>] [-process <arg>] [-junction_temp <arg>] [-ambient_temp <arg>] [-thetaja <arg>] [-thetasa <arg>] [-airflow <arg>] [-heatsink <arg>] [-thetajb <arg>] [-board <arg>] [-board_temp <arg>] [-board_layers <arg>] [-design_power_budget <arg>] [-supply_current_budget <args>] [-quiet] [-verbose]
 		///
 		/// Sets the real-world operating conditions that are used when performing analysis of the design.
 		/// The environmental operating conditions of the device are used for power analysis when running
@@ -3810,13 +3991,14 @@ namespace Quokka.TCL.Vivado
 		/// set_operating_conditions -grade industrial -ambient_temp 75
 		/// The following example sets the supply voltage Vccaux to a value of 1.9:
 		/// set_operating_conditions -voltage {Vccaux 1.89}
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example sets the manufacturing process corner to maximum:
 		/// set_operating_conditions -process maximum
 		/// The following example sets the manufacturing process corner to maximum and the voltage
 		/// supply Vccint to 0.875:
 		/// set_operating_conditions -process maximum -voltage {Vccint 0.875}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1630
+		/// See ug835-vivado-tcl-commands.pdf, page 1663
 		/// </summary>
 		/// <param name="voltage">
 		/// (Optional)
@@ -3844,12 +4026,17 @@ namespace Quokka.TCL.Vivado
 		/// <param name="board_temp">(Optional) Board Temperature degC</param>
 		/// <param name="board_layers">(Optional) Board layers: 4to7, 8to11, 12to15, 16+ Default: 8to11</param>
 		/// <param name="design_power_budget">(Optional) Design Power Budget (W) Default: Unspecified</param>
+		/// <param name="supply_current_budget">
+		/// (Optional)
+		/// Sets list of supply current budget 'name value' pairs.
+		/// Supported voltage supplies vary by family.
+		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_operating_conditions(string voltage = null, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_operating_conditions(string voltage = null, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, string supply_current_budget = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: set_operating_conditions [-voltage <args>] [-grade <arg>] [-process <arg>] [-junction_temp <arg>] [-ambient_temp <arg>] [-thetaja <arg>] [-thetasa <arg>] [-airflow <arg>] [-heatsink <arg>] [-thetajb <arg>] [-board <arg>] [-board_temp <arg>] [-board_layers <arg>] [-design_power_budget <arg>] [-quiet] [-verbose]
-			_tcl.Entry(_builder.set_operating_conditions(voltage, grade, process, junction_temp, ambient_temp, thetaja, thetasa, airflow, heatsink, thetajb, board, board_temp, board_layers, design_power_budget, quiet, verbose));
+			// TCL Syntax: set_operating_conditions [-voltage <args>] [-grade <arg>] [-process <arg>] [-junction_temp <arg>] [-ambient_temp <arg>] [-thetaja <arg>] [-thetasa <arg>] [-airflow <arg>] [-heatsink <arg>] [-thetajb <arg>] [-board <arg>] [-board_temp <arg>] [-board_layers <arg>] [-design_power_budget <arg>] [-supply_current_budget <args>] [-quiet] [-verbose]
+			_tcl.Entry(_builder.set_operating_conditions(voltage, grade, process, junction_temp, ambient_temp, thetaja, thetasa, airflow, heatsink, thetajb, board, board_temp, board_layers, design_power_budget, supply_current_budget, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -3858,18 +4045,19 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: set_output_delay [-clock <args>] [-reference_pin <args>] [-clock_fall] [-rise] [-fall] [-max] [-min] [-add_delay] [-network_latency_included] [-source_latency_included] [-quiet] [-verbose] <delay> <objects>
 		///
-		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado IDE
-		/// offer timing diagrams and additional details around defining specific timing constraints. You can refer to these
-		/// sources for additional information.
+		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado
+		/// IDE offer timing diagrams and additional details around defining specific timing constraints. You can refer
+		/// to these sources for additional information.
 		/// Specifies the external system-level path delay on a primary output port relative to a clock edge at
 		/// the interface of the design. The output delay value is specified in nanoseconds (ns), and can be
 		/// positive or negative, depending on the clock and data relative phase outside the FPGA device.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// To accurately model the system-level timing of your Xilinx FPGA design, you must assign timing
 		/// delays for objects external to the FPGA onto the primary input or output ports in your design.
 		/// These delays are defined by the set_input_delay and set_output_delay commands.
-		/// IMPORTANT! If the output port also has a set_max_delay constraint assigned, the specified output delay
-		/// value is considered part of the max_delay computation. That is, the output delay consumes a portion of the max
-		/// delay on the timing path that includes the output port.
+		/// IMPORTANT! If the output port also has a set_max_delay constraint assigned, the specified output
+		/// delay value is considered part of the max_delay computation. That is, the output delay consumes a portion
+		/// of the max delay on the timing path that includes the output port.
 		/// This command returns nothing if successful, or returns an error if it fails.
 		///
 		/// The following example sets an output delay on ports relative to the specified clock:
@@ -3890,7 +4078,7 @@ namespace Quokka.TCL.Vivado
 		/// Note: The use of the -add_delay option allows the new min and max delay constraints to exist alongside
 		/// the first delays on the same port.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1634
+		/// See ug835-vivado-tcl-commands.pdf, page 1667
 		/// </summary>
 		/// <param name="delay">(Required) Delay value</param>
 		/// <param name="objects">(Required) List of ports</param>
@@ -3933,7 +4121,7 @@ namespace Quokka.TCL.Vivado
 		/// set_package_pin_val -column Test -value GREEN \
 		/// -package_pins {AK1 AK2 AK3}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1637
+		/// See ug835-vivado-tcl-commands.pdf, page 1670
 		/// </summary>
 		/// <param name="column">(Required) User column name</param>
 		/// <param name="value">(Required) Value to set</param>
@@ -3954,18 +4142,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Specify cell instances to include or exclude in power optimization. The specified cells are
 		/// optimized using the power_opt_design command.
-		/// TIP: Block RAM optimizations are performed by default with the opt_design command. Some or all BRAM
-		/// cells can be excluded from the opt_design optimization using the set_power_opt command as well.
+		/// TIP: Block RAM optimizations are performed by default with the opt_design command. Some or all
+		/// BRAM cells can be excluded from the opt_design optimization using the set_power_opt command
+		/// as well.
 		/// The effect of multiple set_power_opt commands is cumulative, so that you can specify a
 		/// broad class of cell types to optimize, include specific hierarchical cells, and then exclude cells
 		/// within the included hierarchy to refine the power optimization.
 		/// The power optimizations that have been performed can be reported using the
 		/// report_power_opt command.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example sets power optimization for BRAM cells only, and then runs power
 		/// optimization:
 		/// set_power_opt -cell_types bram
 		/// power_opt_design
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example sets power optimization for BRAM and REG type cells, then adds SRLs,
 		/// and runs power optimization. Then all cells are cleared, and only SRLs are included, and power
 		/// optimization is run again:
@@ -3983,7 +4174,7 @@ namespace Quokka.TCL.Vivado
 		/// set_power_opt -include_cells cpuEngine/cpu_dbg_dat_i
 		/// power_opt_design
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1644
+		/// See ug835-vivado-tcl-commands.pdf, page 1677
 		/// </summary>
 		/// <param name="include_cells">(Optional) Include only these instances for clock gating. Default: all</param>
 		/// <param name="exclude_cells">(Optional) Exclude these instances from clock gating. Default: none</param>
@@ -4013,10 +4204,11 @@ namespace Quokka.TCL.Vivado
 		///
 		/// This example specifies that the primary system clock from the top-level should be propagated:
 		/// set_propagated_clock [get_clocks top/clk]
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This example specifies that all clocks from "sublevel1" should be propagated:
 		/// set_propagated_clock [get_clocks sublevel1/*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1647
+		/// See ug835-vivado-tcl-commands.pdf, page 1680
 		/// </summary>
 		/// <param name="objects">(Required) List of clocks, ports, or pins</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -4043,7 +4235,9 @@ namespace Quokka.TCL.Vivado
 		/// pair for the object. If an object has custom properties, these will also be reported by the
 		/// report_property and list_property commands.
 		/// This command returns nothing if successful, and an error if it fails.
-		/// TIP: You can use the get_property command to validate any properties that have been set on an object.
+		/// TIP: You can use the get_property command to validate any properties that have been set on an
+		/// object.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// Create a user-defined boolean property, TRUTH, for cell objects, and set the property on a cell:
 		/// create_property -type bool truth cell
@@ -4075,11 +4269,10 @@ namespace Quokka.TCL.Vivado
 		/// The following example defines a DCI Cascade by setting the DCI_CASCADE property for the
 		/// specified IO Bank:
 		/// set_property DCI_CASCADE {14} [get_iobanks 0 ]
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example configures the synth_1 run, setting options for Vivado Synthesis 2013,
 		/// and then launches the synthesis run:
 		/// set_property flow {Vivado Synthesis 2016} \
-		/// [get_runs synth_1]
-		/// set_property STEPS.SYNTH_DESIGN.ARGS.FANOUT_LIMIT 500 \
 		/// [get_runs synth_1]
 		/// set_property STEPS.SYNTH_DESIGN.ARGS.GATED_CLOCK_CONVERSION on \
 		/// [get_runs synth_1]
@@ -4089,13 +4282,12 @@ namespace Quokka.TCL.Vivado
 		/// This example is the same as the prior example, except that it uses the -dict option to set all the
 		/// properties on the synthesis run in a single set_property command:
 		/// set_property -dict [ list flow {Vivado Synthesis 2016} \
-		/// STEPS.SYNTH_DESIGN.ARGS.FANOUT_LIMIT 500 \
 		/// STEPS.SYNTH_DESIGN.ARGS.GATED_CLOCK_CONVERSION on \
 		/// STEPS.SYNTH_DESIGN.ARGS.FSM_EXTRACTION \
 		/// one_hot ] [get_runs synth_1]
 		/// launch_runs synth_1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1649
+		/// See ug835-vivado-tcl-commands.pdf, page 1682
 		/// </summary>
 		/// <param name="name">(Required) Name of property to set. Not valid with -dict option</param>
 		/// <param name="value">(Required) Value of property to set. Not valid with -dict option</param>
@@ -4138,6 +4330,7 @@ namespace Quokka.TCL.Vivado
 		/// report_switching_activity [get_ports]
 		/// The following example specifies the default switching probability for the current design:
 		/// set_switching_activity -default_static_probability .75
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This example sets the specified toggle rate and static probability on all registers in the hierarchy
 		/// of "CPU/MEM":
 		/// set_switching_activity -type register -toggle_rate 0.4 \
@@ -4147,7 +4340,7 @@ namespace Quokka.TCL.Vivado
 		/// set_switching_activity -type register -toggle_rate 0.4
 		/// -static_probability 0.5 -hier [get_cells CPU]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1655
+		/// See ug835-vivado-tcl-commands.pdf, page 1688
 		/// </summary>
 		/// <param name="toggle_rate">
 		/// (Optional)
@@ -4209,7 +4402,11 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		/// <param name="objects">(Optional) Objects to set switching activity on</param>
+		/// <param name="objects">
+		/// (Optional)
+		/// Objects to set switching activity on
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// </param>
 		public TTCL set_switching_activity(string toggle_rate = null, string default_toggle_rate = null, string type = null, bool? all = null, string static_probability = null, string default_static_probability = null, string signal_rate = null, bool? hier = null, bool? deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: set_switching_activity [-toggle_rate <arg>] [-default_toggle_rate <arg>] [-type <args>] [-all] [-static_probability <arg>] [-default_static_probability <arg>] [-signal_rate <arg>] [-hier] [-deassert_resets] [-quiet] [-verbose] [<objects>...]
@@ -4231,13 +4428,14 @@ namespace Quokka.TCL.Vivado
 		/// uncertainty for a path. It is due to the maximum noise (in time) that can be seen on the Vccint rail
 		/// due to simultaneous switching of internal nodes, cross talk and other phenomenon that can
 		/// impact timing on any path in the design.
-		/// IMPORTANT! The jitter calculated by Xilinx takes into consideration the uncertainty introduced by the clocking
-		/// resources, the input jitter and the system jitter. Using the set_system_jitter command overrides the
-		/// default system jitter value calculated by Xilinx, and is not recommended.
+		/// IMPORTANT! The jitter calculated by Xilinx takes into consideration the uncertainty introduced by the
+		/// clocking resources, the input jitter and the system jitter. Using the set_system_jitter command
+		/// overrides the default system jitter value calculated by Xilinx, and is not recommended.
 		/// The System Jitter and the Input Jitter are random jitters which typically follow a Gaussian
 		/// distribution and are added in a quadratic manner to represent the worst case combination. When
 		/// the Input Jitter is null, the Total System Jitter (Tsj) for an internal register-to-register path has the
 		/// following equation:
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// • Tsj = √(SourceClockSystemJitter2
 		/// + DestinationClockSystemJitter2
 		/// )
@@ -4248,8 +4446,8 @@ namespace Quokka.TCL.Vivado
 		/// The set_system_jitter command applies to all the clocks in the design. Use the
 		/// set_input_jitter command to specify additional jitter for a specific primary clock.
 		/// TIP: SYSTEM_JITTER is reported as a property of clocks, although it applies to all clocks in the design.
-		/// INPUT_JITTER is also a property of primary clocks. These properties can be returned by the get_property or
-		/// report_property commands.
+		/// INPUT_JITTER is also a property of primary clocks. These properties can be returned by the
+		/// get_property or report_property commands.
 		/// This command returns nothing if successful, or returns an error if it fails.
 		///
 		/// This example defines the primary clock, sysClk, and specifies a system wide jitter of 0.1 ns:
@@ -4264,6 +4462,7 @@ namespace Quokka.TCL.Vivado
 		/// -divide_by 2 [get_pins clkgen/sysClkDiv/Q]
 		/// set_system_jitter 0.2
 		/// set_input_jitter sysClk 0.09
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The follow example defines two primary clocks, sysClk and procClk. A system jitter of 0.2 ns is
 		/// defined for all the clocks in the system. An additional input jitter of 0.05 ns is specified for the
 		/// clock procClk:
@@ -4272,7 +4471,7 @@ namespace Quokka.TCL.Vivado
 		/// set_system_jitter 0.2
 		/// set_input_jitter procClk 0.05
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1660
+		/// See ug835-vivado-tcl-commands.pdf, page 1693
 		/// </summary>
 		/// <param name="system_jitter">(Required) System jitter: Value >= 0</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -4304,7 +4503,7 @@ namespace Quokka.TCL.Vivado
 		/// Note: The second example of set_units redefines the Voltage units defined in the first example, as well
 		/// as defining the units for current.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1663
+		/// See ug835-vivado-tcl-commands.pdf, page 1696
 		/// </summary>
 		/// <param name="capacitance">(Optional) Capacitance unit in farad. Valid values are from kF-fF. Default: pF</param>
 		/// <param name="current">(Optional) Current unit in ampere. Valid values are from kA-fA. Default: mA</param>
@@ -4350,6 +4549,7 @@ namespace Quokka.TCL.Vivado
 		/// current_instance usbEngine0/u0
 		/// update_macro usbMacro0 {rx_active_reg X0Y0 \
 		/// rx_err_reg X0Y0 rx_valid_reg X0Y1}
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example creates a macro named usbMacro1, assigns three cells to the macro using
 		/// the hierarchical path to the leaf-cell, with absolute coordinates specified for the cells in the
 		/// macro:
@@ -4371,7 +4571,7 @@ namespace Quokka.TCL.Vivado
 		/// coordinates assigned to the cells in the macro:
 		/// report_property -all [get_macros usbMacro1]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1742
+		/// See ug835-vivado-tcl-commands.pdf, page 1776
 		/// </summary>
 		/// <param name="macro">(Required) Macro to update</param>
 		/// <param name="rlocs">(Required) a list interleaved instances and site names</param>

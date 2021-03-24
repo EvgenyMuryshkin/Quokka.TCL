@@ -26,7 +26,7 @@ namespace Quokka.TCL.Vivado
 		/// Create an Ethernet interface within the specified parent interface:
 		/// create_interface -parent Top_Int ENET0
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 305
+		/// See ug835-vivado-tcl-commands.pdf, page 314
 		/// </summary>
 		/// <param name="name">(Required) Name for new I/O port interface</param>
 		/// <param name="parent">(Optional) Assign new interface to this parent interface</param>
@@ -52,6 +52,7 @@ namespace Quokka.TCL.Vivado
 		/// index values.
 		/// The create_port command can be used to create a new port in an I/O Planning project, or
 		/// while editing the netlist of an open Synthesized or Implemented design.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Netlist editing changes the in-memory view of the netlist in the current design. It does not
 		/// change the files in the source fileset, or change the persistent design on the disk. Changes made
 		/// to the netlist may be saved to a design checkpoint using the write_checkpoint command, or
@@ -76,7 +77,7 @@ namespace Quokka.TCL.Vivado
 		/// pair output ports named data_P and data_N.
 		/// create_port -direction OUT -diff_pair data_P data_N
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 326
+		/// See ug835-vivado-tcl-commands.pdf, page 335
 		/// </summary>
 		/// <param name="direction">(Required) Direction of port. Valid arguments are IN, OUT and INOUT</param>
 		/// <param name="name">(Required) Name of the port</param>
@@ -106,7 +107,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example deletes the specified interface and all of its associated ports and buses:
 		/// delete_interface USB0
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 444
+		/// See ug835-vivado-tcl-commands.pdf, page 455
 		/// </summary>
 		/// <param name="interfaces">(Required) I/O port interfaces to remove</param>
 		/// <param name="all">(Optional) Also remove all of the ports and buses belonging to the interface</param>
@@ -127,13 +128,13 @@ namespace Quokka.TCL.Vivado
 		/// Joins two existing ports to create a differential pair. The port directions, interfaces, and other
 		/// properties must match in order for the specified ports to be joined as a differential pair.
 		/// Otherwise an error will be returned.
-		/// IMPORTANT! The two ports must first be created, either by using the create_port command or by reading
-		/// in an XDC file, prior to making them into a differential pair.
+		/// IMPORTANT! The two ports must first be created, either by using the create_port command or by
+		/// reading in an XDC file, prior to making them into a differential pair.
 		///
 		/// The following example joins the two specified ports to create a differential pair:
 		/// make_diff_pair_ports port_Pos1 port_Neg1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1034
+		/// See ug835-vivado-tcl-commands.pdf, page 1057
 		/// </summary>
 		/// <param name="ports">(Required) Ports to join</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -165,7 +166,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example places all input ports onto I/O banks 12, 13, 14 and 15 of the device:
 		/// place_ports -iobank [get_iobanks {12 13 14 15}] [all_inputs]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1108
+		/// See ug835-vivado-tcl-commands.pdf, page 1129
 		/// </summary>
 		/// <param name="skip_unconnected_ports">(Optional) Do not place unconnected ports</param>
 		/// <param name="check_only">(Optional) Only check IO/Clock placement DRCs</param>
@@ -211,7 +212,7 @@ namespace Quokka.TCL.Vivado
 		/// remove_port D_BUS_P[0]
 		/// Note: Deleting either the N or the P side of a differential pair will also delete the other side of the pair.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1245
+		/// See ug835-vivado-tcl-commands.pdf, page 1272
 		/// </summary>
 		/// <param name="ports">(Required) Ports and/or bus ports to remove</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -244,6 +245,7 @@ namespace Quokka.TCL.Vivado
 		/// may be exported to a netlist file such as Verilog, VHDL, or EDIF, using the appropriate write_*
 		/// command.
 		/// Note: Netlist editing is not allowed on the elaborated RTL design.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This command returns nothing if successful, and returns an error if it fails.
 		///
 		/// The following example creates a 32-bit output bus port, then renumbers the ports to include
@@ -252,7 +254,7 @@ namespace Quokka.TCL.Vivado
 		/// resize_port_bus -from -16 -to 15 outPorts
 		/// resize_port_bus -from -8 -to 7 outPorts
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1500
+		/// See ug835-vivado-tcl-commands.pdf, page 1533
 		/// </summary>
 		/// <param name="port_bus_name">(Required) Name of the port bus to resize</param>
 		/// <param name="from">(Optional) New starting bus index</param>
@@ -286,7 +288,7 @@ namespace Quokka.TCL.Vivado
 		/// set_package_pin_val -column Test -value GREEN \
 		/// -package_pins {AK1 AK2 AK3}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1637
+		/// See ug835-vivado-tcl-commands.pdf, page 1670
 		/// </summary>
 		/// <param name="column">(Required) User column name</param>
 		/// <param name="value">(Required) Value to set</param>
@@ -310,8 +312,9 @@ namespace Quokka.TCL.Vivado
 		///
 		/// The following example splits the specified diff pair ports to form two single ended ports:
 		/// split_diff_pair_ports PORT_N PORT_P
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1678
+		/// See ug835-vivado-tcl-commands.pdf, page 1711
 		/// </summary>
 		/// <param name="ports">(Required) Ports to split</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>

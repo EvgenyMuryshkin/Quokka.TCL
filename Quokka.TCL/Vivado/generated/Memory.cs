@@ -33,18 +33,20 @@ namespace Quokka.TCL.Vivado
 		/// into a design are associated with hw_mig objects, one hw_mig object per debug-enabled memory
 		/// controller. The hw_mig object will have all the properties needed to get the calibration status and
 		/// draw the per-bit eye margin views.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Implementation of the memory IP, and debug core, is automatic when you launch an
 		/// implementation run using the launch_runs command, or when you run opt_design.
 		/// However, you can also use the implement_mig_cores command to integrate the memory IP
 		/// without having to implement the whole design.
 		/// TIP: All pins of the memory controller must be assigned prior to running the implement_mig_cores
-		/// command, or an error will be returned. You can use report_drc to check the status of the memory controller.
+		/// command, or an error will be returned. You can use report_drc to check the status of the memory
+		/// controller.
 		/// This command returns a transcript of its process, or returns an error if it fails.
 		///
 		/// The following example implements the memory IP cores in the current design:
 		/// implement_mig_cores
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 959
+		/// See ug835-vivado-tcl-commands.pdf, page 980
 		/// </summary>
 		/// <param name="outputdir">(Optional) Target Output Directory for PHY IP Generated Files Default: empty</param>
 		/// <param name="rtlonly">
@@ -70,9 +72,9 @@ namespace Quokka.TCL.Vivado
 		/// Call IP Services to regenerate an IP, then stitch it into the current netlist
 		///
 		///
-		/// TCL Syntax: implement_xphy_cores [-outputdir <arg>] [-rtlonly] [-force] [-debug_output] [-quiet] [-verbose]
+		/// TCL Syntax: implement_xphy_cores [-outputdir <arg>] [-rtlonly] [-force] [-debug_output] [-update_delay_value_only] [-quiet] [-verbose]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 961
+		/// See ug835-vivado-tcl-commands.pdf, page 983
 		/// </summary>
 		/// <param name="outputdir">(Optional) Target Output Directory for PHY IP Generated Files Default: empty</param>
 		/// <param name="rtlonly">
@@ -86,12 +88,13 @@ namespace Quokka.TCL.Vivado
 		/// -rtlonly, optimized cores will be included, as well.
 		/// </param>
 		/// <param name="debug_output">(Optional) Enable debugging output.</param>
+		/// <param name="update_delay_value_only">(Optional) Update latest Delay value.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL implement_xphy_cores(string outputdir = null, bool? rtlonly = null, bool? force = null, bool? debug_output = null, bool? quiet = null, bool? verbose = null)
+		public TTCL implement_xphy_cores(string outputdir = null, bool? rtlonly = null, bool? force = null, bool? debug_output = null, bool? update_delay_value_only = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: implement_xphy_cores [-outputdir <arg>] [-rtlonly] [-force] [-debug_output] [-quiet] [-verbose]
-			_tcl.Entry(_builder.implement_xphy_cores(outputdir, rtlonly, force, debug_output, quiet, verbose));
+			// TCL Syntax: implement_xphy_cores [-outputdir <arg>] [-rtlonly] [-force] [-debug_output] [-update_delay_value_only] [-quiet] [-verbose]
+			_tcl.Entry(_builder.implement_xphy_cores(outputdir, rtlonly, force, debug_output, update_delay_value_only, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -100,7 +103,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: refresh_meminit [-quiet] [-verbose]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1199
+		/// See ug835-vivado-tcl-commands.pdf, page 1223
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>

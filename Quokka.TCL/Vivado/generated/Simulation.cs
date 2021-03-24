@@ -24,6 +24,7 @@ namespace Quokka.TCL.Vivado
 		/// A breakpoint is a user-determined stopping point in the source code used for debugging the
 		/// design. When simulating a design with breakpoints, simulation of the design stops at each
 		/// breakpoint to let you examine values and verify the design behavior.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// You can report breakpoints in the current simulation using the report_bps command, and
 		/// remove existing breakpoints using the remove_bps command.
 		/// This command returns a new breakpoint object if there is not already a breakpoint set at the
@@ -35,7 +36,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example adds a the breakpoint to the HDL source file at the specified line number:
 		/// add_bp C:/Data/ug937/sources/sinegen.vhd 137
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 31
+		/// See ug835-vivado-tcl-commands.pdf, page 33
 		/// </summary>
 		/// <param name="file_name">(Required) Filename to add the breakpoint</param>
 		/// <param name="line_number">(Required) Line number of the given file to set the breakpoint</param>
@@ -62,6 +63,7 @@ namespace Quokka.TCL.Vivado
 		/// specified condition expression becomes TRUE, the condition commands are run.
 		/// The add_condition command returns a condition identifier for the added condition, or returns
 		/// an error if the command fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example defines a condition named resetLow, that becomes true when the reset
 		/// signal is low, and then puts a message to the standard output, and stops the current simulation:
@@ -69,6 +71,7 @@ namespace Quokka.TCL.Vivado
 		/// puts "Condition Reset was encountered at [current_time]. Stopping
 		/// simulation."
 		/// stop }
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This next example defines a Tcl procedure, called myProc, that uses the add_force command to
 		/// define clk and reset signal values, and print a standard message when it completes. A
 		/// condition is then added that calls myProc when reset is low:
@@ -81,7 +84,7 @@ namespace Quokka.TCL.Vivado
 		/// }
 		/// add_condition -radix unsigned /top/reset==0 myproc
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 35
+		/// See ug835-vivado-tcl-commands.pdf, page 37
 		/// </summary>
 		/// <param name="condition_expression">(Required) The condition expression when true executes the given commands</param>
 		/// <param name="commands">(Required) Commands to execute upon condition</param>
@@ -120,6 +123,7 @@ namespace Quokka.TCL.Vivado
 		/// IP and Block Design sources are not added through the add_files command. These are
 		/// compound files that are supported by separate commands such as import_ip, read_bd, and
 		/// read_ip.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// For every file added to a project the Vivado Design Suite attempts to store and maintain both a
 		/// relative path and an absolute path to the file or directory. When a project is opened, these paths
 		/// are used to locate the files and directories. By default the Vivado Design Suite applies a Relative
@@ -127,8 +131,8 @@ namespace Quokka.TCL.Vivado
 		/// can use the PATH_MODE property to change how the Vivado tool resolves file paths or
 		/// properties for specific objects. For more information, see the Vivado Design Suite Properties
 		/// Reference Guide (UG912).
-		/// IMPORTANT! Adding multiple files one at a time can cause noticeable performance degradation. It is more
-		/// efficient to use a single add_files command to import a list of files:
+		/// IMPORTANT! Adding multiple files one at a time can cause noticeable performance degradation. It is
+		/// more efficient to use a single add_files command to import a list of files:
 		/// add_files {file1 file2 file3 ... fileN}
 		/// The Vivado tool does not read the contents of a file automatically when the file is added to the
 		/// project with add_files, but rather reads the file contents when they are needed. For instance,
@@ -137,8 +141,8 @@ namespace Quokka.TCL.Vivado
 		/// command instead.
 		/// TIP: When running the Vivado tool in Non-Project mode, in which there is no project file to maintain and
 		/// manage the various project source files, you should use the read_xxx commands to read the contents of
-		/// source files into the in-memory design. Refer to the Vivado Design Suite User Guide: Design Flows Overview
-		/// (UG892) for more information on Non-Project mode.
+		/// source files into the in-memory design. Refer to the Vivado Design Suite User Guide: Design Flows
+		/// Overview (UG892) for more information on Non-Project mode.
 		/// The add_files command adds them by reference to the specified fileset. This is different from
 		/// the import_files command, which copies the file into the local project folders as well as
 		/// adding them to the specified fileset.
@@ -159,6 +163,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example adds an existing IP core file to the current project:
 		/// add_files -norecurse C:/Data/ip/c_addsub_v11_0_0.xci
 		/// Note: Use the import_ip command to import the IP file into the local project folders.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example reads a top-level design netlist, and the char_fifo IP in a Non-Project
 		/// Mode design:
 		/// # Read top-level EDIF and IP DCP
@@ -171,7 +176,7 @@ namespace Quokka.TCL.Vivado
 		/// add_files C:/Data/model1.mdl
 		/// Note: Use the create_sysgen command to use System Generator to create a new DSP module.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 42
+		/// See ug835-vivado-tcl-commands.pdf, page 44
 		/// </summary>
 		/// <param name="fileset">(Optional) Fileset name</param>
 		/// <param name="of_objects">(Optional) Filesets or sub-designs or RMs to add the files to</param>
@@ -205,9 +210,10 @@ namespace Quokka.TCL.Vivado
 		/// the specified time, or until released by the -cancel_after option, or the remove_forces
 		/// command.
 		/// IMPORTANT! If there are Verilog force/release statements on an HDL object in the test bench or
-		/// module, these commands are overridden by the Tcl add_force command. When the Tcl force expires or is
-		/// released, the HDL object resumes normal operation in the simulation, including the application of any Verilog
-		/// forces.
+		/// module, these commands are overridden by the Tcl add_force command. When the Tcl force expires or
+		/// is released, the HDL object resumes normal operation in the simulation, including the application of any
+		/// Verilog forces.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This command returns the name of the force object created, or returns an error if the command
 		/// failed. The name of the returned force object is important when using the remove_forces
 		/// command, and should be captured in a Tcl variable for later recall, as shown in the examples.
@@ -216,6 +222,7 @@ namespace Quokka.TCL.Vivado
 		/// and captures the name of the returned force object in a Tcl variable which can be used to later
 		/// remove the force:
 		/// set for10 [ add_force reset 1 300 ]
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example shows the use of {<value> <time>} pairs, repeated periodically, and
 		/// canceled after a specified time.
 		/// add_force mySig {0} {1 50} {0 100} {1 150} -repeat_every 200
@@ -223,7 +230,7 @@ namespace Quokka.TCL.Vivado
 		/// Note: In the preceding example, the first {<value> <time>} pair does not include a time. This indicates that
 		/// the specified value, 0, is applied at time 0 (the current_time).
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 46
+		/// See ug835-vivado-tcl-commands.pdf, page 48
 		/// </summary>
 		/// <param name="hdl_object">(Required) Specifies the object upon which to add a force</param>
 		/// <param name="values">(Required) Adds a value and time offset to the force: {value [ time_offset ] }</param>
@@ -264,7 +271,7 @@ namespace Quokka.TCL.Vivado
 		/// signal values of specified HDL objects into the open VCD file:
 		/// checkpoint_vcd
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 129
+		/// See ug835-vivado-tcl-commands.pdf, page 133
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -287,8 +294,9 @@ namespace Quokka.TCL.Vivado
 		///
 		/// The following is an example:
 		/// close_saif
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 141
+		/// See ug835-vivado-tcl-commands.pdf, page 145
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -311,7 +319,7 @@ namespace Quokka.TCL.Vivado
 		/// lost:
 		/// close_sim -force
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 143
+		/// See ug835-vivado-tcl-commands.pdf, page 147
 		/// </summary>
 		/// <param name="force">
 		/// (Optional)
@@ -339,8 +347,9 @@ namespace Quokka.TCL.Vivado
 		///
 		/// The following example closes the current VCD object:
 		/// close_vcd
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 145
+		/// See ug835-vivado-tcl-commands.pdf, page 149
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -354,17 +363,18 @@ namespace Quokka.TCL.Vivado
 		/// Compile simulation libraries
 		///
 		///
-		/// TCL Syntax: compile_simlib [-directory <arg>] [-family <arg>] [-force] [-language <arg>] [-library <arg>] [-print_library_info <arg>] -simulator <arg> [-simulator_exec_path <arg>] [-source_library_path <arg>] [-no_ip_compile] [-32bit] [-quiet] [-verbose]
+		/// TCL Syntax: compile_simlib [-directory <arg>] [-family <arg>] [-force] [-language <arg>] [-library <arg>] [-print_library_info <arg>] -simulator <arg> [-simulator_exec_path <arg>] [-gcc_exec_path <arg>] [-source_library_path <arg>] [-no_ip_compile] [-32bit] [-no_systemc_compile] [-no_dpi_compile] [-quiet] [-verbose]
 		///
 		/// Compile Xilinx® simulation libraries for the cells and IP used in the current project, or from a
 		/// specified directory for use in multiple design projects.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The Vivado Design Suite provides simulation models as a set of files and libraries that contain the
 		/// behavioral and timing models for use by the Vivado simulator. The compile_simlib command
 		/// compiles these libraries for use by third-party simulators prior to design simulation. Libraries
 		/// must generally be compiled or recompiled with a new software release to update simulation
 		/// models and to support a new version of a simulator.
-		/// IMPORTANT! You should rerun the compile_simlib command any time a new third party simulator will be
-		/// used, or a new Vivado Design Suite version or update is installed.
+		/// IMPORTANT! You should rerun the compile_simlib command any time a new third party simulator
+		/// will be used, or a new Vivado Design Suite version or update is installed.
 		/// When this command is run from a current project, the tool will use the device family, target
 		/// language, and library settings specified by the project as the default values, rather than the
 		/// default settings of the command defined below. The default settings can be overridden by
@@ -379,7 +389,7 @@ namespace Quokka.TCL.Vivado
 		/// compile_simlib -simulator modelsim -family virtex7 -library unisim \
 		/// -library simprim -language vhdl
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 161
+		/// See ug835-vivado-tcl-commands.pdf, page 166
 		/// </summary>
 		/// <param name="simulator">(Required) Compile libraries for this simulator</param>
 		/// <param name="directory">(Optional) Directory path for saving the compiled results Default: .</param>
@@ -389,6 +399,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="library">(Optional) Select library to compile Default: all</param>
 		/// <param name="print_library_info">(Optional) Print Pre-Compiled library information</param>
 		/// <param name="simulator_exec_path">(Optional) Use simulator executables from this directory</param>
+		/// <param name="gcc_exec_path">(Optional) Use GNU executables from this directory</param>
 		/// <param name="source_library_path">
 		/// (Optional)
 		/// If specified, this directory will be searched for the library
@@ -397,12 +408,14 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="no_ip_compile">(Optional) Do not compile IP static files from repository</param>
 		/// <param name="_32bit">(Optional) Perform the 32-bit compilation</param>
+		/// <param name="no_systemc_compile">(Optional) Do not compile models for system simulation</param>
+		/// <param name="no_dpi_compile">(Optional) Do not compile DPI models</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL compile_simlib(string simulator, string directory = null, string family = null, bool? force = null, string language = null, string library = null, string print_library_info = null, string simulator_exec_path = null, string source_library_path = null, bool? no_ip_compile = null, bool? _32bit = null, bool? quiet = null, bool? verbose = null)
+		public TTCL compile_simlib(string simulator, string directory = null, string family = null, bool? force = null, string language = null, string library = null, string print_library_info = null, string simulator_exec_path = null, string gcc_exec_path = null, string source_library_path = null, bool? no_ip_compile = null, bool? _32bit = null, bool? no_systemc_compile = null, bool? no_dpi_compile = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: compile_simlib [-directory <arg>] [-family <arg>] [-force] [-language <arg>] [-library <arg>] [-print_library_info <arg>] -simulator <arg> [-simulator_exec_path <arg>] [-source_library_path <arg>] [-no_ip_compile] [-32bit] [-quiet] [-verbose]
-			_tcl.Entry(_builder.compile_simlib(simulator, directory, family, force, language, library, print_library_info, simulator_exec_path, source_library_path, no_ip_compile, _32bit, quiet, verbose));
+			// TCL Syntax: compile_simlib [-directory <arg>] [-family <arg>] [-force] [-language <arg>] [-library <arg>] [-print_library_info <arg>] -simulator <arg> [-simulator_exec_path <arg>] [-gcc_exec_path <arg>] [-source_library_path <arg>] [-no_ip_compile] [-32bit] [-no_systemc_compile] [-no_dpi_compile] [-quiet] [-verbose]
+			_tcl.Entry(_builder.compile_simlib(simulator, directory, family, force, language, library, print_library_info, simulator_exec_path, gcc_exec_path, source_library_path, no_ip_compile, _32bit, no_systemc_compile, no_dpi_compile, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -426,7 +439,7 @@ namespace Quokka.TCL.Vivado
 		/// config_compile_simlib -cfgopt {modelsim.verilog.synopsys: -quiet} \
 		/// -cfgopt {modelsim.verilog.simprim:-source +define+XIL_TIMING}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 166
+		/// See ug835-vivado-tcl-commands.pdf, page 171
 		/// </summary>
 		/// <param name="cfgopt">(Optional) Configuration option in form of simulator.language.library.options</param>
 		/// <param name="simulator">(Optional) Display the configurations for specified simulator</param>
@@ -451,6 +464,7 @@ namespace Quokka.TCL.Vivado
 		/// a constraint set (-constrset); one or more simulation test benches is a simulation set (-
 		/// simset). Only one fileset option can be specified when using the create_fileset command.
 		/// As a default, the tool will create a constraint fileset if the type is not specified.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// You can also use the create_fileset -blockset command to configure an IP core, or
 		/// hierarchical module of the design, as an out-of-context (OOC) block. The block fileset, or
 		/// blockset, creates a hierarchical file collection for the IP or module specified with the -
@@ -462,8 +476,8 @@ namespace Quokka.TCL.Vivado
 		/// needed when a behavioral model for the block is not available, or is not available in the language
 		/// supported by the target simulator. You can define an out-of-context constraint file for the IP or
 		/// moduleif needed, and add the at to the block fileset as well.
-		/// TIP: Refer to the Vivado Design Suite User Guide: Designing with IP (UG896) or the Vivado Design Suite User
-		/// Guide: Hierarchical Design (UG905) for more information on out-of-context design.
+		/// TIP: Refer to the Vivado Design Suite User Guide: Designing with IP (UG896) or the Vivado Design Suite
+		/// User Guide: Hierarchical Design (UG905) for more information on out-of-context design.
 		/// The create_fileset command returns the name of the newly created fileset, or will return an
 		/// error message if it fails.
 		///
@@ -477,7 +491,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example creates a new simulation fileset named sim_1:
 		/// create_fileset -simset sim_1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 264
+		/// See ug835-vivado-tcl-commands.pdf, page 272
 		/// </summary>
 		/// <param name="define_from">(Required) Name of the module in the source fileset to be the top of the blockset</param>
 		/// <param name="name">(Required) Name of the fileset to be create</param>
@@ -507,9 +521,10 @@ namespace Quokka.TCL.Vivado
 		/// subprogram-frame is the current frame, i.e. with frame-index "0" (zero) and marked with (->).
 		/// Switches like -up,-down, and -set let you select other frames in the call-stack, rather than the
 		/// current frame.
-		/// IMPORTANT! The current_frame strictly follows the current_scope. If current_scope is not an
-		/// HDL process scope waiting inside a sub-program, the current_frame command reports that the current
-		/// process does not have an associated sub-program stack.
+		/// IMPORTANT! The current_frame strictly follows the current_scope . If current_scope is
+		/// not an HDL process scope waiting inside a sub-program, the current_frame command reports that
+		/// the current process does not have an associated sub-program stack.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// Example design:
 		/// module top;
@@ -535,6 +550,7 @@ namespace Quokka.TCL.Vivado
 		/// end
 		/// initial begin // "/top/Initial25_1"
 		/// $display($time, " in initial 2 ");
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// #2;
 		/// f(50); // Case A
 		/// $display($time, " Back in initial 2 after f(50) ");
@@ -573,7 +589,7 @@ namespace Quokka.TCL.Vivado
 		/// 1 : t @top.v:15
 		/// 2: /top/Initial18_0 @top.v:21
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 379
+		/// See ug835-vivado-tcl-commands.pdf, page 389
 		/// </summary>
 		/// <param name="up">
 		/// (Optional)
@@ -611,7 +627,7 @@ namespace Quokka.TCL.Vivado
 		/// This example returns the current scope name to console:
 		/// current_scope
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 405
+		/// See ug835-vivado-tcl-commands.pdf, page 415
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -636,7 +652,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example sets the curent simulation:
 		/// current_sim simulation_2
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 407
+		/// See ug835-vivado-tcl-commands.pdf, page 417
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -663,7 +679,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example returns the current time of the current simulation:
 		/// current_time
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 409
+		/// See ug835-vivado-tcl-commands.pdf, page 419
 		/// </summary>
 		/// <param name="s">(Optional) Short -- suppress the space between numeric part and unit part</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -690,7 +706,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example sets the specified VCD object as current:
 		/// current_vcd vcd2
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 411
+		/// See ug835-vivado-tcl-commands.pdf, page 421
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -715,7 +731,7 @@ namespace Quokka.TCL.Vivado
 		/// Note: The fileset and all of its files are removed from the project. The files are not removed from the hard
 		/// drive.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 432
+		/// See ug835-vivado-tcl-commands.pdf, page 443
 		/// </summary>
 		/// <param name="fileset">(Required) Fileset to be deleted</param>
 		/// <param name="merge">(Optional) Fileset to merge files from the deleted fileset into</param>
@@ -736,8 +752,8 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Describe an HDL object (variable, signal, wire, or reg) by printing type and declaration
 		/// information, as well as path, and file information for the HDL source of the specified objects.
-		/// TIP: The describe command works for a single HDL object. Use the report_objects command for a
-		/// brief report on multiple HDL objects.
+		/// TIP: The describe command works for a single HDL object. Use the report_objects command for
+		/// a brief report on multiple HDL objects.
 		/// HDL objects include HDL signals, variables, or constants as defined in the Verilog or VHDL test
 		/// bench and source files. An HDL signal includes Verilog wire or reg entities, and VHDL signals.
 		/// Examples of HDL variables include Verilog real, realtime, time, and event. HDL constants include
@@ -749,6 +765,7 @@ namespace Quokka.TCL.Vivado
 		/// Arguments
 		/// -quiet - (Optional) Execute the command quietly, returning no messages from the command.
 		/// The command also returns TCL_OK regardless of any errors encountered during execution.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Note: Any errors encountered on the command-line, while launching the command, will be returned. Only
 		/// errors occurring inside the command will be trapped.
 		/// -verbose - (Optional) Temporarily override any message limits and return all messages from this
@@ -772,7 +789,7 @@ namespace Quokka.TCL.Vivado
 		/// Path: {/testbench/dut/LEDS_n}
 		/// Location: {File "C:/Data/sources/sinegen_demo.vhd" Line 42}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 474
+		/// See ug835-vivado-tcl-commands.pdf, page 486
 		/// </summary>
 		/// <param name="hdl_object">(Required) The hdl_object or hdl_scope to describe</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -786,12 +803,7 @@ namespace Quokka.TCL.Vivado
 		}
 		/// <summary>
 		/// (User-written application) Generate and export IP/IPI user files from a project. This can be
-		/// scoped to work on one or more IPs. Argument Usage: [-of_objects <arg>]: IP,IPI or a fileset object
-		/// [-ip_user_files_dir <arg>]: Directory path to simulation base directory (for static, dynamic,
-		/// wrapper, netlist, script and MEM files) [-ipstatic_source_dir <arg>]: Directory path to the IP static
-		/// files [-lib_map_path <arg> = Empty]: Compiled simulation library directory path [-no_script]: Do
-		/// not export simulation scripts [-sync]: Delete IP/IPI dynamic and simulation script files [-reset]:
-		/// Delete all IP/IPI static, dynamic and simulation script files [-force]: Overwrite files
+		/// scoped to work on one or more IPs.
 		///
 		///
 		/// TCL Syntax: export_ip_user_files [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-no_script] [-sync] [-reset] [-force] [-quiet] [-verbose]
@@ -804,7 +816,7 @@ namespace Quokka.TCL.Vivado
 		/// <project>.ip_user_files/ipstatic directory:
 		/// export_ip_user_files -of_objects [get_ips char_fifo]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 505
+		/// See ug835-vivado-tcl-commands.pdf, page 517
 		/// </summary>
 		/// <param name="of_objects">(Optional) IP,IPI or a fileset object Default: None</param>
 		/// <param name="ip_user_files_dir">
@@ -833,7 +845,7 @@ namespace Quokka.TCL.Vivado
 		/// simulation using the specified simulator.
 		///
 		///
-		/// TCL Syntax: export_simulation [-simulator <arg>] [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-script_name <arg>] [-directory <arg>] [-runtime <arg>] [-define <arg>] [-generic <arg>] [-include <arg>] [-use_ip_compiled_libs] [-absolute_path] [-export_source_files] [-32bit] [-force] [-quiet] [-verbose]
+		/// TCL Syntax: export_simulation [-simulator <arg>] [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-script_name <arg>] [-directory <arg>] [-runtime <arg>] [-define <arg>] [-generic <arg>] [-include <arg>] [-use_ip_compiled_libs] [-absolute_path] [-export_source_files] [-generate_hier_access] [-32bit] [-force] [-quiet] [-verbose]
 		///
 		/// Export a simulation script file for the target simulator. Currently the Cadence Incisive Enterprise
 		/// Simulator (ies) and the Synopsys VCS MX simulator (vcs_mx) are supported. The generated
@@ -858,6 +870,7 @@ namespace Quokka.TCL.Vivado
 		/// generating this script. The generated simulation script will automatically include the setup files for the
 		/// target simulator from the compiled library directory.
 		/// This command returns nothing.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following command generates a simulation script file in the current directory for the "IES"
 		/// simulator:
@@ -888,8 +901,8 @@ namespace Quokka.TCL.Vivado
 		/// The following command exports a script file top_tb_sim_vcs_mx.sh for the "VCS_MX"
 		/// simulator in the specified output directory with the design source files compiled for 32 bit
 		/// version of the simulator compiler (no 64 bit option will be added to the command line):
-		/// export_simulation -force -32bit -simulator vcs_mx -directory
-		/// test_bft_vcs_mx
+		/// export_simulation -force -32bit -simulator vcs_mx -directory test_bft_vcs_mx
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example will include /sim_libs/ius/lin64/lib/cds.lib file path in the ./
 		/// test_sim/cds.lib file ("INCLUDE /sim_libs/ius/lin64/lib/cds.lib") for referencing the
 		/// compiled libraries for "IES" simulator:
@@ -913,7 +926,7 @@ namespace Quokka.TCL.Vivado
 		/// cd test_sim/vcs_mx
 		/// ./top_tb_sim_vcs_mx.sh
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 508
+		/// See ug835-vivado-tcl-commands.pdf, page 519
 		/// </summary>
 		/// <param name="simulator">
 		/// (Optional)
@@ -971,19 +984,21 @@ namespace Quokka.TCL.Vivado
 		/// This switch requires -ip_user_files_dir and -
 		/// ipstatic_source_dir switches as well for generating scripts
 		/// using pre-compiled IP library.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Name Description
 		/// </param>
 		/// <param name="absolute_path">(Optional) Make all file paths absolute</param>
 		/// <param name="export_source_files">(Optional) Copy IP/BD design files to output directory</param>
+		/// <param name="generate_hier_access">(Optional) Extract path for hierarchical access simulation</param>
 		/// <param name="_32bit">(Optional) Perform 32bit compilation</param>
 		/// <param name="force">(Optional) Overwrite previous files</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>None</returns>
-		public TTCL export_simulation(string simulator = null, string of_objects = null, string ip_user_files_dir = null, string ipstatic_source_dir = null, string lib_map_path = null, string script_name = null, string directory = null, string runtime = null, string define = null, string generic = null, string include = null, bool? use_ip_compiled_libs = null, bool? absolute_path = null, bool? export_source_files = null, bool? _32bit = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL export_simulation(string simulator = null, string of_objects = null, string ip_user_files_dir = null, string ipstatic_source_dir = null, string lib_map_path = null, string script_name = null, string directory = null, string runtime = null, string define = null, string generic = null, string include = null, bool? use_ip_compiled_libs = null, bool? absolute_path = null, bool? export_source_files = null, bool? generate_hier_access = null, bool? _32bit = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: export_simulation [-simulator <arg>] [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-script_name <arg>] [-directory <arg>] [-runtime <arg>] [-define <arg>] [-generic <arg>] [-include <arg>] [-use_ip_compiled_libs] [-absolute_path] [-export_source_files] [-32bit] [-force] [-quiet] [-verbose]
-			_tcl.Entry(_builder.export_simulation(simulator, of_objects, ip_user_files_dir, ipstatic_source_dir, lib_map_path, script_name, directory, runtime, define, generic, include, use_ip_compiled_libs, absolute_path, export_source_files, _32bit, force, quiet, verbose));
+			// TCL Syntax: export_simulation [-simulator <arg>] [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-script_name <arg>] [-directory <arg>] [-runtime <arg>] [-define <arg>] [-generic <arg>] [-include <arg>] [-use_ip_compiled_libs] [-absolute_path] [-export_source_files] [-generate_hier_access] [-32bit] [-force] [-quiet] [-verbose]
+			_tcl.Entry(_builder.export_simulation(simulator, of_objects, ip_user_files_dir, ipstatic_source_dir, lib_map_path, script_name, directory, runtime, define, generic, include, use_ip_compiled_libs, absolute_path, export_source_files, generate_hier_access, _32bit, force, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -1004,7 +1019,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example flushes the VCD buffer into the current VCD file:
 		/// flush_vcd
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 526
+		/// See ug835-vivado-tcl-commands.pdf, page 537
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -1012,6 +1027,40 @@ namespace Quokka.TCL.Vivado
 		{
 			// TCL Syntax: flush_vcd [-quiet] [-verbose]
 			_tcl.Entry(_builder.flush_vcd(quiet, verbose));
+			return _tcl;
+		}
+		/// <summary>
+		/// (User-written application) Generate sources for hierarchical access simulation
+		///
+		///
+		/// TCL Syntax: generate_hier_access [-bypass <arg>] [-driver <arg>] [-directory <arg>] [-pseudo_top <arg>] [-testbench <arg>] [-log <arg>] [-quiet] [-verbose]
+		///
+		/// Generates sources for hierarchical access simulation.
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 540
+		/// </summary>
+		/// <param name="bypass">(Optional) Hierarchical access module name Default: xil_dut_bypass</param>
+		/// <param name="driver">(Optional) Signal driver template module name Default: xil_bypass_driver</param>
+		/// <param name="directory">
+		/// (Optional)
+		/// Output directory for the generated sources Default: current
+		/// working directory
+		/// </param>
+		/// <param name="pseudo_top">(Optional) Top-level pseudo testbench module name Default: None</param>
+		/// <param name="testbench">(Optional) User design testbench module name Default: None</param>
+		/// <param name="log">
+		/// (Optional)
+		/// Simulator log containing hierarchical path information
+		/// (required for the non-Vivado standalone flow only) Default:
+		/// None
+		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <returns>None</returns>
+		public TTCL generate_hier_access(string bypass = null, string driver = null, string directory = null, string pseudo_top = null, string testbench = null, string log = null, bool? quiet = null, bool? verbose = null)
+		{
+			// TCL Syntax: generate_hier_access [-bypass <arg>] [-driver <arg>] [-directory <arg>] [-pseudo_top <arg>] [-testbench <arg>] [-log <arg>] [-quiet] [-verbose]
+			_tcl.Entry(_builder.generate_hier_access(bypass, driver, directory, pseudo_top, testbench, log, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -1032,7 +1081,7 @@ namespace Quokka.TCL.Vivado
 		/// This command returns the directory where the MEM files are written, or returns an error if it
 		/// fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 529
+		/// See ug835-vivado-tcl-commands.pdf, page 542
 		/// </summary>
 		/// <param name="directory">
 		/// (Required)
@@ -1060,17 +1109,18 @@ namespace Quokka.TCL.Vivado
 		/// bench and source files. An HDL signal includes Verilog wire or reg entities, and VHDL signals.
 		/// Examples of HDL variables include Verilog real, realtime, time, and event. HDL constants include
 		/// Verilog parameters and localparams, and VHDL generic and constants.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The HDL scope, or scope, is defined by a declarative region in the HDL code such as a module,
 		/// function, task, process, or begin-end blocks in Verilog. VHDL scopes include entity/architecture
 		/// definitions, block, function, procedure, and process blocks.
 		///
 		/// Verilog parameters and localparams, and VHDL generic and constants.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The HDL scope, or scope, is defined by a declarative region in the HDL code such as a module,
 		/// function, task, process, or begin-end blocks in Verilog. VHDL scopes include entity/architecture
 		/// definitions, block, function, procedure, and process blocks.
 		/// Arguments
-		/// -recursive | -r - (Optional) Apply the command to the current scope, and all sub-scopes of
-		/// the current scope.
+		/// -r - (Optional) Apply the command to the current scope, and all sub-scopes of the current scope.
 		/// -regexp - (Optional) Specifies that the search <patterns> are written as regular expressions.
 		/// Both search <patterns> and -filter expressions must be written as regular expressions when
 		/// this argument is used. Xilinx regular expression Tcl commands are always anchored to the start of
@@ -1101,6 +1151,7 @@ namespace Quokka.TCL.Vivado
 		/// get_pins * -filter {DIRECTION == IN && NAME !~ "*RESET*"}
 		/// Boolean (bool) type properties can be directly evaluated in filter expressions as true or not true:
 		/// -filter {IS_PRIMITIVE && !IS_LOC_FIXED}
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// -quiet - (Optional) Execute the command quietly, returning no messages from the command.
 		/// The command also returns TCL_OK regardless of any errors encountered during execution.
 		/// Note: Any errors encountered on the command-line, while launching the command, will be returned. Only
@@ -1137,11 +1188,12 @@ namespace Quokka.TCL.Vivado
 		/// /top/cpuEngine/or1200_cpu/clk
 		/// ...
 		/// /top/cpuEngine/or1200_immu_top/or1200_immu_tlb/itlb_mr_ram/clk
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Search the current scope, and all sub-scopes, for any internal signals whose names start with cl
 		/// or ma:
 		/// get_objects -recursive -filter {type == internal_signal} ma* cl*
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 831
+		/// See ug835-vivado-tcl-commands.pdf, page 851
 		/// </summary>
 		/// <param name="filter">
 		/// (Optional)
@@ -1187,7 +1239,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example recursively returns all of the children scopes of the specified scope:
 		/// get_scopes -r /testbench/dut
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 894
+		/// See ug835-vivado-tcl-commands.pdf, page 915
 		/// </summary>
 		/// <param name="filter">
 		/// (Optional)
@@ -1228,7 +1280,7 @@ namespace Quokka.TCL.Vivado
 		/// register_simulator command.
 		/// This command returns the names of registered simulators, or returns an error if it fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 899
+		/// See ug835-vivado-tcl-commands.pdf, page 920
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
@@ -1287,7 +1339,7 @@ namespace Quokka.TCL.Vivado
 		/// 1. > get_stacks
 		/// /top/Initial18_0 /top/Initial25_1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 919
+		/// See ug835-vivado-tcl-commands.pdf, page 940
 		/// </summary>
 		/// <param name="of_instance">(Optional) Default: NULL</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -1315,11 +1367,13 @@ namespace Quokka.TCL.Vivado
 		/// The HDL scope, or scope, is defined by a declarative region in the HDL code such as a module,
 		/// function, task, process, or begin-end blocks in Verilog. VHDL scopes include entity/architecture
 		/// definitions, block, function, procedure, and process blocks.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// HDL constants include Verilog parameters and localparams, and VHDL generic and constants.
 		/// The HDL scope, or scope, is defined by a declarative region in the HDL code such as a module,
 		/// function, task, process, or begin-end blocks in Verilog. VHDL scopes include entity/architecture
 		/// definitions, block, function, procedure, and process blocks.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Arguments
 		/// -radix <arg> - (Optional) Specifies the radix to use when returning the value of the specified
 		/// object. Allowed values are: default, dec, bin, oct, hex, unsigned, ascii, or smag.
@@ -1347,7 +1401,7 @@ namespace Quokka.TCL.Vivado
 		/// get_value -radix dec /test/bench_VStatus_pad_0_i[7:0]
 		/// -91
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 934
+		/// See ug835-vivado-tcl-commands.pdf, page 955
 		/// </summary>
 		/// <param name="hdl_object">(Required) The hdl_object to retrieve the current value</param>
 		/// <param name="radix">
@@ -1380,8 +1434,9 @@ namespace Quokka.TCL.Vivado
 		/// can use the PATH_MODE property to change how the Vivado tool resolves file paths or
 		/// properties for specific objects. For more information, see the Vivado Design Suite Properties
 		/// Reference Guide (UG912).
-		/// IMPORTANT! Importing multiple files one at a time can cause noticeable performance degradation. It is more
-		/// efficient to use a single import_files command to import a list of files:
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// IMPORTANT! Importing multiple files one at a time can cause noticeable performance degradation. It is
+		/// more efficient to use a single import_files command to import a list of files:
 		/// import_files {file1 file2 file3 ... fileN}
 		/// This command is different from the add_files command, which adds files by reference into the
 		/// specified fileset. This command imports the files into the local project folders under
@@ -1403,7 +1458,7 @@ namespace Quokka.TCL.Vivado
 		/// the \Data directory due to the use of the -relative_to argument.
 		/// import_files C:/Data/FPGA_Design/level1 -relative_to C:/Data
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 962
+		/// See ug835-vivado-tcl-commands.pdf, page 984
 		/// </summary>
 		/// <param name="fileset">(Optional) Fileset name</param>
 		/// <param name="force">(Optional) Overwrite files of the same name in project directory</param>
@@ -1422,15 +1477,16 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Launch simulation
+		/// Generate simulation scripts of the design and launch steps for the target simulator.
 		///
 		///
-		/// TCL Syntax: launch_simulation [-step <arg>] [-simset <arg>] [-mode <arg>] [-type <arg>] [-scripts_only] [-of_objects <args>] [-absolute_path] [-install_path <arg>] [-noclean_dir] [-quiet] [-verbose]
+		/// TCL Syntax: launch_simulation [-step <arg>] [-simset <arg>] [-mode <arg>] [-type <arg>] [-scripts_only] [-of_objects <args>] [-absolute_path] [-install_path <arg>] [-gcc_install_path <arg>] [-noclean_dir] [-quiet] [-verbose]
 		///
 		/// Launch a simulator to perform analysis and verification of a design.
 		/// The launch_simulation command creates a script file for the target simulator and then
 		/// executes this file in the simulation run directory. The simulation results are saved in the log files
 		/// created in the run directory.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// To run simulation for a specific simulator, you must first define the target simulator by setting the
 		/// TARGET_SIMULATOR property on the design project:
 		/// set_property TARGET_SIMULATOR <name> [current_project]
@@ -1466,6 +1522,7 @@ namespace Quokka.TCL.Vivado
 		/// Synopsys VCS Simulator:
 		/// set_property target_simulator "VCS" [current_project]
 		/// launch_simulation -mode "post-implementation" -type "timing"
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following command generates behavioral simulation scripts for the target simulator in the
 		/// simulation run directory:
 		/// launch_simulation -scripts_only
@@ -1481,7 +1538,7 @@ namespace Quokka.TCL.Vivado
 		/// of from the PATH variable:
 		/// launch_simulation -install_path /tools/ius/13.20.005/tools/bin
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 995
+		/// See ug835-vivado-tcl-commands.pdf, page 1017
 		/// </summary>
 		/// <param name="step">
 		/// (Optional)
@@ -1506,13 +1563,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="absolute_path">(Optional) Make design source file paths in 'absolute' format</param>
 		/// <param name="install_path">(Optional) Custom installation directory path</param>
+		/// <param name="gcc_install_path">
+		/// (Optional)
+		/// Specify GNU compiler installation directory path for the g+
+		/// +/gcc executables
+		/// </param>
 		/// <param name="noclean_dir">(Optional) Do not remove simulation run directory files</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL launch_simulation(string step = null, string simset = null, string mode = null, string type = null, bool? scripts_only = null, string of_objects = null, bool? absolute_path = null, string install_path = null, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
+		public TTCL launch_simulation(string step = null, string simset = null, string mode = null, string type = null, bool? scripts_only = null, string of_objects = null, bool? absolute_path = null, string install_path = null, string gcc_install_path = null, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: launch_simulation [-step <arg>] [-simset <arg>] [-mode <arg>] [-type <arg>] [-scripts_only] [-of_objects <args>] [-absolute_path] [-install_path <arg>] [-noclean_dir] [-quiet] [-verbose]
-			_tcl.Entry(_builder.launch_simulation(step, simset, mode, type, scripts_only, of_objects, absolute_path, install_path, noclean_dir, quiet, verbose));
+			// TCL Syntax: launch_simulation [-step <arg>] [-simset <arg>] [-mode <arg>] [-type <arg>] [-scripts_only] [-of_objects <args>] [-absolute_path] [-install_path <arg>] [-gcc_install_path <arg>] [-noclean_dir] [-quiet] [-verbose]
+			_tcl.Entry(_builder.launch_simulation(step, simset, mode, type, scripts_only, of_objects, absolute_path, install_path, gcc_install_path, noclean_dir, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -1530,7 +1592,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example limits the current VCD file:
 		/// limit_vcd 1000
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 999
+		/// See ug835-vivado-tcl-commands.pdf, page 1022
 		/// </summary>
 		/// <param name="filesize">(Required) Specify the maximum size of the VCD file in bytes.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -1559,7 +1621,7 @@ namespace Quokka.TCL.Vivado
 		/// Log SAIF for only the internal signals starting with name c of the scope /tb/UUT:
 		/// log_saif [get_objects -filter { type == internal_signal }/tb/UUT/c*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1022
+		/// See ug835-vivado-tcl-commands.pdf, page 1045
 		/// </summary>
 		/// <param name="hdl_objects">(Required) The hdl_objects to log</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -1589,12 +1651,14 @@ namespace Quokka.TCL.Vivado
 		/// checkpoint_vcd or flush_vcd commands at a specific time during simulation.
 		/// IMPORTANT! You must use the open_vcd command before using any other *_vcd commands.
 		/// Nothing is returned by this command.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// This command specifies which HDL objects and how many levels of design hierarchy to write
 		/// into the VCD file. The actual values of the objects are written to the VCD file when you run the
 		/// checkpoint_vcd or flush_vcd commands at a specific time during simulation.
 		/// IMPORTANT! You must use the open_vcd command before using any other *_vcd commands.
 		/// Nothing is returned by this command.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Arguments
 		/// -level <arg> - (Optional) Specifies the number of levels of design hierarchy to traverse when
 		/// locating HDL objects to write to the VCD file. The default value of 0 causes the tool to dump all
@@ -1623,7 +1687,7 @@ namespace Quokka.TCL.Vivado
 		/// UUT:
 		/// log_vcd [get_objects -filter { type == internal_signal }./C*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1024
+		/// See ug835-vivado-tcl-commands.pdf, page 1047
 		/// </summary>
 		/// <param name="level">(Optional) Number of levels to log (for HDL scopes) Default: 0</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -1657,7 +1721,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example logs the waveform activities for the specified HDL objects.
 		/// log_wave -r [get_objects /testbench/dut/*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1026
+		/// See ug835-vivado-tcl-commands.pdf, page 1049
 		/// </summary>
 		/// <param name="hdl_objects">(Required) Which hdl_objects to trace</param>
 		/// <param name="recursive">(Optional) Searches recursively for objects</param>
@@ -1680,14 +1744,14 @@ namespace Quokka.TCL.Vivado
 		/// Enables line-level tracing for simulation debugging purposes.
 		/// During simulation the simulation source file and line number being evaluated is returned to the
 		/// Tcl console.
-		/// TIP: Process tracing with the ptrace command provides more detailed information than is available with line
-		/// tracing.
+		/// TIP: Process tracing with the ptrace command provides more detailed information than is available with
+		/// line tracing.
 		/// This feature can also be enabled using the LINE_TRACING property on the current simulation
 		/// object:
 		/// set_property LINE_TRACING on [current_sim]
 		/// The command returns the state of line tracing, or returns an error if it fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1028
+		/// See ug835-vivado-tcl-commands.pdf, page 1051
 		/// </summary>
 		/// <param name="value">(Required) value: on, true, yes. Otherwise set to off, false, no</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -1711,7 +1775,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example moves the file, top_full.xdc, to the constrs_2 fileset.
 		/// move_files -fileset constrs_2 [get_files top_full.xdc]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1047
+		/// See ug835-vivado-tcl-commands.pdf, page 1070
 		/// </summary>
 		/// <param name="fileset">(Optional) Destination fileset name</param>
 		/// <param name="of_objects">(Optional) Reconfig Modules to move the files to</param>
@@ -1745,11 +1809,12 @@ namespace Quokka.TCL.Vivado
 		/// close_saif command.
 		/// This command returns the object ID of the opened SAIF file, or returns an error if the command
 		/// failed.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example opens the specified simulation:
 		/// open_saif myData.saif
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1073
+		/// See ug835-vivado-tcl-commands.pdf, page 1096
 		/// </summary>
 		/// <param name="file_name">(Required) The SAIF filename to store information</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -1780,6 +1845,7 @@ namespace Quokka.TCL.Vivado
 		/// To close the VCD file, use the close_vcd command.
 		/// Note: You must use the open_vcd command before using any other *_vcd commands. Only one VCD file
 		/// can be open at any time.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example opens the specified VCD file (design1.vcd) so that value changes can
 		/// be written to it. The log_vcd command identifies all ports in the /tb/UUT scope, and only that
@@ -1792,7 +1858,7 @@ namespace Quokka.TCL.Vivado
 		/// flush_vcd
 		/// close_vcd
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1075
+		/// See ug835-vivado-tcl-commands.pdf, page 1098
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -1829,6 +1895,7 @@ namespace Quokka.TCL.Vivado
 		/// HDL objects can be added to the simulation waveform database using the log_wave command
 		/// which enables logging of waveform activity for the specified objects to the Vivado simulator
 		/// waveform database.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The waveform database is associated with a Wave Config file that stores the waveform activity
 		/// for the simulation. The Wave Config file contains just the list of wave objects (signals, dividers,
 		/// groups, virtual buses) to display, and their display properties, plus markers. The waveform
@@ -1838,8 +1905,8 @@ namespace Quokka.TCL.Vivado
 		/// be opened with the open_wave_config command.
 		/// Use the open_wave_database command with the open_wave_config command to open a
 		/// previously completed simulation for review in the Vivado IDE.
-		/// TIP: Objects that were logged in the simulation waveform database, with the log_wave command, can be
-		/// added posthumously to the wave configuration in a static simulation using the add_wave command.
+		/// TIP: Objects that were logged in the simulation waveform database, with the log_wave command, can
+		/// be added posthumously to the wave configuration in a static simulation using the add_wave command.
 		///
 		/// The following example opens a WDB file with the specified name, then opens an associated
 		/// Wave Config file, and finally uses the current_fileset command to open the simulation
@@ -1848,7 +1915,7 @@ namespace Quokka.TCL.Vivado
 		/// open_wave_config {C:/Data/project_xsim/testbench_behav.wcfg}
 		/// current_fileset
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1079
+		/// See ug835-vivado-tcl-commands.pdf, page 1102
 		/// </summary>
 		/// <param name="wdb">(Required) file name</param>
 		/// <param name="noautoloadwcfg">(Optional) Do not automatically open associated WCFG files</param>
@@ -1870,14 +1937,14 @@ namespace Quokka.TCL.Vivado
 		/// Enables process tracing for simulation debugging purposes.
 		/// During simulation the name of the HDL process that is evaluated will be written to the Tcl
 		/// console, as well as the simulation source file and line number associated with the process.
-		/// TIP: Process tracing provides more detailed information than is available with line tracing and the ltrace
-		/// command.
+		/// TIP: Process tracing provides more detailed information than is available with line tracing and the
+		/// ltrace command.
 		/// This feature can also be enabled using the PROCESS_TRACING property on the current
 		/// simulation object:
 		/// set_property PROCESS_TRACING on [current_sim]
 		/// The command returns the state of process tracing, or returns an error if it fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1128
+		/// See ug835-vivado-tcl-commands.pdf, page 1149
 		/// </summary>
 		/// <param name="value">(Required) value: on, true, yes. Otherwise set to off, false, no</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -1904,7 +1971,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example:
 		/// read_saif -strip_path design/top/F1 C:/Data/design1.saif
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1155
+		/// See ug835-vivado-tcl-commands.pdf, page 1176
 		/// </summary>
 		/// <param name="file">(Required) Specifies the name of the SAIF file to be read</param>
 		/// <param name="strip_path">
@@ -1944,14 +2011,15 @@ namespace Quokka.TCL.Vivado
 		/// This command lets you recompile the design, and relaunch the simulator while preserving the
 		/// current Vivado simulator configuration, such as open waveform and code windows, Scopes and
 		/// Objects window settings.
-		/// IMPORTANT! The relaunch_sim command applies only to simulations running in the Vivado Design Suite
-		/// IDE, not stand-alone or batch Vivado simulator runs.
+		/// IMPORTANT! The relaunch_sim command applies only to simulations running in the Vivado Design
+		/// Suite IDE, not stand-alone or batch Vivado simulator runs.
 		/// This command returns a transcript of its process, or returns an error if it fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following command relaunches the current simulation:
 		/// relaunch_sim
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1207
+		/// See ug835-vivado-tcl-commands.pdf, page 1231
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -1979,7 +2047,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example removes all the breakpoints in the current simulation:
 		/// remove_bps -all
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1209
+		/// See ug835-vivado-tcl-commands.pdf, page 1233
 		/// </summary>
 		/// <param name="all">(Optional) Remove all breakpoints</param>
 		/// <param name="file">(Optional) The specific file to remove the breakpoint from given a line number</param>
@@ -2019,7 +2087,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example removes the specified condition from the current simulation:
 		/// remove_conditions condition3
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1215
+		/// See ug835-vivado-tcl-commands.pdf, page 1241
 		/// </summary>
 		/// <param name="all">(Optional) Remove all conditions</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -2055,7 +2123,7 @@ namespace Quokka.TCL.Vivado
 		/// remove_files [get_files]
 		/// CAUTION! This will remove ALL files from your design.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1221
+		/// See ug835-vivado-tcl-commands.pdf, page 1247
 		/// </summary>
 		/// <param name="files">(Required) Name of the file(s) to be removed</param>
 		/// <param name="fileset">(Optional) Fileset name</param>
@@ -2077,9 +2145,10 @@ namespace Quokka.TCL.Vivado
 		/// Remove the specified force objects, or force IDs from the current simulation.
 		/// Forces are applied to specific HDL objects using the add_forces command. This command
 		/// removes those forces from the current simulation.
-		/// IMPORTANT! If there are force/release statements on an HDL object in the test bench or module, these
-		/// statements are overridden by the add_force command. When the remove_force command releases these
-		/// objects to resume their normal operation, the Verilog force/release statements resume their effect.
+		/// IMPORTANT! If there are force/release statements on an HDL object in the test bench or module,
+		/// these statements are overridden by the add_force command. When the remove_force command
+		/// releases these objects to resume their normal operation, the Verilog force/release statements
+		/// resume their effect.
 		/// This command returns nothing if successful, or returns an error if it fails.
 		///
 		/// The following example creates a force object using the add_force command, and captures the
@@ -2089,7 +2158,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example removes all force objects from the current simulation:
 		/// remove_forces -all
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1223
+		/// See ug835-vivado-tcl-commands.pdf, page 1249
 		/// </summary>
 		/// <param name="all">(Optional) Remove all forces</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -2120,7 +2189,7 @@ namespace Quokka.TCL.Vivado
 		/// This example reports the specified breakpoints in the current simulation:
 		/// report_bps bp1 bp2 bp5
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1268
+		/// See ug835-vivado-tcl-commands.pdf, page 1295
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -2164,7 +2233,7 @@ namespace Quokka.TCL.Vivado
 		/// stop }
 		/// Name: ledUnknown
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1294
+		/// See ug835-vivado-tcl-commands.pdf, page 1321
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -2198,6 +2267,7 @@ namespace Quokka.TCL.Vivado
 		/// Note: The Declared Net is returned when the probed signal name is different from the hierarchical name of
 		/// the actual declared signal due to the current scope of the simulation. Each bit of the declared net is printed
 		/// for the probed signal.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The values of signals returned by the report_drivers command depend on the state of the
 		/// simulation. In the following example, the report is run before and after simulation:
 		/// current_scope /testbench/dut
@@ -2258,12 +2328,13 @@ namespace Quokka.TCL.Vivado
 		/// level than the top-level of the test bench.
 		/// This command returns a report of the drivers on the specified objects, or returns an error if it
 		/// fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example reports the drivers for the HDL objects returned by the get_objects
 		/// command:
 		/// report_drivers [get_objects leds_n]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1326
+		/// See ug835-vivado-tcl-commands.pdf, page 1353
 		/// </summary>
 		/// <param name="hdl_object">(Required) Which hdl_object to report</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -2288,8 +2359,8 @@ namespace Quokka.TCL.Vivado
 		/// By default, the most recently called sub-program frame is the current_frame. Other frames
 		/// can be selected using current_frame command. In verbose mode, output gives the source
 		/// line-file information for each and every call.
-		/// IMPORTANT! report_frames strictly follows the current_scope. If the current_scope is not an
-		/// HDL process scope waiting inside a sub-program, the command returns an empty list.
+		/// IMPORTANT! report_frames strictly follows the current_scope . If the current_scope is not
+		/// an HDL process scope waiting inside a sub-program, the command returns an empty list.
 		/// This command returns the name of the design object of the current_instance, or returns nothing
 		/// when set to the top of current design.
 		///
@@ -2334,8 +2405,9 @@ namespace Quokka.TCL.Vivado
 		/// -> 0 : f @top.v:6
 		/// 1 : t @top.v:15
 		/// 2 : /top/Initial18_0 @top.v:21
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1335
+		/// See ug835-vivado-tcl-commands.pdf, page 1362
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -2369,6 +2441,7 @@ namespace Quokka.TCL.Vivado
 		/// Arguments
 		/// -quiet - (Optional) Execute the command quietly, returning no messages from the command.
 		/// The command also returns TCL_OK regardless of any errors encountered during execution.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Note: Any errors encountered on the command-line, while launching the command, will be returned. Only
 		/// errors occurring inside the command will be trapped.
 		/// -verbose - (Optional) Temporarily override any message limits and return all messages from this
@@ -2391,7 +2464,7 @@ namespace Quokka.TCL.Vivado
 		/// This example reports the specified HDL objects of the current simulation scope:
 		/// report_objects [get_objects GPIO*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1363
+		/// See ug835-vivado-tcl-commands.pdf, page 1393
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -2432,7 +2505,7 @@ namespace Quokka.TCL.Vivado
 		/// VHDL Process: {line__187}
 		/// VHDL Process: {line__191}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1406
+		/// See ug835-vivado-tcl-commands.pdf, page 1437
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -2456,7 +2529,7 @@ namespace Quokka.TCL.Vivado
 		/// specified path:
 		/// report_simlib_info C:/Data/compiled_simlib
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1409
+		/// See ug835-vivado-tcl-commands.pdf, page 1440
 		/// </summary>
 		/// <param name="path">(Required) Specify the path for pre-compiled libraries</param>
 		/// <param name="file">(Optional) Output file Default: report_simlib_info.log</param>
@@ -2513,7 +2586,7 @@ namespace Quokka.TCL.Vivado
 		/// Verilog Process: {/top/Initial18_0}
 		/// Verilog Process: {/top/Initial25_1}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1414
+		/// See ug835-vivado-tcl-commands.pdf, page 1445
 		/// </summary>
 		/// <param name="of_instance">(Optional) Default: NULL</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -2547,6 +2620,7 @@ namespace Quokka.TCL.Vivado
 		/// Arguments
 		/// -radix <arg> - (Optional) Specifies the radix to use when returning the value of the specified
 		/// objects. Allowed values are: default, dec, bin, oct, hex, unsigned, ascii, or smag.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Note: The radix dec indicates a signed decimal. Specify the radix unsigned when dealing with unsigned
 		/// data.
 		/// -quiet - (Optional) Execute the command quietly, returning no messages from the command.
@@ -2570,7 +2644,7 @@ namespace Quokka.TCL.Vivado
 		/// report_values -radix dec /test/bench_VStatus_pad_0_i[7:0]
 		/// Declared: {/test/bench_VStatus_pad_0_i[7:0]} Verilog -91
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1444
+		/// See ug835-vivado-tcl-commands.pdf, page 1475
 		/// </summary>
 		/// <param name="hdl_objects">(Required) The hdl_objects to report. Default is report_objects [get_objects *]</param>
 		/// <param name="radix">
@@ -2602,8 +2676,9 @@ namespace Quokka.TCL.Vivado
 		/// The following example resets the post-synthesis timing simulation by removing files for the sim_2
 		/// simset:
 		/// reset_simulation -mode post-synthesis -type timing sim_2
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1481
+		/// See ug835-vivado-tcl-commands.pdf, page 1514
 		/// </summary>
 		/// <param name="mode">
 		/// (Optional)
@@ -2640,7 +2715,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example restarts the current simulation:
 		/// restart
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1502
+		/// See ug835-vivado-tcl-commands.pdf, page 1535
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -2676,7 +2751,7 @@ namespace Quokka.TCL.Vivado
 		/// breakpoint or valid condition is met, or a simulation runtime error occurs:
 		/// run -all
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1512
+		/// See ug835-vivado-tcl-commands.pdf, page 1545
 		/// </summary>
 		/// <param name="all">
 		/// (Optional)
@@ -2717,6 +2792,7 @@ namespace Quokka.TCL.Vivado
 		/// object. Allowed values are: default, dec, bin, oct, hex, unsigned, ascii, or smag.
 		/// Note: The radix dec indicates a signed decimal. Specify the radix unsigned when dealing with unsigned
 		/// data.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// -quiet - (Optional) Execute the command quietly, returning no messages from the command.
 		/// The command also returns TCL_OK regardless of any errors encountered during execution.
 		/// Note: Any errors encountered on the command-line, while launching the command, will be returned. Only
@@ -2748,6 +2824,7 @@ namespace Quokka.TCL.Vivado
 		/// Examples
 		/// The following example sets the value of the sysClk signal:
 		/// set_value sysClk Z
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This example uses the bin, dec, and unsigned radix to specify the same value on the given
 		/// bus:
 		/// set_value -radix bin /test/bench_VStatus_pad_0_i[7:0] 10100101
@@ -2767,7 +2844,7 @@ namespace Quokka.TCL.Vivado
 		/// ERROR: [#UNDEF] Object size 8 does not match size of given value 1110100101
 		/// Note: In the second set_value command, the extra bits are not zero, and so an error is returned.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1665
+		/// See ug835-vivado-tcl-commands.pdf, page 1698
 		/// </summary>
 		/// <param name="hdl_object">(Required) Set the value on the given hdl_object.</param>
 		/// <param name="value">(Required) The value to assign to the specified object.</param>
@@ -2787,12 +2864,7 @@ namespace Quokka.TCL.Vivado
 		}
 		/// <summary>
 		/// (User-written application) Extract IP static files from the project or repository and prepare it for
-		/// compile_simlib Argument Usage: [-directory <arg>]: Extract static files in the specified directory [-
-		/// ip_repo_path <arg>]: Extract static files from the specified IP repository path [-ips <arg> =
-		/// Empty]: Extract static files for the specified IPs only [-library <arg> = Empty]: Extract static files
-		/// for the specified IP library [-project]: Extract static files for the current project [-install]: Extract
-		/// static files for the IP catalog [-no_update_catalog]: Do no update IP catalog [-force]: Overwrite
-		/// static files
+		/// compile_simlib
 		///
 		///
 		/// TCL Syntax: setup_ip_static_library [-directory <arg>] [-ip_repo_path <arg>] [-ips <arg>] [-library <arg>] [-project] [-install] [-no_update_catalog] [-force] [-quiet] [-verbose]
@@ -2800,6 +2872,7 @@ namespace Quokka.TCL.Vivado
 		/// Retrieve static simulation files for IP cores used in the current project, or from the Xilinx IP
 		/// catalog, and create a source library for the compile_simlib command to use for compiling the
 		/// IP files for a specified simulator.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following command will build static library for all the IPs in the current project in ./
 		/// static_compiled_lib:
@@ -2808,7 +2881,7 @@ namespace Quokka.TCL.Vivado
 		/// command will create the specified directory if it does not exist:
 		/// setup_ip_static_library -directory /work/simlib -project
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1668
+		/// See ug835-vivado-tcl-commands.pdf, page 1701
 		/// </summary>
 		/// <param name="directory">(Optional) Extract static files in the specified directory Default: None</param>
 		/// <param name="ip_repo_path">
@@ -2847,7 +2920,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example starts the writing of HDL signals into the current VCD file:
 		/// start_vcd
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1681
+		/// See ug835-vivado-tcl-commands.pdf, page 1714
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -2874,7 +2947,7 @@ namespace Quokka.TCL.Vivado
 		/// step
 		/// Stopped at time : 0 fs : File "C:/Data/ug937/sim/testbench.v" Line 17
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1685
+		/// See ug835-vivado-tcl-commands.pdf, page 1718
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -2900,7 +2973,7 @@ namespace Quokka.TCL.Vivado
 		/// Stopping simulation."
 		/// stop }
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1687
+		/// See ug835-vivado-tcl-commands.pdf, page 1720
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -2928,7 +3001,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example stops writing simulation values to the current VCD file:
 		/// stop_vcd
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1696
+		/// See ug835-vivado-tcl-commands.pdf, page 1729
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -2942,7 +3015,7 @@ namespace Quokka.TCL.Vivado
 		/// write_sdf command generates flat sdf delay files for event simulation
 		///
 		///
-		/// TCL Syntax: write_sdf [-process_corner <arg>] [-cell <arg>] [-rename_top <arg>] [-force] [-mode <arg>] [-gzip] [-quiet] [-verbose] <file>
+		/// TCL Syntax: write_sdf [-process_corner <arg>] [-cell <arg>] [-rename_top <arg>] [-force] [-mode <arg>] [-gzip] [-multithread <arg>] [-quiet] [-verbose] <file>
 		///
 		/// Writes the timing delays for cells in the design to a Standard Delay Format (SDF) file.
 		/// The output SDF file can be used by the write_verilog command to create Verilog netlists for
@@ -2951,7 +3024,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example writes an SDF file to the specified directory:
 		/// write_sdf C:/Data/FPGA_Design/designOut.sdf
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1851
+		/// See ug835-vivado-tcl-commands.pdf, page 1889
 		/// </summary>
 		/// <param name="file">(Required) File name</param>
 		/// <param name="process_corner">
@@ -2972,12 +3045,13 @@ namespace Quokka.TCL.Vivado
 		/// Simulation) mode for SDF Default: timesim
 		/// </param>
 		/// <param name="gzip">(Optional) write gzipped SDF</param>
+		/// <param name="multithread">(Optional) Run in multithread mode with specified number of threads Default: -1</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL write_sdf(string file, string process_corner = null, string cell = null, string rename_top = null, bool? force = null, string mode = null, bool? gzip = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_sdf(string file, string process_corner = null, string cell = null, string rename_top = null, bool? force = null, string mode = null, bool? gzip = null, string multithread = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: write_sdf [-process_corner <arg>] [-cell <arg>] [-rename_top <arg>] [-force] [-mode <arg>] [-gzip] [-quiet] [-verbose] <file>
-			_tcl.Entry(_builder.write_sdf(file, process_corner, cell, rename_top, force, mode, gzip, quiet, verbose));
+			// TCL Syntax: write_sdf [-process_corner <arg>] [-cell <arg>] [-rename_top <arg>] [-force] [-mode <arg>] [-gzip] [-multithread <arg>] [-quiet] [-verbose] <file>
+			_tcl.Entry(_builder.write_sdf(file, process_corner, cell, rename_top, force, mode, gzip, multithread, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -3005,7 +3079,7 @@ namespace Quokka.TCL.Vivado
 		/// and GND primitives in the output simulation netlist is enabled, and the output file is specified:
 		/// write_verilog -mode funcsim -keep_vcc_gnd out.v
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1853
+		/// See ug835-vivado-tcl-commands.pdf, page 1891
 		/// </summary>
 		/// <param name="file">(Required) Which file to write</param>
 		/// <param name="cell">(Optional) Root of the design to write, e.g. des.subblk.cpu Default: whole design</param>
@@ -3061,6 +3135,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Write a VHDL netlist of the current design or from a specific cell of the design to the specified
 		/// file or directory.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The output of this command is a VHDL IEEE 1076.4 VITAL-2000 compliant VHDL file that
 		/// contains netlist information obtained from the input design files. You can output a complete
 		/// netlist of the design or specific cell, or output a port list for the design.
@@ -3072,7 +3147,7 @@ namespace Quokka.TCL.Vivado
 		/// netlist:
 		/// write_vhdl C:/Data/vhdl_arch_only.vhd -arch_only
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1857
+		/// See ug835-vivado-tcl-commands.pdf, page 1895
 		/// </summary>
 		/// <param name="file">(Required) Which file to write</param>
 		/// <param name="cell">(Optional) Root of the design to write, e.g. des.subblk.cpu Default: whole design</param>
@@ -3131,7 +3206,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example launches xsim on the specified simulation snapshot:
 		/// xsim C:/Data/project_xsim/project_xsim.sim/sim_1/behav/testbench_behav
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1865
+		/// See ug835-vivado-tcl-commands.pdf, page 1903
 		/// </summary>
 		/// <param name="snapshot">(Required) The name of design snapshot or WDB file</param>
 		/// <param name="view">
@@ -3172,7 +3247,12 @@ namespace Quokka.TCL.Vivado
 		/// Specify plusargs to be used by $test$plusargs and $value
 		/// $plusargs system functions
 		/// </param>
-		/// <param name="vcdfile">(Optional) Specify the vcd output file Name Description</param>
+		/// <param name="vcdfile">
+		/// (Optional)
+		/// Specify the vcd output file
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// Name Description
+		/// </param>
 		/// <param name="vcdunit">
 		/// (Optional)
 		/// Specify the vcd output unit. Default is the same as the

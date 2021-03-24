@@ -20,7 +20,8 @@ namespace Quokka.TCL.Vivado
 		/// TCL Syntax: create_partition_def -name <arg> -module <arg> [-library <arg>] [-quiet] [-verbose]
 		///
 		/// IMPORTANT! You must first define the project as a Partial Reconfiguration (PR) project by setting the
-		/// PR_FLOW property on the project to TRUE, or by using the Tools > Enable Partial Reconfiguration command.
+		/// PR_FLOW property on the project to TRUE, or by using the Tools → Enable Partial Reconfiguration
+		/// command.
 		/// The Partial Reconfiguration flow lets you create Partition Definitions (partitionDefs) from
 		/// hierarchical cells in a design, and to specify reconfigurable modules (RMs) to be assigned to these
 		/// partitionDefs to create a unique configurations of the design based on the combination of the
@@ -33,8 +34,9 @@ namespace Quokka.TCL.Vivado
 		/// assigned to for a specific PR configuration.
 		/// This command returns the name of the newly created partitionDef, or returns an error if the
 		/// command fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 316
+		/// See ug835-vivado-tcl-commands.pdf, page 325
 		/// </summary>
 		/// <param name="name">(Required) Name of the PartitionDef</param>
 		/// <param name="module">(Required) Module name of the PartitionDef</param>
@@ -54,7 +56,8 @@ namespace Quokka.TCL.Vivado
 		/// TCL Syntax: create_pr_configuration -name <arg> [-partitions <args>] [-greyboxes <args>] [-use_netlist] [-quiet] [-verbose]
 		///
 		/// IMPORTANT! You must first define the project as a Partial Reconfiguration (PR) project by setting the
-		/// PR_FLOW property on the project to TRUE, or by using the Tools > Enable Partial Reconfiguration command.
+		/// PR_FLOW property on the project to TRUE, or by using the Tools → Enable Partial Reconfiguration
+		/// command.
 		/// The Partial Reconfiguration flow lets you create Partition Definitions (partitionDefs) from
 		/// hierarchical cells in a design, and to specify reconfigurable modules (RMs) to be assigned to these
 		/// partitionDefs to create unique configurations of the design based on the combination of the core
@@ -67,10 +70,11 @@ namespace Quokka.TCL.Vivado
 		/// implemented and the bitstream is generated for.
 		/// You will also need to create implementation runs for the PR configuration using the
 		/// create_run -pr_config command.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This command returns the name of the newly created PR configuration, or returns an error if the
 		/// command fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 330
+		/// See ug835-vivado-tcl-commands.pdf, page 340
 		/// </summary>
 		/// <param name="name">(Required) Name of the Configuration</param>
 		/// <param name="partitions">(Optional) List of partition instances and reconfig modules pairs</param>
@@ -95,10 +99,12 @@ namespace Quokka.TCL.Vivado
 		/// TCL Syntax: create_reconfig_module -name <arg> [-top <arg>] [-gate_level] -partition_def <arg> [-define_from <arg>] [-define_from_file <arg>] [-quiet] [-verbose]
 		///
 		/// IMPORTANT! You must first define the project as a Partial Reconfiguration (PR) project by setting the
-		/// PR_FLOW property on the project to TRUE, or by using the Tools > Enable Partial Reconfiguration command.
+		/// PR_FLOW property on the project to TRUE, or by using the Tools → Enable Partial Reconfiguration
+		/// command.
 		/// The create_reconfig_module command defines an reconfigurable module (RM) from a
 		/// specified hierarchical cell, or design file, and assigns it to the specified Partition Definition
 		/// (partitionDef) in the current project.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The Partial Reconfiguration flow allows RMs to be swapped into and out of a partitionDef to
 		/// create a unique configuration of the design based on the combination of the core design and an
 		/// RM. A single partitionDef can have multiple RMs to contain different netlists, constraints, or
@@ -114,7 +120,7 @@ namespace Quokka.TCL.Vivado
 		/// create_reconfig_module -name fftBottom -partition_def \
 		/// [get_partition_defs partDef1 ] -top fftTop
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 340
+		/// See ug835-vivado-tcl-commands.pdf, page 350
 		/// </summary>
 		/// <param name="name">(Required) Name of the Reconfig Module</param>
 		/// <param name="partition_def">(Required) PartitionDef in which reconfig module will be created</param>
@@ -152,8 +158,9 @@ namespace Quokka.TCL.Vivado
 		/// configfuration in the design, or lets you specify a PR configuration to make active.
 		/// This command returns the name of the current PR configuration, or returns an error if the
 		/// command fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 399
+		/// See ug835-vivado-tcl-commands.pdf, page 409
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -175,7 +182,7 @@ namespace Quokka.TCL.Vivado
 		/// This command returns a transcript of the file merge process, returns nothing without file merge,
 		/// or returns an error if the command fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 450
+		/// See ug835-vivado-tcl-commands.pdf, page 461
 		/// </summary>
 		/// <param name="partition_defs">(Required) List of PartitionDefs to delete</param>
 		/// <param name="merge">
@@ -200,7 +207,7 @@ namespace Quokka.TCL.Vivado
 		/// Delete the specified PR configuration from the current project.
 		/// This command returns nothing if successful, or returns an error if the command fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 456
+		/// See ug835-vivado-tcl-commands.pdf, page 468
 		/// </summary>
 		/// <param name="configs">(Required) List of Configurations to delete</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -220,7 +227,7 @@ namespace Quokka.TCL.Vivado
 		/// Delete the specified reconfigurable modules (RMs) from the current project.
 		/// This command returns nothing if successful, or returns an error if the command fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 460
+		/// See ug835-vivado-tcl-commands.pdf, page 472
 		/// </summary>
 		/// <param name="rms">(Required) List of Reconfig Modules to delete</param>
 		/// <param name="merge">(Optional) Fileset to merge files into from the deleted Reconfig Module</param>
@@ -239,7 +246,8 @@ namespace Quokka.TCL.Vivado
 		/// TCL Syntax: get_partition_defs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 		///
 		/// IMPORTANT! You must first define the project as a Partial Reconfiguration (PR) project by setting the
-		/// PR_FLOW property on the project to TRUE, or by using the Tools → Enable Partial Reconfiguration command.
+		/// PR_FLOW property on the project to TRUE, or by using the Tools → Enable Partial Reconfiguration
+		/// command.
 		/// Get a list of all Partition Definition (partitionDef) objects in the current design, or the
 		/// partitionDefs that match a specified search pattern.
 		/// The Partial Reconfiguration flow lets you create Partition Definitions (partitionDefs) from
@@ -249,9 +257,10 @@ namespace Quokka.TCL.Vivado
 		/// configuration, resulting in partial bitstreams for the RMs, but complete bitstreams for each
 		/// integrated configuration. Refer to the Vivado Design Suite User Guide: Dynamic Function eXchange
 		/// (UG909) for more information.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This command returns a list of partitionDef objects, or returns an error if the command fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 840
+		/// See ug835-vivado-tcl-commands.pdf, page 860
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
@@ -281,8 +290,9 @@ namespace Quokka.TCL.Vivado
 		/// complete bitstreams for each integrated configuration. Refer to the Vivado Design Suite User
 		/// Guide: Dynamic Function eXchange (UG909) for more information.
 		/// This command returns a list of PR configuration objects, or returns an error if the command fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 871
+		/// See ug835-vivado-tcl-commands.pdf, page 892
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
@@ -306,8 +316,9 @@ namespace Quokka.TCL.Vivado
 		/// Get a list of reconfigurable modules (RMs) in the current design that match a specified search
 		/// pattern. The default command returns a list of all RMs in the current project.
 		/// This command returns a list of RM objects, or returns an error if the command fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 885
+		/// See ug835-vivado-tcl-commands.pdf, page 906
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
@@ -342,8 +353,9 @@ namespace Quokka.TCL.Vivado
 		/// This command is designed to work automatically to create the needed PR configurations and
 		/// implementation runs for those configurations.
 		/// This command returns nothing if successful, or returns an error if the command fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1671
+		/// See ug835-vivado-tcl-commands.pdf, page 1704
 		/// </summary>
 		/// <param name="partitions">(Optional) List of partition instances and reconfig modules pairs</param>
 		/// <param name="use_netlist">

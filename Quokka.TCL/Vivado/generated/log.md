@@ -12,6 +12,12 @@
 ## Command: create_bd_cell
 ### Inconsistent Usage:
 * vlnv
+## Command: create_bd_intf_pin
+### Inconsistent Usage:
+* name
+## Command: create_bd_intf_port
+### Inconsistent Usage:
+* name
 ## Command: create_hw_bitstream
 ### Inconsistent Usage:
 * file
@@ -21,9 +27,6 @@
 ## Command: delete_qor_suggestions
 ### Inconsistent Usage:
 * IDs
-## Command: disconnect_net
-### Inconsistent Usage:
-* objects
 ## Command: get_bd_regs
 ### Inconsistent Usage:
 * of_objects
@@ -70,6 +73,9 @@
 ## Command: ungroup_bd_cells
 ### Inconsistent Usage:
 * cells
+## Command: write_checkpoint
+### Inconsistent Usage:
+* file
 ## Command: write_hw_ila_data
 ### Duplicate parameters:
 * hw_ila_data

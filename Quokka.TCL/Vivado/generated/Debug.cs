@@ -35,6 +35,7 @@ namespace Quokka.TCL.Vivado
 		/// 2. Open the implemented design, or the implemented design checkpoint.
 		/// 3. Use the apply_hw_ila_trigger command to apply the trigger settings to the in-memory
 		/// design.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// 4. Use the write_bitstream command to write the bitstream with the applied trigger
 		/// configuration file.
 		/// Note: Be sure to use the write_bitstream command, and not the Flow Navigator commands in the
@@ -46,7 +47,7 @@ namespace Quokka.TCL.Vivado
 		/// with captured data samples if trigger events or capture conditions have occurred. Refer to the
 		/// Vivado Design Suite User Guide: Vivado Programming and Debugging (UG908) for more information.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 102
+		/// See ug835-vivado-tcl-commands.pdf, page 106
 		/// </summary>
 		/// <param name="ila_cell">(Optional) Apply trigger settings to this ila cell</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -71,6 +72,7 @@ namespace Quokka.TCL.Vivado
 		/// Connect debug slave instances to the specified master instance. The command can add the
 		/// specified slaves into an existing debug chain, where the specified slaves will be connected to the
 		/// debug hub or bridge, without affecting debug slaves that are already in the connection chain.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Debug masters include both the Debug Hub and Debug Bridge. The Vivado Debug Hub core
 		/// provides an interface between the JTAG Boundary Scan (BSCAN) interface of the Xilinx device
 		/// and the Vivado Debug cores, including the Integrated Logic Analyzer (ILA), Virtual Input/Output
@@ -80,14 +82,15 @@ namespace Quokka.TCL.Vivado
 		/// JTAG cable, or remotely through Ethernet, PCIe, or other interfaces using a Xilinx Virtual Cable
 		/// (XVC), without the need for a JTAG cable. Refer to the Vivado Design Suite User Guide: Vivado
 		/// Programming and Debugging (UG908) for more information.
-		/// IMPORTANT! For Partial Reconfiguration (PR) designs, the connect_debug_cores command can only
-		/// connect master and slave instances that occur in the Static Region, or in the same Reconfigurable Partition.
+		/// IMPORTANT! For Partial Reconfiguration (PR) designs, the connect_debug_cores command can
+		/// only connect master and slave instances that occur in the Static Region, or in the same Reconfigurable
+		/// Partition.
 		///
 		/// The following example connects the specified ILA cores to the debug bridge:
 		/// connect_debug_cores -master [get_cells inst_count/debug_bridge_0] \
 		/// -slaves [list [get_cells inst_count/ila_0] [get_cells inst_count/ila_1] ]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 193
+		/// See ug835-vivado-tcl-commands.pdf, page 198
 		/// </summary>
 		/// <param name="master">
 		/// (Required)
@@ -127,6 +130,7 @@ namespace Quokka.TCL.Vivado
 		/// When the debug core has been defined and connected, you can implement the debug core as a
 		/// block for inclusion in the netlist design. Use the implement_debug_core command to
 		/// implement the core.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example creates a new PROBE port on the myCore debug core, increases the
 		/// PORT_WIDTH property of the port in order to prepare it to receive the number of signals to be
@@ -138,7 +142,7 @@ namespace Quokka.TCL.Vivado
 		/// Note: If you specify too many nets to connect to the available channels on the port, the tool will return an
 		/// error and will not connect the ports.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 196
+		/// See ug835-vivado-tcl-commands.pdf, page 201
 		/// </summary>
 		/// <param name="port">(Required) Debug port name</param>
 		/// <param name="nets">(Required) List of nets or pins</param>
@@ -171,6 +175,7 @@ namespace Quokka.TCL.Vivado
 		/// each clock domain. The PROBE port provides a probe point for nets marked for debug with the
 		/// MARK_DEBUG property. The PROBE port offers multiple channels to probe multiple nets from a
 		/// single ILA core.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// You can add new ports to an existing ILA core with the create_debug_port command, and
 		/// connect signals to the ports using the connect_debug_port command.
 		///
@@ -193,6 +198,7 @@ namespace Quokka.TCL.Vivado
 		/// {control_reg[14]} {control_reg[15]} {control_reg[16]} {control_reg[17]}
 		/// \
 		/// {control_reg[18]} {control_reg[19]} {control_reg[20]} {control_reg[21]}
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// \
 		/// {control_reg[22]} {control_reg[23]} {control_reg[24]} {control_reg[25]}
 		/// \
@@ -218,7 +224,7 @@ namespace Quokka.TCL.Vivado
 		/// \
 		/// {control_reg[29]} {control_reg[30]} {control_reg[31]} ]]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 247
+		/// See ug835-vivado-tcl-commands.pdf, page 255
 		/// </summary>
 		/// <param name="name">(Required) Name of the new debug core instance</param>
 		/// <param name="type">(Required) Type of the new debug core</param>
@@ -252,6 +258,7 @@ namespace Quokka.TCL.Vivado
 		/// You can connect signals to ports using the connect_debug_port command, modify existing
 		/// probe connections using modify_debug_ports, and disconnect signals with the
 		/// disconnect_debug_port command.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example creates a new debug core, and then adds an additional probe port to the
 		/// core, then sets the width of that new port to 8, and connects signals to the probe port:
@@ -262,8 +269,9 @@ namespace Quokka.TCL.Vivado
 		/// {m1_cyc_i m1_ack_o m1_err_o m1_rty_o}
 		/// Note: Recall that the ILA core is created with a clk and probe port by default, so the new probe port is
 		/// automatically numbered as probe1.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 250
+		/// See ug835-vivado-tcl-commands.pdf, page 258
 		/// </summary>
 		/// <param name="name">(Required) Name of the debug core instance</param>
 		/// <param name="type">(Required) Type of the new debug port</param>
@@ -287,11 +295,12 @@ namespace Quokka.TCL.Vivado
 		///
 		/// The following command deletes the myCore debug core from the current project:
 		/// delete_debug_core myCore
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following command deletes all debug cores from the current project:
 		/// delete_debug_core [get_debug_cores]
 		/// Note: The get_debug_cores command returns all debug cores as a default.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 423
+		/// See ug835-vivado-tcl-commands.pdf, page 434
 		/// </summary>
 		/// <param name="cores">(Required) Debug cores to delete</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -322,7 +331,7 @@ namespace Quokka.TCL.Vivado
 		/// TRIG port. The effect of this command will be to delete the TRIG ports starting at TRIG0 and removing all
 		/// of them except the last port.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 425
+		/// See ug835-vivado-tcl-commands.pdf, page 436
 		/// </summary>
 		/// <param name="ports">(Required) Debug ports to delete</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -356,7 +365,7 @@ namespace Quokka.TCL.Vivado
 		/// disconnected, as in the following example:
 		/// disconnect_debug_port myCore/PROBE1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 482
+		/// See ug835-vivado-tcl-commands.pdf, page 494
 		/// </summary>
 		/// <param name="port">(Required) Debug port name</param>
 		/// <param name="channel_index">(Optional) Disconnect the net at channel index</param>
@@ -384,6 +393,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following command gets a list of the Vivado Lab Edition debug cores in the current project:
 		/// get_debug_cores
@@ -392,7 +402,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example gets the properties of the specified debug core:
 		/// report_property [get_debug_cores myCore]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 653
+		/// See ug835-vivado-tcl-commands.pdf, page 669
 		/// </summary>
 		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <param name="of_objects">(Optional) Get cores of these debug ports or nets</param>
@@ -423,6 +433,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following command gets a list of the ports from the ILA debug cores in the current project,
 		/// with a PORT_WIDTH property of 8:
@@ -431,7 +442,7 @@ namespace Quokka.TCL.Vivado
 		/// report_property [get_debug_ports myCore/PROBE1]
 		/// Note: The debug port is defined by the core_name/port_name combination.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 656
+		/// See ug835-vivado-tcl-commands.pdf, page 672
 		/// </summary>
 		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <param name="of_objects">(Optional) Get ports of these debug cores</param>
@@ -471,7 +482,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example implements all debug cores in the current project:
 		/// implement_debug_core [get_debug_cores]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 957
+		/// See ug835-vivado-tcl-commands.pdf, page 978
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -500,6 +511,7 @@ namespace Quokka.TCL.Vivado
 		/// the specified probe ports as needed, connecting each net to be probed to the specified probe
 		/// port, and automatically routing the modified connections. Nets that become disconnected during
 		/// the process are left unconnected.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example modifies 3 probe connections:
 		/// modify_debug_ports -probes [list {top/x_ila/probe0 0 top/inst_A/net_0} \
@@ -507,7 +519,7 @@ namespace Quokka.TCL.Vivado
 		/// net_b}]
 		/// TIP: The modify_debug_ports command moves a port probe from one signal to another.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1041
+		/// See ug835-vivado-tcl-commands.pdf, page 1064
 		/// </summary>
 		/// <param name="probes">
 		/// (Required)
@@ -538,7 +550,7 @@ namespace Quokka.TCL.Vivado
 		/// location:
 		/// report_debug_core -file C:/Data/FPGA_Design/project_1_cores.txt
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1307
+		/// See ug835-vivado-tcl-commands.pdf, page 1334
 		/// </summary>
 		/// <param name="file">
 		/// (Optional)
@@ -574,7 +586,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example write a debug probe file from the current design:
 		/// write_debug_probes C:/Data/designProbes.ltx
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1805
+		/// See ug835-vivado-tcl-commands.pdf, page 1842
 		/// </summary>
 		/// <param name="file">(Required) Debug probes file name (default extension is .ltx)</param>
 		/// <param name="cell">(Optional) Hierarchical name of the Reconfigurable Partition Cell</param>

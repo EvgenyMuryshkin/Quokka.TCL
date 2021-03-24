@@ -35,9 +35,13 @@ namespace Quokka.TCL.Vivado
 		/// configuration:
 		/// add_wave dout_tvalid /rsb_design_testbench/dout_tvalid
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 57
+		/// See ug835-vivado-tcl-commands.pdf, page 60
 		/// </summary>
-		/// <param name="items">(Required) the design objects from which to create wave objects</param>
+		/// <param name="items">
+		/// (Required)
+		/// the design objects from which to create wave objects
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// </param>
 		/// <param name="into">
 		/// (Optional)
 		/// the wave configuration, group, or virtual bus into which the
@@ -105,11 +109,12 @@ namespace Quokka.TCL.Vivado
 		/// waveform configuration.
 		/// This command returns the name of the newly-created wave divider.
 		/// Note: This command can only be used when running a simulation.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example inserts a wave divider named Div1, after the CLK wave object:
 		/// add_wave_divider -after_wave CLK Div1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 60
+		/// See ug835-vivado-tcl-commands.pdf, page 63
 		/// </summary>
 		/// <param name="into">
 		/// (Optional)
@@ -155,12 +160,13 @@ namespace Quokka.TCL.Vivado
 		/// inserted at the end of the specified waveform configuration.
 		/// The command returns the name of the newly created wave group object.
 		/// Note: This command can only be used when running a simulation.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// Add a clk to the existing waveform configuration:
 		/// add_wave_group clk
 		/// group10
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 62
+		/// See ug835-vivado-tcl-commands.pdf, page 65
 		/// </summary>
 		/// <param name="into">
 		/// (Optional)
@@ -202,7 +208,7 @@ namespace Quokka.TCL.Vivado
 		/// Add a marker to the existing waveform configuration at 500ns:
 		/// add_wave_marker 500 ns
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 64
+		/// See ug835-vivado-tcl-commands.pdf, page 67
 		/// </summary>
 		/// <param name="into">(Optional) the wave configuration in which to create the marker</param>
 		/// <param name="name">(Optional) sets the name of the new marker to the specified string</param>
@@ -232,11 +238,13 @@ namespace Quokka.TCL.Vivado
 		/// default at the bottom of the existing WCFG. It returns a vb### for the newly-created virtual bus.
 		/// Note: This command can only be used when running a simulation. At a minimum, you must specify a name,
 		/// which is the name of the new virtual bus
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// Add a virtual bus of the name dout_tvalid to the end of the current waveform configuration:
 		/// add_wave_virtual_bus dout_tvalid
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 66
+		/// See ug835-vivado-tcl-commands.pdf, page 69
 		/// </summary>
 		/// <param name="into">
 		/// (Optional)
@@ -296,7 +304,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example closes all Wave Config files associated with the current simulation:
 		/// close_wave_config [get_wave_configs]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 147
+		/// See ug835-vivado-tcl-commands.pdf, page 151
 		/// </summary>
 		/// <param name="force">
 		/// (Optional)
@@ -338,7 +346,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example creates a new wave configuration object with the specified name:
 		/// create_wave_config testbench1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 361
+		/// See ug835-vivado-tcl-commands.pdf, page 371
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -372,7 +380,7 @@ namespace Quokka.TCL.Vivado
 		/// configuration in the simulation:
 		/// current_wave_config [get_wave_config testbench]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 413
+		/// See ug835-vivado-tcl-commands.pdf, page 424
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -403,12 +411,13 @@ namespace Quokka.TCL.Vivado
 		/// add_wave_divider.
 		/// This command returns the matching wave configuration objects, or returns nothing if no objects
 		/// matched the search pattern.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example returns all wave configuration objects, in the current simulation, that have
 		/// unsaved changes:
 		/// get_wave_config -filter {NEEDS_SAVE}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 939
+		/// See ug835-vivado-tcl-commands.pdf, page 960
 		/// </summary>
 		/// <param name="regexp">(Optional) interprets <patterns> using regular expressions</param>
 		/// <param name="nocase">(Optional) only when regexp is used, performs a case insensitive match</param>
@@ -432,7 +441,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: get_waves [-of <args>] [-regexp] [-nocase] [-filter <arg>] [-recursive] [-r] [-long_name] [-short_name] [-quiet] [-verbose] <patterns>...
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 942
+		/// See ug835-vivado-tcl-commands.pdf, page 963
 		/// </summary>
 		/// <param name="patterns">(Required) the design objects from which to create wave objects</param>
 		/// <param name="of">(Optional) the wave configuration, group, or virtual bus to search</param>
@@ -472,7 +481,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: move_wave [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-quiet] [-verbose] <items>...
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1049
+		/// See ug835-vivado-tcl-commands.pdf, page 1072
 		/// </summary>
 		/// <param name="items">(Required) wave objects to move</param>
 		/// <param name="into">
@@ -517,13 +526,14 @@ namespace Quokka.TCL.Vivado
 		/// save_wave_config command, and can be opened with the open_wave_config command.
 		/// The open_wave_config command opens a Wave Config file and maps it to the data source in
 		/// the current simulation.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// IMPORTANT! Any HDL objects that are specified in the Wave Config file that are not found in the current
 		/// simulation will be ignored.
 		///
 		/// The following example opens the specified Wave Config file:
 		/// open_wave_config testbench.wcfg
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1077
+		/// See ug835-vivado-tcl-commands.pdf, page 1100
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -545,7 +555,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: remove_wave [-of <args>] [-quiet] [-verbose] <items>...
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1247
+		/// See ug835-vivado-tcl-commands.pdf, page 1274
 		/// </summary>
 		/// <param name="items">(Required) wave objects to remove</param>
 		/// <param name="of">
@@ -577,13 +587,14 @@ namespace Quokka.TCL.Vivado
 		/// If the wave configuration object has a FILE_PATH property, but a different <filename> is
 		/// specified, the wave configuration object will be saved to the new <filename>, and the object will
 		/// be renamed to match the specified <filename>.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example saves the specified wave configuration object to a new filename:
 		/// save_wave_config -object [get_wave_configs test.wcfg] \
 		/// C:/Data/project/newTest
 		/// Note: The wave config file will be assigned the .wcfg suffix since none is specified.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1545
+		/// See ug835-vivado-tcl-commands.pdf, page 1578
 		/// </summary>
 		/// <param name="@object">
 		/// (Optional)
@@ -618,7 +629,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example selects the specified site on the device:
 		/// select_wave_objects {sys_clk_p sysc_clk_n}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1557
+		/// See ug835-vivado-tcl-commands.pdf, page 1590
 		/// </summary>
 		/// <param name="items">(Required) select waveform objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>

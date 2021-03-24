@@ -31,6 +31,7 @@ namespace Quokka.TCL.Vivado
 		/// between the IP core to the board part, the IP integrator of the Vivado Design Suite adds an
 		/// external interface port and interface connection to the block design. The added external
 		/// interface port is named for the specified board part interface.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The apply_board_connection commands uses the available interfaces of the current board
 		/// part defined in the project. An error is returned if the project uses a target part rather than a
 		/// target board. You can use the current_board_part command to identify the target board
@@ -42,7 +43,7 @@ namespace Quokka.TCL.Vivado
 		/// disconnected.
 		/// This command returns a transcript of it actions, or returns an error if it fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 99
+		/// See ug835-vivado-tcl-commands.pdf, page 103
 		/// </summary>
 		/// <param name="ip_intf">
 		/// (Required)
@@ -81,12 +82,13 @@ namespace Quokka.TCL.Vivado
 		/// creating projects, and on configuring project settings.
 		/// IMPORTANT! When you specify the board with the set_property command, the target part is also
 		/// changed to match the part required by the specified BOARD property.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The current_board command returns the Vendor:Board_Name:File_Version attributes
 		/// of the current board, as defined in the BOARD_PART property. The command returns nothing
 		/// when the project targets a Xilinx FPGA instead of a TRD and board, or when the BOARD_PART
 		/// property has not been defined. The command returns an error if it fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 369
+		/// See ug835-vivado-tcl-commands.pdf, page 379
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -118,13 +120,14 @@ namespace Quokka.TCL.Vivado
 		/// • By selecting the Project Device in the Settings dialog box in an open project in the Vivado IDE.
 		/// Refer to the Vivado Design Suite User Guide: System-Level Design Entry (UG895) for information on
 		/// creating projects, and on configuring project settings.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// IMPORTANT! When you specify the board with the set_property command, the target part is also
 		/// changed to match the part required by the specified BOARD_PART property.
 		/// The current_board_part command returns the NAME property of the current board part.
 		/// The command returns a warning when the project targets a Xilinx FPGA instead of a board, or
 		/// when the BOARD_PART property has not been defined. The command returns an error if it fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 372
+		/// See ug835-vivado-tcl-commands.pdf, page 382
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -149,6 +152,7 @@ namespace Quokka.TCL.Vivado
 		/// aspects of the design, such as clock constraints, I/O port assignments, and supported interfaces.
 		/// You can create custom boards by defining a custom Board Interface file, as described in the
 		/// Vivado Design Suite User Guide: System-Level Design Entry (UG895).
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Connection buses define the connections between the Xilinx device (part0) and other
 		/// components on the board. Bus nets define individual connections of the connection bus.
 		/// This command returns a list of connection bus nets, or returns an error if it fails.
@@ -157,7 +161,7 @@ namespace Quokka.TCL.Vivado
 		/// the current board:
 		/// get_board_bus_nets -of_objects [get_board_components {*iic_main*}]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 587
+		/// See ug835-vivado-tcl-commands.pdf, page 600
 		/// </summary>
 		/// <param name="of_objects">
 		/// (Required)
@@ -197,6 +201,7 @@ namespace Quokka.TCL.Vivado
 		/// aspects of the design, such as clock constraints, I/O port assignments, and supported interfaces.
 		/// You can create custom boards by defining a custom Board Interface file, as described in the
 		/// Vivado Design Suite User Guide: System-Level Design Entry (UG895).
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Connection buses define the connections between the Xilinx device (part0) and other
 		/// components on the board.
 		/// This command returns a list of buses, or returns an error if it fails.
@@ -205,7 +210,7 @@ namespace Quokka.TCL.Vivado
 		/// the current board:
 		/// get_board_buses -of_objects [get_board_components sgmii]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 590
+		/// See ug835-vivado-tcl-commands.pdf, page 603
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
@@ -245,6 +250,7 @@ namespace Quokka.TCL.Vivado
 		/// aspects of the design, such as clock constraints, I/O port assignments, defined components and
 		/// supported interfaces. You can create custom boards by defining a custom Board Interface file, as
 		/// described in the Vivado Design Suite User Guide: System-Level Design Entry (UG895).
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The component interface defines related groups of signals that are found on a component, or a
 		/// component mode.
 		/// This command returns a list of component interfaces, or returns an error if it fails.
@@ -258,7 +264,7 @@ namespace Quokka.TCL.Vivado
 		/// foreach x [get_board_component_interfaces] {
 		/// create_interface $x }
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 593
+		/// See ug835-vivado-tcl-commands.pdf, page 606
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
@@ -298,6 +304,7 @@ namespace Quokka.TCL.Vivado
 		/// aspects of the design, such as clock constraints, I/O port assignments, and supported interfaces.
 		/// You can create custom boards by defining a custom Board Interface file, as described in the
 		/// Vivado Design Suite User Guide: System-Level Design Entry (UG895).
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The component mode defines various modes of operations that the components on a board may
 		/// have, and the interfaces and preferred IP of those modes.
 		/// This command returns a list of component modes, or returns an error if it fails.
@@ -306,7 +313,7 @@ namespace Quokka.TCL.Vivado
 		/// specified board:
 		/// get_board_component_modes -of_objects [get_board_components *part0*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 596
+		/// See ug835-vivado-tcl-commands.pdf, page 609
 		/// </summary>
 		/// <param name="of_objects">(Required) Get 'board_component_mode' objects of these types: 'board_component'.</param>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
@@ -344,13 +351,14 @@ namespace Quokka.TCL.Vivado
 		/// Vivado Design Suite User Guide: System-Level Design Entry (UG895).
 		/// Board components define the list of components found on the board defined by the Board
 		/// Interface file. Component pins enumerate the individual pins of the component.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This command returns a list of component pin objects, or returns an error if it fails.
 		///
 		/// The following example gets the component pins associated with the specified Xilinx device
 		/// (part0) component object of the current board:
 		/// get_board_component_pins -of_objects [get_board_components *part0*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 599
+		/// See ug835-vivado-tcl-commands.pdf, page 612
 		/// </summary>
 		/// <param name="of_objects">
 		/// (Required)
@@ -389,12 +397,13 @@ namespace Quokka.TCL.Vivado
 		/// You can create custom boards by defining a custom Board Interface file, as described in the
 		/// Vivado Design Suite User Guide: System-Level Design Entry (UG895).
 		/// This command returns a list of components, or returns an error if it fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets the components defined in the Board Interface file of the specified
 		/// board:
 		/// get_board_components -of_objects [get_boards zed]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 602
+		/// See ug835-vivado-tcl-commands.pdf, page 615
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
@@ -436,6 +445,7 @@ namespace Quokka.TCL.Vivado
 		/// aspects of the design, such as clock constraints, I/O port assignments, and supported interfaces.
 		/// You can create custom boards by defining a custom Board Interface file, as described in the
 		/// Vivado Design Suite User Guide: System-Level Design Entry (UG895).
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// In the Board Interface file, a component interface includes a map of the logical ports, that are
 		/// defined in the interface file, with a physical port that relates to the component pin or pins on the
 		/// Xilinx device (part0).
@@ -447,7 +457,7 @@ namespace Quokka.TCL.Vivado
 		/// get_board_interface_ports -of_objects \
 		/// [get_board_component_interfaces *gmii*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 605
+		/// See ug835-vivado-tcl-commands.pdf, page 618
 		/// </summary>
 		/// <param name="of_objects">
 		/// (Required)
@@ -487,6 +497,7 @@ namespace Quokka.TCL.Vivado
 		/// Vivado Design Suite User Guide: System-Level Design Entry (UG895).
 		/// IP preferences define the preferred IP to connect a component interface to in the Board Interface
 		/// file.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This command returns a list of preferred IP for specified component interfaces, or component
 		/// modes, or returns an error if it fails.
 		///
@@ -494,7 +505,7 @@ namespace Quokka.TCL.Vivado
 		/// get_board_ip_preferences -of_objects \
 		/// [get_board_component_interfaces *clock*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 608
+		/// See ug835-vivado-tcl-commands.pdf, page 621
 		/// </summary>
 		/// <param name="of_objects">
 		/// (Required)
@@ -535,11 +546,12 @@ namespace Quokka.TCL.Vivado
 		/// The jumpers defined in the board file can be used to enable specific component modes and
 		/// interfaces of the board.
 		/// This command returns a list of jumpers, or returns an error if it fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets the jumpers defined in the Board Interface file of the specified board:
 		/// get_board_jumpers -of_objects [get_boards kc705]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 611
+		/// See ug835-vivado-tcl-commands.pdf, page 624
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
@@ -576,12 +588,13 @@ namespace Quokka.TCL.Vivado
 		/// The parameters defined in the board file specify custom or user-defined characteristics of the
 		/// board.
 		/// This command returns a list of board parameters, or returns an error if it fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets the parameters defined in the Board Interface file of the current
 		/// board:
 		/// get_board_parameters
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 614
+		/// See ug835-vivado-tcl-commands.pdf, page 627
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
@@ -620,6 +633,7 @@ namespace Quokka.TCL.Vivado
 		/// aspects of the design, such as clock constraints, I/O port assignments, and supported interfaces.
 		/// You can create custom boards by defining a custom Board Interface file, as described in the
 		/// Vivado Design Suite User Guide: System-Level Design Entry (UG895).
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The board part provides a representation of the Xilinx device in the context of the board-level
 		/// system, and is represented by the part0 component in the Board Interface file. The
 		/// current_board_part command returns the board part in use by the current project.
@@ -635,7 +649,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example gets a list of all interfaces defined on the current board part:
 		/// join [get_board_part_interfaces] \n
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 617
+		/// See ug835-vivado-tcl-commands.pdf, page 630
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
@@ -674,6 +688,7 @@ namespace Quokka.TCL.Vivado
 		/// aspects of the design, such as clock constraints, I/O port assignments, and supported interfaces.
 		/// You can create custom boards by defining a custom Board Interface file, as described in the
 		/// Vivado Design Suite User Guide: System-Level Design Entry (UG895).
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The board part provides a representation of the Xilinx device in the context of the board-level
 		/// system, and is represented by the part0 component in the Board Interface file. The
 		/// current_board_part command returns the board part in use by the current project.
@@ -686,6 +701,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// This example returns the physical pins of the specified board part interface:
 		/// get_board_part_pins -of [get_board_part_interfaces push_buttons_5bits]
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example assigns the PACKAGE_PIN and IOSTANDARD properties on the specified
 		/// port in the current design according to the properties on the leds_8bits pins in the current board:
 		/// set_property PACKAGE_PIN [get_property LOC \
@@ -708,7 +724,7 @@ namespace Quokka.TCL.Vivado
 		/// The location of leds_8bits_tri_o[6] is: E18
 		/// The location of leds_8bits_tri_o[7] is: F16
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 621
+		/// See ug835-vivado-tcl-commands.pdf, page 634
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
@@ -747,6 +763,7 @@ namespace Quokka.TCL.Vivado
 		/// aspects of the design, such as clock constraints, I/O port assignments, and supported interfaces.
 		/// You can create custom boards by defining a custom Board Interface file, as described in the
 		/// Vivado Design Suite User Guide: System-Level Design Entry (UG895).
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The board part provides a representation of the Xilinx device in the context of the board-level
 		/// system, and is represented by the part0 component in the Board Interface file. The
 		/// current_board_part command returns the board part in use by the current project. Refer to
@@ -759,7 +776,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example returns all board parts matching the specified search patterns:
 		/// get_board_parts {*av* *kc*}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 625
+		/// See ug835-vivado-tcl-commands.pdf, page 638
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
@@ -797,6 +814,7 @@ namespace Quokka.TCL.Vivado
 		/// The board in use by the project is returned by the current_board_part command.
 		/// The board can be specified:
 		/// • When the project is created by selecting Boards from the Default Part dialog box.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// • By setting the BOARD property on the current project as shown in the example.
 		/// • By selecting the Project Device in the Settings dialog box in an open project in the Vivado IDE.
 		/// Refer to the Vivado Design Suite User Guide: System-Level Design Entry (UG895) for information on
@@ -811,7 +829,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example returns all boards matching the specified search patterns:
 		/// get_boards {*ar* *kc*}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 629
+		/// See ug835-vivado-tcl-commands.pdf, page 642
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
@@ -830,6 +848,34 @@ namespace Quokka.TCL.Vivado
 		{
 			// TCL Syntax: get_boards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_boards(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
+			return _tcl;
+		}
+		/// <summary>
+		/// Check whether the XML files describing a board in the given directory are valid. Only supported
+		/// for board XML files with schema_version>=2.0. The XML files must contain an appropriate
+		/// DOCTYPE declaration to be fully validated. Examples: <!DOCTYPE board SYSTEM "board.dtd">
+		/// <!-- for board.xml --> <!DOCTYPE ip_presets SYSTEM "preset.dtd"> <!-- for preset.xml --> <!
+		/// DOCTYPE part_info SYSTEM "part0_pins.dtd"> <!-- for part0_pins.xml -->
+		/// Note that if a project is open and an IP repository loaded, this command will also validate certain
+		/// IP and Interface attributes used in the board definition against the current IP repository.
+		///
+		///
+		/// TCL Syntax: validate_board_files [-quiet] [-verbose] [<dir>...]
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 1796
+		/// </summary>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="dir">
+		/// (Optional)
+		/// The name of a directory containing the board files
+		/// (board.xml, part0_pins.xml, preset.xml) to be checked
+		/// </param>
+		/// <returns>ok if all board files are valid</returns>
+		public TTCL validate_board_files(bool? quiet = null, bool? verbose = null, string dir = null)
+		{
+			// TCL Syntax: validate_board_files [-quiet] [-verbose] [<dir>...]
+			_tcl.Entry(_builder.validate_board_files(quiet, verbose, dir));
 			return _tcl;
 		}
 	}

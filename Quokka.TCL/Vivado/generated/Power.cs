@@ -26,7 +26,7 @@ namespace Quokka.TCL.Vivado
 		/// report_power -name my_set
 		/// delete_power_results -name my_set
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 454
+		/// See ug835-vivado-tcl-commands.pdf, page 466
 		/// </summary>
 		/// <param name="name">(Required) Name for the set of results to clear</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -67,7 +67,7 @@ namespace Quokka.TCL.Vivado
 		/// opt_design -retarget -propconst -sweep
 		/// power_opt_design
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1113
+		/// See ug835-vivado-tcl-commands.pdf, page 1134
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -93,7 +93,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example:
 		/// read_saif -strip_path design/top/F1 C:/Data/design1.saif
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1155
+		/// See ug835-vivado-tcl-commands.pdf, page 1176
 		/// </summary>
 		/// <param name="file">(Required) Specifies the name of the SAIF file to be read</param>
 		/// <param name="strip_path">
@@ -125,6 +125,7 @@ namespace Quokka.TCL.Vivado
 		/// current operating conditions of the device, and the switching rates of the design. The operating
 		/// conditions can be set using the set_operating_conditions command. The switching
 		/// activity can be defined using the set_switching_activity command.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Switching activity can also be read in from an SAIF file with the read_saif command. The
 		/// Vivado tool will annotate the design nodes with activity from the SAIF file and estimate power
 		/// appropriately.
@@ -135,8 +136,9 @@ namespace Quokka.TCL.Vivado
 		/// The following example performs power analysis, without net propagation, and writes the results
 		/// to an XML file for use in XPE:
 		/// report_power -no_propagation -xpe C:/Data/design1.xpe
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1375
+		/// See ug835-vivado-tcl-commands.pdf, page 1406
 		/// </summary>
 		/// <param name="no_propagation">
 		/// (Optional)
@@ -186,7 +188,7 @@ namespace Quokka.TCL.Vivado
 		/// them to the specified file in an XML format:
 		/// report_power_opt -format xml -file C:/Data/power_opt.xml
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1379
+		/// See ug835-vivado-tcl-commands.pdf, page 1410
 		/// </summary>
 		/// <param name="cell">(Optional) list of instance names Default: empty</param>
 		/// <param name="file">(Optional) output file</param>
@@ -211,10 +213,11 @@ namespace Quokka.TCL.Vivado
 		/// Reset operating conditions to tool default for power estimation
 		///
 		///
-		/// TCL Syntax: reset_operating_conditions [-voltage <args>] [-grade] [-process] [-junction_temp] [-ambient_temp] [-thetaja] [-thetasa] [-airflow] [-heatsink] [-thetajb] [-board] [-board_temp] [-board_layers] [-design_power_budget] [-quiet] [-verbose]
+		/// TCL Syntax: reset_operating_conditions [-voltage <args>] [-grade] [-process] [-junction_temp] [-ambient_temp] [-thetaja] [-thetasa] [-airflow] [-heatsink] [-thetajb] [-board] [-board_temp] [-board_layers] [-design_power_budget] [-supply_current_budget <args>] [-quiet] [-verbose]
 		///
 		/// Resets the specified operating conditions to their default values. If no operating conditions are
 		/// specified, all operating conditions are reset to their default values.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Operating conditions can be set using the set_operating_conditions command. The
 		/// current values can be determined using the report_operating_conditions command. The
 		/// environmental operating conditions of the device are used for power analysis when running the
@@ -229,7 +232,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example resets the voltage supply Vccint to its default value:
 		/// reset_operating_conditions -voltage Vccint
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1471
+		/// See ug835-vivado-tcl-commands.pdf, page 1504
 		/// </summary>
 		/// <param name="voltage">(Optional) Resets voltage value. Supported voltage supplies vary by family.</param>
 		/// <param name="grade">(Optional) Resets temperature grade</param>
@@ -245,12 +248,17 @@ namespace Quokka.TCL.Vivado
 		/// <param name="board_temp">(Optional) Resets Board Temperature</param>
 		/// <param name="board_layers">(Optional) Resets Board layers</param>
 		/// <param name="design_power_budget">(Optional) Design Power Budget (W)</param>
+		/// <param name="supply_current_budget">
+		/// (Optional)
+		/// Resets list of supply current budget 'name value' pairs.
+		/// Supported voltage supplies vary by family.
+		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL reset_operating_conditions(string voltage = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_operating_conditions(string voltage = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, string supply_current_budget = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: reset_operating_conditions [-voltage <args>] [-grade] [-process] [-junction_temp] [-ambient_temp] [-thetaja] [-thetasa] [-airflow] [-heatsink] [-thetajb] [-board] [-board_temp] [-board_layers] [-design_power_budget] [-quiet] [-verbose]
-			_tcl.Entry(_builder.reset_operating_conditions(voltage, grade, process, junction_temp, ambient_temp, thetaja, thetasa, airflow, heatsink, thetajb, board, board_temp, board_layers, design_power_budget, quiet, verbose));
+			// TCL Syntax: reset_operating_conditions [-voltage <args>] [-grade] [-process] [-junction_temp] [-ambient_temp] [-thetaja] [-thetasa] [-airflow] [-heatsink] [-thetajb] [-board] [-board_temp] [-board_layers] [-design_power_budget] [-supply_current_budget <args>] [-quiet] [-verbose]
+			_tcl.Entry(_builder.reset_operating_conditions(voltage, grade, process, junction_temp, ambient_temp, thetaja, thetasa, airflow, heatsink, thetajb, board, board_temp, board_layers, design_power_budget, supply_current_budget, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -268,11 +276,12 @@ namespace Quokka.TCL.Vivado
 		/// set_switching_activity -default_toggle_rate or -default_static_probability to
 		/// change or reset the default values for the current design.
 		/// This command operates silently and does not return direct feedback of its operation.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example resets the signal_rate and static probability value on all output ports:
 		/// reset_switching_activity -default [all_outputs]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1485
+		/// See ug835-vivado-tcl-commands.pdf, page 1518
 		/// </summary>
 		/// <param name="@default">(Optional) Reset default static probability and default toggle rate</param>
 		/// <param name="type">
@@ -305,7 +314,7 @@ namespace Quokka.TCL.Vivado
 		/// Set operating conditions for power estimation
 		///
 		///
-		/// TCL Syntax: set_operating_conditions [-voltage <args>] [-grade <arg>] [-process <arg>] [-junction_temp <arg>] [-ambient_temp <arg>] [-thetaja <arg>] [-thetasa <arg>] [-airflow <arg>] [-heatsink <arg>] [-thetajb <arg>] [-board <arg>] [-board_temp <arg>] [-board_layers <arg>] [-design_power_budget <arg>] [-quiet] [-verbose]
+		/// TCL Syntax: set_operating_conditions [-voltage <args>] [-grade <arg>] [-process <arg>] [-junction_temp <arg>] [-ambient_temp <arg>] [-thetaja <arg>] [-thetasa <arg>] [-airflow <arg>] [-heatsink <arg>] [-thetajb <arg>] [-board <arg>] [-board_temp <arg>] [-board_layers <arg>] [-design_power_budget <arg>] [-supply_current_budget <args>] [-quiet] [-verbose]
 		///
 		/// Sets the real-world operating conditions that are used when performing analysis of the design.
 		/// The environmental operating conditions of the device are used for power analysis when running
@@ -321,13 +330,14 @@ namespace Quokka.TCL.Vivado
 		/// set_operating_conditions -grade industrial -ambient_temp 75
 		/// The following example sets the supply voltage Vccaux to a value of 1.9:
 		/// set_operating_conditions -voltage {Vccaux 1.89}
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example sets the manufacturing process corner to maximum:
 		/// set_operating_conditions -process maximum
 		/// The following example sets the manufacturing process corner to maximum and the voltage
 		/// supply Vccint to 0.875:
 		/// set_operating_conditions -process maximum -voltage {Vccint 0.875}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1630
+		/// See ug835-vivado-tcl-commands.pdf, page 1663
 		/// </summary>
 		/// <param name="voltage">
 		/// (Optional)
@@ -355,12 +365,17 @@ namespace Quokka.TCL.Vivado
 		/// <param name="board_temp">(Optional) Board Temperature degC</param>
 		/// <param name="board_layers">(Optional) Board layers: 4to7, 8to11, 12to15, 16+ Default: 8to11</param>
 		/// <param name="design_power_budget">(Optional) Design Power Budget (W) Default: Unspecified</param>
+		/// <param name="supply_current_budget">
+		/// (Optional)
+		/// Sets list of supply current budget 'name value' pairs.
+		/// Supported voltage supplies vary by family.
+		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_operating_conditions(string voltage = null, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_operating_conditions(string voltage = null, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, string supply_current_budget = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: set_operating_conditions [-voltage <args>] [-grade <arg>] [-process <arg>] [-junction_temp <arg>] [-ambient_temp <arg>] [-thetaja <arg>] [-thetasa <arg>] [-airflow <arg>] [-heatsink <arg>] [-thetajb <arg>] [-board <arg>] [-board_temp <arg>] [-board_layers <arg>] [-design_power_budget <arg>] [-quiet] [-verbose]
-			_tcl.Entry(_builder.set_operating_conditions(voltage, grade, process, junction_temp, ambient_temp, thetaja, thetasa, airflow, heatsink, thetajb, board, board_temp, board_layers, design_power_budget, quiet, verbose));
+			// TCL Syntax: set_operating_conditions [-voltage <args>] [-grade <arg>] [-process <arg>] [-junction_temp <arg>] [-ambient_temp <arg>] [-thetaja <arg>] [-thetasa <arg>] [-airflow <arg>] [-heatsink <arg>] [-thetajb <arg>] [-board <arg>] [-board_temp <arg>] [-board_layers <arg>] [-design_power_budget <arg>] [-supply_current_budget <args>] [-quiet] [-verbose]
+			_tcl.Entry(_builder.set_operating_conditions(voltage, grade, process, junction_temp, ambient_temp, thetaja, thetasa, airflow, heatsink, thetajb, board, board_temp, board_layers, design_power_budget, supply_current_budget, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -371,18 +386,21 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Specify cell instances to include or exclude in power optimization. The specified cells are
 		/// optimized using the power_opt_design command.
-		/// TIP: Block RAM optimizations are performed by default with the opt_design command. Some or all BRAM
-		/// cells can be excluded from the opt_design optimization using the set_power_opt command as well.
+		/// TIP: Block RAM optimizations are performed by default with the opt_design command. Some or all
+		/// BRAM cells can be excluded from the opt_design optimization using the set_power_opt command
+		/// as well.
 		/// The effect of multiple set_power_opt commands is cumulative, so that you can specify a
 		/// broad class of cell types to optimize, include specific hierarchical cells, and then exclude cells
 		/// within the included hierarchy to refine the power optimization.
 		/// The power optimizations that have been performed can be reported using the
 		/// report_power_opt command.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example sets power optimization for BRAM cells only, and then runs power
 		/// optimization:
 		/// set_power_opt -cell_types bram
 		/// power_opt_design
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example sets power optimization for BRAM and REG type cells, then adds SRLs,
 		/// and runs power optimization. Then all cells are cleared, and only SRLs are included, and power
 		/// optimization is run again:
@@ -400,7 +418,7 @@ namespace Quokka.TCL.Vivado
 		/// set_power_opt -include_cells cpuEngine/cpu_dbg_dat_i
 		/// power_opt_design
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1644
+		/// See ug835-vivado-tcl-commands.pdf, page 1677
 		/// </summary>
 		/// <param name="include_cells">(Optional) Include only these instances for clock gating. Default: all</param>
 		/// <param name="exclude_cells">(Optional) Exclude these instances from clock gating. Default: none</param>
@@ -447,6 +465,7 @@ namespace Quokka.TCL.Vivado
 		/// report_switching_activity [get_ports]
 		/// The following example specifies the default switching probability for the current design:
 		/// set_switching_activity -default_static_probability .75
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This example sets the specified toggle rate and static probability on all registers in the hierarchy
 		/// of "CPU/MEM":
 		/// set_switching_activity -type register -toggle_rate 0.4 \
@@ -456,7 +475,7 @@ namespace Quokka.TCL.Vivado
 		/// set_switching_activity -type register -toggle_rate 0.4
 		/// -static_probability 0.5 -hier [get_cells CPU]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1655
+		/// See ug835-vivado-tcl-commands.pdf, page 1688
 		/// </summary>
 		/// <param name="toggle_rate">
 		/// (Optional)
@@ -518,7 +537,11 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		/// <param name="objects">(Optional) Objects to set switching activity on</param>
+		/// <param name="objects">
+		/// (Optional)
+		/// Objects to set switching activity on
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// </param>
 		public TTCL set_switching_activity(string toggle_rate = null, string default_toggle_rate = null, string type = null, bool? all = null, string static_probability = null, string default_static_probability = null, string signal_rate = null, bool? hier = null, bool? deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: set_switching_activity [-toggle_rate <arg>] [-default_toggle_rate <arg>] [-type <args>] [-all] [-static_probability <arg>] [-default_static_probability <arg>] [-signal_rate <arg>] [-hier] [-deassert_resets] [-quiet] [-verbose] [<objects>...]

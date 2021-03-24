@@ -26,7 +26,7 @@ namespace Quokka.TCL.Vivado
 		/// register_simulator command.
 		/// This command returns the names of registered simulators, or returns an error if it fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 899
+		/// See ug835-vivado-tcl-commands.pdf, page 920
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
@@ -64,7 +64,7 @@ namespace Quokka.TCL.Vivado
 		/// launch_chipscope_analyzer -run impl_4
 		/// Note: In this example the ChipScope project will be called csdefaultproj.cpj.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 986
+		/// See ug835-vivado-tcl-commands.pdf, page 1008
 		/// </summary>
 		/// <param name="run">(Optional) Implemented run to launch ChipScope Analyzer with</param>
 		/// <param name="csproject">(Optional) ChipScope project</param>
@@ -90,7 +90,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example launches iMPACT using the specified implementation run:
 		/// launch_impact -run impl_3
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 988
+		/// See ug835-vivado-tcl-commands.pdf, page 1010
 		/// </summary>
 		/// <param name="run">(Optional) Implemented run to launch iMPACT with</param>
 		/// <param name="ipf">(Optional) Project for iMPACT</param>
@@ -103,15 +103,16 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Launch simulation
+		/// Generate simulation scripts of the design and launch steps for the target simulator.
 		///
 		///
-		/// TCL Syntax: launch_simulation [-step <arg>] [-simset <arg>] [-mode <arg>] [-type <arg>] [-scripts_only] [-of_objects <args>] [-absolute_path] [-install_path <arg>] [-noclean_dir] [-quiet] [-verbose]
+		/// TCL Syntax: launch_simulation [-step <arg>] [-simset <arg>] [-mode <arg>] [-type <arg>] [-scripts_only] [-of_objects <args>] [-absolute_path] [-install_path <arg>] [-gcc_install_path <arg>] [-noclean_dir] [-quiet] [-verbose]
 		///
 		/// Launch a simulator to perform analysis and verification of a design.
 		/// The launch_simulation command creates a script file for the target simulator and then
 		/// executes this file in the simulation run directory. The simulation results are saved in the log files
 		/// created in the run directory.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// To run simulation for a specific simulator, you must first define the target simulator by setting the
 		/// TARGET_SIMULATOR property on the design project:
 		/// set_property TARGET_SIMULATOR <name> [current_project]
@@ -147,6 +148,7 @@ namespace Quokka.TCL.Vivado
 		/// Synopsys VCS Simulator:
 		/// set_property target_simulator "VCS" [current_project]
 		/// launch_simulation -mode "post-implementation" -type "timing"
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following command generates behavioral simulation scripts for the target simulator in the
 		/// simulation run directory:
 		/// launch_simulation -scripts_only
@@ -162,7 +164,7 @@ namespace Quokka.TCL.Vivado
 		/// of from the PATH variable:
 		/// launch_simulation -install_path /tools/ius/13.20.005/tools/bin
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 995
+		/// See ug835-vivado-tcl-commands.pdf, page 1017
 		/// </summary>
 		/// <param name="step">
 		/// (Optional)
@@ -187,13 +189,18 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="absolute_path">(Optional) Make design source file paths in 'absolute' format</param>
 		/// <param name="install_path">(Optional) Custom installation directory path</param>
+		/// <param name="gcc_install_path">
+		/// (Optional)
+		/// Specify GNU compiler installation directory path for the g+
+		/// +/gcc executables
+		/// </param>
 		/// <param name="noclean_dir">(Optional) Do not remove simulation run directory files</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL launch_simulation(string step = null, string simset = null, string mode = null, string type = null, bool? scripts_only = null, string of_objects = null, bool? absolute_path = null, string install_path = null, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
+		public TTCL launch_simulation(string step = null, string simset = null, string mode = null, string type = null, bool? scripts_only = null, string of_objects = null, bool? absolute_path = null, string install_path = null, string gcc_install_path = null, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: launch_simulation [-step <arg>] [-simset <arg>] [-mode <arg>] [-type <arg>] [-scripts_only] [-of_objects <args>] [-absolute_path] [-install_path <arg>] [-noclean_dir] [-quiet] [-verbose]
-			_tcl.Entry(_builder.launch_simulation(step, simset, mode, type, scripts_only, of_objects, absolute_path, install_path, noclean_dir, quiet, verbose));
+			// TCL Syntax: launch_simulation [-step <arg>] [-simset <arg>] [-mode <arg>] [-type <arg>] [-scripts_only] [-of_objects <args>] [-absolute_path] [-install_path <arg>] [-gcc_install_path <arg>] [-noclean_dir] [-quiet] [-verbose]
+			_tcl.Entry(_builder.launch_simulation(step, simset, mode, type, scripts_only, of_objects, absolute_path, install_path, gcc_install_path, noclean_dir, quiet, verbose));
 			return _tcl;
 		}
 	}

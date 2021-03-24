@@ -28,7 +28,7 @@ namespace Quokka.TCL.Vivado
 		/// config_implementation { {incr.ignore_user_clock_uncertainty True}
 		/// {<other_param> <other_value>} }
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 172
+		/// See ug835-vivado-tcl-commands.pdf, page 177
 		/// </summary>
 		/// <param name="list">(Required) list of config params which need to be configured</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>

@@ -231,7 +231,7 @@ namespace Quokka.TCL.SourceGenerator
         void ReadCategoriesAndCommandsSet(VivadoGeneratorContext generatorContext)
         {
             // find list of commands
-            var commandsPage = generatorContext.docReader.GetPageReader(page(20));
+            var commandsPage = generatorContext.docReader.GetPageReader(page(21));
             var categories = generatorContext.categories =
                 between(commandsPage.GetText(), "Tcl Command Categories", "Tcl Commands Listed by Category")
                 .SelectMany(l => l.Split(" "))
@@ -245,7 +245,7 @@ namespace Quokka.TCL.SourceGenerator
                 };
 
             var commandLines =
-                Enumerable.Range(20, 11)
+                Enumerable.Range(21, 12)
                 .SelectMany(p => generatorContext.docReader.GetPageReader(page(p)).GetText().Split('\n').Select(l => l.Trim()))
                 .Where(l => !skipLines.Any(s => l.StartsWith(s)))
                 .SkipWhile(l => !l.StartsWith("Tcl Commands Listed by Category")).Skip(1)
@@ -282,7 +282,7 @@ namespace Quokka.TCL.SourceGenerator
             var breaks = new HashSet<int>() { };
 
             string currentCommand = null;
-            for (var pageNumber = 31; pageNumber <= 1869; pageNumber++)
+            for (var pageNumber = 33; pageNumber <= 1907; pageNumber++)
             {
                 if (breaks.Contains(pageNumber))
                     Debugger.Break();
@@ -403,7 +403,7 @@ namespace Quokka.TCL.SourceGenerator
             vivadoTCL.AppendLine("namespace Quokka.TCL.Vivado");
             using (vivadoTCL.CodeBlock())
             {
-                vivadoTCL.AppendLine($"public partial class VivadoTCL : TCLFile<VivadoTCL>");
+                vivadoTCL.AppendLine($"public partial class VivadoTCL : FluentTCLFile<VivadoTCL>");
                 using (vivadoTCL.CodeBlock())
                 {
                     vivadoTCL.AppendLine($"private readonly VivadoTCLBuilder _builder = new VivadoTCLBuilder();");
@@ -437,7 +437,7 @@ namespace Quokka.TCL.SourceGenerator
             vivadoTCL.AppendLine("namespace Quokka.TCL.Vivado");
             using (vivadoTCL.CodeBlock())
             {
-                vivadoTCL.AppendLine($"public partial class VivadoCategorizedTCL : TCLFile<VivadoCategorizedTCL>");
+                vivadoTCL.AppendLine($"public partial class VivadoCategorizedTCL : FluentTCLFile<VivadoCategorizedTCL>");
                 using (vivadoTCL.CodeBlock())
                 {
                     vivadoTCL.AppendLine($"private readonly VivadoTCLBuilder _builder = new VivadoTCLBuilder();");

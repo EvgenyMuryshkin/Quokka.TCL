@@ -357,6 +357,7 @@ namespace Quokka.TCL.SourceGenerator
                         {
                             case "option":
                             case "optional":
+                            case "optional, default":
                                 /*
                                 switch (matchingArg)
                                 {
@@ -370,6 +371,9 @@ namespace Quokka.TCL.SourceGenerator
                                         throw new Exception($"Unhandled parameter type: {matchingArg}");
                                 }
                                 */
+                                break;
+                            case "deprecated":
+                                fixUsage[matchingArg] = null;
                                 break;
                             case "required":
                                 switch (matchingArg)
@@ -386,7 +390,7 @@ namespace Quokka.TCL.SourceGenerator
                                 }
                                 break;
                             default:
-                                throw new Exception($"Usage type for argument '{matchingArg.Name}' not recognized: {usage.Groups[1].Value}");
+                                throw new Exception($"{Name}: Usage type for argument '{matchingArg.Name}' not recognized: {usage.Groups[1].Value}");
                         }
                     }
                     else
@@ -397,7 +401,7 @@ namespace Quokka.TCL.SourceGenerator
                 }
             }
 
-            Parameters = Parameters.Select(p => fixUsage[p]).ToList();
+            Parameters = Parameters.Where(p => fixUsage[p] != null).Select(p => fixUsage[p]).ToList();
             /*
             for (var idx = 0; idx < Parameters.Count; idx++)
             {

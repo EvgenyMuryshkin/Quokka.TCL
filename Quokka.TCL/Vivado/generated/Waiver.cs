@@ -24,8 +24,8 @@ namespace Quokka.TCL.Vivado
 		/// the design from progressing until they have been resolved or addressed in some way. The
 		/// create_waiver command lets you select individual violations or specific checks that can be
 		/// waived for a design, letting you move forward in the design flow.
-		/// IMPORTANT! Use caution when waiving violations. Waivers may let you proceed in the design flow, but also
-		/// let you create a design that is fundamentally flawed.
+		/// IMPORTANT! Use caution when waiving violations. Waivers may let you proceed in the design flow, but
+		/// also let you create a design that is fundamentally flawed.
 		/// The user creating the waiver is required to provide a user ID and description in the
 		/// create_waiver command in order to provide some history of the waiver.
 		/// A waiver must be specified for an individual DRC or methodology violation, or for a specific DRC
@@ -33,8 +33,8 @@ namespace Quokka.TCL.Vivado
 		/// specific violation ID, or for paths using -from/-to arguments. The form of the
 		/// create_waiver command varies depending on the check, violation, or object being waived, as
 		/// shown in the examples below.
-		/// TIP: Although many of the arguments are described as optional, some form of identifier is required to associate
-		/// the waiver with its target.
+		/// TIP: Although many of the arguments are described as optional, some form of identifier is required to
+		/// associate the waiver with its target.
 		/// To save waivers from one design session to the next, you must use write_waivers to create
 		/// an XDC file of the waiver commands, and read_xdc to read those waivers back into the design
 		/// when it is reopened.
@@ -65,7 +65,7 @@ namespace Quokka.TCL.Vivado
 		/// inst_xpm_grey/dest_graysync_ff_reg[0][9]/D \
 		/// inst_xpm_grey/dest_graysync_ff_reg[0][24]/D}] ]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 357
+		/// See ug835-vivado-tcl-commands.pdf, page 367
 		/// </summary>
 		/// <param name="description">(Required) Description string of the cause for the waiver</param>
 		/// <param name="type">(Optional) Type of waiver - DRC, METHODOLOGY, CDC</param>
@@ -124,7 +124,11 @@ namespace Quokka.TCL.Vivado
 		/// current_instance that is set
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
-		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="verbose">
+		/// (Optional)
+		/// Suspend message limits during command execution
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// </param>
 		/// <returns>waiver</returns>
 		public TTCL create_waiver(string description, string type = null, string id = null, string objects = null, string from = null, string to = null, string strings = null, string of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
 		{
@@ -148,7 +152,7 @@ namespace Quokka.TCL.Vivado
 		/// This example deletes all the DRC waivers in the design:
 		/// delete_waivers [get_waivers -type DRC]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 472
+		/// See ug835-vivado-tcl-commands.pdf, page 484
 		/// </summary>
 		/// <param name="scoped">
 		/// (Optional)
@@ -183,6 +187,7 @@ namespace Quokka.TCL.Vivado
 		/// specific violation ID, or for paths using -from/-to arguments. You can format the
 		/// get_waivers command to return the specific types of waivers you are looking for, or waivers
 		/// associated with specific objects.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// You can report the waivers defined in the current design with report_waivers, and remove
 		/// waivers from the design using delete_waivers.
 		///
@@ -193,7 +198,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example gets all waivers associated with the specified objects:
 		/// get_waivers -of_objects [get_ports {src_in* dest_out*}]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 936
+		/// See ug835-vivado-tcl-commands.pdf, page 957
 		/// </summary>
 		/// <param name="type">(Optional) Type of waiver - DRC, METHODOLOGY, CDC, ALL</param>
 		/// <param name="id">(Optional) ID of the DRC/METHODOLOGY/CDC message being waived</param>
@@ -233,8 +238,9 @@ namespace Quokka.TCL.Vivado
 		///
 		/// This example reports all waivers in the current design:
 		/// report_waivers
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1446
+		/// See ug835-vivado-tcl-commands.pdf, page 1477
 		/// </summary>
 		/// <param name="file">(Optional) Name of file to report waivers</param>
 		/// <param name="type">(Optional) Type of waiver - ALL, DRC, METHODOLOGY, CDC</param>
@@ -279,13 +285,13 @@ namespace Quokka.TCL.Vivado
 		/// The following example writes only DRC type waivers:
 		/// write_waivers -type DRC C:/Data/drc_waivers.xdc
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1860
+		/// See ug835-vivado-tcl-commands.pdf, page 1898
 		/// </summary>
 		/// <param name="file">(Required) Name of file to write waivers</param>
 		/// <param name="type">(Optional) Type of waiver(s) - ALL, DRC, METHODOLOGY, CDC to write</param>
 		/// <param name="objects">(Optional) List of DRC/METHODOLOGY/CDC waiver objects to be written</param>
 		/// <param name="return_string">(Optional) Return report results as a string object</param>
-		/// <param name="force">(Optional) Overwrite existing file.</param>
+		/// <param name="force">(Optional) Overwrite existing file</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		public TTCL write_waivers(string file, string type = null, string objects = null, bool? return_string = null, bool? force = null, bool? quiet = null, bool? verbose = null)

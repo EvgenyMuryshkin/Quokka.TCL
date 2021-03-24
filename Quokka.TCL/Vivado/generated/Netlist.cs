@@ -25,6 +25,7 @@ namespace Quokka.TCL.Vivado
 		/// adding pins and hierarchical nets as needed to complete the connection. Added nets and pins can
 		/// be assigned a custom basename to make them easy to identify, or will be assigned a basename
 		/// by the Vivado tool.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// TIP: You can specify multiple nets, and a list of pins and ports to connect those nets to, using a single
 		/// connect_net command with the -net_object_list or -dict options, to significantly speed the
 		/// addition of multiple nets to the current design.
@@ -35,7 +36,7 @@ namespace Quokka.TCL.Vivado
 		/// command.
 		/// Note: Netlist editing is not allowed on the elaborated RTL design.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 201
+		/// See ug835-vivado-tcl-commands.pdf, page 206
 		/// </summary>
 		/// <param name="objects">(Required) List of pin and port objects to connect</param>
 		/// <param name="hierarchical">
@@ -102,7 +103,7 @@ namespace Quokka.TCL.Vivado
 		/// create_cell -reference dmaBlock -black_box usbEngine0|myDMA
 		/// Note: The tool will return an error when -black_box is used, but the -reference cell already exists.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 238
+		/// See ug835-vivado-tcl-commands.pdf, page 243
 		/// </summary>
 		/// <param name="reference">(Required) Library cell or design which cells reference</param>
 		/// <param name="cells">(Required) Names of cells to create</param>
@@ -137,8 +138,9 @@ namespace Quokka.TCL.Vivado
 		/// may be exported to a netlist file such as Verilog, VHDL, or EDIF, using the appropriate write_*
 		/// command.
 		/// Note: Netlist editing is not allowed on the elaborated RTL design.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 314
+		/// See ug835-vivado-tcl-commands.pdf, page 323
 		/// </summary>
 		/// <param name="nets">(Required) Names of nets to create</param>
 		/// <param name="from">(Optional) Starting bus index</param>
@@ -171,6 +173,7 @@ namespace Quokka.TCL.Vivado
 		/// may be exported to a netlist file such as Verilog, VHDL, or EDIF, using the appropriate write_*
 		/// command.
 		/// Note: Netlist editing is not allowed on the elaborated RTL design.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example creates a new input pin on the cpuEngine module with the specified pin
 		/// name:
@@ -181,7 +184,7 @@ namespace Quokka.TCL.Vivado
 		/// create_cell -reference dmaBlock -black_box usbEngine0|myDMA
 		/// create_pin -direction INOUT -from 0 -to 23 usbEngine0|myDMA|dataBus
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 323
+		/// See ug835-vivado-tcl-commands.pdf, page 332
 		/// </summary>
 		/// <param name="direction">(Required) Pin direction Values: IN, OUT, INOUT</param>
 		/// <param name="pins">(Required) Names of pins to create</param>
@@ -210,9 +213,8 @@ namespace Quokka.TCL.Vivado
 		/// command.
 		/// Note: Netlist editing is not allowed on the elaborated RTL design.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 486
+		/// See ug835-vivado-tcl-commands.pdf, page 498
 		/// </summary>
-		/// <param name="objects">(Required) List of pins or ports to disconnect</param>
 		/// <param name="prune">
 		/// (Optional)
 		/// When performing disconnect, remove the net and any
@@ -224,18 +226,18 @@ namespace Quokka.TCL.Vivado
 		/// Net to disconnect - optional, net attached to first pin or port
 		/// object is used if not specified.
 		/// </param>
-		/// <param name="pinlist">
+		/// <param name="objects">
 		/// (Optional)
-		/// List of pin and port objects to disconnect (names of objects
-		/// supported, but not as flexibly as with -objects, faster than -
-		/// objects.
+		/// List of pin and port names to disconnect. String expressions
+		/// are supported.
 		/// </param>
+		/// <param name="pinlist">(Optional) List of pin and port objects to disconnect.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL disconnect_net(string objects, bool? prune = null, string net = null, string pinlist = null, bool? quiet = null, bool? verbose = null)
+		public TTCL disconnect_net(bool? prune = null, string net = null, string objects = null, string pinlist = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: disconnect_net [-prune] [-net <arg>] [-objects <args>] [-pinlist <args>] [-quiet] [-verbose]
-			_tcl.Entry(_builder.disconnect_net(objects, prune, net, pinlist, quiet, verbose));
+			_tcl.Entry(_builder.disconnect_net(prune, net, objects, pinlist, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -251,6 +253,7 @@ namespace Quokka.TCL.Vivado
 		/// the delay object. Delay property values on the delay object are specified in picoseconds.
 		/// TIP: In most cases the Vivado tools return delay values specified in nanoseconds, but the delay object uses
 		/// picoseconds.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The values returned are calculated or estimated depending upon whether the net is routed.
 		/// Delay values can include the actual delay of routed interconnect, or estimated net delays for
 		/// unrouted nets. The net delay can also include delay through logic elements or device sites, or just
@@ -266,10 +269,10 @@ namespace Quokka.TCL.Vivado
 		/// the form of a delay object:
 		/// report_property -all [lindex [get_net_delays -interconnect_only \
 		/// -of_objects [get_nets control_reg[*]]] 16 ]
-		/// TIP: The FAST_MAX, FAST_MIN, SLOW_MAX, and SLOW_MIN properties on the delay object are reported in
-		/// picoseconds.
+		/// TIP: The FAST_MAX, FAST_MIN, SLOW_MAX, and SLOW_MIN properties on the delay object are
+		/// reported in picoseconds.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 818
+		/// See ug835-vivado-tcl-commands.pdf, page 838
 		/// </summary>
 		/// <param name="of_objects">(Required) Get 'net_delay' objects of these types: 'net'.</param>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
@@ -310,7 +313,7 @@ namespace Quokka.TCL.Vivado
 		/// remove_cell fftEngine
 		/// remove_cell usbEngine0/usb_out
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1211
+		/// See ug835-vivado-tcl-commands.pdf, page 1235
 		/// </summary>
 		/// <param name="cells">(Required) List of cells to remove</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -339,7 +342,7 @@ namespace Quokka.TCL.Vivado
 		/// command.
 		/// Note: Netlist editing is not allowed on the elaborated RTL design.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1241
+		/// See ug835-vivado-tcl-commands.pdf, page 1268
 		/// </summary>
 		/// <param name="nets">(Required) List of nets to remove</param>
 		/// <param name="prune">
@@ -378,7 +381,7 @@ namespace Quokka.TCL.Vivado
 		/// the current design:
 		/// remove_pin cpuEngine/inPin
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1243
+		/// See ug835-vivado-tcl-commands.pdf, page 1270
 		/// </summary>
 		/// <param name="pins">(Required) List of pins to remove</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -408,11 +411,12 @@ namespace Quokka.TCL.Vivado
 		/// however these are not written back to the source XDC file. Saving the modified in-memory
 		/// design using write_checkpoint will save both the renamed objects and modified constraints.
 		/// This command returns nothing if successful, or an error if it fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example changes the name of the hierarchical or1200_cpu cell as specified:
 		/// rename_cell -to or1200_gpu or1200_cpu
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1248
+		/// See ug835-vivado-tcl-commands.pdf, page 1275
 		/// </summary>
 		/// <param name="to">(Required) New name</param>
 		/// <param name="cell">(Required) Cell to rename</param>
@@ -445,11 +449,12 @@ namespace Quokka.TCL.Vivado
 		/// however these are not written back to the source XDC file. Saving the modified in-memory
 		/// design using write_checkpoint will save both the renamed objects and modified constraints.
 		/// This command returns nothing if successful, or an error if it fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example renames the specified bus signal:
 		/// rename_net -to dataOut dout
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1250
+		/// See ug835-vivado-tcl-commands.pdf, page 1277
 		/// </summary>
 		/// <param name="to">(Required) New name</param>
 		/// <param name="net">(Required) Net to rename</param>
@@ -483,6 +488,7 @@ namespace Quokka.TCL.Vivado
 		/// in the in-memory design. Constraints are automatically modified to target the new object name,
 		/// however these are not written back to the source XDC file. Saving the modified in-memory
 		/// design using write_checkpoint will save both the renamed objects and modified constraints.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This command returns nothing if successful, or an error if it fails.
 		///
 		/// The following example renames the specified pin:
@@ -494,7 +500,7 @@ namespace Quokka.TCL.Vivado
 		/// use resize_pin_bus instead.
 		/// rename_pin -to dataInput egressLoop[0].egressFifo/buffer_fifo/din
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1252
+		/// See ug835-vivado-tcl-commands.pdf, page 1279
 		/// </summary>
 		/// <param name="to">(Required) New name</param>
 		/// <param name="pin">(Required) Pin to rename</param>
@@ -525,11 +531,12 @@ namespace Quokka.TCL.Vivado
 		/// however these are not written back to the source XDC file. Saving the modified in-memory
 		/// design using write_checkpoint will save both the renamed objects and modified constraints.
 		/// This command returns nothing if successful, or an error if it fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example renames the specified bus port:
 		/// rename_port -to wbInputData wbInDat
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1255
+		/// See ug835-vivado-tcl-commands.pdf, page 1282
 		/// </summary>
 		/// <param name="to">(Required) New name</param>
 		/// <param name="port">(Required) Port to rename</param>
@@ -562,7 +569,7 @@ namespace Quokka.TCL.Vivado
 		/// current design:
 		/// rename_ref -prefix_all MOD1_
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1257
+		/// See ug835-vivado-tcl-commands.pdf, page 1284
 		/// </summary>
 		/// <param name="@ref">(Optional) Cell ref to rename</param>
 		/// <param name="to">(Optional) New name</param>
@@ -602,9 +609,10 @@ namespace Quokka.TCL.Vivado
 		/// may be exported to a netlist file such as Verilog, VHDL, or EDIF, using the appropriate write_*
 		/// command.
 		/// Note: Netlist editing is not allowed on the elaborated RTL design.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This command returns nothing if successful, and returns an error if it fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1492
+		/// See ug835-vivado-tcl-commands.pdf, page 1525
 		/// </summary>
 		/// <param name="net_bus_name">(Required) Name of the net bus to resize</param>
 		/// <param name="from">(Optional) New starting bus index</param>
@@ -639,6 +647,7 @@ namespace Quokka.TCL.Vivado
 		/// may be exported to a netlist file such as Verilog, VHDL, or EDIF, using the appropriate write_*
 		/// command.
 		/// Note: Netlist editing is not allowed on the elaborated RTL design.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This command returns nothing if successful, and returns an error if it fails.
 		///
 		/// The following example creates a blackbox cell, then creates a 24-bit bidirectional bus for the
@@ -649,7 +658,7 @@ namespace Quokka.TCL.Vivado
 		/// resize_pin_bus -from 0 -to 31 usbEngine0/myDMA/dataBus
 		/// resize_pin_bus -from -16 -to 15 usbEngine0/myDMA/dataBus
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1497
+		/// See ug835-vivado-tcl-commands.pdf, page 1530
 		/// </summary>
 		/// <param name="pin_bus_name">(Required) Name of the pin bus to resize</param>
 		/// <param name="from">(Optional) New starting bus index</param>
@@ -673,7 +682,7 @@ namespace Quokka.TCL.Vivado
 		/// This command is intended to tie up or down the unconnected pins of cells added to the netlist
 		/// with the create_cell command.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1711
+		/// See ug835-vivado-tcl-commands.pdf, page 1744
 		/// </summary>
 		/// <param name="of_objects">(Optional) tie unused pins of specified cell(s)</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>

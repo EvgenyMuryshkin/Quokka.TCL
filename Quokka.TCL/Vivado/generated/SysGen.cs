@@ -34,7 +34,7 @@ namespace Quokka.TCL.Vivado
 		/// specified DSP module:
 		/// create_sysgen DSP_mod1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 355
+		/// See ug835-vivado-tcl-commands.pdf, page 365
 		/// </summary>
 		/// <param name="name">(Required) Sub module name</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -63,13 +63,15 @@ namespace Quokka.TCL.Vivado
 		/// project.
 		/// The command returns information related to the creation of the wrappers, or returns an error if it
 		/// fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example creates the instantiation template to integrate the specified IP integrator
 		/// block design into the design hierarchy of the current project:
 		/// make_wrapper -inst_template -fileset [get_filesets sources_1] \
 		/// -files [get_files C:/Data/design_1/design_1.bd]
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1036
+		/// See ug835-vivado-tcl-commands.pdf, page 1059
 		/// </summary>
 		/// <param name="files">(Required) Source file for which the wrapper needs to be generated</param>
 		/// <param name="top">(Optional) Create a top-level wrapper for the specified source</param>

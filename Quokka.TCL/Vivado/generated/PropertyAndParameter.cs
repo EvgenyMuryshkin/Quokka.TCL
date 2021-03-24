@@ -25,6 +25,7 @@ namespace Quokka.TCL.Vivado
 		/// class.
 		/// The report_property -all command will not report the newly created property for an
 		/// object of the specified class until the property has been assigned to that object.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example defines a property called PURPOSE for cell objects:
 		/// create_property PURPOSE cell
@@ -32,7 +33,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example creates a pin property called COUNT which holds an Integer value:
 		/// create_property -type int COUNT pin
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 337
+		/// See ug835-vivado-tcl-commands.pdf, page 347
 		/// </summary>
 		/// <param name="name">(Required) Name of property to create</param>
 		/// <param name="@class">
@@ -78,7 +79,7 @@ namespace Quokka.TCL.Vivado
 		/// brackets:
 		/// filter -regexp [get_ports] {NAME =~ VStatus.*\[[0-9]+\]}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 515
+		/// See ug835-vivado-tcl-commands.pdf, page 526
 		/// </summary>
 		/// <param name="regexp">(Optional) Operators =~ and !~ use regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
@@ -106,7 +107,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example returns the current value of the MaxThreads parameter used for multi￾threaded processes:
 		/// get_param general.MaxThreads
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 838
+		/// See ug835-vivado-tcl-commands.pdf, page 858
 		/// </summary>
 		/// <param name="name">(Required) Parameter name</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -135,6 +136,7 @@ namespace Quokka.TCL.Vivado
 		/// RECOMMENDED: For numeric properties, the min/max determination is based on numeric values. For all
 		/// other properties, the determination is based on string sorting.
 		/// This command returns a value, or list of values, or returns an error if it fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets the NAME property from the specified cell:
 		/// get_property NAME [lindex [get_cells] 3]
@@ -150,8 +152,9 @@ namespace Quokka.TCL.Vivado
 		/// IOB_X1Y98
 		/// Note: While IOB_X1Y125 is the largest site value on the port objects, the property value IOB_X1Y98 is
 		/// returned because of the sorting of the property values as strings.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 880
+		/// See ug835-vivado-tcl-commands.pdf, page 901
 		/// </summary>
 		/// <param name="name">(Required) Name of property whose value is to be retrieved</param>
 		/// <param name="@object">(Required) Object to query for properties</param>
@@ -180,7 +183,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example returns a list of all user-definable parameters:
 		/// list_param
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1009
+		/// See ug835-vivado-tcl-commands.pdf, page 1032
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -207,7 +210,7 @@ namespace Quokka.TCL.Vivado
 		/// class of objects:
 		/// list_property -class bel *NUM*
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1011
+		/// See ug835-vivado-tcl-commands.pdf, page 1034
 		/// </summary>
 		/// <param name="@class">(Optional) Object type to query for properties. Ignored if object is specified.</param>
 		/// <param name="regexp">(Optional) Pattern is treated as a regular expression</param>
@@ -243,7 +246,7 @@ namespace Quokka.TCL.Vivado
 		/// design as a representative of the design class:
 		/// list_property_value -default BITSTREAM.GENERAL.COMPRESS [current_design]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1013
+		/// See ug835-vivado-tcl-commands.pdf, page 1036
 		/// </summary>
 		/// <param name="name">(Required) Name of property whose legal values is to be retrieved</param>
 		/// <param name="@default">(Optional) Show only the default value.</param>
@@ -277,7 +280,7 @@ namespace Quokka.TCL.Vivado
 		/// that match the specified search pattern:
 		/// report_param *coll*
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1368
+		/// See ug835-vivado-tcl-commands.pdf, page 1399
 		/// </summary>
 		/// <param name="file">
 		/// (Optional)
@@ -307,6 +310,7 @@ namespace Quokka.TCL.Vivado
 		/// object, or class of objects.
 		/// Note: list_property also returns a list of all properties on an object, but does not include the property
 		/// type or value.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// You can specify objects for report_property using the get_* series of commands to get a
 		/// specific object. You can use the lindex command to return a specific object from a list of
 		/// objects:
@@ -331,7 +335,7 @@ namespace Quokka.TCL.Vivado
 		/// report_property -all [current_design]
 		/// report_property -all [current_run]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1384
+		/// See ug835-vivado-tcl-commands.pdf, page 1415
 		/// </summary>
 		/// <param name="all">(Optional) Report all properties of object even if not set</param>
 		/// <param name="@class">(Optional) Object type to query for properties. Not valid with <object></param>
@@ -371,7 +375,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example restores the tcl.statsThreshold parameter to its default value:
 		/// reset_param tcl.statsThreshold
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1474
+		/// See ug835-vivado-tcl-commands.pdf, page 1507
 		/// </summary>
 		/// <param name="name">(Required) Parameter name</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -396,10 +400,9 @@ namespace Quokka.TCL.Vivado
 		/// the property:
 		/// set_property DOB_REG 1 [get_cells usbEngine1/usbEngineSRAM/
 		/// snoopyRam_reg_19]
-		/// reset_property DOB_REG [get_cells usbEngine1/usbEngineSRAM/
-		/// snoopyRam_reg_19]
+		/// reset_property DOB_REG [get_cells usbEngine1/usbEngineSRAM/snoopyRam_reg_19]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1478
+		/// See ug835-vivado-tcl-commands.pdf, page 1511
 		/// </summary>
 		/// <param name="property_name">(Required) Name of property to reset</param>
 		/// <param name="objects">(Required) Objects to set properties</param>
@@ -431,6 +434,7 @@ namespace Quokka.TCL.Vivado
 		/// The maximum number of simultaneous threads that can be used also varies by the task being
 		/// run. You can change the maxThreads parameter prior to running these processes. The
 		/// maximum number of threads for specific Tcl commands are:
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// • phys_opt_design: 8
 		/// • place_design: 8
 		/// • report_drc: 8
@@ -448,7 +452,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example sets a new default value for message limit:
 		/// set_param messaging.defaultLimit 1000
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1639
+		/// See ug835-vivado-tcl-commands.pdf, page 1672
 		/// </summary>
 		/// <param name="name">(Required) Parameter name</param>
 		/// <param name="value">(Required) Parameter value</param>
@@ -469,10 +473,10 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Change the part used by the current project for subsequent elaboration, synthesis,
 		/// implementation, and analysis.
-		/// TIP: The part is changed for the current project only, and not for the in-memory design. You can change the
-		/// speed grade of the device in the in-memory design for timing analysis using the set_speed_grade
-		/// command. You can change the part used when opening an existing design checkpoint using the -part option
-		/// of the open_checkpoint or read_checkpoint commands.
+		/// TIP: The part is changed for the current project only, and not for the in-memory design. You can change
+		/// the speed grade of the device in the in-memory design for timing analysis using the set_speed_grade
+		/// command. You can change the part used when opening an existing design checkpoint using the -part
+		/// option of the open_checkpoint or read_checkpoint commands.
 		/// This command is provided to let you change the part for the in-memory project of non-project
 		/// based designs, and does not support project-based designs. For a project-based design set the
 		/// PART property on the project as follows:
@@ -484,8 +488,9 @@ namespace Quokka.TCL.Vivado
 		/// Design Flows Overview (UG892).
 		/// This command returns the part that the in-memory project is set to use, or returns an error if it
 		/// fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1642
+		/// See ug835-vivado-tcl-commands.pdf, page 1675
 		/// </summary>
 		/// <param name="part">(Required) Set current project's part to this part.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -512,7 +517,9 @@ namespace Quokka.TCL.Vivado
 		/// pair for the object. If an object has custom properties, these will also be reported by the
 		/// report_property and list_property commands.
 		/// This command returns nothing if successful, and an error if it fails.
-		/// TIP: You can use the get_property command to validate any properties that have been set on an object.
+		/// TIP: You can use the get_property command to validate any properties that have been set on an
+		/// object.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// Create a user-defined boolean property, TRUTH, for cell objects, and set the property on a cell:
 		/// create_property -type bool truth cell
@@ -544,11 +551,10 @@ namespace Quokka.TCL.Vivado
 		/// The following example defines a DCI Cascade by setting the DCI_CASCADE property for the
 		/// specified IO Bank:
 		/// set_property DCI_CASCADE {14} [get_iobanks 0 ]
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example configures the synth_1 run, setting options for Vivado Synthesis 2013,
 		/// and then launches the synthesis run:
 		/// set_property flow {Vivado Synthesis 2016} \
-		/// [get_runs synth_1]
-		/// set_property STEPS.SYNTH_DESIGN.ARGS.FANOUT_LIMIT 500 \
 		/// [get_runs synth_1]
 		/// set_property STEPS.SYNTH_DESIGN.ARGS.GATED_CLOCK_CONVERSION on \
 		/// [get_runs synth_1]
@@ -558,13 +564,12 @@ namespace Quokka.TCL.Vivado
 		/// This example is the same as the prior example, except that it uses the -dict option to set all the
 		/// properties on the synthesis run in a single set_property command:
 		/// set_property -dict [ list flow {Vivado Synthesis 2016} \
-		/// STEPS.SYNTH_DESIGN.ARGS.FANOUT_LIMIT 500 \
 		/// STEPS.SYNTH_DESIGN.ARGS.GATED_CLOCK_CONVERSION on \
 		/// STEPS.SYNTH_DESIGN.ARGS.FSM_EXTRACTION \
 		/// one_hot ] [get_runs synth_1]
 		/// launch_runs synth_1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1649
+		/// See ug835-vivado-tcl-commands.pdf, page 1682
 		/// </summary>
 		/// <param name="name">(Required) Name of property to set. Not valid with -dict option</param>
 		/// <param name="value">(Required) Value of property to set. Not valid with -dict option</param>

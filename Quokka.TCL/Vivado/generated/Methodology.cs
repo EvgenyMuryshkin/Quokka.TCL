@@ -24,8 +24,8 @@ namespace Quokka.TCL.Vivado
 		/// the design from progressing until they have been resolved or addressed in some way. The
 		/// create_waiver command lets you select individual violations or specific checks that can be
 		/// waived for a design, letting you move forward in the design flow.
-		/// IMPORTANT! Use caution when waiving violations. Waivers may let you proceed in the design flow, but also
-		/// let you create a design that is fundamentally flawed.
+		/// IMPORTANT! Use caution when waiving violations. Waivers may let you proceed in the design flow, but
+		/// also let you create a design that is fundamentally flawed.
 		/// The user creating the waiver is required to provide a user ID and description in the
 		/// create_waiver command in order to provide some history of the waiver.
 		/// A waiver must be specified for an individual DRC or methodology violation, or for a specific DRC
@@ -33,8 +33,8 @@ namespace Quokka.TCL.Vivado
 		/// specific violation ID, or for paths using -from/-to arguments. The form of the
 		/// create_waiver command varies depending on the check, violation, or object being waived, as
 		/// shown in the examples below.
-		/// TIP: Although many of the arguments are described as optional, some form of identifier is required to associate
-		/// the waiver with its target.
+		/// TIP: Although many of the arguments are described as optional, some form of identifier is required to
+		/// associate the waiver with its target.
 		/// To save waivers from one design session to the next, you must use write_waivers to create
 		/// an XDC file of the waiver commands, and read_xdc to read those waivers back into the design
 		/// when it is reopened.
@@ -65,7 +65,7 @@ namespace Quokka.TCL.Vivado
 		/// inst_xpm_grey/dest_graysync_ff_reg[0][9]/D \
 		/// inst_xpm_grey/dest_graysync_ff_reg[0][24]/D}] ]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 357
+		/// See ug835-vivado-tcl-commands.pdf, page 367
 		/// </summary>
 		/// <param name="description">(Required) Description string of the cause for the waiver</param>
 		/// <param name="type">(Optional) Type of waiver - DRC, METHODOLOGY, CDC</param>
@@ -124,7 +124,11 @@ namespace Quokka.TCL.Vivado
 		/// current_instance that is set
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
-		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="verbose">
+		/// (Optional)
+		/// Suspend message limits during command execution
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// </param>
 		/// <returns>waiver</returns>
 		public TTCL create_waiver(string description, string type = null, string id = null, string objects = null, string from = null, string to = null, string strings = null, string of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
 		{
@@ -144,11 +148,12 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following command gets a list of all synthesis methodology checks:
 		/// get_methodology_checks SYNTH*
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 809
+		/// See ug835-vivado-tcl-commands.pdf, page 829
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
@@ -177,6 +182,7 @@ namespace Quokka.TCL.Vivado
 		/// on the current device. The design objects associated with a methodology violation object can be
 		/// obtained using the -of_objects option of the appropriate get_* command, such as
 		/// get_cells, or get_nets for instance.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Note: To improve memory and performance, the get_* commands return a container list of a single type
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
@@ -191,7 +197,7 @@ namespace Quokka.TCL.Vivado
 		/// report_methodology -name method_1
 		/// get_pins -of_objects [get_methodology_violations -name method_1]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 812
+		/// See ug835-vivado-tcl-commands.pdf, page 832
 		/// </summary>
 		/// <param name="name">(Optional) Get the results with this name</param>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
@@ -223,8 +229,9 @@ namespace Quokka.TCL.Vivado
 		/// Methodology checks are a special class of design rule checks (DRC) that are accessible through
 		/// this separate Tcl command. The methodology checks are a necessary part of the design flow, and
 		/// should be considered mandatory after implementation and prior to generating the bitstream.
-		/// TIP: Other than their availability through the separate report_methodology command, the checks are
-		/// standard design rule checks in every other way.
+		/// TIP: Other than their availability through the separate report_methodology command, the checks
+		/// are standard design rule checks in every other way.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The report_methodology command requires an open design to check the design rules
 		/// against. The command returns a report with the results of violations found by the design rule
 		/// checks. Violations are returned as Vivado objects that can be listed with the
@@ -247,7 +254,7 @@ namespace Quokka.TCL.Vivado
 		/// report_methodology -file C:/Data/methodology_Rpt1.txt -append
 		/// Note: The -append option adds the result to the specified file.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1359
+		/// See ug835-vivado-tcl-commands.pdf, page 1389
 		/// </summary>
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="cells">(Optional) Run report_methodology on the specified cell(s).</param>
@@ -287,7 +294,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example clears the specified results set from memory and the GUI:
 		/// reset_methodology -name ultrafast_methodology_3
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1461
+		/// See ug835-vivado-tcl-commands.pdf, page 1494
 		/// </summary>
 		/// <param name="name">(Optional) Methodology result name</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -323,7 +330,7 @@ namespace Quokka.TCL.Vivado
 		/// reset_methodology_check [get_methodology_checks CHECK-4]
 		/// report_property [get_methodology_checks CHECK-4]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1463
+		/// See ug835-vivado-tcl-commands.pdf, page 1496
 		/// </summary>
 		/// <param name="checks">(Required) The list of checks to reset.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>

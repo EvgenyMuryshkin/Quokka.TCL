@@ -30,7 +30,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example converts all NGC files in the current directory and in all sub-directories:
 		/// convert_ngc [ glob ./**/*.ngc ] [ glob ./*.ngc ]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 208
+		/// See ug835-vivado-tcl-commands.pdf, page 213
 		/// </summary>
 		/// <param name="files">(Required) A list of NGC files to convert</param>
 		/// <param name="output_dir">
@@ -77,7 +77,7 @@ namespace Quokka.TCL.Vivado
 		/// as the parent of the new run:
 		/// copy_run -name impl_2 [get_runs impl_1] -parent_run synth_2
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 215
+		/// See ug835-vivado-tcl-commands.pdf, page 220
 		/// </summary>
 		/// <param name="name">(Required) Specify the name of the new run</param>
 		/// <param name="run">(Required) The run to be copied, accepts name or run object</param>
@@ -132,7 +132,7 @@ namespace Quokka.TCL.Vivado
 		/// TIP: The constraints were previously created using the -output_dir option of the
 		/// report_qor_suggestions command.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 346
+		/// See ug835-vivado-tcl-commands.pdf, page 356
 		/// </summary>
 		/// <param name="dir">
 		/// (Required)
@@ -145,6 +145,7 @@ namespace Quokka.TCL.Vivado
 		/// Specify the name of the already existing synth run. This run
 		/// will be the parent run for the newly created impl run
 		/// Default: None
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Name Description
 		/// </param>
 		/// <param name="opt_more_options">
@@ -184,7 +185,7 @@ namespace Quokka.TCL.Vivado
 		/// block design:
 		/// export_bd_synth [get_files block_1.bd]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 503
+		/// See ug835-vivado-tcl-commands.pdf, page 515
 		/// </summary>
 		/// <param name="file">(Required) The Block Design file to write a synthesized checkpoint for</param>
 		/// <param name="force">(Optional) Overwrite existing design checkpoint and stub files</param>
@@ -202,17 +203,17 @@ namespace Quokka.TCL.Vivado
 		/// (User-written application) Export Tcl script for re-creating the current project
 		///
 		///
-		/// TCL Syntax: write_project_tcl [-paths_relative_to <arg>] [-origin_dir_override <arg>] [-target_proj_dir <arg>] [-force] [-all_properties] [-no_copy_sources] [-no_ip_version] [-absolute_path] [-dump_project_info] [-use_bd_files] [-internal] [-quiet] [-verbose] <file>
+		/// TCL Syntax: write_project_tcl [-paths_relative_to <arg>] [-origin_dir_override <arg>] [-target_proj_dir <arg>] [-force] [-all_properties] [-no_copy_sources] [-no_ip_version] [-absolute_path] [-dump_project_info] [-use_bd_files] [-internal] [-validate] [-quiet] [-verbose] <file>
 		///
 		/// Creates a Tcl script to recreate the current project.
 		/// The generated script will contain the Tcl commands for creating the project, setting the project
 		/// type, creating filesets, adding/importing source files, defining runs and run properties.
-		/// IMPORTANT! The new project will be created in the current working directory (CWD) where the generated Tcl
-		/// script is sourced from. The script written out by write_project_tcl should be sourced in the same
-		/// directory from which it was created. If you source the script from a different directory, you should first set the
-		/// <origin_dir_loc> variable in Tcl shell to this alternate directory, or edit the script to define the <origin_dir>
-		/// variable in the script in order to maintain the relative path between the CWD and the source files referenced in
-		/// the script.
+		/// IMPORTANT! The new project will be created in the current working directory (CWD) where the
+		/// generated Tcl script is sourced from. The script written out by write_project_tcl should be sourced
+		/// in the same directory from which it was created. If you source the script from a different directory, you
+		/// should first set the <origin_dir_loc> variable in Tcl shell to this alternate directory, or edit the script to
+		/// define the <origin_dir> variable in the script in order to maintain the relative path between the CWD and
+		/// the source files referenced in the script.
 		/// This Tcl project script and the various design sources can be stored in a version control system
 		/// for source file management and project archival.
 		///
@@ -225,11 +226,12 @@ namespace Quokka.TCL.Vivado
 		/// The following command exports Tcl script for the current project and writes all the properties,
 		/// both default or non-default values:
 		/// write_project_tcl -all_properties recreate.tcl
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following command exports Tcl script for the current project and adds files that are local in
 		/// this project. The recreated project will reference these files:
 		/// write_project_tcl -no_copy_sources -use_bd_files recreate.tcl
-		/// IMPORTANT! The -use_bd_files switch is required for use with -no_copy_sources in designs with
-		/// block diagrams.
+		/// IMPORTANT! The -use_bd_files switch is required for use with -no_copy_sources in designs
+		/// with block diagrams.
 		/// The following command exports recreate.tcl script for the current project in the current
 		/// working directory, creates a new project in ./my_test directory, prints the list of files in the
 		/// new project, prints the current project settings and then closes the newly created project:
@@ -259,7 +261,7 @@ namespace Quokka.TCL.Vivado
 		/// get_property verilog_define [get_filesets sources_1]
 		/// close_project
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1840
+		/// See ug835-vivado-tcl-commands.pdf, page 1878
 		/// </summary>
 		/// <param name="file">(Required) Name of the tcl script file to generate</param>
 		/// <param name="paths_relative_to">
@@ -294,13 +296,18 @@ namespace Quokka.TCL.Vivado
 		/// <param name="dump_project_info">(Optional) Write object values</param>
 		/// <param name="use_bd_files">(Optional) Use BD sources directly instead of writing out procs to create them</param>
 		/// <param name="@internal">(Optional) Print basic header information in the generated tcl script</param>
+		/// <param name="validate">
+		/// (Optional)
+		/// Runs a validate script before recreating the project. To test if
+		/// the files and paths refrenced in the tcl file exists or not.
+		/// </param>
 		/// <param name="quiet">(Optional) Execute the command quietly, returning no messages from the command.</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>true (0) if success, false (1) otherwise</returns>
-		public TTCL write_project_tcl(string file, string paths_relative_to = null, string origin_dir_override = null, string target_proj_dir = null, bool? force = null, bool? all_properties = null, bool? no_copy_sources = null, bool? no_ip_version = null, bool? absolute_path = null, bool? dump_project_info = null, bool? use_bd_files = null, bool? @internal = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_project_tcl(string file, string paths_relative_to = null, string origin_dir_override = null, string target_proj_dir = null, bool? force = null, bool? all_properties = null, bool? no_copy_sources = null, bool? no_ip_version = null, bool? absolute_path = null, bool? dump_project_info = null, bool? use_bd_files = null, bool? @internal = null, bool? validate = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: write_project_tcl [-paths_relative_to <arg>] [-origin_dir_override <arg>] [-target_proj_dir <arg>] [-force] [-all_properties] [-no_copy_sources] [-no_ip_version] [-absolute_path] [-dump_project_info] [-use_bd_files] [-internal] [-quiet] [-verbose] <file>
-			_tcl.Entry(_builder.write_project_tcl(file, paths_relative_to, origin_dir_override, target_proj_dir, force, all_properties, no_copy_sources, no_ip_version, absolute_path, dump_project_info, use_bd_files, @internal, quiet, verbose));
+			// TCL Syntax: write_project_tcl [-paths_relative_to <arg>] [-origin_dir_override <arg>] [-target_proj_dir <arg>] [-force] [-all_properties] [-no_copy_sources] [-no_ip_version] [-absolute_path] [-dump_project_info] [-use_bd_files] [-internal] [-validate] [-quiet] [-verbose] <file>
+			_tcl.Entry(_builder.write_project_tcl(file, paths_relative_to, origin_dir_override, target_proj_dir, force, all_properties, no_copy_sources, no_ip_version, absolute_path, dump_project_info, use_bd_files, @internal, validate, quiet, verbose));
 			return _tcl;
 		}
 	}

@@ -29,6 +29,7 @@ namespace Quokka.TCL.Vivado
 		/// You can add standard factory defined rule checks to the rule deck, or add user-defined rule
 		/// checks that were created using the create_drc_check command. Use the get_drc_checks
 		/// command to get a list of checks that can be added to a rule deck.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Checks can also be removed from a rule deck using the remove_drc_checks command.
 		/// Note: To temporarily disable a specific DRC rule, use the set_property command to set the
 		/// IS_ENABLED property for the rule to false. This will disable the rule from being run in report_drc,
@@ -45,10 +46,11 @@ namespace Quokka.TCL.Vivado
 		/// add_drc_checks -of_objects [get_drc_ruledecks placer_checks] \
 		/// -ruledeck placer+
 		/// add_drc_checks -ruledeck placer+ *IO*
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example adds only the rule checks with a severity of Warning to the rule deck:
 		/// add_drc_checks -filter {SEVERITY == Warning} -ruledeck warn_only
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 38
+		/// See ug835-vivado-tcl-commands.pdf, page 40
 		/// </summary>
 		/// <param name="ruledeck">(Required) DRC rule deck to modify</param>
 		/// <param name="of_objects">(Optional) Get 'rule_check' objects of these types: 'drc_ruledeck'.</param>
@@ -73,6 +75,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Create a new user-defined DRC rule check, drc_check, for use by the tool when running
 		/// report_drc.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This command allows you to define a unique name or abbreviation for the user-defined rule
 		/// check, optionally group the rule into a special hierarchy and provide a description of the rule,
 		/// define a general placeholder message for the check when violations are encountered, and refer
@@ -138,11 +141,12 @@ namespace Quokka.TCL.Vivado
 		/// create_drc_check -name {RAMW-1} -hiername {RAMB Checks} \
 		/// -desc {Data Width Check} -rule_body dataWidthCheck \
 		/// -severity Advisory
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Note: The script file can contain both the Tcl checker procedure, and the create_drc_check command
 		/// that defines it for use by report_drc command. In this case, when the Tcl script file is sourced, both the
 		/// dataWidthCheck proc and the RAMW-1 design rule check are loaded into the tool.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 253
+		/// See ug835-vivado-tcl-commands.pdf, page 261
 		/// </summary>
 		/// <param name="name">
 		/// (Required)
@@ -210,7 +214,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example creates two new drc_ruledeck objects:
 		/// create_drc_ruledeck my_rules project_rules
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 258
+		/// See ug835-vivado-tcl-commands.pdf, page 266
 		/// </summary>
 		/// <param name="ruledecks">(Required) Names of DRC rule decks to create</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -241,6 +245,7 @@ namespace Quokka.TCL.Vivado
 		/// report_drc.
 		/// • Use create_drc_violation in the Tcl checker to identify and flag violations found when
 		/// checking the rule against a design.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// • Define a user-defined DRC rule check using the create_drc_check command that calls the
 		/// Tcl checker proc from the -rule_body.
 		/// • Create a rule deck using the create_drc_ruledeck command, and add the user-defined
@@ -278,6 +283,7 @@ namespace Quokka.TCL.Vivado
 		/// set msg "On cell %ELG, WRITE_WIDTH_B is $bwidth"
 		/// set vio [ create_drc_violation -name {RAMW-1} -msg $msg $bram ]
 		/// lappend vios $vio
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// }
 		/// }
 		/// if {[llength $vios] > 0} {
@@ -293,7 +299,7 @@ namespace Quokka.TCL.Vivado
 		/// that defines it for use by report_drc command. In this case, when the Tcl script file is sourced, both the
 		/// dataWidthCheck proc and the RAMW-1 design rule check are loaded into the tool.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 260
+		/// See ug835-vivado-tcl-commands.pdf, page 268
 		/// </summary>
 		/// <param name="name">
 		/// (Required)
@@ -331,8 +337,8 @@ namespace Quokka.TCL.Vivado
 		/// the design from progressing until they have been resolved or addressed in some way. The
 		/// create_waiver command lets you select individual violations or specific checks that can be
 		/// waived for a design, letting you move forward in the design flow.
-		/// IMPORTANT! Use caution when waiving violations. Waivers may let you proceed in the design flow, but also
-		/// let you create a design that is fundamentally flawed.
+		/// IMPORTANT! Use caution when waiving violations. Waivers may let you proceed in the design flow, but
+		/// also let you create a design that is fundamentally flawed.
 		/// The user creating the waiver is required to provide a user ID and description in the
 		/// create_waiver command in order to provide some history of the waiver.
 		/// A waiver must be specified for an individual DRC or methodology violation, or for a specific DRC
@@ -340,8 +346,8 @@ namespace Quokka.TCL.Vivado
 		/// specific violation ID, or for paths using -from/-to arguments. The form of the
 		/// create_waiver command varies depending on the check, violation, or object being waived, as
 		/// shown in the examples below.
-		/// TIP: Although many of the arguments are described as optional, some form of identifier is required to associate
-		/// the waiver with its target.
+		/// TIP: Although many of the arguments are described as optional, some form of identifier is required to
+		/// associate the waiver with its target.
 		/// To save waivers from one design session to the next, you must use write_waivers to create
 		/// an XDC file of the waiver commands, and read_xdc to read those waivers back into the design
 		/// when it is reopened.
@@ -372,7 +378,7 @@ namespace Quokka.TCL.Vivado
 		/// inst_xpm_grey/dest_graysync_ff_reg[0][9]/D \
 		/// inst_xpm_grey/dest_graysync_ff_reg[0][24]/D}] ]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 357
+		/// See ug835-vivado-tcl-commands.pdf, page 367
 		/// </summary>
 		/// <param name="description">(Required) Description string of the cause for the waiver</param>
 		/// <param name="type">(Optional) Type of waiver - DRC, METHODOLOGY, CDC</param>
@@ -431,7 +437,11 @@ namespace Quokka.TCL.Vivado
 		/// current_instance that is set
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
-		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="verbose">
+		/// (Optional)
+		/// Suspend message limits during command execution
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// </param>
 		/// <returns>waiver</returns>
 		public TTCL create_waiver(string description, string type = null, string id = null, string objects = null, string from = null, string to = null, string strings = null, string of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
 		{
@@ -455,7 +465,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example deletes the specified design rule check:
 		/// delete_drc_check LJH-1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 427
+		/// See ug835-vivado-tcl-commands.pdf, page 438
 		/// </summary>
 		/// <param name="name">
 		/// (Required)
@@ -488,11 +498,12 @@ namespace Quokka.TCL.Vivado
 		/// or placement. The tool comes with a set of factory defined rule decks, but you can also create
 		/// new user-defined rule decks with the create_drc_ruledeck command.
 		/// Note: This command returns nothing if successful, or returns an error if it fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example deletes all user-defined rule decks from the current project:
 		/// delete_drc_ruledeck
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 429
+		/// See ug835-vivado-tcl-commands.pdf, page 440
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching. (valid only when -regexp specified)</param>
@@ -525,7 +536,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example gets the checks associated with the specified rule deck:
 		/// get_drc_checks -of_objects [get_drc_ruledecks placer_checks]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 662
+		/// See ug835-vivado-tcl-commands.pdf, page 678
 		/// </summary>
 		/// <param name="of_objects">(Optional) Get 'rule_check' objects of these types: 'drc_ruledeck'.</param>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
@@ -559,6 +570,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets a list of rule decks defined in the current project:
 		/// get_drc_ruledecks
@@ -567,7 +579,7 @@ namespace Quokka.TCL.Vivado
 		/// foreach rule [get_drc_checks -of_objects \
 		/// [get_drc_ruledecks placer_checks]] {puts $rule}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 665
+		/// See ug835-vivado-tcl-commands.pdf, page 681
 		/// </summary>
 		/// <param name="of_objects">(Optional) Get 'drc_ruledeck' objects of these types: 'rule_check'.</param>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
@@ -597,6 +609,7 @@ namespace Quokka.TCL.Vivado
 		/// on the current device. The design objects associated with a DRC violation object can be obtained
 		/// using the -of_objects option of the appropriate get_* command, such as get_cells, or
 		/// get_nets for instance.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Note: To improve memory and performance, the get_* commands return a container list of a single type
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
@@ -614,7 +627,7 @@ namespace Quokka.TCL.Vivado
 		/// get_drc_violations -name drc_1
 		/// get_ports -of_objects [get_drc_violations -name drc_1 NSTD*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 668
+		/// See ug835-vivado-tcl-commands.pdf, page 684
 		/// </summary>
 		/// <param name="name">(Optional) Get the results with this name</param>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
@@ -651,7 +664,9 @@ namespace Quokka.TCL.Vivado
 		/// using the set_property command. When a new rule check is created, the IS_ENABLED
 		/// property is set to true as a default. Set the IS_ENABLED property to false to disable the rule
 		/// check from being used by report_drc without having to remove the rule from the rule deck.
-		/// TIP: Use the reset_drc_check command to restore the DRC rule, and its properties, to the default settings.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// TIP: Use the reset_drc_check command to restore the DRC rule, and its properties, to the default
+		/// settings.
 		/// This command returns the list of design rule checks that were removed from the specified rule
 		/// deck.
 		///
@@ -662,8 +677,9 @@ namespace Quokka.TCL.Vivado
 		/// set_property IS_ENABLED FALSE [get_drc_checks RAMW-1]
 		/// The following example removes all rule checks from the specified rule deck:
 		/// remove_drc_checks -ruledeck my_rules
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1217
+		/// See ug835-vivado-tcl-commands.pdf, page 1243
 		/// </summary>
 		/// <param name="ruledeck">(Required) DRC rule deck to modify</param>
 		/// <param name="of_objects">(Optional) Get 'rule_check' objects of these types: 'drc_ruledeck'.</param>
@@ -694,8 +710,9 @@ namespace Quokka.TCL.Vivado
 		/// command, and are associated with cells, pins, ports, nets, and sites in the current design. You can
 		/// get the cells, nets, and other design objects that are associated with DRC violation objects, using
 		/// the -of_objects option of the get_cells command for instance.
-		/// TIP: The report_drc can be multi-threaded to speed the process. Refer to the set_param command for
-		/// more information on setting the general.maxThreads parameter.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// TIP: The report_drc can be multi-threaded to speed the process. Refer to the set_param command
+		/// for more information on setting the general.maxThreads parameter.
 		/// The Vivado tools include a large number of predefined design rule checks to be used by the
 		/// report_drc command. Use the get_drc_checks command to list the currently defined
 		/// design rule checks. You can also create new custom design rule checks using the
@@ -711,8 +728,8 @@ namespace Quokka.TCL.Vivado
 		/// DRC rules can be enabled or disabled using the IS_ENABLED property on the rule check object.
 		/// If a rule IS_ENABLED false, the rule will not be run by the report_drc command, whether it is
 		/// specified directly using -checks, or indirectly with -ruledeck.
-		/// TIP: You can reset the properties of a DRC rule to the factory default settings using the reset_drc_check
-		/// command.
+		/// TIP: You can reset the properties of a DRC rule to the factory default settings using the
+		/// reset_drc_check command.
 		/// You can reset the current results of the report_drc command, clearing any found violations,
 		/// using the reset_drc command.
 		///
@@ -728,7 +745,7 @@ namespace Quokka.TCL.Vivado
 		/// -file C:/Data/DRC_Rpt1.txt -append
 		/// Note: The -append option adds the result of the second report_drc command to the specified file.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1322
+		/// See ug835-vivado-tcl-commands.pdf, page 1349
 		/// </summary>
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="upgrade_cw">
@@ -768,7 +785,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example clears the specified results set from memory and the GUI:
 		/// reset_drc -name DRC1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1449
+		/// See ug835-vivado-tcl-commands.pdf, page 1480
 		/// </summary>
 		/// <param name="name">(Optional) DRC result name</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -801,7 +818,7 @@ namespace Quokka.TCL.Vivado
 		/// set_property SEVERITY "Critical Warning" [get_drc_checks RFFC-1]
 		/// reset_drc_check [get_drc_checks]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1451
+		/// See ug835-vivado-tcl-commands.pdf, page 1482
 		/// </summary>
 		/// <param name="checks">(Required) The list of checks to reset.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>

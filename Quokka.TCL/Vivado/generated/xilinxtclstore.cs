@@ -30,7 +30,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example converts all NGC files in the current directory and in all sub-directories:
 		/// convert_ngc [ glob ./**/*.ngc ] [ glob ./*.ngc ]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 208
+		/// See ug835-vivado-tcl-commands.pdf, page 213
 		/// </summary>
 		/// <param name="files">(Required) A list of NGC files to convert</param>
 		/// <param name="output_dir">
@@ -77,7 +77,7 @@ namespace Quokka.TCL.Vivado
 		/// as the parent of the new run:
 		/// copy_run -name impl_2 [get_runs impl_1] -parent_run synth_2
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 215
+		/// See ug835-vivado-tcl-commands.pdf, page 220
 		/// </summary>
 		/// <param name="name">(Required) Specify the name of the new run</param>
 		/// <param name="run">(Required) The run to be copied, accepts name or run object</param>
@@ -132,7 +132,7 @@ namespace Quokka.TCL.Vivado
 		/// TIP: The constraints were previously created using the -output_dir option of the
 		/// report_qor_suggestions command.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 346
+		/// See ug835-vivado-tcl-commands.pdf, page 356
 		/// </summary>
 		/// <param name="dir">
 		/// (Required)
@@ -145,6 +145,7 @@ namespace Quokka.TCL.Vivado
 		/// Specify the name of the already existing synth run. This run
 		/// will be the parent run for the newly created impl run
 		/// Default: None
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Name Description
 		/// </param>
 		/// <param name="opt_more_options">
@@ -184,7 +185,7 @@ namespace Quokka.TCL.Vivado
 		/// block design:
 		/// export_bd_synth [get_files block_1.bd]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 503
+		/// See ug835-vivado-tcl-commands.pdf, page 515
 		/// </summary>
 		/// <param name="file">(Required) The Block Design file to write a synthesized checkpoint for</param>
 		/// <param name="force">(Optional) Overwrite existing design checkpoint and stub files</param>
@@ -200,12 +201,7 @@ namespace Quokka.TCL.Vivado
 		}
 		/// <summary>
 		/// (User-written application) Generate and export IP/IPI user files from a project. This can be
-		/// scoped to work on one or more IPs. Argument Usage: [-of_objects <arg>]: IP,IPI or a fileset object
-		/// [-ip_user_files_dir <arg>]: Directory path to simulation base directory (for static, dynamic,
-		/// wrapper, netlist, script and MEM files) [-ipstatic_source_dir <arg>]: Directory path to the IP static
-		/// files [-lib_map_path <arg> = Empty]: Compiled simulation library directory path [-no_script]: Do
-		/// not export simulation scripts [-sync]: Delete IP/IPI dynamic and simulation script files [-reset]:
-		/// Delete all IP/IPI static, dynamic and simulation script files [-force]: Overwrite files
+		/// scoped to work on one or more IPs.
 		///
 		///
 		/// TCL Syntax: export_ip_user_files [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-no_script] [-sync] [-reset] [-force] [-quiet] [-verbose]
@@ -218,7 +214,7 @@ namespace Quokka.TCL.Vivado
 		/// <project>.ip_user_files/ipstatic directory:
 		/// export_ip_user_files -of_objects [get_ips char_fifo]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 505
+		/// See ug835-vivado-tcl-commands.pdf, page 517
 		/// </summary>
 		/// <param name="of_objects">(Optional) IP,IPI or a fileset object Default: None</param>
 		/// <param name="ip_user_files_dir">
@@ -247,7 +243,7 @@ namespace Quokka.TCL.Vivado
 		/// simulation using the specified simulator.
 		///
 		///
-		/// TCL Syntax: export_simulation [-simulator <arg>] [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-script_name <arg>] [-directory <arg>] [-runtime <arg>] [-define <arg>] [-generic <arg>] [-include <arg>] [-use_ip_compiled_libs] [-absolute_path] [-export_source_files] [-32bit] [-force] [-quiet] [-verbose]
+		/// TCL Syntax: export_simulation [-simulator <arg>] [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-script_name <arg>] [-directory <arg>] [-runtime <arg>] [-define <arg>] [-generic <arg>] [-include <arg>] [-use_ip_compiled_libs] [-absolute_path] [-export_source_files] [-generate_hier_access] [-32bit] [-force] [-quiet] [-verbose]
 		///
 		/// Export a simulation script file for the target simulator. Currently the Cadence Incisive Enterprise
 		/// Simulator (ies) and the Synopsys VCS MX simulator (vcs_mx) are supported. The generated
@@ -272,6 +268,7 @@ namespace Quokka.TCL.Vivado
 		/// generating this script. The generated simulation script will automatically include the setup files for the
 		/// target simulator from the compiled library directory.
 		/// This command returns nothing.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following command generates a simulation script file in the current directory for the "IES"
 		/// simulator:
@@ -302,8 +299,8 @@ namespace Quokka.TCL.Vivado
 		/// The following command exports a script file top_tb_sim_vcs_mx.sh for the "VCS_MX"
 		/// simulator in the specified output directory with the design source files compiled for 32 bit
 		/// version of the simulator compiler (no 64 bit option will be added to the command line):
-		/// export_simulation -force -32bit -simulator vcs_mx -directory
-		/// test_bft_vcs_mx
+		/// export_simulation -force -32bit -simulator vcs_mx -directory test_bft_vcs_mx
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example will include /sim_libs/ius/lin64/lib/cds.lib file path in the ./
 		/// test_sim/cds.lib file ("INCLUDE /sim_libs/ius/lin64/lib/cds.lib") for referencing the
 		/// compiled libraries for "IES" simulator:
@@ -327,7 +324,7 @@ namespace Quokka.TCL.Vivado
 		/// cd test_sim/vcs_mx
 		/// ./top_tb_sim_vcs_mx.sh
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 508
+		/// See ug835-vivado-tcl-commands.pdf, page 519
 		/// </summary>
 		/// <param name="simulator">
 		/// (Optional)
@@ -385,29 +382,60 @@ namespace Quokka.TCL.Vivado
 		/// This switch requires -ip_user_files_dir and -
 		/// ipstatic_source_dir switches as well for generating scripts
 		/// using pre-compiled IP library.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// Name Description
 		/// </param>
 		/// <param name="absolute_path">(Optional) Make all file paths absolute</param>
 		/// <param name="export_source_files">(Optional) Copy IP/BD design files to output directory</param>
+		/// <param name="generate_hier_access">(Optional) Extract path for hierarchical access simulation</param>
 		/// <param name="_32bit">(Optional) Perform 32bit compilation</param>
 		/// <param name="force">(Optional) Overwrite previous files</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>None</returns>
-		public TTCL export_simulation(string simulator = null, string of_objects = null, string ip_user_files_dir = null, string ipstatic_source_dir = null, string lib_map_path = null, string script_name = null, string directory = null, string runtime = null, string define = null, string generic = null, string include = null, bool? use_ip_compiled_libs = null, bool? absolute_path = null, bool? export_source_files = null, bool? _32bit = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL export_simulation(string simulator = null, string of_objects = null, string ip_user_files_dir = null, string ipstatic_source_dir = null, string lib_map_path = null, string script_name = null, string directory = null, string runtime = null, string define = null, string generic = null, string include = null, bool? use_ip_compiled_libs = null, bool? absolute_path = null, bool? export_source_files = null, bool? generate_hier_access = null, bool? _32bit = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: export_simulation [-simulator <arg>] [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-script_name <arg>] [-directory <arg>] [-runtime <arg>] [-define <arg>] [-generic <arg>] [-include <arg>] [-use_ip_compiled_libs] [-absolute_path] [-export_source_files] [-32bit] [-force] [-quiet] [-verbose]
-			_tcl.Entry(_builder.export_simulation(simulator, of_objects, ip_user_files_dir, ipstatic_source_dir, lib_map_path, script_name, directory, runtime, define, generic, include, use_ip_compiled_libs, absolute_path, export_source_files, _32bit, force, quiet, verbose));
+			// TCL Syntax: export_simulation [-simulator <arg>] [-of_objects <arg>] [-ip_user_files_dir <arg>] [-ipstatic_source_dir <arg>] [-lib_map_path <arg>] [-script_name <arg>] [-directory <arg>] [-runtime <arg>] [-define <arg>] [-generic <arg>] [-include <arg>] [-use_ip_compiled_libs] [-absolute_path] [-export_source_files] [-generate_hier_access] [-32bit] [-force] [-quiet] [-verbose]
+			_tcl.Entry(_builder.export_simulation(simulator, of_objects, ip_user_files_dir, ipstatic_source_dir, lib_map_path, script_name, directory, runtime, define, generic, include, use_ip_compiled_libs, absolute_path, export_source_files, generate_hier_access, _32bit, force, quiet, verbose));
+			return _tcl;
+		}
+		/// <summary>
+		/// (User-written application) Generate sources for hierarchical access simulation
+		///
+		///
+		/// TCL Syntax: generate_hier_access [-bypass <arg>] [-driver <arg>] [-directory <arg>] [-pseudo_top <arg>] [-testbench <arg>] [-log <arg>] [-quiet] [-verbose]
+		///
+		/// Generates sources for hierarchical access simulation.
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 540
+		/// </summary>
+		/// <param name="bypass">(Optional) Hierarchical access module name Default: xil_dut_bypass</param>
+		/// <param name="driver">(Optional) Signal driver template module name Default: xil_bypass_driver</param>
+		/// <param name="directory">
+		/// (Optional)
+		/// Output directory for the generated sources Default: current
+		/// working directory
+		/// </param>
+		/// <param name="pseudo_top">(Optional) Top-level pseudo testbench module name Default: None</param>
+		/// <param name="testbench">(Optional) User design testbench module name Default: None</param>
+		/// <param name="log">
+		/// (Optional)
+		/// Simulator log containing hierarchical path information
+		/// (required for the non-Vivado standalone flow only) Default:
+		/// None
+		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <returns>None</returns>
+		public TTCL generate_hier_access(string bypass = null, string driver = null, string directory = null, string pseudo_top = null, string testbench = null, string log = null, bool? quiet = null, bool? verbose = null)
+		{
+			// TCL Syntax: generate_hier_access [-bypass <arg>] [-driver <arg>] [-directory <arg>] [-pseudo_top <arg>] [-testbench <arg>] [-log <arg>] [-quiet] [-verbose]
+			_tcl.Entry(_builder.generate_hier_access(bypass, driver, directory, pseudo_top, testbench, log, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
 		/// (User-written application) Extract IP static files from the project or repository and prepare it for
-		/// compile_simlib Argument Usage: [-directory <arg>]: Extract static files in the specified directory [-
-		/// ip_repo_path <arg>]: Extract static files from the specified IP repository path [-ips <arg> =
-		/// Empty]: Extract static files for the specified IPs only [-library <arg> = Empty]: Extract static files
-		/// for the specified IP library [-project]: Extract static files for the current project [-install]: Extract
-		/// static files for the IP catalog [-no_update_catalog]: Do no update IP catalog [-force]: Overwrite
-		/// static files
+		/// compile_simlib
 		///
 		///
 		/// TCL Syntax: setup_ip_static_library [-directory <arg>] [-ip_repo_path <arg>] [-ips <arg>] [-library <arg>] [-project] [-install] [-no_update_catalog] [-force] [-quiet] [-verbose]
@@ -415,6 +443,7 @@ namespace Quokka.TCL.Vivado
 		/// Retrieve static simulation files for IP cores used in the current project, or from the Xilinx IP
 		/// catalog, and create a source library for the compile_simlib command to use for compiling the
 		/// IP files for a specified simulator.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following command will build static library for all the IPs in the current project in ./
 		/// static_compiled_lib:
@@ -423,7 +452,7 @@ namespace Quokka.TCL.Vivado
 		/// command will create the specified directory if it does not exist:
 		/// setup_ip_static_library -directory /work/simlib -project
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1668
+		/// See ug835-vivado-tcl-commands.pdf, page 1701
 		/// </summary>
 		/// <param name="directory">(Optional) Extract static files in the specified directory Default: None</param>
 		/// <param name="ip_repo_path">
@@ -450,17 +479,17 @@ namespace Quokka.TCL.Vivado
 		/// (User-written application) Export Tcl script for re-creating the current project
 		///
 		///
-		/// TCL Syntax: write_project_tcl [-paths_relative_to <arg>] [-origin_dir_override <arg>] [-target_proj_dir <arg>] [-force] [-all_properties] [-no_copy_sources] [-no_ip_version] [-absolute_path] [-dump_project_info] [-use_bd_files] [-internal] [-quiet] [-verbose] <file>
+		/// TCL Syntax: write_project_tcl [-paths_relative_to <arg>] [-origin_dir_override <arg>] [-target_proj_dir <arg>] [-force] [-all_properties] [-no_copy_sources] [-no_ip_version] [-absolute_path] [-dump_project_info] [-use_bd_files] [-internal] [-validate] [-quiet] [-verbose] <file>
 		///
 		/// Creates a Tcl script to recreate the current project.
 		/// The generated script will contain the Tcl commands for creating the project, setting the project
 		/// type, creating filesets, adding/importing source files, defining runs and run properties.
-		/// IMPORTANT! The new project will be created in the current working directory (CWD) where the generated Tcl
-		/// script is sourced from. The script written out by write_project_tcl should be sourced in the same
-		/// directory from which it was created. If you source the script from a different directory, you should first set the
-		/// <origin_dir_loc> variable in Tcl shell to this alternate directory, or edit the script to define the <origin_dir>
-		/// variable in the script in order to maintain the relative path between the CWD and the source files referenced in
-		/// the script.
+		/// IMPORTANT! The new project will be created in the current working directory (CWD) where the
+		/// generated Tcl script is sourced from. The script written out by write_project_tcl should be sourced
+		/// in the same directory from which it was created. If you source the script from a different directory, you
+		/// should first set the <origin_dir_loc> variable in Tcl shell to this alternate directory, or edit the script to
+		/// define the <origin_dir> variable in the script in order to maintain the relative path between the CWD and
+		/// the source files referenced in the script.
 		/// This Tcl project script and the various design sources can be stored in a version control system
 		/// for source file management and project archival.
 		///
@@ -473,11 +502,12 @@ namespace Quokka.TCL.Vivado
 		/// The following command exports Tcl script for the current project and writes all the properties,
 		/// both default or non-default values:
 		/// write_project_tcl -all_properties recreate.tcl
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following command exports Tcl script for the current project and adds files that are local in
 		/// this project. The recreated project will reference these files:
 		/// write_project_tcl -no_copy_sources -use_bd_files recreate.tcl
-		/// IMPORTANT! The -use_bd_files switch is required for use with -no_copy_sources in designs with
-		/// block diagrams.
+		/// IMPORTANT! The -use_bd_files switch is required for use with -no_copy_sources in designs
+		/// with block diagrams.
 		/// The following command exports recreate.tcl script for the current project in the current
 		/// working directory, creates a new project in ./my_test directory, prints the list of files in the
 		/// new project, prints the current project settings and then closes the newly created project:
@@ -507,7 +537,7 @@ namespace Quokka.TCL.Vivado
 		/// get_property verilog_define [get_filesets sources_1]
 		/// close_project
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1840
+		/// See ug835-vivado-tcl-commands.pdf, page 1878
 		/// </summary>
 		/// <param name="file">(Required) Name of the tcl script file to generate</param>
 		/// <param name="paths_relative_to">
@@ -542,13 +572,18 @@ namespace Quokka.TCL.Vivado
 		/// <param name="dump_project_info">(Optional) Write object values</param>
 		/// <param name="use_bd_files">(Optional) Use BD sources directly instead of writing out procs to create them</param>
 		/// <param name="@internal">(Optional) Print basic header information in the generated tcl script</param>
+		/// <param name="validate">
+		/// (Optional)
+		/// Runs a validate script before recreating the project. To test if
+		/// the files and paths refrenced in the tcl file exists or not.
+		/// </param>
 		/// <param name="quiet">(Optional) Execute the command quietly, returning no messages from the command.</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>true (0) if success, false (1) otherwise</returns>
-		public TTCL write_project_tcl(string file, string paths_relative_to = null, string origin_dir_override = null, string target_proj_dir = null, bool? force = null, bool? all_properties = null, bool? no_copy_sources = null, bool? no_ip_version = null, bool? absolute_path = null, bool? dump_project_info = null, bool? use_bd_files = null, bool? @internal = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_project_tcl(string file, string paths_relative_to = null, string origin_dir_override = null, string target_proj_dir = null, bool? force = null, bool? all_properties = null, bool? no_copy_sources = null, bool? no_ip_version = null, bool? absolute_path = null, bool? dump_project_info = null, bool? use_bd_files = null, bool? @internal = null, bool? validate = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: write_project_tcl [-paths_relative_to <arg>] [-origin_dir_override <arg>] [-target_proj_dir <arg>] [-force] [-all_properties] [-no_copy_sources] [-no_ip_version] [-absolute_path] [-dump_project_info] [-use_bd_files] [-internal] [-quiet] [-verbose] <file>
-			_tcl.Entry(_builder.write_project_tcl(file, paths_relative_to, origin_dir_override, target_proj_dir, force, all_properties, no_copy_sources, no_ip_version, absolute_path, dump_project_info, use_bd_files, @internal, quiet, verbose));
+			// TCL Syntax: write_project_tcl [-paths_relative_to <arg>] [-origin_dir_override <arg>] [-target_proj_dir <arg>] [-force] [-all_properties] [-no_copy_sources] [-no_ip_version] [-absolute_path] [-dump_project_info] [-use_bd_files] [-internal] [-validate] [-quiet] [-verbose] <file>
+			_tcl.Entry(_builder.write_project_tcl(file, paths_relative_to, origin_dir_override, target_proj_dir, force, all_properties, no_copy_sources, no_ip_version, absolute_path, dump_project_info, use_bd_files, @internal, validate, quiet, verbose));
 			return _tcl;
 		}
 	}

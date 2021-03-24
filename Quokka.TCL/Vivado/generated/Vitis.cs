@@ -14,10 +14,45 @@ namespace Quokka.TCL.Vivado
 			_builder = builder;
 		}
 		/// <summary>
+		/// Add a hw_emu Xilinx Shell Archive to an existing hw Xilinx Shell Archive
+		///
+		///
+		/// TCL Syntax: combine_hw_platforms [-hw <arg>] [-hw_emu <arg>] [-o <arg>] [-add_digest] [-force] [-quiet] [-verbose]
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 153
+		/// </summary>
+		/// <param name="hw">
+		/// (Optional)
+		/// A hw Xilinx Shell Archive Values: A filename with
+		/// alphanumeric characters and .xsa extension.
+		/// </param>
+		/// <param name="hw_emu">
+		/// (Optional)
+		/// A hw_emu Xilinx Shell Archive Values: A filename with
+		/// alphanumeric characters and .xsa extension.
+		/// </param>
+		/// <param name="o">
+		/// (Optional)
+		/// The (optional) output Xilinx Shell Archive. If not specified,
+		/// the hw_emu will be added to the hw file, overwriting the
+		/// original file. Values: A filename with alphanumeric
+		/// characters and .xsa extension.
+		/// </param>
+		/// <param name="add_digest">(Optional) Remove this!!!</param>
+		/// <param name="force">(Optional) Overwrite existing Xilinx Shell Archive file</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL combine_hw_platforms(string hw = null, string hw_emu = null, string o = null, bool? add_digest = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		{
+			// TCL Syntax: combine_hw_platforms [-hw <arg>] [-hw_emu <arg>] [-o <arg>] [-add_digest] [-force] [-quiet] [-verbose]
+			_tcl.Entry(_builder.combine_hw_platforms(hw, hw_emu, o, add_digest, force, quiet, verbose));
+			return _tcl;
+		}
+		/// <summary>
 		/// Open the Xilinx Shell Archive
 		///
 		///
-		/// TCL Syntax: open_hw_platform [-auto_upgrade] [-quiet] [-verbose] [<file>]
+		/// TCL Syntax: open_hw_platform [-no_auto_upgrade] [-quiet] [-verbose] [<file>]
 		///
 		/// Open a Xilinx support archive (XSA) file and extract the Vivado project, block design, and IP from
 		/// the archive. This will create a project directory and project file (.xpr) from the XSA.
@@ -26,23 +61,23 @@ namespace Quokka.TCL.Vivado
 		/// This command returns a transcript of its actions, or returns an error if it fails.
 		///
 		/// The following example opens the specified XSA, automatically upgrading the IP as needed:
-		/// open_hw_platform -auto_upgrade C:/Data/zc706.xsa
+		/// open_hw_platform C:/Data/zc706.xsa
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1059
+		/// See ug835-vivado-tcl-commands.pdf, page 1082
 		/// </summary>
 		/// <param name="file">
 		/// (Required)
 		/// Xilinx Shell Archive file Values: A filename with alphanumeric
 		/// characters and .dsa/.xsa extension.
 		/// </param>
-		/// <param name="auto_upgrade">(Optional) Automatically upgrade the BD</param>
+		/// <param name="no_auto_upgrade">(Optional) Disable BD auto upgrade</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The name of the shell file</returns>
-		public TTCL open_hw_platform(string file, bool? auto_upgrade = null, bool? quiet = null, bool? verbose = null)
+		public TTCL open_hw_platform(string file, bool? no_auto_upgrade = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: open_hw_platform [-auto_upgrade] [-quiet] [-verbose] [<file>]
-			_tcl.Entry(_builder.open_hw_platform(file, auto_upgrade, quiet, verbose));
+			// TCL Syntax: open_hw_platform [-no_auto_upgrade] [-quiet] [-verbose] [<file>]
+			_tcl.Entry(_builder.open_hw_platform(file, no_auto_upgrade, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -59,7 +94,7 @@ namespace Quokka.TCL.Vivado
 		/// platform contents:
 		/// validate_hw_platform C:/Data/zc706.xsa -verbose
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1762
+		/// See ug835-vivado-tcl-commands.pdf, page 1799
 		/// </summary>
 		/// <param name="verbose">(Optional) Dump verbose information</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -75,7 +110,7 @@ namespace Quokka.TCL.Vivado
 		/// Write the Xilinx Shell Archive for the current design
 		///
 		///
-		/// TCL Syntax: write_hw_platform [-fixed] [-force] [-include_bit] [-include_emulation] [-minimal] [-quiet] [-verbose] [<file>]
+		/// TCL Syntax: write_hw_platform [-fixed] [-force] [-include_bit] [-include_sim_content] [-minimal] [-hw] [-hw_emu] [-quiet] [-verbose] [<file>]
 		///
 		/// Writes a Xilinx support archive (XSA) of the current design for use as a hardware platform.
 		/// All platforms are dynamically implemented during compilation, meaning that the accelerator logic
@@ -85,12 +120,13 @@ namespace Quokka.TCL.Vivado
 		/// the required board interface IP cores configured and connected to the device I/Os. The Vivado
 		/// project must also include several required XSA and PFM properties needed to define the XSA.
 		/// This command reports the name of the XSA file written, or returns an error if it fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example writes the XSA for the current project, overwriting a XSA file of the same
 		/// name if one exists:
-		/// write_XSA -force C:/Data/zc702.xsa
+		/// write_hw_platform -force C:/Data/zc702.xsa
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1813
+		/// See ug835-vivado-tcl-commands.pdf, page 1851
 		/// </summary>
 		/// <param name="file">
 		/// (Required)
@@ -100,15 +136,17 @@ namespace Quokka.TCL.Vivado
 		/// <param name="@fixed">(Optional) Write fixed Shell.</param>
 		/// <param name="force">(Optional) Overwrite existing Xilinx Shell Archive file</param>
 		/// <param name="include_bit">(Optional) Include bit file(s) in the Shell.</param>
-		/// <param name="include_emulation">(Optional) Generate and include hardware emulation support in the Shell.</param>
+		/// <param name="include_sim_content">(Optional) Include simulaton files in the Shell.</param>
 		/// <param name="minimal">(Optional) Add only minimal files in the Shell.</param>
+		/// <param name="hw">(Optional) Write shell for use in hardware only.</param>
+		/// <param name="hw_emu">(Optional) Write shell for use in hardware emulation only.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The name of the Shell file</returns>
-		public TTCL write_hw_platform(string file, bool? @fixed = null, bool? force = null, bool? include_bit = null, bool? include_emulation = null, bool? minimal = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_hw_platform(string file, bool? @fixed = null, bool? force = null, bool? include_bit = null, bool? include_sim_content = null, bool? minimal = null, bool? hw = null, bool? hw_emu = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: write_hw_platform [-fixed] [-force] [-include_bit] [-include_emulation] [-minimal] [-quiet] [-verbose] [<file>]
-			_tcl.Entry(_builder.write_hw_platform(file, @fixed, force, include_bit, include_emulation, minimal, quiet, verbose));
+			// TCL Syntax: write_hw_platform [-fixed] [-force] [-include_bit] [-include_sim_content] [-minimal] [-hw] [-hw_emu] [-quiet] [-verbose] [<file>]
+			_tcl.Entry(_builder.write_hw_platform(file, @fixed, force, include_bit, include_sim_content, minimal, hw, hw_emu, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -123,7 +161,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example writes the JSON file for the current project:
 		/// write_hw_platform_metadata C:/Data/zc102_platform.json
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1815
+		/// See ug835-vivado-tcl-commands.pdf, page 1853
 		/// </summary>
 		/// <param name="file">
 		/// (Required)

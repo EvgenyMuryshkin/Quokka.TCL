@@ -4,7 +4,7 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class VivadoCategorizedTCL : TCLFile<VivadoCategorizedTCL>
+	public partial class VivadoCategorizedTCL : FluentTCLFile<VivadoCategorizedTCL>
 	{
 		private readonly VivadoTCLBuilder _builder = new VivadoTCLBuilder();
 		public VivadoCategorizedTCL(VivadoTCLBuilder builder = null)
@@ -12,6 +12,7 @@ namespace Quokka.TCL.Vivado
 			_builder = builder ?? new VivadoTCLBuilder();
 		}
 		public BoardCommands<VivadoCategorizedTCL> Board => new BoardCommands<VivadoCategorizedTCL>(this, _builder);
+		public cluster_configurationCommands<VivadoCategorizedTCL> cluster_configuration => new cluster_configurationCommands<VivadoCategorizedTCL>(this, _builder);
 		public ConfigurationCommands<VivadoCategorizedTCL> Configuration => new ConfigurationCommands<VivadoCategorizedTCL>(this, _builder);
 		public CreatePeripheralCommands<VivadoCategorizedTCL> CreatePeripheral => new CreatePeripheralCommands<VivadoCategorizedTCL>(this, _builder);
 		public DebugCommands<VivadoCategorizedTCL> Debug => new DebugCommands<VivadoCategorizedTCL>(this, _builder);
@@ -42,6 +43,7 @@ namespace Quokka.TCL.Vivado
 		public ToolLaunchCommands<VivadoCategorizedTCL> ToolLaunch => new ToolLaunchCommands<VivadoCategorizedTCL>(this, _builder);
 		public ToolsCommands<VivadoCategorizedTCL> Tools => new ToolsCommands<VivadoCategorizedTCL>(this, _builder);
 		public VitisCommands<VivadoCategorizedTCL> Vitis => new VitisCommands<VivadoCategorizedTCL>(this, _builder);
+		public vivado_preferencesCommands<VivadoCategorizedTCL> vivado_preferences => new vivado_preferencesCommands<VivadoCategorizedTCL>(this, _builder);
 		public WaiverCommands<VivadoCategorizedTCL> Waiver => new WaiverCommands<VivadoCategorizedTCL>(this, _builder);
 		public WaveformCommands<VivadoCategorizedTCL> Waveform => new WaveformCommands<VivadoCategorizedTCL>(this, _builder);
 		public XDCCommands<VivadoCategorizedTCL> XDC => new XDCCommands<VivadoCategorizedTCL>(this, _builder);

@@ -26,13 +26,14 @@ namespace Quokka.TCL.Vivado
 		/// button is clicked.
 		/// You can use the get_gui_custom_commands to determine the list of user-defined custom
 		/// commands.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example creates a GUI custom command with name 'print_version', and adds it to
 		/// the toolbar.
 		/// create_gui_custom_command -name print_version -command "version" \
 		/// -description "Gets tool version" -show_on_toolbar
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 272
+		/// See ug835-vivado-tcl-commands.pdf, page 280
 		/// </summary>
 		/// <param name="name">(Required) Unique name of the command to create.</param>
 		/// <param name="menu_name">(Optional) Menu name for the custom command.</param>
@@ -76,7 +77,7 @@ namespace Quokka.TCL.Vivado
 		/// create_gui_custom_command_arg -command_name print_version -arg_name quiet \
 		/// -default "-quiet" -comment "Ignore commands errors" -optional
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 274
+		/// See ug835-vivado-tcl-commands.pdf, page 282
 		/// </summary>
 		/// <param name="command_name">
 		/// (Required)
@@ -106,10 +107,10 @@ namespace Quokka.TCL.Vivado
 		/// You can have multiple command groups to undo or redo, but you cannot nest command groups.
 		/// You must use endgroup to end a command sequence before using startgroup to create a
 		/// new command sequence.
-		/// TIP: The startgroup/endgroup commands are provided to support sequences of related commands that
-		/// can be undone via the undo command, or redone if needed using the redo command. However, some Tcl
-		/// commands can trigger an endgroup unexpectedly, and certain commands do not support either UNDO or
-		/// REDO. The limitations are not fully defined.
+		/// TIP: The startgroup /endgroup commands are provided to support sequences of related commands
+		/// that can be undone via the undo command, or redone if needed using the redo command. However,
+		/// some Tcl commands can trigger an endgroup unexpectedly, and certain commands do not support either
+		/// UNDO or REDO. The limitations are not fully defined.
 		///
 		/// The following example defines a startgroup, executes a sequence of related commands, and
 		/// then executes the endgroup. This sequence of commands can be undone as a group:
@@ -122,7 +123,7 @@ namespace Quokka.TCL.Vivado
 		/// [get_cells [list usbEngine1/usbEngineSRAM]] -clear_locs
 		/// endgroup
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 495
+		/// See ug835-vivado-tcl-commands.pdf, page 507
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -145,7 +146,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example returns a list of command arguments for the GUI custom command abc:
 		/// get_gui_custom_command_args -command_name abc
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 685
+		/// See ug835-vivado-tcl-commands.pdf, page 701
 		/// </summary>
 		/// <param name="command_name">
 		/// (Required)
@@ -176,7 +177,7 @@ namespace Quokka.TCL.Vivado
 		/// with 'p':
 		/// get_gui_custom_commands p*
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 687
+		/// See ug835-vivado-tcl-commands.pdf, page 703
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
@@ -208,7 +209,7 @@ namespace Quokka.TCL.Vivado
 		/// color:
 		/// get_highlighted_objects -color cyan
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 690
+		/// See ug835-vivado-tcl-commands.pdf, page 706
 		/// </summary>
 		/// <param name="color_index">(Optional) Color index</param>
 		/// <param name="rgb">(Optional) RGB color index list</param>
@@ -239,7 +240,7 @@ namespace Quokka.TCL.Vivado
 		/// color:
 		/// get_marked_objects -color yellow
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 807
+		/// See ug835-vivado-tcl-commands.pdf, page 827
 		/// </summary>
 		/// <param name="rgb">(Optional) RGB color index list</param>
 		/// <param name="color">(Optional) Valid values are red green blue magenta yellow cyan and orange</param>
@@ -269,12 +270,13 @@ namespace Quokka.TCL.Vivado
 		/// current_instance command. In this case you can use lindex to pass a specific object from
 		/// the get_selected_objects list to the current_instance command:
 		/// current_instance [lindex [get_selected_objects] 0]
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example reports the properties of all currently selected objects, both primary and
 		/// secondary:
 		/// report_property [get_selected_objects]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 897
+		/// See ug835-vivado-tcl-commands.pdf, page 918
 		/// </summary>
 		/// <param name="primary">(Optional) Do not include objects that were selected due to selection rules</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -294,8 +296,9 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Highlights the specified or selected object or objects in a color as determined by one of the
 		/// available color options.
-		/// TIP: Only one of the available color option should be used to specify the highlight color. However, if more than
-		/// one color option is used, the order of precedence to define the color is -rgb, -color_index, and -color.
+		/// TIP: Only one of the available color option should be used to specify the highlight color. However, if more
+		/// than one color option is used, the order of precedence to define the color is -rgb, -color_index, and -
+		/// color.
 		/// Selected objects are automatically unselected in order to display the objects in the specified
 		/// highlight color. Objects can be unhighlighted with the unhighlight_objects command.
 		///
@@ -304,7 +307,7 @@ namespace Quokka.TCL.Vivado
 		/// This example highlights the specified cells in green:
 		/// highlight_objects -color green -leaf_cells [get_cells cpuEngine/*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 955
+		/// See ug835-vivado-tcl-commands.pdf, page 976
 		/// </summary>
 		/// <param name="objects">(Required) Objects to highlight</param>
 		/// <param name="color_index">(Optional) Color index</param>
@@ -334,7 +337,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example adds a red icon to mark the currently selected objects:
 		/// mark_objects -color red [get_selected_objects]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1039
+		/// See ug835-vivado-tcl-commands.pdf, page 1062
 		/// </summary>
 		/// <param name="objects">(Required) Objects to mark</param>
 		/// <param name="rgb">(Optional) RGB color index list</param>
@@ -355,8 +358,8 @@ namespace Quokka.TCL.Vivado
 		///
 		/// IMPORTANT! The UNDO and REDO commands are intended for use in the Vivado IDE, and are not
 		/// recommended for use in Tcl scripts to restore designs to a former state. To restore a design to a specific
-		/// condition, you must write a design checkpoint using the write_checkpoint command, to be restored using
-		/// read_checkpoint.
+		/// condition, you must write a design checkpoint using the write_checkpoint command, to be restored
+		/// using read_checkpoint.
 		/// Redo a command that has been previously undone. This command can be used repeatedly to
 		/// redo a series of commands.
 		/// If a command group has been created using the startgroup and endgroup commands, the
@@ -365,7 +368,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example returns a list of commands that can be redone:
 		/// redo -list
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1175
+		/// See ug835-vivado-tcl-commands.pdf, page 1196
 		/// </summary>
 		/// <param name="list">(Optional) Show a list of redoable tasks</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -392,7 +395,7 @@ namespace Quokka.TCL.Vivado
 		/// with name 'cmd_1' :
 		/// remove_gui_custom_command_args -command_name cmd_1 {arg1 arg2}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1225
+		/// See ug835-vivado-tcl-commands.pdf, page 1252
 		/// </summary>
 		/// <param name="command_name">(Required) name of custom command whose arguments are being removed.</param>
 		/// <param name="names">(Required) name of one or more custom command arguments to remove.</param>
@@ -416,8 +419,9 @@ namespace Quokka.TCL.Vivado
 		///
 		/// The following example removes the GUI custom commands with names 'abc' and 'xyz':
 		/// remove_gui_custom_commands {abc xyz}
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1227
+		/// See ug835-vivado-tcl-commands.pdf, page 1254
 		/// </summary>
 		/// <param name="names">(Required) name of one or more custom commands to remove</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -446,7 +450,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example selects the specified site on the device:
 		/// select_objects [get_sites SLICE_X56Y214]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1555
+		/// See ug835-vivado-tcl-commands.pdf, page 1588
 		/// </summary>
 		/// <param name="objects">(Required) Objects to select</param>
 		/// <param name="add">(Optional) Add to existing selection list</param>
@@ -475,7 +479,7 @@ namespace Quokka.TCL.Vivado
 		/// show_objects -name find_1 [get_cells -hierarchical \
 		/// -filter { PRIMITIVE_TYPE =~ CLK.*.* || PRIMITIVE_TYPE =~ MULT.dsp.* } ]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1673
+		/// See ug835-vivado-tcl-commands.pdf, page 1706
 		/// </summary>
 		/// <param name="objects">(Required) Objects to show Find Results view</param>
 		/// <param name="name">(Optional) Tab title</param>
@@ -505,6 +509,7 @@ namespace Quokka.TCL.Vivado
 		/// when specifying design objects with a get_* command.
 		/// Note: This command is only useful when run in the Vivado IDE. When run in Tcl or Batch mode the
 		/// command simply returns without error or comment.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example creates a schematic for the top-level of the design, displaying the nets as
 		/// well as the ports and cells they connect to:
@@ -517,7 +522,7 @@ namespace Quokka.TCL.Vivado
 		/// connection between them:
 		/// show_schematic -pin_pairs [get_pins {data0_i/O data_reg/D}]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1675
+		/// See ug835-vivado-tcl-commands.pdf, page 1708
 		/// </summary>
 		/// <param name="objects">(Required) Netlist items to show in schematic view</param>
 		/// <param name="add">(Optional) Add to existing schematic view</param>
@@ -550,7 +555,7 @@ namespace Quokka.TCL.Vivado
 		/// mode:
 		/// Vivado% start_gui
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1680
+		/// See ug835-vivado-tcl-commands.pdf, page 1713
 		/// </summary>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		public TTCL start_gui(bool? verbose = null)
@@ -570,10 +575,10 @@ namespace Quokka.TCL.Vivado
 		/// You can have multiple command groups to undo or redo, but you cannot nest command groups.
 		/// You must use endgroup to end a command sequence before using startgroup to create a
 		/// new command sequence.
-		/// TIP: The startgroup/endgroup commands are provided to support sequences of related commands that
-		/// can be undone via the undo command, or redone if needed using the redo command. However, some
-		/// commands can trigger an endgroup unexpectedly, and certain commands do not support either undo or
-		/// redo. The limitations are not fully defined.
+		/// TIP: The startgroup /endgroup commands are provided to support sequences of related commands
+		/// that can be undone via the undo command, or redone if needed using the redo command. However,
+		/// some commands can trigger an endgroup unexpectedly, and certain commands do not support either
+		/// undo or redo. The limitations are not fully defined.
 		/// The startgroup command returns an integer value of 0 if a group is already started, and
 		/// returns an integer value of 1 if the startgroup command has started a new group.
 		///
@@ -588,7 +593,7 @@ namespace Quokka.TCL.Vivado
 		/// [get_cells [list usbEngine1/usbEngineSRAM]] -clear_locs
 		/// endgroup
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1683
+		/// See ug835-vivado-tcl-commands.pdf, page 1716
 		/// </summary>
 		/// <param name="@try">(Optional) Don't start a group if one has already been started</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -612,7 +617,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example stops and closes the GUI and places the tool into Tcl mode:
 		/// stop_gui
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1689
+		/// See ug835-vivado-tcl-commands.pdf, page 1722
 		/// </summary>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		public TTCL stop_gui(bool? verbose = null)
@@ -629,8 +634,8 @@ namespace Quokka.TCL.Vivado
 		///
 		/// IMPORTANT! The undo and redo commands are intended for use in the Vivado IDE, and are not
 		/// recommended for use in Tcl scripts to restore designs to a former state. To restore a design to a specific
-		/// condition, you must write a design checkpoint using the write_checkpoint command, to be restored using
-		/// read_checkpoint.
+		/// condition, you must write a design checkpoint using the write_checkpoint command, to be restored
+		/// using read_checkpoint.
 		/// Undo a prior command. This command can be used repeatedly to undo a series of commands.
 		/// If a group of commands has been created using the startgroup and endgroup commands,
 		/// this command will undo that group as a sequence. The undo command will start at the
@@ -640,7 +645,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example returns a list of commands that you can undo:
 		/// undo -list
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1713
+		/// See ug835-vivado-tcl-commands.pdf, page 1746
 		/// </summary>
 		/// <param name="list">(Optional) Show a list of undoable tasks</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -668,7 +673,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example unhighlights all objects currently highlighted in the color yellow:
 		/// unhighlight_objects -color yellow
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1717
+		/// See ug835-vivado-tcl-commands.pdf, page 1750
 		/// </summary>
 		/// <param name="color_index">(Optional) Color index</param>
 		/// <param name="rgb">(Optional) RGB color index list</param>
@@ -700,7 +705,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example unmarks all objects currently marked in the color yellow:
 		/// unmark_objects -color yellow
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1719
+		/// See ug835-vivado-tcl-commands.pdf, page 1752
 		/// </summary>
 		/// <param name="rgb">(Optional) RGB color index list</param>
 		/// <param name="color">(Optional) Valid values are red green blue magenta yellow cyan and orange</param>
@@ -731,7 +736,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example unselects all currently selected objects:
 		/// unselect_objects
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1725
+		/// See ug835-vivado-tcl-commands.pdf, page 1758
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>

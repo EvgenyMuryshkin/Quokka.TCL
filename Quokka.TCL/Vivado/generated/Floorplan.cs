@@ -31,7 +31,7 @@ namespace Quokka.TCL.Vivado
 		/// add_cells_to_pblock pb_cpuEngine [get_cells cpuEngine/*] \
 		/// -add_primitives -clear_locs
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 33
+		/// See ug835-vivado-tcl-commands.pdf, page 35
 		/// </summary>
 		/// <param name="pblock">(Required) Pblock to add cells to</param>
 		/// <param name="top">
@@ -60,6 +60,24 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
+		/// Add power sources to power Rail
+		///
+		///
+		/// TCL Syntax: add_to_power_rail [-power_sources <args>] [-quiet] [-verbose] <power_rail>
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 59
+		/// </summary>
+		/// <param name="power_rail">(Required) Power rail to add sources to</param>
+		/// <param name="power_sources">(Optional) List of power_sources to add. Can be power rails and/or power supplies</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL add_to_power_rail(string power_rail, string power_sources = null, bool? quiet = null, bool? verbose = null)
+		{
+			// TCL Syntax: add_to_power_rail [-power_sources <args>] [-quiet] [-verbose] <power_rail>
+			_tcl.Entry(_builder.add_to_power_rail(power_rail, power_sources, quiet, verbose));
+			return _tcl;
+		}
+		/// <summary>
 		/// Create a new Pblock
 		///
 		///
@@ -85,7 +103,7 @@ namespace Quokka.TCL.Vivado
 		/// create_pblock pb_usbTop
 		/// set_property PARENT pb_usbTop [get_pblocks {pb_usbEngine?}]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 318
+		/// See ug835-vivado-tcl-commands.pdf, page 327
 		/// </summary>
 		/// <param name="name">(Required) Name of the new pblock</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -95,6 +113,26 @@ namespace Quokka.TCL.Vivado
 		{
 			// TCL Syntax: create_pblock [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.create_pblock(name, quiet, verbose));
+			return _tcl;
+		}
+		/// <summary>
+		/// Create a new Power Rail
+		///
+		///
+		/// TCL Syntax: create_power_rail [-power_sources <args>] [-direct] [-quiet] [-verbose] <name>
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 339
+		/// </summary>
+		/// <param name="name">(Required) Name of the new power rail</param>
+		/// <param name="power_sources">(Optional) List of power sources. Can be power rails and/or power supplies</param>
+		/// <param name="direct">(Optional) Implies if the power is a direct rail</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <returns>new power_rail object</returns>
+		public TTCL create_power_rail(string name, string power_sources = null, bool? direct = null, bool? quiet = null, bool? verbose = null)
+		{
+			// TCL Syntax: create_power_rail [-power_sources <args>] [-direct] [-quiet] [-verbose] <name>
+			_tcl.Entry(_builder.create_power_rail(name, power_sources, direct, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -109,7 +147,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example deletes the specified Pblock as well as any Pblocks nested inside:
 		/// delete_pblocks -hier cpuEngine
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 452
+		/// See ug835-vivado-tcl-commands.pdf, page 463
 		/// </summary>
 		/// <param name="pblocks">(Required) Pblocks to delete</param>
 		/// <param name="hier">(Optional) Also delete all the children of Pblock</param>
@@ -119,6 +157,23 @@ namespace Quokka.TCL.Vivado
 		{
 			// TCL Syntax: delete_pblocks [-hier] [-quiet] [-verbose] <pblocks>...
 			_tcl.Entry(_builder.delete_pblocks(pblocks, hier, quiet, verbose));
+			return _tcl;
+		}
+		/// <summary>
+		/// Delete a Power Rail
+		///
+		///
+		/// TCL Syntax: delete_power_rails [-quiet] [-verbose] <power_rail>
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 465
+		/// </summary>
+		/// <param name="power_rail">(Required) power rail to delete</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL delete_power_rails(string power_rail, bool? quiet = null, bool? verbose = null)
+		{
+			// TCL Syntax: delete_power_rails [-quiet] [-verbose] <power_rail>
+			_tcl.Entry(_builder.delete_power_rails(power_rail, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -138,8 +193,9 @@ namespace Quokka.TCL.Vivado
 		///
 		/// The following example deletes the specified RPM (cs_ila_0/U0) from the design:
 		/// delete_rpm cs_ila_0/U0
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 464
+		/// See ug835-vivado-tcl-commands.pdf, page 476
 		/// </summary>
 		/// <param name="rpm">(Required) RPM to delete</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -154,7 +210,7 @@ namespace Quokka.TCL.Vivado
 		/// Get a list of Pblocks in the current design
 		///
 		///
-		/// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblock] [-quiet] [-verbose] [<patterns>]
+		/// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblocks] [-quiet] [-verbose] [<patterns>]
 		///
 		/// Gets a list of Pblocks defined in the current project that match a specific pattern. The default
 		/// command gets a list of all Pblocks in the project.
@@ -162,6 +218,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets a list of all Pblocks in the current project:
 		/// get_pblocks
@@ -172,21 +229,42 @@ namespace Quokka.TCL.Vivado
 		/// This example returns the specified Pblock, including any nested Pblocks:
 		/// get_pblocks -include_nested_pblocks usbTop
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 848
+		/// See ug835-vivado-tcl-commands.pdf, page 868
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
 		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <param name="of_objects">(Optional) Get Pblocks of these cells</param>
-		/// <param name="include_nested_pblock">(Optional) Display the the list of nested pblocks</param>
+		/// <param name="include_nested_pblocks">(Optional) Display the the list of nested pblocks</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match Pblock names against patterns Default: *</param>
 		/// <returns>list of Pblock objects</returns>
-		public TTCL get_pblocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_nested_pblock = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_pblocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_nested_pblocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
-			// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblock] [-quiet] [-verbose] [<patterns>]
-			_tcl.Entry(_builder.get_pblocks(regexp, nocase, filter, of_objects, include_nested_pblock, quiet, verbose, patterns));
+			// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblocks] [-quiet] [-verbose] [<patterns>]
+			_tcl.Entry(_builder.get_pblocks(regexp, nocase, filter, of_objects, include_nested_pblocks, quiet, verbose, patterns));
+			return _tcl;
+		}
+		/// <summary>
+		/// Get a list of Power Rails in the current design
+		///
+		///
+		/// TCL Syntax: get_power_rails [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 890
+		/// </summary>
+		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
+		/// <param name="nocase">(Optional) Perform case-insensitive matching (valid only when -regexp specified)</param>
+		/// <param name="filter">(Optional) Filter list with expression</param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="patterns">(Optional) Match Power rail names against patterns Default: *</param>
+		/// <returns>list of power rail objects</returns>
+		public TTCL get_power_rails(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		{
+			// TCL Syntax: get_power_rails [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
+			_tcl.Entry(_builder.get_power_rails(regexp, nocase, filter, quiet, verbose, patterns));
 			return _tcl;
 		}
 		/// <summary>
@@ -210,6 +288,7 @@ namespace Quokka.TCL.Vivado
 		/// This command can be used to place cells, or to move placed cells from one site on the device to
 		/// another site. The command syntax is the same for placing an unplaced cell, or moving a placed
 		/// cell.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// When moving a placed cell, if you specify only the SLICE for the site, the tool will attempt to
 		/// place the cell onto the same BEL site in the new SLICE as it currently is placed. For instance
 		/// moving a cell from the B6LUT, by specifying a new SLICE, will cause the tool to attempt to place
@@ -229,8 +308,9 @@ namespace Quokka.TCL.Vivado
 		/// cpuEngine/or1200_cpu/or1200_mult_mac/i_4775_15857 SLICE_X49Y60/B6LUT \
 		/// cpuEngine/cpu_iwb_adr_o/buffer_fifo/xlnx_opt_LUT_i_4810_18807_2 \
 		/// SLICE_X49Y60/C6LUT }
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1098
+		/// See ug835-vivado-tcl-commands.pdf, page 1121
 		/// </summary>
 		/// <param name="cell_site_list">(Required) a list of cells and sites in the interleaved order</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -239,39 +319,6 @@ namespace Quokka.TCL.Vivado
 		{
 			// TCL Syntax: place_cell [-quiet] [-verbose] <cell_site_list>...
 			_tcl.Entry(_builder.place_cell(cell_site_list, quiet, verbose));
-			return _tcl;
-		}
-		/// <summary>
-		/// Resize Pblocks according to SLICE demand and re-position them according to connectivity
-		///
-		///
-		/// TCL Syntax: place_pblocks [-effort <arg>] [-utilization <arg>] [-quiet] [-verbose] <pblocks>...
-		///
-		/// Places Pblocks onto the fabric of the FPGA. Pblocks must be created using the create_pblock
-		/// command, and should be populated with assigned logic using the add_cells_to_pblock
-		/// command.
-		/// Note: An empty Pblock will be placed as directed, but results in a Pblock covering a single CLB tile (two
-		/// SLICEs).
-		///
-		/// The following example places the specified Pblocks with a utilization of 75%:
-		/// place_pblocks -effort LOW -utilization 75 block1 block2 block3 block4
-		/// block5
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1106
-		/// </summary>
-		/// <param name="pblocks">(Required) List of Pblocks to place</param>
-		/// <param name="effort">
-		/// (Optional)
-		/// Placer effort level (per Pblock) Values: LOW, MEDIUM, HIGH
-		/// Default: HIGH
-		/// </param>
-		/// <param name="utilization">(Optional) Placer utilization (per Pblock)</param>
-		/// <param name="quiet">(Optional) Ignore command errors</param>
-		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL place_pblocks(string pblocks, string effort = null, string utilization = null, bool? quiet = null, bool? verbose = null)
-		{
-			// TCL Syntax: place_pblocks [-effort <arg>] [-utilization <arg>] [-quiet] [-verbose] <pblocks>...
-			_tcl.Entry(_builder.place_pblocks(pblocks, effort, utilization, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -288,7 +335,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example removes the specified cells from the pb_cpuEngine Pblock:
 		/// remove_cells_from_pblock pb_cpuEngine [get_cells cpuEngine/cpu_dwb_dat_o/*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1213
+		/// See ug835-vivado-tcl-commands.pdf, page 1237
 		/// </summary>
 		/// <param name="pblock">(Required) Pblock to remove cells from</param>
 		/// <param name="cells">(Required) Cells to remove</param>
@@ -298,6 +345,28 @@ namespace Quokka.TCL.Vivado
 		{
 			// TCL Syntax: remove_cells_from_pblock [-quiet] [-verbose] <pblock> <cells>...
 			_tcl.Entry(_builder.remove_cells_from_pblock(pblock, cells, quiet, verbose));
+			return _tcl;
+		}
+		/// <summary>
+		/// Remove power sources from Power Rail
+		///
+		///
+		/// TCL Syntax: remove_from_power_rail [-power_sources <args>] [-quiet] [-verbose] <power_rail>
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 1251
+		/// </summary>
+		/// <param name="power_rail">(Required) Power rail to remove power sources from</param>
+		/// <param name="power_sources">
+		/// (Optional)
+		/// List of power sources to remove. Can be power rails and/or
+		/// power supplies
+		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		public TTCL remove_from_power_rail(string power_rail, string power_sources = null, bool? quiet = null, bool? verbose = null)
+		{
+			// TCL Syntax: remove_from_power_rail [-power_sources <args>] [-quiet] [-verbose] <power_rail>
+			_tcl.Entry(_builder.remove_from_power_rail(power_rail, power_sources, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -329,7 +398,7 @@ namespace Quokka.TCL.Vivado
 		/// resize_pblock block3 -add {SLICE_X6Y67:SLICE_X11Y71 \
 		/// RAMB18_X0Y2:RAMB18_X1Y4}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1494
+		/// See ug835-vivado-tcl-commands.pdf, page 1527
 		/// </summary>
 		/// <param name="pblock">(Required) Pblock to resize</param>
 		/// <param name="add">(Optional) Add site ranges(s)</param>
@@ -362,7 +431,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example swaps the instances assigned to the two specified device sites:
 		/// swap_locs [get_sites {OLOGIC_X2Y1}] [get_sites {OLOGIC_X2Y0}]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1698
+		/// See ug835-vivado-tcl-commands.pdf, page 1731
 		/// </summary>
 		/// <param name="aloc">(Required) First location (port/cell/site - should be of same type as 'bloc')</param>
 		/// <param name="bloc">(Required) Second location (port/cell/site - should be of same type as 'aloc')</param>
@@ -385,11 +454,12 @@ namespace Quokka.TCL.Vivado
 		/// The following example unplaces the specified cell:
 		/// unplace_cell {fftEngine/fftInst/ingressLoop[6].ingressFifo/buffer_fifo/
 		/// i_4773_12897}
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example unplaces multiple cells:
 		/// unplace_cell {div_cntr_reg_inferredi_4810_15889 div_cntr_reg[0]
 		/// div_cntr_reg[1]}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1721
+		/// See ug835-vivado-tcl-commands.pdf, page 1754
 		/// </summary>
 		/// <param name="cell_list">(Required) a list of cells to be unplaced</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>

@@ -27,6 +27,7 @@ namespace Quokka.TCL.Vivado
 		/// Currently block and connection automation exists for cells, interfaces, pins and ports. The Block
 		/// Automation feature is provided for certain complex blocks such as the Zynq device, MicroBlaze
 		/// processor, AXI Ethernet and memory IP.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The Connection Automation feature helps automate different types of connections. For instance
 		/// when connecting Slave AXI-MM interfaces, the automation will also connect up the relevant
 		/// clock and reset pins and also create an interconnect if one is required. Connection Automation
@@ -37,7 +38,7 @@ namespace Quokka.TCL.Vivado
 		/// rather than directly from Tcl scripts. Use the write_bd_tcl command to output Tcl for use within a user
 		/// script.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 96
+		/// See ug835-vivado-tcl-commands.pdf, page 99
 		/// </summary>
 		/// <param name="rule">(Required) Rule ID string</param>
 		/// <param name="dict">(Required) List of objects and corresponding parameter name-value pairs.</param>
@@ -71,6 +72,7 @@ namespace Quokka.TCL.Vivado
 		/// between the IP core to the board part, the IP integrator of the Vivado Design Suite adds an
 		/// external interface port and interface connection to the block design. The added external
 		/// interface port is named for the specified board part interface.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The apply_board_connection commands uses the available interfaces of the current board
 		/// part defined in the project. An error is returned if the project uses a target part rather than a
 		/// target board. You can use the current_board_part command to identify the target board
@@ -82,7 +84,7 @@ namespace Quokka.TCL.Vivado
 		/// disconnected.
 		/// This command returns a transcript of it actions, or returns an error if it fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 99
+		/// See ug835-vivado-tcl-commands.pdf, page 103
 		/// </summary>
 		/// <param name="ip_intf">
 		/// (Required)
@@ -113,7 +115,7 @@ namespace Quokka.TCL.Vivado
 		/// unmapped address segments to any connected AXI master address spaces.
 		/// This command returns the newly mapped address segments, or returns an error if it failed.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 108
+		/// See ug835-vivado-tcl-commands.pdf, page 112
 		/// </summary>
 		/// <param name="dict">
 		/// (Required)
@@ -163,7 +165,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="force">(Optional) force the assignment, do not run any validity checks</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		/// <param name="objects">(Optional) The objects to assign</param>
+		/// <param name="objects">(Optional) The objects to assign UG835 (v2020.2) November 18, 2020 www.xilinx.com</param>
 		/// <returns>The newly mapped segments, "" if failed.</returns>
 		public TTCL assign_bd_address(string dict, string target_address_space = null, bool? boundary = null, bool? master_boundary = null, bool? external = null, string import_from_file = null, string export_to_file = null, string export_gui_to_file = null, string offset = null, string range = null, string base_high = null, bool? force = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
@@ -182,7 +184,7 @@ namespace Quokka.TCL.Vivado
 		/// will need to run save_bd_design to save any changes made to the design before using the
 		/// close_bd_design command.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 131
+		/// See ug835-vivado-tcl-commands.pdf, page 135
 		/// </summary>
 		/// <param name="name">(Required) Name of design to close</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -208,10 +210,11 @@ namespace Quokka.TCL.Vivado
 		/// is synthesized, either in the out-of-context flow, or with the top-level design, the compile_c
 		/// command launches Vivado HLS to convert the C source files into RTL, and import the resulting
 		/// RTL sources back into the design prior to synthesis.
-		/// RECOMMENDED: The compile_c command is automatically called by the Vivado Design Suite when it
-		/// encounters IP with C code from the Vivado HLS system. You should not need to manually call this command.
+		/// RECOMMENDED: The compile_c command is automatically called by the Vivado Design Suite when
+		/// it encounters IP with C code from the Vivado HLS system. You should not need to manually call this
+		/// command.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 159
+		/// See ug835-vivado-tcl-commands.pdf, page 164
 		/// </summary>
 		/// <param name="objects">(Required) The objects which need C to RTL conversion</param>
 		/// <param name="force">(Optional) Force generate product state regeneration</param>
@@ -236,8 +239,9 @@ namespace Quokka.TCL.Vivado
 		/// connect to an existing interface net of the specified name, or will assign a name if none is
 		/// specified.
 		/// Returns the connected interface net object, or returns an error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 189
+		/// See ug835-vivado-tcl-commands.pdf, page 194
 		/// </summary>
 		/// <param name="object1">(Required) Name of intf_port or intf_pin to connect</param>
 		/// <param name="object2">(Required) Name of intf_port or intf_pin to connect</param>
@@ -276,6 +280,7 @@ namespace Quokka.TCL.Vivado
 		/// when complete, will result in multiple nets rather than a single net.
 		/// The command returns the connected IP integrator subsystem design net object, or returns an
 		/// error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example connects two pins on different levels of the IP subsystem design
 		/// hierarchy:
@@ -285,7 +290,7 @@ namespace Quokka.TCL.Vivado
 		/// subsystem design hierarchy, the -net option is not specified. In this case, multiple nets are created for
 		/// connection across the hierarchy.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 191
+		/// See ug835-vivado-tcl-commands.pdf, page 196
 		/// </summary>
 		/// <param name="objects">(Required) The objects connect to the net</param>
 		/// <param name="net">(Optional) The single net that all objects connect to</param>
@@ -323,8 +328,9 @@ namespace Quokka.TCL.Vivado
 		/// subsystem design to another. In this case, the -from_design argument does not need to be
 		/// specified.
 		/// This command returns 0 if successful, and returns an error if it failed.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 210
+		/// See ug835-vivado-tcl-commands.pdf, page 215
 		/// </summary>
 		/// <param name="parent_cell">(Required) Parent cell</param>
 		/// <param name="objects">(Required) The objects to copy</param>
@@ -350,7 +356,7 @@ namespace Quokka.TCL.Vivado
 		/// This command returns the newly created master address segment object, or returns nothing if it
 		/// failed.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 217
+		/// See ug835-vivado-tcl-commands.pdf, page 222
 		/// </summary>
 		/// <param name="range">(Required) Range of segment. e.g. 4096, 4K, 16M, 1G</param>
 		/// <param name="offset">(Required) Offset of segment. e.g. 0x00000000</param>
@@ -377,6 +383,7 @@ namespace Quokka.TCL.Vivado
 		/// definition from an HDL source file.
 		/// When adding an IP core from the catalog, the -vlnv argument is required.
 		/// When creating a new hierarchical block design module, the -type hier argument is required.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// When creating a block design module that references an RTL module or entity declaration the -
 		/// type module argument is required, as well as -reference. The module reference feature lets
 		/// you add a module definition from an RTL file (Verilog or VHDL) into the block design. The source
@@ -386,14 +393,39 @@ namespace Quokka.TCL.Vivado
 		/// This command returns the name of the newly created cell object, or returns nothing if the
 		/// command fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 219
+		/// This example adds an AXI FIFO core from the IP integrator catalog to the current subsystem
+		/// design, with the specified name:
+		/// create_bd_cell -vlnv xilinx.com:ip:axi_fifo_mm_s:4.0 axi_fifo_1
+		/// Note: The -vlnv argument identifies the core to add from the Vivado catalog.
+		/// This example creates a new block design container in the block design, referencing the specified
+		/// module definition from a previously loaded BD source file:
+		/// set bdc [ create_bd_cell -type container -reference hier_0 bdc ]
+		/// This example creates a new module in the block design, referencing the specified module
+		/// definition from a previously loaded RTL source file:
+		/// create_bd_cell -type module -reference rtlRam rtlRam_0
+		/// This example creates a new hierarchical module, myModule1, and moves the AXI FIFO from the
+		/// prior example into the new module. myModule1 is set as the current instance in the subsystem
+		/// design, and a new module is created, myModule2, which is added to the current instance. Finally
+		/// the current instance is reset to point to the top-level of the subsystem design:
+		/// create_bd_cell -type hier myModule1
+		/// /myModule1
+		/// move_bd_cells /myModule1 [get_bd_cells /axi_fifo_1]
+		/// /myModule1
+		/// current_bd_instance /myModule1
+		/// /myModule1
+		/// create_bd_cell -type hier myModule2
+		/// /myModule1/myModule2
+		/// current_bd_instance
+		/// /
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 224
 		/// </summary>
 		/// <param name="vlnv">(Required) Vendor:Library:Name:Version of the IP cell to add from the IP catalog.</param>
 		/// <param name="name">(Required) Name of cell to create</param>
 		/// <param name="type">
 		/// (Optional)
-		/// Type of cell to create. Valid values are IP, hier and module.
-		/// Default: IP
+		/// Type of cell to create. Valid values are IP, hier, container and
+		/// module. Default: IP
 		/// </param>
 		/// <param name="reference">
 		/// (Optional)
@@ -424,7 +456,7 @@ namespace Quokka.TCL.Vivado
 		/// This command returns the file path and name of the IP subsystem design created if the command
 		/// is successful. An error is returned if the command fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 222
+		/// See ug835-vivado-tcl-commands.pdf, page 227
 		/// </summary>
 		/// <param name="name">(Required) Name of design to create</param>
 		/// <param name="dir">
@@ -452,7 +484,7 @@ namespace Quokka.TCL.Vivado
 		/// This command returns the newly created interface net object if successful, and returns noting if it
 		/// failed.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 224
+		/// See ug835-vivado-tcl-commands.pdf, page 229
 		/// </summary>
 		/// <param name="name">(Required) Name of intf_net to create</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -468,7 +500,7 @@ namespace Quokka.TCL.Vivado
 		/// Create a new intf_pin.
 		///
 		///
-		/// TCL Syntax: create_bd_intf_pin -vlnv <arg> -mode <arg> [-quiet] [-verbose] <name>
+		/// TCL Syntax: create_bd_intf_pin [-vlnv <arg>] [-mode <arg>] [-quiet] [-verbose] [<name>]
 		///
 		/// Create a new interface pin on an IP integrator hierarchical module. An IP integrator interface is a
 		/// grouping of signals that share a common function, and can include both individual signals and
@@ -483,26 +515,27 @@ namespace Quokka.TCL.Vivado
 		/// create_bd_intf_pin command.
 		/// This command returns the name of the newly created interface pin object if successful, and
 		/// returns an error if it failed.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 226
+		/// See ug835-vivado-tcl-commands.pdf, page 231
 		/// </summary>
-		/// <param name="vlnv">(Required) Bus vlnv</param>
-		/// <param name="mode">(Required) Bus interface mode</param>
 		/// <param name="name">(Required) Name of intf_pin to create</param>
+		/// <param name="vlnv">(Optional) Bus vlnv</param>
+		/// <param name="mode">(Optional) Bus interface mode</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created intf_pin object, "" if failed.</returns>
-		public TTCL create_bd_intf_pin(string vlnv, string mode, string name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_intf_pin(string name, string vlnv = null, string mode = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: create_bd_intf_pin -vlnv <arg> -mode <arg> [-quiet] [-verbose] <name>
-			_tcl.Entry(_builder.create_bd_intf_pin(vlnv, mode, name, quiet, verbose));
+			// TCL Syntax: create_bd_intf_pin [-vlnv <arg>] [-mode <arg>] [-quiet] [-verbose] [<name>]
+			_tcl.Entry(_builder.create_bd_intf_pin(name, vlnv, mode, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
 		/// Create a new interface port.
 		///
 		///
-		/// TCL Syntax: create_bd_intf_port -vlnv <arg> -mode <arg> [-board_intf <arg>] [-quiet] [-verbose] <name>
+		/// TCL Syntax: create_bd_intf_port [-vlnv <arg>] [-mode <arg>] [-quiet] [-verbose] [<name>]
 		///
 		/// Create a new IP integrator subsystem design interface port. An IP integrator interface is a
 		/// grouping of signals that share a common function, and can include both individual signals and
@@ -512,23 +545,18 @@ namespace Quokka.TCL.Vivado
 		/// This command returns the name of the newly created interface port object if successful, and
 		/// returns nothing if it failed.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 228
+		/// See ug835-vivado-tcl-commands.pdf, page 233
 		/// </summary>
-		/// <param name="vlnv">(Required) Bus vlnv</param>
-		/// <param name="mode">(Required) Bus interface mode</param>
 		/// <param name="name">(Required) Name of port to create</param>
-		/// <param name="board_intf">
-		/// (Optional)
-		/// Creates port-maps for this external bus-interface using the
-		/// specified interface of current board.
-		/// </param>
+		/// <param name="vlnv">(Optional) Bus vlnv</param>
+		/// <param name="mode">(Optional) Bus interface mode</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created interface port object, "" if failed.</returns>
-		public TTCL create_bd_intf_port(string vlnv, string mode, string name, string board_intf = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_intf_port(string name, string vlnv = null, string mode = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: create_bd_intf_port -vlnv <arg> -mode <arg> [-board_intf <arg>] [-quiet] [-verbose] <name>
-			_tcl.Entry(_builder.create_bd_intf_port(vlnv, mode, name, board_intf, quiet, verbose));
+			// TCL Syntax: create_bd_intf_port [-vlnv <arg>] [-mode <arg>] [-quiet] [-verbose] [<name>]
+			_tcl.Entry(_builder.create_bd_intf_port(name, vlnv, mode, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -537,7 +565,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: create_bd_intf_tlm_port -vlnv <arg> -mode <arg> [-quiet] [-verbose] <name>
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 230
+		/// See ug835-vivado-tcl-commands.pdf, page 235
 		/// </summary>
 		/// <param name="vlnv">(Required) TLM interface vlnv</param>
 		/// <param name="mode">(Required) TLM interface mode</param>
@@ -560,7 +588,7 @@ namespace Quokka.TCL.Vivado
 		/// Create a new net in the current IP integrator subsystem design.
 		/// This command returns the newly created net object, or returns an error if failed.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 231
+		/// See ug835-vivado-tcl-commands.pdf, page 236
 		/// </summary>
 		/// <param name="name">(Required) Name of net to create</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -587,7 +615,7 @@ namespace Quokka.TCL.Vivado
 		/// create_bd_pin -dir I -type rst /newMod1/rst
 		/// /newMod1/rst
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 233
+		/// See ug835-vivado-tcl-commands.pdf, page 238
 		/// </summary>
 		/// <param name="dir">(Required) Pin direction</param>
 		/// <param name="name">(Required) Name of pin to create</param>
@@ -621,7 +649,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example creates a new 125 MHz clock port:
 		/// create_bd_port -dir I -type clk -freq_hz 125000000 my_clock
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 235
+		/// See ug835-vivado-tcl-commands.pdf, page 240
 		/// </summary>
 		/// <param name="dir">(Required) Port direction. Valid values are I, O, or IO.</param>
 		/// <param name="name">(Required) Name of port to create</param>
@@ -644,7 +672,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: create_bd_tlm_port [-quiet] [-verbose] <name>
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 237
+		/// See ug835-vivado-tcl-commands.pdf, page 242
 		/// </summary>
 		/// <param name="name">(Required) Name of port to create</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -675,11 +703,12 @@ namespace Quokka.TCL.Vivado
 		/// help -category IPintegrator
 		/// Note: The load_features command is only needed if the IP integrator is not currently loaded in the
 		/// Vivado Design Suite.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example sets the IP subsystem design as the current design:
 		/// current_bd_design design_1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 365
+		/// See ug835-vivado-tcl-commands.pdf, page 375
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -711,7 +740,7 @@ namespace Quokka.TCL.Vivado
 		/// hierarchy:
 		/// current_instance /
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 367
+		/// See ug835-vivado-tcl-commands.pdf, page 377
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -735,7 +764,7 @@ namespace Quokka.TCL.Vivado
 		/// by pin name.
 		/// This command returns nothing if it is successful, and returns an error if it fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 417
+		/// See ug835-vivado-tcl-commands.pdf, page 428
 		/// </summary>
 		/// <param name="objects">(Required) The objects to be deleted</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -759,9 +788,9 @@ namespace Quokka.TCL.Vivado
 		/// This command lets you disconnect the specified interface net from pins or ports in the IP
 		/// subsystem design, without deleting the whole net. To delete the whole net, you should use the
 		/// delete_bd_objs command.
-		/// This command returns TCL_OK is successful, or TCL_ERROR if it fails.
+		/// This command returns TCL_OK if it is successful, or TCL_ERROR if it fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 478
+		/// See ug835-vivado-tcl-commands.pdf, page 490
 		/// </summary>
 		/// <param name="intf_net">(Required) The IntfNet that the objects connect to</param>
 		/// <param name="objects">(Required) The objects to disconnect from the intf_net</param>
@@ -784,9 +813,9 @@ namespace Quokka.TCL.Vivado
 		/// This command lets you disconnect the specified nets from pins or ports in the IP subsystem
 		/// design, without deleting the whole net. To delete the whole net, you should use the
 		/// delete_bd_objs command.
-		/// This command returns TCL_OK if successful, or TCL_ERROR if it fails.
+		/// This command returns TCL_OK if it is successful, or TCL_ERROR if it fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 480
+		/// See ug835-vivado-tcl-commands.pdf, page 492
 		/// </summary>
 		/// <param name="net">(Required) The Net that the objects connect to</param>
 		/// <param name="objects">(Required) The objects to disconnect from the net</param>
@@ -818,6 +847,7 @@ namespace Quokka.TCL.Vivado
 		/// visible to the master.
 		/// • Mapped - The AXI peripheral is mapped into the AXI master's address space, assigned an
 		/// address segment or range, and is accessible through the master.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// • Excluded - The AXI peripheral is mapped to the AXI master, and has been assigned an address,
 		/// but is not accessible to the master. The address segment that the AXI slave occupies within
 		/// the master address space is also considered filled.
@@ -827,8 +857,8 @@ namespace Quokka.TCL.Vivado
 		/// of that master. However, by excluding the peripheral after it is mapped, the resources required to
 		/// connect and provide access between the AXI master and the peripheral (the muxes and decoding
 		/// for example) can be eliminated to conserve resources on the implemented design.
-		/// TIP: When running assign_bd_address, the IP integrator will map unmapped address segments into address
-		/// spaces, but will not map excluded address spaces.
+		/// TIP: When running assign_bd_address, the IP integrator will map unmapped address segments into
+		/// address spaces, but will not map excluded address spaces.
 		/// This command offers two syntaxes, for a previously mapped address segment, and an unmapped
 		/// address segment:
 		/// exclude_bd_addr_seg <master_addr_seg>
@@ -839,7 +869,7 @@ namespace Quokka.TCL.Vivado
 		/// the master.
 		/// This command returns nothing if successful, or returns an error if it failed.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 497
+		/// See ug835-vivado-tcl-commands.pdf, page 509
 		/// </summary>
 		/// <param name="target_address_space">(Optional) Target address space to exclude the slave segment from</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -858,7 +888,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: export_as_example_design -vlnv <arg> [-no_ip_version] [-force] [-quiet] [-verbose] -directory <arg>
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 502
+		/// See ug835-vivado-tcl-commands.pdf, page 514
 		/// </summary>
 		/// <param name="vlnv">(Required) VLNV of the example design to be generated</param>
 		/// <param name="directory">(Required) Destination directory in which example design needs to be generated</param>
@@ -880,13 +910,13 @@ namespace Quokka.TCL.Vivado
 		/// Find a list of pins, ports or interfaces with a given relationship to the given object.
 		///
 		///
-		/// TCL Syntax: find_bd_objs -relation <arg> [-boundary_type <arg>] [-thru_hier] [-stop_at_interconnect] [-end_type <arg>] [-quiet] [-verbose] <objects>...
+		/// TCL Syntax: find_bd_objs -relation <arg> [-boundary_type <arg>] [-thru_hier] [-stop_at_interconnect] [-stop_at_container] [-end_type <arg>] [-quiet] [-verbose] <objects>...
 		///
 		/// Find a list of pins, ports or interfaces with a given relationship to the specified objects.
 		/// This command returns a list of pins, ports or interface objects if successful, or returns an error if
 		/// it fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 518
+		/// See ug835-vivado-tcl-commands.pdf, page 529
 		/// </summary>
 		/// <param name="relation">
 		/// (Required)
@@ -895,7 +925,11 @@ namespace Quokka.TCL.Vivado
 		/// pins, ports or interfaces that are connected to the given
 		/// source objects, across hierarchy boundaries.
 		/// </param>
-		/// <param name="objects">(Required) One or more source object to start finding from</param>
+		/// <param name="objects">
+		/// (Required)
+		/// One or more source object to start finding from
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// </param>
 		/// <param name="boundary_type">
 		/// (Optional)
 		/// Used when source object is an hierarchical block's pin or
@@ -915,6 +949,11 @@ namespace Quokka.TCL.Vivado
 		/// Flag used to stop at the axi_interconnect's boundary when -
 		/// thru_hier is used.
 		/// </param>
+		/// <param name="stop_at_container">
+		/// (Optional)
+		/// Flag used to stop at the container's boundary when -
+		/// thru_hier is used.
+		/// </param>
 		/// <param name="end_type">
 		/// (Optional)
 		/// Only to be used with objects that are pins or ports and bus
@@ -926,16 +965,18 @@ namespace Quokka.TCL.Vivado
 		/// interface pins/ports - Default is to return the end
 		/// connection that is non-monitor interfaces. If 'monitor' is
 		/// used, will only return the monitor interfaces. If 'all' is used,
-		/// will return both end connection and monitor interfaces. This
-		/// option is only valid for relation: connected_to
+		/// will return both end connection and monitor interfaces. If
+		/// 'master', will return master interfaces and if 'slave', will
+		/// return slave interfaces.This option is only valid for relation:
+		/// connected_to
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>List of pins, ports or interface objects, "" if failed.</returns>
-		public TTCL find_bd_objs(string relation, string objects, string boundary_type = null, bool? thru_hier = null, bool? stop_at_interconnect = null, string end_type = null, bool? quiet = null, bool? verbose = null)
+		public TTCL find_bd_objs(string relation, string objects, string boundary_type = null, bool? thru_hier = null, bool? stop_at_interconnect = null, bool? stop_at_container = null, string end_type = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: find_bd_objs -relation <arg> [-boundary_type <arg>] [-thru_hier] [-stop_at_interconnect] [-end_type <arg>] [-quiet] [-verbose] <objects>...
-			_tcl.Entry(_builder.find_bd_objs(relation, objects, boundary_type, thru_hier, stop_at_interconnect, end_type, quiet, verbose));
+			// TCL Syntax: find_bd_objs -relation <arg> [-boundary_type <arg>] [-thru_hier] [-stop_at_interconnect] [-stop_at_container] [-end_type <arg>] [-quiet] [-verbose] <objects>...
+			_tcl.Entry(_builder.find_bd_objs(relation, objects, boundary_type, thru_hier, stop_at_interconnect, stop_at_container, end_type, quiet, verbose));
 			return _tcl;
 		}
 		/// <summary>
@@ -959,20 +1000,21 @@ namespace Quokka.TCL.Vivado
 		/// The following example generates the instantiation template and synthesis targets for all of the IP
 		/// cores in the current project:
 		/// generate_target {instantiation_template synthesis} [get_ips]
-		/// TIP: Note the use of the braces to pass the list of targets to the command. The absence of the -force option
-		/// means that only out-of-date targets will be regenerated.
+		/// TIP: Note the use of the braces to pass the list of targets to the command. The absence of the -force
+		/// option means that only out-of-date targets will be regenerated.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example generates all targets for the specified block design:
 		/// generate_target all \
 		/// [get_files C:/Data/project_mb/project_mb.srcs/sources_1/bd/base_mb/
 		/// base_mb.bd]
-		/// IMPORTANT! The use of get_ips is not supported to generate targets for individual IP within block designs.
-		/// The tool will return an error.
+		/// IMPORTANT! The use of get_ips is not supported to generate targets for individual IP within block
+		/// designs. The tool will return an error.
 		/// The following queries the SUPPORTED_TARGETS property of the specified IP object, and then
 		/// generates the example project for the IP:
 		/// get_property SUPPORTED_TARGETS [get_ips blk_mem*]
 		/// open_example_project -dir C:/Data/examples -force [get_ips blk_mem*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 539
+		/// See ug835-vivado-tcl-commands.pdf, page 552
 		/// </summary>
 		/// <param name="name">
 		/// (Required)
@@ -1000,6 +1042,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets the address segments of the specified address spaces:
 		/// get_bd_addr_segs -of_objects [get_bd_addr_spaces -of_objects \
@@ -1009,7 +1052,7 @@ namespace Quokka.TCL.Vivado
 		/// /microblaze_1/Instruction/SEG2
 		/// Note: If there are no objects matching the pattern you will get a warning.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 542
+		/// See ug835-vivado-tcl-commands.pdf, page 555
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="hierarchical">(Optional) Hierarchical cells included</param>
@@ -1041,6 +1084,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example lists all of the address spaces in the current IP integrator subsystem
 		/// design, listing one per line:
@@ -1061,6 +1105,7 @@ namespace Quokka.TCL.Vivado
 		/// /microblaze_1_local_memory/ilmb_bram_if_cntlr/S_AXI_CTRL
 		/// /microblaze_1_local_memory/lmb_bram/S_1
 		/// Note: If there are no objects matching the pattern you will get a warning.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example returns all of the properties attached to the third in a list, or index 2, of all
 		/// address spaces in the current subsystem design:
 		/// report_property -all [lindex [get_bd_addr_spaces] 2 ]
@@ -1072,7 +1117,7 @@ namespace Quokka.TCL.Vivado
 		/// RANGE string false true -1
 		/// TYPE string false true
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 546
+		/// See ug835-vivado-tcl-commands.pdf, page 559
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="hierarchical">(Optional) Hierarchical cells included</param>
@@ -1101,6 +1146,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets a list of cells that include the specified IP integrator subsystem pin,
 		/// and sorts the list to remove duplicate entries:
@@ -1111,7 +1157,7 @@ namespace Quokka.TCL.Vivado
 		/// hierarchy:
 		/// get_bd_cells -hierarchical -filter {NAME=~"/newMod1/*"}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 550
+		/// See ug835-vivado-tcl-commands.pdf, page 563
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="hierarchical">(Optional) Hierarchical cells included</param>
@@ -1143,7 +1189,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example gets all open IP subsystem designs in the current project:
 		/// get_bd_designs
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 554
+		/// See ug835-vivado-tcl-commands.pdf, page 567
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="filter">(Optional) Filter list with expression</param>
@@ -1170,18 +1216,19 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets the interface net attached to the specified pin of an IP integrator
 		/// hierarchical module, and returns both the net at the level of the hierarchical module, and the net
 		/// inside the hierarchical module:
-		/// get_bd_intf_nets -boundary_type both -of_objects [get_bd_pins /newMod1/
-		/// aclk]
+		/// get_bd_intf_nets -boundary_type both -of_objects [get_bd_pins /newMod1/aclk]
 		/// Note: If there are no interface nets matching the pattern you will get a warning.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example returns a list of all interface nets at all levels of the IP integrator
 		/// subsystem design hierarchy:
 		/// get_bd_intf_nets -hierarchical
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 557
+		/// See ug835-vivado-tcl-commands.pdf, page 570
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="hierarchical">(Optional) Hierarchical cells included</param>
@@ -1192,7 +1239,6 @@ namespace Quokka.TCL.Vivado
 		/// interface pin. Valid values are 'upper', 'lower', or 'both'. If
 		/// 'lower' boundary, searches from the lower level of hierarchy
 		/// onwards. This option is only valid for connected_to relations.
-		/// Default: upper
 		/// </param>
 		/// <param name="of_objects">
 		/// (Optional)
@@ -1224,6 +1270,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets a list of interface pins attached to the specified cell:
 		/// get_bd_intf_pins -of [get_bd_cells new_vidOut_1]
@@ -1234,7 +1281,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example gets a list of interface pins attached to the specified subsystem net:
 		/// get_bd_intf_pins -of [get_bd_intf_nets vidout_1_vtg_ce]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 561
+		/// See ug835-vivado-tcl-commands.pdf, page 574
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="hierarchical">(Optional) Hierarchical cells included</param>
@@ -1270,6 +1317,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets the interface ports in the subsystem design that operate in Master
 		/// mode:
@@ -1278,7 +1326,7 @@ namespace Quokka.TCL.Vivado
 		/// This example returns the block design interface port that the specified bd_port is part of:
 		/// get_bd_intf_ports -of [get_bd_ports sys_diff_clock_clk_n]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 565
+		/// See ug835-vivado-tcl-commands.pdf, page 578
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="filter">(Optional) Filter list with expression</param>
@@ -1305,17 +1353,19 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets the net attached to the specified pin of an IP integrator hierarchical
 		/// module, and returns both the net at the level of the hierarchical module, and the net inside the
 		/// hierarchical module:
 		/// get_bd_nets -boundary_type both -of_objects [get_bd_pins /newMod1/aclk]
 		/// Note: If there are no nets matching the pattern you will get a warning.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example returns a list of all nets at all levels of the IP integrator subsystem design
 		/// hierarchy:
 		/// get_bd_nets -hierarchical
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 568
+		/// See ug835-vivado-tcl-commands.pdf, page 581
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="hierarchical">(Optional) Hierarchical cells included</param>
@@ -1326,7 +1376,6 @@ namespace Quokka.TCL.Vivado
 		/// Valid values are 'upper', 'lower', or 'both'. If 'lower'
 		/// boundary, searches from the lower level of hierarchy
 		/// onwards. This option is only valid for connected_to relations.
-		/// Default: upper
 		/// </param>
 		/// <param name="of_objects">
 		/// (Optional)
@@ -1358,6 +1407,7 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets a list of pins attached to the specified cell:
 		/// get_bd_pins -of [get_bd_cells new_vidOut_1]
@@ -1367,8 +1417,9 @@ namespace Quokka.TCL.Vivado
 		/// get_bd_pins -hierarchical LMB*
 		/// The following example gets a list of pins attached to the specified subsystem net:
 		/// get_bd_pins -of [get_bd_nets vidout_1_vtg_ce]
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 572
+		/// See ug835-vivado-tcl-commands.pdf, page 585
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="hierarchical">(Optional) Hierarchical cells included</param>
@@ -1403,12 +1454,13 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example gets the ports connected to the specified IP subsystem net:
 		/// get_bd_ports -of_objects [get_bd_nets bridge_1_apb_m]
 		/// Note: If there are no ports matching the pattern, the tool will return a warning.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 576
+		/// See ug835-vivado-tcl-commands.pdf, page 589
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="filter">(Optional) Filter list with expression</param>
@@ -1458,7 +1510,7 @@ namespace Quokka.TCL.Vivado
 		/// NAME string true true GPIO_DATA
 		/// OFFSET string true true 0x0
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 579
+		/// See ug835-vivado-tcl-commands.pdf, page 592
 		/// </summary>
 		/// <param name="of_objects">(Required) Get registers of segments, interface pins, external interface ports</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -1489,7 +1541,7 @@ namespace Quokka.TCL.Vivado
 		/// Note: The reported properties include the PARTS property which lists the compatible parts for the example
 		/// design.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 672
+		/// See ug835-vivado-tcl-commands.pdf, page 688
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
@@ -1520,8 +1572,9 @@ namespace Quokka.TCL.Vivado
 		///
 		/// The following example returns the list of available block design templates in the current release:
 		/// get_template_bd_designs
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 921
+		/// See ug835-vivado-tcl-commands.pdf, page 942
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -1551,8 +1604,9 @@ namespace Quokka.TCL.Vivado
 		/// after the hierarchical module has been created using the create_bd_cells command.
 		/// The command returns the name of the created hierarchical module if successful, or an error
 		/// message if it fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 946
+		/// See ug835-vivado-tcl-commands.pdf, page 967
 		/// </summary>
 		/// <param name="target_cell_name">(Required) Target cell</param>
 		/// <param name="cells">(Required) Match engine names against cell names Default: *</param>
@@ -1587,8 +1641,9 @@ namespace Quokka.TCL.Vivado
 		/// by the AXI master they are mapped to. The include_bd_addr_seg restores access to the
 		/// mapped address segment.
 		/// This command returns nothing if successful, or returns an error if it failed.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 973
+		/// See ug835-vivado-tcl-commands.pdf, page 995
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -1615,6 +1670,7 @@ namespace Quokka.TCL.Vivado
 		/// a target part. Refer to the current_board_part command for more information.
 		/// The command returns the name of the example design used and a transcript of commands; or it
 		/// returns an error if it fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example creates a new project as specified, overwriting an existing project of the
 		/// same name if one is found, specifies the BOARD_PART property for the project, creates a new
@@ -1627,6 +1683,7 @@ namespace Quokka.TCL.Vivado
 		/// [lindex [get_example_designs] 1]
 		/// This example reports the configurable properties of the specified example design:
 		/// report_property [lindex [get_example_designs] 3] CONFIG.*
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// This example creates a new empty project as specified, sets a target BOARD for the project,
 		/// creates and opens a new empty block design, and then instantiates the configurable example
 		/// design:
@@ -1638,7 +1695,7 @@ namespace Quokka.TCL.Vivado
 		/// Local_memory.VALUE 128K }\
 		/// xilinx.com:design:config_mb:1.0
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 977
+		/// See ug835-vivado-tcl-commands.pdf, page 999
 		/// </summary>
 		/// <param name="template">(Required) Configurable Design Name</param>
 		/// <param name="design">(Optional) Block Design Name</param>
@@ -1672,7 +1729,7 @@ namespace Quokka.TCL.Vivado
 		/// instantiate_template_bd_design -design myFirstZynq \
 		/// [lindex [get_template_bd_designs] 1]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 980
+		/// See ug835-vivado-tcl-commands.pdf, page 1002
 		/// </summary>
 		/// <param name="design">(Required) Block Design Name</param>
 		/// <param name="template">(Required) Configurable Design Name</param>
@@ -1701,7 +1758,8 @@ namespace Quokka.TCL.Vivado
 		/// IMPORTANT! For a group of block interface pins, one external port will be created per block interface pin.
 		/// The selected block interface pin, if unconnected, will be connected to a new interface port at the
 		/// top-most level of the block design.
-		/// This command returns TCL_OK if successful, or TCL_ERROR if it fails, unless -quiet is specified.
+		/// This command returns TCL_OK if it is successful, or TCL_ERROR if it fails, unless -quiet is
+		/// specified.
 		///
 		/// The following example will select the specified block interface pin on the bd_cell axi_gpio_0,
 		/// and connect it to an external interface port:
@@ -1710,7 +1768,7 @@ namespace Quokka.TCL.Vivado
 		/// axi_gpio_0 and individually connect them to external interface ports:
 		/// make_bd_intf_pins_external [get_bd_cells axi_gpio_0]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1030
+		/// See ug835-vivado-tcl-commands.pdf, page 1053
 		/// </summary>
 		/// <param name="objects">(Required) The interface pins/cells to be made external</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -1735,7 +1793,8 @@ namespace Quokka.TCL.Vivado
 		/// IMPORTANT! For a group of block pins, one external port will be created per block pin.
 		/// The selected block pin, if unconnected, will be connected to a new port at the topmost level of
 		/// the block design.
-		/// This command returns TCL_OK if successful, or TCL_ERROR if it fails, unless -quiet is specified.
+		/// This command returns TCL_OK if it is successful, or TCL_ERROR if it fails, unless -quiet is
+		/// specified.
 		///
 		/// The following example will select a block pin on the bd_cell axi_gpio_0 and connect it to an
 		/// external port:
@@ -1744,7 +1803,7 @@ namespace Quokka.TCL.Vivado
 		/// individually connect them to external ports:
 		/// make_bd_pins_external [get_bd_cells axi_gpio_0]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1032
+		/// See ug835-vivado-tcl-commands.pdf, page 1055
 		/// </summary>
 		/// <param name="objects">(Required) The pins/cells to be made external</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -1773,7 +1832,7 @@ namespace Quokka.TCL.Vivado
 		/// This command returns the name of the <parent_cell> module when successful, or returns an
 		/// error message if it failed.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1043
+		/// See ug835-vivado-tcl-commands.pdf, page 1066
 		/// </summary>
 		/// <param name="prefix">(Optional) Prefix name to add to cells</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -1802,7 +1861,7 @@ namespace Quokka.TCL.Vivado
 		/// open_bd_design C:/Data/project1/project1.src/sources_1/bd/design_1/
 		/// design_1.bd
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1050
+		/// See ug835-vivado-tcl-commands.pdf, page 1073
 		/// </summary>
 		/// <param name="name">(Required) Name of IP subsystem design to open</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -1822,8 +1881,9 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Read the specified IP subsystem design files, or block designs, into the current project or the in￾memory design. This command is similar to the add_files command. The block design file is
 		/// added to the source fileset as it is read.
-		/// RECOMMENDED: Files are read and referenced from their current location, and are not moved into the local
-		/// project directories. To bring the file into the local project, use the import_files command instead.
+		/// RECOMMENDED: Files are read and referenced from their current location, and are not moved into the
+		/// local project directories. To bring the file into the local project, use the import_files command
+		/// instead.
 		/// You can use this command to read block designs into the in-memory design, when running the
 		/// Vivado tool in Non Project mode, in which there is no project file to maintain and manage the
 		/// various project source files. Refer to the Vivado Design Suite User Guide: Design Flows Overview
@@ -1834,7 +1894,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example reads the specified IP subsystem design into the current project:
 		/// read_bd C:/Data/block_designs/design1.bd
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1130
+		/// See ug835-vivado-tcl-commands.pdf, page 1151
 		/// </summary>
 		/// <param name="files">(Required) IPIntegrator design file name(s)</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -1856,7 +1916,7 @@ namespace Quokka.TCL.Vivado
 		/// command updates and redraws the graphical elements of the subsystem design in the Vivado
 		/// IDE.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1200
+		/// See ug835-vivado-tcl-commands.pdf, page 1224
 		/// </summary>
 		/// <param name="hierarchy">(Optional) Hierarchy path to the window</param>
 		/// <param name="layout_file">(Optional) layout file previously exported by write_bd_layout using native format</param>
@@ -1884,9 +1944,10 @@ namespace Quokka.TCL.Vivado
 		/// on the cell are preserved where possible, and result in a Critical Warning when connections must
 		/// be removed.
 		/// IMPORTANT! This command is not supported by the UNDO command.
-		/// This command returns TCL_OK if successful, or returns TCL_ERROR if it fails.
+		/// This command returns TCL_OK if it is successful, or returns TCL_ERROR if it fails.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1261
+		/// See ug835-vivado-tcl-commands.pdf, page 1288
 		/// </summary>
 		/// <param name="cell1">(Required) Cell with connections that are to be disconnected.</param>
 		/// <param name="preserve_name">(Optional) cell2 will rename as cell1's name, cell1 rename as cell1name_old</param>
@@ -1908,9 +1969,10 @@ namespace Quokka.TCL.Vivado
 		/// TCL Syntax: report_bd_diffs [-format <arg>] [-file <arg>] [-open_html] [-brief] [-strict] [-fast] [-return_string] [-depth <arg>] [-crossprobe] [-repository <arg>] [-take_snapshot] [-diff_snapshot] [-quiet] [-verbose] <design1> <design2>
 		///
 		/// Analyze and report the difference between two block design files (.bd).
-		/// TIP: There is also a standalone version of this command, diffbd, that can be run from the command line. You
-		/// can find out more information about this command by typing diffbd -h from the command line. Refer to the
-		/// Vivado Design Suite User Guide: Designing IP Subsystems using IP Integrator (UG994) for more informaiton.
+		/// TIP: There is also a standalone version of this command, diffbd , that can be run from the command
+		/// line. You can find out more information about this command by typing diffbd -h from the command
+		/// line. Refer to the Vivado Design Suite User Guide: Designing IP Subsystems using IP Integrator (UG994) for
+		/// more informaiton.
 		/// This command performs a non-graphical comparison of two block designs to let you compare
 		/// revisions of a block design from within revision control systems. Block designs must be specified
 		/// as BD objects, as returned by current_bd_design, or get_bd_designs commands. The
@@ -1930,7 +1992,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example takes a snapshot of the current open block design:
 		/// report_bd_diffs -take_snapshot
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1264
+		/// See ug835-vivado-tcl-commands.pdf, page 1291
 		/// </summary>
 		/// <param name="design1">(Required) Name or file path of first block design to compare</param>
 		/// <param name="design2">(Required) Name or file path of second block design to compare</param>
@@ -1977,12 +2039,12 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Saves any changes to the current or specified IP subsystem design in the IP integrator of the
 		/// Vivado Design Suite.
-		/// This command returns TCL_OK if successful, or TCL_ERROR if it fails.
+		/// This command returns TCL_OK if it is successful, or TCL_ERROR if it fails.
 		///
 		/// The following example saves the current IP subsystem design in the current project:
 		/// save_bd_design
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1534
+		/// See ug835-vivado-tcl-commands.pdf, page 1567
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -2011,7 +2073,7 @@ namespace Quokka.TCL.Vivado
 		/// to the specified name:
 		/// save_bd_design_as -dir C:/Data new_Block
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1536
+		/// See ug835-vivado-tcl-commands.pdf, page 1569
 		/// </summary>
 		/// <param name="dir">
 		/// (Optional)
@@ -2050,7 +2112,7 @@ namespace Quokka.TCL.Vivado
 		/// and other cells are maintained automatically by removing unneeded subsystem ports and pins.
 		/// This command returns 0 if successful, or an error message if it fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1715
+		/// See ug835-vivado-tcl-commands.pdf, page 1748
 		/// </summary>
 		/// <param name="cells">(Required) Match engine names against cell names Default: *</param>
 		/// <param name="prefix">(Optional) Prefix name to add to cells</param>
@@ -2061,6 +2123,37 @@ namespace Quokka.TCL.Vivado
 		{
 			// TCL Syntax: ungroup_bd_cells [-prefix <arg>] [-quiet] [-verbose] [<cells>...]
 			_tcl.Entry(_builder.ungroup_bd_cells(cells, prefix, quiet, verbose));
+			return _tcl;
+		}
+		/// <summary>
+		/// update the boundary of source designs of a specified block design container cell from its active
+		/// variant source design or a specified design. Otherwise, update the boundary of a block design
+		/// from another block design provided
+		///
+		///
+		/// TCL Syntax: update_bd_boundaries [-from_bd <arg>] [-check_only] [-quiet] [-verbose] [<of_objects>...]
+		///
+		/// See ug835-vivado-tcl-commands.pdf, page 1760
+		/// </summary>
+		/// <param name="from_bd">(Optional) block design to copy the boundary from</param>
+		/// <param name="check_only">
+		/// (Optional)
+		/// report only the changes made when the boundary is copied,
+		/// do not save the changes to disk
+		/// </param>
+		/// <param name="quiet">(Optional) Ignore command errors</param>
+		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
+		/// <param name="of_objects">
+		/// (Optional)
+		/// One or a list of block design container cells enabled for
+		/// Dynamic Function Exchange or block desing names. List
+		/// must be of one object type.
+		/// </param>
+		/// <returns>TCL_OK on success, TCL_ERROR on failure.</returns>
+		public TTCL update_bd_boundaries(string from_bd = null, bool? check_only = null, bool? quiet = null, bool? verbose = null, string of_objects = null)
+		{
+			// TCL Syntax: update_bd_boundaries [-from_bd <arg>] [-check_only] [-quiet] [-verbose] [<of_objects>...]
+			_tcl.Entry(_builder.update_bd_boundaries(from_bd, check_only, quiet, verbose, of_objects));
 			return _tcl;
 		}
 		/// <summary>
@@ -2075,7 +2168,7 @@ namespace Quokka.TCL.Vivado
 		/// This command returns the list of IP integrator cells that were upgraded, or returns an error if it
 		/// fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1752
+		/// See ug835-vivado-tcl-commands.pdf, page 1786
 		/// </summary>
 		/// <param name="objects">(Required) IPIntegrator cells to be upgraded</param>
 		/// <param name="latest">(Optional) Upgrade the IPIntegrator block to the latest version</param>
@@ -2100,7 +2193,7 @@ namespace Quokka.TCL.Vivado
 		/// if needed:
 		/// validate_bd_design -force
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1760
+		/// See ug835-vivado-tcl-commands.pdf, page 1794
 		/// </summary>
 		/// <param name="force">(Optional) Force re-run validation on the design</param>
 		/// <param name="design">
@@ -2122,20 +2215,21 @@ namespace Quokka.TCL.Vivado
 		/// Export the current design to a Tcl file on disk.
 		///
 		///
-		/// TCL Syntax: write_bd_tcl [-force] [-bd_name <arg>] [-no_mig_contents] [-no_ip_version] [-ignore_minor_versions] [-bd_folder <arg>] [-check_ips <arg>] [-hier_blks <arg>] [-include_layout] [-exclude_layout] [-make_local] [-no_project_wrapper] [-exclude_pfm] [-quiet] [-verbose] <tcl_filename>
+		/// TCL Syntax: write_bd_tcl [-force] [-bd_name <arg>] [-no_mig_contents] [-no_ip_version] [-ignore_minor_versions] [-bd_folder <arg>] [-check_ips <arg>] [-hier_blks <arg>] [-include_layout] [-exclude_layout] [-make_local] [-no_project_wrapper] [-exclude_pfm] [-updated_pfm_attrs] [-quiet] [-verbose] <tcl_filename>
 		///
 		/// Export the current IP integrator subsystem design as a Tcl script file to the disk.
-		/// IMPORTANT! Any directory in the path specified by the <name> option must already exist, or the script will
-		/// not be created.
+		/// IMPORTANT! Any directory in the path specified by the <name> option must already exist, or the script
+		/// will not be created.
 		/// The Tcl script file lets you recreate, reuse, and customize IP integrator subsystem designs without
 		/// having to archive the original subsystem design.
 		/// When working with a new software release, you must use the output script from the
 		/// write_bd_tcl command to create a block design in the same software release as the Tcl script
 		/// was generated. This ensures the availability of the needed versions of any IP used in the script.
 		/// You can then migrate the created block design into a new software release.
-		/// This command returns TCL_OK if successful, or TCL_ERROR if it fails, unless -quiet is specified.
+		/// This command returns TCL_OK if it is successful, or TCL_ERROR if it fails, unless -quiet is
+		/// specified.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1783
+		/// See ug835-vivado-tcl-commands.pdf, page 1820
 		/// </summary>
 		/// <param name="tcl_filename">(Required) Name of exported Tcl file</param>
 		/// <param name="force">(Optional) Flag to overwrite existing file.</param>
@@ -2190,6 +2284,8 @@ namespace Quokka.TCL.Vivado
 		/// By default will NOT include the GUI layout of the design. Use
 		/// this argument to include the layout information in the
 		/// generated Tcl script.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// Name Description
 		/// </param>
 		/// <param name="exclude_layout">
 		/// (Optional)
@@ -2197,7 +2293,6 @@ namespace Quokka.TCL.Vivado
 		/// is currently supported for backwards compatibility. Use this
 		/// argument to not include the layout information in the
 		/// generated Tcl script.
-		/// Name Description
 		/// </param>
 		/// <param name="make_local">(Optional) Use this flag when you want to write your remote BD out as a local BD.</param>
 		/// <param name="no_project_wrapper">
@@ -2206,13 +2301,18 @@ namespace Quokka.TCL.Vivado
 		/// any project wrapper.
 		/// </param>
 		/// <param name="exclude_pfm">(Optional) Use this flag to exclude pfm attributes for this design</param>
+		/// <param name="updated_pfm_attrs">
+		/// (Optional)
+		/// Use this flag to update the pfms to remove connected
+		/// ports/interfaces from the values.
+		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public TTCL write_bd_tcl(string tcl_filename, bool? force = null, string bd_name = null, bool? no_mig_contents = null, bool? no_ip_version = null, bool? ignore_minor_versions = null, string bd_folder = null, string check_ips = null, string hier_blks = null, bool? include_layout = null, bool? exclude_layout = null, bool? make_local = null, bool? no_project_wrapper = null, bool? exclude_pfm = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_bd_tcl(string tcl_filename, bool? force = null, string bd_name = null, bool? no_mig_contents = null, bool? no_ip_version = null, bool? ignore_minor_versions = null, string bd_folder = null, string check_ips = null, string hier_blks = null, bool? include_layout = null, bool? exclude_layout = null, bool? make_local = null, bool? no_project_wrapper = null, bool? exclude_pfm = null, bool? updated_pfm_attrs = null, bool? quiet = null, bool? verbose = null)
 		{
-			// TCL Syntax: write_bd_tcl [-force] [-bd_name <arg>] [-no_mig_contents] [-no_ip_version] [-ignore_minor_versions] [-bd_folder <arg>] [-check_ips <arg>] [-hier_blks <arg>] [-include_layout] [-exclude_layout] [-make_local] [-no_project_wrapper] [-exclude_pfm] [-quiet] [-verbose] <tcl_filename>
-			_tcl.Entry(_builder.write_bd_tcl(tcl_filename, force, bd_name, no_mig_contents, no_ip_version, ignore_minor_versions, bd_folder, check_ips, hier_blks, include_layout, exclude_layout, make_local, no_project_wrapper, exclude_pfm, quiet, verbose));
+			// TCL Syntax: write_bd_tcl [-force] [-bd_name <arg>] [-no_mig_contents] [-no_ip_version] [-ignore_minor_versions] [-bd_folder <arg>] [-check_ips <arg>] [-hier_blks <arg>] [-include_layout] [-exclude_layout] [-make_local] [-no_project_wrapper] [-exclude_pfm] [-updated_pfm_attrs] [-quiet] [-verbose] <tcl_filename>
+			_tcl.Entry(_builder.write_bd_tcl(tcl_filename, force, bd_name, no_mig_contents, no_ip_version, ignore_minor_versions, bd_folder, check_ips, hier_blks, include_layout, exclude_layout, make_local, no_project_wrapper, exclude_pfm, updated_pfm_attrs, quiet, verbose));
 			return _tcl;
 		}
 	}

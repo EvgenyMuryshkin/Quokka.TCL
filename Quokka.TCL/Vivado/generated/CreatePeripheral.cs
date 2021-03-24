@@ -21,7 +21,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Add an AXI bus interface to a peripheral created with the create_peripheral command.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 55
+		/// See ug835-vivado-tcl-commands.pdf, page 57
 		/// </summary>
 		/// <param name="interface_mode">(Required) Mode of an interface, supported option - master,slave.</param>
 		/// <param name="axi_type">(Required) Type of a axi interface, supported option - lite,full,stream.</param>
@@ -46,7 +46,7 @@ namespace Quokka.TCL.Vivado
 		/// peripheral using the add_peripheral_interface command, and the peripheral has been
 		/// generated using the generate_peripheral command.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 320
+		/// See ug835-vivado-tcl-commands.pdf, page 329
 		/// </summary>
 		/// <param name="vendor">(Required) Vendor, for example xilinx.com</param>
 		/// <param name="library">(Required) Library, for example ip</param>
@@ -75,7 +75,7 @@ namespace Quokka.TCL.Vivado
 		/// written to the IP repository location specified when the IP is created by the
 		/// create_peripheral command, under the name of the IP as specified at creation.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 532
+		/// See ug835-vivado-tcl-commands.pdf, page 545
 		/// </summary>
 		/// <param name="peripheral">(Required) peripheral object</param>
 		/// <param name="driver">(Optional) Generate driver for peripheral.</param>
@@ -102,7 +102,7 @@ namespace Quokka.TCL.Vivado
 		/// peripheral is written to the repository location specified by the create_peripheral
 		/// command, under the name specified at creation.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1838
+		/// See ug835-vivado-tcl-commands.pdf, page 1876
 		/// </summary>
 		/// <param name="peripheral">(Required) Peripheral object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>

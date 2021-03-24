@@ -21,7 +21,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Add an AXI bus interface to a peripheral created with the create_peripheral command.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 55
+		/// See ug835-vivado-tcl-commands.pdf, page 57
 		/// </summary>
 		/// <param name="interface_mode">(Required) Mode of an interface, supported option - master,slave.</param>
 		/// <param name="axi_type">(Required) Type of a axi interface, supported option - lite,full,stream.</param>
@@ -49,10 +49,11 @@ namespace Quokka.TCL.Vivado
 		/// is synthesized, either in the out-of-context flow, or with the top-level design, the compile_c
 		/// command launches Vivado HLS to convert the C source files into RTL, and import the resulting
 		/// RTL sources back into the design prior to synthesis.
-		/// RECOMMENDED: The compile_c command is automatically called by the Vivado Design Suite when it
-		/// encounters IP with C code from the Vivado HLS system. You should not need to manually call this command.
+		/// RECOMMENDED: The compile_c command is automatically called by the Vivado Design Suite when
+		/// it encounters IP with C code from the Vivado HLS system. You should not need to manually call this
+		/// command.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 159
+		/// See ug835-vivado-tcl-commands.pdf, page 164
 		/// </summary>
 		/// <param name="objects">(Required) The objects which need C to RTL conversion</param>
 		/// <param name="force">(Optional) Force generate product state regeneration</param>
@@ -68,7 +69,7 @@ namespace Quokka.TCL.Vivado
 		/// Manage the IP instance Synthesis cache. Lists out the IP Cache entries if no options are specified.
 		///
 		///
-		/// TCL Syntax: config_ip_cache [-use_cache_location <arg>] [-use_project_cache] [-disable_cache] [-clear_output_repo] [-clear_local_cache] [-cache_has_match] [-cache_was_used] [-get_id] [-remove] [-vlnv <arg>] [-old_swvers] [-unused] [-swver <arg>] [-num_days_old <arg>] [-num_days_unused <arg>] [-obs_synth_crc] [-disk_usage_output_repo] [-report] [-rptfile <arg>] [-csvfile <arg>] [-import_from_project] [-filter <arg>] [-regexp] [-nocase] [-purge] [-quiet] [-verbose] [<ip>]
+		/// TCL Syntax: config_ip_cache [-use_cache_location <arg>] [-use_project_cache] [-disable_cache] [-clear_output_repo] [-clear_local_cache] [-cache_has_match] [-cache_was_used] [-get_id] [-get_entry_location <arg>] [-remove] [-vlnv <arg>] [-old_swvers] [-unused] [-swver <arg>] [-num_days_old <arg>] [-num_days_unused <arg>] [-obs_synth_crc] [-disk_usage_output_repo] [-report] [-rptfile <arg>] [-csvfile <arg>] [-zip_cache <arg>] [-import_from_project] [-filter <arg>] [-regexp] [-nocase] [-purge] [-quiet] [-verbose] [<ip>]
 		///
 		/// This command lets you manage the Vivado Design Suite out-of-context (OOC) IP cache. The
 		/// Vivado Design Suite caches the synthesis results for customized OOC IP in an IP repository, so
@@ -81,6 +82,7 @@ namespace Quokka.TCL.Vivado
 		/// including the design checkpoint (DCP), will be copied into the IP synthesis cache for future use.
 		/// TIP: When cached results are used, an information message is displayed in the Tcl console indicating the IP
 		/// cache location used.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// You can specify a repository of cached IP synthesis results either within the current project, or at
 		/// an external location. The location of the IP cache is defined by the IP_OUTPUT_REPO property
 		/// on a project, with the value of a string defining a valid file system directory. You can set this
@@ -98,13 +100,13 @@ namespace Quokka.TCL.Vivado
 		/// the current project.
 		/// The config_ip_cache command should be followed by the update_ip_catalog command
 		/// to read the specified IP cache repository into the Vivado tool.
-		/// TIP: The IP synthesis cache can be enabled, and the cache repository specified, in the Vivado Design Suite IDE
-		/// using the Settings dialog box. Refer to the Vivado Design Suite User Guide: Designing with IP (UG896) for more
-		/// information on using the cache.
+		/// TIP: The IP synthesis cache can be enabled, and the cache repository specified, in the Vivado Design Suite
+		/// IDE using the Settings dialog box. Refer to the Vivado Design Suite User Guide: Designing with IP (UG896)
+		/// for more information on using the cache.
 		/// By default, without any of the arguments specified below, the config_ip_cache command
 		/// returns a list of entries in the IP synthesis cache, or returns an error if it fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 174
+		/// See ug835-vivado-tcl-commands.pdf, page 179
 		/// </summary>
 		/// <param name="use_cache_location">(Optional) Set current project properties to use the specified cache location</param>
 		/// <param name="use_project_cache">
@@ -134,6 +136,7 @@ namespace Quokka.TCL.Vivado
 		/// synthesis results; else '0'.
 		/// </param>
 		/// <param name="get_id">(Optional) Calculate and return IP cache ID string for specified <ip></param>
+		/// <param name="get_entry_location">(Optional) Return directory where this cache-ID entry is located.</param>
 		/// <param name="remove">
 		/// (Optional)
 		/// Remove the corresponding cache entry for the specified IP
@@ -166,13 +169,14 @@ namespace Quokka.TCL.Vivado
 		/// (Optional)
 		/// Used with -purge to delete any cache entries that have not
 		/// been used for this number of days or longer.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// Name Description
 		/// </param>
 		/// <param name="obs_synth_crc">
 		/// (Optional)
 		/// Used with -purge to delete cache entries whose component
 		/// synth checksum is not the same as the IP Catalog's current
 		/// component synthesis checksum.
-		/// Name Description
 		/// </param>
 		/// <param name="disk_usage_output_repo">
 		/// (Optional)
@@ -196,6 +200,11 @@ namespace Quokka.TCL.Vivado
 		/// Used with -report, specifies the csv file to write the cache
 		/// statistics to, in csv format.
 		/// </param>
+		/// <param name="zip_cache">
+		/// (Optional)
+		/// Zip up all cache entries used by the current project and
+		/// write to the given filename.
+		/// </param>
 		/// <param name="import_from_project">(Optional) Import existing synthesized IP from the project into the cache.</param>
 		/// <param name="filter">(Optional) Filter result of '-list'</param>
 		/// <param name="regexp">(Optional) Use regular expressions instead of globs in '-filter' argument(s)</param>
@@ -209,10 +218,10 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="ip">(Optional) IP instance object, IP file, or IP name pattern</param>
-		public TTCL config_ip_cache(string use_cache_location = null, bool? use_project_cache = null, bool? disable_cache = null, bool? clear_output_repo = null, bool? clear_local_cache = null, bool? cache_has_match = null, bool? cache_was_used = null, bool? get_id = null, bool? remove = null, string vlnv = null, bool? old_swvers = null, bool? unused = null, string swver = null, string num_days_old = null, string num_days_unused = null, bool? obs_synth_crc = null, bool? disk_usage_output_repo = null, bool? report = null, string rptfile = null, string csvfile = null, bool? import_from_project = null, string filter = null, bool? regexp = null, bool? nocase = null, bool? purge = null, bool? quiet = null, bool? verbose = null, string ip = null)
+		public TTCL config_ip_cache(string use_cache_location = null, bool? use_project_cache = null, bool? disable_cache = null, bool? clear_output_repo = null, bool? clear_local_cache = null, bool? cache_has_match = null, bool? cache_was_used = null, bool? get_id = null, string get_entry_location = null, bool? remove = null, string vlnv = null, bool? old_swvers = null, bool? unused = null, string swver = null, string num_days_old = null, string num_days_unused = null, bool? obs_synth_crc = null, bool? disk_usage_output_repo = null, bool? report = null, string rptfile = null, string csvfile = null, string zip_cache = null, bool? import_from_project = null, string filter = null, bool? regexp = null, bool? nocase = null, bool? purge = null, bool? quiet = null, bool? verbose = null, string ip = null)
 		{
-			// TCL Syntax: config_ip_cache [-use_cache_location <arg>] [-use_project_cache] [-disable_cache] [-clear_output_repo] [-clear_local_cache] [-cache_has_match] [-cache_was_used] [-get_id] [-remove] [-vlnv <arg>] [-old_swvers] [-unused] [-swver <arg>] [-num_days_old <arg>] [-num_days_unused <arg>] [-obs_synth_crc] [-disk_usage_output_repo] [-report] [-rptfile <arg>] [-csvfile <arg>] [-import_from_project] [-filter <arg>] [-regexp] [-nocase] [-purge] [-quiet] [-verbose] [<ip>]
-			_tcl.Entry(_builder.config_ip_cache(use_cache_location, use_project_cache, disable_cache, clear_output_repo, clear_local_cache, cache_has_match, cache_was_used, get_id, remove, vlnv, old_swvers, unused, swver, num_days_old, num_days_unused, obs_synth_crc, disk_usage_output_repo, report, rptfile, csvfile, import_from_project, filter, regexp, nocase, purge, quiet, verbose, ip));
+			// TCL Syntax: config_ip_cache [-use_cache_location <arg>] [-use_project_cache] [-disable_cache] [-clear_output_repo] [-clear_local_cache] [-cache_has_match] [-cache_was_used] [-get_id] [-get_entry_location <arg>] [-remove] [-vlnv <arg>] [-old_swvers] [-unused] [-swver <arg>] [-num_days_old <arg>] [-num_days_unused <arg>] [-obs_synth_crc] [-disk_usage_output_repo] [-report] [-rptfile <arg>] [-csvfile <arg>] [-zip_cache <arg>] [-import_from_project] [-filter <arg>] [-regexp] [-nocase] [-purge] [-quiet] [-verbose] [<ip>]
+			_tcl.Entry(_builder.config_ip_cache(use_cache_location, use_project_cache, disable_cache, clear_output_repo, clear_local_cache, cache_has_match, cache_was_used, get_id, get_entry_location, remove, vlnv, old_swvers, unused, swver, num_days_old, num_days_unused, obs_synth_crc, disk_usage_output_repo, report, rptfile, csvfile, zip_cache, import_from_project, filter, regexp, nocase, purge, quiet, verbose, ip));
 			return _tcl;
 		}
 		/// <summary>
@@ -231,9 +240,10 @@ namespace Quokka.TCL.Vivado
 		/// lets you revert the compressed core container format into the expanded non-core container
 		/// format.
 		/// TIP: If neither -to_core_container or -from_core_container options are specified then the
-		/// convert_ips command will convert the IP from its current format into the opposite form. Any core container
-		/// IP will be converted to non-core container format, and any non-core container IP will be converted to core
-		/// container format.
+		/// convert_ips command will convert the IP from its current format into the opposite form. Any core
+		/// container IP will be converted to non-core container format, and any non-core container IP will be
+		/// converted to core container format.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// IP that is user-managed, cannot be converted from its current format. IP that is locked requires
 		/// the use of the -force option to convert. Refer to the Vivado Design Suite User Guide: Designing
 		/// with IP (UG896) for more information on editing IP and the IS_LOCKED and IS_MANAGED
@@ -249,8 +259,9 @@ namespace Quokka.TCL.Vivado
 		/// The following example toggles the current format of all IP in the design, switching from core
 		/// container to non-core container, and from non-core container to core container:
 		/// convert_ips [get_ips]
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 205
+		/// See ug835-vivado-tcl-commands.pdf, page 210
 		/// </summary>
 		/// <param name="objects">(Required) Input objects for the IP. May IP or source file objects</param>
 		/// <param name="force">(Optional) Force conversion even if the IP is locked.</param>
@@ -272,7 +283,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Create a copy of an IP core that has been previously instanced into the current project.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 213
+		/// See ug835-vivado-tcl-commands.pdf, page 218
 		/// </summary>
 		/// <param name="name">(Required) Name of copied IP</param>
 		/// <param name="objects">(Required) IP to be copied</param>
@@ -302,6 +313,7 @@ namespace Quokka.TCL.Vivado
 		/// For multiple instances of the same core, simply instantiate the core module into the HDL design
 		/// as many times as needed. However, to use the same IP core with different customizations, use
 		/// the create_ip command to create separate IP source objects.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The create_ip command is used to import IP cores from the current IP catalog. Use the
 		/// import_ip command to read existing XCI and XCO files directly, without having to add IP to a
 		/// catalog.
@@ -329,7 +341,7 @@ namespace Quokka.TCL.Vivado
 		/// [get_files C:/Data/c_addsub_v11_0_0/c_addsub_v11_0_0.xci \
 		/// -of_objects [get_filesets sources_1]]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 307
+		/// See ug835-vivado-tcl-commands.pdf, page 316
 		/// </summary>
 		/// <param name="module_name">(Required) Name for the new IP that will be added to the project</param>
 		/// <param name="vlnv">
@@ -377,7 +389,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example creates synthesis and implementation runs for the specified IP module:
 		/// create_ip_run [get_ips add1]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 310
+		/// See ug835-vivado-tcl-commands.pdf, page 319
 		/// </summary>
 		/// <param name="objects">
 		/// (Required)
@@ -404,7 +416,7 @@ namespace Quokka.TCL.Vivado
 		/// peripheral using the add_peripheral_interface command, and the peripheral has been
 		/// generated using the generate_peripheral command.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 320
+		/// See ug835-vivado-tcl-commands.pdf, page 329
 		/// </summary>
 		/// <param name="vendor">(Required) Vendor, for example xilinx.com</param>
 		/// <param name="library">(Required) Library, for example ip</param>
@@ -435,15 +447,16 @@ namespace Quokka.TCL.Vivado
 		/// output products created by the run and copied to the IP sources folder, the DCP file and Verilog
 		/// and VHDL structural netlists, are not deleted from the project. You must use the reset_target
 		/// or generate_target command to update the IP output products.
-		/// IMPORTANT! The command requires an IP object as specified by the get_ips or get_files command,
-		/// and will not delete a run based on either the name of the run, or a run object as returned by get_runs.
+		/// IMPORTANT! The command requires an IP object as specified by the get_ips or get_files
+		/// command, and will not delete a run based on either the name of the run, or a run object as returned by
+		/// get_runs.
 		///
 		/// The following example deletes the OOC synthesis and implementation runs from the specified IP
 		/// module:
 		/// delete_ip_run [get_ips add1]
 		/// Note: In this example, all run results will also be removed from the run directory on the hard drive.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 446
+		/// See ug835-vivado-tcl-commands.pdf, page 457
 		/// </summary>
 		/// <param name="objects">
 		/// (Required)
@@ -475,7 +488,7 @@ namespace Quokka.TCL.Vivado
 		/// specified base directory:
 		/// extract_files -base_dir C:/Data [get_files char_fifo.xcix]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 513
+		/// See ug835-vivado-tcl-commands.pdf, page 524
 		/// </summary>
 		/// <param name="files">(Required) Name of the file(s) to be extracted</param>
 		/// <param name="base_dir">(Optional) Base directory for extracted files Default: ip_files</param>
@@ -501,7 +514,7 @@ namespace Quokka.TCL.Vivado
 		/// written to the IP repository location specified when the IP is created by the
 		/// create_peripheral command, under the name of the IP as specified at creation.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 532
+		/// See ug835-vivado-tcl-commands.pdf, page 545
 		/// </summary>
 		/// <param name="peripheral">(Required) peripheral object</param>
 		/// <param name="driver">(Optional) Generate driver for peripheral.</param>
@@ -539,20 +552,21 @@ namespace Quokka.TCL.Vivado
 		/// The following example generates the instantiation template and synthesis targets for all of the IP
 		/// cores in the current project:
 		/// generate_target {instantiation_template synthesis} [get_ips]
-		/// TIP: Note the use of the braces to pass the list of targets to the command. The absence of the -force option
-		/// means that only out-of-date targets will be regenerated.
+		/// TIP: Note the use of the braces to pass the list of targets to the command. The absence of the -force
+		/// option means that only out-of-date targets will be regenerated.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The following example generates all targets for the specified block design:
 		/// generate_target all \
 		/// [get_files C:/Data/project_mb/project_mb.srcs/sources_1/bd/base_mb/
 		/// base_mb.bd]
-		/// IMPORTANT! The use of get_ips is not supported to generate targets for individual IP within block designs.
-		/// The tool will return an error.
+		/// IMPORTANT! The use of get_ips is not supported to generate targets for individual IP within block
+		/// designs. The tool will return an error.
 		/// The following queries the SUPPORTED_TARGETS property of the specified IP object, and then
 		/// generates the example project for the IP:
 		/// get_property SUPPORTED_TARGETS [get_ips blk_mem*]
 		/// open_example_project -dir C:/Data/examples -force [get_ips blk_mem*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 539
+		/// See ug835-vivado-tcl-commands.pdf, page 552
 		/// </summary>
 		/// <param name="name">
 		/// (Required)
@@ -583,7 +597,7 @@ namespace Quokka.TCL.Vivado
 		/// This command returns the upgrade_log file names of the specified IP objects, or returns an error
 		/// if it fails.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 786
+		/// See ug835-vivado-tcl-commands.pdf, page 806
 		/// </summary>
 		/// <param name="srcset">
 		/// (Optional)
@@ -629,15 +643,17 @@ namespace Quokka.TCL.Vivado
 		/// The following example filters the above results with the DESIGN_TOOL_CONTEXTS property to
 		/// return only the IP integrator IP:
 		/// get_ipdefs -all *axi_interconnect* -filter {DESIGN_TOOL_CONTEXTS =~*IPI*}
-		/// TIP: By filtering on the DESIGN_TOOL_CONTEXTS property, you can identify IP from the IP integrator catalog
-		/// instead of the Vivado tools standard catalog.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// TIP: By filtering on the DESIGN_TOOL_CONTEXTS property, you can identify IP from the IP integrator
+		/// catalog instead of the Vivado tools standard catalog.
 		/// In some cases, where multiple versions of an IP are returned, you can also filter on the
 		/// UPGRADE_VERSIONS property to get as specific version or the latest IP version, as shown in the
 		/// following example:
 		/// get_ipdefs -all *axi_interconnect* -filter {UPGRADE_VERSIONS == ""}
-		/// TIP: The {UPGRADE_VERSIONS == ""} filter returns IP defs that have no upgrade, and so are the latest version.
+		/// TIP: The {UPGRADE_VERSIONS == ""} filter returns IP defs that have no upgrade, and so are the latest
+		/// version.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 788
+		/// See ug835-vivado-tcl-commands.pdf, page 808
 		/// </summary>
 		/// <param name="name">(Optional) Match the pattern against IP display name instead of VLNV</param>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
@@ -672,11 +688,12 @@ namespace Quokka.TCL.Vivado
 		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
 		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
 		/// or string, to the list is not permitted and will result in a Tcl error.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example returns a list of IP cores with names beginning with the string "EDK":
 		/// get_ips EDK*
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 792
+		/// See ug835-vivado-tcl-commands.pdf, page 812
 		/// </summary>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
 		/// <param name="nocase">(Optional) Perform case-insensitive matching</param>
@@ -716,7 +733,7 @@ namespace Quokka.TCL.Vivado
 		/// name of IP_block1:
 		/// import_ip C:/Data/FPGA_Design/10gig_eth.xci -name IP_block1
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 965
+		/// See ug835-vivado-tcl-commands.pdf, page 987
 		/// </summary>
 		/// <param name="srcset">
 		/// (Optional)
@@ -758,7 +775,7 @@ namespace Quokka.TCL.Vivado
 		/// core in a new location:
 		/// open_example_project -dir C:/Data/examples -force [get_ips blk_mem*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1054
+		/// See ug835-vivado-tcl-commands.pdf, page 1077
 		/// </summary>
 		/// <param name="objects">(Required) The objects whose example projects will be opened</param>
 		/// <param name="dir">(Optional) Path to directory where example project will be created</param>
@@ -787,18 +804,19 @@ namespace Quokka.TCL.Vivado
 		/// Overview (UG892) for more information on Non Project mode.
 		/// When using the read_ip command all output products associated with the IP core, including
 		/// the design checkpoint file (DCP) will be read into the in-memory design.
-		/// TIP: In the project-based design flow, the Vivado tool will automatically generate the necessary output products
-		/// associated with an IP core. However, in a non-project flow you must generate the necessary output products
-		/// using the synth_ip or generate_target commands. For more information on working with IP refer to the
-		/// Vivado Design Suite User Guide: Designing with IP (UG896).
+		/// TIP: In the project-based design flow, the Vivado tool will automatically generate the necessary output
+		/// products associated with an IP core. However, in a non-project flow you must generate the necessary
+		/// output products using the synth_ip or generate_target commands. For more information on
+		/// working with IP refer to the Vivado Design Suite User Guide: Designing with IP (UG896).
 		/// Use the import_ip command to add the IP cores and import the files into the local project
 		/// directory.
 		/// This command returns the list of files read.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		///
 		/// The following example reads the specified IP files:
 		/// read_ip C:/test_ip/char_fifo.xci
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1146
+		/// See ug835-vivado-tcl-commands.pdf, page 1167
 		/// </summary>
 		/// <param name="files">(Required) IP file name(s)</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -824,6 +842,7 @@ namespace Quokka.TCL.Vivado
 		/// • Lock Status - An explanation of the lock status of the IP in the current project.
 		/// • Change Log - A reference to the change log for the IP update in the catalog. This will provide a
 		/// description of the changes in the latest IP.
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// • IP Name - The name of the IP core in the catalog.
 		/// • IP Version - The version of the IP in use in the current project.
 		/// • New Version - The latest version of the IP in the catalog.
@@ -841,7 +860,7 @@ namespace Quokka.TCL.Vivado
 		/// already exists:
 		/// report_ip_status -file C:/Data/reports/ip_status.txt -append
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1356
+		/// See ug835-vivado-tcl-commands.pdf, page 1386
 		/// </summary>
 		/// <param name="name">
 		/// (Optional)
@@ -879,7 +898,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example resets the instantiation template for the specified IP core:
 		/// reset_target instantiation_template [get_ips blk_mem*]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1488
+		/// See ug835-vivado-tcl-commands.pdf, page 1521
 		/// </summary>
 		/// <param name="name">(Required) List of targets to be reset, or 'all' to reset all generated targets</param>
 		/// <param name="objects">(Required) The objects for which data needs to be reset</param>
@@ -902,7 +921,8 @@ namespace Quokka.TCL.Vivado
 		/// in the OOC hierarchical design flow. IP objects are specified by the get_ips command, or for
 		/// the specified IP core file (XCI) as specified by the get_files command.
 		/// IMPORTANT! To enable this functionality, the IP core must be marked for OOC generation by setting the
-		/// GENERATE_SYNTH_CHECKPOINT property to true (or 1) using the set_property command on the XCI file.
+		/// GENERATE_SYNTH_CHECKPOINT property to true (or 1) using the set_property command on the
+		/// XCI file.
 		/// For project-based designs you would use the create_ip_run and launch_runs commands.
 		/// Refer to the Vivado Design Suite User Guide: Design Flows Overview (UG892) for more information
 		/// on Project and Non-Project Modes in Vivado.
@@ -915,7 +935,7 @@ namespace Quokka.TCL.Vivado
 		/// synthesized core is up-to-date:
 		/// synth_ip [get_ips char_fifo] -force
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1709
+		/// See ug835-vivado-tcl-commands.pdf, page 1742
 		/// </summary>
 		/// <param name="objects">(Required) All the objects for which a netlist needs to be generated for.</param>
 		/// <param name="force">(Optional) Force regeneration of the netlist.</param>
@@ -942,8 +962,8 @@ namespace Quokka.TCL.Vivado
 		/// The update_ip_catalog command lets you add, delete, disable, or enable individual IP cores
 		/// in the catalog. When referring to individual cores, you can reference them by the path to the
 		/// component.xml file, or by referencing the VLNV property of the IP.
-		/// TIP: The VLNV property refers to the Vendor:Library:Name:Version string which uniquely identifies the IP in the
-		/// catalog.
+		/// TIP: The VLNV property refers to the Vendor:Library:Name:Version string which uniquely identifies the IP
+		/// in the catalog.
 		/// This command returns a transcript of its process if successful, or returns an error if it fails.
 		///
 		/// The following example sets the IP_REPO_PATHS property of the current Source fileset, to add an
@@ -958,7 +978,7 @@ namespace Quokka.TCL.Vivado
 		/// update_ip_catalog -disable_ip C:/Data/ip/custom_encoder_1/component.xml \
 		/// -repo_path C:/Xilinx/Vivado/data/ip
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1738
+		/// See ug835-vivado-tcl-commands.pdf, page 1772
 		/// </summary>
 		/// <param name="rebuild">
 		/// (Optional)
@@ -1031,7 +1051,7 @@ namespace Quokka.TCL.Vivado
 		/// The following example updates the specified module references in the current design:
 		/// update_module_reference {rtlRam_0 uart_0}
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1745
+		/// See ug835-vivado-tcl-commands.pdf, page 1779
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -1057,14 +1077,15 @@ namespace Quokka.TCL.Vivado
 		/// IP catalog.
 		/// You can only upgrade IP that explicitly supports upgrading. The UPGRADE_VERSIONS property
 		/// on the ipdef object indicates if there are upgrade versions for an IP core.
-		/// TIP: The upgrade_ip command also accepts Block Design cell IP instances as bd_cell objects. The command
-		/// upgrades the bd_cell objects within the Block Design, and does not require the diagram to be open in the Vivado
-		/// IP integrator .
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// TIP: The upgrade_ip command also accepts Block Design cell IP instances as bd_cell objects. The
+		/// command upgrades the bd_cell objects within the Block Design, and does not require the diagram to be
+		/// open in the Vivado IP integrator .
 		///
 		/// The following example upgrades all IP cores in the current project to the latest version:
 		/// upgrade_ip [get_ips]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1754
+		/// See ug835-vivado-tcl-commands.pdf, page 1788
 		/// </summary>
 		/// <param name="objects">
 		/// (Required)
@@ -1118,7 +1139,7 @@ namespace Quokka.TCL.Vivado
 		/// representation of the IP.
 		/// validate_ip -save_ip [get_ips]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1764
+		/// See ug835-vivado-tcl-commands.pdf, page 1801
 		/// </summary>
 		/// <param name="save_ip">(Optional) Write IP files on the disk</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -1136,7 +1157,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: write_ip_tcl [-force] [-no_ip_version] [-ip_name <arg>] [-show_defaults] [-multiple_files] [-quiet] [-verbose] [<objects>] [<tcl_filename>...]
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1833
+		/// See ug835-vivado-tcl-commands.pdf, page 1871
 		/// </summary>
 		/// <param name="force">(Optional) Flag to overwrite existing file.</param>
 		/// <param name="no_ip_version">
@@ -1182,7 +1203,7 @@ namespace Quokka.TCL.Vivado
 		/// peripheral is written to the repository location specified by the create_peripheral
 		/// command, under the name specified at creation.
 		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1838
+		/// See ug835-vivado-tcl-commands.pdf, page 1876
 		/// </summary>
 		/// <param name="peripheral">(Required) Peripheral object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
