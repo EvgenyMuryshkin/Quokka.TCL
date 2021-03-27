@@ -21,6 +21,8 @@ namespace Quokka.TCL.SourceGenerator
     class VivadoCommandRecord
     {
         VivadoCommandLog _log;
+        VivadoTCLFixes _fixes;
+
         public VivdoCommandTextLines CommandData;
         public string Name = "";
         public List<string> ShortDescription = new List<string>();
@@ -32,9 +34,10 @@ namespace Quokka.TCL.SourceGenerator
 
         public List<VivadoCommandParameter> orderedParameters => Parameters.Where(c => c is VivadoCommandRequiredParameter).Concat(Parameters.Where(c => c is VivadoCommandOptionalParameter)).ToList();
 
-        public VivadoCommandRecord(VivadoCommandLog log, string name, VivdoCommandTextLines commandData)
+        public VivadoCommandRecord(VivadoCommandLog log, VivadoTCLFixes fixes, string name, VivdoCommandTextLines commandData)
         {
             _log = log;
+            _fixes = fixes;
 
             CommandData = commandData;
             Name = name;
@@ -336,6 +339,10 @@ namespace Quokka.TCL.SourceGenerator
         {
             Description = content;
         }
+
+        bool IsOptionalInFixes(string parameter) => _fixes.Optional.Contains($"{Name}.{parameter}");
+        bool IsRequiredInFixes(string parameter) => _fixes.Required.Contains($"{Name}.{parameter}");
+
         void OnArguments(List<string> content)
         {
             // Syntax and Arguments sections sometimes disagree if parameter is optional or required.
@@ -358,11 +365,21 @@ namespace Quokka.TCL.SourceGenerator
                             case "option":
                             case "optional":
                             case "optional, default":
-                                /*
                                 switch (matchingArg)
                                 {
                                     case VivadoCommandRequiredParameter r:
-                                        fixUsage[matchingArg] = r.MakeOptional();
+                                        if (IsRequiredInFixes(matchingArg.Name))
+                                        {
+                                            // usage matched
+                                        }
+                                        else if (IsOptionalInFixes(matchingArg.Name))
+                                        {
+                                            fixUsage[matchingArg] = r.MakeOptional();
+                                        }
+                                        else
+                                        {
+                                            _log.Command(Name).InconsistentUsage.Add(matchingArg.Name);
+                                        }
                                         break;
                                     case VivadoCommandOptionalParameter o:
                                         // usage matched
@@ -370,7 +387,6 @@ namespace Quokka.TCL.SourceGenerator
                                     default:
                                         throw new Exception($"Unhandled parameter type: {matchingArg}");
                                 }
-                                */
                                 break;
                             case "deprecated":
                                 fixUsage[matchingArg] = null;
@@ -382,8 +398,20 @@ namespace Quokka.TCL.SourceGenerator
                                         // usage matched
                                         break;
                                     case VivadoCommandOptionalParameter o:
-                                        fixUsage[matchingArg] = o.MakeRequired();
-                                        _log.Command(Name).InconsistentUsage.Add(matchingArg.Name);
+                                        if (IsOptionalInFixes(matchingArg.Name))
+                                        {
+                                            // usage matched
+                                        }
+                                        else if (IsRequiredInFixes(matchingArg.Name))
+                                        {
+                                            fixUsage[matchingArg] = o.MakeRequired();
+                                        }
+                                        else
+                                        {
+                                            // default make it required and report inconsistency
+                                            fixUsage[matchingArg] = o.MakeRequired();
+                                            _log.Command(Name).InconsistentUsage.Add(matchingArg.Name);
+                                        }
                                         break;
                                     default:
                                         throw new Exception($"Unhandled parameter type: {matchingArg}");

@@ -2,6 +2,7 @@
 // See VivadoGenerator for implementation
 using System;
 using Quokka.TCL.Tools;
+using System.Collections.Generic;
 namespace Quokka.TCL.Vivado
 {
 	public partial class FeasibilityCommands<TTCL> where TTCL : TCLFile
@@ -234,7 +235,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="of_objects">(Optional) List of QoR suggestion objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_qor_suggestions(string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? no_split = null, bool? report_all_suggestions = null, string cells = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_qor_suggestions(string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? no_split = null, bool? report_all_suggestions = null, TCLParameterList cells = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_qor_suggestions [-file <arg>] [-name <arg>] [-append] [-return_string] [-max_strategies <arg>] [-max_paths <arg>] [-no_split] [-report_all_suggestions] [-cells <args>] [-of_objects <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_qor_suggestions(file, name, append, return_string, max_strategies, max_paths, no_split, report_all_suggestions, cells, of_objects, quiet, verbose));
@@ -303,7 +304,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="of_objects">(Optional) List of QoR suggestion objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL write_qor_suggestions(string file, string strategy_dir = null, string tcl_output_dir = null, bool? force = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_qor_suggestions(string file, string strategy_dir = null, string tcl_output_dir = null, bool? force = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_qor_suggestions [-strategy_dir <arg>] [-tcl_output_dir <arg>] [-force] [-of_objects <args>] [-quiet] [-verbose] <file>
 			_tcl.Entry(_builder.write_qor_suggestions(file, strategy_dir, tcl_output_dir, force, of_objects, quiet, verbose));

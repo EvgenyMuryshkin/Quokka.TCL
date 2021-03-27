@@ -1,7 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Quokka.Rollout;
 using Quokka.TCL.Tools;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -10,6 +12,7 @@ namespace Quokka.TCL.Tests
     public class TCLTestClass
     {
         protected string TestOutputFolder => Path.Combine(RolloutTools.SolutionLocation(), "Quokka.TCL.Tests", "output");
+        protected string TestSourceFolder => Path.Combine(RolloutTools.SolutionLocation(), "Quokka.TCL.Tests", "source");
 
         [TestInitialize]
         public void OnInitialize()
@@ -22,7 +25,35 @@ namespace Quokka.TCL.Tests
 
         protected void SaveTCL(TCLFile tcl)
         {
+            if (tcl == null)
+                throw new NullReferenceException(nameof(tcl));
+
             File.WriteAllText(Path.Combine(TestOutputFolder, $"script.tcl"), tcl.ToString());
+        }
+
+        protected void RunTCL(TCLFile tcl = null)
+        {
+            if (tcl != null)
+                SaveTCL(tcl);
+
+            var process = Process.Start(new ProcessStartInfo()
+            {
+                FileName = "cmd.exe",
+                WorkingDirectory = TestOutputFolder,
+                Arguments = $"/c vivado.bat -mode batch -source script.tcl"
+            });
+
+            File.WriteAllText(Path.Combine(TestOutputFolder, "pid.txt"), $"{process.Id}");
+
+            process.WaitForExit();
+            Assert.AreEqual(0, process.ExitCode);
+
+            var logFile = Path.Combine(TestOutputFolder, "vivado.log");
+            if (File.Exists(logFile))
+            {
+                var lines = File.ReadAllLines(logFile);
+                File.WriteAllLines(logFile, lines);
+            }
         }
 
         protected List<string> LoadTCLLines()

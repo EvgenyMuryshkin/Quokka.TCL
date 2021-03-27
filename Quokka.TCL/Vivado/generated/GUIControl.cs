@@ -2,6 +2,7 @@
 // See VivadoGenerator for implementation
 using System;
 using Quokka.TCL.Tools;
+using System.Collections.Generic;
 namespace Quokka.TCL.Vivado
 {
 	public partial class GUIControlCommands<TTCL> where TTCL : TCLFile
@@ -159,7 +160,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the custom command argument names against patterns Default: *</param>
 		/// <returns>list of custom command argument names</returns>
-		public TTCL get_gui_custom_command_args(string command_name, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_gui_custom_command_args(string command_name, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_gui_custom_command_args -command_name <arg> [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_gui_custom_command_args(command_name, regexp, nocase, quiet, verbose, patterns));
@@ -185,7 +186,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the custom command names against patterns Default: *</param>
 		/// <returns>list of custom command names</returns>
-		public TTCL get_gui_custom_commands(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_gui_custom_commands(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_gui_custom_commands [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_gui_custom_commands(regexp, nocase, quiet, verbose, patterns));
@@ -217,7 +218,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of highlighted objects</returns>
-		public TTCL get_highlighted_objects(string color_index = null, string rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_highlighted_objects(string color_index = null, TCLParameterList rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_highlighted_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.get_highlighted_objects(color_index, rgb, color, quiet, verbose));
@@ -247,7 +248,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of marked objects</returns>
-		public TTCL get_marked_objects(string rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_marked_objects(TCLParameterList rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_marked_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.get_marked_objects(rgb, color, quiet, verbose));
@@ -316,7 +317,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="leaf_cells">(Optional) Leaf cells</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL highlight_objects(string objects, string color_index = null, string rgb = null, string color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null)
+		public TTCL highlight_objects(string objects, string color_index = null, TCLParameterList rgb = null, string color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: highlight_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-leaf_cells] [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.highlight_objects(objects, color_index, rgb, color, leaf_cells, quiet, verbose));
@@ -344,7 +345,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="color">(Optional) Valid values are red green blue magenta yellow cyan and orange</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL mark_objects(string objects, string rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
+		public TTCL mark_objects(string objects, TCLParameterList rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: mark_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.mark_objects(objects, rgb, color, quiet, verbose));
@@ -401,7 +402,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="names">(Required) name of one or more custom command arguments to remove.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL remove_gui_custom_command_args(string command_name, string names, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_gui_custom_command_args(string command_name, TCLParameterList names, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_gui_custom_command_args -command_name <arg> [-quiet] [-verbose] <names>...
 			_tcl.Entry(_builder.remove_gui_custom_command_args(command_name, names, quiet, verbose));
@@ -426,7 +427,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="names">(Required) name of one or more custom commands to remove</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL remove_gui_custom_commands(string names, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_gui_custom_commands(TCLParameterList names, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_gui_custom_commands [-quiet] [-verbose] <names>...
 			_tcl.Entry(_builder.remove_gui_custom_commands(names, quiet, verbose));
@@ -682,7 +683,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) Objects to unhighlight</param>
-		public TTCL unhighlight_objects(string color_index = null, string rgb = null, string color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public TTCL unhighlight_objects(string color_index = null, TCLParameterList rgb = null, string color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: unhighlight_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-leaf_cells] [-quiet] [-verbose] [<objects>]
 			_tcl.Entry(_builder.unhighlight_objects(color_index, rgb, color, leaf_cells, quiet, verbose, objects));
@@ -712,7 +713,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) Objects to unmark</param>
-		public TTCL unmark_objects(string rgb = null, string color = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public TTCL unmark_objects(TCLParameterList rgb = null, string color = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: unmark_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose] [<objects>]
 			_tcl.Entry(_builder.unmark_objects(rgb, color, quiet, verbose, objects));

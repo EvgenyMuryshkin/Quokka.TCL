@@ -2,6 +2,7 @@
 // See VivadoGenerator for implementation
 using System;
 using Quokka.TCL.Tools;
+using System.Collections.Generic;
 namespace Quokka.TCL.Vivado
 {
 	public partial class PowerCommands<TTCL> where TTCL : TCLFile
@@ -203,7 +204,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_power_opt(string cell = null, string file = null, string format = null, string name = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_power_opt(TCLParameterList cell = null, string file = null, string format = null, string name = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_power_opt [-cell <args>] [-file <arg>] [-format <arg>] [-name <arg>] [-append] [-return_string] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_power_opt(cell, file, format, name, append, return_string, quiet, verbose));
@@ -255,7 +256,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL reset_operating_conditions(string voltage = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, string supply_current_budget = null, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_operating_conditions(TCLParameterList voltage = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, TCLParameterList supply_current_budget = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_operating_conditions [-voltage <args>] [-grade] [-process] [-junction_temp] [-ambient_temp] [-thetaja] [-thetasa] [-airflow] [-heatsink] [-thetajb] [-board] [-board_temp] [-board_layers] [-design_power_budget] [-supply_current_budget <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.reset_operating_conditions(voltage, grade, process, junction_temp, ambient_temp, thetaja, thetasa, airflow, heatsink, thetajb, board, board_temp, board_layers, design_power_budget, supply_current_budget, quiet, verbose));
@@ -304,7 +305,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) Objects to reset switching activity on</param>
-		public TTCL reset_switching_activity(bool? @default = null, string type = null, bool? hier = null, bool? all = null, bool? no_deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public TTCL reset_switching_activity(bool? @default = null, TCLParameterList type = null, bool? hier = null, bool? all = null, bool? no_deassert_resets = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
 		{
 			// TCL Syntax: reset_switching_activity [-default] [-type <args>] [-hier] [-all] [-no_deassert_resets] [-quiet] [-verbose] [<objects>...]
 			_tcl.Entry(_builder.reset_switching_activity(@default, type, hier, all, no_deassert_resets, quiet, verbose, objects));
@@ -372,7 +373,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_operating_conditions(string voltage = null, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, string supply_current_budget = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_operating_conditions(TCLParameterList voltage = null, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, TCLParameterList supply_current_budget = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_operating_conditions [-voltage <args>] [-grade <arg>] [-process <arg>] [-junction_temp <arg>] [-ambient_temp <arg>] [-thetaja <arg>] [-thetasa <arg>] [-airflow <arg>] [-heatsink <arg>] [-thetajb <arg>] [-board <arg>] [-board_temp <arg>] [-board_layers <arg>] [-design_power_budget <arg>] [-supply_current_budget <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.set_operating_conditions(voltage, grade, process, junction_temp, ambient_temp, thetaja, thetasa, airflow, heatsink, thetajb, board, board_temp, board_layers, design_power_budget, supply_current_budget, quiet, verbose));
@@ -430,7 +431,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_power_opt(string include_cells = null, string exclude_cells = null, string clocks = null, string cell_types = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_power_opt(TCLParameterList include_cells = null, TCLParameterList exclude_cells = null, TCLParameterList clocks = null, TCLParameterList cell_types = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_power_opt [-include_cells <args>] [-exclude_cells <args>] [-clocks <args>] [-cell_types <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.set_power_opt(include_cells, exclude_cells, clocks, cell_types, quiet, verbose));
@@ -542,7 +543,7 @@ namespace Quokka.TCL.Vivado
 		/// Objects to set switching activity on
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
-		public TTCL set_switching_activity(string toggle_rate = null, string default_toggle_rate = null, string type = null, bool? all = null, string static_probability = null, string default_static_probability = null, string signal_rate = null, bool? hier = null, bool? deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public TTCL set_switching_activity(string toggle_rate = null, string default_toggle_rate = null, TCLParameterList type = null, bool? all = null, string static_probability = null, string default_static_probability = null, string signal_rate = null, bool? hier = null, bool? deassert_resets = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
 		{
 			// TCL Syntax: set_switching_activity [-toggle_rate <arg>] [-default_toggle_rate <arg>] [-type <args>] [-all] [-static_probability <arg>] [-default_static_probability <arg>] [-signal_rate <arg>] [-hier] [-deassert_resets] [-quiet] [-verbose] [<objects>...]
 			_tcl.Entry(_builder.set_switching_activity(toggle_rate, default_toggle_rate, type, all, static_probability, default_static_probability, signal_rate, hier, deassert_resets, quiet, verbose, objects));

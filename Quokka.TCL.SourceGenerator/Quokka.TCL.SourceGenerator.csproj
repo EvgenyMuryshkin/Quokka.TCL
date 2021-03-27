@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\docs\ug835-vivado-tcl-commands.json" Link="fixes\ug835-vivado-tcl-commands.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Docnet.Core" Version="2.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
@@ -19,6 +23,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Quokka.TCL.Tools\Quokka.TCL.Tools.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="fixes\" />
   </ItemGroup>
 
 </Project>

@@ -2,6 +2,7 @@
 // See VivadoGenerator for implementation
 using System;
 using Quokka.TCL.Tools;
+using System.Collections.Generic;
 namespace Quokka.TCL.Vivado
 {
 	public partial class PinPlanningCommands<TTCL> where TTCL : TCLFile
@@ -113,7 +114,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="all">(Optional) Also remove all of the ports and buses belonging to the interface</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_interface(string interfaces, bool? all = null, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_interface(TCLParameterList interfaces, bool? all = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_interface [-all] [-quiet] [-verbose] <interfaces>...
 			_tcl.Entry(_builder.delete_interface(interfaces, all, quiet, verbose));
@@ -139,7 +140,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="ports">(Required) Ports to join</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL make_diff_pair_ports(string ports, bool? quiet = null, bool? verbose = null)
+		public TTCL make_diff_pair_ports(TCLParameterList ports, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: make_diff_pair_ports [-quiet] [-verbose] <ports>...
 			_tcl.Entry(_builder.make_diff_pair_ports(ports, quiet, verbose));
@@ -179,7 +180,7 @@ namespace Quokka.TCL.Vivado
 		/// arguments are interleaved objects of ports and package
 		/// pins, then manual placement is performed
 		/// </param>
-		public TTCL place_ports(bool? skip_unconnected_ports = null, bool? check_only = null, string iobank = null, bool? quiet = null, bool? verbose = null, string ports = null)
+		public TTCL place_ports(bool? skip_unconnected_ports = null, bool? check_only = null, TCLParameterList iobank = null, bool? quiet = null, bool? verbose = null, TCLParameterList ports = null)
 		{
 			// TCL Syntax: place_ports [-skip_unconnected_ports] [-check_only] [-iobank <args>] [-quiet] [-verbose] [<ports>...]
 			_tcl.Entry(_builder.place_ports(skip_unconnected_ports, check_only, iobank, quiet, verbose, ports));
@@ -217,7 +218,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="ports">(Required) Ports and/or bus ports to remove</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL remove_port(string ports, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_port(TCLParameterList ports, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_port [-quiet] [-verbose] <ports>...
 			_tcl.Entry(_builder.remove_port(ports, quiet, verbose));
@@ -261,7 +262,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="to">(Optional) New ending bus index</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL resize_port_bus(string port_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		public TTCL resize_port_bus(TCLParameterList port_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: resize_port_bus [-from <arg>] [-to <arg>] [-quiet] [-verbose] <port_bus_name>...
 			_tcl.Entry(_builder.resize_port_bus(port_bus_name, from, to, quiet, verbose));
@@ -295,7 +296,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="package_pins">(Required) Package pin names</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_package_pin_val(string column, string value, string package_pins, bool? quiet = null, bool? verbose = null)
+		public TTCL set_package_pin_val(string column, string value, TCLParameterList package_pins, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_package_pin_val [-quiet] [-verbose] <column> <value> <package_pins>...
 			_tcl.Entry(_builder.set_package_pin_val(column, value, package_pins, quiet, verbose));
@@ -319,7 +320,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="ports">(Required) Ports to split</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL split_diff_pair_ports(string ports, bool? quiet = null, bool? verbose = null)
+		public TTCL split_diff_pair_ports(TCLParameterList ports, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: split_diff_pair_ports [-quiet] [-verbose] <ports>...
 			_tcl.Entry(_builder.split_diff_pair_ports(ports, quiet, verbose));

@@ -2,6 +2,7 @@
 // See VivadoGenerator for implementation
 using System;
 using Quokka.TCL.Tools;
+using System.Collections.Generic;
 namespace Quokka.TCL.Vivado
 {
 	public partial class BoardCommands<TTCL> where TTCL : TCLFile
@@ -181,7 +182,7 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of bus nets in the board</returns>
-		public TTCL get_board_bus_nets(string of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_bus_nets(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_bus_nets [-regexp] [-nocase] [-all] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_bus_nets(of_objects, regexp, nocase, all, filter, quiet, verbose, patterns));
@@ -230,7 +231,7 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of buses in the board</returns>
-		public TTCL get_board_buses(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_buses(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_buses [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_buses(regexp, nocase, all, filter, of_objects, quiet, verbose, patterns));
@@ -284,7 +285,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of bus interfaces</returns>
-		public TTCL get_board_component_interfaces(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_component_interfaces(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_component_interfaces [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_component_interfaces(regexp, nocase, all, filter, of_objects, quiet, verbose, patterns));
@@ -329,7 +330,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of component modes in the board</returns>
-		public TTCL get_board_component_modes(string of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_component_modes(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_component_modes [-regexp] [-nocase] [-all] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_component_modes(of_objects, regexp, nocase, all, filter, quiet, verbose, patterns));
@@ -377,7 +378,7 @@ namespace Quokka.TCL.Vivado
 		/// *, or .* when -regexp is specified.
 		/// </param>
 		/// <returns>list of pins in the board_part</returns>
-		public TTCL get_board_component_pins(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_component_pins(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_component_pins [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_component_pins(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -423,7 +424,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of component objects</returns>
-		public TTCL get_board_components(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_components(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_components [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_components(regexp, nocase, all, filter, of_objects, quiet, verbose, patterns));
@@ -476,7 +477,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of ports in the given interface</returns>
-		public TTCL get_board_interface_ports(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_interface_ports(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_interface_ports [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_interface_ports(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -524,7 +525,7 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>list of ip preferences for the component</returns>
-		public TTCL get_board_ip_preferences(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_ip_preferences(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_ip_preferences [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_ip_preferences(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -566,7 +567,7 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of jumpers in the board</returns>
-		public TTCL get_board_jumpers(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_jumpers(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_jumpers [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_jumpers(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -613,7 +614,7 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of parameters in the board</returns>
-		public TTCL get_board_parameters(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_parameters(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_parameters [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_parameters(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -668,7 +669,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of bus interfaces</returns>
-		public TTCL get_board_part_interfaces(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_part_interfaces(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_part_interfaces [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_part_interfaces(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -743,7 +744,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of pins in the board_part</returns>
-		public TTCL get_board_part_pins(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_part_pins(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_part_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_part_pins(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -792,7 +793,7 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of board_part objects</returns>
-		public TTCL get_board_parts(bool? regexp = null, bool? nocase = null, bool? latest_file_version = null, bool? latest_hw_revision = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_parts(bool? regexp = null, bool? nocase = null, bool? latest_file_version = null, bool? latest_hw_revision = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_parts [-regexp] [-nocase] [-latest_file_version] [-latest_hw_revision] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_parts(regexp, nocase, latest_file_version, latest_hw_revision, filter, quiet, verbose, patterns));
@@ -844,7 +845,7 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>list of board objects</returns>
-		public TTCL get_boards(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_boards(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_boards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_boards(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -872,7 +873,7 @@ namespace Quokka.TCL.Vivado
 		/// (board.xml, part0_pins.xml, preset.xml) to be checked
 		/// </param>
 		/// <returns>ok if all board files are valid</returns>
-		public TTCL validate_board_files(bool? quiet = null, bool? verbose = null, string dir = null)
+		public TTCL validate_board_files(bool? quiet = null, bool? verbose = null, TCLParameterList dir = null)
 		{
 			// TCL Syntax: validate_board_files [-quiet] [-verbose] [<dir>...]
 			_tcl.Entry(_builder.validate_board_files(quiet, verbose, dir));

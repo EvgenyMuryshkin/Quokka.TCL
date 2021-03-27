@@ -1,5 +1,9 @@
-﻿namespace Quokka.TCL.Tools
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Quokka.TCL.Tools
 {
+
     public abstract class TCLCommand : TCLEntry
     {
     }
@@ -41,6 +45,23 @@
         }
     }
 
+    public class TCLCommandStringListNamedParameter : TCLCommandParameter
+    {
+        protected string _name = "";
+        protected TCLParameterList _value = new TCLParameterList();
+
+        public TCLCommandStringListNamedParameter(string name, TCLParameterList value)
+        {
+            _name = name;
+            _value = (value ?? new TCLParameterList());
+        }
+
+        public override void Write(IndentedStringBuilder builder)
+        {
+            builder.AppendContent($" -{_name} {string.Join(" ", _value)}");
+        }
+    }
+
     public class TCLCommandStringParameter : TCLCommandParameter
     {
         protected string _value = "";
@@ -52,6 +73,21 @@
         public override void Write(IndentedStringBuilder builder)
         {
             builder.AppendContent($" {_value}");
+        }
+    }
+
+    public class TCLCommandStringListParameter : TCLCommandParameter
+    {
+        protected TCLParameterList _value = new TCLParameterList();
+
+        public TCLCommandStringListParameter(TCLParameterList value)
+        {
+            _value = (value ?? new TCLParameterList());
+        }
+
+        public override void Write(IndentedStringBuilder builder)
+        {
+            builder.AppendContent($" {string.Join(" ", _value.Params)}");
         }
     }
 }

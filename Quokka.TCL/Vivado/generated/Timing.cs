@@ -2,6 +2,7 @@
 // See VivadoGenerator for implementation
 using System;
 using Quokka.TCL.Tools;
+using System.Collections.Generic;
 namespace Quokka.TCL.Vivado
 {
 	public partial class TimingCommands<TTCL> where TTCL : TCLFile
@@ -114,7 +115,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cells">(Optional) run check_timing on the specified cell(s)</param>
 		/// <param name="verbose">(Optional) Return a detailed list of all timing problems found</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
-		public TTCL check_timing(string file = null, bool? no_header = null, string loop_limit = null, bool? append = null, string name = null, string override_defaults = null, string include = null, string exclude = null, bool? return_string = null, string rpx = null, string cells = null, bool? verbose = null, bool? quiet = null)
+		public TTCL check_timing(string file = null, bool? no_header = null, string loop_limit = null, bool? append = null, string name = null, TCLParameterList override_defaults = null, TCLParameterList include = null, TCLParameterList exclude = null, bool? return_string = null, string rpx = null, TCLParameterList cells = null, bool? verbose = null, bool? quiet = null)
 		{
 			// TCL Syntax: check_timing [-file <arg>] [-no_header] [-loop_limit <arg>] [-append] [-name <arg>] [-override_defaults <args>] [-include <args>] [-exclude <args>] [-return_string] [-rpx <arg>] [-cells <args>] [-verbose] [-quiet]
 			_tcl.Entry(_builder.check_timing(file, no_header, loop_limit, append, name, override_defaults, include, exclude, return_string, rpx, cells, verbose, quiet));
@@ -303,7 +304,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cells">(Optional) run create_slack_histogram on the specified cell(s)</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL create_slack_histogram(string to = null, string delay_type = null, string num_bins = null, string slack_less_than = null, string slack_greater_than = null, string group = null, bool? report_unconstrained = null, string significant_digits = null, string scale = null, string name = null, string cells = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_slack_histogram(TCLParameterList to = null, string delay_type = null, string num_bins = null, string slack_less_than = null, string slack_greater_than = null, TCLParameterList group = null, bool? report_unconstrained = null, string significant_digits = null, string scale = null, string name = null, TCLParameterList cells = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_slack_histogram [-to <args>] [-delay_type <arg>] [-num_bins <arg>] [-slack_less_than <arg>] [-slack_greater_than <arg>] [-group <args>] [-report_unconstrained] [-significant_digits <arg>] [-scale <arg>] [-name <arg>] [-cells <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.create_slack_histogram(to, delay_type, num_bins, slack_less_than, slack_greater_than, group, report_unconstrained, significant_digits, scale, name, cells, quiet, verbose));
@@ -414,7 +415,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>net_delays</returns>
-		public TTCL get_net_delays(string of_objects, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, string to = null, bool? interconnect_only = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_net_delays(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, TCLParameterList to = null, bool? interconnect_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_net_delays -of_objects <args> [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-to <args>] [-interconnect_only] [-quiet] [-verbose]
 			_tcl.Entry(_builder.get_net_delays(of_objects, regexp, nocase, patterns, filter, to, interconnect_only, quiet, verbose));
@@ -495,7 +496,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of timing arc objects</returns>
-		public TTCL get_timing_arcs(string from = null, string to = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_timing_arcs(TCLParameterList from = null, TCLParameterList to = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_timing_arcs [-from <args>] [-to <args>] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.get_timing_arcs(from, to, filter, of_objects, quiet, verbose));
@@ -604,7 +605,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cell">(Optional) run get_timing_paths on the cell</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL get_timing_paths(string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, string delay_type = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string slack_lesser_than = null, string slack_greater_than = null, string group = null, bool? no_report_unconstrained = null, bool? user_ignored = null, bool? routable_nets = null, string sort_by = null, string filter = null, bool? regexp = null, bool? nocase = null, string cell = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_timing_paths(TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, string delay_type = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string slack_lesser_than = null, string slack_greater_than = null, TCLParameterList group = null, bool? no_report_unconstrained = null, bool? user_ignored = null, bool? routable_nets = null, string sort_by = null, string filter = null, bool? regexp = null, bool? nocase = null, TCLParameterList cell = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_timing_paths [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-delay_type <arg>] [-setup] [-hold] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-slack_lesser_than <arg>] [-slack_greater_than <arg>] [-group <args>] [-no_report_unconstrained] [-user_ignored] [-routable_nets] [-sort_by <arg>] [-filter <arg>] [-regexp] [-nocase] [-cell <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.get_timing_paths(from, rise_from, fall_from, to, rise_to, fall_to, through, rise_through, fall_through, delay_type, setup, hold, max_paths, nworst, unique_pins, slack_lesser_than, slack_greater_than, group, no_report_unconstrained, user_ignored, routable_nets, sort_by, filter, regexp, nocase, cell, quiet, verbose));
@@ -714,7 +715,7 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
-		public TTCL report_bus_skew(string delay_type = null, bool? setup = null, bool? hold = null, bool? no_detailed_paths = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? sort_by_slack = null, bool? input_pins = null, bool? no_header = null, string significant_digits = null, string file = null, bool? append = null, bool? return_string = null, bool? warn_on_violation = null, string rpx = null, string cells = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_bus_skew(string delay_type = null, bool? setup = null, bool? hold = null, bool? no_detailed_paths = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? sort_by_slack = null, bool? input_pins = null, bool? no_header = null, string significant_digits = null, string file = null, bool? append = null, bool? return_string = null, bool? warn_on_violation = null, string rpx = null, TCLParameterList cells = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_bus_skew [-delay_type <arg>] [-setup] [-hold] [-no_detailed_paths] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-path_type <arg>] [-sort_by_slack] [-input_pins] [-no_header] [-significant_digits <arg>] [-file <arg>] [-append] [-return_string] [-warn_on_violation] [-rpx <arg>] [-cells <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_bus_skew(delay_type, setup, hold, no_detailed_paths, max_paths, nworst, unique_pins, path_type, sort_by_slack, input_pins, no_header, significant_digits, file, append, return_string, warn_on_violation, rpx, cells, quiet, verbose));
@@ -787,7 +788,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_cdc(string from = null, string to = null, string cells = null, bool? details = null, bool? summary = null, bool? all_checks_per_endpoint = null, string severity = null, bool? no_header = null, bool? show_waiver = null, bool? no_waiver = null, bool? waived = null, string file = null, bool? append = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_cdc(TCLParameterList from = null, TCLParameterList to = null, TCLParameterList cells = null, bool? details = null, bool? summary = null, bool? all_checks_per_endpoint = null, string severity = null, bool? no_header = null, bool? show_waiver = null, bool? no_waiver = null, bool? waived = null, string file = null, bool? append = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_cdc [-from <args>] [-to <args>] [-cells <args>] [-details] [-summary] [-all_checks_per_endpoint] [-severity <arg>] [-no_header] [-show_waiver] [-no_waiver] [-waived] [-file <arg>] [-append] [-return_string] [-name <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_cdc(from, to, cells, details, summary, all_checks_per_endpoint, severity, no_header, show_waiver, no_waiver, waived, file, append, return_string, name, quiet, verbose));
@@ -835,7 +836,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cells">(Optional) run report_clock_interaction on the specified cell(s)</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_clock_interaction(string delay_type = null, bool? setup = null, bool? hold = null, string significant_digits = null, bool? no_header = null, string file = null, bool? append = null, string name = null, bool? return_string = null, string cells = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_clock_interaction(string delay_type = null, bool? setup = null, bool? hold = null, string significant_digits = null, bool? no_header = null, string file = null, bool? append = null, string name = null, bool? return_string = null, TCLParameterList cells = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_clock_interaction [-delay_type <arg>] [-setup] [-hold] [-significant_digits <arg>] [-no_header] [-file <arg>] [-append] [-name <arg>] [-return_string] [-cells <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_clock_interaction(delay_type, setup, hold, significant_digits, no_header, file, append, name, return_string, cells, quiet, verbose));
@@ -907,7 +908,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_clock_networks(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? endpoints_only = null, string levels = null, bool? expand_buckets = null, string suppress_endpoints = null, string clocks = null, string unconstrained_roots = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_clock_networks(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? endpoints_only = null, string levels = null, bool? expand_buckets = null, string suppress_endpoints = null, TCLParameterList clocks = null, TCLParameterList unconstrained_roots = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_clock_networks [-file <arg>] [-append] [-name <arg>] [-return_string] [-endpoints_only] [-levels <arg>] [-expand_buckets] [-suppress_endpoints <arg>] [-clocks <args>] [-unconstrained_roots <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_clock_networks(file, append, name, return_string, endpoints_only, levels, expand_buckets, suppress_endpoints, clocks, unconstrained_roots, quiet, verbose));
@@ -958,7 +959,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Report</returns>
-		public TTCL report_clock_utilization(string file = null, bool? append = null, string write_xdc = null, string cells = null, bool? clock_roots_only = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_clock_utilization(string file = null, bool? append = null, string write_xdc = null, TCLParameterList cells = null, bool? clock_roots_only = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_clock_utilization [-file <arg>] [-append] [-write_xdc <arg>] [-cells <args>] [-clock_roots_only] [-return_string] [-name <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_clock_utilization(file, append, write_xdc, cells, clock_roots_only, return_string, name, quiet, verbose));
@@ -1084,7 +1085,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_datasheet(string significant_digits = null, string file = null, bool? append = null, bool? return_string = null, string sort_by = null, string name = null, bool? show_all_corners = null, bool? show_oe_timing = null, string group = null, string rpx = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_datasheet(string significant_digits = null, string file = null, bool? append = null, bool? return_string = null, string sort_by = null, string name = null, bool? show_all_corners = null, bool? show_oe_timing = null, TCLParameterList group = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_datasheet [-significant_digits <arg>] [-file <arg>] [-append] [-return_string] [-sort_by <arg>] [-name <arg>] [-show_all_corners] [-show_oe_timing] [-group <args>] [-rpx <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_datasheet(significant_digits, file, append, return_string, sort_by, name, show_all_corners, show_oe_timing, group, rpx, quiet, verbose));
@@ -1314,7 +1315,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="no_pr_attribute">(Optional) Report without PR attributes</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_design_analysis(string file = null, bool? append = null, bool? return_string = null, bool? complexity = null, string cells = null, string bounding_boxes = null, string hierarchical_depth = null, bool? congestion = null, string min_congestion_level = null, bool? timing = null, bool? setup = null, bool? hold = null, bool? show_all = null, bool? full_logical_pin = null, bool? routed_vs_estimated = null, bool? logic_level_distribution = null, string logic_level_dist_paths = null, string min_level = null, string max_level = null, bool? return_timing_paths = null, string of_timing_paths = null, string max_paths = null, bool? extend = null, bool? routes = null, string end_point_clocks = null, string logic_levels = null, bool? qor_summary = null, string name = null, bool? no_pr_attribute = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_design_analysis(string file = null, bool? append = null, bool? return_string = null, bool? complexity = null, TCLParameterList cells = null, TCLParameterList bounding_boxes = null, string hierarchical_depth = null, bool? congestion = null, string min_congestion_level = null, bool? timing = null, bool? setup = null, bool? hold = null, bool? show_all = null, bool? full_logical_pin = null, bool? routed_vs_estimated = null, bool? logic_level_distribution = null, string logic_level_dist_paths = null, string min_level = null, string max_level = null, bool? return_timing_paths = null, TCLParameterList of_timing_paths = null, string max_paths = null, bool? extend = null, bool? routes = null, TCLParameterList end_point_clocks = null, string logic_levels = null, bool? qor_summary = null, string name = null, bool? no_pr_attribute = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_design_analysis [-file <arg>] [-append] [-return_string] [-complexity] [-cells <args>] [-bounding_boxes <args>] [-hierarchical_depth <arg>] [-congestion] [-min_congestion_level <arg>] [-timing] [-setup] [-hold] [-show_all] [-full_logical_pin] [-routed_vs_estimated] [-logic_level_distribution] [-logic_level_dist_paths <arg>] [-min_level <arg>] [-max_level <arg>] [-return_timing_paths] [-of_timing_paths <args>] [-max_paths <arg>] [-extend] [-routes] [-end_point_clocks <args>] [-logic_levels <arg>] [-qor_summary] [-name <arg>] [-no_pr_attribute] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_design_analysis(file, append, return_string, complexity, cells, bounding_boxes, hierarchical_depth, congestion, min_congestion_level, timing, setup, hold, show_all, full_logical_pin, routed_vs_estimated, logic_level_distribution, logic_level_dist_paths, min_level, max_level, return_timing_paths, of_timing_paths, max_paths, extend, routes, end_point_clocks, logic_levels, qor_summary, name, no_pr_attribute, quiet, verbose));
@@ -1366,7 +1367,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_disable_timing(bool? user_disabled = null, string column_style = null, string file = null, bool? append = null, string cells = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_disable_timing(bool? user_disabled = null, string column_style = null, string file = null, bool? append = null, TCLParameterList cells = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_disable_timing [-user_disabled] [-column_style <arg>] [-file <arg>] [-append] [-cells <args>] [-return_string] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_disable_timing(user_disabled, column_style, file, append, cells, return_string, quiet, verbose));
@@ -1443,7 +1444,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_drc(string name = null, bool? upgrade_cw = null, string checks = null, string ruledecks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_drc(string name = null, bool? upgrade_cw = null, TCLParameterList checks = null, TCLParameterList ruledecks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_drc [-name <arg>] [-upgrade_cw] [-checks <args>] [-ruledecks <args>] [-file <arg>] [-rpx <arg>] [-append] [-waived] [-no_waivers] [-return_string] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_drc(name, upgrade_cw, checks, ruledecks, file, rpx, append, waived, no_waivers, return_string, quiet, verbose));
@@ -1500,7 +1501,7 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
-		public TTCL report_exceptions(string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? ignored = null, bool? summary = null, bool? coverage = null, bool? ignored_objects = null, bool? count_objects = null, bool? write_merged_exceptions = null, bool? write_valid_exceptions = null, bool? no_header = null, string file = null, bool? append = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_exceptions(TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, bool? ignored = null, bool? summary = null, bool? coverage = null, bool? ignored_objects = null, bool? count_objects = null, bool? write_merged_exceptions = null, bool? write_valid_exceptions = null, bool? no_header = null, string file = null, bool? append = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_exceptions [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-ignored] [-summary] [-coverage] [-ignored_objects] [-count_objects] [-write_merged_exceptions] [-write_valid_exceptions] [-no_header] [-file <arg>] [-append] [-return_string] [-name <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_exceptions(from, rise_from, fall_from, to, rise_to, fall_to, through, rise_through, fall_through, ignored, summary, coverage, ignored_objects, count_objects, write_merged_exceptions, write_valid_exceptions, no_header, file, append, return_string, name, quiet, verbose));
@@ -1567,7 +1568,7 @@ namespace Quokka.TCL.Vivado
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
 		/// <returns>Report</returns>
-		public TTCL report_high_fanout_nets(string file = null, string format = null, bool? append = null, bool? ascending = null, bool? timing = null, bool? histogram = null, bool? load_types = null, bool? clock_regions = null, bool? slr = null, string max_nets = null, string fanout_greater_than = null, string fanout_lesser_than = null, string name = null, string cells = null, string clocks = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_high_fanout_nets(string file = null, string format = null, bool? append = null, bool? ascending = null, bool? timing = null, bool? histogram = null, bool? load_types = null, bool? clock_regions = null, bool? slr = null, string max_nets = null, string fanout_greater_than = null, string fanout_lesser_than = null, string name = null, TCLParameterList cells = null, TCLParameterList clocks = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_high_fanout_nets [-file <arg>] [-format <arg>] [-append] [-ascending] [-timing] [-histogram] [-load_types] [-clock_regions] [-slr] [-max_nets <arg>] [-fanout_greater_than <arg>] [-fanout_lesser_than <arg>] [-name <arg>] [-cells <args>] [-clocks <args>] [-return_string] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_high_fanout_nets(file, format, append, ascending, timing, histogram, load_types, clock_regions, slr, max_nets, fanout_greater_than, fanout_lesser_than, name, cells, clocks, return_string, quiet, verbose));
@@ -1631,7 +1632,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_methodology(string name = null, string cells = null, string checks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, string slack_lesser_than = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_methodology(string name = null, TCLParameterList cells = null, TCLParameterList checks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, string slack_lesser_than = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_methodology [-name <arg>] [-cells <args>] [-checks <args>] [-file <arg>] [-rpx <arg>] [-append] [-waived] [-no_waivers] [-slack_lesser_than <arg>] [-return_string] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_methodology(name, cells, checks, file, rpx, append, waived, no_waivers, slack_lesser_than, return_string, quiet, verbose));
@@ -1691,7 +1692,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) List of objects to check min pulse width with</param>
-		public TTCL report_pulse_width(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? warn_on_violation = null, bool? all_violators = null, string significant_digits = null, string limit = null, bool? min_period = null, bool? max_period = null, bool? low_pulse = null, bool? high_pulse = null, bool? max_skew = null, string clocks = null, bool? no_header = null, string cells = null, string rpx = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public TTCL report_pulse_width(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? warn_on_violation = null, bool? all_violators = null, string significant_digits = null, string limit = null, bool? min_period = null, bool? max_period = null, bool? low_pulse = null, bool? high_pulse = null, bool? max_skew = null, TCLParameterList clocks = null, bool? no_header = null, TCLParameterList cells = null, string rpx = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: report_pulse_width [-file <arg>] [-append] [-name <arg>] [-return_string] [-warn_on_violation] [-all_violators] [-significant_digits <arg>] [-limit <arg>] [-min_period] [-max_period] [-low_pulse] [-high_pulse] [-max_skew] [-clocks <args>] [-no_header] [-cells <args>] [-rpx <arg>] [-quiet] [-verbose] [<objects>]
 			_tcl.Entry(_builder.report_pulse_width(file, append, name, return_string, warn_on_violation, all_violators, significant_digits, limit, min_period, max_period, low_pulse, high_pulse, max_skew, clocks, no_header, cells, rpx, quiet, verbose, objects));
@@ -1825,7 +1826,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="of_objects">(Optional) List of QoR suggestion objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_qor_suggestions(string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? no_split = null, bool? report_all_suggestions = null, string cells = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_qor_suggestions(string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? no_split = null, bool? report_all_suggestions = null, TCLParameterList cells = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_qor_suggestions [-file <arg>] [-name <arg>] [-append] [-return_string] [-max_strategies <arg>] [-max_paths <arg>] [-no_split] [-report_all_suggestions] [-cells <args>] [-of_objects <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_qor_suggestions(file, name, append, return_string, max_strategies, max_paths, no_split, report_all_suggestions, cells, of_objects, quiet, verbose));
@@ -2044,7 +2045,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_timing(string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, string delay_type = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? input_pins = null, bool? no_header = null, bool? no_reused_label = null, string slack_lesser_than = null, string slack_greater_than = null, string group = null, string sort_by = null, bool? no_report_unconstrained = null, bool? user_ignored = null, string of_objects = null, string significant_digits = null, string column_style = null, string file = null, bool? append = null, string name = null, bool? no_pr_attribute = null, bool? routable_nets = null, bool? return_string = null, bool? warn_on_violation = null, string cells = null, string rpx = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_timing(TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, string delay_type = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? input_pins = null, bool? no_header = null, bool? no_reused_label = null, string slack_lesser_than = null, string slack_greater_than = null, TCLParameterList group = null, string sort_by = null, bool? no_report_unconstrained = null, bool? user_ignored = null, TCLParameterList of_objects = null, string significant_digits = null, string column_style = null, string file = null, bool? append = null, string name = null, bool? no_pr_attribute = null, bool? routable_nets = null, bool? return_string = null, bool? warn_on_violation = null, TCLParameterList cells = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_timing [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-delay_type <arg>] [-setup] [-hold] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-path_type <arg>] [-input_pins] [-no_header] [-no_reused_label] [-slack_lesser_than <arg>] [-slack_greater_than <arg>] [-group <args>] [-sort_by <arg>] [-no_report_unconstrained] [-user_ignored] [-of_objects <args>] [-significant_digits <arg>] [-column_style <arg>] [-file <arg>] [-append] [-name <arg>] [-no_pr_attribute] [-routable_nets] [-return_string] [-warn_on_violation] [-cells <args>] [-rpx <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_timing(from, rise_from, fall_from, to, rise_to, fall_to, through, rise_through, fall_through, delay_type, setup, hold, max_paths, nworst, unique_pins, path_type, input_pins, no_header, no_reused_label, slack_lesser_than, slack_greater_than, group, sort_by, no_report_unconstrained, user_ignored, of_objects, significant_digits, column_style, file, append, name, no_pr_attribute, routable_nets, return_string, warn_on_violation, cells, rpx, quiet, verbose));
@@ -2150,7 +2151,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_timing_summary(bool? check_timing_verbose = null, string delay_type = null, bool? no_detailed_paths = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? no_reused_label = null, bool? input_pins = null, bool? no_pr_attribute = null, bool? routable_nets = null, string slack_lesser_than = null, bool? report_unconstrained = null, string significant_digits = null, bool? no_header = null, string file = null, bool? append = null, string name = null, bool? return_string = null, bool? warn_on_violation = null, bool? datasheet = null, string cells = null, string rpx = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_timing_summary(bool? check_timing_verbose = null, string delay_type = null, bool? no_detailed_paths = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? no_reused_label = null, bool? input_pins = null, bool? no_pr_attribute = null, bool? routable_nets = null, string slack_lesser_than = null, bool? report_unconstrained = null, string significant_digits = null, bool? no_header = null, string file = null, bool? append = null, string name = null, bool? return_string = null, bool? warn_on_violation = null, bool? datasheet = null, TCLParameterList cells = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_timing_summary [-check_timing_verbose] [-delay_type <arg>] [-no_detailed_paths] [-setup] [-hold] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-path_type <arg>] [-no_reused_label] [-input_pins] [-no_pr_attribute] [-routable_nets] [-slack_lesser_than <arg>] [-report_unconstrained] [-significant_digits <arg>] [-no_header] [-file <arg>] [-append] [-name <arg>] [-return_string] [-warn_on_violation] [-datasheet] [-cells <args>] [-rpx <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_timing_summary(check_timing_verbose, delay_type, no_detailed_paths, setup, hold, max_paths, nworst, unique_pins, path_type, no_reused_label, input_pins, no_pr_attribute, routable_nets, slack_lesser_than, report_unconstrained, significant_digits, no_header, file, append, name, return_string, warn_on_violation, datasheet, cells, rpx, quiet, verbose));
@@ -2308,7 +2309,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="add">(Optional) Add to existing external delay</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_external_delay(string from, string to, string delay_value, bool? min = null, bool? max = null, bool? add = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_external_delay(TCLParameterList from, TCLParameterList to, string delay_value, bool? min = null, bool? max = null, bool? add = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_external_delay -from <args> -to <args> [-min] [-max] [-add] [-quiet] [-verbose] <delay_value>
 			_tcl.Entry(_builder.set_external_delay(from, to, delay_value, min, max, add, quiet, verbose));
@@ -2485,7 +2486,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="of_objects">(Optional) List of QoR suggestion objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL write_qor_suggestions(string file, string strategy_dir = null, string tcl_output_dir = null, bool? force = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_qor_suggestions(string file, string strategy_dir = null, string tcl_output_dir = null, bool? force = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_qor_suggestions [-strategy_dir <arg>] [-tcl_output_dir <arg>] [-force] [-of_objects <args>] [-quiet] [-verbose] <file>
 			_tcl.Entry(_builder.write_qor_suggestions(file, strategy_dir, tcl_output_dir, force, of_objects, quiet, verbose));
@@ -2606,7 +2607,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="write_id">(Optional) Write position number for timing constraints</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL write_xdc(string file, bool? no_fixed_only = null, string constraints = null, string cell = null, bool? sdc = null, bool? no_tool_comments = null, bool? force = null, bool? exclude_timing = null, bool? exclude_physical = null, bool? add_netlist_placement = null, bool? logic_function_stripped = null, string type = null, bool? write_id = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_xdc(string file, bool? no_fixed_only = null, string constraints = null, string cell = null, bool? sdc = null, bool? no_tool_comments = null, bool? force = null, bool? exclude_timing = null, bool? exclude_physical = null, bool? add_netlist_placement = null, bool? logic_function_stripped = null, TCLParameterList type = null, bool? write_id = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_xdc [-no_fixed_only] [-constraints <arg>] [-cell <arg>] [-sdc] [-no_tool_comments] [-force] [-exclude_timing] [-exclude_physical] [-add_netlist_placement] [-logic_function_stripped] [-type <args>] [-write_id] [-quiet] [-verbose] [<file>]
 			_tcl.Entry(_builder.write_xdc(file, no_fixed_only, constraints, cell, sdc, no_tool_comments, force, exclude_timing, exclude_physical, add_netlist_placement, logic_function_stripped, type, write_id, quiet, verbose));

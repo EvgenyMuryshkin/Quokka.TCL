@@ -2,6 +2,7 @@
 // See VivadoGenerator for implementation
 using System;
 using Quokka.TCL.Tools;
+using System.Collections.Generic;
 namespace Quokka.TCL.Vivado
 {
 	public partial class DebugCommands<TTCL> where TTCL : TCLFile
@@ -106,7 +107,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>debug master and slave instances</returns>
-		public TTCL connect_debug_cores(string master, string slaves, bool? quiet = null, bool? verbose = null)
+		public TTCL connect_debug_cores(TCLParameterList master, TCLParameterList slaves, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: connect_debug_cores -master <args> -slaves <args> [-quiet] [-verbose]
 			_tcl.Entry(_builder.connect_debug_cores(master, slaves, quiet, verbose));
@@ -149,7 +150,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="channel_start_index">(Optional) Connect nets starting at channel index</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL connect_debug_port(string port, string nets, string channel_start_index = null, bool? quiet = null, bool? verbose = null)
+		public TTCL connect_debug_port(string port, TCLParameterList nets, string channel_start_index = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: connect_debug_port [-channel_start_index <arg>] [-quiet] [-verbose] <port> <nets>...
 			_tcl.Entry(_builder.connect_debug_port(port, nets, channel_start_index, quiet, verbose));
@@ -305,7 +306,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cores">(Required) Debug cores to delete</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_debug_core(string cores, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_debug_core(TCLParameterList cores, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_debug_core [-quiet] [-verbose] <cores>...
 			_tcl.Entry(_builder.delete_debug_core(cores, quiet, verbose));
@@ -336,7 +337,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="ports">(Required) Debug ports to delete</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_debug_port(string ports, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_debug_port(TCLParameterList ports, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_debug_port [-quiet] [-verbose] <ports>...
 			_tcl.Entry(_builder.delete_debug_port(ports, quiet, verbose));
@@ -412,7 +413,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match debug cores against patterns Default: *</param>
 		/// <returns>list of debug_core objects</returns>
-		public TTCL get_debug_cores(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_debug_cores(string filter = null, TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_debug_cores [-filter <arg>] [-of_objects <args>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_debug_cores(filter, of_objects, regexp, nocase, quiet, verbose, patterns));
@@ -452,7 +453,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match debug ports against patterns Default: *</param>
 		/// <returns>list of debug_port objects</returns>
-		public TTCL get_debug_ports(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_debug_ports(string filter = null, TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_debug_ports [-filter <arg>] [-of_objects <args>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_debug_ports(filter, of_objects, regexp, nocase, quiet, verbose, patterns));
@@ -487,7 +488,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="cores">(Optional) Debug core</param>
-		public TTCL implement_debug_core(bool? quiet = null, bool? verbose = null, string cores = null)
+		public TTCL implement_debug_core(bool? quiet = null, bool? verbose = null, TCLParameterList cores = null)
 		{
 			// TCL Syntax: implement_debug_core [-quiet] [-verbose] [<cores>...]
 			_tcl.Entry(_builder.implement_debug_core(quiet, verbose, cores));
@@ -528,7 +529,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL modify_debug_ports(string probes, bool? quiet = null, bool? verbose = null)
+		public TTCL modify_debug_ports(TCLParameterList probes, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: modify_debug_ports [-probes <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.modify_debug_ports(probes, quiet, verbose));

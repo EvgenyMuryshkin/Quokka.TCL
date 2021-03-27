@@ -2,6 +2,7 @@
 // See VivadoGenerator for implementation
 using System;
 using Quokka.TCL.Tools;
+using System.Collections.Generic;
 namespace Quokka.TCL.Vivado
 {
 	public partial class WaiverCommands<TTCL> where TTCL : TCLFile
@@ -130,7 +131,7 @@ namespace Quokka.TCL.Vivado
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
 		/// <returns>waiver</returns>
-		public TTCL create_waiver(string description, string type = null, string id = null, string objects = null, string from = null, string to = null, string strings = null, string of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_waiver(string description, string type = null, string id = null, TCLParameterList objects = null, TCLParameterList from = null, TCLParameterList to = null, TCLParameterList strings = null, TCLParameterList of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_waiver [-type <arg>] [-id <arg>] [-objects <args>] [-from <args>] [-to <args>] [-strings <args>] [-of_objects <args>] [-user <arg>] -description <arg> [-tags <arg>] [-timestamp <arg>] [-scoped] [-quiet] [-verbose]
 			_tcl.Entry(_builder.create_waiver(description, type, id, objects, from, to, strings, of_objects, user, tags, timestamp, scoped, quiet, verbose));
@@ -167,7 +168,7 @@ namespace Quokka.TCL.Vivado
 		/// nets, sites, etc.) for which DRC/METHODOLOGY waiver(s)
 		/// were set
 		/// </param>
-		public TTCL delete_waivers(bool? scoped = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public TTCL delete_waivers(bool? scoped = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
 		{
 			// TCL Syntax: delete_waivers [-scoped] [-quiet] [-verbose] [<objects>...]
 			_tcl.Entry(_builder.delete_waivers(scoped, quiet, verbose, objects));
@@ -219,7 +220,7 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>waivers</returns>
-		public TTCL get_waivers(string type = null, string id = null, string of_objects = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_waivers(string type = null, string id = null, TCLParameterList of_objects = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_waivers [-type <arg>] [-id <arg>] [-of_objects <args>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_waivers(type, id, of_objects, regexp, filter, nocase, quiet, verbose, patterns));
@@ -294,7 +295,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="force">(Optional) Overwrite existing file</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL write_waivers(string file, string type = null, string objects = null, bool? return_string = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_waivers(string file, string type = null, TCLParameterList objects = null, bool? return_string = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_waivers [-type <arg>] [-objects <args>] [-return_string] [-force] [-quiet] [-verbose] [<file>]
 			_tcl.Entry(_builder.write_waivers(file, type, objects, return_string, force, quiet, verbose));

@@ -2,6 +2,7 @@
 // See VivadoGenerator for implementation
 using System;
 using Quokka.TCL.Tools;
+using System.Collections.Generic;
 namespace Quokka.TCL.Vivado
 {
 	public partial class PropertyAndParameterCommands<TTCL> where TTCL : TCLFile
@@ -54,7 +55,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The property that was created if success, "" if failure</returns>
-		public TTCL create_property(string name, string @class, string description = null, string type = null, string enum_values = null, string default_value = null, string file_types = null, string display_text = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_property(string name, string @class, string description = null, string type = null, TCLParameterList enum_values = null, string default_value = null, TCLParameterList file_types = null, string display_text = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_property [-description <arg>] [-type <arg>] [-enum_values <args>] [-default_value <arg>] [-file_types <args>] [-display_text <arg>] [-quiet] [-verbose] <name> <class>
 			_tcl.Entry(_builder.create_property(name, @class, description, type, enum_values, default_value, file_types, display_text, quiet, verbose));
@@ -409,7 +410,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The value that was set if success, "" if failure</returns>
-		public TTCL reset_property(string property_name, string objects, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_property(string property_name, TCLParameterList objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_property [-quiet] [-verbose] <property_name> <objects>...
 			_tcl.Entry(_builder.reset_property(property_name, objects, quiet, verbose));
@@ -577,7 +578,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="dict">(Optional) list of name/value pairs of properties to set</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_property(string name, string value, string objects, string dict = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_property(string name, string value, TCLParameterList objects, TCLParameterList dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_property [-dict <args>] [-quiet] [-verbose] <name> <value> <objects>...
 			_tcl.Entry(_builder.set_property(name, value, objects, dict, quiet, verbose));

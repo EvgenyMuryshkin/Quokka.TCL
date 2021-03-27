@@ -1,4 +1,5 @@
 using Quokka.TCL.Tools;
+using System.Collections.Generic;
 namespace Quokka.TCL.Vivado
 {
 	public partial class VivadoTCLBuilder
@@ -85,7 +86,7 @@ namespace Quokka.TCL.Vivado
 		/// Cells to add. You can't use this option with -top option. You
 		/// must specify either -cells or -top option.
 		/// </param>
-		public virtual SimpleTCLCommand add_cells_to_pblock(string pblock, bool? top = null, bool? add_primitives = null, bool? clear_locs = null, bool? quiet = null, bool? verbose = null, string cells = null)
+		public virtual SimpleTCLCommand add_cells_to_pblock(string pblock, bool? top = null, bool? add_primitives = null, bool? clear_locs = null, bool? quiet = null, bool? verbose = null, TCLParameterList cells = null)
 		{
 			// TCL Syntax: add_cells_to_pblock [-top] [-add_primitives] [-clear_locs] [-quiet] [-verbose] <pblock> [<cells>...]
 			return
@@ -96,7 +97,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(pblock)
-					.OptionalString(cells)
+					.OptionalStringList(cells)
 			;
 		}
 		/// <summary>
@@ -215,12 +216,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'rule_check' objects against patterns. Default: *</param>
 		/// <returns>drc_check</returns>
-		public virtual SimpleTCLCommand add_drc_checks(string ruledeck, string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand add_drc_checks(string ruledeck, TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: add_drc_checks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] -ruledeck <arg> [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("add_drc_checks")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -312,20 +313,20 @@ namespace Quokka.TCL.Vivado
 		/// specified if -scan_for_includes is not used.
 		/// </param>
 		/// <returns>list of file objects that were added</returns>
-		public virtual SimpleTCLCommand add_files(string fileset = null, string of_objects = null, bool? norecurse = null, string copy_to = null, bool? force = null, bool? scan_for_includes = null, bool? quiet = null, bool? verbose = null, string files = null)
+		public virtual SimpleTCLCommand add_files(string fileset = null, TCLParameterList of_objects = null, bool? norecurse = null, string copy_to = null, bool? force = null, bool? scan_for_includes = null, bool? quiet = null, bool? verbose = null, TCLParameterList files = null)
 		{
 			// TCL Syntax: add_files [-fileset <arg>] [-of_objects <args>] [-norecurse] [-copy_to <arg>] [-force] [-scan_for_includes] [-quiet] [-verbose] [<files>...]
 			return
 				new SimpleTCLCommand("add_files")
 					.OptionalNamedString("fileset", fileset)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("norecurse", norecurse)
 					.OptionalNamedString("copy_to", copy_to)
 					.Flag("force", force)
 					.Flag("scan_for_includes", scan_for_includes)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(files)
+					.OptionalStringList(files)
 			;
 		}
 		/// <summary>
@@ -374,7 +375,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The force objects added</returns>
-		public virtual SimpleTCLCommand add_force(string hdl_object, string values, string radix = null, string repeat_every = null, string cancel_after = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand add_force(string hdl_object, TCLParameterList values, string radix = null, string repeat_every = null, string cancel_after = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: add_force [-radix <arg>] [-repeat_every <arg>] [-cancel_after <arg>] [-quiet] [-verbose] <hdl_object> <values>...
 			return
@@ -385,7 +386,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(hdl_object)
-					.RequiredString(values)
+					.RequiredStringList(values)
 			;
 		}
 		/// <summary>
@@ -507,13 +508,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="dict">(Optional) List of parameter name-value pairs.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand add_hw_probe_enum(string name, string value, string hw_probe, bool? no_gui_update = null, string dict = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand add_hw_probe_enum(string name, string value, string hw_probe, bool? no_gui_update = null, TCLParameterList dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: add_hw_probe_enum [-no_gui_update] [-dict <args>] [-quiet] [-verbose] <name> <value> <hw_probe>
 			return
 				new SimpleTCLCommand("add_hw_probe_enum")
 					.Flag("no_gui_update", no_gui_update)
-					.OptionalNamedString("dict", dict)
+					.OptionalNamedStringList("dict", dict)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(name)
@@ -562,12 +563,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="power_sources">(Optional) List of power_sources to add. Can be power rails and/or power supplies</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand add_to_power_rail(string power_rail, string power_sources = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand add_to_power_rail(string power_rail, TCLParameterList power_sources = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: add_to_power_rail [-power_sources <args>] [-quiet] [-verbose] <power_rail>
 			return
 				new SimpleTCLCommand("add_to_power_rail")
-					.OptionalNamedString("power_sources", power_sources)
+					.OptionalNamedStringList("power_sources", power_sources)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(power_rail)
@@ -650,15 +651,15 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The new waves</returns>
-		public virtual SimpleTCLCommand add_wave(string items, string into = null, string at_wave = null, string after_wave = null, string before_wave = null, bool? reverse = null, string radix = null, string color = null, string name = null, bool? recursive = null, bool? r = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand add_wave(TCLParameterList items, TCLParameterList into = null, TCLParameterList at_wave = null, TCLParameterList after_wave = null, TCLParameterList before_wave = null, bool? reverse = null, string radix = null, string color = null, string name = null, bool? recursive = null, bool? r = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: add_wave [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-reverse] [-radix <arg>] [-color <arg>] [-name <arg>] [-recursive] [-r] [-regexp] [-nocase] [-quiet] [-verbose] <items>...
 			return
 				new SimpleTCLCommand("add_wave")
-					.OptionalNamedString("into", into)
-					.OptionalNamedString("at_wave", at_wave)
-					.OptionalNamedString("after_wave", after_wave)
-					.OptionalNamedString("before_wave", before_wave)
+					.OptionalNamedStringList("into", into)
+					.OptionalNamedStringList("at_wave", at_wave)
+					.OptionalNamedStringList("after_wave", after_wave)
+					.OptionalNamedStringList("before_wave", before_wave)
 					.Flag("reverse", reverse)
 					.OptionalNamedString("radix", radix)
 					.OptionalNamedString("color", color)
@@ -669,7 +670,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("nocase", nocase)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(items)
+					.RequiredStringList(items)
 			;
 		}
 		/// <summary>
@@ -718,15 +719,15 @@ namespace Quokka.TCL.Vivado
 		/// string Default: new_divider
 		/// </param>
 		/// <returns>The new divider</returns>
-		public virtual SimpleTCLCommand add_wave_divider(string into = null, string at_wave = null, string after_wave = null, string before_wave = null, string color = null, bool? quiet = null, bool? verbose = null, string name = null)
+		public virtual SimpleTCLCommand add_wave_divider(TCLParameterList into = null, TCLParameterList at_wave = null, TCLParameterList after_wave = null, TCLParameterList before_wave = null, string color = null, bool? quiet = null, bool? verbose = null, string name = null)
 		{
 			// TCL Syntax: add_wave_divider [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-color <arg>] [-quiet] [-verbose] [<name>]
 			return
 				new SimpleTCLCommand("add_wave_divider")
-					.OptionalNamedString("into", into)
-					.OptionalNamedString("at_wave", at_wave)
-					.OptionalNamedString("after_wave", after_wave)
-					.OptionalNamedString("before_wave", before_wave)
+					.OptionalNamedStringList("into", into)
+					.OptionalNamedStringList("at_wave", at_wave)
+					.OptionalNamedStringList("after_wave", after_wave)
+					.OptionalNamedStringList("before_wave", before_wave)
 					.OptionalNamedString("color", color)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -773,15 +774,15 @@ namespace Quokka.TCL.Vivado
 		/// Default: new_group
 		/// </param>
 		/// <returns>The new group</returns>
-		public virtual SimpleTCLCommand add_wave_group(string into = null, string at_wave = null, string after_wave = null, string before_wave = null, bool? quiet = null, bool? verbose = null, string name = null)
+		public virtual SimpleTCLCommand add_wave_group(TCLParameterList into = null, TCLParameterList at_wave = null, TCLParameterList after_wave = null, TCLParameterList before_wave = null, bool? quiet = null, bool? verbose = null, string name = null)
 		{
 			// TCL Syntax: add_wave_group [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-quiet] [-verbose] [<name>]
 			return
 				new SimpleTCLCommand("add_wave_group")
-					.OptionalNamedString("into", into)
-					.OptionalNamedString("at_wave", at_wave)
-					.OptionalNamedString("after_wave", after_wave)
-					.OptionalNamedString("before_wave", before_wave)
+					.OptionalNamedStringList("into", into)
+					.OptionalNamedStringList("at_wave", at_wave)
+					.OptionalNamedStringList("after_wave", after_wave)
+					.OptionalNamedStringList("before_wave", before_wave)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(name)
@@ -879,15 +880,15 @@ namespace Quokka.TCL.Vivado
 		/// string Default: new_virtual_bus
 		/// </param>
 		/// <returns>The new virtual bus</returns>
-		public virtual SimpleTCLCommand add_wave_virtual_bus(string into = null, string at_wave = null, string after_wave = null, string before_wave = null, bool? reverse = null, string radix = null, string color = null, bool? quiet = null, bool? verbose = null, string name = null)
+		public virtual SimpleTCLCommand add_wave_virtual_bus(TCLParameterList into = null, TCLParameterList at_wave = null, TCLParameterList after_wave = null, TCLParameterList before_wave = null, bool? reverse = null, string radix = null, string color = null, bool? quiet = null, bool? verbose = null, string name = null)
 		{
 			// TCL Syntax: add_wave_virtual_bus [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-reverse] [-radix <arg>] [-color <arg>] [-quiet] [-verbose] [<name>]
 			return
 				new SimpleTCLCommand("add_wave_virtual_bus")
-					.OptionalNamedString("into", into)
-					.OptionalNamedString("at_wave", at_wave)
-					.OptionalNamedString("after_wave", after_wave)
-					.OptionalNamedString("before_wave", before_wave)
+					.OptionalNamedStringList("into", into)
+					.OptionalNamedStringList("at_wave", at_wave)
+					.OptionalNamedStringList("after_wave", after_wave)
+					.OptionalNamedStringList("before_wave", before_wave)
 					.Flag("reverse", reverse)
 					.OptionalNamedString("radix", radix)
 					.OptionalNamedString("color", color)
@@ -1357,14 +1358,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of cell or pin objects</returns>
-		public virtual SimpleTCLCommand all_registers(string clock = null, string rise_clock = null, string fall_clock = null, bool? cells = null, bool? data_pins = null, bool? clock_pins = null, bool? async_pins = null, bool? output_pins = null, bool? level_sensitive = null, bool? edge_triggered = null, bool? no_hierarchy = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand all_registers(TCLParameterList clock = null, TCLParameterList rise_clock = null, TCLParameterList fall_clock = null, bool? cells = null, bool? data_pins = null, bool? clock_pins = null, bool? async_pins = null, bool? output_pins = null, bool? level_sensitive = null, bool? edge_triggered = null, bool? no_hierarchy = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: all_registers [-clock <args>] [-rise_clock <args>] [-fall_clock <args>] [-cells] [-data_pins] [-clock_pins] [-async_pins] [-output_pins] [-level_sensitive] [-edge_triggered] [-no_hierarchy] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("all_registers")
-					.OptionalNamedString("clock", clock)
-					.OptionalNamedString("rise_clock", rise_clock)
-					.OptionalNamedString("fall_clock", fall_clock)
+					.OptionalNamedStringList("clock", clock)
+					.OptionalNamedStringList("rise_clock", rise_clock)
+					.OptionalNamedStringList("fall_clock", fall_clock)
 					.Flag("cells", cells)
 					.Flag("data_pins", data_pins)
 					.Flag("clock_pins", clock_pins)
@@ -1412,18 +1413,18 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Returns success or failure</returns>
-		public virtual SimpleTCLCommand apply_bd_automation(string rule, string dict, string opts, string objects, string config = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand apply_bd_automation(string rule, string dict, string opts, TCLParameterList objects, TCLParameterList config = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: apply_bd_automation -rule <arg> [-config <args>] -dict <arg> -opts <arg> [-quiet] [-verbose] <objects>...
 			return
 				new SimpleTCLCommand("apply_bd_automation")
 					.RequiredNamedString("rule", rule)
-					.OptionalNamedString("config", config)
+					.OptionalNamedStringList("config", config)
 					.RequiredNamedString("dict", dict)
 					.RequiredNamedString("opts", opts)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(objects)
+					.RequiredStringList(objects)
 			;
 		}
 		/// <summary>
@@ -1666,7 +1667,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) The objects to assign UG835 (v2020.2) November 18, 2020 www.xilinx.com</param>
 		/// <returns>The newly mapped segments, "" if failed.</returns>
-		public virtual SimpleTCLCommand assign_bd_address(string dict, string target_address_space = null, bool? boundary = null, bool? master_boundary = null, bool? external = null, string import_from_file = null, string export_to_file = null, string export_gui_to_file = null, string offset = null, string range = null, string base_high = null, bool? force = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public virtual SimpleTCLCommand assign_bd_address(string dict, string target_address_space = null, bool? boundary = null, bool? master_boundary = null, bool? external = null, string import_from_file = null, string export_to_file = null, string export_gui_to_file = null, string offset = null, string range = null, string base_high = null, bool? force = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
 		{
 			// TCL Syntax: assign_bd_address [-target_address_space <arg>] [-boundary] [-master_boundary] [-external] -dict <arg> [-import_from_file <arg>] [-export_to_file <arg>] [-export_gui_to_file <arg>] [-offset <arg>] [-range <arg>] [-base_high <arg>] [-force] [-quiet] [-verbose] [<objects>...]
 			return
@@ -1685,7 +1686,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("force", force)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(objects)
+					.OptionalStringList(objects)
 			;
 		}
 		/// <summary>
@@ -1844,14 +1845,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="module">(Required) module name</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand can_resolve_reference(string module, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand can_resolve_reference(TCLParameterList module, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: can_resolve_reference [-quiet] [-verbose] <module>...
 			return
 				new SimpleTCLCommand("can_resolve_reference")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(module)
+					.RequiredStringList(module)
 			;
 		}
 		/// <summary>
@@ -1989,7 +1990,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cells">(Optional) run check_timing on the specified cell(s)</param>
 		/// <param name="verbose">(Optional) Return a detailed list of all timing problems found</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
-		public virtual SimpleTCLCommand check_timing(string file = null, bool? no_header = null, string loop_limit = null, bool? append = null, string name = null, string override_defaults = null, string include = null, string exclude = null, bool? return_string = null, string rpx = null, string cells = null, bool? verbose = null, bool? quiet = null)
+		public virtual SimpleTCLCommand check_timing(string file = null, bool? no_header = null, string loop_limit = null, bool? append = null, string name = null, TCLParameterList override_defaults = null, TCLParameterList include = null, TCLParameterList exclude = null, bool? return_string = null, string rpx = null, TCLParameterList cells = null, bool? verbose = null, bool? quiet = null)
 		{
 			// TCL Syntax: check_timing [-file <arg>] [-no_header] [-loop_limit <arg>] [-append] [-name <arg>] [-override_defaults <args>] [-include <args>] [-exclude <args>] [-return_string] [-rpx <arg>] [-cells <args>] [-verbose] [-quiet]
 			return
@@ -1999,12 +2000,12 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("loop_limit", loop_limit)
 					.Flag("append", append)
 					.OptionalNamedString("name", name)
-					.OptionalNamedString("override_defaults", override_defaults)
-					.OptionalNamedString("include", include)
-					.OptionalNamedString("exclude", exclude)
+					.OptionalNamedStringList("override_defaults", override_defaults)
+					.OptionalNamedStringList("include", include)
+					.OptionalNamedStringList("exclude", exclude)
 					.Flag("return_string", return_string)
 					.OptionalNamedString("rpx", rpx)
-					.OptionalNamedString("cells", cells)
+					.OptionalNamedStringList("cells", cells)
 					.Flag("verbose", verbose)
 					.Flag("quiet", quiet)
 			;
@@ -2527,14 +2528,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_objects">(Required) List of hardware VIO and hardware probe objects.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand commit_hw_vio(string hw_objects, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand commit_hw_vio(TCLParameterList hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: commit_hw_vio [-quiet] [-verbose] <hw_objects>...
 			return
 				new SimpleTCLCommand("commit_hw_vio")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(hw_objects)
+					.RequiredStringList(hw_objects)
 			;
 		}
 		/// <summary>
@@ -2738,12 +2739,12 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand config_hw_sio_gts(string hw_device, string dict = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand config_hw_sio_gts(string hw_device, TCLParameterList dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: config_hw_sio_gts [-dict <args>] [-quiet] [-verbose] <hw_device>
 			return
 				new SimpleTCLCommand("config_hw_sio_gts")
-					.OptionalNamedString("dict", dict)
+					.OptionalNamedStringList("dict", dict)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(hw_device)
@@ -3256,7 +3257,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public virtual SimpleTCLCommand connect_bd_net(string objects, string net = null, string boundary_type = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand connect_bd_net(TCLParameterList objects, string net = null, string boundary_type = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: connect_bd_net [-net <arg>] [-boundary_type <arg>] [-quiet] [-verbose] <objects>...
 			return
@@ -3265,7 +3266,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("boundary_type", boundary_type)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(objects)
+					.RequiredStringList(objects)
 			;
 		}
 		/// <summary>
@@ -3315,13 +3316,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>debug master and slave instances</returns>
-		public virtual SimpleTCLCommand connect_debug_cores(string master, string slaves, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand connect_debug_cores(TCLParameterList master, TCLParameterList slaves, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: connect_debug_cores -master <args> -slaves <args> [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("connect_debug_cores")
-					.RequiredNamedString("master", master)
-					.RequiredNamedString("slaves", slaves)
+					.RequiredNamedStringList("master", master)
+					.RequiredNamedStringList("slaves", slaves)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -3363,7 +3364,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="channel_start_index">(Optional) Connect nets starting at channel index</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand connect_debug_port(string port, string nets, string channel_start_index = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand connect_debug_port(string port, TCLParameterList nets, string channel_start_index = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: connect_debug_port [-channel_start_index <arg>] [-quiet] [-verbose] <port> <nets>...
 			return
@@ -3372,7 +3373,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(port)
-					.RequiredString(nets)
+					.RequiredStringList(nets)
 			;
 		}
 		/// <summary>
@@ -3485,17 +3486,17 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand connect_net(string objects, bool? hierarchical = null, string basename = null, string net = null, string net_object_list = null, string dict = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand connect_net(TCLParameterList objects, bool? hierarchical = null, string basename = null, TCLParameterList net = null, TCLParameterList net_object_list = null, TCLParameterList dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: connect_net [-hierarchical] [-basename <arg>] [-net <args>] [-objects <args>] [-net_object_list <args>] [-dict <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("connect_net")
 					.Flag("hierarchical", hierarchical)
 					.OptionalNamedString("basename", basename)
-					.OptionalNamedString("net", net)
-					.RequiredNamedString("objects", objects)
-					.OptionalNamedString("net_object_list", net_object_list)
-					.OptionalNamedString("dict", dict)
+					.OptionalNamedStringList("net", net)
+					.RequiredNamedStringList("objects", objects)
+					.OptionalNamedStringList("net_object_list", net_object_list)
+					.OptionalNamedStringList("dict", dict)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -3644,7 +3645,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>0, "" if failed.</returns>
-		public virtual SimpleTCLCommand copy_bd_objs(string parent_cell, string objects, string prefix = null, string from_design = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand copy_bd_objs(string parent_cell, TCLParameterList objects, string prefix = null, string from_design = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: copy_bd_objs [-prefix <arg>] [-from_design <arg>] [-quiet] [-verbose] <parent_cell> <objects>...
 			return
@@ -3654,7 +3655,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(parent_cell)
-					.RequiredString(objects)
+					.RequiredStringList(objects)
 			;
 		}
 		/// <summary>
@@ -3677,7 +3678,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>IP file object that was added to the project</returns>
-		public virtual SimpleTCLCommand copy_ip(string name, string objects, string dir = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand copy_ip(string name, TCLParameterList objects, string dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: copy_ip -name <arg> [-dir <arg>] [-quiet] [-verbose] <objects>...
 			return
@@ -3686,7 +3687,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("dir", dir)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(objects)
+					.RequiredStringList(objects)
 			;
 		}
 		/// <summary>
@@ -4172,7 +4173,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="black_box">(Optional) Create black box instance</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand create_cell(string reference, string cells, bool? black_box = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand create_cell(string reference, TCLParameterList cells, bool? black_box = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_cell -reference <arg> [-black_box] [-quiet] [-verbose] <cells>...
 			return
@@ -4181,7 +4182,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("black_box", black_box)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(cells)
+					.RequiredStringList(cells)
 			;
 		}
 		/// <summary>
@@ -4233,14 +4234,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) List of clock source ports, pins or nets</param>
 		/// <returns>new clock object</returns>
-		public virtual SimpleTCLCommand create_clock(string period, string name = null, string waveform = null, bool? add = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public virtual SimpleTCLCommand create_clock(string period, string name = null, TCLParameterList waveform = null, bool? add = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: create_clock -period <arg> [-name <arg>] [-waveform <args>] [-add] [-quiet] [-verbose] [<objects>]
 			return
 				new SimpleTCLCommand("create_clock")
 					.RequiredNamedString("period", period)
 					.OptionalNamedString("name", name)
-					.OptionalNamedString("waveform", waveform)
+					.OptionalNamedStringList("waveform", waveform)
 					.Flag("add", add)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -4649,14 +4650,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>drc_ruledeck</returns>
-		public virtual SimpleTCLCommand create_drc_ruledeck(string ruledecks, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand create_drc_ruledeck(TCLParameterList ruledecks, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_drc_ruledeck [-quiet] [-verbose] <ruledecks>...
 			return
 				new SimpleTCLCommand("create_drc_ruledeck")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(ruledecks)
+					.RequiredStringList(ruledecks)
 			;
 		}
 		/// <summary>
@@ -4753,7 +4754,7 @@ namespace Quokka.TCL.Vivado
 		/// Cells, ports, pins, nets, clock regions, sites, package banks to
 		/// query.
 		/// </param>
-		public virtual SimpleTCLCommand create_drc_violation(string name, string severity = null, string msg = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public virtual SimpleTCLCommand create_drc_violation(string name, string severity = null, string msg = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
 		{
 			// TCL Syntax: create_drc_violation -name <arg> [-severity <arg>] [-msg <arg>] [-quiet] [-verbose] [<objects>...]
 			return
@@ -4763,7 +4764,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("msg", msg)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(objects)
+					.OptionalStringList(objects)
 			;
 		}
 		/// <summary>
@@ -4807,16 +4808,16 @@ namespace Quokka.TCL.Vivado
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 272
 		/// </summary>
-		/// <param name="define_from">(Required) Name of the module in the source fileset to be the top of the blockset</param>
 		/// <param name="name">(Required) Name of the fileset to be create</param>
 		/// <param name="constrset">(Optional) Create fileset as constraints fileset (default)</param>
 		/// <param name="simset">(Optional) Create fileset as simulation source fileset</param>
 		/// <param name="blockset">(Optional) Create fileset as block source fileset</param>
 		/// <param name="clone_properties">(Optional) Fileset to initialize properties from</param>
+		/// <param name="define_from">(Optional) Name of the module in the source fileset to be the top of the blockset</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>new fileset object</returns>
-		public virtual SimpleTCLCommand create_fileset(string define_from, string name, bool? constrset = null, bool? simset = null, bool? blockset = null, string clone_properties = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand create_fileset(string name, bool? constrset = null, bool? simset = null, bool? blockset = null, string clone_properties = null, string define_from = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_fileset [-constrset] [-simset] [-blockset] [-clone_properties <arg>] -define_from <arg> [-quiet] [-verbose] <name>
 			return
@@ -4825,7 +4826,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("simset", simset)
 					.Flag("blockset", blockset)
 					.OptionalNamedString("clone_properties", clone_properties)
-					.RequiredNamedString("define_from", define_from)
+					.OptionalNamedString("define_from", define_from)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(name)
@@ -4906,22 +4907,22 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>new clock object</returns>
-		public virtual SimpleTCLCommand create_generated_clock(string objects, string name = null, string source = null, string edges = null, string divide_by = null, string multiply_by = null, bool? combinational = null, string duty_cycle = null, bool? invert = null, string edge_shift = null, bool? add = null, string master_clock = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand create_generated_clock(string objects, string name = null, TCLParameterList source = null, TCLParameterList edges = null, string divide_by = null, string multiply_by = null, bool? combinational = null, string duty_cycle = null, bool? invert = null, TCLParameterList edge_shift = null, bool? add = null, TCLParameterList master_clock = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_generated_clock [-name <arg>] [-source <args>] [-edges <args>] [-divide_by <arg>] [-multiply_by <arg>] [-combinational] [-duty_cycle <arg>] [-invert] [-edge_shift <args>] [-add] [-master_clock <args>] [-quiet] [-verbose] <objects>
 			return
 				new SimpleTCLCommand("create_generated_clock")
 					.OptionalNamedString("name", name)
-					.OptionalNamedString("source", source)
-					.OptionalNamedString("edges", edges)
+					.OptionalNamedStringList("source", source)
+					.OptionalNamedStringList("edges", edges)
 					.OptionalNamedString("divide_by", divide_by)
 					.OptionalNamedString("multiply_by", multiply_by)
 					.Flag("combinational", combinational)
 					.OptionalNamedString("duty_cycle", duty_cycle)
 					.Flag("invert", invert)
-					.OptionalNamedString("edge_shift", edge_shift)
+					.OptionalNamedStringList("edge_shift", edge_shift)
 					.Flag("add", add)
-					.OptionalNamedString("master_clock", master_clock)
+					.OptionalNamedStringList("master_clock", master_clock)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(objects)
@@ -5777,7 +5778,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="to">(Optional) Ending bus index</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand create_net(string nets, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand create_net(TCLParameterList nets, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_net [-from <arg>] [-to <arg>] [-quiet] [-verbose] <nets>...
 			return
@@ -5786,7 +5787,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("to", to)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(nets)
+					.RequiredStringList(nets)
 			;
 		}
 		/// <summary>
@@ -5950,7 +5951,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="to">(Optional) Ending bus index</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand create_pin(string direction, string pins, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand create_pin(string direction, TCLParameterList pins, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_pin [-from <arg>] [-to <arg>] -direction <arg> [-quiet] [-verbose] <pins>...
 			return
@@ -5960,7 +5961,7 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("direction", direction)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(pins)
+					.RequiredStringList(pins)
 			;
 		}
 		/// <summary>
@@ -6080,12 +6081,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>new power_rail object</returns>
-		public virtual SimpleTCLCommand create_power_rail(string name, string power_sources = null, bool? direct = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand create_power_rail(string name, TCLParameterList power_sources = null, bool? direct = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_power_rail [-power_sources <args>] [-direct] [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("create_power_rail")
-					.OptionalNamedString("power_sources", power_sources)
+					.OptionalNamedStringList("power_sources", power_sources)
 					.Flag("direct", direct)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -6129,14 +6130,14 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand create_pr_configuration(string name, string partitions = null, string greyboxes = null, bool? use_netlist = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand create_pr_configuration(string name, TCLParameterList partitions = null, TCLParameterList greyboxes = null, bool? use_netlist = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_pr_configuration -name <arg> [-partitions <args>] [-greyboxes <args>] [-use_netlist] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("create_pr_configuration")
 					.RequiredNamedString("name", name)
-					.OptionalNamedString("partitions", partitions)
-					.OptionalNamedString("greyboxes", greyboxes)
+					.OptionalNamedStringList("partitions", partitions)
+					.OptionalNamedStringList("greyboxes", greyboxes)
 					.Flag("use_netlist", use_netlist)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -6267,16 +6268,16 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The property that was created if success, "" if failure</returns>
-		public virtual SimpleTCLCommand create_property(string name, string @class, string description = null, string type = null, string enum_values = null, string default_value = null, string file_types = null, string display_text = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand create_property(string name, string @class, string description = null, string type = null, TCLParameterList enum_values = null, string default_value = null, TCLParameterList file_types = null, string display_text = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_property [-description <arg>] [-type <arg>] [-enum_values <args>] [-default_value <arg>] [-file_types <args>] [-display_text <arg>] [-quiet] [-verbose] <name> <class>
 			return
 				new SimpleTCLCommand("create_property")
 					.OptionalNamedString("description", description)
 					.OptionalNamedString("type", type)
-					.OptionalNamedString("enum_values", enum_values)
+					.OptionalNamedStringList("enum_values", enum_values)
 					.OptionalNamedString("default_value", default_value)
-					.OptionalNamedString("file_types", file_types)
+					.OptionalNamedStringList("file_types", file_types)
 					.OptionalNamedString("display_text", display_text)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -6402,17 +6403,17 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>List of configurable report objects</returns>
-		public virtual SimpleTCLCommand create_report_config(string steps, string runs, string report_name = null, string report_type = null, string options = null, string copy_of = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand create_report_config(TCLParameterList steps, TCLParameterList runs, string report_name = null, string report_type = null, string options = null, TCLParameterList copy_of = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_report_config [-report_name <arg>] [-report_type <arg>] -steps <args> -runs <args> [-options <arg>] [-copy_of <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("create_report_config")
 					.OptionalNamedString("report_name", report_name)
 					.OptionalNamedString("report_type", report_type)
-					.RequiredNamedString("steps", steps)
-					.RequiredNamedString("runs", runs)
+					.RequiredNamedStringList("steps", steps)
+					.RequiredNamedStringList("runs", runs)
 					.OptionalNamedString("options", options)
-					.OptionalNamedString("copy_of", copy_of)
+					.OptionalNamedStringList("copy_of", copy_of)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -6580,22 +6581,22 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cells">(Optional) run create_slack_histogram on the specified cell(s)</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand create_slack_histogram(string to = null, string delay_type = null, string num_bins = null, string slack_less_than = null, string slack_greater_than = null, string group = null, bool? report_unconstrained = null, string significant_digits = null, string scale = null, string name = null, string cells = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand create_slack_histogram(TCLParameterList to = null, string delay_type = null, string num_bins = null, string slack_less_than = null, string slack_greater_than = null, TCLParameterList group = null, bool? report_unconstrained = null, string significant_digits = null, string scale = null, string name = null, TCLParameterList cells = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_slack_histogram [-to <args>] [-delay_type <arg>] [-num_bins <arg>] [-slack_less_than <arg>] [-slack_greater_than <arg>] [-group <args>] [-report_unconstrained] [-significant_digits <arg>] [-scale <arg>] [-name <arg>] [-cells <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("create_slack_histogram")
-					.OptionalNamedString("to", to)
+					.OptionalNamedStringList("to", to)
 					.OptionalNamedString("delay_type", delay_type)
 					.OptionalNamedString("num_bins", num_bins)
 					.OptionalNamedString("slack_less_than", slack_less_than)
 					.OptionalNamedString("slack_greater_than", slack_greater_than)
-					.OptionalNamedString("group", group)
+					.OptionalNamedStringList("group", group)
 					.Flag("report_unconstrained", report_unconstrained)
 					.OptionalNamedString("significant_digits", significant_digits)
 					.OptionalNamedString("scale", scale)
 					.OptionalNamedString("name", name)
-					.OptionalNamedString("cells", cells)
+					.OptionalNamedStringList("cells", cells)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -6754,18 +6755,18 @@ namespace Quokka.TCL.Vivado
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
 		/// <returns>waiver</returns>
-		public virtual SimpleTCLCommand create_waiver(string description, string type = null, string id = null, string objects = null, string from = null, string to = null, string strings = null, string of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand create_waiver(string description, string type = null, string id = null, TCLParameterList objects = null, TCLParameterList from = null, TCLParameterList to = null, TCLParameterList strings = null, TCLParameterList of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_waiver [-type <arg>] [-id <arg>] [-objects <args>] [-from <args>] [-to <args>] [-strings <args>] [-of_objects <args>] [-user <arg>] -description <arg> [-tags <arg>] [-timestamp <arg>] [-scoped] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("create_waiver")
 					.OptionalNamedString("type", type)
 					.OptionalNamedString("id", id)
-					.OptionalNamedString("objects", objects)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("strings", strings)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("objects", objects)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("to", to)
+					.OptionalNamedStringList("strings", strings)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("user", user)
 					.RequiredNamedString("description", description)
 					.OptionalNamedString("tags", tags)
@@ -7075,7 +7076,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="fileset">(Optional) Specify the simulation fileset to set as current (active); optional</param>
 		/// <returns>current fileset (the current srcset by default)</returns>
-		public virtual SimpleTCLCommand current_fileset(bool? constrset = null, bool? simset = null, bool? quiet = null, bool? verbose = null, string fileset = null)
+		public virtual SimpleTCLCommand current_fileset(bool? constrset = null, bool? simset = null, bool? quiet = null, bool? verbose = null, TCLParameterList fileset = null)
 		{
 			// TCL Syntax: current_fileset [-constrset] [-simset] [-quiet] [-verbose] [<fileset>...]
 			return
@@ -7084,7 +7085,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("simset", simset)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(fileset)
+					.OptionalStringList(fileset)
 			;
 		}
 		/// <summary>
@@ -7223,12 +7224,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_cfgmem">(Optional) list of hardware cfgmems Default: current hardware cfgmem</param>
 		/// <returns>hardware cfgmem</returns>
-		public virtual SimpleTCLCommand current_hw_cfgmem(string hw_device = null, bool? quiet = null, bool? verbose = null, string hw_cfgmem = null)
+		public virtual SimpleTCLCommand current_hw_cfgmem(TCLParameterList hw_device = null, bool? quiet = null, bool? verbose = null, string hw_cfgmem = null)
 		{
 			// TCL Syntax: current_hw_cfgmem [-hw_device <args>] [-quiet] [-verbose] [<hw_cfgmem>]
 			return
 				new SimpleTCLCommand("current_hw_cfgmem")
-					.OptionalNamedString("hw_device", hw_device)
+					.OptionalNamedStringList("hw_device", hw_device)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(hw_cfgmem)
@@ -7540,14 +7541,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="config">(Optional) Specify the PR configuration to be set as current (active); optional</param>
 		/// <returns>list of PartitionDef objects</returns>
-		public virtual SimpleTCLCommand current_pr_configuration(bool? quiet = null, bool? verbose = null, string config = null)
+		public virtual SimpleTCLCommand current_pr_configuration(bool? quiet = null, bool? verbose = null, TCLParameterList config = null)
 		{
 			// TCL Syntax: current_pr_configuration [-quiet] [-verbose] [<config>...]
 			return
 				new SimpleTCLCommand("current_pr_configuration")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(config)
+					.OptionalStringList(config)
 			;
 		}
 		/// <summary>
@@ -7855,14 +7856,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Pass if successful in deleting objects</returns>
-		public virtual SimpleTCLCommand delete_bd_objs(string objects, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand delete_bd_objs(TCLParameterList objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_bd_objs [-quiet] [-verbose] <objects>...
 			return
 				new SimpleTCLCommand("delete_bd_objs")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(objects)
+					.RequiredStringList(objects)
 			;
 		}
 		/// <summary>
@@ -7937,14 +7938,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cores">(Required) Debug cores to delete</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand delete_debug_core(string cores, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand delete_debug_core(TCLParameterList cores, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_debug_core [-quiet] [-verbose] <cores>...
 			return
 				new SimpleTCLCommand("delete_debug_core")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(cores)
+					.RequiredStringList(cores)
 			;
 		}
 		/// <summary>
@@ -7972,14 +7973,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="ports">(Required) Debug ports to delete</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand delete_debug_port(string ports, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand delete_debug_port(TCLParameterList ports, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_debug_port [-quiet] [-verbose] <ports>...
 			return
 				new SimpleTCLCommand("delete_debug_port")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(ports)
+					.RequiredStringList(ports)
 			;
 		}
 		/// <summary>
@@ -8010,14 +8011,14 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand delete_drc_check(string name, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand delete_drc_check(TCLParameterList name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_drc_check [-quiet] [-verbose] <name>...
 			return
 				new SimpleTCLCommand("delete_drc_check")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(name)
+					.RequiredStringList(name)
 			;
 		}
 		/// <summary>
@@ -8111,14 +8112,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_axi_txns">(Required) hardware AXI Transaction object to delete</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand delete_hw_axi_txn(string hw_axi_txns, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand delete_hw_axi_txn(TCLParameterList hw_axi_txns, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_hw_axi_txn [-quiet] [-verbose] <hw_axi_txns>...
 			return
 				new SimpleTCLCommand("delete_hw_axi_txn")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(hw_axi_txns)
+					.RequiredStringList(hw_axi_txns)
 			;
 		}
 		/// <summary>
@@ -8137,12 +8138,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>hardware devices</returns>
-		public virtual SimpleTCLCommand delete_hw_bitstream(string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand delete_hw_bitstream(TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_hw_bitstream [-of_objects <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("delete_hw_bitstream")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -8188,14 +8189,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_probes">(Required) hardware probe objects to delete</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand delete_hw_probe(string hw_probes, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand delete_hw_probe(TCLParameterList hw_probes, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_hw_probe [-quiet] [-verbose] <hw_probes>...
 			return
 				new SimpleTCLCommand("delete_hw_probe")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(hw_probes)
+					.RequiredStringList(hw_probes)
 			;
 		}
 		/// <summary>
@@ -8245,7 +8246,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="all">(Optional) Also remove all of the ports and buses belonging to the interface</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand delete_interface(string interfaces, bool? all = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand delete_interface(TCLParameterList interfaces, bool? all = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_interface [-all] [-quiet] [-verbose] <interfaces>...
 			return
@@ -8253,7 +8254,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("all", all)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(interfaces)
+					.RequiredStringList(interfaces)
 			;
 		}
 		/// <summary>
@@ -8374,7 +8375,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hier">(Optional) Also delete all the children of Pblock</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand delete_pblocks(string pblocks, bool? hier = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand delete_pblocks(TCLParameterList pblocks, bool? hier = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_pblocks [-hier] [-quiet] [-verbose] <pblocks>...
 			return
@@ -8382,7 +8383,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("hier", hier)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(pblocks)
+					.RequiredStringList(pblocks)
 			;
 		}
 		/// <summary>
@@ -8533,14 +8534,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="report_configs">(Required) List of configurable report objects to delete</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand delete_report_configs(string report_configs, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand delete_report_configs(TCLParameterList report_configs, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_report_configs [-quiet] [-verbose] <report_configs>...
 			return
 				new SimpleTCLCommand("delete_report_configs")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(report_configs)
+					.RequiredStringList(report_configs)
 			;
 		}
 		/// <summary>
@@ -8702,7 +8703,7 @@ namespace Quokka.TCL.Vivado
 		/// nets, sites, etc.) for which DRC/METHODOLOGY waiver(s)
 		/// were set
 		/// </param>
-		public virtual SimpleTCLCommand delete_waivers(bool? scoped = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public virtual SimpleTCLCommand delete_waivers(bool? scoped = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
 		{
 			// TCL Syntax: delete_waivers [-scoped] [-quiet] [-verbose] [<objects>...]
 			return
@@ -8710,7 +8711,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("scoped", scoped)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(objects)
+					.OptionalStringList(objects)
 			;
 		}
 		/// <summary>
@@ -8834,7 +8835,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public virtual SimpleTCLCommand disconnect_bd_intf_net(string intf_net, string objects, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand disconnect_bd_intf_net(string intf_net, TCLParameterList objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: disconnect_bd_intf_net [-quiet] [-verbose] <intf_net> <objects>...
 			return
@@ -8842,7 +8843,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(intf_net)
-					.RequiredString(objects)
+					.RequiredStringList(objects)
 			;
 		}
 		/// <summary>
@@ -8864,7 +8865,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public virtual SimpleTCLCommand disconnect_bd_net(string net, string objects, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand disconnect_bd_net(string net, TCLParameterList objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: disconnect_bd_net [-quiet] [-verbose] <net> <objects>...
 			return
@@ -8872,7 +8873,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(net)
-					.RequiredString(objects)
+					.RequiredStringList(objects)
 			;
 		}
 		/// <summary>
@@ -8979,15 +8980,15 @@ namespace Quokka.TCL.Vivado
 		/// <param name="pinlist">(Optional) List of pin and port objects to disconnect.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand disconnect_net(bool? prune = null, string net = null, string objects = null, string pinlist = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand disconnect_net(bool? prune = null, string net = null, TCLParameterList objects = null, TCLParameterList pinlist = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: disconnect_net [-prune] [-net <arg>] [-objects <args>] [-pinlist <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("disconnect_net")
 					.Flag("prune", prune)
 					.OptionalNamedString("net", net)
-					.OptionalNamedString("objects", objects)
-					.OptionalNamedString("pinlist", pinlist)
+					.OptionalNamedStringList("objects", objects)
+					.OptionalNamedStringList("pinlist", pinlist)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -9021,7 +9022,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_ila_data">(Optional) List of hardware ILA data objects. Default: Current hardware ILA data</param>
-		public virtual SimpleTCLCommand display_hw_ila_data(string wcfg = null, bool? reset = null, bool? quiet = null, bool? verbose = null, string hw_ila_data = null)
+		public virtual SimpleTCLCommand display_hw_ila_data(string wcfg = null, bool? reset = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_ila_data = null)
 		{
 			// TCL Syntax: display_hw_ila_data [-wcfg <arg>] [-reset] [-quiet] [-verbose] [<hw_ila_data>...]
 			return
@@ -9030,7 +9031,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("reset", reset)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(hw_ila_data)
+					.OptionalStringList(hw_ila_data)
 			;
 		}
 		/// <summary>
@@ -9088,7 +9089,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand encrypt(string lang, string files, string key = null, string ext = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand encrypt(string lang, TCLParameterList files, string key = null, string ext = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: encrypt [-key <arg>] -lang <arg> [-ext <arg>] [-quiet] [-verbose] <files>...
 			return
@@ -9098,7 +9099,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("ext", ext)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(files)
+					.RequiredStringList(files)
 			;
 		}
 		/// <summary>
@@ -9566,7 +9567,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of files that were extracted with the new paths</returns>
-		public virtual SimpleTCLCommand extract_files(string files, string base_dir = null, bool? force = null, bool? no_ip_dir = null, bool? no_paths = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand extract_files(TCLParameterList files, string base_dir = null, bool? force = null, bool? no_ip_dir = null, bool? no_paths = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: extract_files [-base_dir <arg>] [-force] [-no_ip_dir] [-no_paths] [-quiet] [-verbose] <files>...
 			return
@@ -9577,7 +9578,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("no_paths", no_paths)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(files)
+					.RequiredStringList(files)
 			;
 		}
 		/// <summary>
@@ -9688,7 +9689,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>List of pins, ports or interface objects, "" if failed.</returns>
-		public virtual SimpleTCLCommand find_bd_objs(string relation, string objects, string boundary_type = null, bool? thru_hier = null, bool? stop_at_interconnect = null, bool? stop_at_container = null, string end_type = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand find_bd_objs(string relation, TCLParameterList objects, string boundary_type = null, bool? thru_hier = null, bool? stop_at_interconnect = null, bool? stop_at_container = null, string end_type = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: find_bd_objs -relation <arg> [-boundary_type <arg>] [-thru_hier] [-stop_at_interconnect] [-stop_at_container] [-end_type <arg>] [-quiet] [-verbose] <objects>...
 			return
@@ -9701,7 +9702,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("end_type", end_type)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(objects)
+					.RequiredStringList(objects)
 			;
 		}
 		/// <summary>
@@ -9761,7 +9762,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="to">(Optional) -to <end node> End of routing path.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand find_routing_path(bool? allow_overlap = null, string max_nodes = null, string min_nodes = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand find_routing_path(bool? allow_overlap = null, string max_nodes = null, string min_nodes = null, TCLParameterList from = null, TCLParameterList to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: find_routing_path [-allow_overlap] [-max_nodes <arg>] [-min_nodes <arg>] [-from <args>] [-to <args>] [-quiet] [-verbose]
 			return
@@ -9769,8 +9770,8 @@ namespace Quokka.TCL.Vivado
 					.Flag("allow_overlap", allow_overlap)
 					.OptionalNamedString("max_nodes", max_nodes)
 					.OptionalNamedString("min_nodes", min_nodes)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("to", to)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -9812,13 +9813,13 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand find_top(string fileset = null, string files = null, bool? return_file_paths = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand find_top(string fileset = null, TCLParameterList files = null, bool? return_file_paths = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: find_top [-fileset <arg>] [-files <args>] [-return_file_paths] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("find_top")
 					.OptionalNamedString("fileset", fileset)
-					.OptionalNamedString("files", files)
+					.OptionalNamedStringList("files", files)
 					.Flag("return_file_paths", return_file_paths)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -10072,7 +10073,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="jobs">(Optional) Number of jobs Default: 1</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand generate_reports(string report_configs, string jobs = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand generate_reports(TCLParameterList report_configs, string jobs = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_reports [-jobs <arg>] [-quiet] [-verbose] <report_configs>...
 			return
@@ -10080,7 +10081,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("jobs", jobs)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(report_configs)
+					.RequiredStringList(report_configs)
 			;
 		}
 		/// <summary>
@@ -10235,7 +10236,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of segment objects, "" if failed.</returns>
-		public virtual SimpleTCLCommand get_bd_addr_segs(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? excluded = null, bool? addressed = null, bool? unaddressed = null, bool? addressing = null, bool? addressables = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_bd_addr_segs(bool? regexp = null, bool? hierarchical = null, string filter = null, TCLParameterList of_objects = null, bool? excluded = null, bool? addressed = null, bool? unaddressed = null, bool? addressing = null, bool? addressables = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_addr_segs [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-excluded] [-addressed] [-unaddressed] [-addressing] [-addressables] [-quiet] [-verbose] [<patterns>]
 			return
@@ -10243,7 +10244,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("hierarchical", hierarchical)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("excluded", excluded)
 					.Flag("addressed", addressed)
 					.Flag("unaddressed", unaddressed)
@@ -10308,7 +10309,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of addr_space objects, "" if failed.</returns>
-		public virtual SimpleTCLCommand get_bd_addr_spaces(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_bd_addr_spaces(bool? regexp = null, bool? hierarchical = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_addr_spaces [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -10316,7 +10317,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("hierarchical", hierarchical)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -10356,7 +10357,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of block diagram cell objects, "" if failed.</returns>
-		public virtual SimpleTCLCommand get_bd_cells(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_bd_cells(bool? regexp = null, bool? hierarchical = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_cells [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -10364,7 +10365,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("hierarchical", hierarchical)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -10395,17 +10396,17 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of design objects, "" if failed.</returns>
-		public virtual SimpleTCLCommand get_bd_designs(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_bd_designs(bool? regexp = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_bd_designs [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_bd_designs")
 					.Flag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -10453,7 +10454,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of pin objects, "" if failed.</returns>
-		public virtual SimpleTCLCommand get_bd_intf_nets(bool? regexp = null, bool? hierarchical = null, string filter = null, string boundary_type = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_bd_intf_nets(bool? regexp = null, bool? hierarchical = null, string filter = null, string boundary_type = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_intf_nets [-regexp] [-hierarchical] [-filter <arg>] [-boundary_type <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -10462,7 +10463,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("hierarchical", hierarchical)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedString("boundary_type", boundary_type)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -10508,7 +10509,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of pin objects, "" if failed.</returns>
-		public virtual SimpleTCLCommand get_bd_intf_pins(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_bd_intf_pins(bool? regexp = null, bool? hierarchical = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_intf_pins [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -10516,7 +10517,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("hierarchical", hierarchical)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -10556,14 +10557,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of port objects, "" if failed.</returns>
-		public virtual SimpleTCLCommand get_bd_intf_ports(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_bd_intf_ports(bool? regexp = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_intf_ports [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_bd_intf_ports")
 					.Flag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -10614,7 +10615,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of pin objects, "" if failed.</returns>
-		public virtual SimpleTCLCommand get_bd_nets(bool? regexp = null, bool? hierarchical = null, string filter = null, string boundary_type = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_bd_nets(bool? regexp = null, bool? hierarchical = null, string filter = null, string boundary_type = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_nets [-regexp] [-hierarchical] [-filter <arg>] [-boundary_type <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -10623,7 +10624,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("hierarchical", hierarchical)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedString("boundary_type", boundary_type)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -10670,7 +10671,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of pin objects, "" if failed.</returns>
-		public virtual SimpleTCLCommand get_bd_pins(bool? regexp = null, bool? hierarchical = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_bd_pins(bool? regexp = null, bool? hierarchical = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_pins [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -10678,7 +10679,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("hierarchical", hierarchical)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -10714,14 +10715,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of port objects, "" if failed.</returns>
-		public virtual SimpleTCLCommand get_bd_ports(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_bd_ports(bool? regexp = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bd_ports [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_bd_ports")
 					.Flag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -10768,12 +10769,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>List of register objects, "" if failed.</returns>
-		public virtual SimpleTCLCommand get_bd_regs(string of_objects, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand get_bd_regs(TCLParameterList of_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_bd_regs [-of_objects <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("get_bd_regs")
-					.RequiredNamedString("of_objects", of_objects)
+					.RequiredNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -10809,7 +10810,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match bel_pin against patterns Default: *</param>
 		/// <returns>bel_pin</returns>
-		public virtual SimpleTCLCommand get_bel_pins(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_bel_pins(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bel_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -10817,7 +10818,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -10855,7 +10856,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match bels against patterns Default: *</param>
 		/// <returns>bels</returns>
-		public virtual SimpleTCLCommand get_bels(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_routing_bels = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_bels(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? include_routing_bels = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bels [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_routing_bels] [-quiet] [-verbose] [<patterns>]
 			return
@@ -10863,7 +10864,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("include_routing_bels", include_routing_bels)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -10913,7 +10914,7 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of bus nets in the board</returns>
-		public virtual SimpleTCLCommand get_board_bus_nets(string of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_board_bus_nets(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_bus_nets [-regexp] [-nocase] [-all] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			return
@@ -10922,10 +10923,10 @@ namespace Quokka.TCL.Vivado
 					.Flag("nocase", nocase)
 					.Flag("all", all)
 					.OptionalNamedString("filter", filter)
-					.RequiredNamedString("of_objects", of_objects)
+					.RequiredNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -10971,7 +10972,7 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of buses in the board</returns>
-		public virtual SimpleTCLCommand get_board_buses(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_board_buses(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_buses [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -10980,10 +10981,10 @@ namespace Quokka.TCL.Vivado
 					.Flag("nocase", nocase)
 					.Flag("all", all)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -11034,7 +11035,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of bus interfaces</returns>
-		public virtual SimpleTCLCommand get_board_component_interfaces(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_board_component_interfaces(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_component_interfaces [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -11043,10 +11044,10 @@ namespace Quokka.TCL.Vivado
 					.Flag("nocase", nocase)
 					.Flag("all", all)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -11088,7 +11089,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of component modes in the board</returns>
-		public virtual SimpleTCLCommand get_board_component_modes(string of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_board_component_modes(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_component_modes [-regexp] [-nocase] [-all] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			return
@@ -11097,10 +11098,10 @@ namespace Quokka.TCL.Vivado
 					.Flag("nocase", nocase)
 					.Flag("all", all)
 					.OptionalNamedString("filter", filter)
-					.RequiredNamedString("of_objects", of_objects)
+					.RequiredNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -11145,7 +11146,7 @@ namespace Quokka.TCL.Vivado
 		/// *, or .* when -regexp is specified.
 		/// </param>
 		/// <returns>list of pins in the board_part</returns>
-		public virtual SimpleTCLCommand get_board_component_pins(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_board_component_pins(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_component_pins [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			return
@@ -11153,10 +11154,10 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.RequiredNamedString("of_objects", of_objects)
+					.RequiredNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -11199,7 +11200,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of component objects</returns>
-		public virtual SimpleTCLCommand get_board_components(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_board_components(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_components [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -11208,10 +11209,10 @@ namespace Quokka.TCL.Vivado
 					.Flag("nocase", nocase)
 					.Flag("all", all)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -11261,7 +11262,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of ports in the given interface</returns>
-		public virtual SimpleTCLCommand get_board_interface_ports(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_board_interface_ports(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_interface_ports [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			return
@@ -11269,10 +11270,10 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.RequiredNamedString("of_objects", of_objects)
+					.RequiredNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -11317,7 +11318,7 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>list of ip preferences for the component</returns>
-		public virtual SimpleTCLCommand get_board_ip_preferences(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_board_ip_preferences(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_ip_preferences [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			return
@@ -11325,10 +11326,10 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.RequiredNamedString("of_objects", of_objects)
+					.RequiredNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -11367,7 +11368,7 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of jumpers in the board</returns>
-		public virtual SimpleTCLCommand get_board_jumpers(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_board_jumpers(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_jumpers [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -11375,10 +11376,10 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -11422,7 +11423,7 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of parameters in the board</returns>
-		public virtual SimpleTCLCommand get_board_parameters(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_board_parameters(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_parameters [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -11430,10 +11431,10 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -11485,7 +11486,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of bus interfaces</returns>
-		public virtual SimpleTCLCommand get_board_part_interfaces(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_board_part_interfaces(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_part_interfaces [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -11493,10 +11494,10 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -11568,7 +11569,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of pins in the board_part</returns>
-		public virtual SimpleTCLCommand get_board_part_pins(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_board_part_pins(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_part_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -11576,10 +11577,10 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -11625,7 +11626,7 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of board_part objects</returns>
-		public virtual SimpleTCLCommand get_board_parts(bool? regexp = null, bool? nocase = null, bool? latest_file_version = null, bool? latest_hw_revision = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_board_parts(bool? regexp = null, bool? nocase = null, bool? latest_file_version = null, bool? latest_hw_revision = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_parts [-regexp] [-nocase] [-latest_file_version] [-latest_hw_revision] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -11637,7 +11638,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("filter", filter)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -11686,7 +11687,7 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>list of board objects</returns>
-		public virtual SimpleTCLCommand get_boards(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_boards(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_boards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -11694,10 +11695,10 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -11837,7 +11838,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match cell names against patterns Default: *</param>
 		/// <returns>list of cell objects</returns>
-		public virtual SimpleTCLCommand get_cells(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_cells(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_cells [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_replicated_objects] [-quiet] [-verbose] [<patterns>]
 			return
@@ -11847,7 +11848,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("match_style", match_style)
 					.Flag("include_replicated_objects", include_replicated_objects)
 					.Flag("quiet", quiet)
@@ -11894,7 +11895,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'cfgmem_part' objects against patterns. Default: *</param>
 		/// <returns>list of cfgmem_part objects</returns>
-		public virtual SimpleTCLCommand get_cfgmem_parts(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_cfgmem_parts(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_cfgmem_parts [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -11902,7 +11903,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -11949,7 +11950,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match objects' name against patterns. Default: *</param>
 		/// <returns>clock_regions</returns>
-		public virtual SimpleTCLCommand get_clock_regions(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_clock_regions(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_clock_regions [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -11957,7 +11958,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -12002,7 +12003,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match clock names against patterns Default: *</param>
 		/// <returns>list of clocks</returns>
-		public virtual SimpleTCLCommand get_clocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? include_generated_clocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_clocks(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, string match_style = null, bool? include_generated_clocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_clocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_generated_clocks] [-quiet] [-verbose] [<patterns>]
 			return
@@ -12010,7 +12011,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("match_style", match_style)
 					.Flag("include_generated_clocks", include_generated_clocks)
 					.Flag("quiet", quiet)
@@ -12080,14 +12081,14 @@ namespace Quokka.TCL.Vivado
 		/// Match gadget names against patterns Default: * Values: The
 		/// default search pattern is the wildcard *
 		/// </param>
-		public virtual SimpleTCLCommand get_dashboard_gadgets(bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_dashboard_gadgets(bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_dashboard_gadgets [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_dashboard_gadgets")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -12125,13 +12126,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match debug cores against patterns Default: *</param>
 		/// <returns>list of debug_core objects</returns>
-		public virtual SimpleTCLCommand get_debug_cores(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_debug_cores(string filter = null, TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_debug_cores [-filter <arg>] [-of_objects <args>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_debug_cores")
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.Flag("quiet", quiet)
@@ -12173,13 +12174,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match debug ports against patterns Default: *</param>
 		/// <returns>list of debug_port objects</returns>
-		public virtual SimpleTCLCommand get_debug_ports(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_debug_ports(string filter = null, TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_debug_ports [-filter <arg>] [-of_objects <args>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_debug_ports")
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.Flag("quiet", quiet)
@@ -12260,17 +12261,17 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'rule_check' objects against patterns. Default: *</param>
 		/// <returns>list of DRC rule_check objects</returns>
-		public virtual SimpleTCLCommand get_drc_checks(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, string abbrev = null, string ruledecks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_drc_checks(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, string abbrev = null, TCLParameterList ruledecks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_drc_checks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-abbrev <arg>] [-ruledecks <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_drc_checks")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedString("abbrev", abbrev)
-					.OptionalNamedString("ruledecks", ruledecks)
+					.OptionalNamedStringList("ruledecks", ruledecks)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -12311,12 +12312,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'drc_ruledeck' objects against patterns. Default: *</param>
 		/// <returns>drc_ruledeck</returns>
-		public virtual SimpleTCLCommand get_drc_ruledecks(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_drc_ruledecks(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_drc_ruledecks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_drc_ruledecks")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -12419,7 +12420,7 @@ namespace Quokka.TCL.Vivado
 		/// specified.
 		/// </param>
 		/// <returns>list of design objects</returns>
-		public virtual SimpleTCLCommand get_example_designs(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_example_designs(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_example_designs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -12429,7 +12430,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("filter", filter)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -12488,7 +12489,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match file names against patterns Default: *</param>
 		/// <returns>list of file objects</returns>
-		public virtual SimpleTCLCommand get_files(bool? regexp = null, bool? nocase = null, string filter = null, string compile_order = null, string used_in = null, bool? references = null, bool? all = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_files(bool? regexp = null, bool? nocase = null, string filter = null, string compile_order = null, string used_in = null, bool? references = null, bool? all = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_files [-regexp] [-nocase] [-filter <arg>] [-compile_order <arg>] [-used_in <arg>] [-references] [-all] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -12500,7 +12501,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("used_in", used_in)
 					.Flag("references", references)
 					.Flag("all", all)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -12545,7 +12546,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match fileset names against patterns Default: *</param>
 		/// <returns>list of fileset objects</returns>
-		public virtual SimpleTCLCommand get_filesets(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_filesets(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_filesets [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -12553,7 +12554,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -12590,7 +12591,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match generated clock names against patterns Default: *</param>
 		/// <returns>list of clocks</returns>
-		public virtual SimpleTCLCommand get_generated_clocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_generated_clocks(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, string match_style = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_generated_clocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -12598,7 +12599,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("match_style", match_style)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -12631,7 +12632,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the custom command argument names against patterns Default: *</param>
 		/// <returns>list of custom command argument names</returns>
-		public virtual SimpleTCLCommand get_gui_custom_command_args(string command_name, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_gui_custom_command_args(string command_name, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_gui_custom_command_args -command_name <arg> [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -12641,7 +12642,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("nocase", nocase)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -12664,7 +12665,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the custom command names against patterns Default: *</param>
 		/// <returns>list of custom command names</returns>
-		public virtual SimpleTCLCommand get_gui_custom_commands(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_gui_custom_commands(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_gui_custom_commands [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -12673,7 +12674,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("nocase", nocase)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -12727,13 +12728,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of highlighted objects</returns>
-		public virtual SimpleTCLCommand get_highlighted_objects(string color_index = null, string rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand get_highlighted_objects(string color_index = null, TCLParameterList rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_highlighted_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("get_highlighted_objects")
 					.OptionalNamedString("color_index", color_index)
-					.OptionalNamedString("rgb", rgb)
+					.OptionalNamedStringList("rgb", rgb)
 					.OptionalNamedString("color", color)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -12773,12 +12774,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_axi_txn' objects against patterns. Default: *</param>
 		/// <returns>hw_axi_txns</returns>
-		public virtual SimpleTCLCommand get_hw_axi_txns(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_axi_txns(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_axi_txns [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_axi_txns")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -12823,12 +12824,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_axi' objects against patterns. Default: *</param>
 		/// <returns>hw_axi</returns>
-		public virtual SimpleTCLCommand get_hw_axis(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_axis(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_axis [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_axis")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -12914,12 +12915,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_ddrmc' objects against patterns. Default: *</param>
 		/// <returns>integrated and soft DDRMC cores</returns>
-		public virtual SimpleTCLCommand get_hw_ddrmcs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_ddrmcs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_ddrmcs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_ddrmcs")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -12949,12 +12950,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_device' objects against patterns. Default: *</param>
 		/// <returns>hardware devices</returns>
-		public virtual SimpleTCLCommand get_hw_devices(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_devices(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_devices [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_devices")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -12996,12 +12997,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_hbm' objects against patterns. Default: *</param>
 		/// <returns>hardware HBM cores</returns>
-		public virtual SimpleTCLCommand get_hw_hbms(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_hbms(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_hbms [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_hbms")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13037,12 +13038,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_ila_data' objects against patterns. Default: *</param>
 		/// <returns>hardware ILA data</returns>
-		public virtual SimpleTCLCommand get_hw_ila_datas(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_ila_datas(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_ila_datas [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_ila_datas")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13102,12 +13103,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_ila' objects against patterns. Default: *</param>
 		/// <returns>hardware ILAs</returns>
-		public virtual SimpleTCLCommand get_hw_ilas(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_ilas(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_ilas [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_ilas")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13155,12 +13156,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_mig' objects against patterns. Default: *</param>
 		/// <returns>hardware migs cores</returns>
-		public virtual SimpleTCLCommand get_hw_migs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_migs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_migs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_migs")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13202,12 +13203,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>PCIe core(s)</returns>
-		public virtual SimpleTCLCommand get_hw_pcies(string of_objects = null, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand get_hw_pcies(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_hw_pcies [-of_objects <args>] [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("get_hw_pcies")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("patterns", patterns)
@@ -13251,12 +13252,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_probe' objects against patterns. Default: *</param>
 		/// <returns>hardware probes</returns>
-		public virtual SimpleTCLCommand get_hw_probes(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_probes(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_probes [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_probes")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13337,12 +13338,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_common' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO GT commons</returns>
-		public virtual SimpleTCLCommand get_hw_sio_commons(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_sio_commons(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_commons [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_sio_commons")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13387,12 +13388,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_gtgroup' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO GT groups.</returns>
-		public virtual SimpleTCLCommand get_hw_sio_gtgroups(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_sio_gtgroups(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_gtgroups [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_sio_gtgroups")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13437,12 +13438,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_gt' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO GTs</returns>
-		public virtual SimpleTCLCommand get_hw_sio_gts(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_sio_gts(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_gts [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_sio_gts")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13493,12 +13494,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_ibert' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO IBERT cores.</returns>
-		public virtual SimpleTCLCommand get_hw_sio_iberts(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_sio_iberts(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_iberts [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_sio_iberts")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13532,12 +13533,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_linkgroup' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO link groups</returns>
-		public virtual SimpleTCLCommand get_hw_sio_linkgroups(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_sio_linkgroups(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_linkgroups [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_sio_linkgroups")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13576,12 +13577,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_link' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO links</returns>
-		public virtual SimpleTCLCommand get_hw_sio_links(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_sio_links(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_links [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_sio_links")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13623,12 +13624,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_pll' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO PLLs</returns>
-		public virtual SimpleTCLCommand get_hw_sio_plls(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_sio_plls(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_plls [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_sio_plls")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13666,12 +13667,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_rx' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO RXs</returns>
-		public virtual SimpleTCLCommand get_hw_sio_rxs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_sio_rxs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_rxs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_sio_rxs")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13706,12 +13707,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_scan' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO scans</returns>
-		public virtual SimpleTCLCommand get_hw_sio_scans(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_sio_scans(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_scans [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_sio_scans")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13750,12 +13751,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_sweep' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO sweeps</returns>
-		public virtual SimpleTCLCommand get_hw_sio_sweeps(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_sio_sweeps(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_sweeps [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_sio_sweeps")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13793,12 +13794,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_tx' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO TXs</returns>
-		public virtual SimpleTCLCommand get_hw_sio_txs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_sio_txs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_txs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_sio_txs")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13827,12 +13828,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_softmc' objects against patterns. Default: *</param>
 		/// <returns>soft memory controller cores</returns>
-		public virtual SimpleTCLCommand get_hw_softmcs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_softmcs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_softmcs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_softmcs")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13937,12 +13938,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sysmon' objects against patterns. Default: *</param>
 		/// <returns>hardware sysmons</returns>
-		public virtual SimpleTCLCommand get_hw_sysmons(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_sysmons(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sysmons [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_sysmons")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -13983,12 +13984,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_target' objects against patterns. Default: *</param>
 		/// <returns>hardware targets</returns>
-		public virtual SimpleTCLCommand get_hw_targets(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_targets(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_targets [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_targets")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -14030,12 +14031,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_vio' objects against patterns. Default: *</param>
 		/// <returns>hardware VIOs</returns>
-		public virtual SimpleTCLCommand get_hw_vios(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_hw_vios(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_vios [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_vios")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -14071,7 +14072,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match I/O port interfaces against patterns Default: *</param>
 		/// <returns>list of interface objects</returns>
-		public virtual SimpleTCLCommand get_interfaces(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_interfaces(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_interfaces [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -14079,7 +14080,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -14117,7 +14118,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match IO standards against patterns Default: *</param>
 		/// <returns>IO standards</returns>
-		public virtual SimpleTCLCommand get_io_standards(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_io_standards(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_io_standards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -14125,7 +14126,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -14164,7 +14165,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match iobanks against patterns Default: *</param>
 		/// <returns>iobanks</returns>
-		public virtual SimpleTCLCommand get_iobanks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_iobanks(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_iobanks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -14172,7 +14173,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -14209,7 +14210,7 @@ namespace Quokka.TCL.Vivado
 		/// <cell name>'
 		/// </param>
 		/// <returns>list of IP upgrade results</returns>
-		public virtual SimpleTCLCommand get_ip_upgrade_results(string srcset = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public virtual SimpleTCLCommand get_ip_upgrade_results(string srcset = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
 		{
 			// TCL Syntax: get_ip_upgrade_results [-srcset <arg>] [-quiet] [-verbose] [<objects>...]
 			return
@@ -14217,7 +14218,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("srcset", srcset)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(objects)
+					.OptionalStringList(objects)
 			;
 		}
 		/// <summary>
@@ -14270,7 +14271,7 @@ namespace Quokka.TCL.Vivado
 		/// specified.
 		/// </param>
 		/// <returns>List of Catalog IP objects</returns>
-		public virtual SimpleTCLCommand get_ipdefs(bool? name = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? all = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_ipdefs(bool? name = null, bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? all = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_ipdefs [-name] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-all] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -14279,11 +14280,11 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("all", all)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -14320,7 +14321,7 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>list of IP objects</returns>
-		public virtual SimpleTCLCommand get_ips(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? exclude_bd_ips = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_ips(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? exclude_bd_ips = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_ips [-regexp] [-nocase] [-all] [-filter <arg>] [-exclude_bd_ips] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -14330,10 +14331,10 @@ namespace Quokka.TCL.Vivado
 					.Flag("all", all)
 					.OptionalNamedString("filter", filter)
 					.Flag("exclude_bd_ips", exclude_bd_ips)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -14381,7 +14382,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of library cells</returns>
-		public virtual SimpleTCLCommand get_lib_cells(string patterns, bool? regexp = null, string filter = null, bool? nocase = null, bool? include_unsupported = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand get_lib_cells(string patterns, bool? regexp = null, string filter = null, bool? nocase = null, bool? include_unsupported = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_lib_cells [-regexp] [-filter <arg>] [-nocase] [-include_unsupported] [-of_objects <args>] [-quiet] [-verbose] <patterns>
 			return
@@ -14390,7 +14391,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("filter", filter)
 					.Flag("nocase", nocase)
 					.Flag("include_unsupported", include_unsupported)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(patterns)
@@ -14439,7 +14440,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of library cell pins</returns>
-		public virtual SimpleTCLCommand get_lib_pins(string patterns, bool? regexp = null, string filter = null, bool? nocase = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand get_lib_pins(string patterns, bool? regexp = null, string filter = null, bool? nocase = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_lib_pins [-regexp] [-filter <arg>] [-nocase] [-of_objects <args>] [-quiet] [-verbose] <patterns>
 			return
@@ -14447,7 +14448,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
 					.Flag("nocase", nocase)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(patterns)
@@ -14525,7 +14526,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match macro names against patterns Default: *</param>
 		/// <returns>list of macro objects</returns>
-		public virtual SimpleTCLCommand get_macros(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_macros(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_macros [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -14533,7 +14534,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -14563,12 +14564,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of marked objects</returns>
-		public virtual SimpleTCLCommand get_marked_objects(string rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand get_marked_objects(TCLParameterList rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_marked_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("get_marked_objects")
-					.OptionalNamedString("rgb", rgb)
+					.OptionalNamedStringList("rgb", rgb)
 					.OptionalNamedString("color", color)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -14810,17 +14811,17 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>net_delays</returns>
-		public virtual SimpleTCLCommand get_net_delays(string of_objects, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, string to = null, bool? interconnect_only = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand get_net_delays(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, TCLParameterList to = null, bool? interconnect_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_net_delays -of_objects <args> [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-to <args>] [-interconnect_only] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("get_net_delays")
-					.RequiredNamedString("of_objects", of_objects)
+					.RequiredNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("patterns", patterns)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("to", to)
+					.OptionalNamedStringList("to", to)
 					.Flag("interconnect_only", interconnect_only)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -14903,7 +14904,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match net names against patterns Default: *</param>
 		/// <returns>list of net objects</returns>
-		public virtual SimpleTCLCommand get_nets(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? top_net_of_hierarchical_group = null, bool? segments = null, string boundary_type = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_nets(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, string match_style = null, bool? top_net_of_hierarchical_group = null, bool? segments = null, string boundary_type = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_nets [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-top_net_of_hierarchical_group] [-segments] [-boundary_type <arg>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -14913,7 +14914,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("match_style", match_style)
 					.Flag("top_net_of_hierarchical_group", top_net_of_hierarchical_group)
 					.Flag("segments", segments)
@@ -14979,20 +14980,20 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'node' objects against patterns. Default: *</param>
 		/// <returns>nodes</returns>
-		public virtual SimpleTCLCommand get_nodes(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? uphill = null, bool? downhill = null, bool? flyover = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_nodes(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? uphill = null, bool? downhill = null, bool? flyover = null, TCLParameterList from = null, TCLParameterList to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_nodes [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-uphill] [-downhill] [-flyover] [-from <args>] [-to <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_nodes")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.Flag("uphill", uphill)
 					.Flag("downhill", downhill)
 					.Flag("flyover", flyover)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("to", to)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -15121,7 +15122,7 @@ namespace Quokka.TCL.Vivado
 		/// returned
 		/// </param>
 		/// <returns>Returns all the objects found given the specified pattern</returns>
-		public virtual SimpleTCLCommand get_objects(string filter = null, bool? r = null, bool? local = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_objects(string filter = null, bool? r = null, bool? local = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_objects [-filter <arg>] [-r] [-local] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -15133,7 +15134,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("nocase", nocase)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -15171,7 +15172,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match list of package pin objects against patterns Default: *</param>
 		/// <returns>list of package pin objects</returns>
-		public virtual SimpleTCLCommand get_package_pins(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_package_pins(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_package_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -15179,7 +15180,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -15291,14 +15292,14 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>list of part objects</returns>
-		public virtual SimpleTCLCommand get_parts(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_parts(bool? regexp = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_parts [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_parts")
 					.Flag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -15381,7 +15382,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match Pblock names against patterns Default: *</param>
 		/// <returns>list of Pblock objects</returns>
-		public virtual SimpleTCLCommand get_pblocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_nested_pblocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_pblocks(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? include_nested_pblocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblocks] [-quiet] [-verbose] [<patterns>]
 			return
@@ -15389,7 +15390,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("include_nested_pblocks", include_nested_pblocks)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -15468,7 +15469,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match pin names against patterns Default: *</param>
 		/// <returns>list of pin objects</returns>
-		public virtual SimpleTCLCommand get_pins(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, bool? leaf = null, string filter = null, string of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_pins(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, bool? leaf = null, string filter = null, TCLParameterList of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_pins [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-leaf] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_replicated_objects] [-quiet] [-verbose] [<patterns>]
 			return
@@ -15479,7 +15480,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("nocase", nocase)
 					.Flag("leaf", leaf)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("match_style", match_style)
 					.Flag("include_replicated_objects", include_replicated_objects)
 					.Flag("quiet", quiet)
@@ -15532,7 +15533,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match pips against patterns Default: *</param>
 		/// <returns>pips</returns>
-		public virtual SimpleTCLCommand get_pips(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? uphill = null, bool? downhill = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_pips(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? uphill = null, bool? downhill = null, TCLParameterList from = null, TCLParameterList to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_pips [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-uphill] [-downhill] [-from <args>] [-to <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -15540,11 +15541,11 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("uphill", uphill)
 					.Flag("downhill", downhill)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("to", to)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -15584,7 +15585,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match pin_group against patterns Default: *</param>
 		/// <returns>pin_group</returns>
-		public virtual SimpleTCLCommand get_pkgpin_bytegroups(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_pkgpin_bytegroups(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_pkgpin_bytegroups [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -15592,7 +15593,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -15632,7 +15633,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match pin_nibble against patterns Default: *</param>
 		/// <returns>pin_nibble</returns>
-		public virtual SimpleTCLCommand get_pkgpin_nibbles(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_pkgpin_nibbles(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_pkgpin_nibbles [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -15640,7 +15641,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -15702,7 +15703,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match port names against patterns Default: *</param>
 		/// <returns>list of port objects</returns>
-		public virtual SimpleTCLCommand get_ports(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? scoped_to_current_instance = null, bool? no_traverse = null, bool? prop_thru_buffers = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_ports(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, string match_style = null, bool? scoped_to_current_instance = null, bool? no_traverse = null, bool? prop_thru_buffers = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_ports [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-scoped_to_current_instance] [-no_traverse] [-prop_thru_buffers] [-quiet] [-verbose] [<patterns>]
 			return
@@ -15710,7 +15711,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("match_style", match_style)
 					.Flag("scoped_to_current_instance", scoped_to_current_instance)
 					.Flag("no_traverse", no_traverse)
@@ -15771,13 +15772,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>PPLOC nodes or number of PPLOCs</returns>
-		public virtual SimpleTCLCommand get_pplocs(string nets, string pins, bool? count = null, bool? unlocked = null, bool? locked = null, string level = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand get_pplocs(TCLParameterList nets, TCLParameterList pins, bool? count = null, bool? unlocked = null, bool? locked = null, string level = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_pplocs -nets <args> -pins <args> [-count] [-unlocked] [-locked] [-level <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("get_pplocs")
-					.RequiredNamedString("nets", nets)
-					.RequiredNamedString("pins", pins)
+					.RequiredNamedStringList("nets", nets)
+					.RequiredNamedStringList("pins", pins)
 					.Flag("count", count)
 					.Flag("unlocked", unlocked)
 					.Flag("locked", locked)
@@ -16051,7 +16052,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match reconfigurable module names against patterns Default: *</param>
 		/// <returns>list of ReconfigModule objects</returns>
-		public virtual SimpleTCLCommand get_reconfig_modules(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_reconfig_modules(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_reconfig_modules [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -16059,7 +16060,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -16091,7 +16092,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match report names against patterns Default: *</param>
 		/// <returns>list of Configurable Report objects</returns>
-		public virtual SimpleTCLCommand get_report_configs(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_report_configs(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_report_configs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -16099,7 +16100,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -16135,7 +16136,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match run names against patterns Default: *</param>
 		/// <returns>list of run objects</returns>
-		public virtual SimpleTCLCommand get_runs(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_runs(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_runs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -16143,7 +16144,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -16183,7 +16184,7 @@ namespace Quokka.TCL.Vivado
 		/// children scopes)
 		/// </param>
 		/// <returns>Returns HDL scope objects from the given arguments</returns>
-		public virtual SimpleTCLCommand get_scopes(string filter = null, bool? regexp = null, bool? nocase = null, bool? r = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_scopes(string filter = null, bool? regexp = null, bool? nocase = null, bool? r = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_scopes [-filter <arg>] [-regexp] [-nocase] [-r] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -16194,7 +16195,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("r", r)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -16311,12 +16312,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'site_pin' objects against patterns. Default: *</param>
 		/// <returns>site_pins</returns>
-		public virtual SimpleTCLCommand get_site_pins(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_site_pins(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_site_pins [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_site_pins")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -16356,7 +16357,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match site_pips against patterns Default: *</param>
 		/// <returns>site_pips</returns>
-		public virtual SimpleTCLCommand get_site_pips(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_site_pips(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_site_pips [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -16364,7 +16365,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -16437,7 +16438,7 @@ namespace Quokka.TCL.Vivado
 		/// match on package pin names. Default: *
 		/// </param>
 		/// <returns>list of site objects</returns>
-		public virtual SimpleTCLCommand get_sites(bool? regexp = null, string filter = null, bool? nocase = null, string range = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_sites(bool? regexp = null, string filter = null, bool? nocase = null, TCLParameterList range = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_sites [-regexp] [-filter <arg>] [-nocase] [-range <args>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -16445,8 +16446,8 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
 					.Flag("nocase", nocase)
-					.OptionalNamedString("range", range)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("range", range)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -16490,7 +16491,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match slr against patterns Default: *</param>
 		/// <returns>slr</returns>
-		public virtual SimpleTCLCommand get_slrs(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_slrs(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_slrs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -16498,7 +16499,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -16561,12 +16562,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>speed_models</returns>
-		public virtual SimpleTCLCommand get_speed_models(string of_objects = null, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, string speed_pattern = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand get_speed_models(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, string speed_pattern = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_speed_models [-of_objects <args>] [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-speed_pattern <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("get_speed_models")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("patterns", patterns)
@@ -16700,7 +16701,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match tiles against patterns Default: *</param>
 		/// <returns>tiles</returns>
-		public virtual SimpleTCLCommand get_tiles(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_tiles(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_tiles [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -16708,7 +16709,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -16752,15 +16753,15 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of timing arc objects</returns>
-		public virtual SimpleTCLCommand get_timing_arcs(string from = null, string to = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand get_timing_arcs(TCLParameterList from = null, TCLParameterList to = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_timing_arcs [-from <args>] [-to <args>] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("get_timing_arcs")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("to", to)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -16868,20 +16869,20 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cell">(Optional) run get_timing_paths on the cell</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand get_timing_paths(string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, string delay_type = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string slack_lesser_than = null, string slack_greater_than = null, string group = null, bool? no_report_unconstrained = null, bool? user_ignored = null, bool? routable_nets = null, string sort_by = null, string filter = null, bool? regexp = null, bool? nocase = null, string cell = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand get_timing_paths(TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, string delay_type = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string slack_lesser_than = null, string slack_greater_than = null, TCLParameterList group = null, bool? no_report_unconstrained = null, bool? user_ignored = null, bool? routable_nets = null, string sort_by = null, string filter = null, bool? regexp = null, bool? nocase = null, TCLParameterList cell = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_timing_paths [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-delay_type <arg>] [-setup] [-hold] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-slack_lesser_than <arg>] [-slack_greater_than <arg>] [-group <args>] [-no_report_unconstrained] [-user_ignored] [-routable_nets] [-sort_by <arg>] [-filter <arg>] [-regexp] [-nocase] [-cell <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("get_timing_paths")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
-					.OptionalNamedString("through", through)
-					.OptionalNamedString("rise_through", rise_through)
-					.OptionalNamedString("fall_through", fall_through)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("rise_from", rise_from)
+					.OptionalNamedStringList("fall_from", fall_from)
+					.OptionalNamedStringList("to", to)
+					.OptionalNamedStringList("rise_to", rise_to)
+					.OptionalNamedStringList("fall_to", fall_to)
+					.OptionalNamedStringList("through", through)
+					.OptionalNamedStringList("rise_through", rise_through)
+					.OptionalNamedStringList("fall_through", fall_through)
 					.OptionalNamedString("delay_type", delay_type)
 					.Flag("setup", setup)
 					.Flag("hold", hold)
@@ -16890,7 +16891,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("unique_pins", unique_pins)
 					.OptionalNamedString("slack_lesser_than", slack_lesser_than)
 					.OptionalNamedString("slack_greater_than", slack_greater_than)
-					.OptionalNamedString("group", group)
+					.OptionalNamedStringList("group", group)
 					.Flag("no_report_unconstrained", no_report_unconstrained)
 					.Flag("user_ignored", user_ignored)
 					.Flag("routable_nets", routable_nets)
@@ -16898,7 +16899,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("filter", filter)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
-					.OptionalNamedString("cell", cell)
+					.OptionalNamedStringList("cell", cell)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -17021,14 +17022,14 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>waivers</returns>
-		public virtual SimpleTCLCommand get_waivers(string type = null, string id = null, string of_objects = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_waivers(string type = null, string id = null, TCLParameterList of_objects = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_waivers [-type <arg>] [-id <arg>] [-of_objects <args>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_waivers")
 					.OptionalNamedString("type", type)
 					.OptionalNamedString("id", id)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
 					.Flag("nocase", nocase)
@@ -17070,7 +17071,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) the pattern strings to search for wave configuration names</param>
 		/// <returns>Wave configs that match the given options</returns>
-		public virtual SimpleTCLCommand get_wave_configs(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_wave_configs(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_wave_configs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
 			return
@@ -17080,7 +17081,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("filter", filter)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(patterns)
+					.OptionalStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -17116,12 +17117,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>a collection of found wave objects</returns>
-		public virtual SimpleTCLCommand get_waves(string patterns, string of = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? recursive = null, bool? r = null, bool? long_name = null, bool? short_name = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand get_waves(TCLParameterList patterns, TCLParameterList of = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? recursive = null, bool? r = null, bool? long_name = null, bool? short_name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_waves [-of <args>] [-regexp] [-nocase] [-filter <arg>] [-recursive] [-r] [-long_name] [-short_name] [-quiet] [-verbose] <patterns>...
 			return
 				new SimpleTCLCommand("get_waves")
-					.OptionalNamedString("of", of)
+					.OptionalNamedStringList("of", of)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -17131,7 +17132,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("short_name", short_name)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(patterns)
+					.RequiredStringList(patterns)
 			;
 		}
 		/// <summary>
@@ -17175,7 +17176,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match wires against patterns Default: *</param>
 		/// <returns>wires</returns>
-		public virtual SimpleTCLCommand get_wires(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? uphill = null, bool? downhill = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand get_wires(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? uphill = null, bool? downhill = null, TCLParameterList from = null, TCLParameterList to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_wires [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-uphill] [-downhill] [-from <args>] [-to <args>] [-quiet] [-verbose] [<patterns>]
 			return
@@ -17183,11 +17184,11 @@ namespace Quokka.TCL.Vivado
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("uphill", uphill)
 					.Flag("downhill", downhill)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("to", to)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(patterns)
@@ -17222,7 +17223,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>0 if success.</returns>
-		public virtual SimpleTCLCommand group_bd_cells(string target_cell_name, string cells, string prefix = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand group_bd_cells(string target_cell_name, TCLParameterList cells, string prefix = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: group_bd_cells [-prefix <arg>] [-quiet] [-verbose] [<target_cell_name>] [<cells>...]
 			return
@@ -17231,7 +17232,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(target_cell_name)
-					.RequiredString(cells)
+					.RequiredStringList(cells)
 			;
 		}
 		/// <summary>
@@ -17281,17 +17282,17 @@ namespace Quokka.TCL.Vivado
 		/// <param name="through">(Optional) Consider paths through pins, cells or nets</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand group_path(string name = null, string weight = null, bool? @default = null, string from = null, string to = null, string through = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand group_path(TCLParameterList name = null, string weight = null, bool? @default = null, TCLParameterList from = null, TCLParameterList to = null, TCLParameterList through = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: group_path [-name <args>] [-weight <arg>] [-default] [-from <args>] [-to <args>] [-through <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("group_path")
-					.OptionalNamedString("name", name)
+					.OptionalNamedStringList("name", name)
 					.OptionalNamedString("weight", weight)
 					.Flag("default", @default)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("through", through)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("to", to)
+					.OptionalNamedStringList("through", through)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -17414,13 +17415,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="leaf_cells">(Optional) Leaf cells</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand highlight_objects(string objects, string color_index = null, string rgb = null, string color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand highlight_objects(string objects, string color_index = null, TCLParameterList rgb = null, string color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: highlight_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-leaf_cells] [-quiet] [-verbose] <objects>
 			return
 				new SimpleTCLCommand("highlight_objects")
 					.OptionalNamedString("color_index", color_index)
-					.OptionalNamedString("rgb", rgb)
+					.OptionalNamedStringList("rgb", rgb)
 					.OptionalNamedString("color", color)
 					.Flag("leaf_cells", leaf_cells)
 					.Flag("quiet", quiet)
@@ -17457,14 +17458,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="cores">(Optional) Debug core</param>
-		public virtual SimpleTCLCommand implement_debug_core(bool? quiet = null, bool? verbose = null, string cores = null)
+		public virtual SimpleTCLCommand implement_debug_core(bool? quiet = null, bool? verbose = null, TCLParameterList cores = null)
 		{
 			// TCL Syntax: implement_debug_core [-quiet] [-verbose] [<cores>...]
 			return
 				new SimpleTCLCommand("implement_debug_core")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(cores)
+					.OptionalStringList(cores)
 			;
 		}
 		/// <summary>
@@ -17617,20 +17618,20 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="files">(Optional) Name of the files to import into fileset</param>
 		/// <returns>A list of file objects that were imported</returns>
-		public virtual SimpleTCLCommand import_files(string fileset = null, bool? force = null, string of_objects = null, bool? norecurse = null, bool? flat = null, string relative_to = null, bool? quiet = null, bool? verbose = null, string files = null)
+		public virtual SimpleTCLCommand import_files(string fileset = null, bool? force = null, TCLParameterList of_objects = null, bool? norecurse = null, bool? flat = null, string relative_to = null, bool? quiet = null, bool? verbose = null, TCLParameterList files = null)
 		{
 			// TCL Syntax: import_files [-fileset <arg>] [-force] [-of_objects <args>] [-norecurse] [-flat] [-relative_to <arg>] [-quiet] [-verbose] [<files>...]
 			return
 				new SimpleTCLCommand("import_files")
 					.OptionalNamedString("fileset", fileset)
 					.Flag("force", force)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("norecurse", norecurse)
 					.Flag("flat", flat)
 					.OptionalNamedString("relative_to", relative_to)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(files)
+					.OptionalStringList(files)
 			;
 		}
 		/// <summary>
@@ -17871,7 +17872,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="file">(Optional) Pin Planning CSV or XDC file Default: file</param>
-		public virtual SimpleTCLCommand infer_diff_pairs(string file_type = null, bool? quiet = null, bool? verbose = null, string file = null)
+		public virtual SimpleTCLCommand infer_diff_pairs(string file_type = null, bool? quiet = null, bool? verbose = null, TCLParameterList file = null)
 		{
 			// TCL Syntax: infer_diff_pairs [-file_type <arg>] [-quiet] [-verbose] [<file>...]
 			return
@@ -17879,7 +17880,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("file_type", file_type)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(file)
+					.OptionalStringList(file)
 			;
 		}
 		/// <summary>
@@ -17933,7 +17934,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Returns the name of the template applied.</returns>
-		public virtual SimpleTCLCommand instantiate_example_design(string template, string design = null, string hier = null, string project = null, string project_location = null, string options = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand instantiate_example_design(string template, string design = null, string hier = null, string project = null, string project_location = null, TCLParameterList options = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: instantiate_example_design [-design <arg>] [-hier <arg>] [-project <arg>] [-project_location <arg>] [-options <args>] [-quiet] [-verbose] <template>
 			return
@@ -17942,7 +17943,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("hier", hier)
 					.OptionalNamedString("project", project)
 					.OptionalNamedString("project_location", project_location)
-					.OptionalNamedString("options", options)
+					.OptionalNamedStringList("options", options)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(template)
@@ -17974,14 +17975,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Returns the name of the template applied.</returns>
-		public virtual SimpleTCLCommand instantiate_template_bd_design(string design, string template, string hier = null, string options = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand instantiate_template_bd_design(string design, string template, string hier = null, TCLParameterList options = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: instantiate_template_bd_design -design <arg> [-hier <arg>] [-options <args>] [-quiet] [-verbose] <template>
 			return
 				new SimpleTCLCommand("instantiate_template_bd_design")
 					.RequiredNamedString("design", design)
 					.OptionalNamedString("hier", hier)
-					.OptionalNamedString("options", options)
+					.OptionalNamedStringList("options", options)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(template)
@@ -18059,7 +18060,7 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
-		public virtual SimpleTCLCommand iphys_opt_design(string cluster, string place_cell, bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, string net = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, string cell = null, bool? packing = null, bool? unpacking = null, string port = null, bool? critical_pin_opt = null, bool? equ_drivers_opt = null, bool? skipped_optimization = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? auto_pipeline = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand iphys_opt_design(TCLParameterList cluster, TCLParameterList place_cell, bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, string net = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, string cell = null, bool? packing = null, bool? unpacking = null, string port = null, bool? critical_pin_opt = null, bool? equ_drivers_opt = null, bool? skipped_optimization = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? auto_pipeline = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: iphys_opt_design [-fanout_opt] [-critical_cell_opt] [-placement_opt] [-rewire] [-net <arg>] -cluster <args> -place_cell <args> [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-shift_register_opt] [-cell <arg>] [-packing] [-unpacking] [-port <arg>] [-critical_pin_opt] [-equ_drivers_opt] [-skipped_optimization] [-insert_negative_edge_ffs] [-hold_fix] [-slr_crossing_opt] [-auto_pipeline] [-quiet] [-verbose]
 			return
@@ -18069,8 +18070,8 @@ namespace Quokka.TCL.Vivado
 					.Flag("placement_opt", placement_opt)
 					.Flag("rewire", rewire)
 					.OptionalNamedString("net", net)
-					.RequiredNamedString("cluster", cluster)
-					.RequiredNamedString("place_cell", place_cell)
+					.RequiredNamedStringList("cluster", cluster)
+					.RequiredNamedStringList("place_cell", place_cell)
 					.Flag("dsp_register_opt", dsp_register_opt)
 					.Flag("bram_register_opt", bram_register_opt)
 					.Flag("uram_register_opt", uram_register_opt)
@@ -18260,7 +18261,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand launch_runs(string runs, string jobs = null, bool? scripts_only = null, string lsf = null, string sge = null, string cluster_configuration = null, string dir = null, string to_step = null, bool? next_step = null, string host = null, string remote_cmd = null, string email_to = null, bool? email_all = null, string pre_launch_script = null, string post_launch_script = null, string custom_script = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand launch_runs(TCLParameterList runs, string jobs = null, bool? scripts_only = null, string lsf = null, string sge = null, string cluster_configuration = null, string dir = null, string to_step = null, bool? next_step = null, TCLParameterList host = null, string remote_cmd = null, TCLParameterList email_to = null, bool? email_all = null, string pre_launch_script = null, string post_launch_script = null, string custom_script = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: launch_runs [-jobs <arg>] [-scripts_only] [-lsf <arg>] [-sge <arg>] [-cluster_configuration <arg>] [-dir <arg>] [-to_step <arg>] [-next_step] [-host <args>] [-remote_cmd <arg>] [-email_to <args>] [-email_all] [-pre_launch_script <arg>] [-post_launch_script <arg>] [-custom_script <arg>] [-force] [-quiet] [-verbose] <runs>...
 			return
@@ -18273,9 +18274,9 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("dir", dir)
 					.OptionalNamedString("to_step", to_step)
 					.Flag("next_step", next_step)
-					.OptionalNamedString("host", host)
+					.OptionalNamedStringList("host", host)
 					.OptionalNamedString("remote_cmd", remote_cmd)
-					.OptionalNamedString("email_to", email_to)
+					.OptionalNamedStringList("email_to", email_to)
 					.Flag("email_all", email_all)
 					.OptionalNamedString("pre_launch_script", pre_launch_script)
 					.OptionalNamedString("post_launch_script", post_launch_script)
@@ -18283,7 +18284,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("force", force)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(runs)
+					.RequiredStringList(runs)
 			;
 		}
 		/// <summary>
@@ -18381,7 +18382,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="noclean_dir">(Optional) Do not remove simulation run directory files</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand launch_simulation(string step = null, string simset = null, string mode = null, string type = null, bool? scripts_only = null, string of_objects = null, bool? absolute_path = null, string install_path = null, string gcc_install_path = null, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand launch_simulation(string step = null, string simset = null, string mode = null, string type = null, bool? scripts_only = null, TCLParameterList of_objects = null, bool? absolute_path = null, string install_path = null, string gcc_install_path = null, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: launch_simulation [-step <arg>] [-simset <arg>] [-mode <arg>] [-type <arg>] [-scripts_only] [-of_objects <args>] [-absolute_path] [-install_path <arg>] [-gcc_install_path <arg>] [-noclean_dir] [-quiet] [-verbose]
 			return
@@ -18391,7 +18392,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("mode", mode)
 					.OptionalNamedString("type", type)
 					.Flag("scripts_only", scripts_only)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("absolute_path", absolute_path)
 					.OptionalNamedString("install_path", install_path)
 					.OptionalNamedString("gcc_install_path", gcc_install_path)
@@ -18475,7 +18476,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>design object</returns>
-		public virtual SimpleTCLCommand link_design(string name = null, string part = null, string constrset = null, string top = null, string mode = null, string pr_config = null, string reconfig_partitions = null, string partitions = null, bool? ignore_timing = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand link_design(string name = null, string part = null, string constrset = null, string top = null, string mode = null, string pr_config = null, TCLParameterList reconfig_partitions = null, TCLParameterList partitions = null, bool? ignore_timing = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: link_design [-name <arg>] [-part <arg>] [-constrset <arg>] [-top <arg>] [-mode <arg>] [-pr_config <arg>] [-reconfig_partitions <args>] [-partitions <args>] [-ignore_timing] [-quiet] [-verbose]
 			return
@@ -18486,8 +18487,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("top", top)
 					.OptionalNamedString("mode", mode)
 					.OptionalNamedString("pr_config", pr_config)
-					.OptionalNamedString("reconfig_partitions", reconfig_partitions)
-					.OptionalNamedString("partitions", partitions)
+					.OptionalNamedStringList("reconfig_partitions", reconfig_partitions)
+					.OptionalNamedStringList("partitions", partitions)
 					.Flag("ignore_timing", ignore_timing)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -18751,14 +18752,14 @@ namespace Quokka.TCL.Vivado
 		/// Feature(s) to load, use list_features for a list of available
 		/// features.
 		/// </param>
-		public virtual SimpleTCLCommand load_features(bool? quiet = null, bool? verbose = null, string features = null)
+		public virtual SimpleTCLCommand load_features(bool? quiet = null, bool? verbose = null, TCLParameterList features = null)
 		{
 			// TCL Syntax: load_features [-quiet] [-verbose] [<features>...]
 			return
 				new SimpleTCLCommand("load_features")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(features)
+					.OptionalStringList(features)
 			;
 		}
 		/// <summary>
@@ -18847,14 +18848,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Does not return any object</returns>
-		public virtual SimpleTCLCommand log_saif(string hdl_objects, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand log_saif(TCLParameterList hdl_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: log_saif [-quiet] [-verbose] <hdl_objects>...
 			return
 				new SimpleTCLCommand("log_saif")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(hdl_objects)
+					.RequiredStringList(hdl_objects)
 			;
 		}
 		/// <summary>
@@ -18918,7 +18919,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hdl_objects">(Optional) Which HDL objects to log</param>
 		/// <returns>Does not return any object</returns>
-		public virtual SimpleTCLCommand log_vcd(string level = null, bool? quiet = null, bool? verbose = null, string hdl_objects = null)
+		public virtual SimpleTCLCommand log_vcd(string level = null, bool? quiet = null, bool? verbose = null, TCLParameterList hdl_objects = null)
 		{
 			// TCL Syntax: log_vcd [-level <arg>] [-quiet] [-verbose] [<hdl_objects>...]
 			return
@@ -18926,7 +18927,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("level", level)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(hdl_objects)
+					.OptionalStringList(hdl_objects)
 			;
 		}
 		/// <summary>
@@ -18958,7 +18959,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Displays all warnings</param>
 		/// <param name="v">(Optional) Displays all warnings</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
-		public virtual SimpleTCLCommand log_wave(string hdl_objects, bool? recursive = null, bool? r = null, bool? verbose = null, bool? v = null, bool? quiet = null)
+		public virtual SimpleTCLCommand log_wave(TCLParameterList hdl_objects, bool? recursive = null, bool? r = null, bool? verbose = null, bool? v = null, bool? quiet = null)
 		{
 			// TCL Syntax: log_wave [-recursive] [-r] [-verbose] [-v] [-quiet] <hdl_objects>...
 			return
@@ -18968,7 +18969,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("verbose", verbose)
 					.Flag("v", v)
 					.Flag("quiet", quiet)
-					.RequiredString(hdl_objects)
+					.RequiredStringList(hdl_objects)
 			;
 		}
 		/// <summary>
@@ -19032,14 +19033,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Pass if successful in creating at least one interface port</returns>
-		public virtual SimpleTCLCommand make_bd_intf_pins_external(string objects, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand make_bd_intf_pins_external(TCLParameterList objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: make_bd_intf_pins_external [-quiet] [-verbose] <objects>...
 			return
 				new SimpleTCLCommand("make_bd_intf_pins_external")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(objects)
+					.RequiredStringList(objects)
 			;
 		}
 		/// <summary>
@@ -19071,14 +19072,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Pass if successful in creating at least one port</returns>
-		public virtual SimpleTCLCommand make_bd_pins_external(string objects, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand make_bd_pins_external(TCLParameterList objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: make_bd_pins_external [-quiet] [-verbose] <objects>...
 			return
 				new SimpleTCLCommand("make_bd_pins_external")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(objects)
+					.RequiredStringList(objects)
 			;
 		}
 		/// <summary>
@@ -19101,14 +19102,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="ports">(Required) Ports to join</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand make_diff_pair_ports(string ports, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand make_diff_pair_ports(TCLParameterList ports, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: make_diff_pair_ports [-quiet] [-verbose] <ports>...
 			return
 				new SimpleTCLCommand("make_diff_pair_ports")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(ports)
+					.RequiredStringList(ports)
 			;
 		}
 		/// <summary>
@@ -19190,12 +19191,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="color">(Optional) Valid values are red green blue magenta yellow cyan and orange</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand mark_objects(string objects, string rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand mark_objects(string objects, TCLParameterList rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: mark_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose] <objects>
 			return
 				new SimpleTCLCommand("mark_objects")
-					.OptionalNamedString("rgb", rgb)
+					.OptionalNamedStringList("rgb", rgb)
 					.OptionalNamedString("color", color)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -19237,12 +19238,12 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand modify_debug_ports(string probes, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand modify_debug_ports(TCLParameterList probes, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: modify_debug_ports [-probes <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("modify_debug_ports")
-					.RequiredNamedString("probes", probes)
+					.RequiredNamedStringList("probes", probes)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -19272,7 +19273,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="parent_cell">(Optional) Parent cell</param>
 		/// <param name="cells">(Optional) Match engine names against cell names Default: *</param>
 		/// <returns>0 if success.</returns>
-		public virtual SimpleTCLCommand move_bd_cells(string prefix = null, bool? quiet = null, bool? verbose = null, string parent_cell = null, string cells = null)
+		public virtual SimpleTCLCommand move_bd_cells(string prefix = null, bool? quiet = null, bool? verbose = null, string parent_cell = null, TCLParameterList cells = null)
 		{
 			// TCL Syntax: move_bd_cells [-prefix <arg>] [-quiet] [-verbose] [<parent_cell>] [<cells>...]
 			return
@@ -19281,7 +19282,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(parent_cell)
-					.OptionalString(cells)
+					.OptionalStringList(cells)
 			;
 		}
 		/// <summary>
@@ -19339,16 +19340,16 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="files">(Optional) Name of the files to be moved</param>
 		/// <returns>list of files that were moved</returns>
-		public virtual SimpleTCLCommand move_files(string fileset = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string files = null)
+		public virtual SimpleTCLCommand move_files(string fileset = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList files = null)
 		{
 			// TCL Syntax: move_files [-fileset <arg>] [-of_objects <args>] [-quiet] [-verbose] [<files>...]
 			return
 				new SimpleTCLCommand("move_files")
 					.OptionalNamedString("fileset", fileset)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(files)
+					.OptionalStringList(files)
 			;
 		}
 		/// <summary>
@@ -19376,18 +19377,18 @@ namespace Quokka.TCL.Vivado
 		/// <param name="before_wave">(Optional) inserts the new wave objects(s) before the specified wave object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand move_wave(string items, string into = null, string at_wave = null, string after_wave = null, string before_wave = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand move_wave(TCLParameterList items, TCLParameterList into = null, TCLParameterList at_wave = null, TCLParameterList after_wave = null, TCLParameterList before_wave = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: move_wave [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-quiet] [-verbose] <items>...
 			return
 				new SimpleTCLCommand("move_wave")
-					.OptionalNamedString("into", into)
-					.OptionalNamedString("at_wave", at_wave)
-					.OptionalNamedString("after_wave", after_wave)
-					.OptionalNamedString("before_wave", before_wave)
+					.OptionalNamedStringList("into", into)
+					.OptionalNamedStringList("at_wave", at_wave)
+					.OptionalNamedStringList("after_wave", after_wave)
+					.OptionalNamedStringList("before_wave", before_wave)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(items)
+					.RequiredStringList(items)
 			;
 		}
 		/// <summary>
@@ -19493,7 +19494,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The Project that was opened</returns>
-		public virtual SimpleTCLCommand open_example_project(string objects, string dir = null, bool? force = null, bool? in_process = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand open_example_project(TCLParameterList objects, string dir = null, bool? force = null, bool? in_process = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_example_project [-dir <arg>] [-force] [-in_process] [-quiet] [-verbose] <objects>...
 			return
@@ -19503,7 +19504,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("in_process", in_process)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(objects)
+					.RequiredStringList(objects)
 			;
 		}
 		/// <summary>
@@ -20005,13 +20006,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="protoinst">(Optional) Specify a .protoinst file for protocol analysis</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand open_wave_database(string wdb, bool? noautoloadwcfg = null, string protoinst = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand open_wave_database(string wdb, bool? noautoloadwcfg = null, TCLParameterList protoinst = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_wave_database [-noautoloadwcfg] [-protoinst <args>] [-quiet] [-verbose] <wdb>
 			return
 				new SimpleTCLCommand("open_wave_database")
 					.Flag("noautoloadwcfg", noautoloadwcfg)
-					.OptionalNamedString("protoinst", protoinst)
+					.OptionalNamedStringList("protoinst", protoinst)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(wdb)
@@ -20286,7 +20287,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand phys_opt_design(bool? fanout_opt = null, bool? placement_opt = null, bool? routing_opt = null, bool? slr_crossing_opt = null, bool? rewire = null, bool? insert_negative_edge_ffs = null, bool? critical_cell_opt = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? bram_enable_opt = null, bool? shift_register_opt = null, bool? hold_fix = null, bool? aggressive_hold_fix = null, bool? retime = null, string force_replication_on_nets = null, string directive = null, bool? critical_pin_opt = null, bool? clock_opt = null, string path_groups = null, bool? tns_cleanup = null, bool? sll_reg_hold_fix = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand phys_opt_design(bool? fanout_opt = null, bool? placement_opt = null, bool? routing_opt = null, bool? slr_crossing_opt = null, bool? rewire = null, bool? insert_negative_edge_ffs = null, bool? critical_cell_opt = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? bram_enable_opt = null, bool? shift_register_opt = null, bool? hold_fix = null, bool? aggressive_hold_fix = null, bool? retime = null, TCLParameterList force_replication_on_nets = null, string directive = null, bool? critical_pin_opt = null, bool? clock_opt = null, TCLParameterList path_groups = null, bool? tns_cleanup = null, bool? sll_reg_hold_fix = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: phys_opt_design [-fanout_opt] [-placement_opt] [-routing_opt] [-slr_crossing_opt] [-rewire] [-insert_negative_edge_ffs] [-critical_cell_opt] [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-bram_enable_opt] [-shift_register_opt] [-hold_fix] [-aggressive_hold_fix] [-retime] [-force_replication_on_nets <args>] [-directive <arg>] [-critical_pin_opt] [-clock_opt] [-path_groups <args>] [-tns_cleanup] [-sll_reg_hold_fix] [-quiet] [-verbose]
 			return
@@ -20306,11 +20307,11 @@ namespace Quokka.TCL.Vivado
 					.Flag("hold_fix", hold_fix)
 					.Flag("aggressive_hold_fix", aggressive_hold_fix)
 					.Flag("retime", retime)
-					.OptionalNamedString("force_replication_on_nets", force_replication_on_nets)
+					.OptionalNamedStringList("force_replication_on_nets", force_replication_on_nets)
 					.OptionalNamedString("directive", directive)
 					.Flag("critical_pin_opt", critical_pin_opt)
 					.Flag("clock_opt", clock_opt)
-					.OptionalNamedString("path_groups", path_groups)
+					.OptionalNamedStringList("path_groups", path_groups)
 					.Flag("tns_cleanup", tns_cleanup)
 					.Flag("sll_reg_hold_fix", sll_reg_hold_fix)
 					.Flag("quiet", quiet)
@@ -20365,14 +20366,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cell_site_list">(Required) a list of cells and sites in the interleaved order</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand place_cell(string cell_site_list, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand place_cell(TCLParameterList cell_site_list, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: place_cell [-quiet] [-verbose] <cell_site_list>...
 			return
 				new SimpleTCLCommand("place_cell")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(cell_site_list)
+					.RequiredStringList(cell_site_list)
 			;
 		}
 		/// <summary>
@@ -20490,17 +20491,17 @@ namespace Quokka.TCL.Vivado
 		/// arguments are interleaved objects of ports and package
 		/// pins, then manual placement is performed
 		/// </param>
-		public virtual SimpleTCLCommand place_ports(bool? skip_unconnected_ports = null, bool? check_only = null, string iobank = null, bool? quiet = null, bool? verbose = null, string ports = null)
+		public virtual SimpleTCLCommand place_ports(bool? skip_unconnected_ports = null, bool? check_only = null, TCLParameterList iobank = null, bool? quiet = null, bool? verbose = null, TCLParameterList ports = null)
 		{
 			// TCL Syntax: place_ports [-skip_unconnected_ports] [-check_only] [-iobank <args>] [-quiet] [-verbose] [<ports>...]
 			return
 				new SimpleTCLCommand("place_ports")
 					.Flag("skip_unconnected_ports", skip_unconnected_ports)
 					.Flag("check_only", check_only)
-					.OptionalNamedString("iobank", iobank)
+					.OptionalNamedStringList("iobank", iobank)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(ports)
+					.OptionalStringList(ports)
 			;
 		}
 		/// <summary>
@@ -20721,7 +20722,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="append">(Optional) append to svf file</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand program_hw_cfgmem(string hw_cfgmem, string svf_file = null, bool? force = null, bool? append = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand program_hw_cfgmem(TCLParameterList hw_cfgmem, string svf_file = null, bool? force = null, bool? append = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: program_hw_cfgmem [-svf_file <arg>] [-force] [-append] [-quiet] [-verbose] [<hw_cfgmem>...]
 			return
@@ -20731,7 +20732,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("append", append)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(hw_cfgmem)
+					.RequiredStringList(hw_cfgmem)
 			;
 		}
 		/// <summary>
@@ -20808,7 +20809,7 @@ namespace Quokka.TCL.Vivado
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
 		/// <returns>hardware devices</returns>
-		public virtual SimpleTCLCommand program_hw_devices(string key = null, bool? clear = null, bool? skip_program_keys = null, bool? skip_program_rsa = null, string user_efuse = null, string user_efuse_128 = null, string control_efuse = null, string security_efuse = null, bool? only_export_efuse = null, string svf_file = null, string efuse_export_file = null, bool? disable_eos_check = null, bool? skip_reset = null, bool? force = null, bool? append = null, string type = null, bool? quiet = null, bool? verbose = null, string hw_device = null)
+		public virtual SimpleTCLCommand program_hw_devices(string key = null, bool? clear = null, bool? skip_program_keys = null, bool? skip_program_rsa = null, string user_efuse = null, string user_efuse_128 = null, string control_efuse = null, string security_efuse = null, bool? only_export_efuse = null, string svf_file = null, string efuse_export_file = null, bool? disable_eos_check = null, bool? skip_reset = null, bool? force = null, bool? append = null, string type = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_device = null)
 		{
 			// TCL Syntax: program_hw_devices [-key <arg>] [-clear] [-skip_program_keys] [-skip_program_rsa] [-user_efuse <arg>] [-user_efuse_128 <arg>] [-control_efuse <arg>] [-security_efuse <arg>] [-only_export_efuse] [-svf_file <arg>] [-efuse_export_file <arg>] [-disable_eos_check] [-skip_reset] [-force] [-append] [-type <arg>] [-quiet] [-verbose] [<hw_device>...]
 			return
@@ -20831,7 +20832,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("type", type)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(hw_device)
+					.OptionalStringList(hw_device)
 			;
 		}
 		/// <summary>
@@ -20892,14 +20893,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of IPIntegrator design file objects that were added</returns>
-		public virtual SimpleTCLCommand read_bd(string files, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand read_bd(TCLParameterList files, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_bd [-quiet] [-verbose] <files>...
 			return
 				new SimpleTCLCommand("read_bd")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(files)
+					.RequiredStringList(files)
 			;
 		}
 		/// <summary>
@@ -20983,7 +20984,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand read_checkpoint(string file, string cell = null, bool? incremental = null, string directive = null, bool? auto_incremental = null, string reuse_objects = null, string fix_objects = null, string dcp_cell_list = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand read_checkpoint(string file, string cell = null, bool? incremental = null, string directive = null, bool? auto_incremental = null, TCLParameterList reuse_objects = null, TCLParameterList fix_objects = null, TCLParameterList dcp_cell_list = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_checkpoint [-cell <arg>] [-incremental] [-directive <arg>] [-auto_incremental] [-reuse_objects <args>] [-fix_objects <args>] [-dcp_cell_list <args>] [-quiet] [-verbose] [<file>]
 			return
@@ -20992,9 +20993,9 @@ namespace Quokka.TCL.Vivado
 					.Flag("incremental", incremental)
 					.OptionalNamedString("directive", directive)
 					.Flag("auto_incremental", auto_incremental)
-					.OptionalNamedString("reuse_objects", reuse_objects)
-					.OptionalNamedString("fix_objects", fix_objects)
-					.OptionalNamedString("dcp_cell_list", dcp_cell_list)
+					.OptionalNamedStringList("reuse_objects", reuse_objects)
+					.OptionalNamedStringList("fix_objects", fix_objects)
+					.OptionalNamedStringList("dcp_cell_list", dcp_cell_list)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(file)
@@ -21328,14 +21329,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of file objects that were added</returns>
-		public virtual SimpleTCLCommand read_mem(string files, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand read_mem(TCLParameterList files, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_mem [-quiet] [-verbose] <files>...
 			return
 				new SimpleTCLCommand("read_mem")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(files)
+					.RequiredStringList(files)
 			;
 		}
 		/// <summary>
@@ -21516,7 +21517,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of file objects that were added</returns>
-		public virtual SimpleTCLCommand read_verilog(string files, string library = null, bool? sv = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand read_verilog(TCLParameterList files, string library = null, bool? sv = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_verilog [-library <arg>] [-sv] [-quiet] [-verbose] <files>...
 			return
@@ -21525,7 +21526,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("sv", sv)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(files)
+					.RequiredStringList(files)
 			;
 		}
 		/// <summary>
@@ -21620,12 +21621,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of files</returns>
-		public virtual SimpleTCLCommand read_xdc(string files, string cells = null, string @ref = null, bool? quiet_diff_pairs = null, string mode = null, bool? unmanaged = null, bool? no_add = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand read_xdc(string files, TCLParameterList cells = null, string @ref = null, bool? quiet_diff_pairs = null, string mode = null, bool? unmanaged = null, bool? no_add = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_xdc [-cells <args>] [-ref <arg>] [-quiet_diff_pairs] [-mode <arg>] [-unmanaged] [-no_add] [-quiet] [-verbose] <files>
 			return
 				new SimpleTCLCommand("read_xdc")
-					.OptionalNamedString("cells", cells)
+					.OptionalNamedStringList("cells", cells)
 					.OptionalNamedString("ref", @ref)
 					.Flag("quiet_diff_pairs", quiet_diff_pairs)
 					.OptionalNamedString("mode", mode)
@@ -21663,7 +21664,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_cfgmem">(Optional) list of hardware cfgmems Default: current hardware cfgmem</param>
-		public virtual SimpleTCLCommand readback_hw_cfgmem(string file, bool? checksum = null, bool? force = null, bool? all = null, string offset = null, string format = null, string datacount = null, bool? quiet = null, bool? verbose = null, string hw_cfgmem = null)
+		public virtual SimpleTCLCommand readback_hw_cfgmem(string file, bool? checksum = null, bool? force = null, bool? all = null, string offset = null, string format = null, string datacount = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_cfgmem = null)
 		{
 			// TCL Syntax: readback_hw_cfgmem [-checksum] [-force] [-all] [-offset <arg>] -file <arg> [-format <arg>] [-datacount <arg>] [-quiet] [-verbose] [<hw_cfgmem>...]
 			return
@@ -21677,7 +21678,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("datacount", datacount)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(hw_cfgmem)
+					.OptionalStringList(hw_cfgmem)
 			;
 		}
 		/// <summary>
@@ -21703,7 +21704,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_device">(Optional) list of hardware devices Default: current hardware device</param>
 		/// <returns>hardware devices</returns>
-		public virtual SimpleTCLCommand readback_hw_device(bool? force = null, bool? capture = null, string readback_file = null, string bin_file = null, bool? quiet = null, bool? verbose = null, string hw_device = null)
+		public virtual SimpleTCLCommand readback_hw_device(bool? force = null, bool? capture = null, string readback_file = null, string bin_file = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_device = null)
 		{
 			// TCL Syntax: readback_hw_device [-force] [-capture] [-readback_file <arg>] [-bin_file <arg>] [-quiet] [-verbose] [<hw_device>...]
 			return
@@ -21714,7 +21715,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("bin_file", bin_file)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(hw_device)
+					.OptionalStringList(hw_device)
 			;
 		}
 		/// <summary>
@@ -21807,14 +21808,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_axis">(Required) List of hardware AXI objects.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand refresh_hw_axi(string hw_axis, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand refresh_hw_axi(TCLParameterList hw_axis, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_axi [-quiet] [-verbose] [<hw_axis>...]
 			return
 				new SimpleTCLCommand("refresh_hw_axi")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(hw_axis)
+					.RequiredStringList(hw_axis)
 			;
 		}
 		/// <summary>
@@ -21848,13 +21849,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand refresh_hw_ddrmc(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand refresh_hw_ddrmc(string hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_ddrmc [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("refresh_hw_ddrmc")
 					.Flag("regexp", regexp)
-					.OptionalNamedString("properties", properties)
+					.OptionalNamedStringList("properties", properties)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(hw_objects)
@@ -21928,13 +21929,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand refresh_hw_hbm(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand refresh_hw_hbm(string hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_hbm [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("refresh_hw_hbm")
 					.Flag("regexp", regexp)
-					.OptionalNamedString("properties", properties)
+					.OptionalNamedStringList("properties", properties)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(hw_objects)
@@ -21965,13 +21966,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand refresh_hw_mig(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand refresh_hw_mig(string hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_mig [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("refresh_hw_mig")
 					.Flag("regexp", regexp)
-					.OptionalNamedString("properties", properties)
+					.OptionalNamedStringList("properties", properties)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(hw_objects)
@@ -22064,13 +22065,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand refresh_hw_sio(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand refresh_hw_sio(string hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_sio [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("refresh_hw_sio")
 					.Flag("regexp", regexp)
-					.OptionalNamedString("properties", properties)
+					.OptionalNamedStringList("properties", properties)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(hw_objects)
@@ -22091,13 +22092,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand refresh_hw_softmc(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand refresh_hw_softmc(string hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_softmc [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("refresh_hw_softmc")
 					.Flag("regexp", regexp)
-					.OptionalNamedString("properties", properties)
+					.OptionalNamedStringList("properties", properties)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(hw_objects)
@@ -22128,13 +22129,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand refresh_hw_sysmon(string hw_objects, bool? regexp = null, string properties = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand refresh_hw_sysmon(string hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_sysmon [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("refresh_hw_sysmon")
 					.Flag("regexp", regexp)
-					.OptionalNamedString("properties", properties)
+					.OptionalNamedStringList("properties", properties)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(hw_objects)
@@ -22210,7 +22211,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand refresh_hw_vio(string hw_vios, bool? update_output_values = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand refresh_hw_vio(TCLParameterList hw_vios, bool? update_output_values = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_vio [-update_output_values] [-quiet] [-verbose] <hw_vios>...
 			return
@@ -22218,7 +22219,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("update_output_values", update_output_values)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(hw_vios)
+					.RequiredStringList(hw_vios)
 			;
 		}
 		/// <summary>
@@ -22362,7 +22363,7 @@ namespace Quokka.TCL.Vivado
 		/// the project that are out-of-date, will be reimported
 		/// </param>
 		/// <returns>list of file objects that were imported</returns>
-		public virtual SimpleTCLCommand reimport_files(bool? force = null, bool? quiet = null, bool? verbose = null, string files = null)
+		public virtual SimpleTCLCommand reimport_files(bool? force = null, bool? quiet = null, bool? verbose = null, TCLParameterList files = null)
 		{
 			// TCL Syntax: reimport_files [-force] [-quiet] [-verbose] [<files>...]
 			return
@@ -22370,7 +22371,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("force", force)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(files)
+					.OptionalStringList(files)
 			;
 		}
 		/// <summary>
@@ -22446,7 +22447,7 @@ namespace Quokka.TCL.Vivado
 		/// A list of one or more breakpoint objects and/or breakpoint
 		/// object ID's to be removed
 		/// </param>
-		public virtual SimpleTCLCommand remove_bps(bool? all = null, string file = null, string line = null, bool? quiet = null, bool? verbose = null, string BreakPointObjsOrIds = null)
+		public virtual SimpleTCLCommand remove_bps(bool? all = null, string file = null, string line = null, bool? quiet = null, bool? verbose = null, TCLParameterList BreakPointObjsOrIds = null)
 		{
 			// TCL Syntax: remove_bps [-all] [-file <arg>] [-line <arg>] [-quiet] [-verbose] [<BreakPointObjsOrIds>...]
 			return
@@ -22456,7 +22457,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("line", line)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(BreakPointObjsOrIds)
+					.OptionalStringList(BreakPointObjsOrIds)
 			;
 		}
 		/// <summary>
@@ -22483,14 +22484,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cells">(Required) List of cells to remove</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand remove_cell(string cells, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand remove_cell(TCLParameterList cells, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_cell [-quiet] [-verbose] <cells>...
 			return
 				new SimpleTCLCommand("remove_cell")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(cells)
+					.RequiredStringList(cells)
 			;
 		}
 		/// <summary>
@@ -22513,7 +22514,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cells">(Required) Cells to remove</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand remove_cells_from_pblock(string pblock, string cells, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand remove_cells_from_pblock(string pblock, TCLParameterList cells, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_cells_from_pblock [-quiet] [-verbose] <pblock> <cells>...
 			return
@@ -22521,7 +22522,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(pblock)
-					.RequiredString(cells)
+					.RequiredStringList(cells)
 			;
 		}
 		/// <summary>
@@ -22641,12 +22642,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'rule_check' objects against patterns. Default: *</param>
 		/// <returns>drc_check</returns>
-		public virtual SimpleTCLCommand remove_drc_checks(string ruledeck, string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public virtual SimpleTCLCommand remove_drc_checks(string ruledeck, TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: remove_drc_checks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] -ruledeck <arg> [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("remove_drc_checks")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("regexp", regexp)
 					.Flag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
@@ -22687,7 +22688,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of files that were removed</returns>
-		public virtual SimpleTCLCommand remove_files(string files, string fileset = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand remove_files(TCLParameterList files, string fileset = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_files [-fileset <arg>] [-quiet] [-verbose] <files>...
 			return
@@ -22695,7 +22696,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("fileset", fileset)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(files)
+					.RequiredStringList(files)
 			;
 		}
 		/// <summary>
@@ -22726,7 +22727,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="ForceObj">(Optional) ForceObj or id's</param>
-		public virtual SimpleTCLCommand remove_forces(bool? all = null, bool? quiet = null, bool? verbose = null, string ForceObj = null)
+		public virtual SimpleTCLCommand remove_forces(bool? all = null, bool? quiet = null, bool? verbose = null, TCLParameterList ForceObj = null)
 		{
 			// TCL Syntax: remove_forces [-all] [-quiet] [-verbose] [<ForceObj>...]
 			return
@@ -22734,7 +22735,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("all", all)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(ForceObj)
+					.OptionalStringList(ForceObj)
 			;
 		}
 		/// <summary>
@@ -22753,12 +22754,12 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand remove_from_power_rail(string power_rail, string power_sources = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand remove_from_power_rail(string power_rail, TCLParameterList power_sources = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_from_power_rail [-power_sources <args>] [-quiet] [-verbose] <power_rail>
 			return
 				new SimpleTCLCommand("remove_from_power_rail")
-					.OptionalNamedString("power_sources", power_sources)
+					.OptionalNamedStringList("power_sources", power_sources)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(power_rail)
@@ -22785,7 +22786,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="names">(Required) name of one or more custom command arguments to remove.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand remove_gui_custom_command_args(string command_name, string names, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand remove_gui_custom_command_args(string command_name, TCLParameterList names, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_gui_custom_command_args -command_name <arg> [-quiet] [-verbose] <names>...
 			return
@@ -22793,7 +22794,7 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("command_name", command_name)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(names)
+					.RequiredStringList(names)
 			;
 		}
 		/// <summary>
@@ -22815,14 +22816,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="names">(Required) name of one or more custom commands to remove</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand remove_gui_custom_commands(string names, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand remove_gui_custom_commands(TCLParameterList names, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_gui_custom_commands [-quiet] [-verbose] <names>...
 			return
 				new SimpleTCLCommand("remove_gui_custom_commands")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(names)
+					.RequiredStringList(names)
 			;
 		}
 		/// <summary>
@@ -22885,13 +22886,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="remove_all">(Optional) Remove the whole enumeration for a hardware probe. Default: 0</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand remove_hw_probe_enum(string hw_probe, bool? no_gui_update = null, string list = null, bool? remove_all = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand remove_hw_probe_enum(string hw_probe, bool? no_gui_update = null, TCLParameterList list = null, bool? remove_all = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_hw_probe_enum [-no_gui_update] [-list <args>] [-remove_all] [-quiet] [-verbose] <hw_probe>
 			return
 				new SimpleTCLCommand("remove_hw_probe_enum")
 					.Flag("no_gui_update", no_gui_update)
-					.OptionalNamedString("list", list)
+					.OptionalNamedStringList("list", list)
 					.Flag("remove_all", remove_all)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -23036,7 +23037,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand remove_net(string nets, bool? prune = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand remove_net(TCLParameterList nets, bool? prune = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_net [-prune] [-quiet] [-verbose] <nets>...
 			return
@@ -23044,7 +23045,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("prune", prune)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(nets)
+					.RequiredStringList(nets)
 			;
 		}
 		/// <summary>
@@ -23074,14 +23075,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="pins">(Required) List of pins to remove</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand remove_pin(string pins, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand remove_pin(TCLParameterList pins, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_pin [-quiet] [-verbose] <pins>...
 			return
 				new SimpleTCLCommand("remove_pin")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(pins)
+					.RequiredStringList(pins)
 			;
 		}
 		/// <summary>
@@ -23116,14 +23117,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="ports">(Required) Ports and/or bus ports to remove</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand remove_port(string ports, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand remove_port(TCLParameterList ports, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_port [-quiet] [-verbose] <ports>...
 			return
 				new SimpleTCLCommand("remove_port")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(ports)
+					.RequiredStringList(ports)
 			;
 		}
 		/// <summary>
@@ -23142,15 +23143,15 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand remove_wave(string items, string of = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand remove_wave(TCLParameterList items, TCLParameterList of = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_wave [-of <args>] [-quiet] [-verbose] <items>...
 			return
 				new SimpleTCLCommand("remove_wave")
-					.OptionalNamedString("of", of)
+					.OptionalNamedStringList("of", of)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(items)
+					.RequiredStringList(items)
 			;
 		}
 		/// <summary>
@@ -23183,7 +23184,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cell">(Required) Cell to rename</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand rename_cell(string to, string cell, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand rename_cell(string to, TCLParameterList cell, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: rename_cell -to <arg> [-quiet] [-verbose] <cell>...
 			return
@@ -23191,7 +23192,7 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("to", to)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(cell)
+					.RequiredStringList(cell)
 			;
 		}
 		/// <summary>
@@ -23226,7 +23227,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="net">(Required) Net to rename</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand rename_net(string to, string net, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand rename_net(string to, TCLParameterList net, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: rename_net -to <arg> [-quiet] [-verbose] <net>...
 			return
@@ -23234,7 +23235,7 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("to", to)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(net)
+					.RequiredStringList(net)
 			;
 		}
 		/// <summary>
@@ -23277,7 +23278,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="pin">(Required) Pin to rename</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand rename_pin(string to, string pin, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand rename_pin(string to, TCLParameterList pin, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: rename_pin -to <arg> [-quiet] [-verbose] <pin>...
 			return
@@ -23285,7 +23286,7 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("to", to)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(pin)
+					.RequiredStringList(pin)
 			;
 		}
 		/// <summary>
@@ -23318,7 +23319,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="port">(Required) Port to rename</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand rename_port(string to, string port, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand rename_port(string to, TCLParameterList port, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: rename_port -to <arg> [-quiet] [-verbose] <port>...
 			return
@@ -23326,7 +23327,7 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("to", to)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(port)
+					.RequiredStringList(port)
 			;
 		}
 		/// <summary>
@@ -23406,7 +23407,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="disable_unused">(Optional) Disables all files not associated with the TOP design unit</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand reorder_files(string files, string fileset = null, string before = null, string after = null, bool? front = null, bool? back = null, bool? auto = null, bool? disable_unused = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand reorder_files(TCLParameterList files, string fileset = null, string before = null, string after = null, bool? front = null, bool? back = null, bool? auto = null, bool? disable_unused = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reorder_files [-fileset <arg>] [-before <arg>] [-after <arg>] [-front] [-back] [-auto] [-disable_unused] [-quiet] [-verbose] <files>...
 			return
@@ -23420,7 +23421,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("disable_unused", disable_unused)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(files)
+					.RequiredStringList(files)
 			;
 		}
 		/// <summary>
@@ -23450,7 +23451,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="cell2">(Optional) Cell to be connected to connections that were disconnected from cell1.</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public virtual SimpleTCLCommand replace_bd_cell(string cell1, bool? preserve_name = null, bool? preserve_configuration = null, bool? quiet = null, bool? verbose = null, string cell2 = null)
+		public virtual SimpleTCLCommand replace_bd_cell(string cell1, bool? preserve_name = null, bool? preserve_configuration = null, bool? quiet = null, bool? verbose = null, TCLParameterList cell2 = null)
 		{
 			// TCL Syntax: replace_bd_cell [-preserve_name] [-preserve_configuration] [-quiet] [-verbose] [<cell1>] [<cell2>...]
 			return
@@ -23460,7 +23461,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(cell1)
-					.OptionalString(cell2)
+					.OptionalStringList(cell2)
 			;
 		}
 		/// <summary>
@@ -23574,14 +23575,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="BreakPointObjs">(Optional) List of breakpoint objects to report</param>
 		/// <returns>Print the breakpoints id, file_name and line_number to the console in textual format</returns>
-		public virtual SimpleTCLCommand report_bps(bool? quiet = null, bool? verbose = null, string BreakPointObjs = null)
+		public virtual SimpleTCLCommand report_bps(bool? quiet = null, bool? verbose = null, TCLParameterList BreakPointObjs = null)
 		{
 			// TCL Syntax: report_bps [-quiet] [-verbose] [<BreakPointObjs>...]
 			return
 				new SimpleTCLCommand("report_bps")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(BreakPointObjs)
+					.OptionalStringList(BreakPointObjs)
 			;
 		}
 		/// <summary>
@@ -23659,7 +23660,7 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
-		public virtual SimpleTCLCommand report_bus_skew(string delay_type = null, bool? setup = null, bool? hold = null, bool? no_detailed_paths = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? sort_by_slack = null, bool? input_pins = null, bool? no_header = null, string significant_digits = null, string file = null, bool? append = null, bool? return_string = null, bool? warn_on_violation = null, string rpx = null, string cells = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_bus_skew(string delay_type = null, bool? setup = null, bool? hold = null, bool? no_detailed_paths = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? sort_by_slack = null, bool? input_pins = null, bool? no_header = null, string significant_digits = null, string file = null, bool? append = null, bool? return_string = null, bool? warn_on_violation = null, string rpx = null, TCLParameterList cells = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_bus_skew [-delay_type <arg>] [-setup] [-hold] [-no_detailed_paths] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-path_type <arg>] [-sort_by_slack] [-input_pins] [-no_header] [-significant_digits <arg>] [-file <arg>] [-append] [-return_string] [-warn_on_violation] [-rpx <arg>] [-cells <args>] [-quiet] [-verbose]
 			return
@@ -23681,7 +23682,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("return_string", return_string)
 					.Flag("warn_on_violation", warn_on_violation)
 					.OptionalNamedString("rpx", rpx)
-					.OptionalNamedString("cells", cells)
+					.OptionalNamedStringList("cells", cells)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -23716,7 +23717,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Report</returns>
-		public virtual SimpleTCLCommand report_carry_chains(string file = null, bool? append = null, bool? return_string = null, string cell = null, string max_chains = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_carry_chains(string file = null, bool? append = null, bool? return_string = null, TCLParameterList cell = null, string max_chains = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_carry_chains [-file <arg>] [-append] [-return_string] [-cell <args>] [-max_chains <arg>] [-quiet] [-verbose]
 			return
@@ -23724,7 +23725,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("file", file)
 					.Flag("append", append)
 					.Flag("return_string", return_string)
-					.OptionalNamedString("cell", cell)
+					.OptionalNamedStringList("cell", cell)
 					.OptionalNamedString("max_chains", max_chains)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -23797,14 +23798,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_cdc(string from = null, string to = null, string cells = null, bool? details = null, bool? summary = null, bool? all_checks_per_endpoint = null, string severity = null, bool? no_header = null, bool? show_waiver = null, bool? no_waiver = null, bool? waived = null, string file = null, bool? append = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_cdc(TCLParameterList from = null, TCLParameterList to = null, TCLParameterList cells = null, bool? details = null, bool? summary = null, bool? all_checks_per_endpoint = null, string severity = null, bool? no_header = null, bool? show_waiver = null, bool? no_waiver = null, bool? waived = null, string file = null, bool? append = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_cdc [-from <args>] [-to <args>] [-cells <args>] [-details] [-summary] [-all_checks_per_endpoint] [-severity <arg>] [-no_header] [-show_waiver] [-no_waiver] [-waived] [-file <arg>] [-append] [-return_string] [-name <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_cdc")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("cells", cells)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("to", to)
+					.OptionalNamedStringList("cells", cells)
 					.Flag("details", details)
 					.Flag("summary", summary)
 					.Flag("all_checks_per_endpoint", all_checks_per_endpoint)
@@ -23863,7 +23864,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cells">(Optional) run report_clock_interaction on the specified cell(s)</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_clock_interaction(string delay_type = null, bool? setup = null, bool? hold = null, string significant_digits = null, bool? no_header = null, string file = null, bool? append = null, string name = null, bool? return_string = null, string cells = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_clock_interaction(string delay_type = null, bool? setup = null, bool? hold = null, string significant_digits = null, bool? no_header = null, string file = null, bool? append = null, string name = null, bool? return_string = null, TCLParameterList cells = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_clock_interaction [-delay_type <arg>] [-setup] [-hold] [-significant_digits <arg>] [-no_header] [-file <arg>] [-append] [-name <arg>] [-return_string] [-cells <args>] [-quiet] [-verbose]
 			return
@@ -23877,7 +23878,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("append", append)
 					.OptionalNamedString("name", name)
 					.Flag("return_string", return_string)
-					.OptionalNamedString("cells", cells)
+					.OptionalNamedStringList("cells", cells)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -23948,7 +23949,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_clock_networks(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? endpoints_only = null, string levels = null, bool? expand_buckets = null, string suppress_endpoints = null, string clocks = null, string unconstrained_roots = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_clock_networks(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? endpoints_only = null, string levels = null, bool? expand_buckets = null, string suppress_endpoints = null, TCLParameterList clocks = null, TCLParameterList unconstrained_roots = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_clock_networks [-file <arg>] [-append] [-name <arg>] [-return_string] [-endpoints_only] [-levels <arg>] [-expand_buckets] [-suppress_endpoints <arg>] [-clocks <args>] [-unconstrained_roots <args>] [-quiet] [-verbose]
 			return
@@ -23961,8 +23962,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("levels", levels)
 					.Flag("expand_buckets", expand_buckets)
 					.OptionalNamedString("suppress_endpoints", suppress_endpoints)
-					.OptionalNamedString("clocks", clocks)
-					.OptionalNamedString("unconstrained_roots", unconstrained_roots)
+					.OptionalNamedStringList("clocks", clocks)
+					.OptionalNamedStringList("unconstrained_roots", unconstrained_roots)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -24012,7 +24013,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Report</returns>
-		public virtual SimpleTCLCommand report_clock_utilization(string file = null, bool? append = null, string write_xdc = null, string cells = null, bool? clock_roots_only = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_clock_utilization(string file = null, bool? append = null, string write_xdc = null, TCLParameterList cells = null, bool? clock_roots_only = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_clock_utilization [-file <arg>] [-append] [-write_xdc <arg>] [-cells <args>] [-clock_roots_only] [-return_string] [-name <arg>] [-quiet] [-verbose]
 			return
@@ -24020,7 +24021,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("file", file)
 					.Flag("append", append)
 					.OptionalNamedString("write_xdc", write_xdc)
-					.OptionalNamedString("cells", cells)
+					.OptionalNamedStringList("cells", cells)
 					.Flag("clock_roots_only", clock_roots_only)
 					.Flag("return_string", return_string)
 					.OptionalNamedString("name", name)
@@ -24109,7 +24110,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="of_objects">(Optional) Get 'file' objects of these types: 'file fileset ip reconfig_module'.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_compile_order(string fileset = null, bool? missing_instances = null, bool? constraints = null, bool? sources = null, string used_in = null, string file = null, bool? append = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_compile_order(string fileset = null, bool? missing_instances = null, bool? constraints = null, bool? sources = null, string used_in = null, string file = null, bool? append = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_compile_order [-fileset <arg>] [-missing_instances] [-constraints] [-sources] [-used_in <arg>] [-file <arg>] [-append] [-of_objects <args>] [-quiet] [-verbose]
 			return
@@ -24121,7 +24122,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("used_in", used_in)
 					.OptionalNamedString("file", file)
 					.Flag("append", append)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -24164,14 +24165,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="ConditionObjs">(Optional) ConditionObjs, id's or names</param>
 		/// <returns>Prints name, id, condition_expression and commands of each condition object on the console</returns>
-		public virtual SimpleTCLCommand report_conditions(bool? quiet = null, bool? verbose = null, string ConditionObjs = null)
+		public virtual SimpleTCLCommand report_conditions(bool? quiet = null, bool? verbose = null, TCLParameterList ConditionObjs = null)
 		{
 			// TCL Syntax: report_conditions [-quiet] [-verbose] [<ConditionObjs>...]
 			return
 				new SimpleTCLCommand("report_conditions")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(ConditionObjs)
+					.OptionalStringList(ConditionObjs)
 			;
 		}
 		/// <summary>
@@ -24306,7 +24307,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Report</returns>
-		public virtual SimpleTCLCommand report_control_sets(string file = null, bool? append = null, bool? hierarchical = null, string hierarchical_depth = null, string sort_by = null, string cells = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_control_sets(string file = null, bool? append = null, bool? hierarchical = null, string hierarchical_depth = null, TCLParameterList sort_by = null, TCLParameterList cells = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_control_sets [-file <arg>] [-append] [-hierarchical] [-hierarchical_depth <arg>] [-sort_by <args>] [-cells <args>] [-return_string] [-quiet] [-verbose]
 			return
@@ -24315,8 +24316,8 @@ namespace Quokka.TCL.Vivado
 					.Flag("append", append)
 					.Flag("hierarchical", hierarchical)
 					.OptionalNamedString("hierarchical_depth", hierarchical_depth)
-					.OptionalNamedString("sort_by", sort_by)
-					.OptionalNamedString("cells", cells)
+					.OptionalNamedStringList("sort_by", sort_by)
+					.OptionalNamedStringList("cells", cells)
 					.Flag("return_string", return_string)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -24369,7 +24370,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_datasheet(string significant_digits = null, string file = null, bool? append = null, bool? return_string = null, string sort_by = null, string name = null, bool? show_all_corners = null, bool? show_oe_timing = null, string group = null, string rpx = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_datasheet(string significant_digits = null, string file = null, bool? append = null, bool? return_string = null, string sort_by = null, string name = null, bool? show_all_corners = null, bool? show_oe_timing = null, TCLParameterList group = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_datasheet [-significant_digits <arg>] [-file <arg>] [-append] [-return_string] [-sort_by <arg>] [-name <arg>] [-show_all_corners] [-show_oe_timing] [-group <args>] [-rpx <arg>] [-quiet] [-verbose]
 			return
@@ -24382,7 +24383,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("name", name)
 					.Flag("show_all_corners", show_all_corners)
 					.Flag("show_oe_timing", show_oe_timing)
-					.OptionalNamedString("group", group)
+					.OptionalNamedStringList("group", group)
 					.OptionalNamedString("rpx", rpx)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -24653,7 +24654,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="no_pr_attribute">(Optional) Report without PR attributes</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_design_analysis(string file = null, bool? append = null, bool? return_string = null, bool? complexity = null, string cells = null, string bounding_boxes = null, string hierarchical_depth = null, bool? congestion = null, string min_congestion_level = null, bool? timing = null, bool? setup = null, bool? hold = null, bool? show_all = null, bool? full_logical_pin = null, bool? routed_vs_estimated = null, bool? logic_level_distribution = null, string logic_level_dist_paths = null, string min_level = null, string max_level = null, bool? return_timing_paths = null, string of_timing_paths = null, string max_paths = null, bool? extend = null, bool? routes = null, string end_point_clocks = null, string logic_levels = null, bool? qor_summary = null, string name = null, bool? no_pr_attribute = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_design_analysis(string file = null, bool? append = null, bool? return_string = null, bool? complexity = null, TCLParameterList cells = null, TCLParameterList bounding_boxes = null, string hierarchical_depth = null, bool? congestion = null, string min_congestion_level = null, bool? timing = null, bool? setup = null, bool? hold = null, bool? show_all = null, bool? full_logical_pin = null, bool? routed_vs_estimated = null, bool? logic_level_distribution = null, string logic_level_dist_paths = null, string min_level = null, string max_level = null, bool? return_timing_paths = null, TCLParameterList of_timing_paths = null, string max_paths = null, bool? extend = null, bool? routes = null, TCLParameterList end_point_clocks = null, string logic_levels = null, bool? qor_summary = null, string name = null, bool? no_pr_attribute = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_design_analysis [-file <arg>] [-append] [-return_string] [-complexity] [-cells <args>] [-bounding_boxes <args>] [-hierarchical_depth <arg>] [-congestion] [-min_congestion_level <arg>] [-timing] [-setup] [-hold] [-show_all] [-full_logical_pin] [-routed_vs_estimated] [-logic_level_distribution] [-logic_level_dist_paths <arg>] [-min_level <arg>] [-max_level <arg>] [-return_timing_paths] [-of_timing_paths <args>] [-max_paths <arg>] [-extend] [-routes] [-end_point_clocks <args>] [-logic_levels <arg>] [-qor_summary] [-name <arg>] [-no_pr_attribute] [-quiet] [-verbose]
 			return
@@ -24662,8 +24663,8 @@ namespace Quokka.TCL.Vivado
 					.Flag("append", append)
 					.Flag("return_string", return_string)
 					.Flag("complexity", complexity)
-					.OptionalNamedString("cells", cells)
-					.OptionalNamedString("bounding_boxes", bounding_boxes)
+					.OptionalNamedStringList("cells", cells)
+					.OptionalNamedStringList("bounding_boxes", bounding_boxes)
 					.OptionalNamedString("hierarchical_depth", hierarchical_depth)
 					.Flag("congestion", congestion)
 					.OptionalNamedString("min_congestion_level", min_congestion_level)
@@ -24678,11 +24679,11 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("min_level", min_level)
 					.OptionalNamedString("max_level", max_level)
 					.Flag("return_timing_paths", return_timing_paths)
-					.OptionalNamedString("of_timing_paths", of_timing_paths)
+					.OptionalNamedStringList("of_timing_paths", of_timing_paths)
 					.OptionalNamedString("max_paths", max_paths)
 					.Flag("extend", extend)
 					.Flag("routes", routes)
-					.OptionalNamedString("end_point_clocks", end_point_clocks)
+					.OptionalNamedStringList("end_point_clocks", end_point_clocks)
 					.OptionalNamedString("logic_levels", logic_levels)
 					.Flag("qor_summary", qor_summary)
 					.OptionalNamedString("name", name)
@@ -24737,7 +24738,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_disable_timing(bool? user_disabled = null, string column_style = null, string file = null, bool? append = null, string cells = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_disable_timing(bool? user_disabled = null, string column_style = null, string file = null, bool? append = null, TCLParameterList cells = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_disable_timing [-user_disabled] [-column_style <arg>] [-file <arg>] [-append] [-cells <args>] [-return_string] [-quiet] [-verbose]
 			return
@@ -24746,7 +24747,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("column_style", column_style)
 					.OptionalNamedString("file", file)
 					.Flag("append", append)
-					.OptionalNamedString("cells", cells)
+					.OptionalNamedStringList("cells", cells)
 					.Flag("return_string", return_string)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -24823,15 +24824,15 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_drc(string name = null, bool? upgrade_cw = null, string checks = null, string ruledecks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_drc(string name = null, bool? upgrade_cw = null, TCLParameterList checks = null, TCLParameterList ruledecks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_drc [-name <arg>] [-upgrade_cw] [-checks <args>] [-ruledecks <args>] [-file <arg>] [-rpx <arg>] [-append] [-waived] [-no_waivers] [-return_string] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_drc")
 					.OptionalNamedString("name", name)
 					.Flag("upgrade_cw", upgrade_cw)
-					.OptionalNamedString("checks", checks)
-					.OptionalNamedString("ruledecks", ruledecks)
+					.OptionalNamedStringList("checks", checks)
+					.OptionalNamedStringList("ruledecks", ruledecks)
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("rpx", rpx)
 					.Flag("append", append)
@@ -25039,20 +25040,20 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
-		public virtual SimpleTCLCommand report_exceptions(string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? ignored = null, bool? summary = null, bool? coverage = null, bool? ignored_objects = null, bool? count_objects = null, bool? write_merged_exceptions = null, bool? write_valid_exceptions = null, bool? no_header = null, string file = null, bool? append = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_exceptions(TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, bool? ignored = null, bool? summary = null, bool? coverage = null, bool? ignored_objects = null, bool? count_objects = null, bool? write_merged_exceptions = null, bool? write_valid_exceptions = null, bool? no_header = null, string file = null, bool? append = null, bool? return_string = null, string name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_exceptions [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-ignored] [-summary] [-coverage] [-ignored_objects] [-count_objects] [-write_merged_exceptions] [-write_valid_exceptions] [-no_header] [-file <arg>] [-append] [-return_string] [-name <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_exceptions")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
-					.OptionalNamedString("through", through)
-					.OptionalNamedString("rise_through", rise_through)
-					.OptionalNamedString("fall_through", fall_through)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("rise_from", rise_from)
+					.OptionalNamedStringList("fall_from", fall_from)
+					.OptionalNamedStringList("to", to)
+					.OptionalNamedStringList("rise_to", rise_to)
+					.OptionalNamedStringList("fall_to", fall_to)
+					.OptionalNamedStringList("through", through)
+					.OptionalNamedStringList("rise_through", rise_through)
+					.OptionalNamedStringList("fall_through", fall_through)
 					.Flag("ignored", ignored)
 					.Flag("summary", summary)
 					.Flag("coverage", coverage)
@@ -25206,7 +25207,7 @@ namespace Quokka.TCL.Vivado
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
 		/// <returns>Report</returns>
-		public virtual SimpleTCLCommand report_high_fanout_nets(string file = null, string format = null, bool? append = null, bool? ascending = null, bool? timing = null, bool? histogram = null, bool? load_types = null, bool? clock_regions = null, bool? slr = null, string max_nets = null, string fanout_greater_than = null, string fanout_lesser_than = null, string name = null, string cells = null, string clocks = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_high_fanout_nets(string file = null, string format = null, bool? append = null, bool? ascending = null, bool? timing = null, bool? histogram = null, bool? load_types = null, bool? clock_regions = null, bool? slr = null, string max_nets = null, string fanout_greater_than = null, string fanout_lesser_than = null, string name = null, TCLParameterList cells = null, TCLParameterList clocks = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_high_fanout_nets [-file <arg>] [-format <arg>] [-append] [-ascending] [-timing] [-histogram] [-load_types] [-clock_regions] [-slr] [-max_nets <arg>] [-fanout_greater_than <arg>] [-fanout_lesser_than <arg>] [-name <arg>] [-cells <args>] [-clocks <args>] [-return_string] [-quiet] [-verbose]
 			return
@@ -25224,8 +25225,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("fanout_greater_than", fanout_greater_than)
 					.OptionalNamedString("fanout_lesser_than", fanout_lesser_than)
 					.OptionalNamedString("name", name)
-					.OptionalNamedString("cells", cells)
-					.OptionalNamedString("clocks", clocks)
+					.OptionalNamedStringList("cells", cells)
+					.OptionalNamedStringList("clocks", clocks)
 					.Flag("return_string", return_string)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -25260,7 +25261,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_hw_axi_txn(string hw_axi_txns, string w = null, string t = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_hw_axi_txn(TCLParameterList hw_axi_txns, string w = null, string t = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_hw_axi_txn [-w <arg>] [-t <arg>] [-quiet] [-verbose] <hw_axi_txns>...
 			return
@@ -25269,7 +25270,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("t", t)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(hw_axi_txns)
+					.RequiredStringList(hw_axi_txns)
 			;
 		}
 		/// <summary>
@@ -25510,14 +25511,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) Return report as string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_incremental_reuse(string file = null, bool? append = null, string cells = null, bool? hierarchical = null, string hierarchical_depth = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_incremental_reuse(string file = null, bool? append = null, TCLParameterList cells = null, bool? hierarchical = null, string hierarchical_depth = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_incremental_reuse [-file <arg>] [-append] [-cells <args>] [-hierarchical] [-hierarchical_depth <arg>] [-return_string] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_incremental_reuse")
 					.OptionalNamedString("file", file)
 					.Flag("append", append)
-					.OptionalNamedString("cells", cells)
+					.OptionalNamedStringList("cells", cells)
 					.Flag("hierarchical", hierarchical)
 					.OptionalNamedString("hierarchical_depth", hierarchical_depth)
 					.Flag("return_string", return_string)
@@ -25696,14 +25697,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_methodology(string name = null, string cells = null, string checks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, string slack_lesser_than = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_methodology(string name = null, TCLParameterList cells = null, TCLParameterList checks = null, string file = null, string rpx = null, bool? append = null, bool? waived = null, bool? no_waivers = null, string slack_lesser_than = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_methodology [-name <arg>] [-cells <args>] [-checks <args>] [-file <arg>] [-rpx <arg>] [-append] [-waived] [-no_waivers] [-slack_lesser_than <arg>] [-return_string] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_methodology")
 					.OptionalNamedString("name", name)
-					.OptionalNamedString("cells", cells)
-					.OptionalNamedString("checks", checks)
+					.OptionalNamedStringList("cells", cells)
+					.OptionalNamedStringList("checks", checks)
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("rpx", rpx)
 					.Flag("append", append)
@@ -25767,14 +25768,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hdl_objects">(Optional) The hdl_objects to report. Default is report_objects [get_objects *]</param>
 		/// <returns>Print name, type, data_type of the HDL objects on console in textual format</returns>
-		public virtual SimpleTCLCommand report_objects(bool? quiet = null, bool? verbose = null, string hdl_objects = null)
+		public virtual SimpleTCLCommand report_objects(bool? quiet = null, bool? verbose = null, TCLParameterList hdl_objects = null)
 		{
 			// TCL Syntax: report_objects [-quiet] [-verbose] [<hdl_objects>...]
 			return
 				new SimpleTCLCommand("report_objects")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(hdl_objects)
+					.OptionalStringList(hdl_objects)
 			;
 		}
 		/// <summary>
@@ -25836,13 +25837,13 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
-		public virtual SimpleTCLCommand report_operating_conditions(string voltage = null, string voltage_range = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, bool? all = null, string file = null, bool? return_string = null, bool? append = null, string supply_current_budget = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_operating_conditions(TCLParameterList voltage = null, TCLParameterList voltage_range = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, bool? all = null, string file = null, bool? return_string = null, bool? append = null, TCLParameterList supply_current_budget = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_operating_conditions [-voltage <args>] [-voltage_range <args>] [-grade] [-process] [-junction_temp] [-ambient_temp] [-thetaja] [-thetasa] [-airflow] [-heatsink] [-thetajb] [-board] [-board_temp] [-board_layers] [-design_power_budget] [-all] [-file <arg>] [-return_string] [-append] [-supply_current_budget <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_operating_conditions")
-					.OptionalNamedString("voltage", voltage)
-					.OptionalNamedString("voltage_range", voltage_range)
+					.OptionalNamedStringList("voltage", voltage)
+					.OptionalNamedStringList("voltage_range", voltage_range)
 					.Flag("grade", grade)
 					.Flag("process", process)
 					.Flag("junction_temp", junction_temp)
@@ -25860,7 +25861,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("file", file)
 					.Flag("return_string", return_string)
 					.Flag("append", append)
-					.OptionalNamedString("supply_current_budget", supply_current_budget)
+					.OptionalNamedStringList("supply_current_budget", supply_current_budget)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -25989,14 +25990,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="report_loops">(Optional) Report loop information as well</param>
 		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
-		public virtual SimpleTCLCommand report_pipeline_analysis(string cells = null, bool? verbose = null, string clocks = null, string file = null, bool? include_paths_to_pipeline = null, bool? append = null, string max_added_latency = null, bool? report_loops = null, bool? return_string = null, bool? quiet = null)
+		public virtual SimpleTCLCommand report_pipeline_analysis(TCLParameterList cells = null, bool? verbose = null, TCLParameterList clocks = null, string file = null, bool? include_paths_to_pipeline = null, bool? append = null, string max_added_latency = null, bool? report_loops = null, bool? return_string = null, bool? quiet = null)
 		{
 			// TCL Syntax: report_pipeline_analysis [-cells <args>] [-verbose] [-clocks <args>] [-file <arg>] [-include_paths_to_pipeline] [-append] [-max_added_latency <arg>] [-report_loops] [-return_string] [-quiet]
 			return
 				new SimpleTCLCommand("report_pipeline_analysis")
-					.OptionalNamedString("cells", cells)
+					.OptionalNamedStringList("cells", cells)
 					.Flag("verbose", verbose)
-					.OptionalNamedString("clocks", clocks)
+					.OptionalNamedStringList("clocks", clocks)
 					.OptionalNamedString("file", file)
 					.Flag("include_paths_to_pipeline", include_paths_to_pipeline)
 					.Flag("append", append)
@@ -26110,12 +26111,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_power_opt(string cell = null, string file = null, string format = null, string name = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_power_opt(TCLParameterList cell = null, string file = null, string format = null, string name = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_power_opt [-cell <args>] [-file <arg>] [-format <arg>] [-name <arg>] [-append] [-return_string] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_power_opt")
-					.OptionalNamedString("cell", cell)
+					.OptionalNamedStringList("cell", cell)
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("format", format)
 					.OptionalNamedString("name", name)
@@ -26171,7 +26172,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_pr_configuration_analysis(bool? complexity = null, bool? clocking = null, bool? timing = null, string cells = null, string dcps = null, bool? rent = null, string nworst = null, string file = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_pr_configuration_analysis(bool? complexity = null, bool? clocking = null, bool? timing = null, TCLParameterList cells = null, TCLParameterList dcps = null, bool? rent = null, string nworst = null, string file = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_pr_configuration_analysis [-complexity] [-clocking] [-timing] [-cells <args>] [-dcps <args>] [-rent] [-nworst <arg>] [-file <arg>] [-quiet] [-verbose]
 			return
@@ -26179,8 +26180,8 @@ namespace Quokka.TCL.Vivado
 					.Flag("complexity", complexity)
 					.Flag("clocking", clocking)
 					.Flag("timing", timing)
-					.OptionalNamedString("cells", cells)
-					.OptionalNamedString("dcps", dcps)
+					.OptionalNamedStringList("cells", cells)
+					.OptionalNamedStringList("dcps", dcps)
 					.Flag("rent", rent)
 					.OptionalNamedString("nworst", nworst)
 					.OptionalNamedString("file", file)
@@ -26315,7 +26316,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) List of objects to check min pulse width with</param>
-		public virtual SimpleTCLCommand report_pulse_width(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? warn_on_violation = null, bool? all_violators = null, string significant_digits = null, string limit = null, bool? min_period = null, bool? max_period = null, bool? low_pulse = null, bool? high_pulse = null, bool? max_skew = null, string clocks = null, bool? no_header = null, string cells = null, string rpx = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public virtual SimpleTCLCommand report_pulse_width(string file = null, bool? append = null, string name = null, bool? return_string = null, bool? warn_on_violation = null, bool? all_violators = null, string significant_digits = null, string limit = null, bool? min_period = null, bool? max_period = null, bool? low_pulse = null, bool? high_pulse = null, bool? max_skew = null, TCLParameterList clocks = null, bool? no_header = null, TCLParameterList cells = null, string rpx = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: report_pulse_width [-file <arg>] [-append] [-name <arg>] [-return_string] [-warn_on_violation] [-all_violators] [-significant_digits <arg>] [-limit <arg>] [-min_period] [-max_period] [-low_pulse] [-high_pulse] [-max_skew] [-clocks <args>] [-no_header] [-cells <args>] [-rpx <arg>] [-quiet] [-verbose] [<objects>]
 			return
@@ -26333,9 +26334,9 @@ namespace Quokka.TCL.Vivado
 					.Flag("low_pulse", low_pulse)
 					.Flag("high_pulse", high_pulse)
 					.Flag("max_skew", max_skew)
-					.OptionalNamedString("clocks", clocks)
+					.OptionalNamedStringList("clocks", clocks)
 					.Flag("no_header", no_header)
-					.OptionalNamedString("cells", cells)
+					.OptionalNamedStringList("cells", cells)
 					.OptionalNamedString("rpx", rpx)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -26477,7 +26478,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="of_objects">(Optional) List of QoR suggestion objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_qor_suggestions(string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? no_split = null, bool? report_all_suggestions = null, string cells = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_qor_suggestions(string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? no_split = null, bool? report_all_suggestions = null, TCLParameterList cells = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_qor_suggestions [-file <arg>] [-name <arg>] [-append] [-return_string] [-max_strategies <arg>] [-max_paths <arg>] [-no_split] [-report_all_suggestions] [-cells <args>] [-of_objects <args>] [-quiet] [-verbose]
 			return
@@ -26490,8 +26491,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("max_paths", max_paths)
 					.Flag("no_split", no_split)
 					.Flag("report_all_suggestions", report_all_suggestions)
-					.OptionalNamedString("cells", cells)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("cells", cells)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -26564,7 +26565,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Report</returns>
-		public virtual SimpleTCLCommand report_ram_utilization(bool? append = null, string file = null, string csv = null, bool? return_string = null, string cells = null, bool? include_path_info = null, bool? include_lutram = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_ram_utilization(bool? append = null, string file = null, string csv = null, bool? return_string = null, TCLParameterList cells = null, bool? include_path_info = null, bool? include_lutram = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_ram_utilization [-append] [-file <arg>] [-csv <arg>] [-return_string] [-cells <args>] [-include_path_info] [-include_lutram] [-quiet] [-verbose]
 			return
@@ -26573,7 +26574,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("csv", csv)
 					.Flag("return_string", return_string)
-					.OptionalNamedString("cells", cells)
+					.OptionalNamedStringList("cells", cells)
 					.Flag("include_path_info", include_path_info)
 					.Flag("include_lutram", include_lutram)
 					.Flag("quiet", quiet)
@@ -26656,7 +26657,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_route_status(bool? return_nets = null, bool? return_string = null, string file = null, bool? append = null, string of_objects = null, string route_type = null, bool? list_all_nets = null, bool? show_all = null, bool? dump_routes = null, bool? has_routing = null, string boolean_check = null, bool? ignore_cache = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_route_status(bool? return_nets = null, bool? return_string = null, string file = null, bool? append = null, TCLParameterList of_objects = null, string route_type = null, bool? list_all_nets = null, bool? show_all = null, bool? dump_routes = null, bool? has_routing = null, string boolean_check = null, bool? ignore_cache = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_route_status [-return_nets] [-return_string] [-file <arg>] [-append] [-of_objects <args>] [-route_type <arg>] [-list_all_nets] [-show_all] [-dump_routes] [-has_routing] [-boolean_check <arg>] [-ignore_cache] [-quiet] [-verbose]
 			return
@@ -26665,7 +26666,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("return_string", return_string)
 					.OptionalNamedString("file", file)
 					.Flag("append", append)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("route_type", route_type)
 					.Flag("list_all_nets", list_all_nets)
 					.Flag("show_all", show_all)
@@ -26712,14 +26713,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hdl_scopes">(Optional) The hdl_objects to report. Default is report_scopes [get_scopes *]</param>
 		/// <returns>report_scopes prints a subset of properties of the HDL scope on console in textual format</returns>
-		public virtual SimpleTCLCommand report_scopes(bool? quiet = null, bool? verbose = null, string hdl_scopes = null)
+		public virtual SimpleTCLCommand report_scopes(bool? quiet = null, bool? verbose = null, TCLParameterList hdl_scopes = null)
 		{
 			// TCL Syntax: report_scopes [-quiet] [-verbose] [<hdl_scopes>...]
 			return
 				new SimpleTCLCommand("report_scopes")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(hdl_scopes)
+					.OptionalStringList(hdl_scopes)
 			;
 		}
 		/// <summary>
@@ -26968,7 +26969,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) objects</param>
-		public virtual SimpleTCLCommand report_switching_activity(bool? static_probability = null, bool? signal_rate = null, bool? toggle_rate = null, bool? default_static_probability = null, bool? default_toggle_rate = null, bool? average = null, string file = null, bool? return_string = null, bool? append = null, bool? hier = null, bool? all = null, string type = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public virtual SimpleTCLCommand report_switching_activity(bool? static_probability = null, bool? signal_rate = null, bool? toggle_rate = null, bool? default_static_probability = null, bool? default_toggle_rate = null, bool? average = null, string file = null, bool? return_string = null, bool? append = null, bool? hier = null, bool? all = null, TCLParameterList type = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
 		{
 			// TCL Syntax: report_switching_activity [-static_probability] [-signal_rate] [-toggle_rate] [-default_static_probability] [-default_toggle_rate] [-average] [-file <arg>] [-return_string] [-append] [-hier] [-all] [-type <args>] [-quiet] [-verbose] [<objects>...]
 			return
@@ -26984,10 +26985,10 @@ namespace Quokka.TCL.Vivado
 					.Flag("append", append)
 					.Flag("hier", hier)
 					.Flag("all", all)
-					.OptionalNamedString("type", type)
+					.OptionalNamedStringList("type", type)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(objects)
+					.OptionalStringList(objects)
 			;
 		}
 		/// <summary>
@@ -27212,20 +27213,20 @@ namespace Quokka.TCL.Vivado
 		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_timing(string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, string delay_type = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? input_pins = null, bool? no_header = null, bool? no_reused_label = null, string slack_lesser_than = null, string slack_greater_than = null, string group = null, string sort_by = null, bool? no_report_unconstrained = null, bool? user_ignored = null, string of_objects = null, string significant_digits = null, string column_style = null, string file = null, bool? append = null, string name = null, bool? no_pr_attribute = null, bool? routable_nets = null, bool? return_string = null, bool? warn_on_violation = null, string cells = null, string rpx = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_timing(TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, string delay_type = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? input_pins = null, bool? no_header = null, bool? no_reused_label = null, string slack_lesser_than = null, string slack_greater_than = null, TCLParameterList group = null, string sort_by = null, bool? no_report_unconstrained = null, bool? user_ignored = null, TCLParameterList of_objects = null, string significant_digits = null, string column_style = null, string file = null, bool? append = null, string name = null, bool? no_pr_attribute = null, bool? routable_nets = null, bool? return_string = null, bool? warn_on_violation = null, TCLParameterList cells = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_timing [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-delay_type <arg>] [-setup] [-hold] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-path_type <arg>] [-input_pins] [-no_header] [-no_reused_label] [-slack_lesser_than <arg>] [-slack_greater_than <arg>] [-group <args>] [-sort_by <arg>] [-no_report_unconstrained] [-user_ignored] [-of_objects <args>] [-significant_digits <arg>] [-column_style <arg>] [-file <arg>] [-append] [-name <arg>] [-no_pr_attribute] [-routable_nets] [-return_string] [-warn_on_violation] [-cells <args>] [-rpx <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_timing")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
-					.OptionalNamedString("through", through)
-					.OptionalNamedString("rise_through", rise_through)
-					.OptionalNamedString("fall_through", fall_through)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("rise_from", rise_from)
+					.OptionalNamedStringList("fall_from", fall_from)
+					.OptionalNamedStringList("to", to)
+					.OptionalNamedStringList("rise_to", rise_to)
+					.OptionalNamedStringList("fall_to", fall_to)
+					.OptionalNamedStringList("through", through)
+					.OptionalNamedStringList("rise_through", rise_through)
+					.OptionalNamedStringList("fall_through", fall_through)
 					.OptionalNamedString("delay_type", delay_type)
 					.Flag("setup", setup)
 					.Flag("hold", hold)
@@ -27238,11 +27239,11 @@ namespace Quokka.TCL.Vivado
 					.Flag("no_reused_label", no_reused_label)
 					.OptionalNamedString("slack_lesser_than", slack_lesser_than)
 					.OptionalNamedString("slack_greater_than", slack_greater_than)
-					.OptionalNamedString("group", group)
+					.OptionalNamedStringList("group", group)
 					.OptionalNamedString("sort_by", sort_by)
 					.Flag("no_report_unconstrained", no_report_unconstrained)
 					.Flag("user_ignored", user_ignored)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("significant_digits", significant_digits)
 					.OptionalNamedString("column_style", column_style)
 					.OptionalNamedString("file", file)
@@ -27252,7 +27253,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("routable_nets", routable_nets)
 					.Flag("return_string", return_string)
 					.Flag("warn_on_violation", warn_on_violation)
-					.OptionalNamedString("cells", cells)
+					.OptionalNamedStringList("cells", cells)
 					.OptionalNamedString("rpx", rpx)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -27358,7 +27359,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand report_timing_summary(bool? check_timing_verbose = null, string delay_type = null, bool? no_detailed_paths = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? no_reused_label = null, bool? input_pins = null, bool? no_pr_attribute = null, bool? routable_nets = null, string slack_lesser_than = null, bool? report_unconstrained = null, string significant_digits = null, bool? no_header = null, string file = null, bool? append = null, string name = null, bool? return_string = null, bool? warn_on_violation = null, bool? datasheet = null, string cells = null, string rpx = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_timing_summary(bool? check_timing_verbose = null, string delay_type = null, bool? no_detailed_paths = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string path_type = null, bool? no_reused_label = null, bool? input_pins = null, bool? no_pr_attribute = null, bool? routable_nets = null, string slack_lesser_than = null, bool? report_unconstrained = null, string significant_digits = null, bool? no_header = null, string file = null, bool? append = null, string name = null, bool? return_string = null, bool? warn_on_violation = null, bool? datasheet = null, TCLParameterList cells = null, string rpx = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_timing_summary [-check_timing_verbose] [-delay_type <arg>] [-no_detailed_paths] [-setup] [-hold] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-path_type <arg>] [-no_reused_label] [-input_pins] [-no_pr_attribute] [-routable_nets] [-slack_lesser_than <arg>] [-report_unconstrained] [-significant_digits <arg>] [-no_header] [-file <arg>] [-append] [-name <arg>] [-return_string] [-warn_on_violation] [-datasheet] [-cells <args>] [-rpx <arg>] [-quiet] [-verbose]
 			return
@@ -27386,7 +27387,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("return_string", return_string)
 					.Flag("warn_on_violation", warn_on_violation)
 					.Flag("datasheet", datasheet)
-					.OptionalNamedString("cells", cells)
+					.OptionalNamedStringList("cells", cells)
 					.OptionalNamedString("rpx", rpx)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -27505,18 +27506,18 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Report</returns>
-		public virtual SimpleTCLCommand report_utilization(string file = null, bool? append = null, string pblocks = null, bool? evaluate_pblock = null, bool? exclude_child_pblocks = null, bool? exclude_non_assigned = null, string cells = null, bool? return_string = null, bool? slr = null, bool? packthru = null, string name = null, bool? no_primitives = null, bool? omit_locs = null, bool? hierarchical = null, string spreadsheet_file = null, string spreadsheet_table = null, string spreadsheet_depth = null, string hierarchical_depth = null, bool? hierarchical_percentages = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_utilization(string file = null, bool? append = null, TCLParameterList pblocks = null, bool? evaluate_pblock = null, bool? exclude_child_pblocks = null, bool? exclude_non_assigned = null, TCLParameterList cells = null, bool? return_string = null, bool? slr = null, bool? packthru = null, string name = null, bool? no_primitives = null, bool? omit_locs = null, bool? hierarchical = null, string spreadsheet_file = null, string spreadsheet_table = null, string spreadsheet_depth = null, string hierarchical_depth = null, bool? hierarchical_percentages = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_utilization [-file <arg>] [-append] [-pblocks <args>] [-evaluate_pblock] [-exclude_child_pblocks] [-exclude_non_assigned] [-cells <args>] [-return_string] [-slr] [-packthru] [-name <arg>] [-no_primitives] [-omit_locs] [-hierarchical] [-spreadsheet_file <arg>] [-spreadsheet_table <arg>] [-spreadsheet_depth <arg>] [-hierarchical_depth <arg>] [-hierarchical_percentages] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_utilization")
 					.OptionalNamedString("file", file)
 					.Flag("append", append)
-					.OptionalNamedString("pblocks", pblocks)
+					.OptionalNamedStringList("pblocks", pblocks)
 					.Flag("evaluate_pblock", evaluate_pblock)
 					.Flag("exclude_child_pblocks", exclude_child_pblocks)
 					.Flag("exclude_non_assigned", exclude_non_assigned)
-					.OptionalNamedString("cells", cells)
+					.OptionalNamedStringList("cells", cells)
 					.Flag("return_string", return_string)
 					.Flag("slr", slr)
 					.Flag("packthru", packthru)
@@ -27591,7 +27592,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Print name and value of HDL objects on the console in textual format</returns>
-		public virtual SimpleTCLCommand report_values(string hdl_objects, string radix = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand report_values(TCLParameterList hdl_objects, string radix = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_values [-radix <arg>] [-quiet] [-verbose] [<hdl_objects>...]
 			return
@@ -27599,7 +27600,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("radix", radix)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(hdl_objects)
+					.RequiredStringList(hdl_objects)
 			;
 		}
 		/// <summary>
@@ -27711,14 +27712,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="checks">(Required) The list of checks to reset.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand reset_drc_check(string checks, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand reset_drc_check(TCLParameterList checks, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_drc_check [-quiet] [-verbose] [<checks>...]
 			return
 				new SimpleTCLCommand("reset_drc_check")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(checks)
+					.RequiredStringList(checks)
 			;
 		}
 		/// <summary>
@@ -27743,14 +27744,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_axis">(Required) List of hardware AXI objects.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand reset_hw_axi(string hw_axis, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand reset_hw_axi(TCLParameterList hw_axis, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_hw_axi [-quiet] [-verbose] [<hw_axis>...]
 			return
 				new SimpleTCLCommand("reset_hw_axi")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(hw_axis)
+					.RequiredStringList(hw_axis)
 			;
 		}
 		/// <summary>
@@ -27787,7 +27788,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_ilas">(Optional) List of hardware ILA objects. Default: Current hardware ILA</param>
-		public virtual SimpleTCLCommand reset_hw_ila(string reset_compare_values = null, bool? quiet = null, bool? verbose = null, string hw_ilas = null)
+		public virtual SimpleTCLCommand reset_hw_ila(string reset_compare_values = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_ilas = null)
 		{
 			// TCL Syntax: reset_hw_ila [-reset_compare_values <arg>] [-quiet] [-verbose] [<hw_ilas>...]
 			return
@@ -27795,7 +27796,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("reset_compare_values", reset_compare_values)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(hw_ilas)
+					.OptionalStringList(hw_ilas)
 			;
 		}
 		/// <summary>
@@ -27853,14 +27854,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_vios">(Required) List of hardware VIO objects.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand reset_hw_vio_activity(string hw_vios, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand reset_hw_vio_activity(TCLParameterList hw_vios, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_hw_vio_activity [-quiet] [-verbose] <hw_vios>...
 			return
 				new SimpleTCLCommand("reset_hw_vio_activity")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(hw_vios)
+					.RequiredStringList(hw_vios)
 			;
 		}
 		/// <summary>
@@ -27886,14 +27887,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_vios">(Required) List of hardware VIO objects.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand reset_hw_vio_outputs(string hw_vios, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand reset_hw_vio_outputs(TCLParameterList hw_vios, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_hw_vio_outputs [-quiet] [-verbose] <hw_vios>...
 			return
 				new SimpleTCLCommand("reset_hw_vio_outputs")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(hw_vios)
+					.RequiredStringList(hw_vios)
 			;
 		}
 		/// <summary>
@@ -27953,14 +27954,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="checks">(Required) The list of checks to reset.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand reset_methodology_check(string checks, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand reset_methodology_check(TCLParameterList checks, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_methodology_check [-quiet] [-verbose] [<checks>...]
 			return
 				new SimpleTCLCommand("reset_methodology_check")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(checks)
+					.RequiredStringList(checks)
 			;
 		}
 		/// <summary>
@@ -28047,12 +28048,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="regexp">(Optional) The values used for -string are full regular expressions</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand reset_msg_config(string @string = null, string id = null, string severity = null, bool? limit = null, bool? suppress = null, bool? count = null, bool? default_severity = null, bool? regexp = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand reset_msg_config(TCLParameterList @string = null, string id = null, string severity = null, bool? limit = null, bool? suppress = null, bool? count = null, bool? default_severity = null, bool? regexp = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_msg_config [-string <args>] [-id <arg>] [-severity <arg>] [-limit] [-suppress] [-count] [-default_severity] [-regexp] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("reset_msg_config")
-					.OptionalNamedString("string", @string)
+					.OptionalNamedStringList("string", @string)
 					.OptionalNamedString("id", id)
 					.OptionalNamedString("severity", severity)
 					.Flag("limit", limit)
@@ -28151,12 +28152,12 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand reset_operating_conditions(string voltage = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, string supply_current_budget = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand reset_operating_conditions(TCLParameterList voltage = null, bool? grade = null, bool? process = null, bool? junction_temp = null, bool? ambient_temp = null, bool? thetaja = null, bool? thetasa = null, bool? airflow = null, bool? heatsink = null, bool? thetajb = null, bool? board = null, bool? board_temp = null, bool? board_layers = null, bool? design_power_budget = null, TCLParameterList supply_current_budget = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_operating_conditions [-voltage <args>] [-grade] [-process] [-junction_temp] [-ambient_temp] [-thetaja] [-thetasa] [-airflow] [-heatsink] [-thetajb] [-board] [-board_temp] [-board_layers] [-design_power_budget] [-supply_current_budget <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("reset_operating_conditions")
-					.OptionalNamedString("voltage", voltage)
+					.OptionalNamedStringList("voltage", voltage)
 					.Flag("grade", grade)
 					.Flag("process", process)
 					.Flag("junction_temp", junction_temp)
@@ -28170,7 +28171,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("board_temp", board_temp)
 					.Flag("board_layers", board_layers)
 					.Flag("design_power_budget", design_power_budget)
-					.OptionalNamedString("supply_current_budget", supply_current_budget)
+					.OptionalNamedStringList("supply_current_budget", supply_current_budget)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -28259,7 +28260,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The value that was set if success, "" if failure</returns>
-		public virtual SimpleTCLCommand reset_property(string property_name, string objects, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand reset_property(string property_name, TCLParameterList objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_property [-quiet] [-verbose] <property_name> <objects>...
 			return
@@ -28267,7 +28268,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(property_name)
-					.RequiredString(objects)
+					.RequiredStringList(objects)
 			;
 		}
 		/// <summary>
@@ -28410,19 +28411,19 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) Objects to reset switching activity on</param>
-		public virtual SimpleTCLCommand reset_switching_activity(bool? @default = null, string type = null, bool? hier = null, bool? all = null, bool? no_deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public virtual SimpleTCLCommand reset_switching_activity(bool? @default = null, TCLParameterList type = null, bool? hier = null, bool? all = null, bool? no_deassert_resets = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
 		{
 			// TCL Syntax: reset_switching_activity [-default] [-type <args>] [-hier] [-all] [-no_deassert_resets] [-quiet] [-verbose] [<objects>...]
 			return
 				new SimpleTCLCommand("reset_switching_activity")
 					.Flag("default", @default)
-					.OptionalNamedString("type", type)
+					.OptionalNamedStringList("type", type)
 					.Flag("hier", hier)
 					.Flag("all", all)
 					.Flag("no_deassert_resets", no_deassert_resets)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(objects)
+					.OptionalStringList(objects)
 			;
 		}
 		/// <summary>
@@ -28531,7 +28532,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="to">(Optional) New ending bus index</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand resize_net_bus(string net_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand resize_net_bus(TCLParameterList net_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: resize_net_bus [-from <arg>] [-to <arg>] [-quiet] [-verbose] <net_bus_name>...
 			return
@@ -28540,7 +28541,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("to", to)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(net_bus_name)
+					.RequiredStringList(net_bus_name)
 			;
 		}
 		/// <summary>
@@ -28583,15 +28584,15 @@ namespace Quokka.TCL.Vivado
 		/// <param name="locs">(Optional) LOC treatment Default: keep_all</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand resize_pblock(string pblock, string add = null, string remove = null, string from = null, string to = null, bool? replace = null, string locs = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand resize_pblock(string pblock, TCLParameterList add = null, TCLParameterList remove = null, TCLParameterList from = null, TCLParameterList to = null, bool? replace = null, string locs = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: resize_pblock [-add <args>] [-remove <args>] [-from <args>] [-to <args>] [-replace] [-locs <arg>] [-quiet] [-verbose] <pblock>
 			return
 				new SimpleTCLCommand("resize_pblock")
-					.OptionalNamedString("add", add)
-					.OptionalNamedString("remove", remove)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
+					.OptionalNamedStringList("add", add)
+					.OptionalNamedStringList("remove", remove)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("to", to)
 					.Flag("replace", replace)
 					.OptionalNamedString("locs", locs)
 					.Flag("quiet", quiet)
@@ -28639,7 +28640,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="to">(Optional) New ending bus index</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand resize_pin_bus(string pin_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand resize_pin_bus(TCLParameterList pin_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: resize_pin_bus [-from <arg>] [-to <arg>] [-quiet] [-verbose] <pin_bus_name>...
 			return
@@ -28648,7 +28649,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("to", to)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(pin_bus_name)
+					.RequiredStringList(pin_bus_name)
 			;
 		}
 		/// <summary>
@@ -28689,7 +28690,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="to">(Optional) New ending bus index</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand resize_port_bus(string port_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand resize_port_bus(TCLParameterList port_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: resize_port_bus [-from <arg>] [-to <arg>] [-quiet] [-verbose] <port_bus_name>...
 			return
@@ -28698,7 +28699,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("to", to)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(port_bus_name)
+					.RequiredStringList(port_bus_name)
 			;
 		}
 		/// <summary>
@@ -28850,14 +28851,14 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand route_design(string max_delay, string min_delay, bool? unroute = null, bool? release_memory = null, string nets = null, bool? physical_nets = null, string pins = null, string directive = null, bool? tns_cleanup = null, bool? no_timing_driven = null, bool? preserve = null, bool? delay = null, bool? auto_delay = null, bool? timing_summary = null, bool? finalize = null, bool? ultrathreads = null, bool? eco = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand route_design(string max_delay, string min_delay, bool? unroute = null, bool? release_memory = null, TCLParameterList nets = null, bool? physical_nets = null, string pins = null, string directive = null, bool? tns_cleanup = null, bool? no_timing_driven = null, bool? preserve = null, bool? delay = null, bool? auto_delay = null, bool? timing_summary = null, bool? finalize = null, bool? ultrathreads = null, bool? eco = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: route_design [-unroute] [-release_memory] [-nets <args>] [-physical_nets] [-pins <arg>] [-directive <arg>] [-tns_cleanup] [-no_timing_driven] [-preserve] [-delay] [-auto_delay] -max_delay <arg> -min_delay <arg> [-timing_summary] [-finalize] [-ultrathreads] [-eco] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("route_design")
 					.Flag("unroute", unroute)
 					.Flag("release_memory", release_memory)
-					.OptionalNamedString("nets", nets)
+					.OptionalNamedStringList("nets", nets)
 					.Flag("physical_nets", physical_nets)
 					.OptionalNamedString("pins", pins)
 					.OptionalNamedString("directive", directive)
@@ -28940,7 +28941,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="queue">(Optional) Queue Transaction. Default: 0</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand run_hw_axi(string hw_axi_txns, bool? queue = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand run_hw_axi(TCLParameterList hw_axi_txns, bool? queue = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: run_hw_axi [-queue] [-quiet] [-verbose] <hw_axi_txns>...
 			return
@@ -28948,7 +28949,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("queue", queue)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(hw_axi_txns)
+					.RequiredStringList(hw_axi_txns)
 			;
 		}
 		/// <summary>
@@ -29143,7 +29144,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_ilas">(Optional) hardware ILAs Default: Current hardware ILA</param>
-		public virtual SimpleTCLCommand run_hw_ila(bool? trigger_now = null, bool? compile_only = null, string file = null, bool? force = null, bool? quiet = null, bool? verbose = null, string hw_ilas = null)
+		public virtual SimpleTCLCommand run_hw_ila(bool? trigger_now = null, bool? compile_only = null, string file = null, bool? force = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_ilas = null)
 		{
 			// TCL Syntax: run_hw_ila [-trigger_now] [-compile_only] [-file <arg>] [-force] [-quiet] [-verbose] [<hw_ilas>...]
 			return
@@ -29154,7 +29155,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("force", force)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(hw_ilas)
+					.OptionalStringList(hw_ilas)
 			;
 		}
 		/// <summary>
@@ -29285,12 +29286,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>hardware JTAG</returns>
-		public virtual SimpleTCLCommand run_state_hw_jtag(string stable_state, string state = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand run_state_hw_jtag(string stable_state, TCLParameterList state = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: run_state_hw_jtag [-state <args>] [-quiet] [-verbose] <stable_state>
 			return
 				new SimpleTCLCommand("run_state_hw_jtag")
-					.OptionalNamedString("state", state)
+					.OptionalNamedStringList("state", state)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(stable_state)
@@ -29595,12 +29596,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="filename">(Optional) Filename to save the specified or current wave configuration object</param>
 		/// <returns>The wave configuration object saved</returns>
-		public virtual SimpleTCLCommand save_wave_config(string @object = null, bool? quiet = null, bool? verbose = null, string filename = null)
+		public virtual SimpleTCLCommand save_wave_config(TCLParameterList @object = null, bool? quiet = null, bool? verbose = null, string filename = null)
 		{
 			// TCL Syntax: save_wave_config [-object <args>] [-quiet] [-verbose] [<filename>]
 			return
 				new SimpleTCLCommand("save_wave_config")
-					.OptionalNamedString("object", @object)
+					.OptionalNamedStringList("object", @object)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(filename)
@@ -29794,14 +29795,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="items">(Required) select waveform objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand select_wave_objects(string items, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand select_wave_objects(TCLParameterList items, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: select_wave_objects [-quiet] [-verbose] <items>...
 			return
 				new SimpleTCLCommand("select_wave_objects")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(items)
+					.RequiredStringList(items)
 			;
 		}
 		/// <summary>
@@ -29860,20 +29861,20 @@ namespace Quokka.TCL.Vivado
 		/// <param name="fall_through">(Optional) Apply to paths falling through pins, cells or nets</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_bus_skew(string value, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_bus_skew(string value, TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_bus_skew [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose] <value>
 			return
 				new SimpleTCLCommand("set_bus_skew")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
-					.OptionalNamedString("through", through)
-					.OptionalNamedString("rise_through", rise_through)
-					.OptionalNamedString("fall_through", fall_through)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("rise_from", rise_from)
+					.OptionalNamedStringList("fall_from", fall_from)
+					.OptionalNamedStringList("to", to)
+					.OptionalNamedStringList("rise_to", rise_to)
+					.OptionalNamedStringList("fall_to", fall_to)
+					.OptionalNamedStringList("through", through)
+					.OptionalNamedStringList("rise_through", rise_through)
+					.OptionalNamedStringList("fall_through", fall_through)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(value)
@@ -29970,7 +29971,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="group">(Optional) Clocks List</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_clock_groups(string name = null, bool? logically_exclusive = null, bool? physically_exclusive = null, bool? asynchronous = null, string group = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_clock_groups(string name = null, bool? logically_exclusive = null, bool? physically_exclusive = null, bool? asynchronous = null, TCLParameterList group = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_clock_groups [-name <arg>] [-logically_exclusive] [-physically_exclusive] [-asynchronous] [-group <args>] [-quiet] [-verbose]
 			return
@@ -29979,7 +29980,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("logically_exclusive", logically_exclusive)
 					.Flag("physically_exclusive", physically_exclusive)
 					.Flag("asynchronous", asynchronous)
-					.OptionalNamedString("group", group)
+					.OptionalNamedStringList("group", group)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -30018,12 +30019,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="early">(Optional) Specify clock rise and fall early source latency</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_clock_latency(string latency, string objects, string clock = null, bool? rise = null, bool? fall = null, bool? min = null, bool? max = null, bool? source = null, bool? late = null, bool? early = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_clock_latency(string latency, string objects, TCLParameterList clock = null, bool? rise = null, bool? fall = null, bool? min = null, bool? max = null, bool? source = null, bool? late = null, bool? early = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_clock_latency [-clock <args>] [-rise] [-fall] [-min] [-max] [-source] [-late] [-early] [-quiet] [-verbose] <latency> <objects>
 			return
 				new SimpleTCLCommand("set_clock_latency")
-					.OptionalNamedString("clock", clock)
+					.OptionalNamedStringList("clock", clock)
 					.Flag("rise", rise)
 					.Flag("fall", fall)
 					.Flag("min", min)
@@ -30063,7 +30064,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="clocks">(Optional) List of clocks</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_clock_sense(string pins, bool? positive = null, bool? negative = null, bool? stop_propagation = null, string clocks = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_clock_sense(string pins, bool? positive = null, bool? negative = null, bool? stop_propagation = null, TCLParameterList clocks = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_clock_sense [-positive] [-negative] [-stop_propagation] [-clocks <args>] [-quiet] [-verbose] <pins>
 			return
@@ -30071,7 +30072,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("positive", positive)
 					.Flag("negative", negative)
 					.Flag("stop_propagation", stop_propagation)
-					.OptionalNamedString("clocks", clocks)
+					.OptionalNamedStringList("clocks", clocks)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(pins)
@@ -30140,19 +30141,19 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) List of clocks, ports or pins</param>
-		public virtual SimpleTCLCommand set_clock_uncertainty(string uncertainty, bool? setup = null, bool? hold = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public virtual SimpleTCLCommand set_clock_uncertainty(string uncertainty, bool? setup = null, bool? hold = null, TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: set_clock_uncertainty [-setup] [-hold] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-quiet] [-verbose] <uncertainty> [<objects>]
 			return
 				new SimpleTCLCommand("set_clock_uncertainty")
 					.Flag("setup", setup)
 					.Flag("hold", hold)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("rise_from", rise_from)
+					.OptionalNamedStringList("fall_from", fall_from)
+					.OptionalNamedStringList("to", to)
+					.OptionalNamedStringList("rise_to", rise_to)
+					.OptionalNamedStringList("fall_to", fall_to)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(uncertainty)
@@ -30200,20 +30201,20 @@ namespace Quokka.TCL.Vivado
 		/// <param name="clock">(Optional) Specify the clock domain at related pin/port of the checks</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_data_check(string value, string from = null, string to = null, string rise_from = null, string fall_from = null, string rise_to = null, string fall_to = null, bool? setup = null, bool? hold = null, string clock = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_data_check(string value, TCLParameterList from = null, TCLParameterList to = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, bool? setup = null, bool? hold = null, TCLParameterList clock = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_data_check [-from <args>] [-to <args>] [-rise_from <args>] [-fall_from <args>] [-rise_to <args>] [-fall_to <args>] [-setup] [-hold] [-clock <args>] [-quiet] [-verbose] <value>
 			return
 				new SimpleTCLCommand("set_data_check")
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("to", to)
+					.OptionalNamedStringList("rise_from", rise_from)
+					.OptionalNamedStringList("fall_from", fall_from)
+					.OptionalNamedStringList("rise_to", rise_to)
+					.OptionalNamedStringList("fall_to", fall_to)
 					.Flag("setup", setup)
 					.Flag("hold", hold)
-					.OptionalNamedString("clock", clock)
+					.OptionalNamedStringList("clock", clock)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(value)
@@ -30342,13 +30343,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="add">(Optional) Add to existing external delay</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_external_delay(string from, string to, string delay_value, bool? min = null, bool? max = null, bool? add = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_external_delay(TCLParameterList from, TCLParameterList to, string delay_value, bool? min = null, bool? max = null, bool? add = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_external_delay -from <args> -to <args> [-min] [-max] [-add] [-quiet] [-verbose] <delay_value>
 			return
 				new SimpleTCLCommand("set_external_delay")
-					.RequiredNamedString("from", from)
-					.RequiredNamedString("to", to)
+					.RequiredNamedStringList("from", from)
+					.RequiredNamedStringList("to", to)
 					.Flag("min", min)
 					.Flag("max", max)
 					.Flag("add", add)
@@ -30394,7 +30395,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="fall_through">(Optional) Apply to paths falling through pins, cells or nets</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_false_path(bool? setup = null, bool? hold = null, bool? rise = null, bool? fall = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_false_path(bool? setup = null, bool? hold = null, bool? rise = null, bool? fall = null, bool? reset_path = null, TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_false_path [-setup] [-hold] [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose]
 			return
@@ -30404,15 +30405,15 @@ namespace Quokka.TCL.Vivado
 					.Flag("rise", rise)
 					.Flag("fall", fall)
 					.Flag("reset_path", reset_path)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
-					.OptionalNamedString("through", through)
-					.OptionalNamedString("rise_through", rise_through)
-					.OptionalNamedString("fall_through", fall_through)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("rise_from", rise_from)
+					.OptionalNamedStringList("fall_from", fall_from)
+					.OptionalNamedStringList("to", to)
+					.OptionalNamedStringList("rise_to", rise_to)
+					.OptionalNamedStringList("fall_to", fall_to)
+					.OptionalNamedStringList("through", through)
+					.OptionalNamedStringList("rise_through", rise_through)
+					.OptionalNamedStringList("fall_through", fall_through)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -30565,13 +30566,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="source_latency_included">(Optional) Specifies source latency of clock already included</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_input_delay(string delay, string objects, string clock = null, string reference_pin = null, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_input_delay(string delay, string objects, TCLParameterList clock = null, TCLParameterList reference_pin = null, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_input_delay [-clock <args>] [-reference_pin <args>] [-clock_fall] [-rise] [-fall] [-max] [-min] [-add_delay] [-network_latency_included] [-source_latency_included] [-quiet] [-verbose] <delay> <objects>
 			return
 				new SimpleTCLCommand("set_input_delay")
-					.OptionalNamedString("clock", clock)
-					.OptionalNamedString("reference_pin", reference_pin)
+					.OptionalNamedStringList("clock", clock)
+					.OptionalNamedStringList("reference_pin", reference_pin)
 					.Flag("clock_fall", clock_fall)
 					.Flag("rise", rise)
 					.Flag("fall", fall)
@@ -30861,7 +30862,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="datapath_only">(Optional) Remove clock skew and jitter from calculation</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_max_delay(string delay, bool? rise = null, bool? fall = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? datapath_only = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_max_delay(string delay, bool? rise = null, bool? fall = null, bool? reset_path = null, TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, bool? datapath_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_max_delay [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-datapath_only] [-quiet] [-verbose] <delay>
 			return
@@ -30869,15 +30870,15 @@ namespace Quokka.TCL.Vivado
 					.Flag("rise", rise)
 					.Flag("fall", fall)
 					.Flag("reset_path", reset_path)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
-					.OptionalNamedString("through", through)
-					.OptionalNamedString("rise_through", rise_through)
-					.OptionalNamedString("fall_through", fall_through)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("rise_from", rise_from)
+					.OptionalNamedStringList("fall_from", fall_from)
+					.OptionalNamedStringList("to", to)
+					.OptionalNamedStringList("rise_to", rise_to)
+					.OptionalNamedStringList("fall_to", fall_to)
+					.OptionalNamedStringList("through", through)
+					.OptionalNamedStringList("rise_through", rise_through)
+					.OptionalNamedStringList("fall_through", fall_through)
 					.Flag("datapath_only", datapath_only)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -30960,7 +30961,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="fall_through">(Optional) Apply to paths falling through pins, cells or nets</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_min_delay(string delay, bool? rise = null, bool? fall = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_min_delay(string delay, bool? rise = null, bool? fall = null, bool? reset_path = null, TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_min_delay [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose] <delay>
 			return
@@ -30968,15 +30969,15 @@ namespace Quokka.TCL.Vivado
 					.Flag("rise", rise)
 					.Flag("fall", fall)
 					.Flag("reset_path", reset_path)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
-					.OptionalNamedString("through", through)
-					.OptionalNamedString("rise_through", rise_through)
-					.OptionalNamedString("fall_through", fall_through)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("rise_from", rise_from)
+					.OptionalNamedStringList("fall_from", fall_from)
+					.OptionalNamedStringList("to", to)
+					.OptionalNamedStringList("rise_to", rise_to)
+					.OptionalNamedStringList("fall_to", fall_to)
+					.OptionalNamedStringList("through", through)
+					.OptionalNamedStringList("rise_through", rise_through)
+					.OptionalNamedStringList("fall_through", fall_through)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(delay)
@@ -31108,13 +31109,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="regexp">(Optional) The values used for -string are full regular expressions</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_msg_config(string id = null, string @string = null, string severity = null, string limit = null, string new_severity = null, bool? suppress = null, bool? regexp = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_msg_config(string id = null, TCLParameterList @string = null, string severity = null, string limit = null, string new_severity = null, bool? suppress = null, bool? regexp = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_msg_config [-id <arg>] [-string <args>] [-severity <arg>] [-limit <arg>] [-new_severity <arg>] [-suppress] [-regexp] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("set_msg_config")
 					.OptionalNamedString("id", id)
-					.OptionalNamedString("string", @string)
+					.OptionalNamedStringList("string", @string)
 					.OptionalNamedString("severity", severity)
 					.OptionalNamedString("limit", limit)
 					.OptionalNamedString("new_severity", new_severity)
@@ -31198,7 +31199,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="fall_through">(Optional) Apply to paths falling through pins, cells or nets</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_multicycle_path(string path_multiplier, bool? setup = null, bool? hold = null, bool? rise = null, bool? fall = null, bool? start = null, bool? end = null, bool? reset_path = null, string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_multicycle_path(string path_multiplier, bool? setup = null, bool? hold = null, bool? rise = null, bool? fall = null, bool? start = null, bool? end = null, bool? reset_path = null, TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_multicycle_path [-setup] [-hold] [-rise] [-fall] [-start] [-end] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose] <path_multiplier>
 			return
@@ -31210,15 +31211,15 @@ namespace Quokka.TCL.Vivado
 					.Flag("start", start)
 					.Flag("end", end)
 					.Flag("reset_path", reset_path)
-					.OptionalNamedString("from", from)
-					.OptionalNamedString("rise_from", rise_from)
-					.OptionalNamedString("fall_from", fall_from)
-					.OptionalNamedString("to", to)
-					.OptionalNamedString("rise_to", rise_to)
-					.OptionalNamedString("fall_to", fall_to)
-					.OptionalNamedString("through", through)
-					.OptionalNamedString("rise_through", rise_through)
-					.OptionalNamedString("fall_through", fall_through)
+					.OptionalNamedStringList("from", from)
+					.OptionalNamedStringList("rise_from", rise_from)
+					.OptionalNamedStringList("fall_from", fall_from)
+					.OptionalNamedStringList("to", to)
+					.OptionalNamedStringList("rise_to", rise_to)
+					.OptionalNamedStringList("fall_to", fall_to)
+					.OptionalNamedStringList("through", through)
+					.OptionalNamedStringList("rise_through", rise_through)
+					.OptionalNamedStringList("fall_through", fall_through)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(path_multiplier)
@@ -31286,12 +31287,12 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_operating_conditions(string voltage = null, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, string supply_current_budget = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_operating_conditions(TCLParameterList voltage = null, string grade = null, string process = null, string junction_temp = null, string ambient_temp = null, string thetaja = null, string thetasa = null, string airflow = null, string heatsink = null, string thetajb = null, string board = null, string board_temp = null, string board_layers = null, string design_power_budget = null, TCLParameterList supply_current_budget = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_operating_conditions [-voltage <args>] [-grade <arg>] [-process <arg>] [-junction_temp <arg>] [-ambient_temp <arg>] [-thetaja <arg>] [-thetasa <arg>] [-airflow <arg>] [-heatsink <arg>] [-thetajb <arg>] [-board <arg>] [-board_temp <arg>] [-board_layers <arg>] [-design_power_budget <arg>] [-supply_current_budget <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("set_operating_conditions")
-					.OptionalNamedString("voltage", voltage)
+					.OptionalNamedStringList("voltage", voltage)
 					.OptionalNamedString("grade", grade)
 					.OptionalNamedString("process", process)
 					.OptionalNamedString("junction_temp", junction_temp)
@@ -31305,7 +31306,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("board_temp", board_temp)
 					.OptionalNamedString("board_layers", board_layers)
 					.OptionalNamedString("design_power_budget", design_power_budget)
-					.OptionalNamedString("supply_current_budget", supply_current_budget)
+					.OptionalNamedStringList("supply_current_budget", supply_current_budget)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -31365,13 +31366,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="source_latency_included">(Optional) Specifies source latency of clock already included</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_output_delay(string delay, string objects, string clock = null, string reference_pin = null, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_output_delay(string delay, string objects, TCLParameterList clock = null, TCLParameterList reference_pin = null, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_output_delay [-clock <args>] [-reference_pin <args>] [-clock_fall] [-rise] [-fall] [-max] [-min] [-add_delay] [-network_latency_included] [-source_latency_included] [-quiet] [-verbose] <delay> <objects>
 			return
 				new SimpleTCLCommand("set_output_delay")
-					.OptionalNamedString("clock", clock)
-					.OptionalNamedString("reference_pin", reference_pin)
+					.OptionalNamedStringList("clock", clock)
+					.OptionalNamedStringList("reference_pin", reference_pin)
 					.Flag("clock_fall", clock_fall)
 					.Flag("rise", rise)
 					.Flag("fall", fall)
@@ -31414,7 +31415,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="package_pins">(Required) Package pin names</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_package_pin_val(string column, string value, string package_pins, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_package_pin_val(string column, string value, TCLParameterList package_pins, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_package_pin_val [-quiet] [-verbose] <column> <value> <package_pins>...
 			return
@@ -31423,7 +31424,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("verbose", verbose)
 					.RequiredString(column)
 					.RequiredString(value)
-					.RequiredString(package_pins)
+					.RequiredStringList(package_pins)
 			;
 		}
 		/// <summary>
@@ -31573,15 +31574,15 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_power_opt(string include_cells = null, string exclude_cells = null, string clocks = null, string cell_types = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_power_opt(TCLParameterList include_cells = null, TCLParameterList exclude_cells = null, TCLParameterList clocks = null, TCLParameterList cell_types = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_power_opt [-include_cells <args>] [-exclude_cells <args>] [-clocks <args>] [-cell_types <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("set_power_opt")
-					.OptionalNamedString("include_cells", include_cells)
-					.OptionalNamedString("exclude_cells", exclude_cells)
-					.OptionalNamedString("clocks", clocks)
-					.OptionalNamedString("cell_types", cell_types)
+					.OptionalNamedStringList("include_cells", include_cells)
+					.OptionalNamedStringList("exclude_cells", exclude_cells)
+					.OptionalNamedStringList("clocks", clocks)
+					.OptionalNamedStringList("cell_types", cell_types)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -31693,17 +31694,17 @@ namespace Quokka.TCL.Vivado
 		/// <param name="dict">(Optional) list of name/value pairs of properties to set</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand set_property(string name, string value, string objects, string dict = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand set_property(string name, string value, TCLParameterList objects, TCLParameterList dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_property [-dict <args>] [-quiet] [-verbose] <name> <value> <objects>...
 			return
 				new SimpleTCLCommand("set_property")
-					.OptionalNamedString("dict", dict)
+					.OptionalNamedStringList("dict", dict)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(name)
 					.RequiredString(value)
-					.RequiredString(objects)
+					.RequiredStringList(objects)
 			;
 		}
 		/// <summary>
@@ -31861,14 +31862,14 @@ namespace Quokka.TCL.Vivado
 		/// Objects to set switching activity on
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
-		public virtual SimpleTCLCommand set_switching_activity(string toggle_rate = null, string default_toggle_rate = null, string type = null, bool? all = null, string static_probability = null, string default_static_probability = null, string signal_rate = null, bool? hier = null, bool? deassert_resets = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public virtual SimpleTCLCommand set_switching_activity(string toggle_rate = null, string default_toggle_rate = null, TCLParameterList type = null, bool? all = null, string static_probability = null, string default_static_probability = null, string signal_rate = null, bool? hier = null, bool? deassert_resets = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
 		{
 			// TCL Syntax: set_switching_activity [-toggle_rate <arg>] [-default_toggle_rate <arg>] [-type <args>] [-all] [-static_probability <arg>] [-default_static_probability <arg>] [-signal_rate <arg>] [-hier] [-deassert_resets] [-quiet] [-verbose] [<objects>...]
 			return
 				new SimpleTCLCommand("set_switching_activity")
 					.OptionalNamedString("toggle_rate", toggle_rate)
 					.OptionalNamedString("default_toggle_rate", default_toggle_rate)
-					.OptionalNamedString("type", type)
+					.OptionalNamedStringList("type", type)
 					.Flag("all", all)
 					.OptionalNamedString("static_probability", static_probability)
 					.OptionalNamedString("default_static_probability", default_static_probability)
@@ -31877,7 +31878,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("deassert_resets", deassert_resets)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(objects)
+					.OptionalStringList(objects)
 			;
 		}
 		/// <summary>
@@ -32198,12 +32199,12 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand setup_pr_configurations(string partitions = null, bool? use_netlist = null, bool? force = null, string run = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand setup_pr_configurations(TCLParameterList partitions = null, bool? use_netlist = null, bool? force = null, string run = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: setup_pr_configurations [-partitions <args>] [-use_netlist] [-force] [-run <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("setup_pr_configurations")
-					.OptionalNamedString("partitions", partitions)
+					.OptionalNamedStringList("partitions", partitions)
 					.Flag("use_netlist", use_netlist)
 					.Flag("force", force)
 					.OptionalNamedString("run", run)
@@ -32323,14 +32324,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="ports">(Required) Ports to split</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand split_diff_pair_ports(string ports, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand split_diff_pair_ports(TCLParameterList ports, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: split_diff_pair_ports [-quiet] [-verbose] <ports>...
 			return
 				new SimpleTCLCommand("split_diff_pair_ports")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(ports)
+					.RequiredStringList(ports)
 			;
 		}
 		/// <summary>
@@ -32861,7 +32862,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>design object</returns>
-		public virtual SimpleTCLCommand synth_design(string name = null, string part = null, string constrset = null, string top = null, string include_dirs = null, string generic = null, string verilog_define = null, string flatten_hierarchy = null, string gated_clock_conversion = null, string directive = null, bool? rtl = null, string bufg = null, bool? no_lc = null, string shreg_min_size = null, string mode = null, string fsm_extraction = null, bool? rtl_skip_mlo = null, bool? rtl_skip_ip = null, bool? rtl_skip_constraints = null, string srl_style = null, bool? keep_equivalent_registers = null, string resource_sharing = null, string cascade_dsp = null, string control_set_opt_threshold = null, string incremental = null, string max_bram = null, string max_uram = null, string max_dsp = null, string max_bram_cascade_height = null, string max_uram_cascade_height = null, bool? retiming = null, bool? no_srlextract = null, bool? assert = null, bool? no_timing_driven = null, bool? sfcu = null, bool? debug_log = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand synth_design(string name = null, string part = null, string constrset = null, string top = null, TCLParameterList include_dirs = null, TCLParameterList generic = null, TCLParameterList verilog_define = null, string flatten_hierarchy = null, string gated_clock_conversion = null, string directive = null, bool? rtl = null, string bufg = null, bool? no_lc = null, string shreg_min_size = null, string mode = null, string fsm_extraction = null, bool? rtl_skip_mlo = null, bool? rtl_skip_ip = null, bool? rtl_skip_constraints = null, string srl_style = null, bool? keep_equivalent_registers = null, string resource_sharing = null, string cascade_dsp = null, string control_set_opt_threshold = null, string incremental = null, string max_bram = null, string max_uram = null, string max_dsp = null, string max_bram_cascade_height = null, string max_uram_cascade_height = null, bool? retiming = null, bool? no_srlextract = null, bool? assert = null, bool? no_timing_driven = null, bool? sfcu = null, bool? debug_log = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: synth_design [-name <arg>] [-part <arg>] [-constrset <arg>] [-top <arg>] [-include_dirs <args>] [-generic <args>] [-verilog_define <args>] [-flatten_hierarchy <arg>] [-gated_clock_conversion <arg>] [-directive <arg>] [-rtl] [-bufg <arg>] [-no_lc] [-shreg_min_size <arg>] [-mode <arg>] [-fsm_extraction <arg>] [-rtl_skip_mlo] [-rtl_skip_ip] [-rtl_skip_constraints] [-srl_style <arg>] [-keep_equivalent_registers] [-resource_sharing <arg>] [-cascade_dsp <arg>] [-control_set_opt_threshold <arg>] [-incremental <arg>] [-max_bram <arg>] [-max_uram <arg>] [-max_dsp <arg>] [-max_bram_cascade_height <arg>] [-max_uram_cascade_height <arg>] [-retiming] [-no_srlextract] [-assert] [-no_timing_driven] [-sfcu] [-debug_log] [-quiet] [-verbose]
 			return
@@ -32870,9 +32871,9 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("part", part)
 					.OptionalNamedString("constrset", constrset)
 					.OptionalNamedString("top", top)
-					.OptionalNamedString("include_dirs", include_dirs)
-					.OptionalNamedString("generic", generic)
-					.OptionalNamedString("verilog_define", verilog_define)
+					.OptionalNamedStringList("include_dirs", include_dirs)
+					.OptionalNamedStringList("generic", generic)
+					.OptionalNamedStringList("verilog_define", verilog_define)
 					.OptionalNamedString("flatten_hierarchy", flatten_hierarchy)
 					.OptionalNamedString("gated_clock_conversion", gated_clock_conversion)
 					.OptionalNamedString("directive", directive)
@@ -32964,12 +32965,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="of_objects">(Optional) tie unused pins of specified cell(s)</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand tie_unused_pins(string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand tie_unused_pins(TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: tie_unused_pins [-of_objects <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("tie_unused_pins")
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 			;
@@ -33032,7 +33033,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>0 if success.</returns>
-		public virtual SimpleTCLCommand ungroup_bd_cells(string cells, string prefix = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand ungroup_bd_cells(TCLParameterList cells, string prefix = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: ungroup_bd_cells [-prefix <arg>] [-quiet] [-verbose] [<cells>...]
 			return
@@ -33040,7 +33041,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("prefix", prefix)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(cells)
+					.RequiredStringList(cells)
 			;
 		}
 		/// <summary>
@@ -33068,13 +33069,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) Objects to unhighlight</param>
-		public virtual SimpleTCLCommand unhighlight_objects(string color_index = null, string rgb = null, string color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public virtual SimpleTCLCommand unhighlight_objects(string color_index = null, TCLParameterList rgb = null, string color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: unhighlight_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-leaf_cells] [-quiet] [-verbose] [<objects>]
 			return
 				new SimpleTCLCommand("unhighlight_objects")
 					.OptionalNamedString("color_index", color_index)
-					.OptionalNamedString("rgb", rgb)
+					.OptionalNamedStringList("rgb", rgb)
 					.OptionalNamedString("color", color)
 					.Flag("leaf_cells", leaf_cells)
 					.Flag("quiet", quiet)
@@ -33106,12 +33107,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) Objects to unmark</param>
-		public virtual SimpleTCLCommand unmark_objects(string rgb = null, string color = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public virtual SimpleTCLCommand unmark_objects(TCLParameterList rgb = null, string color = null, bool? quiet = null, bool? verbose = null, string objects = null)
 		{
 			// TCL Syntax: unmark_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose] [<objects>]
 			return
 				new SimpleTCLCommand("unmark_objects")
-					.OptionalNamedString("rgb", rgb)
+					.OptionalNamedStringList("rgb", rgb)
 					.OptionalNamedString("color", color)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -33139,14 +33140,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cell_list">(Required) a list of cells to be unplaced</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand unplace_cell(string cell_list, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand unplace_cell(TCLParameterList cell_list, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: unplace_cell [-quiet] [-verbose] <cell_list>...
 			return
 				new SimpleTCLCommand("unplace_cell")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(cell_list)
+					.RequiredStringList(cell_list)
 			;
 		}
 		/// <summary>
@@ -33231,7 +33232,7 @@ namespace Quokka.TCL.Vivado
 		/// must be of one object type.
 		/// </param>
 		/// <returns>TCL_OK on success, TCL_ERROR on failure.</returns>
-		public virtual SimpleTCLCommand update_bd_boundaries(string from_bd = null, bool? check_only = null, bool? quiet = null, bool? verbose = null, string of_objects = null)
+		public virtual SimpleTCLCommand update_bd_boundaries(string from_bd = null, bool? check_only = null, bool? quiet = null, bool? verbose = null, TCLParameterList of_objects = null)
 		{
 			// TCL Syntax: update_bd_boundaries [-from_bd <arg>] [-check_only] [-quiet] [-verbose] [<of_objects>...]
 			return
@@ -33240,7 +33241,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("check_only", check_only)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(of_objects)
+					.OptionalStringList(of_objects)
 			;
 		}
 		/// <summary>
@@ -33372,12 +33373,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="buffer_ports">(Optional) buffer all the ports of black box</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand update_design(string cells, bool? strict = null, string from_file = null, string from_design = null, string from_cell = null, bool? black_box = null, bool? buffer_ports = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand update_design(TCLParameterList cells, bool? strict = null, string from_file = null, string from_design = null, string from_cell = null, bool? black_box = null, bool? buffer_ports = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: update_design -cells <args> [-strict] [-from_file <arg>] [-from_design <arg>] [-from_cell <arg>] [-black_box] [-buffer_ports] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("update_design")
-					.RequiredNamedString("cells", cells)
+					.RequiredNamedStringList("cells", cells)
 					.Flag("strict", strict)
 					.OptionalNamedString("from_file", from_file)
 					.OptionalNamedString("from_design", from_design)
@@ -33424,15 +33425,15 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of the files updated</returns>
-		public virtual SimpleTCLCommand update_files(string from_files = null, bool? norecurse = null, string to_files = null, string filesets = null, bool? force = null, bool? report_only = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand update_files(TCLParameterList from_files = null, bool? norecurse = null, TCLParameterList to_files = null, TCLParameterList filesets = null, bool? force = null, bool? report_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: update_files [-from_files <args>] [-norecurse] [-to_files <args>] [-filesets <args>] [-force] [-report_only] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("update_files")
-					.OptionalNamedString("from_files", from_files)
+					.OptionalNamedStringList("from_files", from_files)
 					.Flag("norecurse", norecurse)
-					.OptionalNamedString("to_files", to_files)
-					.OptionalNamedString("filesets", filesets)
+					.OptionalNamedStringList("to_files", to_files)
+					.OptionalNamedStringList("filesets", filesets)
 					.Flag("force", force)
 					.Flag("report_only", report_only)
 					.Flag("quiet", quiet)
@@ -33596,7 +33597,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>True for success</returns>
-		public virtual SimpleTCLCommand update_ip_catalog(bool? rebuild = null, string add_ip = null, string delete_ip = null, string delete_mult_ip = null, string disable_ip = null, string enable_ip = null, string add_interface = null, bool? create_index = null, string repo_path = null, bool? update_module_ref = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand update_ip_catalog(bool? rebuild = null, string add_ip = null, string delete_ip = null, TCLParameterList delete_mult_ip = null, string disable_ip = null, string enable_ip = null, string add_interface = null, bool? create_index = null, string repo_path = null, bool? update_module_ref = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: update_ip_catalog [-rebuild] [-add_ip <arg>] [-delete_ip <arg>] [-delete_mult_ip <args>] [-disable_ip <arg>] [-enable_ip <arg>] [-add_interface <arg>] [-create_index] [-repo_path <arg>] [-update_module_ref] [-quiet] [-verbose]
 			return
@@ -33604,7 +33605,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("rebuild", rebuild)
 					.OptionalNamedString("add_ip", add_ip)
 					.OptionalNamedString("delete_ip", delete_ip)
-					.OptionalNamedString("delete_mult_ip", delete_mult_ip)
+					.OptionalNamedStringList("delete_mult_ip", delete_mult_ip)
 					.OptionalNamedString("disable_ip", disable_ip)
 					.OptionalNamedString("enable_ip", enable_ip)
 					.OptionalNamedString("add_interface", add_interface)
@@ -33708,14 +33709,14 @@ namespace Quokka.TCL.Vivado
 		/// name(s) within the design
 		/// </param>
 		/// <returns>A return code indicating success or failure.</returns>
-		public virtual SimpleTCLCommand update_module_reference(bool? quiet = null, bool? verbose = null, string ips = null)
+		public virtual SimpleTCLCommand update_module_reference(bool? quiet = null, bool? verbose = null, TCLParameterList ips = null)
 		{
 			// TCL Syntax: update_module_reference [-quiet] [-verbose] [<ips>...]
 			return
 				new SimpleTCLCommand("update_module_reference")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(ips)
+					.OptionalStringList(ips)
 			;
 		}
 		/// <summary>
@@ -33830,7 +33831,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>List of IPIntegrator cell names those were upgraded, "" if failed.</returns>
-		public virtual SimpleTCLCommand upgrade_bd_cells(string objects, string latest = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand upgrade_bd_cells(TCLParameterList objects, string latest = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: upgrade_bd_cells [-latest <arg>] [-quiet] [-verbose] <objects>...
 			return
@@ -33838,7 +33839,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("latest", latest)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(objects)
+					.RequiredStringList(objects)
 			;
 		}
 		/// <summary>
@@ -33893,7 +33894,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>A return code indicating success or failure.</returns>
-		public virtual SimpleTCLCommand upgrade_ip(string objects, string srcset = null, string vlnv = null, string log = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand upgrade_ip(TCLParameterList objects, string srcset = null, string vlnv = null, string log = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: upgrade_ip [-srcset <arg>] [-vlnv <arg>] [-log <arg>] [-quiet] [-verbose] <objects>...
 			return
@@ -33903,7 +33904,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("log", log)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(objects)
+					.RequiredStringList(objects)
 			;
 		}
 		/// <summary>
@@ -33943,14 +33944,14 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_ilas">(Optional) List of hardware ILA objects. Default: Current hardware ILA</param>
 		/// <returns>hardware ILA data objects</returns>
-		public virtual SimpleTCLCommand upload_hw_ila_data(bool? quiet = null, bool? verbose = null, string hw_ilas = null)
+		public virtual SimpleTCLCommand upload_hw_ila_data(bool? quiet = null, bool? verbose = null, TCLParameterList hw_ilas = null)
 		{
 			// TCL Syntax: upload_hw_ila_data [-quiet] [-verbose] [<hw_ilas>...]
 			return
 				new SimpleTCLCommand("upload_hw_ila_data")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(hw_ilas)
+					.OptionalStringList(hw_ilas)
 			;
 		}
 		/// <summary>
@@ -34011,14 +34012,14 @@ namespace Quokka.TCL.Vivado
 		/// (board.xml, part0_pins.xml, preset.xml) to be checked
 		/// </param>
 		/// <returns>ok if all board files are valid</returns>
-		public virtual SimpleTCLCommand validate_board_files(bool? quiet = null, bool? verbose = null, string dir = null)
+		public virtual SimpleTCLCommand validate_board_files(bool? quiet = null, bool? verbose = null, TCLParameterList dir = null)
 		{
 			// TCL Syntax: validate_board_files [-quiet] [-verbose] [<dir>...]
 			return
 				new SimpleTCLCommand("validate_board_files")
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(dir)
+					.OptionalStringList(dir)
 			;
 		}
 		/// <summary>
@@ -34149,7 +34150,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="hw_device">(Optional) list of hardware devices Default: current hardware device</param>
 		/// <returns>hardware devices</returns>
-		public virtual SimpleTCLCommand verify_hw_devices(string key = null, string user_efuse = null, string control_efuse = null, string security_efuse = null, bool? verbose = null, bool? quiet = null, string hw_device = null)
+		public virtual SimpleTCLCommand verify_hw_devices(string key = null, string user_efuse = null, string control_efuse = null, string security_efuse = null, bool? verbose = null, bool? quiet = null, TCLParameterList hw_device = null)
 		{
 			// TCL Syntax: verify_hw_devices [-key <arg>] [-user_efuse <arg>] [-control_efuse <arg>] [-security_efuse <arg>] [-verbose] [-quiet] [<hw_device>...]
 			return
@@ -34160,7 +34161,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("security_efuse", security_efuse)
 					.Flag("verbose", verbose)
 					.Flag("quiet", quiet)
-					.OptionalString(hw_device)
+					.OptionalStringList(hw_device)
 			;
 		}
 		/// <summary>
@@ -34215,7 +34216,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_ilas">(Optional) hardware ILA objects. Default: Current hardware ILA</param>
-		public virtual SimpleTCLCommand wait_on_hw_ila(string timeout = null, bool? quiet = null, bool? verbose = null, string hw_ilas = null)
+		public virtual SimpleTCLCommand wait_on_hw_ila(string timeout = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_ilas = null)
 		{
 			// TCL Syntax: wait_on_hw_ila [-timeout <arg>] [-quiet] [-verbose] [<hw_ilas>...]
 			return
@@ -34223,7 +34224,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("timeout", timeout)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.OptionalString(hw_ilas)
+					.OptionalStringList(hw_ilas)
 			;
 		}
 		/// <summary>
@@ -34245,7 +34246,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="timeout">(Optional) Timeout in minutes. Decimal value allowed Default: No timeout</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand wait_on_hw_sio_scan(string hw_sio_scans, string timeout = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand wait_on_hw_sio_scan(TCLParameterList hw_sio_scans, string timeout = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: wait_on_hw_sio_scan [-timeout <arg>] [-quiet] [-verbose] <hw_sio_scans>...
 			return
@@ -34253,7 +34254,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("timeout", timeout)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(hw_sio_scans)
+					.RequiredStringList(hw_sio_scans)
 			;
 		}
 		/// <summary>
@@ -34275,7 +34276,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="timeout">(Optional) Timeout in minutes. Decimal value allowed Default: No timeout</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand wait_on_hw_sio_sweep(string hw_sio_sweeps, string timeout = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand wait_on_hw_sio_sweep(TCLParameterList hw_sio_sweeps, string timeout = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: wait_on_hw_sio_sweep [-timeout <arg>] [-quiet] [-verbose] <hw_sio_sweeps>...
 			return
@@ -34283,7 +34284,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("timeout", timeout)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
-					.RequiredString(hw_sio_sweeps)
+					.RequiredStringList(hw_sio_sweeps)
 			;
 		}
 		/// <summary>
@@ -34984,12 +34985,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>the name of the output file or directory</returns>
-		public virtual SimpleTCLCommand write_edif(string file, string pblocks = null, string cell = null, bool? force = null, string security_mode = null, bool? logic_function_stripped = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand write_edif(string file, TCLParameterList pblocks = null, string cell = null, bool? force = null, string security_mode = null, bool? logic_function_stripped = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_edif [-pblocks <args>] [-cell <arg>] [-force] [-security_mode <arg>] [-logic_function_stripped] [-quiet] [-verbose] <file>
 			return
 				new SimpleTCLCommand("write_edif")
-					.OptionalNamedString("pblocks", pblocks)
+					.OptionalNamedStringList("pblocks", pblocks)
 					.OptionalNamedString("cell", cell)
 					.Flag("force", force)
 					.OptionalNamedString("security_mode", security_mode)
@@ -35538,7 +35539,7 @@ namespace Quokka.TCL.Vivado
 		/// be created. Default: ./
 		/// </param>
 		/// <returns>IP TCL file</returns>
-		public virtual SimpleTCLCommand write_ip_tcl(bool? force = null, bool? no_ip_version = null, string ip_name = null, bool? show_defaults = null, bool? multiple_files = null, bool? quiet = null, bool? verbose = null, string objects = null, string tcl_filename = null)
+		public virtual SimpleTCLCommand write_ip_tcl(bool? force = null, bool? no_ip_version = null, string ip_name = null, bool? show_defaults = null, bool? multiple_files = null, bool? quiet = null, bool? verbose = null, string objects = null, TCLParameterList tcl_filename = null)
 		{
 			// TCL Syntax: write_ip_tcl [-force] [-no_ip_version] [-ip_name <arg>] [-show_defaults] [-multiple_files] [-quiet] [-verbose] [<objects>] [<tcl_filename>...]
 			return
@@ -35551,7 +35552,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.OptionalString(objects)
-					.OptionalString(tcl_filename)
+					.OptionalStringList(tcl_filename)
 			;
 		}
 		/// <summary>
@@ -35872,7 +35873,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="of_objects">(Optional) List of QoR suggestion objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand write_qor_suggestions(string file, string strategy_dir = null, string tcl_output_dir = null, bool? force = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand write_qor_suggestions(string file, string strategy_dir = null, string tcl_output_dir = null, bool? force = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_qor_suggestions [-strategy_dir <arg>] [-tcl_output_dir <arg>] [-force] [-of_objects <args>] [-quiet] [-verbose] <file>
 			return
@@ -35880,7 +35881,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("strategy_dir", strategy_dir)
 					.OptionalNamedString("tcl_output_dir", tcl_output_dir)
 					.Flag("force", force)
-					.OptionalNamedString("of_objects", of_objects)
+					.OptionalNamedStringList("of_objects", of_objects)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(file)
@@ -36175,13 +36176,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="force">(Optional) Overwrite existing file</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand write_waivers(string file, string type = null, string objects = null, bool? return_string = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand write_waivers(string file, string type = null, TCLParameterList objects = null, bool? return_string = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_waivers [-type <arg>] [-objects <args>] [-return_string] [-force] [-quiet] [-verbose] [<file>]
 			return
 				new SimpleTCLCommand("write_waivers")
 					.OptionalNamedString("type", type)
-					.OptionalNamedString("objects", objects)
+					.OptionalNamedStringList("objects", objects)
 					.Flag("return_string", return_string)
 					.Flag("force", force)
 					.Flag("quiet", quiet)
@@ -36261,7 +36262,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="write_id">(Optional) Write position number for timing constraints</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand write_xdc(string file, bool? no_fixed_only = null, string constraints = null, string cell = null, bool? sdc = null, bool? no_tool_comments = null, bool? force = null, bool? exclude_timing = null, bool? exclude_physical = null, bool? add_netlist_placement = null, bool? logic_function_stripped = null, string type = null, bool? write_id = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand write_xdc(string file, bool? no_fixed_only = null, string constraints = null, string cell = null, bool? sdc = null, bool? no_tool_comments = null, bool? force = null, bool? exclude_timing = null, bool? exclude_physical = null, bool? add_netlist_placement = null, bool? logic_function_stripped = null, TCLParameterList type = null, bool? write_id = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_xdc [-no_fixed_only] [-constraints <arg>] [-cell <arg>] [-sdc] [-no_tool_comments] [-force] [-exclude_timing] [-exclude_physical] [-add_netlist_placement] [-logic_function_stripped] [-type <args>] [-write_id] [-quiet] [-verbose] [<file>]
 			return
@@ -36276,7 +36277,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("exclude_physical", exclude_physical)
 					.Flag("add_netlist_placement", add_netlist_placement)
 					.Flag("logic_function_stripped", logic_function_stripped)
-					.OptionalNamedString("type", type)
+					.OptionalNamedStringList("type", type)
 					.Flag("write_id", write_id)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
@@ -36395,12 +36396,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Current simulation object</returns>
-		public virtual SimpleTCLCommand xsim(string snapshot, string view = null, bool? autoloadwcfg = null, bool? runall = null, bool? R = null, string maxdeltaid = null, bool? nolog = null, string maxlogsize = null, string onfinish = null, string onerror = null, string tclbatch = null, string t = null, string testplusarg = null, string vcdfile = null, string vcdunit = null, string wdb = null, bool? tp = null, bool? tl = null, bool? nosignalhandlers = null, bool? ieeewarnings = null, bool? stats = null, bool? scNoLogFile = null, string sv_seed = null, string protoinst = null, string cov_db_dir = null, string cov_db_name = null, bool? ignore_assertions = null, bool? ignore_coverage = null, bool? downgrade_error2info = null, bool? downgrade_error2warning = null, bool? downgrade_fatal2info = null, bool? downgrade_fatal2warning = null, string ignore_feature = null, string downgrade_severity = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand xsim(string snapshot, TCLParameterList view = null, bool? autoloadwcfg = null, bool? runall = null, bool? R = null, string maxdeltaid = null, bool? nolog = null, string maxlogsize = null, string onfinish = null, string onerror = null, TCLParameterList tclbatch = null, TCLParameterList t = null, TCLParameterList testplusarg = null, string vcdfile = null, string vcdunit = null, string wdb = null, bool? tp = null, bool? tl = null, bool? nosignalhandlers = null, bool? ieeewarnings = null, bool? stats = null, bool? scNoLogFile = null, string sv_seed = null, TCLParameterList protoinst = null, string cov_db_dir = null, string cov_db_name = null, bool? ignore_assertions = null, bool? ignore_coverage = null, bool? downgrade_error2info = null, bool? downgrade_error2warning = null, bool? downgrade_fatal2info = null, bool? downgrade_fatal2warning = null, TCLParameterList ignore_feature = null, TCLParameterList downgrade_severity = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: xsim [-view <args>] [-autoloadwcfg] [-runall] [-R] [-maxdeltaid <arg>] [-nolog] [-maxlogsize <arg>] [-onfinish <arg>] [-onerror <arg>] [-tclbatch <args>] [-t <args>] [-testplusarg <args>] [-vcdfile <arg>] [-vcdunit <arg>] [-wdb <arg>] [-tp] [-tl] [-nosignalhandlers] [-ieeewarnings] [-stats] [-scNoLogFile] [-sv_seed <arg>] [-protoinst <args>] [-cov_db_dir <arg>] [-cov_db_name <arg>] [-ignore_assertions] [-ignore_coverage] [-downgrade_error2info] [-downgrade_error2warning] [-downgrade_fatal2info] [-downgrade_fatal2warning] [-ignore_feature <args>] [-downgrade_severity <args>] [-quiet] [-verbose] <snapshot>
 			return
 				new SimpleTCLCommand("xsim")
-					.OptionalNamedString("view", view)
+					.OptionalNamedStringList("view", view)
 					.Flag("autoloadwcfg", autoloadwcfg)
 					.Flag("runall", runall)
 					.Flag("R", R)
@@ -36409,9 +36410,9 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("maxlogsize", maxlogsize)
 					.OptionalNamedString("onfinish", onfinish)
 					.OptionalNamedString("onerror", onerror)
-					.OptionalNamedString("tclbatch", tclbatch)
-					.OptionalNamedString("t", t)
-					.OptionalNamedString("testplusarg", testplusarg)
+					.OptionalNamedStringList("tclbatch", tclbatch)
+					.OptionalNamedStringList("t", t)
+					.OptionalNamedStringList("testplusarg", testplusarg)
 					.OptionalNamedString("vcdfile", vcdfile)
 					.OptionalNamedString("vcdunit", vcdunit)
 					.OptionalNamedString("wdb", wdb)
@@ -36422,7 +36423,7 @@ namespace Quokka.TCL.Vivado
 					.Flag("stats", stats)
 					.Flag("scNoLogFile", scNoLogFile)
 					.OptionalNamedString("sv_seed", sv_seed)
-					.OptionalNamedString("protoinst", protoinst)
+					.OptionalNamedStringList("protoinst", protoinst)
 					.OptionalNamedString("cov_db_dir", cov_db_dir)
 					.OptionalNamedString("cov_db_name", cov_db_name)
 					.Flag("ignore_assertions", ignore_assertions)
@@ -36431,8 +36432,8 @@ namespace Quokka.TCL.Vivado
 					.Flag("downgrade_error2warning", downgrade_error2warning)
 					.Flag("downgrade_fatal2info", downgrade_fatal2info)
 					.Flag("downgrade_fatal2warning", downgrade_fatal2warning)
-					.OptionalNamedString("ignore_feature", ignore_feature)
-					.OptionalNamedString("downgrade_severity", downgrade_severity)
+					.OptionalNamedStringList("ignore_feature", ignore_feature)
+					.OptionalNamedStringList("downgrade_severity", downgrade_severity)
 					.Flag("quiet", quiet)
 					.Flag("verbose", verbose)
 					.RequiredString(snapshot)

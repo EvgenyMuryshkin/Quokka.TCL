@@ -2,6 +2,7 @@
 // See VivadoGenerator for implementation
 using System;
 using Quokka.TCL.Tools;
+using System.Collections.Generic;
 namespace Quokka.TCL.Vivado
 {
 	public partial class ObjectCommands<TTCL> where TTCL : TCLFile
@@ -61,7 +62,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'rule_check' objects against patterns. Default: *</param>
 		/// <returns>drc_check</returns>
-		public TTCL add_drc_checks(string ruledeck, string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL add_drc_checks(string ruledeck, TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: add_drc_checks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] -ruledeck <arg> [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.add_drc_checks(ruledeck, of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -134,7 +135,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="module">(Required) module name</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL can_resolve_reference(string module, bool? quiet = null, bool? verbose = null)
+		public TTCL can_resolve_reference(TCLParameterList module, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: can_resolve_reference [-quiet] [-verbose] <module>...
 			_tcl.Entry(_builder.can_resolve_reference(module, quiet, verbose));
@@ -452,7 +453,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>drc_ruledeck</returns>
-		public TTCL create_drc_ruledeck(string ruledecks, bool? quiet = null, bool? verbose = null)
+		public TTCL create_drc_ruledeck(TCLParameterList ruledecks, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_drc_ruledeck [-quiet] [-verbose] <ruledecks>...
 			_tcl.Entry(_builder.create_drc_ruledeck(ruledecks, quiet, verbose));
@@ -531,7 +532,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL create_pr_configuration(string name, string partitions = null, string greyboxes = null, bool? use_netlist = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_pr_configuration(string name, TCLParameterList partitions = null, TCLParameterList greyboxes = null, bool? use_netlist = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_pr_configuration -name <arg> [-partitions <args>] [-greyboxes <args>] [-use_netlist] [-quiet] [-verbose]
 			_tcl.Entry(_builder.create_pr_configuration(name, partitions, greyboxes, use_netlist, quiet, verbose));
@@ -646,7 +647,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>List of configurable report objects</returns>
-		public TTCL create_report_config(string steps, string runs, string report_name = null, string report_type = null, string options = null, string copy_of = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_report_config(TCLParameterList steps, TCLParameterList runs, string report_name = null, string report_type = null, string options = null, TCLParameterList copy_of = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_report_config [-report_name <arg>] [-report_type <arg>] -steps <args> -runs <args> [-options <arg>] [-copy_of <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.create_report_config(steps, runs, report_name, report_type, options, copy_of, quiet, verbose));
@@ -769,7 +770,7 @@ namespace Quokka.TCL.Vivado
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
 		/// <returns>waiver</returns>
-		public TTCL create_waiver(string description, string type = null, string id = null, string objects = null, string from = null, string to = null, string strings = null, string of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_waiver(string description, string type = null, string id = null, TCLParameterList objects = null, TCLParameterList from = null, TCLParameterList to = null, TCLParameterList strings = null, TCLParameterList of_objects = null, string user = null, string tags = null, string timestamp = null, bool? scoped = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_waiver [-type <arg>] [-id <arg>] [-objects <args>] [-from <args>] [-to <args>] [-strings <args>] [-of_objects <args>] [-user <arg>] -description <arg> [-tags <arg>] [-timestamp <arg>] [-scoped] [-quiet] [-verbose]
 			_tcl.Entry(_builder.create_waiver(description, type, id, objects, from, to, strings, of_objects, user, tags, timestamp, scoped, quiet, verbose));
@@ -878,7 +879,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="config">(Optional) Specify the PR configuration to be set as current (active); optional</param>
 		/// <returns>list of PartitionDef objects</returns>
-		public TTCL current_pr_configuration(bool? quiet = null, bool? verbose = null, string config = null)
+		public TTCL current_pr_configuration(bool? quiet = null, bool? verbose = null, TCLParameterList config = null)
 		{
 			// TCL Syntax: current_pr_configuration [-quiet] [-verbose] [<config>...]
 			_tcl.Entry(_builder.current_pr_configuration(quiet, verbose, config));
@@ -912,7 +913,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_drc_check(string name, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_drc_check(TCLParameterList name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_drc_check [-quiet] [-verbose] <name>...
 			_tcl.Entry(_builder.delete_drc_check(name, quiet, verbose));
@@ -969,7 +970,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>hardware devices</returns>
-		public TTCL delete_hw_bitstream(string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_hw_bitstream(TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_hw_bitstream [-of_objects <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.delete_hw_bitstream(of_objects, quiet, verbose));
@@ -1020,7 +1021,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="report_configs">(Required) List of configurable report objects to delete</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_report_configs(string report_configs, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_report_configs(TCLParameterList report_configs, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_report_configs [-quiet] [-verbose] <report_configs>...
 			_tcl.Entry(_builder.delete_report_configs(report_configs, quiet, verbose));
@@ -1057,7 +1058,7 @@ namespace Quokka.TCL.Vivado
 		/// nets, sites, etc.) for which DRC/METHODOLOGY waiver(s)
 		/// were set
 		/// </param>
-		public TTCL delete_waivers(bool? scoped = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public TTCL delete_waivers(bool? scoped = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
 		{
 			// TCL Syntax: delete_waivers [-scoped] [-quiet] [-verbose] [<objects>...]
 			_tcl.Entry(_builder.delete_waivers(scoped, quiet, verbose, objects));
@@ -1154,7 +1155,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="to">(Optional) -to <end node> End of routing path.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL find_routing_path(bool? allow_overlap = null, string max_nodes = null, string min_nodes = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		public TTCL find_routing_path(bool? allow_overlap = null, string max_nodes = null, string min_nodes = null, TCLParameterList from = null, TCLParameterList to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: find_routing_path [-allow_overlap] [-max_nodes <arg>] [-min_nodes <arg>] [-from <args>] [-to <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.find_routing_path(allow_overlap, max_nodes, min_nodes, from, to, quiet, verbose));
@@ -1183,7 +1184,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="jobs">(Optional) Number of jobs Default: 1</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL generate_reports(string report_configs, string jobs = null, bool? quiet = null, bool? verbose = null)
+		public TTCL generate_reports(TCLParameterList report_configs, string jobs = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_reports [-jobs <arg>] [-quiet] [-verbose] <report_configs>...
 			_tcl.Entry(_builder.generate_reports(report_configs, jobs, quiet, verbose));
@@ -1220,7 +1221,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match bel_pin against patterns Default: *</param>
 		/// <returns>bel_pin</returns>
-		public TTCL get_bel_pins(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_bel_pins(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bel_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_bel_pins(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -1258,7 +1259,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match bels against patterns Default: *</param>
 		/// <returns>bels</returns>
-		public TTCL get_bels(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_routing_bels = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_bels(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? include_routing_bels = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_bels [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_routing_bels] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_bels(regexp, nocase, filter, of_objects, include_routing_bels, quiet, verbose, patterns));
@@ -1307,7 +1308,7 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of bus nets in the board</returns>
-		public TTCL get_board_bus_nets(string of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_bus_nets(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_bus_nets [-regexp] [-nocase] [-all] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_bus_nets(of_objects, regexp, nocase, all, filter, quiet, verbose, patterns));
@@ -1356,7 +1357,7 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of buses in the board</returns>
-		public TTCL get_board_buses(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_buses(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_buses [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_buses(regexp, nocase, all, filter, of_objects, quiet, verbose, patterns));
@@ -1410,7 +1411,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of bus interfaces</returns>
-		public TTCL get_board_component_interfaces(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_component_interfaces(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_component_interfaces [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_component_interfaces(regexp, nocase, all, filter, of_objects, quiet, verbose, patterns));
@@ -1455,7 +1456,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of component modes in the board</returns>
-		public TTCL get_board_component_modes(string of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_component_modes(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_component_modes [-regexp] [-nocase] [-all] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_component_modes(of_objects, regexp, nocase, all, filter, quiet, verbose, patterns));
@@ -1503,7 +1504,7 @@ namespace Quokka.TCL.Vivado
 		/// *, or .* when -regexp is specified.
 		/// </param>
 		/// <returns>list of pins in the board_part</returns>
-		public TTCL get_board_component_pins(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_component_pins(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_component_pins [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_component_pins(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -1549,7 +1550,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of component objects</returns>
-		public TTCL get_board_components(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_components(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_components [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_components(regexp, nocase, all, filter, of_objects, quiet, verbose, patterns));
@@ -1602,7 +1603,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of ports in the given interface</returns>
-		public TTCL get_board_interface_ports(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_interface_ports(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_interface_ports [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_interface_ports(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -1650,7 +1651,7 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>list of ip preferences for the component</returns>
-		public TTCL get_board_ip_preferences(string of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_ip_preferences(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_ip_preferences [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_ip_preferences(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -1692,7 +1693,7 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of jumpers in the board</returns>
-		public TTCL get_board_jumpers(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_jumpers(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_jumpers [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_jumpers(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -1739,7 +1740,7 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of parameters in the board</returns>
-		public TTCL get_board_parameters(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_parameters(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_parameters [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_parameters(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -1794,7 +1795,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of bus interfaces</returns>
-		public TTCL get_board_part_interfaces(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_part_interfaces(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_part_interfaces [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_part_interfaces(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -1869,7 +1870,7 @@ namespace Quokka.TCL.Vivado
 		/// when -regexp is specified.
 		/// </param>
 		/// <returns>list of pins in the board_part</returns>
-		public TTCL get_board_part_pins(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_part_pins(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_part_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_part_pins(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -1918,7 +1919,7 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of board_part objects</returns>
-		public TTCL get_board_parts(bool? regexp = null, bool? nocase = null, bool? latest_file_version = null, bool? latest_hw_revision = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_board_parts(bool? regexp = null, bool? nocase = null, bool? latest_file_version = null, bool? latest_hw_revision = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_parts [-regexp] [-nocase] [-latest_file_version] [-latest_hw_revision] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_parts(regexp, nocase, latest_file_version, latest_hw_revision, filter, quiet, verbose, patterns));
@@ -1970,7 +1971,7 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>list of board objects</returns>
-		public TTCL get_boards(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_boards(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_boards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_boards(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -2105,7 +2106,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match cell names against patterns Default: *</param>
 		/// <returns>list of cell objects</returns>
-		public TTCL get_cells(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_cells(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_cells [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_replicated_objects] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_cells(hsc, hierarchical, regexp, nocase, filter, of_objects, match_style, include_replicated_objects, quiet, verbose, patterns));
@@ -2150,7 +2151,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'cfgmem_part' objects against patterns. Default: *</param>
 		/// <returns>list of cfgmem_part objects</returns>
-		public TTCL get_cfgmem_parts(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_cfgmem_parts(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_cfgmem_parts [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_cfgmem_parts(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -2197,7 +2198,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match objects' name against patterns. Default: *</param>
 		/// <returns>clock_regions</returns>
-		public TTCL get_clock_regions(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_clock_regions(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_clock_regions [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_clock_regions(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -2242,7 +2243,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match clock names against patterns Default: *</param>
 		/// <returns>list of clocks</returns>
-		public TTCL get_clocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? include_generated_clocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_clocks(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, string match_style = null, bool? include_generated_clocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_clocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_generated_clocks] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_clocks(regexp, nocase, filter, of_objects, match_style, include_generated_clocks, quiet, verbose, patterns));
@@ -2269,7 +2270,7 @@ namespace Quokka.TCL.Vivado
 		/// Match gadget names against patterns Default: * Values: The
 		/// default search pattern is the wildcard *
 		/// </param>
-		public TTCL get_dashboard_gadgets(bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_dashboard_gadgets(bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_dashboard_gadgets [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_dashboard_gadgets(quiet, verbose, patterns));
@@ -2310,7 +2311,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match debug cores against patterns Default: *</param>
 		/// <returns>list of debug_core objects</returns>
-		public TTCL get_debug_cores(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_debug_cores(string filter = null, TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_debug_cores [-filter <arg>] [-of_objects <args>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_debug_cores(filter, of_objects, regexp, nocase, quiet, verbose, patterns));
@@ -2350,7 +2351,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match debug ports against patterns Default: *</param>
 		/// <returns>list of debug_port objects</returns>
-		public TTCL get_debug_ports(string filter = null, string of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_debug_ports(string filter = null, TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_debug_ports [-filter <arg>] [-of_objects <args>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_debug_ports(filter, of_objects, regexp, nocase, quiet, verbose, patterns));
@@ -2422,7 +2423,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'rule_check' objects against patterns. Default: *</param>
 		/// <returns>list of DRC rule_check objects</returns>
-		public TTCL get_drc_checks(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, string abbrev = null, string ruledecks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_drc_checks(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, string abbrev = null, TCLParameterList ruledecks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_drc_checks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-abbrev <arg>] [-ruledecks <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_drc_checks(of_objects, regexp, nocase, filter, abbrev, ruledecks, quiet, verbose, patterns));
@@ -2463,7 +2464,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'drc_ruledeck' objects against patterns. Default: *</param>
 		/// <returns>drc_ruledeck</returns>
-		public TTCL get_drc_ruledecks(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_drc_ruledecks(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_drc_ruledecks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_drc_ruledecks(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2578,7 +2579,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match file names against patterns Default: *</param>
 		/// <returns>list of file objects</returns>
-		public TTCL get_files(bool? regexp = null, bool? nocase = null, string filter = null, string compile_order = null, string used_in = null, bool? references = null, bool? all = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_files(bool? regexp = null, bool? nocase = null, string filter = null, string compile_order = null, string used_in = null, bool? references = null, bool? all = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_files [-regexp] [-nocase] [-filter <arg>] [-compile_order <arg>] [-used_in <arg>] [-references] [-all] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_files(regexp, nocase, filter, compile_order, used_in, references, all, of_objects, quiet, verbose, patterns));
@@ -2623,7 +2624,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match fileset names against patterns Default: *</param>
 		/// <returns>list of fileset objects</returns>
-		public TTCL get_filesets(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_filesets(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_filesets [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_filesets(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -2660,7 +2661,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match generated clock names against patterns Default: *</param>
 		/// <returns>list of clocks</returns>
-		public TTCL get_generated_clocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_generated_clocks(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, string match_style = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_generated_clocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_generated_clocks(regexp, nocase, filter, of_objects, match_style, quiet, verbose, patterns));
@@ -2692,7 +2693,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of highlighted objects</returns>
-		public TTCL get_highlighted_objects(string color_index = null, string rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_highlighted_objects(string color_index = null, TCLParameterList rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_highlighted_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.get_highlighted_objects(color_index, rgb, color, quiet, verbose));
@@ -2732,7 +2733,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_axi_txn' objects against patterns. Default: *</param>
 		/// <returns>hw_axi_txns</returns>
-		public TTCL get_hw_axi_txns(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_axi_txns(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_axi_txns [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_axi_txns(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2774,7 +2775,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_axi' objects against patterns. Default: *</param>
 		/// <returns>hw_axi</returns>
-		public TTCL get_hw_axis(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_axis(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_axis [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_axis(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2850,7 +2851,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_ddrmc' objects against patterns. Default: *</param>
 		/// <returns>integrated and soft DDRMC cores</returns>
-		public TTCL get_hw_ddrmcs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_ddrmcs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_ddrmcs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_ddrmcs(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2877,7 +2878,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_device' objects against patterns. Default: *</param>
 		/// <returns>hardware devices</returns>
-		public TTCL get_hw_devices(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_devices(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_devices [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_devices(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2916,7 +2917,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_hbm' objects against patterns. Default: *</param>
 		/// <returns>hardware HBM cores</returns>
-		public TTCL get_hw_hbms(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_hbms(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_hbms [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_hbms(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2949,7 +2950,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_ila_data' objects against patterns. Default: *</param>
 		/// <returns>hardware ILA data</returns>
-		public TTCL get_hw_ila_datas(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_ila_datas(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_ila_datas [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_ila_datas(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3006,7 +3007,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_ila' objects against patterns. Default: *</param>
 		/// <returns>hardware ILAs</returns>
-		public TTCL get_hw_ilas(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_ilas(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_ilas [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_ilas(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3051,7 +3052,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_mig' objects against patterns. Default: *</param>
 		/// <returns>hardware migs cores</returns>
-		public TTCL get_hw_migs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_migs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_migs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_migs(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3090,7 +3091,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>PCIe core(s)</returns>
-		public TTCL get_hw_pcies(string of_objects = null, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_hw_pcies(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_hw_pcies [-of_objects <args>] [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.get_hw_pcies(of_objects, regexp, nocase, patterns, filter, quiet, verbose));
@@ -3131,7 +3132,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_probe' objects against patterns. Default: *</param>
 		/// <returns>hardware probes</returns>
-		public TTCL get_hw_probes(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_probes(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_probes [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_probes(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3202,7 +3203,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_common' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO GT commons</returns>
-		public TTCL get_hw_sio_commons(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_commons(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_commons [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_commons(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3244,7 +3245,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_gtgroup' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO GT groups.</returns>
-		public TTCL get_hw_sio_gtgroups(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_gtgroups(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_gtgroups [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_gtgroups(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3286,7 +3287,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_gt' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO GTs</returns>
-		public TTCL get_hw_sio_gts(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_gts(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_gts [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_gts(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3334,7 +3335,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_ibert' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO IBERT cores.</returns>
-		public TTCL get_hw_sio_iberts(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_iberts(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_iberts [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_iberts(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3365,7 +3366,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_linkgroup' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO link groups</returns>
-		public TTCL get_hw_sio_linkgroups(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_linkgroups(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_linkgroups [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_linkgroups(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3401,7 +3402,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_link' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO links</returns>
-		public TTCL get_hw_sio_links(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_links(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_links [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_links(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3440,7 +3441,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_pll' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO PLLs</returns>
-		public TTCL get_hw_sio_plls(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_plls(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_plls [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_plls(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3475,7 +3476,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_rx' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO RXs</returns>
-		public TTCL get_hw_sio_rxs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_rxs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_rxs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_rxs(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3507,7 +3508,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_scan' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO scans</returns>
-		public TTCL get_hw_sio_scans(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_scans(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_scans [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_scans(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3543,7 +3544,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_sweep' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO sweeps</returns>
-		public TTCL get_hw_sio_sweeps(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_sweeps(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_sweeps [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_sweeps(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3578,7 +3579,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_tx' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO TXs</returns>
-		public TTCL get_hw_sio_txs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_txs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_txs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_txs(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3604,7 +3605,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_softmc' objects against patterns. Default: *</param>
 		/// <returns>soft memory controller cores</returns>
-		public TTCL get_hw_softmcs(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_softmcs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_softmcs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_softmcs(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3656,7 +3657,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sysmon' objects against patterns. Default: *</param>
 		/// <returns>hardware sysmons</returns>
-		public TTCL get_hw_sysmons(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sysmons(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_sysmons [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sysmons(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3694,7 +3695,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_target' objects against patterns. Default: *</param>
 		/// <returns>hardware targets</returns>
-		public TTCL get_hw_targets(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_targets(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_targets [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_targets(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3733,7 +3734,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_vio' objects against patterns. Default: *</param>
 		/// <returns>hardware VIOs</returns>
-		public TTCL get_hw_vios(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_vios(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_hw_vios [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_vios(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -3766,7 +3767,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match I/O port interfaces against patterns Default: *</param>
 		/// <returns>list of interface objects</returns>
-		public TTCL get_interfaces(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_interfaces(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_interfaces [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_interfaces(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -3804,7 +3805,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match IO standards against patterns Default: *</param>
 		/// <returns>IO standards</returns>
-		public TTCL get_io_standards(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_io_standards(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_io_standards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_io_standards(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -3843,7 +3844,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match iobanks against patterns Default: *</param>
 		/// <returns>iobanks</returns>
-		public TTCL get_iobanks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_iobanks(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_iobanks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_iobanks(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -3880,7 +3881,7 @@ namespace Quokka.TCL.Vivado
 		/// <cell name>'
 		/// </param>
 		/// <returns>list of IP upgrade results</returns>
-		public TTCL get_ip_upgrade_results(string srcset = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public TTCL get_ip_upgrade_results(string srcset = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
 		{
 			// TCL Syntax: get_ip_upgrade_results [-srcset <arg>] [-quiet] [-verbose] [<objects>...]
 			_tcl.Entry(_builder.get_ip_upgrade_results(srcset, quiet, verbose, objects));
@@ -3936,7 +3937,7 @@ namespace Quokka.TCL.Vivado
 		/// specified.
 		/// </param>
 		/// <returns>List of Catalog IP objects</returns>
-		public TTCL get_ipdefs(bool? name = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? all = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_ipdefs(bool? name = null, bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? all = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_ipdefs [-name] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-all] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_ipdefs(name, regexp, nocase, filter, of_objects, all, quiet, verbose, patterns));
@@ -3976,7 +3977,7 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>list of IP objects</returns>
-		public TTCL get_ips(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? exclude_bd_ips = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_ips(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? exclude_bd_ips = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_ips [-regexp] [-nocase] [-all] [-filter <arg>] [-exclude_bd_ips] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_ips(regexp, nocase, all, filter, exclude_bd_ips, of_objects, quiet, verbose, patterns));
@@ -4027,7 +4028,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of library cells</returns>
-		public TTCL get_lib_cells(string patterns, bool? regexp = null, string filter = null, bool? nocase = null, bool? include_unsupported = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_lib_cells(string patterns, bool? regexp = null, string filter = null, bool? nocase = null, bool? include_unsupported = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_lib_cells [-regexp] [-filter <arg>] [-nocase] [-include_unsupported] [-of_objects <args>] [-quiet] [-verbose] <patterns>
 			_tcl.Entry(_builder.get_lib_cells(patterns, regexp, filter, nocase, include_unsupported, of_objects, quiet, verbose));
@@ -4076,7 +4077,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of library cell pins</returns>
-		public TTCL get_lib_pins(string patterns, bool? regexp = null, string filter = null, bool? nocase = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_lib_pins(string patterns, bool? regexp = null, string filter = null, bool? nocase = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_lib_pins [-regexp] [-filter <arg>] [-nocase] [-of_objects <args>] [-quiet] [-verbose] <patterns>
 			_tcl.Entry(_builder.get_lib_pins(patterns, regexp, filter, nocase, of_objects, quiet, verbose));
@@ -4147,7 +4148,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match macro names against patterns Default: *</param>
 		/// <returns>list of macro objects</returns>
-		public TTCL get_macros(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_macros(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_macros [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_macros(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -4177,7 +4178,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of marked objects</returns>
-		public TTCL get_marked_objects(string rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_marked_objects(TCLParameterList rgb = null, string color = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_marked_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.get_marked_objects(rgb, color, quiet, verbose));
@@ -4313,7 +4314,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>net_delays</returns>
-		public TTCL get_net_delays(string of_objects, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, string to = null, bool? interconnect_only = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_net_delays(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, TCLParameterList to = null, bool? interconnect_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_net_delays -of_objects <args> [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-to <args>] [-interconnect_only] [-quiet] [-verbose]
 			_tcl.Entry(_builder.get_net_delays(of_objects, regexp, nocase, patterns, filter, to, interconnect_only, quiet, verbose));
@@ -4396,7 +4397,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match net names against patterns Default: *</param>
 		/// <returns>list of net objects</returns>
-		public TTCL get_nets(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? top_net_of_hierarchical_group = null, bool? segments = null, string boundary_type = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_nets(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, string match_style = null, bool? top_net_of_hierarchical_group = null, bool? segments = null, string boundary_type = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_nets [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-top_net_of_hierarchical_group] [-segments] [-boundary_type <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_nets(hsc, hierarchical, regexp, nocase, filter, of_objects, match_style, top_net_of_hierarchical_group, segments, boundary_type, quiet, verbose, patterns));
@@ -4458,7 +4459,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'node' objects against patterns. Default: *</param>
 		/// <returns>nodes</returns>
-		public TTCL get_nodes(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? uphill = null, bool? downhill = null, bool? flyover = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_nodes(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? uphill = null, bool? downhill = null, bool? flyover = null, TCLParameterList from = null, TCLParameterList to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_nodes [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-uphill] [-downhill] [-flyover] [-from <args>] [-to <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_nodes(of_objects, regexp, nocase, filter, uphill, downhill, flyover, from, to, quiet, verbose, patterns));
@@ -4499,7 +4500,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match list of package pin objects against patterns Default: *</param>
 		/// <returns>list of package pin objects</returns>
-		public TTCL get_package_pins(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_package_pins(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_package_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_package_pins(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -4575,7 +4576,7 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>list of part objects</returns>
-		public TTCL get_parts(bool? regexp = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_parts(bool? regexp = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_parts [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_parts(regexp, filter, of_objects, quiet, verbose, patterns));
@@ -4652,7 +4653,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match Pblock names against patterns Default: *</param>
 		/// <returns>list of Pblock objects</returns>
-		public TTCL get_pblocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_nested_pblocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_pblocks(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? include_nested_pblocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblocks] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_pblocks(regexp, nocase, filter, of_objects, include_nested_pblocks, quiet, verbose, patterns));
@@ -4730,7 +4731,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match pin names against patterns Default: *</param>
 		/// <returns>list of pin objects</returns>
-		public TTCL get_pins(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, bool? leaf = null, string filter = null, string of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_pins(string hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, bool? leaf = null, string filter = null, TCLParameterList of_objects = null, string match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_pins [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-leaf] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_replicated_objects] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_pins(hsc, hierarchical, regexp, nocase, leaf, filter, of_objects, match_style, include_replicated_objects, quiet, verbose, patterns));
@@ -4781,7 +4782,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match pips against patterns Default: *</param>
 		/// <returns>pips</returns>
-		public TTCL get_pips(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? uphill = null, bool? downhill = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_pips(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? uphill = null, bool? downhill = null, TCLParameterList from = null, TCLParameterList to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_pips [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-uphill] [-downhill] [-from <args>] [-to <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_pips(regexp, nocase, filter, of_objects, uphill, downhill, from, to, quiet, verbose, patterns));
@@ -4821,7 +4822,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match pin_group against patterns Default: *</param>
 		/// <returns>pin_group</returns>
-		public TTCL get_pkgpin_bytegroups(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_pkgpin_bytegroups(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_pkgpin_bytegroups [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_pkgpin_bytegroups(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -4861,7 +4862,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match pin_nibble against patterns Default: *</param>
 		/// <returns>pin_nibble</returns>
-		public TTCL get_pkgpin_nibbles(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_pkgpin_nibbles(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_pkgpin_nibbles [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_pkgpin_nibbles(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -4923,7 +4924,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match port names against patterns Default: *</param>
 		/// <returns>list of port objects</returns>
-		public TTCL get_ports(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, string match_style = null, bool? scoped_to_current_instance = null, bool? no_traverse = null, bool? prop_thru_buffers = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_ports(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, string match_style = null, bool? scoped_to_current_instance = null, bool? no_traverse = null, bool? prop_thru_buffers = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_ports [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-scoped_to_current_instance] [-no_traverse] [-prop_thru_buffers] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_ports(regexp, nocase, filter, of_objects, match_style, scoped_to_current_instance, no_traverse, prop_thru_buffers, quiet, verbose, patterns));
@@ -5157,7 +5158,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match reconfigurable module names against patterns Default: *</param>
 		/// <returns>list of ReconfigModule objects</returns>
-		public TTCL get_reconfig_modules(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_reconfig_modules(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_reconfig_modules [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_reconfig_modules(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -5189,7 +5190,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match report names against patterns Default: *</param>
 		/// <returns>list of Configurable Report objects</returns>
-		public TTCL get_report_configs(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_report_configs(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_report_configs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_report_configs(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -5225,7 +5226,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match run names against patterns Default: *</param>
 		/// <returns>list of run objects</returns>
-		public TTCL get_runs(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_runs(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_runs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_runs(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -5307,7 +5308,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'site_pin' objects against patterns. Default: *</param>
 		/// <returns>site_pins</returns>
-		public TTCL get_site_pins(string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_site_pins(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_site_pins [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_site_pins(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -5344,7 +5345,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match site_pips against patterns Default: *</param>
 		/// <returns>site_pips</returns>
-		public TTCL get_site_pips(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_site_pips(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_site_pips [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_site_pips(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -5417,7 +5418,7 @@ namespace Quokka.TCL.Vivado
 		/// match on package pin names. Default: *
 		/// </param>
 		/// <returns>list of site objects</returns>
-		public TTCL get_sites(bool? regexp = null, string filter = null, bool? nocase = null, string range = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_sites(bool? regexp = null, string filter = null, bool? nocase = null, TCLParameterList range = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_sites [-regexp] [-filter <arg>] [-nocase] [-range <args>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_sites(regexp, filter, nocase, range, of_objects, quiet, verbose, patterns));
@@ -5461,7 +5462,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match slr against patterns Default: *</param>
 		/// <returns>slr</returns>
-		public TTCL get_slrs(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_slrs(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_slrs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_slrs(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -5524,7 +5525,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>speed_models</returns>
-		public TTCL get_speed_models(string of_objects = null, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, string speed_pattern = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_speed_models(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, string speed_pattern = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_speed_models [-of_objects <args>] [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-speed_pattern <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.get_speed_models(of_objects, regexp, nocase, patterns, filter, speed_pattern, quiet, verbose));
@@ -5565,7 +5566,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match tiles against patterns Default: *</param>
 		/// <returns>tiles</returns>
-		public TTCL get_tiles(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_tiles(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_tiles [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_tiles(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -5609,7 +5610,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of timing arc objects</returns>
-		public TTCL get_timing_arcs(string from = null, string to = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_timing_arcs(TCLParameterList from = null, TCLParameterList to = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_timing_arcs [-from <args>] [-to <args>] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.get_timing_arcs(from, to, filter, of_objects, quiet, verbose));
@@ -5718,7 +5719,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cell">(Optional) run get_timing_paths on the cell</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL get_timing_paths(string from = null, string rise_from = null, string fall_from = null, string to = null, string rise_to = null, string fall_to = null, string through = null, string rise_through = null, string fall_through = null, string delay_type = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string slack_lesser_than = null, string slack_greater_than = null, string group = null, bool? no_report_unconstrained = null, bool? user_ignored = null, bool? routable_nets = null, string sort_by = null, string filter = null, bool? regexp = null, bool? nocase = null, string cell = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_timing_paths(TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, string delay_type = null, bool? setup = null, bool? hold = null, string max_paths = null, string nworst = null, bool? unique_pins = null, string slack_lesser_than = null, string slack_greater_than = null, TCLParameterList group = null, bool? no_report_unconstrained = null, bool? user_ignored = null, bool? routable_nets = null, string sort_by = null, string filter = null, bool? regexp = null, bool? nocase = null, TCLParameterList cell = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_timing_paths [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-delay_type <arg>] [-setup] [-hold] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-slack_lesser_than <arg>] [-slack_greater_than <arg>] [-group <args>] [-no_report_unconstrained] [-user_ignored] [-routable_nets] [-sort_by <arg>] [-filter <arg>] [-regexp] [-nocase] [-cell <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.get_timing_paths(from, rise_from, fall_from, to, rise_to, fall_to, through, rise_through, fall_through, delay_type, setup, hold, max_paths, nworst, unique_pins, slack_lesser_than, slack_greater_than, group, no_report_unconstrained, user_ignored, routable_nets, sort_by, filter, regexp, nocase, cell, quiet, verbose));
@@ -5770,7 +5771,7 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>waivers</returns>
-		public TTCL get_waivers(string type = null, string id = null, string of_objects = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_waivers(string type = null, string id = null, TCLParameterList of_objects = null, bool? regexp = null, string filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_waivers [-type <arg>] [-id <arg>] [-of_objects <args>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_waivers(type, id, of_objects, regexp, filter, nocase, quiet, verbose, patterns));
@@ -5817,7 +5818,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match wires against patterns Default: *</param>
 		/// <returns>wires</returns>
-		public TTCL get_wires(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? uphill = null, bool? downhill = null, string from = null, string to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_wires(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? uphill = null, bool? downhill = null, TCLParameterList from = null, TCLParameterList to = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_wires [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-uphill] [-downhill] [-from <args>] [-to <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_wires(regexp, nocase, filter, of_objects, uphill, downhill, from, to, quiet, verbose, patterns));
@@ -5983,7 +5984,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'rule_check' objects against patterns. Default: *</param>
 		/// <returns>drc_check</returns>
-		public TTCL remove_drc_checks(string ruledeck, string of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL remove_drc_checks(string ruledeck, TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: remove_drc_checks [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] -ruledeck <arg> [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.remove_drc_checks(ruledeck, of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -6128,7 +6129,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="of_objects">(Optional) List of QoR suggestion objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_qor_suggestions(string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? no_split = null, bool? report_all_suggestions = null, string cells = null, string of_objects = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_qor_suggestions(string file = null, string name = null, bool? append = null, bool? return_string = null, string max_strategies = null, string max_paths = null, bool? no_split = null, bool? report_all_suggestions = null, TCLParameterList cells = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_qor_suggestions [-file <arg>] [-name <arg>] [-append] [-return_string] [-max_strategies <arg>] [-max_paths <arg>] [-no_split] [-report_all_suggestions] [-cells <args>] [-of_objects <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_qor_suggestions(file, name, append, return_string, max_strategies, max_paths, no_split, report_all_suggestions, cells, of_objects, quiet, verbose));
@@ -6206,7 +6207,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="checks">(Required) The list of checks to reset.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL reset_drc_check(string checks, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_drc_check(TCLParameterList checks, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_drc_check [-quiet] [-verbose] [<checks>...]
 			_tcl.Entry(_builder.reset_drc_check(checks, quiet, verbose));
@@ -6242,7 +6243,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="checks">(Required) The list of checks to reset.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL reset_methodology_check(string checks, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_methodology_check(TCLParameterList checks, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_methodology_check [-quiet] [-verbose] [<checks>...]
 			_tcl.Entry(_builder.reset_methodology_check(checks, quiet, verbose));
@@ -6270,7 +6271,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The value that was set if success, "" if failure</returns>
-		public TTCL reset_property(string property_name, string objects, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_property(string property_name, TCLParameterList objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_property [-quiet] [-verbose] <property_name> <objects>...
 			_tcl.Entry(_builder.reset_property(property_name, objects, quiet, verbose));
@@ -6335,7 +6336,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>hardware JTAG</returns>
-		public TTCL run_state_hw_jtag(string stable_state, string state = null, bool? quiet = null, bool? verbose = null)
+		public TTCL run_state_hw_jtag(string stable_state, TCLParameterList state = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: run_state_hw_jtag [-state <args>] [-quiet] [-verbose] <stable_state>
 			_tcl.Entry(_builder.run_state_hw_jtag(stable_state, state, quiet, verbose));
@@ -6582,7 +6583,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="dict">(Optional) list of name/value pairs of properties to set</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_property(string name, string value, string objects, string dict = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_property(string name, string value, TCLParameterList objects, TCLParameterList dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_property [-dict <args>] [-quiet] [-verbose] <name> <value> <objects>...
 			_tcl.Entry(_builder.set_property(name, value, objects, dict, quiet, verbose));
@@ -6610,7 +6611,7 @@ namespace Quokka.TCL.Vivado
 		/// (board.xml, part0_pins.xml, preset.xml) to be checked
 		/// </param>
 		/// <returns>ok if all board files are valid</returns>
-		public TTCL validate_board_files(bool? quiet = null, bool? verbose = null, string dir = null)
+		public TTCL validate_board_files(bool? quiet = null, bool? verbose = null, TCLParameterList dir = null)
 		{
 			// TCL Syntax: validate_board_files [-quiet] [-verbose] [<dir>...]
 			_tcl.Entry(_builder.validate_board_files(quiet, verbose, dir));
@@ -6652,7 +6653,7 @@ namespace Quokka.TCL.Vivado
 		/// be created. Default: ./
 		/// </param>
 		/// <returns>IP TCL file</returns>
-		public TTCL write_ip_tcl(bool? force = null, bool? no_ip_version = null, string ip_name = null, bool? show_defaults = null, bool? multiple_files = null, bool? quiet = null, bool? verbose = null, string objects = null, string tcl_filename = null)
+		public TTCL write_ip_tcl(bool? force = null, bool? no_ip_version = null, string ip_name = null, bool? show_defaults = null, bool? multiple_files = null, bool? quiet = null, bool? verbose = null, string objects = null, TCLParameterList tcl_filename = null)
 		{
 			// TCL Syntax: write_ip_tcl [-force] [-no_ip_version] [-ip_name <arg>] [-show_defaults] [-multiple_files] [-quiet] [-verbose] [<objects>] [<tcl_filename>...]
 			_tcl.Entry(_builder.write_ip_tcl(force, no_ip_version, ip_name, show_defaults, multiple_files, quiet, verbose, objects, tcl_filename));
@@ -6682,7 +6683,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="force">(Optional) Overwrite existing file</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL write_waivers(string file, string type = null, string objects = null, bool? return_string = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_waivers(string file, string type = null, TCLParameterList objects = null, bool? return_string = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_waivers [-type <arg>] [-objects <args>] [-return_string] [-force] [-quiet] [-verbose] [<file>]
 			_tcl.Entry(_builder.write_waivers(file, type, objects, return_string, force, quiet, verbose));

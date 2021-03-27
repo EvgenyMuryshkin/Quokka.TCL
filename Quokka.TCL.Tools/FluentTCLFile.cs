@@ -5,37 +5,45 @@ namespace Quokka.TCL.Tools
     public class FluentTCLFile<TThis> : TCLFile
         where TThis : FluentTCLFile<TThis>
     {
-        public FluentTCLFile<TThis> Comment(string comment)
+        public TThis Comment(string comment)
         {
             _entries.Add(new TCLComment(comment));
-            return this;
+            return (TThis)this;
         }
 
-        public FluentTCLFile<TThis> Add(TCLEntry entry)
+        public TThis Add(TCLEntry entry)
         {
             _entries.Add(entry);
-            return this;
+            return (TThis)this;
         }
 
-        public FluentTCLFile<TThis> Source(string script)
+        public TThis Source(string script)
         {
             _entries.Add(new TCLSource(script));
-            return this;
-
+            return (TThis)this;
         }
-        public FluentTCLFile<TThis> Set(string target, string source)
+
+        public TThis Set(string target, string source)
         {
             _entries.Add(new TCLSet(target, source));
-            return this;
+            return (TThis)this;
         }
 
-        public FluentTCLFile<TThis> SetProperty(string name, string value, string target)
+        public TThis SetProperty(string name, string value, string target)
         {
             _entries.Add(new TCLSetProperty(name, value, target));
-            return this;
+            return (TThis)this;
         }
 
-        public FluentTCLFile<TThis> Add<TFile>(FluentTCLFile<TFile> file)
+        public TThis SetProperty(string name, string value, TCLEntry target)
+        {
+            var builder = new IndentedStringBuilder();
+            target.Write(builder);
+
+            return SetProperty(name, value, builder.ToString().Trim());
+        }
+
+        public TThis Add<TFile>(FluentTCLFile<TFile> file)
             where TFile : FluentTCLFile<TFile>
         {
             if (file == null)
@@ -43,7 +51,7 @@ namespace Quokka.TCL.Tools
 
             _entries.AddRange(file._entries);
 
-            return this;
+            return (TThis)this;
         }
     }
 }

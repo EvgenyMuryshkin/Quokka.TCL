@@ -4,12 +4,10 @@ using System;
 using Quokka.TCL.Tools;
 namespace Quokka.TCL.Vivado
 {
-	public partial class VivadoCategorizedTCL : FluentTCLFile<VivadoCategorizedTCL>
+	public partial class VivadoCategorizedTCL : FluentVivadoTCLFile<VivadoCategorizedTCL>
 	{
-		private readonly VivadoTCLBuilder _builder = new VivadoTCLBuilder();
-		public VivadoCategorizedTCL(VivadoTCLBuilder builder = null)
+		public VivadoCategorizedTCL(VivadoTCLBuilder builder = null) : base(builder)
 		{
-			_builder = builder ?? new VivadoTCLBuilder();
 		}
 		public BoardCommands<VivadoCategorizedTCL> Board => new BoardCommands<VivadoCategorizedTCL>(this, _builder);
 		public cluster_configurationCommands<VivadoCategorizedTCL> cluster_configuration => new cluster_configurationCommands<VivadoCategorizedTCL>(this, _builder);

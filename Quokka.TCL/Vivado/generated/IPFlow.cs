@@ -2,6 +2,7 @@
 // See VivadoGenerator for implementation
 using System;
 using Quokka.TCL.Tools;
+using System.Collections.Generic;
 namespace Quokka.TCL.Vivado
 {
 	public partial class IPFlowCommands<TTCL> where TTCL : TCLFile
@@ -295,7 +296,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>IP file object that was added to the project</returns>
-		public TTCL copy_ip(string name, string objects, string dir = null, bool? quiet = null, bool? verbose = null)
+		public TTCL copy_ip(string name, TCLParameterList objects, string dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: copy_ip -name <arg> [-dir <arg>] [-quiet] [-verbose] <objects>...
 			_tcl.Entry(_builder.copy_ip(name, objects, dir, quiet, verbose));
@@ -498,7 +499,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of files that were extracted with the new paths</returns>
-		public TTCL extract_files(string files, string base_dir = null, bool? force = null, bool? no_ip_dir = null, bool? no_paths = null, bool? quiet = null, bool? verbose = null)
+		public TTCL extract_files(TCLParameterList files, string base_dir = null, bool? force = null, bool? no_ip_dir = null, bool? no_paths = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: extract_files [-base_dir <arg>] [-force] [-no_ip_dir] [-no_paths] [-quiet] [-verbose] <files>...
 			_tcl.Entry(_builder.extract_files(files, base_dir, force, no_ip_dir, no_paths, quiet, verbose));
@@ -614,7 +615,7 @@ namespace Quokka.TCL.Vivado
 		/// <cell name>'
 		/// </param>
 		/// <returns>list of IP upgrade results</returns>
-		public TTCL get_ip_upgrade_results(string srcset = null, bool? quiet = null, bool? verbose = null, string objects = null)
+		public TTCL get_ip_upgrade_results(string srcset = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
 		{
 			// TCL Syntax: get_ip_upgrade_results [-srcset <arg>] [-quiet] [-verbose] [<objects>...]
 			_tcl.Entry(_builder.get_ip_upgrade_results(srcset, quiet, verbose, objects));
@@ -670,7 +671,7 @@ namespace Quokka.TCL.Vivado
 		/// specified.
 		/// </param>
 		/// <returns>List of Catalog IP objects</returns>
-		public TTCL get_ipdefs(bool? name = null, bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? all = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_ipdefs(bool? name = null, bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? all = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_ipdefs [-name] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-all] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_ipdefs(name, regexp, nocase, filter, of_objects, all, quiet, verbose, patterns));
@@ -710,7 +711,7 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>list of IP objects</returns>
-		public TTCL get_ips(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? exclude_bd_ips = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_ips(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? exclude_bd_ips = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_ips [-regexp] [-nocase] [-all] [-filter <arg>] [-exclude_bd_ips] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_ips(regexp, nocase, all, filter, exclude_bd_ips, of_objects, quiet, verbose, patterns));
@@ -784,7 +785,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The Project that was opened</returns>
-		public TTCL open_example_project(string objects, string dir = null, bool? force = null, bool? in_process = null, bool? quiet = null, bool? verbose = null)
+		public TTCL open_example_project(TCLParameterList objects, string dir = null, bool? force = null, bool? in_process = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_example_project [-dir <arg>] [-force] [-in_process] [-quiet] [-verbose] <objects>...
 			_tcl.Entry(_builder.open_example_project(objects, dir, force, in_process, quiet, verbose));
@@ -1029,7 +1030,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>True for success</returns>
-		public TTCL update_ip_catalog(bool? rebuild = null, string add_ip = null, string delete_ip = null, string delete_mult_ip = null, string disable_ip = null, string enable_ip = null, string add_interface = null, bool? create_index = null, string repo_path = null, bool? update_module_ref = null, bool? quiet = null, bool? verbose = null)
+		public TTCL update_ip_catalog(bool? rebuild = null, string add_ip = null, string delete_ip = null, TCLParameterList delete_mult_ip = null, string disable_ip = null, string enable_ip = null, string add_interface = null, bool? create_index = null, string repo_path = null, bool? update_module_ref = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: update_ip_catalog [-rebuild] [-add_ip <arg>] [-delete_ip <arg>] [-delete_mult_ip <args>] [-disable_ip <arg>] [-enable_ip <arg>] [-add_interface <arg>] [-create_index] [-repo_path <arg>] [-update_module_ref] [-quiet] [-verbose]
 			_tcl.Entry(_builder.update_ip_catalog(rebuild, add_ip, delete_ip, delete_mult_ip, disable_ip, enable_ip, add_interface, create_index, repo_path, update_module_ref, quiet, verbose));
@@ -1061,7 +1062,7 @@ namespace Quokka.TCL.Vivado
 		/// name(s) within the design
 		/// </param>
 		/// <returns>A return code indicating success or failure.</returns>
-		public TTCL update_module_reference(bool? quiet = null, bool? verbose = null, string ips = null)
+		public TTCL update_module_reference(bool? quiet = null, bool? verbose = null, TCLParameterList ips = null)
 		{
 			// TCL Syntax: update_module_reference [-quiet] [-verbose] [<ips>...]
 			_tcl.Entry(_builder.update_module_reference(quiet, verbose, ips));
@@ -1119,7 +1120,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>A return code indicating success or failure.</returns>
-		public TTCL upgrade_ip(string objects, string srcset = null, string vlnv = null, string log = null, bool? quiet = null, bool? verbose = null)
+		public TTCL upgrade_ip(TCLParameterList objects, string srcset = null, string vlnv = null, string log = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: upgrade_ip [-srcset <arg>] [-vlnv <arg>] [-log <arg>] [-quiet] [-verbose] <objects>...
 			_tcl.Entry(_builder.upgrade_ip(objects, srcset, vlnv, log, quiet, verbose));
@@ -1187,7 +1188,7 @@ namespace Quokka.TCL.Vivado
 		/// be created. Default: ./
 		/// </param>
 		/// <returns>IP TCL file</returns>
-		public TTCL write_ip_tcl(bool? force = null, bool? no_ip_version = null, string ip_name = null, bool? show_defaults = null, bool? multiple_files = null, bool? quiet = null, bool? verbose = null, string objects = null, string tcl_filename = null)
+		public TTCL write_ip_tcl(bool? force = null, bool? no_ip_version = null, string ip_name = null, bool? show_defaults = null, bool? multiple_files = null, bool? quiet = null, bool? verbose = null, string objects = null, TCLParameterList tcl_filename = null)
 		{
 			// TCL Syntax: write_ip_tcl [-force] [-no_ip_version] [-ip_name <arg>] [-show_defaults] [-multiple_files] [-quiet] [-verbose] [<objects>] [<tcl_filename>...]
 			_tcl.Entry(_builder.write_ip_tcl(force, no_ip_version, ip_name, show_defaults, multiple_files, quiet, verbose, objects, tcl_filename));

@@ -2,6 +2,7 @@
 // See VivadoGenerator for implementation
 using System;
 using Quokka.TCL.Tools;
+using System.Collections.Generic;
 namespace Quokka.TCL.Vivado
 {
 	public partial class PartitionCommands<TTCL> where TTCL : TCLFile
@@ -86,7 +87,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL create_pr_configuration(string name, string partitions = null, string greyboxes = null, bool? use_netlist = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_pr_configuration(string name, TCLParameterList partitions = null, TCLParameterList greyboxes = null, bool? use_netlist = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_pr_configuration -name <arg> [-partitions <args>] [-greyboxes <args>] [-use_netlist] [-quiet] [-verbose]
 			_tcl.Entry(_builder.create_pr_configuration(name, partitions, greyboxes, use_netlist, quiet, verbose));
@@ -166,7 +167,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="config">(Optional) Specify the PR configuration to be set as current (active); optional</param>
 		/// <returns>list of PartitionDef objects</returns>
-		public TTCL current_pr_configuration(bool? quiet = null, bool? verbose = null, string config = null)
+		public TTCL current_pr_configuration(bool? quiet = null, bool? verbose = null, TCLParameterList config = null)
 		{
 			// TCL Syntax: current_pr_configuration [-quiet] [-verbose] [<config>...]
 			_tcl.Entry(_builder.current_pr_configuration(quiet, verbose, config));
@@ -328,7 +329,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match reconfigurable module names against patterns Default: *</param>
 		/// <returns>list of ReconfigModule objects</returns>
-		public TTCL get_reconfig_modules(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_reconfig_modules(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_reconfig_modules [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_reconfig_modules(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -376,7 +377,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL setup_pr_configurations(string partitions = null, bool? use_netlist = null, bool? force = null, string run = null, bool? quiet = null, bool? verbose = null)
+		public TTCL setup_pr_configurations(TCLParameterList partitions = null, bool? use_netlist = null, bool? force = null, string run = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: setup_pr_configurations [-partitions <args>] [-use_netlist] [-force] [-run <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.setup_pr_configurations(partitions, use_netlist, force, run, quiet, verbose));

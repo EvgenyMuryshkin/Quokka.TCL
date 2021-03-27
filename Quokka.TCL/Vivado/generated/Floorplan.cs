@@ -2,6 +2,7 @@
 // See VivadoGenerator for implementation
 using System;
 using Quokka.TCL.Tools;
+using System.Collections.Generic;
 namespace Quokka.TCL.Vivado
 {
 	public partial class FloorplanCommands<TTCL> where TTCL : TCLFile
@@ -53,7 +54,7 @@ namespace Quokka.TCL.Vivado
 		/// Cells to add. You can't use this option with -top option. You
 		/// must specify either -cells or -top option.
 		/// </param>
-		public TTCL add_cells_to_pblock(string pblock, bool? top = null, bool? add_primitives = null, bool? clear_locs = null, bool? quiet = null, bool? verbose = null, string cells = null)
+		public TTCL add_cells_to_pblock(string pblock, bool? top = null, bool? add_primitives = null, bool? clear_locs = null, bool? quiet = null, bool? verbose = null, TCLParameterList cells = null)
 		{
 			// TCL Syntax: add_cells_to_pblock [-top] [-add_primitives] [-clear_locs] [-quiet] [-verbose] <pblock> [<cells>...]
 			_tcl.Entry(_builder.add_cells_to_pblock(pblock, top, add_primitives, clear_locs, quiet, verbose, cells));
@@ -71,7 +72,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="power_sources">(Optional) List of power_sources to add. Can be power rails and/or power supplies</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL add_to_power_rail(string power_rail, string power_sources = null, bool? quiet = null, bool? verbose = null)
+		public TTCL add_to_power_rail(string power_rail, TCLParameterList power_sources = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: add_to_power_rail [-power_sources <args>] [-quiet] [-verbose] <power_rail>
 			_tcl.Entry(_builder.add_to_power_rail(power_rail, power_sources, quiet, verbose));
@@ -129,7 +130,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>new power_rail object</returns>
-		public TTCL create_power_rail(string name, string power_sources = null, bool? direct = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_power_rail(string name, TCLParameterList power_sources = null, bool? direct = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_power_rail [-power_sources <args>] [-direct] [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.create_power_rail(name, power_sources, direct, quiet, verbose));
@@ -153,7 +154,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hier">(Optional) Also delete all the children of Pblock</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_pblocks(string pblocks, bool? hier = null, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_pblocks(TCLParameterList pblocks, bool? hier = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_pblocks [-hier] [-quiet] [-verbose] <pblocks>...
 			_tcl.Entry(_builder.delete_pblocks(pblocks, hier, quiet, verbose));
@@ -240,7 +241,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match Pblock names against patterns Default: *</param>
 		/// <returns>list of Pblock objects</returns>
-		public TTCL get_pblocks(bool? regexp = null, bool? nocase = null, string filter = null, string of_objects = null, bool? include_nested_pblocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_pblocks(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? include_nested_pblocks = null, bool? quiet = null, bool? verbose = null, string patterns = null)
 		{
 			// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblocks] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_pblocks(regexp, nocase, filter, of_objects, include_nested_pblocks, quiet, verbose, patterns));
@@ -315,7 +316,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cell_site_list">(Required) a list of cells and sites in the interleaved order</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL place_cell(string cell_site_list, bool? quiet = null, bool? verbose = null)
+		public TTCL place_cell(TCLParameterList cell_site_list, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: place_cell [-quiet] [-verbose] <cell_site_list>...
 			_tcl.Entry(_builder.place_cell(cell_site_list, quiet, verbose));
@@ -341,7 +342,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cells">(Required) Cells to remove</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL remove_cells_from_pblock(string pblock, string cells, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_cells_from_pblock(string pblock, TCLParameterList cells, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_cells_from_pblock [-quiet] [-verbose] <pblock> <cells>...
 			_tcl.Entry(_builder.remove_cells_from_pblock(pblock, cells, quiet, verbose));
@@ -363,7 +364,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL remove_from_power_rail(string power_rail, string power_sources = null, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_from_power_rail(string power_rail, TCLParameterList power_sources = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_from_power_rail [-power_sources <args>] [-quiet] [-verbose] <power_rail>
 			_tcl.Entry(_builder.remove_from_power_rail(power_rail, power_sources, quiet, verbose));
@@ -409,7 +410,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="locs">(Optional) LOC treatment Default: keep_all</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL resize_pblock(string pblock, string add = null, string remove = null, string from = null, string to = null, bool? replace = null, string locs = null, bool? quiet = null, bool? verbose = null)
+		public TTCL resize_pblock(string pblock, TCLParameterList add = null, TCLParameterList remove = null, TCLParameterList from = null, TCLParameterList to = null, bool? replace = null, string locs = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: resize_pblock [-add <args>] [-remove <args>] [-from <args>] [-to <args>] [-replace] [-locs <arg>] [-quiet] [-verbose] <pblock>
 			_tcl.Entry(_builder.resize_pblock(pblock, add, remove, from, to, replace, locs, quiet, verbose));
@@ -464,7 +465,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cell_list">(Required) a list of cells to be unplaced</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL unplace_cell(string cell_list, bool? quiet = null, bool? verbose = null)
+		public TTCL unplace_cell(TCLParameterList cell_list, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: unplace_cell [-quiet] [-verbose] <cell_list>...
 			_tcl.Entry(_builder.unplace_cell(cell_list, quiet, verbose));
