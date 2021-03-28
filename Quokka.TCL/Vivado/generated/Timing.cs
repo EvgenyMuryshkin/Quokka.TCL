@@ -203,7 +203,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="enable_time_borrowing_for_max_delay_exceptions">(Optional)</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL config_timing_analysis(string enable_input_delay_default_clock = null, string enable_preset_clear_arcs = null, string ignore_io_paths = null, string disable_flight_delays = null, string merge_exceptions = null, string timing_early_launch_at_borrowing_latches = null, string enable_time_borrowing_for_max_delay_exceptions = null, bool? quiet = null, bool? verbose = null)
+		public TTCL config_timing_analysis(bool? enable_input_delay_default_clock = null, string enable_preset_clear_arcs = null, bool? ignore_io_paths = null, bool? disable_flight_delays = null, bool? merge_exceptions = null, bool? timing_early_launch_at_borrowing_latches = null, string enable_time_borrowing_for_max_delay_exceptions = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: config_timing_analysis [-enable_input_delay_default_clock <arg>] [-enable_preset_clear_arcs <arg>] [-ignore_io_paths <arg>] [-disable_flight_delays <arg>] [-merge_exceptions <arg>] [-timing_early_launch_at_borrowing_latches <arg>] [-enable_time_borrowing_for_max_delay_exceptions <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.config_timing_analysis(enable_input_delay_default_clock, enable_preset_clear_arcs, ignore_io_paths, disable_flight_delays, merge_exceptions, timing_early_launch_at_borrowing_latches, enable_time_borrowing_for_max_delay_exceptions, quiet, verbose));

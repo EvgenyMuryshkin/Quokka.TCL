@@ -32,7 +32,7 @@ namespace Quokka.TCL.SourceGenerator
         public List<string> Examples = new List<string>();
         public string Syntax = "";
 
-        public List<VivadoCommandParameter> orderedParameters => Parameters.Where(c => c is VivadoCommandRequiredParameter).Concat(Parameters.Where(c => c is VivadoCommandOptionalParameter)).ToList();
+        public List<VivadoCommandParameter> orderedParameters => Parameters.Where(c => c.Usage == VivadoCommandParameterUsage.Required).Concat(Parameters.Where(c => c.Usage == VivadoCommandParameterUsage.Optional)).ToList();
 
         public VivadoCommandRecord(VivadoCommandLog log, VivadoTCLFixes fixes, string name, VivdoCommandTextLines commandData)
         {
@@ -96,11 +96,13 @@ namespace Quokka.TCL.SourceGenerator
             var optionalFlag = Regex.Match(token, @"^\[\-(\w*)\]" + SpaceAndTailOrEOL);
             if (optionalFlag.Success)
             {
-                var arg = new VivadoCommandOptionalFlagParameter()
+                var arg = new VivadoCommandParameter()
                 {
                     Name = optionalFlag.Groups[1].Value,
                     UsageSectionToken = $"[-{optionalFlag.Groups[1].Value}]",
                     ArgumentsSectionToken = $"-{optionalFlag.Groups[1].Value}",
+                    Usage = VivadoCommandParameterUsage.Optional,
+                    Type = VivadoCommandParameterType.Flag
                 };
 
                 return (arg, optionalFlag.Groups[2].Value);
@@ -114,11 +116,13 @@ namespace Quokka.TCL.SourceGenerator
             var requiredParameter = Regex.Match(token, @"^\[<(\w*)>\]" + SpaceAndTailOrEOL);
             if (requiredParameter.Success)
             {
-                var arg = new VivadoCommandOptionalParameter()
+                var arg = new VivadoCommandParameter()
                 {
                     Name = requiredParameter.Groups[1].Value,
                     UsageSectionToken = $"[<{requiredParameter.Groups[1].Value}>]",
                     ArgumentsSectionToken = $"<{requiredParameter.Groups[1].Value}>",
+                    Usage = VivadoCommandParameterUsage.Optional,
+                    Type = VivadoCommandParameterType.String
                 };
                 return (arg, requiredParameter.Groups[2].Value);
             }
@@ -131,12 +135,14 @@ namespace Quokka.TCL.SourceGenerator
             var optionalNamedParameter = Regex.Match(token, @"^\[\-(\w*) <arg>\]" + SpaceAndTailOrEOL);
             if (optionalNamedParameter.Success)
             {
-                var arg = new VivadoCommandOptionalParameter()
+                var arg = new VivadoCommandParameter()
                 {
                     Name = optionalNamedParameter.Groups[1].Value,
                     UsageSectionToken = $"[-{optionalNamedParameter.Groups[1].Value}]",
                     ArgumentsSectionToken = $"-{optionalNamedParameter.Groups[1].Value} <arg>",
-                    IsNamed = true
+                    IsNamed = true,
+                    Usage = VivadoCommandParameterUsage.Optional,
+                    Type = VivadoCommandParameterType.String
                 };
                 return (arg, optionalNamedParameter.Groups[2].Value);
             }
@@ -149,13 +155,15 @@ namespace Quokka.TCL.SourceGenerator
             var requiredNamedListParameter = Regex.Match(token, @"^\[\-(\w*) <args>\]" + SpaceAndTailOrEOL);
             if (requiredNamedListParameter.Success)
             {
-                var arg = new VivadoCommandOptionalParameter()
+                var arg = new VivadoCommandParameter()
                 {
                     Name = requiredNamedListParameter.Groups[1].Value,
                     UsageSectionToken = $"[-{requiredNamedListParameter.Groups[1].Value}]",
                     ArgumentsSectionToken = $"-{requiredNamedListParameter.Groups[1].Value} <args>",
                     IsNamed = true,
-                    IsArray = true
+                    IsArray = true,
+                    Usage = VivadoCommandParameterUsage.Optional,
+                    Type = VivadoCommandParameterType.String
                 };
                 return (arg, requiredNamedListParameter.Groups[2].Value);
             }
@@ -168,12 +176,14 @@ namespace Quokka.TCL.SourceGenerator
             var optionalPatternsParameter = Regex.Match(token, @"^\[<(\w*)>\.\.\.\]" + SpaceAndTailOrEOL);
             if (optionalPatternsParameter.Success)
             {
-                var arg = new VivadoCommandOptionalParameter()
+                var arg = new VivadoCommandParameter()
                 {
                     Name = optionalPatternsParameter.Groups[1].Value,
                     UsageSectionToken = $"[<{optionalPatternsParameter.Groups[1].Value}>]",
                     ArgumentsSectionToken = $"<{optionalPatternsParameter.Groups[1].Value}>",
-                    IsArray = true
+                    IsArray = true,
+                    Usage = VivadoCommandParameterUsage.Optional,
+                    Type = VivadoCommandParameterType.String
                 };
                 return (arg, optionalPatternsParameter.Groups[2].Value);
             }
@@ -186,12 +196,14 @@ namespace Quokka.TCL.SourceGenerator
             var optionalPatternsParameter = Regex.Match(token, @"^<(\w*)>\.\.\." + SpaceAndTailOrEOL);
             if (optionalPatternsParameter.Success)
             {
-                var arg = new VivadoCommandRequiredParameter()
+                var arg = new VivadoCommandParameter()
                 {
                     Name = optionalPatternsParameter.Groups[1].Value,
                     UsageSectionToken = $"<{optionalPatternsParameter.Groups[1].Value}>",
                     ArgumentsSectionToken = $"<{optionalPatternsParameter.Groups[1].Value}>",
-                    IsArray = true
+                    IsArray = true,
+                    Usage = VivadoCommandParameterUsage.Required,
+                    Type = VivadoCommandParameterType.String
                 };
                 return (arg, optionalPatternsParameter.Groups[2].Value);
             }
@@ -204,11 +216,13 @@ namespace Quokka.TCL.SourceGenerator
             var requiredParameter = Regex.Match(token, @"^<(\w*)>" + SpaceAndTailOrEOL);
             if (requiredParameter.Success)
             {
-                var arg = new VivadoCommandRequiredParameter()
+                var arg = new VivadoCommandParameter()
                 {
                     Name = requiredParameter.Groups[1].Value,
                     UsageSectionToken = $"<{requiredParameter.Groups[1].Value}>",
                     ArgumentsSectionToken = $"<{requiredParameter.Groups[1].Value}>",
+                    Usage = VivadoCommandParameterUsage.Required,
+                    Type = VivadoCommandParameterType.String
                 };
                 return (arg, requiredParameter.Groups[2].Value);
             }
@@ -221,12 +235,14 @@ namespace Quokka.TCL.SourceGenerator
             var requiredNamedParameter = Regex.Match(token, @"^\-(\w*) <arg>" + SpaceAndTailOrEOL);
             if (requiredNamedParameter.Success)
             {
-                var arg = new VivadoCommandRequiredParameter()
+                var arg = new VivadoCommandParameter()
                 {
                     Name = requiredNamedParameter.Groups[1].Value,
                     UsageSectionToken = $"-{requiredNamedParameter.Groups[1].Value}",
                     ArgumentsSectionToken = $"-{requiredNamedParameter.Groups[1].Value} <arg>",
-                    IsNamed = true
+                    IsNamed = true,
+                    Usage = VivadoCommandParameterUsage.Required,
+                    Type = VivadoCommandParameterType.String
                 };
                 return (arg, requiredNamedParameter.Groups[2].Value);
             }
@@ -239,13 +255,15 @@ namespace Quokka.TCL.SourceGenerator
             var requiredNamedListParameter = Regex.Match(token, @"^\-(\w*) <args>" + SpaceAndTailOrEOL);
             if (requiredNamedListParameter.Success)
             {
-                var arg = new VivadoCommandRequiredParameter()
+                var arg = new VivadoCommandParameter()
                 {
                     Name = requiredNamedListParameter.Groups[1].Value,
                     UsageSectionToken = $"-{requiredNamedListParameter.Groups[1].Value}",
                     ArgumentsSectionToken = $"-{requiredNamedListParameter.Groups[1].Value} <args>",
                     IsNamed = true,
-                    IsArray = true
+                    IsArray = true,
+                    Usage = VivadoCommandParameterUsage.Required,
+                    Type = VivadoCommandParameterType.String
                 };
                 return (arg, requiredNamedListParameter.Groups[2].Value);
             }
@@ -331,6 +349,30 @@ namespace Quokka.TCL.SourceGenerator
                     arg.Description.Add(line);
                 }
             }
+
+            // try to fetch enums from description
+            foreach (var p in Parameters)
+            {
+                var desc = string.Join(" ", p.Description);
+                if (desc.Contains("Values:"))
+                {
+                    var valuesMatch = Regex.Match(desc, @"(?:.*)(?:Values:)(.*?)(?:$|Default:|;|\.)");
+                    if (valuesMatch.Success)
+                    {
+                        var parts = valuesMatch.Groups[1].Value.Split(',').Select(s => s.Trim().Replace(".", "")).ToList();
+                        if (parts.Count > 1)
+                        {
+                            p.EnumValues = parts;
+                        }
+                    }
+                }
+
+                if (p.EnumValues.Count == 2 && p.EnumValues.Contains("true") && p.EnumValues.Contains("false"))
+                {
+                    p.Type = VivadoCommandParameterType.Flag;
+                    p.IsNamed = true;
+                }
+            }
         }
         void OnCategories(List<string> content)
         {
@@ -365,23 +407,23 @@ namespace Quokka.TCL.SourceGenerator
                             case "option":
                             case "optional":
                             case "optional, default":
-                                switch (matchingArg)
+                                switch (matchingArg.Usage)
                                 {
-                                    case VivadoCommandRequiredParameter r:
+                                    case VivadoCommandParameterUsage.Required:
                                         if (IsRequiredInFixes(matchingArg.Name))
                                         {
                                             // usage matched
                                         }
                                         else if (IsOptionalInFixes(matchingArg.Name))
                                         {
-                                            fixUsage[matchingArg] = r.MakeOptional();
+                                            fixUsage[matchingArg].Usage = VivadoCommandParameterUsage.Optional;
                                         }
                                         else
                                         {
                                             _log.Command(Name).InconsistentUsage.Add(matchingArg.Name);
                                         }
                                         break;
-                                    case VivadoCommandOptionalParameter o:
+                                    case VivadoCommandParameterUsage.Optional:
                                         // usage matched
                                         break;
                                     default:
@@ -392,24 +434,24 @@ namespace Quokka.TCL.SourceGenerator
                                 fixUsage[matchingArg] = null;
                                 break;
                             case "required":
-                                switch (matchingArg)
+                                switch (matchingArg.Usage)
                                 {
-                                    case VivadoCommandRequiredParameter r:
+                                    case VivadoCommandParameterUsage.Required:
                                         // usage matched
                                         break;
-                                    case VivadoCommandOptionalParameter o:
+                                    case VivadoCommandParameterUsage.Optional:
                                         if (IsOptionalInFixes(matchingArg.Name))
                                         {
                                             // usage matched
                                         }
                                         else if (IsRequiredInFixes(matchingArg.Name))
                                         {
-                                            fixUsage[matchingArg] = o.MakeRequired();
+                                            fixUsage[matchingArg].Usage = VivadoCommandParameterUsage.Required;
                                         }
                                         else
                                         {
                                             // default make it required and report inconsistency
-                                            fixUsage[matchingArg] = o.MakeRequired();
+                                            fixUsage[matchingArg].Usage = VivadoCommandParameterUsage.Required;
                                             _log.Command(Name).InconsistentUsage.Add(matchingArg.Name);
                                         }
                                         break;
@@ -430,30 +472,6 @@ namespace Quokka.TCL.SourceGenerator
             }
 
             Parameters = Parameters.Where(p => fixUsage[p] != null).Select(p => fixUsage[p]).ToList();
-            /*
-            for (var idx = 0; idx < Parameters.Count; idx++)
-            {
-                var thisArg = Parameters[idx];
-                var nextArg = Parameters.Skip(idx + 1).FirstOrDefault();
-
-                var text = BaseGenerator.between(
-                    content, 
-                    $"-{thisArg.Name}", 
-                    true,
-                    nextArg?.Name == null ? null : $"-{nextArg?.Name}");
-
-                if (text == null || !text.Any())
-                {
-                    // parameter does not have description, assume it is a boolean flag
-                    //thisArg.IsFlag = true;
-                    continue;
-                }
-
-                continue;
-
-                throw new Exception($"Argument format was not recognized: {text[0]}");
-            }
-            */
         }
         void OnExamples(List<string> content)
         {

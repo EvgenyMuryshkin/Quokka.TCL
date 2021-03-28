@@ -22,7 +22,7 @@ namespace Quokka.TCL.Tools
             builder.AppendLine(commandBuilder.ToString());
         }
 
-        public SimpleTCLCommand Flag(string name, bool? value)
+        public SimpleTCLCommand OptionalFlag(string name, bool? value)
         {
             if (value.HasValue && value.Value)
             {
@@ -57,7 +57,17 @@ namespace Quokka.TCL.Tools
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
-                _parameters.Add(new TCLCommandStringNamedParameter(name, value));
+                _parameters.Add(new TCLCommandNamedStringParameter(name, value));
+            }
+
+            return this;
+        }
+
+        public SimpleTCLCommand OptionalNamedFlag(string name, bool? value)
+        {
+            if (value.HasValue)
+            {
+                _parameters.Add(new TCLCommandNamedFlagParameter(name, value.Value));
             }
 
             return this;
@@ -67,7 +77,7 @@ namespace Quokka.TCL.Tools
         {
             if (value != null && value.Params.Any(v => !string.IsNullOrWhiteSpace(v)))
             {
-                _parameters.Add(new TCLCommandStringListNamedParameter(name, value));
+                _parameters.Add(new TCLCommandNamedStringListParameter(name, value));
             }
 
             return this;
@@ -98,7 +108,7 @@ namespace Quokka.TCL.Tools
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentNullException($"Parameter '{name}' is required");
 
-            _parameters.Add(new TCLCommandStringNamedParameter(name, value));
+            _parameters.Add(new TCLCommandNamedStringParameter(name, value));
 
             return this;
         }
@@ -108,7 +118,7 @@ namespace Quokka.TCL.Tools
             if (value == null || !value.Params.Any() || value.Params.All(v => string.IsNullOrWhiteSpace(v)))
                 throw new ArgumentException($"Requires list of values");
 
-            _parameters.Add(new TCLCommandStringListNamedParameter(name, value));
+            _parameters.Add(new TCLCommandNamedStringListParameter(name, value));
 
             return this;
         }

@@ -96,12 +96,12 @@ namespace Quokka.TCL.SourceGenerator
             {
                 var descriptionLines = new List<string>();
 
-                switch (arg)
+                switch (arg.Usage)
                 {
-                    case VivadoCommandOptionalParameter _:
+                    case VivadoCommandParameterUsage.Optional:
                         descriptionLines.Add("(Optional)");
                         break;
-                    case VivadoCommandRequiredParameter _:
+                    case VivadoCommandParameterUsage.Required:
                         descriptionLines.Add("(Required)");
                         break;
                 }
@@ -137,22 +137,28 @@ namespace Quokka.TCL.SourceGenerator
         {
             return parameters.Select(a =>
             {
-                switch (a)
+                switch (a.Type)
                 {
-                    case VivadoCommandOptionalFlagParameter _:
+                    case VivadoCommandParameterType.Flag:
                         return $"bool? {a.CSName} = null";
-                    case VivadoCommandOptionalParameter _:
-                        if (a.IsArray)
-                            return $"TCLParameterList {a.CSName} = null";
-                        else
-                            return $"string {a.CSName} = null";
-                    case VivadoCommandRequiredParameter _:
-                        if (a.IsArray)
-                            return $"TCLParameterList {a.CSName}";
-                        else
-                            return $"string {a.CSName}";
+                    case VivadoCommandParameterType.String:
+                        switch(a.Usage)
+                        {
+                            case VivadoCommandParameterUsage.Optional:
+                                if (a.IsArray)
+                                    return $"TCLParameterList {a.CSName} = null";
+                                else
+                                    return $"string {a.CSName} = null";
+                            case VivadoCommandParameterUsage.Required:
+                                if (a.IsArray)
+                                    return $"TCLParameterList {a.CSName}";
+                                else
+                                    return $"string {a.CSName}";
+                            default:
+                                throw new Exception($"Unsupported parameter usage: {a.Usage}");
+                        }
                     default:
-                        throw new Exception($"Unsupported parameter type: {a.GetType()}");
+                        throw new Exception($"Unsupported parameter type: {a.Type}");
                 }
             });
         }
@@ -179,57 +185,84 @@ namespace Quokka.TCL.SourceGenerator
                     {
                         foreach (var arg in record.Parameters)
                         {
-                            switch (arg)
+                            switch (arg.Type)
                             {
-                                case VivadoCommandOptionalFlagParameter f:
-                                    builder.AppendLine($".Flag(\"{arg.Name}\", {arg.CSName})");
-                                    break;
-                                case VivadoCommandOptionalParameter o:
-                                    if (o.IsNamed)
+                                case VivadoCommandParameterType.Flag:
+                                    switch (arg.Usage)
                                     {
-                                        if (o.IsArray)
-                                        {
-                                            builder.AppendLine($".OptionalNamedStringList(\"{arg.Name}\", {arg.CSName})");
-                                        }
-                                        else
-                                        {
-                                            builder.AppendLine($".OptionalNamedString(\"{arg.Name}\", {arg.CSName})");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (o.IsArray)
-                                        {
-                                            builder.AppendLine($".OptionalStringList({arg.CSName})");
-                                        }
-                                        else
-                                        {
-                                            builder.AppendLine($".OptionalString({arg.CSName})");
-                                        }
+                                        case VivadoCommandParameterUsage.Optional:
+                                            if (arg.IsNamed)
+                                            {
+                                                builder.AppendLine($".OptionalNamedFlag(\"{arg.Name}\", {arg.CSName})");
+                                            }
+                                            else
+                                            {
+                                                builder.AppendLine($".OptionalFlag(\"{arg.Name}\", {arg.CSName})");
+                                            }
+                                            break;
+                                        case VivadoCommandParameterUsage.Required:
+                                            if (arg.IsNamed)
+                                            {
+                                                builder.AppendLine($".RequiredNamedFlag(\"{arg.Name}\", {arg.CSName})");
+                                            }
+                                            else
+                                            {
+                                                throw new Exception($"Required flag encountered: {record.Name}.{arg.CSName}");
+                                            }
+                                            break;
                                     }
                                     break;
-                                case VivadoCommandRequiredParameter p:
-                                    if (p.IsNamed)
+                                case VivadoCommandParameterType.String:
+                                    switch (arg.Usage)
                                     {
-                                        if (p.IsArray)
-                                        {
-                                            builder.AppendLine($".RequiredNamedStringList(\"{arg.Name}\", {arg.CSName})");
-                                        }
-                                        else
-                                        {
-                                            builder.AppendLine($".RequiredNamedString(\"{arg.Name}\", {arg.CSName})");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (p.IsArray)
-                                        {
-                                            builder.AppendLine($".RequiredStringList({arg.CSName})");
-                                        }
-                                        else
-                                        {
-                                            builder.AppendLine($".RequiredString({arg.CSName})");
-                                        }
+                                        case VivadoCommandParameterUsage.Optional:
+                                            if (arg.IsNamed)
+                                            {
+                                                if (arg.IsArray)
+                                                {
+                                                    builder.AppendLine($".OptionalNamedStringList(\"{arg.Name}\", {arg.CSName})");
+                                                }
+                                                else
+                                                {
+                                                    builder.AppendLine($".OptionalNamedString(\"{arg.Name}\", {arg.CSName})");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (arg.IsArray)
+                                                {
+                                                    builder.AppendLine($".OptionalStringList({arg.CSName})");
+                                                }
+                                                else
+                                                {
+                                                    builder.AppendLine($".OptionalString({arg.CSName})");
+                                                }
+                                            }
+                                            break;
+                                        case VivadoCommandParameterUsage.Required:
+                                            if (arg.IsNamed)
+                                            {
+                                                if (arg.IsArray)
+                                                {
+                                                    builder.AppendLine($".RequiredNamedStringList(\"{arg.Name}\", {arg.CSName})");
+                                                }
+                                                else
+                                                {
+                                                    builder.AppendLine($".RequiredNamedString(\"{arg.Name}\", {arg.CSName})");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (arg.IsArray)
+                                                {
+                                                    builder.AppendLine($".RequiredStringList({arg.CSName})");
+                                                }
+                                                else
+                                                {
+                                                    builder.AppendLine($".RequiredString({arg.CSName})");
+                                                }
+                                            }
+                                            break;
                                     }
                                     break;
                                 default:
@@ -373,6 +406,25 @@ namespace Quokka.TCL.SourceGenerator
             commandsBuilder.AppendLine("namespace Quokka.TCL.Vivado");
             using (commandsBuilder.CodeBlock())
             {
+                /*
+                foreach (var command in commandsData.Keys.OrderBy(k => k))
+                {
+                    var commandData = commandsData[command];
+                    var record = new VivadoCommandRecord(generatorContext.Log, generatorContext.Fixes, command, commandData);
+                    foreach (var p in record.Parameters.Where(t => t.EnumValues.Any()))
+                    {
+                        commandsBuilder.AppendLine($"public enum {record.Name}_{p.Name}");
+                        using (commandsBuilder.CodeBlock())
+                        {
+                            foreach (var value in p.EnumValues)
+                            {
+                                commandsBuilder.AppendLine($"{value},");
+                            }
+                        }
+                    }
+                }
+                */
+                
                 commandsBuilder.AppendLine($"public partial class VivadoTCLBuilder");
                 using (commandsBuilder.CodeBlock())
                 {

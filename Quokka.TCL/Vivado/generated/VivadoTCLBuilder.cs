@@ -40,8 +40,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: add_bp [-quiet] [-verbose] <file_name> <line_number>
 			return
 				new SimpleTCLCommand("add_bp")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file_name)
 					.RequiredString(line_number)
 			;
@@ -91,11 +91,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: add_cells_to_pblock [-top] [-add_primitives] [-clear_locs] [-quiet] [-verbose] <pblock> [<cells>...]
 			return
 				new SimpleTCLCommand("add_cells_to_pblock")
-					.Flag("top", top)
-					.Flag("add_primitives", add_primitives)
-					.Flag("clear_locs", clear_locs)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("top", top)
+					.OptionalFlag("add_primitives", add_primitives)
+					.OptionalFlag("clear_locs", clear_locs)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(pblock)
 					.OptionalStringList(cells)
 			;
@@ -161,9 +161,9 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("add_condition")
 					.OptionalNamedString("name", name)
 					.OptionalNamedString("radix", radix)
-					.Flag("notrace", notrace)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("notrace", notrace)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(condition_expression)
 					.RequiredString(commands)
 			;
@@ -222,12 +222,12 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("add_drc_checks")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.RequiredNamedString("ruledeck", ruledeck)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -320,12 +320,12 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("add_files")
 					.OptionalNamedString("fileset", fileset)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("norecurse", norecurse)
+					.OptionalFlag("norecurse", norecurse)
 					.OptionalNamedString("copy_to", copy_to)
-					.Flag("force", force)
-					.Flag("scan_for_includes", scan_for_includes)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("scan_for_includes", scan_for_includes)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(files)
 			;
 		}
@@ -383,8 +383,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("radix", radix)
 					.OptionalNamedString("repeat_every", repeat_every)
 					.OptionalNamedString("cancel_after", cancel_after)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hdl_object)
 					.RequiredStringList(values)
 			;
@@ -438,8 +438,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: add_hw_hbm_pc [-quiet] [-verbose] <mc_num> <pc_num> <hw_objects>
 			return
 				new SimpleTCLCommand("add_hw_hbm_pc")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(mc_num)
 					.RequiredString(pc_num)
 					.RequiredString(hw_objects)
@@ -513,10 +513,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: add_hw_probe_enum [-no_gui_update] [-dict <args>] [-quiet] [-verbose] <name> <value> <hw_probe>
 			return
 				new SimpleTCLCommand("add_hw_probe_enum")
-					.Flag("no_gui_update", no_gui_update)
+					.OptionalFlag("no_gui_update", no_gui_update)
 					.OptionalNamedStringList("dict", dict)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.RequiredString(value)
 					.RequiredString(hw_probe)
@@ -545,8 +545,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("add_peripheral_interface")
 					.RequiredNamedString("interface_mode", interface_mode)
 					.RequiredNamedString("axi_type", axi_type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.RequiredString(peripheral)
 			;
@@ -569,8 +569,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("add_to_power_rail")
 					.OptionalNamedStringList("power_sources", power_sources)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(power_rail)
 			;
 		}
@@ -660,16 +660,16 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("at_wave", at_wave)
 					.OptionalNamedStringList("after_wave", after_wave)
 					.OptionalNamedStringList("before_wave", before_wave)
-					.Flag("reverse", reverse)
+					.OptionalFlag("reverse", reverse)
 					.OptionalNamedString("radix", radix)
 					.OptionalNamedString("color", color)
 					.OptionalNamedString("name", name)
-					.Flag("recursive", recursive)
-					.Flag("r", r)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("recursive", recursive)
+					.OptionalFlag("r", r)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(items)
 			;
 		}
@@ -729,8 +729,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("after_wave", after_wave)
 					.OptionalNamedStringList("before_wave", before_wave)
 					.OptionalNamedString("color", color)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(name)
 			;
 		}
@@ -783,8 +783,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("at_wave", at_wave)
 					.OptionalNamedStringList("after_wave", after_wave)
 					.OptionalNamedStringList("before_wave", before_wave)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(name)
 			;
 		}
@@ -822,8 +822,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("add_wave_marker")
 					.OptionalNamedString("into", into)
 					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(time)
 					.OptionalString(unit)
 			;
@@ -889,11 +889,11 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("at_wave", at_wave)
 					.OptionalNamedStringList("after_wave", after_wave)
 					.OptionalNamedStringList("before_wave", before_wave)
-					.Flag("reverse", reverse)
+					.OptionalFlag("reverse", reverse)
 					.OptionalNamedString("radix", radix)
 					.OptionalNamedString("color", color)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(name)
 			;
 		}
@@ -926,8 +926,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: all_clocks [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("all_clocks")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -961,8 +961,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: all_cpus [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("all_cpus")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -995,8 +995,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: all_dsps [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("all_dsps")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -1040,14 +1040,14 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: all_fanin [-startpoints_only] [-flat] [-only_cells] [-levels <arg>] [-pin_levels <arg>] [-trace_arcs <arg>] [-quiet] [-verbose] <to>
 			return
 				new SimpleTCLCommand("all_fanin")
-					.Flag("startpoints_only", startpoints_only)
-					.Flag("flat", flat)
-					.Flag("only_cells", only_cells)
+					.OptionalFlag("startpoints_only", startpoints_only)
+					.OptionalFlag("flat", flat)
+					.OptionalFlag("only_cells", only_cells)
 					.OptionalNamedString("levels", levels)
 					.OptionalNamedString("pin_levels", pin_levels)
 					.OptionalNamedString("trace_arcs", trace_arcs)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(to)
 			;
 		}
@@ -1088,14 +1088,14 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: all_fanout [-endpoints_only] [-flat] [-only_cells] [-levels <arg>] [-pin_levels <arg>] [-trace_arcs <arg>] [-quiet] [-verbose] <from>
 			return
 				new SimpleTCLCommand("all_fanout")
-					.Flag("endpoints_only", endpoints_only)
-					.Flag("flat", flat)
-					.Flag("only_cells", only_cells)
+					.OptionalFlag("endpoints_only", endpoints_only)
+					.OptionalFlag("flat", flat)
+					.OptionalFlag("only_cells", only_cells)
 					.OptionalNamedString("levels", levels)
 					.OptionalNamedString("pin_levels", pin_levels)
 					.OptionalNamedString("trace_arcs", trace_arcs)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(from)
 			;
 		}
@@ -1137,8 +1137,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: all_ffs [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("all_ffs")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -1171,8 +1171,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: all_hsios [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("all_hsios")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -1207,8 +1207,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: all_inputs [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("all_inputs")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -1240,8 +1240,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: all_latches [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("all_latches")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -1272,8 +1272,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: all_outputs [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("all_outputs")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -1312,8 +1312,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: all_rams [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("all_rams")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -1366,16 +1366,16 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("clock", clock)
 					.OptionalNamedStringList("rise_clock", rise_clock)
 					.OptionalNamedStringList("fall_clock", fall_clock)
-					.Flag("cells", cells)
-					.Flag("data_pins", data_pins)
-					.Flag("clock_pins", clock_pins)
-					.Flag("async_pins", async_pins)
-					.Flag("output_pins", output_pins)
-					.Flag("level_sensitive", level_sensitive)
-					.Flag("edge_triggered", edge_triggered)
-					.Flag("no_hierarchy", no_hierarchy)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("cells", cells)
+					.OptionalFlag("data_pins", data_pins)
+					.OptionalFlag("clock_pins", clock_pins)
+					.OptionalFlag("async_pins", async_pins)
+					.OptionalFlag("output_pins", output_pins)
+					.OptionalFlag("level_sensitive", level_sensitive)
+					.OptionalFlag("edge_triggered", edge_triggered)
+					.OptionalFlag("no_hierarchy", no_hierarchy)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -1422,8 +1422,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("config", config)
 					.RequiredNamedString("dict", dict)
 					.RequiredNamedString("opts", opts)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(objects)
 			;
 		}
@@ -1477,8 +1477,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("board_interface", board_interface)
 					.RequiredNamedString("ip_intf", ip_intf)
 					.RequiredNamedString("diagram", diagram)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -1527,8 +1527,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("apply_hw_ila_trigger")
 					.OptionalNamedString("ila_cell", ila_cell)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(file)
 			;
 		}
@@ -1592,13 +1592,13 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("archive_project")
 					.OptionalNamedString("temp_dir", temp_dir)
-					.Flag("force", force)
-					.Flag("exclude_run_results", exclude_run_results)
-					.Flag("include_config_settings", include_config_settings)
-					.Flag("include_runs_in_progress", include_runs_in_progress)
-					.Flag("include_local_ip_cache", include_local_ip_cache)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("exclude_run_results", exclude_run_results)
+					.OptionalFlag("include_config_settings", include_config_settings)
+					.OptionalFlag("include_runs_in_progress", include_runs_in_progress)
+					.OptionalFlag("include_local_ip_cache", include_local_ip_cache)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(file)
 			;
 		}
@@ -1673,9 +1673,9 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("assign_bd_address")
 					.OptionalNamedString("target_address_space", target_address_space)
-					.Flag("boundary", boundary)
-					.Flag("master_boundary", master_boundary)
-					.Flag("external", external)
+					.OptionalFlag("boundary", boundary)
+					.OptionalFlag("master_boundary", master_boundary)
+					.OptionalFlag("external", external)
 					.RequiredNamedString("dict", dict)
 					.OptionalNamedString("import_from_file", import_from_file)
 					.OptionalNamedString("export_to_file", export_to_file)
@@ -1683,9 +1683,9 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("offset", offset)
 					.OptionalNamedString("range", range)
 					.OptionalNamedString("base_high", base_high)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(objects)
 			;
 		}
@@ -1720,8 +1720,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: auto_detect_xpm [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("auto_detect_xpm")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -1752,10 +1752,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: boot_hw_device [-disable_done_check] [-timeout <arg>] [-quiet] [-verbose] <hw_device>
 			return
 				new SimpleTCLCommand("boot_hw_device")
-					.Flag("disable_done_check", disable_done_check)
+					.OptionalFlag("disable_done_check", disable_done_check)
 					.OptionalNamedString("timeout", timeout)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_device)
 			;
 		}
@@ -1815,15 +1815,15 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: calc_config_time [-verbose] [-max] [-min] [-typical] [-por_used] [-por_ramp <arg>] [-clk_freq <arg>] [-bitstream_size <arg>] [-quiet]
 			return
 				new SimpleTCLCommand("calc_config_time")
-					.Flag("verbose", verbose)
-					.Flag("max", max)
-					.Flag("min", min)
-					.Flag("typical", typical)
-					.Flag("por_used", por_used)
+					.OptionalFlag("verbose", verbose)
+					.OptionalFlag("max", max)
+					.OptionalFlag("min", min)
+					.OptionalFlag("typical", typical)
+					.OptionalFlag("por_used", por_used)
 					.OptionalNamedString("por_ramp", por_ramp)
 					.OptionalNamedString("clk_freq", clk_freq)
 					.OptionalNamedString("bitstream_size", bitstream_size)
-					.Flag("quiet", quiet)
+					.OptionalFlag("quiet", quiet)
 			;
 		}
 		/// <summary>
@@ -1850,8 +1850,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: can_resolve_reference [-quiet] [-verbose] <module>...
 			return
 				new SimpleTCLCommand("can_resolve_reference")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(module)
 			;
 		}
@@ -1884,9 +1884,9 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("check_syntax")
 					.OptionalNamedString("fileset", fileset)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -1996,18 +1996,18 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("check_timing")
 					.OptionalNamedString("file", file)
-					.Flag("no_header", no_header)
+					.OptionalFlag("no_header", no_header)
 					.OptionalNamedString("loop_limit", loop_limit)
-					.Flag("append", append)
+					.OptionalFlag("append", append)
 					.OptionalNamedString("name", name)
 					.OptionalNamedStringList("override_defaults", override_defaults)
 					.OptionalNamedStringList("include", include)
 					.OptionalNamedStringList("exclude", exclude)
-					.Flag("return_string", return_string)
+					.OptionalFlag("return_string", return_string)
 					.OptionalNamedString("rpx", rpx)
 					.OptionalNamedStringList("cells", cells)
-					.Flag("verbose", verbose)
-					.Flag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
 			;
 		}
 		/// <summary>
@@ -2040,8 +2040,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: checkpoint_vcd [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("checkpoint_vcd")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -2066,8 +2066,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: close_bd_design [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("close_bd_design")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -2101,8 +2101,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: close_design [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("close_design")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -2125,8 +2125,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: close_hw_manager [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("close_hw_manager")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -2155,8 +2155,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: close_hw_target [-quiet] [-verbose] [<hw_target>]
 			return
 				new SimpleTCLCommand("close_hw_target")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(hw_target)
 			;
 		}
@@ -2194,9 +2194,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: close_project [-delete] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("close_project")
-					.Flag("delete", delete)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("delete", delete)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -2223,8 +2223,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: close_saif [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("close_saif")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -2255,9 +2255,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: close_sim [-force] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("close_sim")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -2283,8 +2283,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: close_vcd [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("close_vcd")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -2327,9 +2327,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: close_wave_config [-force] [-quiet] [-verbose] [<wcfgobj>]
 			return
 				new SimpleTCLCommand("close_wave_config")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(wcfgobj)
 			;
 		}
@@ -2370,10 +2370,10 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("hw", hw)
 					.OptionalNamedString("hw_emu", hw_emu)
 					.OptionalNamedString("o", o)
-					.Flag("add_digest", add_digest)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("add_digest", add_digest)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -2406,8 +2406,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: commit_hw_hbm [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("commit_hw_hbm")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -2438,8 +2438,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: commit_hw_mig [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("commit_hw_mig")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -2472,8 +2472,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: commit_hw_sio [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("commit_hw_sio")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -2500,8 +2500,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: commit_hw_sysmon [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("commit_hw_sysmon")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -2533,8 +2533,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: commit_hw_vio [-quiet] [-verbose] <hw_objects>...
 			return
 				new SimpleTCLCommand("commit_hw_vio")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(hw_objects)
 			;
 		}
@@ -2567,9 +2567,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: compile_c [-force] [-quiet] [-verbose] <objects>
 			return
 				new SimpleTCLCommand("compile_c")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -2633,7 +2633,7 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("compile_simlib")
 					.OptionalNamedString("directory", directory)
 					.OptionalNamedString("family", family)
-					.Flag("force", force)
+					.OptionalFlag("force", force)
 					.OptionalNamedString("language", language)
 					.OptionalNamedString("library", library)
 					.OptionalNamedString("print_library_info", print_library_info)
@@ -2641,12 +2641,12 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("simulator_exec_path", simulator_exec_path)
 					.OptionalNamedString("gcc_exec_path", gcc_exec_path)
 					.OptionalNamedString("source_library_path", source_library_path)
-					.Flag("no_ip_compile", no_ip_compile)
-					.Flag("32bit", _32bit)
-					.Flag("no_systemc_compile", no_systemc_compile)
-					.Flag("no_dpi_compile", no_dpi_compile)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("no_ip_compile", no_ip_compile)
+					.OptionalFlag("32bit", _32bit)
+					.OptionalFlag("no_systemc_compile", no_systemc_compile)
+					.OptionalFlag("no_dpi_compile", no_dpi_compile)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -2684,9 +2684,9 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("config_compile_simlib")
 					.OptionalNamedString("cfgopt", cfgopt)
 					.OptionalNamedString("simulator", simulator)
-					.Flag("reset", reset)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("reset", reset)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -2719,8 +2719,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("config_design_analysis")
 					.OptionalNamedString("max_common_paths", max_common_paths)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -2745,8 +2745,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("config_hw_sio_gts")
 					.OptionalNamedStringList("dict", dict)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_device)
 			;
 		}
@@ -2775,8 +2775,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: config_implementation [-quiet] [-verbose] [<list>]
 			return
 				new SimpleTCLCommand("config_implementation")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(list)
 			;
 		}
@@ -2939,34 +2939,34 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("config_ip_cache")
 					.OptionalNamedString("use_cache_location", use_cache_location)
-					.Flag("use_project_cache", use_project_cache)
-					.Flag("disable_cache", disable_cache)
-					.Flag("clear_output_repo", clear_output_repo)
-					.Flag("clear_local_cache", clear_local_cache)
-					.Flag("cache_has_match", cache_has_match)
-					.Flag("cache_was_used", cache_was_used)
-					.Flag("get_id", get_id)
+					.OptionalFlag("use_project_cache", use_project_cache)
+					.OptionalFlag("disable_cache", disable_cache)
+					.OptionalFlag("clear_output_repo", clear_output_repo)
+					.OptionalFlag("clear_local_cache", clear_local_cache)
+					.OptionalFlag("cache_has_match", cache_has_match)
+					.OptionalFlag("cache_was_used", cache_was_used)
+					.OptionalFlag("get_id", get_id)
 					.OptionalNamedString("get_entry_location", get_entry_location)
-					.Flag("remove", remove)
+					.OptionalFlag("remove", remove)
 					.OptionalNamedString("vlnv", vlnv)
-					.Flag("old_swvers", old_swvers)
-					.Flag("unused", unused)
+					.OptionalFlag("old_swvers", old_swvers)
+					.OptionalFlag("unused", unused)
 					.OptionalNamedString("swver", swver)
 					.OptionalNamedString("num_days_old", num_days_old)
 					.OptionalNamedString("num_days_unused", num_days_unused)
-					.Flag("obs_synth_crc", obs_synth_crc)
-					.Flag("disk_usage_output_repo", disk_usage_output_repo)
-					.Flag("report", report)
+					.OptionalFlag("obs_synth_crc", obs_synth_crc)
+					.OptionalFlag("disk_usage_output_repo", disk_usage_output_repo)
+					.OptionalFlag("report", report)
 					.OptionalNamedString("rptfile", rptfile)
 					.OptionalNamedString("csvfile", csvfile)
 					.OptionalNamedString("zip_cache", zip_cache)
-					.Flag("import_from_project", import_from_project)
+					.OptionalFlag("import_from_project", import_from_project)
 					.OptionalNamedString("filter", filter)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("purge", purge)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("purge", purge)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(ip)
 			;
 		}
@@ -3022,20 +3022,20 @@ namespace Quokka.TCL.Vivado
 		/// <param name="enable_time_borrowing_for_max_delay_exceptions">(Optional)</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public virtual SimpleTCLCommand config_timing_analysis(string enable_input_delay_default_clock = null, string enable_preset_clear_arcs = null, string ignore_io_paths = null, string disable_flight_delays = null, string merge_exceptions = null, string timing_early_launch_at_borrowing_latches = null, string enable_time_borrowing_for_max_delay_exceptions = null, bool? quiet = null, bool? verbose = null)
+		public virtual SimpleTCLCommand config_timing_analysis(bool? enable_input_delay_default_clock = null, string enable_preset_clear_arcs = null, bool? ignore_io_paths = null, bool? disable_flight_delays = null, bool? merge_exceptions = null, bool? timing_early_launch_at_borrowing_latches = null, string enable_time_borrowing_for_max_delay_exceptions = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: config_timing_analysis [-enable_input_delay_default_clock <arg>] [-enable_preset_clear_arcs <arg>] [-ignore_io_paths <arg>] [-disable_flight_delays <arg>] [-merge_exceptions <arg>] [-timing_early_launch_at_borrowing_latches <arg>] [-enable_time_borrowing_for_max_delay_exceptions <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("config_timing_analysis")
-					.OptionalNamedString("enable_input_delay_default_clock", enable_input_delay_default_clock)
+					.OptionalNamedFlag("enable_input_delay_default_clock", enable_input_delay_default_clock)
 					.OptionalNamedString("enable_preset_clear_arcs", enable_preset_clear_arcs)
-					.OptionalNamedString("ignore_io_paths", ignore_io_paths)
-					.OptionalNamedString("disable_flight_delays", disable_flight_delays)
-					.OptionalNamedString("merge_exceptions", merge_exceptions)
-					.OptionalNamedString("timing_early_launch_at_borrowing_latches", timing_early_launch_at_borrowing_latches)
+					.OptionalNamedFlag("ignore_io_paths", ignore_io_paths)
+					.OptionalNamedFlag("disable_flight_delays", disable_flight_delays)
+					.OptionalNamedFlag("merge_exceptions", merge_exceptions)
+					.OptionalNamedFlag("timing_early_launch_at_borrowing_latches", timing_early_launch_at_borrowing_latches)
 					.OptionalNamedString("enable_time_borrowing_for_max_delay_exceptions", enable_time_borrowing_for_max_delay_exceptions)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -3102,10 +3102,10 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("config_timing_corners")
 					.OptionalNamedString("corner", corner)
 					.OptionalNamedString("delay_type", delay_type)
-					.Flag("setup", setup)
-					.Flag("hold", hold)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("setup", setup)
+					.OptionalFlag("hold", hold)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -3164,11 +3164,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: config_webtalk [-info] [-user <arg>] [-install <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("config_webtalk")
-					.Flag("info", info)
+					.OptionalFlag("info", info)
 					.OptionalNamedString("user", user)
 					.OptionalNamedString("install", install)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -3209,8 +3209,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("connect_bd_intf_net")
 					.OptionalNamedString("intf_net", intf_net)
 					.OptionalNamedString("boundary_type", boundary_type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(object1)
 					.RequiredString(object2)
 					.OptionalString(auto)
@@ -3264,8 +3264,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("connect_bd_net")
 					.OptionalNamedString("net", net)
 					.OptionalNamedString("boundary_type", boundary_type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(objects)
 			;
 		}
@@ -3323,8 +3323,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("connect_debug_cores")
 					.RequiredNamedStringList("master", master)
 					.RequiredNamedStringList("slaves", slaves)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -3370,8 +3370,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("connect_debug_port")
 					.OptionalNamedString("channel_start_index", channel_start_index)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(port)
 					.RequiredStringList(nets)
 			;
@@ -3426,8 +3426,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("connect_hw_server")
 					.OptionalNamedString("url", url)
 					.OptionalNamedString("cs_url", cs_url)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -3491,14 +3491,14 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: connect_net [-hierarchical] [-basename <arg>] [-net <args>] [-objects <args>] [-net_object_list <args>] [-dict <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("connect_net")
-					.Flag("hierarchical", hierarchical)
+					.OptionalFlag("hierarchical", hierarchical)
 					.OptionalNamedString("basename", basename)
 					.OptionalNamedStringList("net", net)
 					.RequiredNamedStringList("objects", objects)
 					.OptionalNamedStringList("net_object_list", net_object_list)
 					.OptionalNamedStringList("dict", dict)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -3551,11 +3551,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: convert_ips [-force] [-to_core_container] [-from_core_container] [-quiet] [-verbose] <objects>
 			return
 				new SimpleTCLCommand("convert_ips")
-					.Flag("force", force)
-					.Flag("to_core_container", to_core_container)
-					.Flag("from_core_container", from_core_container)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("to_core_container", to_core_container)
+					.OptionalFlag("from_core_container", from_core_container)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -3609,10 +3609,10 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("convert_ngc")
 					.OptionalNamedString("output_dir", output_dir)
 					.OptionalNamedString("format", format)
-					.Flag("add_to_project", add_to_project)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("add_to_project", add_to_project)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(files)
 			;
 		}
@@ -3652,8 +3652,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("copy_bd_objs")
 					.OptionalNamedString("prefix", prefix)
 					.OptionalNamedString("from_design", from_design)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(parent_cell)
 					.RequiredStringList(objects)
 			;
@@ -3685,8 +3685,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("copy_ip")
 					.RequiredNamedString("name", name)
 					.OptionalNamedString("dir", dir)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(objects)
 			;
 		}
@@ -3724,9 +3724,9 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("copy_run")
 					.OptionalNamedString("parent_run", parent_run)
-					.Flag("verbose", verbose)
+					.OptionalFlag("verbose", verbose)
 					.RequiredNamedString("name", name)
-					.Flag("quiet", quiet)
+					.OptionalFlag("quiet", quiet)
 					.RequiredString(run)
 			;
 		}
@@ -3758,8 +3758,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("create_bd_addr_seg")
 					.RequiredNamedString("range", range)
 					.RequiredNamedString("offset", offset)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(parent_addr_space)
 					.RequiredString(slave_segment)
 					.RequiredString(name)
@@ -3838,8 +3838,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("type", type)
 					.OptionalNamedString("reference", reference)
 					.OptionalNamedString("revision", revision)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -3876,8 +3876,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("create_bd_design")
 					.OptionalNamedString("dir", dir)
 					.OptionalNamedString("cell", cell)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -3902,8 +3902,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_bd_intf_net [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("create_bd_intf_net")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -3943,8 +3943,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("create_bd_intf_pin")
 					.OptionalNamedString("vlnv", vlnv)
 					.OptionalNamedString("mode", mode)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -3977,8 +3977,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("create_bd_intf_port")
 					.OptionalNamedString("vlnv", vlnv)
 					.OptionalNamedString("mode", mode)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -4003,8 +4003,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("create_bd_intf_tlm_port")
 					.RequiredNamedString("vlnv", vlnv)
 					.RequiredNamedString("mode", mode)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -4028,8 +4028,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_bd_net [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("create_bd_net")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -4067,8 +4067,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("to", to)
 					.RequiredNamedString("dir", dir)
 					.OptionalNamedString("type", type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -4111,8 +4111,8 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("dir", dir)
 					.OptionalNamedString("type", type)
 					.OptionalNamedString("freq_hz", freq_hz)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -4133,8 +4133,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_bd_tlm_port [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("create_bd_tlm_port")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -4179,9 +4179,9 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("create_cell")
 					.RequiredNamedString("reference", reference)
-					.Flag("black_box", black_box)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("black_box", black_box)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(cells)
 			;
 		}
@@ -4242,9 +4242,9 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("period", period)
 					.OptionalNamedString("name", name)
 					.OptionalNamedStringList("waveform", waveform)
-					.Flag("add", add)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("add", add)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(objects)
 			;
 		}
@@ -4298,8 +4298,8 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("submit_cmd", submit_cmd)
 					.RequiredNamedString("kill_cmd", kill_cmd)
 					.RequiredNamedString("type", type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -4345,8 +4345,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("create_dashboard_gadget")
 					.RequiredNamedString("name", name)
 					.RequiredNamedString("type", type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -4430,8 +4430,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_debug_core [-quiet] [-verbose] <name> <type>
 			return
 				new SimpleTCLCommand("create_debug_core")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.RequiredString(type)
 			;
@@ -4482,8 +4482,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_debug_port [-quiet] [-verbose] <name> <type>
 			return
 				new SimpleTCLCommand("create_debug_port")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.RequiredString(type)
 			;
@@ -4620,8 +4620,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("msg", msg)
 					.RequiredNamedString("rule_body", rule_body)
 					.OptionalNamedString("severity", severity)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -4655,8 +4655,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_drc_ruledeck [-quiet] [-verbose] <ruledecks>...
 			return
 				new SimpleTCLCommand("create_drc_ruledeck")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(ruledecks)
 			;
 		}
@@ -4762,8 +4762,8 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("name", name)
 					.OptionalNamedString("severity", severity)
 					.OptionalNamedString("msg", msg)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(objects)
 			;
 		}
@@ -4822,13 +4822,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_fileset [-constrset] [-simset] [-blockset] [-clone_properties <arg>] -define_from <arg> [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("create_fileset")
-					.Flag("constrset", constrset)
-					.Flag("simset", simset)
-					.Flag("blockset", blockset)
+					.OptionalFlag("constrset", constrset)
+					.OptionalFlag("simset", simset)
+					.OptionalFlag("blockset", blockset)
 					.OptionalNamedString("clone_properties", clone_properties)
 					.OptionalNamedString("define_from", define_from)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -4917,14 +4917,14 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("edges", edges)
 					.OptionalNamedString("divide_by", divide_by)
 					.OptionalNamedString("multiply_by", multiply_by)
-					.Flag("combinational", combinational)
+					.OptionalFlag("combinational", combinational)
 					.OptionalNamedString("duty_cycle", duty_cycle)
-					.Flag("invert", invert)
+					.OptionalFlag("invert", invert)
 					.OptionalNamedStringList("edge_shift", edge_shift)
-					.Flag("add", add)
+					.OptionalFlag("add", add)
 					.OptionalNamedStringList("master_clock", master_clock)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -4978,13 +4978,13 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("name", name)
 					.OptionalNamedString("menu_name", menu_name)
 					.OptionalNamedString("description", description)
-					.Flag("show_on_toolbar", show_on_toolbar)
+					.OptionalFlag("show_on_toolbar", show_on_toolbar)
 					.OptionalNamedString("run_proc", run_proc)
 					.OptionalNamedString("toolbar_icon", toolbar_icon)
 					.OptionalNamedString("command", command)
 					.OptionalNamedString("tcl_file", tcl_file)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -5025,9 +5025,9 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("arg_name", arg_name)
 					.OptionalNamedString("default", @default)
 					.OptionalNamedString("comment", comment)
-					.Flag("optional", optional)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("optional", optional)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -5088,9 +5088,9 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("burst", burst)
 					.OptionalNamedString("cache", cache)
 					.OptionalNamedString("id", id)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.RequiredString(hw_axi)
 			;
@@ -5136,9 +5136,9 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("hw_device", hw_device)
 					.OptionalNamedString("mask", mask)
 					.OptionalNamedString("nky", nky)
-					.Flag("detect_partial", detect_partial)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("detect_partial", detect_partial)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -5180,8 +5180,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("create_hw_cfgmem")
 					.RequiredNamedString("hw_device", hw_device)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(mem_device)
 			;
 		}
@@ -5268,8 +5268,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("irlength", irlength)
 					.OptionalNamedString("mask", mask)
 					.OptionalNamedString("part", part)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -5317,10 +5317,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_hw_probe [-no_gui_update] [-map <arg>] [-quiet] [-verbose] <name> <core>
 			return
 				new SimpleTCLCommand("create_hw_probe")
-					.Flag("no_gui_update", no_gui_update)
+					.OptionalFlag("no_gui_update", no_gui_update)
 					.OptionalNamedString("map", map)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.RequiredString(core)
 			;
@@ -5358,8 +5358,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("create_hw_sio_link")
 					.OptionalNamedString("description", description)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(hw_sio_rx)
 					.OptionalString(hw_sio_tx)
 			;
@@ -5392,8 +5392,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("create_hw_sio_linkgroup")
 					.OptionalNamedString("description", description)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_sio_links)
 			;
 		}
@@ -5435,8 +5435,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("create_hw_sio_scan")
 					.OptionalNamedString("description", description)
 					.OptionalNamedString("link_settings", link_settings)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(scan_type)
 					.RequiredString(hw_sio_object)
 			;
@@ -5482,8 +5482,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("create_hw_sio_sweep")
 					.OptionalNamedString("description", description)
 					.OptionalNamedString("iteration_settings", iteration_settings)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(scan_type)
 					.OptionalString(hw_sio_link)
 			;
@@ -5551,8 +5551,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("create_hw_target")
 					.OptionalNamedString("copy", copy)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(target_name)
 			;
 		}
@@ -5582,8 +5582,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("create_interface")
 					.OptionalNamedString("parent", parent)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -5658,15 +5658,15 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("vlnv", vlnv)
 					.RequiredNamedString("module_name", module_name)
 					.OptionalNamedString("dir", dir)
-					.Flag("force", force)
-					.Flag("allow_hidden", allow_hidden)
+					.OptionalFlag("force", force)
+					.OptionalFlag("allow_hidden", allow_hidden)
 					.OptionalNamedString("vendor", vendor)
 					.OptionalNamedString("library", library)
 					.OptionalNamedString("name", name)
 					.OptionalNamedString("version", version)
 					.OptionalNamedString("revision", revision)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -5703,9 +5703,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_ip_run [-force] [-quiet] [-verbose] <objects>
 			return
 				new SimpleTCLCommand("create_ip_run")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -5742,8 +5742,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_macro [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("create_macro")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -5785,8 +5785,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("create_net")
 					.OptionalNamedString("from", from)
 					.OptionalNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(nets)
 			;
 		}
@@ -5828,8 +5828,8 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("name", name)
 					.RequiredNamedString("module", module)
 					.OptionalNamedString("library", library)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -5869,8 +5869,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_pblock [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("create_pblock")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -5904,8 +5904,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("create_peripheral")
 					.OptionalNamedString("dir", dir)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(vendor)
 					.RequiredString(library)
 					.RequiredString(name)
@@ -5959,8 +5959,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("from", from)
 					.OptionalNamedString("to", to)
 					.RequiredNamedString("direction", direction)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(pins)
 			;
 		}
@@ -6022,10 +6022,10 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("direction", direction)
 					.OptionalNamedString("from", from)
 					.OptionalNamedString("to", to)
-					.Flag("diff_pair", diff_pair)
+					.OptionalFlag("diff_pair", diff_pair)
 					.OptionalNamedString("interface", @interface)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.OptionalString(negative_name)
 			;
@@ -6063,8 +6063,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("direction", direction)
 					.OptionalNamedString("from", from)
 					.OptionalNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -6087,9 +6087,9 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("create_power_rail")
 					.OptionalNamedStringList("power_sources", power_sources)
-					.Flag("direct", direct)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("direct", direct)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -6138,9 +6138,9 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("name", name)
 					.OptionalNamedStringList("partitions", partitions)
 					.OptionalNamedStringList("greyboxes", greyboxes)
-					.Flag("use_netlist", use_netlist)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("use_netlist", use_netlist)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -6217,12 +6217,12 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("create_project")
 					.OptionalNamedString("part", part)
-					.Flag("force", force)
-					.Flag("in_memory", in_memory)
-					.Flag("ip", ip)
-					.Flag("rtl_kernel", rtl_kernel)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("in_memory", in_memory)
+					.OptionalFlag("ip", ip)
+					.OptionalFlag("rtl_kernel", rtl_kernel)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.OptionalString(dir)
 			;
@@ -6279,8 +6279,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("default_value", default_value)
 					.OptionalNamedStringList("file_types", file_types)
 					.OptionalNamedString("display_text", display_text)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.RequiredString(@class)
 			;
@@ -6334,12 +6334,12 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("create_reconfig_module")
 					.RequiredNamedString("name", name)
 					.OptionalNamedString("top", top)
-					.Flag("gate_level", gate_level)
+					.OptionalFlag("gate_level", gate_level)
 					.RequiredNamedString("partition_def", partition_def)
 					.OptionalNamedString("define_from", define_from)
 					.OptionalNamedString("define_from_file", define_from_file)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -6414,8 +6414,8 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedStringList("runs", runs)
 					.OptionalNamedString("options", options)
 					.OptionalNamedStringList("copy_of", copy_of)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -6495,8 +6495,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("synth_name", synth_name)
 					.OptionalNamedString("opt_more_options", opt_more_options)
 					.OptionalNamedString("place_more_options", place_more_options)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -6544,8 +6544,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("strategy", strategy)
 					.OptionalNamedString("report_strategy", report_strategy)
 					.OptionalNamedString("pr_config", pr_config)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -6592,13 +6592,13 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("slack_less_than", slack_less_than)
 					.OptionalNamedString("slack_greater_than", slack_greater_than)
 					.OptionalNamedStringList("group", group)
-					.Flag("report_unconstrained", report_unconstrained)
+					.OptionalFlag("report_unconstrained", report_unconstrained)
 					.OptionalNamedString("significant_digits", significant_digits)
 					.OptionalNamedString("scale", scale)
 					.OptionalNamedString("name", name)
 					.OptionalNamedStringList("cells", cells)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -6633,8 +6633,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_sysgen [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("create_sysgen")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -6771,9 +6771,9 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("description", description)
 					.OptionalNamedString("tags", tags)
 					.OptionalNamedString("timestamp", timestamp)
-					.Flag("scoped", scoped)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("scoped", scoped)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -6813,8 +6813,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_wave_config [-quiet] [-verbose] [<name>]
 			return
 				new SimpleTCLCommand("create_wave_config")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(name)
 			;
 		}
@@ -6854,8 +6854,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_xps [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("create_xps")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -6894,8 +6894,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_bd_design [-quiet] [-verbose] [<design>]
 			return
 				new SimpleTCLCommand("current_bd_design")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(design)
 			;
 		}
@@ -6930,8 +6930,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_bd_instance [-quiet] [-verbose] [<instance>]
 			return
 				new SimpleTCLCommand("current_bd_instance")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(instance)
 			;
 		}
@@ -6972,8 +6972,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_board [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("current_board")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -7014,8 +7014,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_board_part [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("current_board_part")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -7045,8 +7045,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_design [-quiet] [-verbose] [<design>]
 			return
 				new SimpleTCLCommand("current_design")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(design)
 			;
 		}
@@ -7081,10 +7081,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_fileset [-constrset] [-simset] [-quiet] [-verbose] [<fileset>...]
 			return
 				new SimpleTCLCommand("current_fileset")
-					.Flag("constrset", constrset)
-					.Flag("simset", simset)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("constrset", constrset)
+					.OptionalFlag("simset", simset)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(fileset)
 			;
 		}
@@ -7190,11 +7190,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_frame [-up] [-down] [-set <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("current_frame")
-					.Flag("up", up)
-					.Flag("down", down)
+					.OptionalFlag("up", up)
+					.OptionalFlag("down", down)
 					.OptionalNamedString("set", set)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -7230,8 +7230,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("current_hw_cfgmem")
 					.OptionalNamedStringList("hw_device", hw_device)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(hw_cfgmem)
 			;
 		}
@@ -7282,8 +7282,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_hw_device [-quiet] [-verbose] [<hw_device>]
 			return
 				new SimpleTCLCommand("current_hw_device")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(hw_device)
 			;
 		}
@@ -7323,8 +7323,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_hw_ila [-quiet] [-verbose] [<hw_ila>]
 			return
 				new SimpleTCLCommand("current_hw_ila")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(hw_ila)
 			;
 		}
@@ -7360,8 +7360,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_hw_ila_data [-quiet] [-verbose] [<hw_ila_data>]
 			return
 				new SimpleTCLCommand("current_hw_ila_data")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(hw_ila_data)
 			;
 		}
@@ -7404,8 +7404,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_hw_server [-quiet] [-verbose] [<hw_server>]
 			return
 				new SimpleTCLCommand("current_hw_server")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(hw_server)
 			;
 		}
@@ -7453,8 +7453,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_hw_target [-quiet] [-verbose] [<hw_target>]
 			return
 				new SimpleTCLCommand("current_hw_target")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(hw_target)
 			;
 		}
@@ -7510,8 +7510,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_instance [-quiet] [-verbose] [<instance>]
 			return
 				new SimpleTCLCommand("current_instance")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(instance)
 			;
 		}
@@ -7546,8 +7546,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_pr_configuration [-quiet] [-verbose] [<config>...]
 			return
 				new SimpleTCLCommand("current_pr_configuration")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(config)
 			;
 		}
@@ -7578,8 +7578,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_project [-quiet] [-verbose] [<project>]
 			return
 				new SimpleTCLCommand("current_project")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(project)
 			;
 		}
@@ -7618,10 +7618,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_run [-synthesis] [-implementation] [-quiet] [-verbose] [<run>]
 			return
 				new SimpleTCLCommand("current_run")
-					.Flag("synthesis", synthesis)
-					.Flag("implementation", implementation)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("synthesis", synthesis)
+					.OptionalFlag("implementation", implementation)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(run)
 			;
 		}
@@ -7652,8 +7652,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_scope [-quiet] [-verbose] [<hdl_scope>]
 			return
 				new SimpleTCLCommand("current_scope")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(hdl_scope)
 			;
 		}
@@ -7685,8 +7685,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_sim [-quiet] [-verbose] [<simulationObject>]
 			return
 				new SimpleTCLCommand("current_sim")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(simulationObject)
 			;
 		}
@@ -7712,9 +7712,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_time [-s] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("current_time")
-					.Flag("s", s)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("s", s)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -7742,8 +7742,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_vcd [-quiet] [-verbose] [<VCDObject>]
 			return
 				new SimpleTCLCommand("current_vcd")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(VCDObject)
 			;
 		}
@@ -7762,8 +7762,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_vivado_preferences [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("current_vivado_preferences")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -7797,8 +7797,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: current_wave_config [-quiet] [-verbose] [<wcfgObj>]
 			return
 				new SimpleTCLCommand("current_wave_config")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(wcfgObj)
 			;
 		}
@@ -7832,9 +7832,9 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("decrypt_bitstream")
 					.RequiredNamedString("encrypted_file", encrypted_file)
 					.RequiredNamedString("keyfile", keyfile)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -7861,8 +7861,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_bd_objs [-quiet] [-verbose] <objects>...
 			return
 				new SimpleTCLCommand("delete_bd_objs")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(objects)
 			;
 		}
@@ -7888,8 +7888,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_clock_networks_results [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("delete_clock_networks_results")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -7912,8 +7912,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_dashboard_gadgets [-quiet] [-verbose] <gadgets>
 			return
 				new SimpleTCLCommand("delete_dashboard_gadgets")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(gadgets)
 			;
 		}
@@ -7943,8 +7943,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_debug_core [-quiet] [-verbose] <cores>...
 			return
 				new SimpleTCLCommand("delete_debug_core")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(cores)
 			;
 		}
@@ -7978,8 +7978,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_debug_port [-quiet] [-verbose] <ports>...
 			return
 				new SimpleTCLCommand("delete_debug_port")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(ports)
 			;
 		}
@@ -8016,8 +8016,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_drc_check [-quiet] [-verbose] <name>...
 			return
 				new SimpleTCLCommand("delete_drc_check")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(name)
 			;
 		}
@@ -8055,11 +8055,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_drc_ruledeck [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("delete_drc_ruledeck")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -8089,8 +8089,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("delete_fileset")
 					.OptionalNamedString("merge", merge)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(fileset)
 			;
 		}
@@ -8117,8 +8117,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_hw_axi_txn [-quiet] [-verbose] <hw_axi_txns>...
 			return
 				new SimpleTCLCommand("delete_hw_axi_txn")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(hw_axi_txns)
 			;
 		}
@@ -8144,8 +8144,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("delete_hw_bitstream")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -8166,8 +8166,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_hw_cfgmem [-quiet] [-verbose] <cfgmem>
 			return
 				new SimpleTCLCommand("delete_hw_cfgmem")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(cfgmem)
 			;
 		}
@@ -8194,8 +8194,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_hw_probe [-quiet] [-verbose] <hw_probes>...
 			return
 				new SimpleTCLCommand("delete_hw_probe")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(hw_probes)
 			;
 		}
@@ -8223,8 +8223,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_hw_target [-quiet] [-verbose] [<target_object>]
 			return
 				new SimpleTCLCommand("delete_hw_target")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(target_object)
 			;
 		}
@@ -8251,9 +8251,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_interface [-all] [-quiet] [-verbose] <interfaces>...
 			return
 				new SimpleTCLCommand("delete_interface")
-					.Flag("all", all)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("all", all)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(interfaces)
 			;
 		}
@@ -8293,9 +8293,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_ip_run [-force] [-quiet] [-verbose] <objects>
 			return
 				new SimpleTCLCommand("delete_ip_run")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -8321,8 +8321,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_macros [-quiet] [-verbose] <macros>
 			return
 				new SimpleTCLCommand("delete_macros")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(macros)
 			;
 		}
@@ -8352,8 +8352,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("delete_partition_defs")
 					.OptionalNamedString("merge", merge)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(partition_defs)
 			;
 		}
@@ -8380,9 +8380,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_pblocks [-hier] [-quiet] [-verbose] <pblocks>...
 			return
 				new SimpleTCLCommand("delete_pblocks")
-					.Flag("hier", hier)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("hier", hier)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(pblocks)
 			;
 		}
@@ -8402,8 +8402,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_power_rails [-quiet] [-verbose] <power_rail>
 			return
 				new SimpleTCLCommand("delete_power_rails")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(power_rail)
 			;
 		}
@@ -8431,8 +8431,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("delete_power_results")
 					.RequiredNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -8454,8 +8454,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_pr_configurations [-quiet] [-verbose] <configs>
 			return
 				new SimpleTCLCommand("delete_pr_configurations")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(configs)
 			;
 		}
@@ -8485,8 +8485,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_qor_suggestions [-quiet] [-verbose] [<IDs>]
 			return
 				new SimpleTCLCommand("delete_qor_suggestions")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(IDs)
 			;
 		}
@@ -8511,8 +8511,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("delete_reconfig_modules")
 					.OptionalNamedString("merge", merge)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(rms)
 			;
 		}
@@ -8539,8 +8539,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_report_configs [-quiet] [-verbose] <report_configs>...
 			return
 				new SimpleTCLCommand("delete_report_configs")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(report_configs)
 			;
 		}
@@ -8573,8 +8573,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_rpm [-quiet] [-verbose] <rpm>
 			return
 				new SimpleTCLCommand("delete_rpm")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(rpm)
 			;
 		}
@@ -8604,9 +8604,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_runs [-noclean_dir] [-quiet] [-verbose] <runs>
 			return
 				new SimpleTCLCommand("delete_runs")
-					.Flag("noclean_dir", noclean_dir)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("noclean_dir", noclean_dir)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(runs)
 			;
 		}
@@ -8640,8 +8640,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("delete_timing_results")
 					.OptionalNamedString("type", type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -8668,8 +8668,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("delete_utilization_results")
 					.RequiredNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -8708,9 +8708,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: delete_waivers [-scoped] [-quiet] [-verbose] [<objects>...]
 			return
 				new SimpleTCLCommand("delete_waivers")
-					.Flag("scoped", scoped)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("scoped", scoped)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(objects)
 			;
 		}
@@ -8771,8 +8771,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: describe [-quiet] [-verbose] <hdl_object>
 			return
 				new SimpleTCLCommand("describe")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hdl_object)
 			;
 		}
@@ -8809,9 +8809,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: detect_hw_sio_links [-force] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("detect_hw_sio_links")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -8840,8 +8840,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: disconnect_bd_intf_net [-quiet] [-verbose] <intf_net> <objects>...
 			return
 				new SimpleTCLCommand("disconnect_bd_intf_net")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(intf_net)
 					.RequiredStringList(objects)
 			;
@@ -8870,8 +8870,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: disconnect_bd_net [-quiet] [-verbose] <net> <objects>...
 			return
 				new SimpleTCLCommand("disconnect_bd_net")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(net)
 					.RequiredStringList(objects)
 			;
@@ -8911,8 +8911,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("disconnect_debug_port")
 					.OptionalNamedString("channel_index", channel_index)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(port)
 			;
 		}
@@ -8939,8 +8939,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: disconnect_hw_server [-quiet] [-verbose] [<hw_server>]
 			return
 				new SimpleTCLCommand("disconnect_hw_server")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(hw_server)
 			;
 		}
@@ -8985,12 +8985,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: disconnect_net [-prune] [-net <arg>] [-objects <args>] [-pinlist <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("disconnect_net")
-					.Flag("prune", prune)
+					.OptionalFlag("prune", prune)
 					.OptionalNamedString("net", net)
 					.OptionalNamedStringList("objects", objects)
 					.OptionalNamedStringList("pinlist", pinlist)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -9028,9 +9028,9 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("display_hw_ila_data")
 					.OptionalNamedString("wcfg", wcfg)
-					.Flag("reset", reset)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("reset", reset)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(hw_ila_data)
 			;
 		}
@@ -9057,8 +9057,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: display_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
 			return
 				new SimpleTCLCommand("display_hw_sio_scan")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_sio_scans)
 			;
 		}
@@ -9097,8 +9097,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("key", key)
 					.RequiredNamedString("lang", lang)
 					.OptionalNamedString("ext", ext)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(files)
 			;
 		}
@@ -9138,8 +9138,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: endgroup [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("endgroup")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -9196,8 +9196,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("exclude_bd_addr_seg")
 					.OptionalNamedString("target_address_space", target_address_space)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(segment_to_exclude)
 			;
 		}
@@ -9238,8 +9238,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: execute_hw_svf [-quiet] [-verbose] <file_name>
 			return
 				new SimpleTCLCommand("execute_hw_svf")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file_name)
 			;
 		}
@@ -9267,10 +9267,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("export_as_example_design")
 					.RequiredNamedString("vlnv", vlnv)
-					.Flag("no_ip_version", no_ip_version)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("no_ip_version", no_ip_version)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredNamedString("directory", directory)
 			;
 		}
@@ -9303,10 +9303,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: export_bd_synth [-force] [-keep] [-verbose] [-quiet] <file>
 			return
 				new SimpleTCLCommand("export_bd_synth")
-					.Flag("force", force)
-					.Flag("keep", keep)
-					.Flag("verbose", verbose)
-					.Flag("quiet", quiet)
+					.OptionalFlag("force", force)
+					.OptionalFlag("keep", keep)
+					.OptionalFlag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
 					.RequiredString(file)
 			;
 		}
@@ -9352,12 +9352,12 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("ip_user_files_dir", ip_user_files_dir)
 					.OptionalNamedString("ipstatic_source_dir", ipstatic_source_dir)
 					.OptionalNamedString("lib_map_path", lib_map_path)
-					.Flag("no_script", no_script)
-					.Flag("sync", sync)
-					.Flag("reset", reset)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("no_script", no_script)
+					.OptionalFlag("sync", sync)
+					.OptionalFlag("reset", reset)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -9531,14 +9531,14 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("define", define)
 					.OptionalNamedString("generic", generic)
 					.OptionalNamedString("include", include)
-					.Flag("use_ip_compiled_libs", use_ip_compiled_libs)
-					.Flag("absolute_path", absolute_path)
-					.Flag("export_source_files", export_source_files)
-					.Flag("generate_hier_access", generate_hier_access)
-					.Flag("32bit", _32bit)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("use_ip_compiled_libs", use_ip_compiled_libs)
+					.OptionalFlag("absolute_path", absolute_path)
+					.OptionalFlag("export_source_files", export_source_files)
+					.OptionalFlag("generate_hier_access", generate_hier_access)
+					.OptionalFlag("32bit", _32bit)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -9573,11 +9573,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("extract_files")
 					.OptionalNamedString("base_dir", base_dir)
-					.Flag("force", force)
-					.Flag("no_ip_dir", no_ip_dir)
-					.Flag("no_paths", no_paths)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("no_ip_dir", no_ip_dir)
+					.OptionalFlag("no_paths", no_paths)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(files)
 			;
 		}
@@ -9614,10 +9614,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: filter [-regexp] [-nocase] [-quiet] [-verbose] [<objects>] [<filter>]
 			return
 				new SimpleTCLCommand("filter")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(objects)
 					.OptionalString(filter)
 			;
@@ -9696,12 +9696,12 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("find_bd_objs")
 					.RequiredNamedString("relation", relation)
 					.OptionalNamedString("boundary_type", boundary_type)
-					.Flag("thru_hier", thru_hier)
-					.Flag("stop_at_interconnect", stop_at_interconnect)
-					.Flag("stop_at_container", stop_at_container)
+					.OptionalFlag("thru_hier", thru_hier)
+					.OptionalFlag("stop_at_interconnect", stop_at_interconnect)
+					.OptionalFlag("stop_at_container", stop_at_container)
 					.OptionalNamedString("end_type", end_type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(objects)
 			;
 		}
@@ -9767,13 +9767,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: find_routing_path [-allow_overlap] [-max_nodes <arg>] [-min_nodes <arg>] [-from <args>] [-to <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("find_routing_path")
-					.Flag("allow_overlap", allow_overlap)
+					.OptionalFlag("allow_overlap", allow_overlap)
 					.OptionalNamedString("max_nodes", max_nodes)
 					.OptionalNamedString("min_nodes", min_nodes)
 					.OptionalNamedStringList("from", from)
 					.OptionalNamedStringList("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -9820,9 +9820,9 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("find_top")
 					.OptionalNamedString("fileset", fileset)
 					.OptionalNamedStringList("files", files)
-					.Flag("return_file_paths", return_file_paths)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("return_file_paths", return_file_paths)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -9852,8 +9852,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: flush_vcd [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("flush_vcd")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -9887,8 +9887,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("reconfig_platform", reconfig_platform)
 					.OptionalNamedString("base_platform", base_platform)
 					.OptionalNamedString("reconfig_platform_prefix", reconfig_platform_prefix)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -9930,8 +9930,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("pseudo_top", pseudo_top)
 					.OptionalNamedString("testbench", testbench)
 					.OptionalNamedString("log", log)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -9968,9 +9968,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: generate_mem_files [-force] [-quiet] [-verbose] <directory>
 			return
 				new SimpleTCLCommand("generate_mem_files")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(directory)
 			;
 		}
@@ -10009,8 +10009,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("inverse_pblock", inverse_pblock)
 					.OptionalNamedString("nested_pblock", nested_pblock)
 					.OptionalNamedString("nested_width", nested_width)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -10039,14 +10039,14 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: generate_peripheral [-driver] [-example_design] [-bfm_example_design] [-debug_hw_example_design] [-enable_interrupt] [-force] [-quiet] [-verbose] <peripheral>
 			return
 				new SimpleTCLCommand("generate_peripheral")
-					.Flag("driver", driver)
-					.Flag("example_design", example_design)
-					.Flag("bfm_example_design", bfm_example_design)
-					.Flag("debug_hw_example_design", debug_hw_example_design)
-					.Flag("enable_interrupt", enable_interrupt)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("driver", driver)
+					.OptionalFlag("example_design", example_design)
+					.OptionalFlag("bfm_example_design", bfm_example_design)
+					.OptionalFlag("debug_hw_example_design", debug_hw_example_design)
+					.OptionalFlag("enable_interrupt", enable_interrupt)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(peripheral)
 			;
 		}
@@ -10079,8 +10079,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("generate_reports")
 					.OptionalNamedString("jobs", jobs)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(report_configs)
 			;
 		}
@@ -10111,8 +10111,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("reconfig_platform", reconfig_platform)
 					.OptionalNamedString("base_platform", base_platform)
 					.OptionalNamedString("platform", platform)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -10138,8 +10138,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("wrapper", wrapper)
 					.OptionalNamedString("output", output)
 					.OptionalNamedString("reconfig_platform", reconfig_platform)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -10193,9 +10193,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: generate_target [-force] [-quiet] [-verbose] <name> <objects>
 			return
 				new SimpleTCLCommand("generate_target")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.RequiredString(objects)
 			;
@@ -10241,17 +10241,17 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_bd_addr_segs [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-excluded] [-addressed] [-unaddressed] [-addressing] [-addressables] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_bd_addr_segs")
-					.Flag("regexp", regexp)
-					.Flag("hierarchical", hierarchical)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("hierarchical", hierarchical)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("excluded", excluded)
-					.Flag("addressed", addressed)
-					.Flag("unaddressed", unaddressed)
-					.Flag("addressing", addressing)
-					.Flag("addressables", addressables)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("excluded", excluded)
+					.OptionalFlag("addressed", addressed)
+					.OptionalFlag("unaddressed", unaddressed)
+					.OptionalFlag("addressing", addressing)
+					.OptionalFlag("addressables", addressables)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -10314,12 +10314,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_bd_addr_spaces [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_bd_addr_spaces")
-					.Flag("regexp", regexp)
-					.Flag("hierarchical", hierarchical)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("hierarchical", hierarchical)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -10362,12 +10362,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_bd_cells [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_bd_cells")
-					.Flag("regexp", regexp)
-					.Flag("hierarchical", hierarchical)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("hierarchical", hierarchical)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -10401,11 +10401,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_bd_designs [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_bd_designs")
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -10459,13 +10459,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_bd_intf_nets [-regexp] [-hierarchical] [-filter <arg>] [-boundary_type <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_bd_intf_nets")
-					.Flag("regexp", regexp)
-					.Flag("hierarchical", hierarchical)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("hierarchical", hierarchical)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedString("boundary_type", boundary_type)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -10514,12 +10514,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_bd_intf_pins [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_bd_intf_pins")
-					.Flag("regexp", regexp)
-					.Flag("hierarchical", hierarchical)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("hierarchical", hierarchical)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -10562,11 +10562,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_bd_intf_ports [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_bd_intf_ports")
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -10620,13 +10620,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_bd_nets [-regexp] [-hierarchical] [-filter <arg>] [-boundary_type <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_bd_nets")
-					.Flag("regexp", regexp)
-					.Flag("hierarchical", hierarchical)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("hierarchical", hierarchical)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedString("boundary_type", boundary_type)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -10676,12 +10676,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_bd_pins [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_bd_pins")
-					.Flag("regexp", regexp)
-					.Flag("hierarchical", hierarchical)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("hierarchical", hierarchical)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -10720,11 +10720,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_bd_ports [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_bd_ports")
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -10775,8 +10775,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_bd_regs")
 					.RequiredNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -10815,12 +10815,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_bel_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_bel_pins")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -10861,13 +10861,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_bels [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_routing_bels] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_bels")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("include_routing_bels", include_routing_bels)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("include_routing_bels", include_routing_bels)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -10919,13 +10919,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_board_bus_nets [-regexp] [-nocase] [-all] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_board_bus_nets")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("all", all)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("all", all)
 					.OptionalNamedString("filter", filter)
 					.RequiredNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -10977,13 +10977,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_board_buses [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_board_buses")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("all", all)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("all", all)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -11040,13 +11040,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_board_component_interfaces [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_board_component_interfaces")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("all", all)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("all", all)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -11094,13 +11094,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_board_component_modes [-regexp] [-nocase] [-all] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_board_component_modes")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("all", all)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("all", all)
 					.OptionalNamedString("filter", filter)
 					.RequiredNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -11151,12 +11151,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_board_component_pins [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_board_component_pins")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.RequiredNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -11205,13 +11205,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_board_components [-regexp] [-nocase] [-all] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_board_components")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("all", all)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("all", all)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -11267,12 +11267,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_board_interface_ports [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_board_interface_ports")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.RequiredNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -11323,12 +11323,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_board_ip_preferences [-regexp] [-nocase] [-filter <arg>] -of_objects <args> [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_board_ip_preferences")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.RequiredNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -11373,12 +11373,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_board_jumpers [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_board_jumpers")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -11428,12 +11428,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_board_parameters [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_board_parameters")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -11491,12 +11491,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_board_part_interfaces [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_board_part_interfaces")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -11574,12 +11574,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_board_part_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_board_part_pins")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -11631,13 +11631,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_board_parts [-regexp] [-nocase] [-latest_file_version] [-latest_hw_revision] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_board_parts")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("latest_file_version", latest_file_version)
-					.Flag("latest_hw_revision", latest_hw_revision)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("latest_file_version", latest_file_version)
+					.OptionalFlag("latest_hw_revision", latest_hw_revision)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -11692,12 +11692,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_boards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_boards")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -11750,11 +11750,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_cdc_violations")
 					.OptionalNamedString("name", name)
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -11844,15 +11844,15 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_cells")
 					.OptionalNamedString("hsc", hsc)
-					.Flag("hierarchical", hierarchical)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("hierarchical", hierarchical)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("match_style", match_style)
-					.Flag("include_replicated_objects", include_replicated_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("include_replicated_objects", include_replicated_objects)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -11900,12 +11900,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_cfgmem_parts [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_cfgmem_parts")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -11955,12 +11955,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_clock_regions [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_clock_regions")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -12008,14 +12008,14 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_clocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_generated_clocks] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_clocks")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("match_style", match_style)
-					.Flag("include_generated_clocks", include_generated_clocks)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("include_generated_clocks", include_generated_clocks)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -12053,10 +12053,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_cluster_configurations")
 					.OptionalNamedString("filter", filter)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -12086,8 +12086,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_dashboard_gadgets [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_dashboard_gadgets")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -12133,10 +12133,10 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("get_debug_cores")
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -12181,10 +12181,10 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("get_debug_ports")
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -12223,11 +12223,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_designs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_designs")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -12267,13 +12267,13 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_drc_checks")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedString("abbrev", abbrev)
 					.OptionalNamedStringList("ruledecks", ruledecks)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -12318,11 +12318,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_drc_ruledecks")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -12379,11 +12379,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_drc_violations")
 					.OptionalNamedString("name", name)
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -12425,11 +12425,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_example_designs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_example_designs")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -12494,16 +12494,16 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_files [-regexp] [-nocase] [-filter <arg>] [-compile_order <arg>] [-used_in <arg>] [-references] [-all] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_files")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedString("compile_order", compile_order)
 					.OptionalNamedString("used_in", used_in)
-					.Flag("references", references)
-					.Flag("all", all)
+					.OptionalFlag("references", references)
+					.OptionalFlag("all", all)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -12551,12 +12551,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_filesets [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_filesets")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -12596,13 +12596,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_generated_clocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_generated_clocks")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("match_style", match_style)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -12638,10 +12638,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_gui_custom_command_args")
 					.RequiredNamedString("command_name", command_name)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -12670,10 +12670,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_gui_custom_commands [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_gui_custom_commands")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -12698,8 +12698,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_hierarchy_separator [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("get_hierarchy_separator")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -12736,8 +12736,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("color_index", color_index)
 					.OptionalNamedStringList("rgb", rgb)
 					.OptionalNamedString("color", color)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -12780,11 +12780,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_axi_txns")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -12830,11 +12830,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_axis")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -12872,11 +12872,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_hw_cfgmems [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_cfgmems")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -12921,11 +12921,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_ddrmcs")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -12956,11 +12956,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_devices")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13003,11 +13003,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_hbms")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13044,11 +13044,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_ila_datas")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13109,11 +13109,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_ilas")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13162,11 +13162,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_migs")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13209,12 +13209,12 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_pcies")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("patterns", patterns)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -13258,11 +13258,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_probes")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13297,11 +13297,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_hw_servers [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_hw_servers")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13344,11 +13344,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_sio_commons")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13394,11 +13394,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_sio_gtgroups")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13444,11 +13444,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_sio_gts")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13500,11 +13500,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_sio_iberts")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13539,11 +13539,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_sio_linkgroups")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13583,11 +13583,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_sio_links")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13630,11 +13630,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_sio_plls")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13673,11 +13673,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_sio_rxs")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13713,11 +13713,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_sio_scans")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13757,11 +13757,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_sio_sweeps")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13800,11 +13800,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_sio_txs")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13834,11 +13834,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_softmcs")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13886,8 +13886,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_hw_sysmon_reg [-quiet] [-verbose] <hw_sysmon> <hexaddress>
 			return
 				new SimpleTCLCommand("get_hw_sysmon_reg")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_sysmon)
 					.RequiredString(hexaddress)
 			;
@@ -13944,11 +13944,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_sysmons")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -13990,11 +13990,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_targets")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -14037,11 +14037,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_hw_vios")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -14077,12 +14077,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_interfaces [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_interfaces")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -14123,12 +14123,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_io_standards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_io_standards")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -14170,12 +14170,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_iobanks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_iobanks")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -14216,8 +14216,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_ip_upgrade_results")
 					.OptionalNamedString("srcset", srcset)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(objects)
 			;
 		}
@@ -14276,14 +14276,14 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_ipdefs [-name] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-all] [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_ipdefs")
-					.Flag("name", name)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("name", name)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("all", all)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("all", all)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -14326,14 +14326,14 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_ips [-regexp] [-nocase] [-all] [-filter <arg>] [-exclude_bd_ips] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_ips")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("all", all)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("all", all)
 					.OptionalNamedString("filter", filter)
-					.Flag("exclude_bd_ips", exclude_bd_ips)
+					.OptionalFlag("exclude_bd_ips", exclude_bd_ips)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -14387,13 +14387,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_lib_cells [-regexp] [-filter <arg>] [-nocase] [-include_unsupported] [-of_objects <args>] [-quiet] [-verbose] <patterns>
 			return
 				new SimpleTCLCommand("get_lib_cells")
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
-					.Flag("nocase", nocase)
-					.Flag("include_unsupported", include_unsupported)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("include_unsupported", include_unsupported)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(patterns)
 			;
 		}
@@ -14445,12 +14445,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_lib_pins [-regexp] [-filter <arg>] [-nocase] [-of_objects <args>] [-quiet] [-verbose] <patterns>
 			return
 				new SimpleTCLCommand("get_lib_pins")
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
-					.Flag("nocase", nocase)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(patterns)
 			;
 		}
@@ -14489,11 +14489,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_libs [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_libs")
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -14531,12 +14531,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_macros [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_macros")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -14571,8 +14571,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("get_marked_objects")
 					.OptionalNamedStringList("rgb", rgb)
 					.OptionalNamedString("color", color)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -14607,12 +14607,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_methodology_checks [-regexp] [-nocase] [-filter <arg>] [-abbrev <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_methodology_checks")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedString("abbrev", abbrev)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -14665,11 +14665,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_methodology_violations")
 					.OptionalNamedString("name", name)
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -14756,11 +14756,11 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("get_msg_config")
 					.OptionalNamedString("id", id)
 					.OptionalNamedString("severity", severity)
-					.Flag("rules", rules)
-					.Flag("limit", limit)
-					.Flag("count", count)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("rules", rules)
+					.OptionalFlag("limit", limit)
+					.OptionalFlag("count", count)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -14817,14 +14817,14 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_net_delays")
 					.RequiredNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("patterns", patterns)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("to", to)
-					.Flag("interconnect_only", interconnect_only)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("interconnect_only", interconnect_only)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -14910,17 +14910,17 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_nets")
 					.OptionalNamedString("hsc", hsc)
-					.Flag("hierarchical", hierarchical)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("hierarchical", hierarchical)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("match_style", match_style)
-					.Flag("top_net_of_hierarchical_group", top_net_of_hierarchical_group)
-					.Flag("segments", segments)
+					.OptionalFlag("top_net_of_hierarchical_group", top_net_of_hierarchical_group)
+					.OptionalFlag("segments", segments)
 					.OptionalNamedString("boundary_type", boundary_type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -14986,16 +14986,16 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_nodes")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("uphill", uphill)
-					.Flag("downhill", downhill)
-					.Flag("flyover", flyover)
+					.OptionalFlag("uphill", uphill)
+					.OptionalFlag("downhill", downhill)
+					.OptionalFlag("flyover", flyover)
 					.OptionalNamedStringList("from", from)
 					.OptionalNamedStringList("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -15128,12 +15128,12 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_objects")
 					.OptionalNamedString("filter", filter)
-					.Flag("r", r)
-					.Flag("local", local)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("r", r)
+					.OptionalFlag("local", local)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -15177,12 +15177,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_package_pins [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_package_pins")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -15210,8 +15210,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_param [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("get_param")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -15250,11 +15250,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_partition_defs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_partition_defs")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -15297,11 +15297,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_parts [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_parts")
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -15341,10 +15341,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_path_groups [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_path_groups")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -15387,13 +15387,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_pblocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-include_nested_pblocks] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_pblocks")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("include_nested_pblocks", include_nested_pblocks)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("include_nested_pblocks", include_nested_pblocks)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -15475,16 +15475,16 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_pins")
 					.OptionalNamedString("hsc", hsc)
-					.Flag("hierarchical", hierarchical)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("leaf", leaf)
+					.OptionalFlag("hierarchical", hierarchical)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("leaf", leaf)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("match_style", match_style)
-					.Flag("include_replicated_objects", include_replicated_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("include_replicated_objects", include_replicated_objects)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -15538,16 +15538,16 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_pips [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-uphill] [-downhill] [-from <args>] [-to <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_pips")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("uphill", uphill)
-					.Flag("downhill", downhill)
+					.OptionalFlag("uphill", uphill)
+					.OptionalFlag("downhill", downhill)
 					.OptionalNamedStringList("from", from)
 					.OptionalNamedStringList("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -15590,12 +15590,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_pkgpin_bytegroups [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_pkgpin_bytegroups")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -15638,12 +15638,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_pkgpin_nibbles [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_pkgpin_nibbles")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -15708,16 +15708,16 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_ports [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-scoped_to_current_instance] [-no_traverse] [-prop_thru_buffers] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_ports")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("match_style", match_style)
-					.Flag("scoped_to_current_instance", scoped_to_current_instance)
-					.Flag("no_traverse", no_traverse)
-					.Flag("prop_thru_buffers", prop_thru_buffers)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("scoped_to_current_instance", scoped_to_current_instance)
+					.OptionalFlag("no_traverse", no_traverse)
+					.OptionalFlag("prop_thru_buffers", prop_thru_buffers)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -15741,11 +15741,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_power_rails [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_power_rails")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -15779,12 +15779,12 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("get_pplocs")
 					.RequiredNamedStringList("nets", nets)
 					.RequiredNamedStringList("pins", pins)
-					.Flag("count", count)
-					.Flag("unlocked", unlocked)
-					.Flag("locked", locked)
+					.OptionalFlag("count", count)
+					.OptionalFlag("unlocked", unlocked)
+					.OptionalFlag("locked", locked)
 					.OptionalNamedString("level", level)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -15818,11 +15818,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_pr_configurations [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_pr_configurations")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -15874,15 +15874,15 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_primitives [-regexp] [-nocase] [-filter <arg>] [-part <arg>] [-retarget] [-macro] [-hierarchy] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_primitives")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedString("part", part)
-					.Flag("retarget", retarget)
-					.Flag("macro", macro)
-					.Flag("hierarchy", hierarchy)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("retarget", retarget)
+					.OptionalFlag("macro", macro)
+					.OptionalFlag("hierarchy", hierarchy)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(patterns)
 			;
 		}
@@ -15924,11 +15924,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_projects [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_projects")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -15981,10 +15981,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_property [-min] [-max] [-quiet] [-verbose] <name> <object>
 			return
 				new SimpleTCLCommand("get_property")
-					.Flag("min", min)
-					.Flag("max", max)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("min", min)
+					.OptionalFlag("max", max)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.RequiredString(@object)
 			;
@@ -16026,8 +16026,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_qor_suggestions")
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(IDs)
 			;
 		}
@@ -16057,12 +16057,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_reconfig_modules [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_reconfig_modules")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -16097,12 +16097,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_report_configs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_report_configs")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -16141,12 +16141,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_runs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_runs")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -16190,11 +16190,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_scopes")
 					.OptionalNamedString("filter", filter)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
-					.Flag("r", r)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("r", r)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -16232,9 +16232,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_selected_objects [-primary] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("get_selected_objects")
-					.Flag("primary", primary)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("primary", primary)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -16263,11 +16263,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_simulators [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_simulators")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -16318,11 +16318,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_site_pins")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -16362,12 +16362,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_site_pips [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_site_pips")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -16443,13 +16443,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_sites [-regexp] [-filter <arg>] [-nocase] [-range <args>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_sites")
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
-					.Flag("nocase", nocase)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedStringList("range", range)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -16496,12 +16496,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_slrs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_slrs")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -16568,13 +16568,13 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_speed_models")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("patterns", patterns)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedString("speed_pattern", speed_pattern)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -16635,8 +16635,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_stacks")
 					.OptionalNamedString("of_instance", of_instance)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -16662,8 +16662,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_template_bd_designs [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("get_template_bd_designs")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -16706,12 +16706,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_tiles [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_tiles")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -16762,8 +16762,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("to", to)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -16884,24 +16884,24 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("rise_through", rise_through)
 					.OptionalNamedStringList("fall_through", fall_through)
 					.OptionalNamedString("delay_type", delay_type)
-					.Flag("setup", setup)
-					.Flag("hold", hold)
+					.OptionalFlag("setup", setup)
+					.OptionalFlag("hold", hold)
 					.OptionalNamedString("max_paths", max_paths)
 					.OptionalNamedString("nworst", nworst)
-					.Flag("unique_pins", unique_pins)
+					.OptionalFlag("unique_pins", unique_pins)
 					.OptionalNamedString("slack_lesser_than", slack_lesser_than)
 					.OptionalNamedString("slack_greater_than", slack_greater_than)
 					.OptionalNamedStringList("group", group)
-					.Flag("no_report_unconstrained", no_report_unconstrained)
-					.Flag("user_ignored", user_ignored)
-					.Flag("routable_nets", routable_nets)
+					.OptionalFlag("no_report_unconstrained", no_report_unconstrained)
+					.OptionalFlag("user_ignored", user_ignored)
+					.OptionalFlag("routable_nets", routable_nets)
 					.OptionalNamedString("sort_by", sort_by)
 					.OptionalNamedString("filter", filter)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedStringList("cell", cell)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -16971,8 +16971,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_value")
 					.OptionalNamedString("radix", radix)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hdl_object)
 			;
 		}
@@ -17030,11 +17030,11 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("type", type)
 					.OptionalNamedString("id", id)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedString("filter", filter)
-					.Flag("nocase", nocase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("nocase", nocase)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -17076,11 +17076,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_wave_configs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
 			return
 				new SimpleTCLCommand("get_wave_configs")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(patterns)
 			;
 		}
@@ -17123,15 +17123,15 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("get_waves")
 					.OptionalNamedStringList("of", of)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
-					.Flag("recursive", recursive)
-					.Flag("r", r)
-					.Flag("long_name", long_name)
-					.Flag("short_name", short_name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("recursive", recursive)
+					.OptionalFlag("r", r)
+					.OptionalFlag("long_name", long_name)
+					.OptionalFlag("short_name", short_name)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(patterns)
 			;
 		}
@@ -17181,16 +17181,16 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: get_wires [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-uphill] [-downhill] [-from <args>] [-to <args>] [-quiet] [-verbose] [<patterns>]
 			return
 				new SimpleTCLCommand("get_wires")
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("uphill", uphill)
-					.Flag("downhill", downhill)
+					.OptionalFlag("uphill", uphill)
+					.OptionalFlag("downhill", downhill)
 					.OptionalNamedStringList("from", from)
 					.OptionalNamedStringList("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -17229,8 +17229,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("group_bd_cells")
 					.OptionalNamedString("prefix", prefix)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(target_cell_name)
 					.RequiredStringList(cells)
 			;
@@ -17289,12 +17289,12 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("group_path")
 					.OptionalNamedStringList("name", name)
 					.OptionalNamedString("weight", weight)
-					.Flag("default", @default)
+					.OptionalFlag("default", @default)
 					.OptionalNamedStringList("from", from)
 					.OptionalNamedStringList("to", to)
 					.OptionalNamedStringList("through", through)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -17376,14 +17376,14 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("help")
 					.OptionalNamedString("category", category)
-					.Flag("args", args)
-					.Flag("syntax", syntax)
-					.Flag("long", @long)
+					.OptionalFlag("args", args)
+					.OptionalFlag("syntax", syntax)
+					.OptionalFlag("long", @long)
 					.OptionalNamedString("prop", prop)
 					.OptionalNamedString("class", @class)
 					.OptionalNamedString("message", message)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(pattern_or_object)
 			;
 		}
@@ -17423,9 +17423,9 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("color_index", color_index)
 					.OptionalNamedStringList("rgb", rgb)
 					.OptionalNamedString("color", color)
-					.Flag("leaf_cells", leaf_cells)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("leaf_cells", leaf_cells)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -17463,8 +17463,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: implement_debug_core [-quiet] [-verbose] [<cores>...]
 			return
 				new SimpleTCLCommand("implement_debug_core")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(cores)
 			;
 		}
@@ -17523,11 +17523,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("implement_mig_cores")
 					.OptionalNamedString("outputdir", outputdir)
-					.Flag("rtlonly", rtlonly)
-					.Flag("force", force)
-					.Flag("debug_output", debug_output)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("rtlonly", rtlonly)
+					.OptionalFlag("force", force)
+					.OptionalFlag("debug_output", debug_output)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -17559,12 +17559,12 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("implement_xphy_cores")
 					.OptionalNamedString("outputdir", outputdir)
-					.Flag("rtlonly", rtlonly)
-					.Flag("force", force)
-					.Flag("debug_output", debug_output)
-					.Flag("update_delay_value_only", update_delay_value_only)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("rtlonly", rtlonly)
+					.OptionalFlag("force", force)
+					.OptionalFlag("debug_output", debug_output)
+					.OptionalFlag("update_delay_value_only", update_delay_value_only)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -17624,13 +17624,13 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("import_files")
 					.OptionalNamedString("fileset", fileset)
-					.Flag("force", force)
+					.OptionalFlag("force", force)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("norecurse", norecurse)
-					.Flag("flat", flat)
+					.OptionalFlag("norecurse", norecurse)
+					.OptionalFlag("flat", flat)
 					.OptionalNamedString("relative_to", relative_to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(files)
 			;
 		}
@@ -17681,8 +17681,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("import_ip")
 					.OptionalNamedString("srcset", srcset)
 					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(files)
 			;
 		}
@@ -17716,9 +17716,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: import_synplify [-copy_sources] [-quiet] [-verbose] <file>
 			return
 				new SimpleTCLCommand("import_synplify")
-					.Flag("copy_sources", copy_sources)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("copy_sources", copy_sources)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -17755,9 +17755,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: import_xise [-copy_sources] [-quiet] [-verbose] <file>
 			return
 				new SimpleTCLCommand("import_xise")
-					.Flag("copy_sources", copy_sources)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("copy_sources", copy_sources)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -17787,9 +17787,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: import_xst [-copy_sources] [-quiet] [-verbose] <file>
 			return
 				new SimpleTCLCommand("import_xst")
-					.Flag("copy_sources", copy_sources)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("copy_sources", copy_sources)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -17827,8 +17827,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: include_bd_addr_seg [-quiet] [-verbose] [<segment_to_include>]
 			return
 				new SimpleTCLCommand("include_bd_addr_seg")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(segment_to_include)
 			;
 		}
@@ -17878,8 +17878,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("infer_diff_pairs")
 					.OptionalNamedString("file_type", file_type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(file)
 			;
 		}
@@ -17944,8 +17944,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("project", project)
 					.OptionalNamedString("project_location", project_location)
 					.OptionalNamedStringList("options", options)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(template)
 			;
 		}
@@ -17983,8 +17983,8 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("design", design)
 					.OptionalNamedString("hier", hier)
 					.OptionalNamedStringList("options", options)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(template)
 			;
 		}
@@ -18065,30 +18065,30 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: iphys_opt_design [-fanout_opt] [-critical_cell_opt] [-placement_opt] [-rewire] [-net <arg>] -cluster <args> -place_cell <args> [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-shift_register_opt] [-cell <arg>] [-packing] [-unpacking] [-port <arg>] [-critical_pin_opt] [-equ_drivers_opt] [-skipped_optimization] [-insert_negative_edge_ffs] [-hold_fix] [-slr_crossing_opt] [-auto_pipeline] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("iphys_opt_design")
-					.Flag("fanout_opt", fanout_opt)
-					.Flag("critical_cell_opt", critical_cell_opt)
-					.Flag("placement_opt", placement_opt)
-					.Flag("rewire", rewire)
+					.OptionalFlag("fanout_opt", fanout_opt)
+					.OptionalFlag("critical_cell_opt", critical_cell_opt)
+					.OptionalFlag("placement_opt", placement_opt)
+					.OptionalFlag("rewire", rewire)
 					.OptionalNamedString("net", net)
 					.RequiredNamedStringList("cluster", cluster)
 					.RequiredNamedStringList("place_cell", place_cell)
-					.Flag("dsp_register_opt", dsp_register_opt)
-					.Flag("bram_register_opt", bram_register_opt)
-					.Flag("uram_register_opt", uram_register_opt)
-					.Flag("shift_register_opt", shift_register_opt)
+					.OptionalFlag("dsp_register_opt", dsp_register_opt)
+					.OptionalFlag("bram_register_opt", bram_register_opt)
+					.OptionalFlag("uram_register_opt", uram_register_opt)
+					.OptionalFlag("shift_register_opt", shift_register_opt)
 					.OptionalNamedString("cell", cell)
-					.Flag("packing", packing)
-					.Flag("unpacking", unpacking)
+					.OptionalFlag("packing", packing)
+					.OptionalFlag("unpacking", unpacking)
 					.OptionalNamedString("port", port)
-					.Flag("critical_pin_opt", critical_pin_opt)
-					.Flag("equ_drivers_opt", equ_drivers_opt)
-					.Flag("skipped_optimization", skipped_optimization)
-					.Flag("insert_negative_edge_ffs", insert_negative_edge_ffs)
-					.Flag("hold_fix", hold_fix)
-					.Flag("slr_crossing_opt", slr_crossing_opt)
-					.Flag("auto_pipeline", auto_pipeline)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("critical_pin_opt", critical_pin_opt)
+					.OptionalFlag("equ_drivers_opt", equ_drivers_opt)
+					.OptionalFlag("skipped_optimization", skipped_optimization)
+					.OptionalFlag("insert_negative_edge_ffs", insert_negative_edge_ffs)
+					.OptionalFlag("hold_fix", hold_fix)
+					.OptionalFlag("slr_crossing_opt", slr_crossing_opt)
+					.OptionalFlag("auto_pipeline", auto_pipeline)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -18128,8 +18128,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("launch_chipscope_analyzer")
 					.OptionalNamedString("run", run)
 					.OptionalNamedString("csproject", csproject)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -18159,8 +18159,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("launch_impact")
 					.OptionalNamedString("run", run)
 					.OptionalNamedString("ipf", ipf)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -18267,23 +18267,23 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("launch_runs")
 					.OptionalNamedString("jobs", jobs)
-					.Flag("scripts_only", scripts_only)
+					.OptionalFlag("scripts_only", scripts_only)
 					.OptionalNamedString("lsf", lsf)
 					.OptionalNamedString("sge", sge)
 					.OptionalNamedString("cluster_configuration", cluster_configuration)
 					.OptionalNamedString("dir", dir)
 					.OptionalNamedString("to_step", to_step)
-					.Flag("next_step", next_step)
+					.OptionalFlag("next_step", next_step)
 					.OptionalNamedStringList("host", host)
 					.OptionalNamedString("remote_cmd", remote_cmd)
 					.OptionalNamedStringList("email_to", email_to)
-					.Flag("email_all", email_all)
+					.OptionalFlag("email_all", email_all)
 					.OptionalNamedString("pre_launch_script", pre_launch_script)
 					.OptionalNamedString("post_launch_script", post_launch_script)
 					.OptionalNamedString("custom_script", custom_script)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(runs)
 			;
 		}
@@ -18391,14 +18391,14 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("simset", simset)
 					.OptionalNamedString("mode", mode)
 					.OptionalNamedString("type", type)
-					.Flag("scripts_only", scripts_only)
+					.OptionalFlag("scripts_only", scripts_only)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("absolute_path", absolute_path)
+					.OptionalFlag("absolute_path", absolute_path)
 					.OptionalNamedString("install_path", install_path)
 					.OptionalNamedString("gcc_install_path", gcc_install_path)
-					.Flag("noclean_dir", noclean_dir)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("noclean_dir", noclean_dir)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -18426,8 +18426,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: limit_vcd [-quiet] [-verbose] <filesize>
 			return
 				new SimpleTCLCommand("limit_vcd")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(filesize)
 			;
 		}
@@ -18489,9 +18489,9 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("pr_config", pr_config)
 					.OptionalNamedStringList("reconfig_partitions", reconfig_partitions)
 					.OptionalNamedStringList("partitions", partitions)
-					.Flag("ignore_timing", ignore_timing)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("ignore_timing", ignore_timing)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -18520,8 +18520,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: list_features [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("list_features")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -18570,8 +18570,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: list_hw_samples [-quiet] [-verbose] [<hw_probe>]
 			return
 				new SimpleTCLCommand("list_hw_samples")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(hw_probe)
 			;
 		}
@@ -18599,8 +18599,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: list_param [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("list_param")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -18634,9 +18634,9 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("list_property")
 					.OptionalNamedString("class", @class)
-					.Flag("regexp", regexp)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(@object)
 					.OptionalString(pattern)
 			;
@@ -18680,10 +18680,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: list_property_value [-default] [-class <arg>] [-quiet] [-verbose] <name> [<object>]
 			return
 				new SimpleTCLCommand("list_property_value")
-					.Flag("default", @default)
+					.OptionalFlag("default", @default)
 					.OptionalNamedString("class", @class)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.OptionalString(@object)
 			;
@@ -18714,8 +18714,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: list_targets [-quiet] [-verbose] <files>
 			return
 				new SimpleTCLCommand("list_targets")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(files)
 			;
 		}
@@ -18757,8 +18757,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: load_features [-quiet] [-verbose] [<features>...]
 			return
 				new SimpleTCLCommand("load_features")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(features)
 			;
 		}
@@ -18817,10 +18817,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("lock_design")
 					.OptionalNamedString("level", level)
-					.Flag("unlock", unlock)
-					.Flag("export", export)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("unlock", unlock)
+					.OptionalFlag("export", export)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(cell)
 			;
 		}
@@ -18853,8 +18853,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: log_saif [-quiet] [-verbose] <hdl_objects>...
 			return
 				new SimpleTCLCommand("log_saif")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(hdl_objects)
 			;
 		}
@@ -18925,8 +18925,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("log_vcd")
 					.OptionalNamedString("level", level)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(hdl_objects)
 			;
 		}
@@ -18964,11 +18964,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: log_wave [-recursive] [-r] [-verbose] [-v] [-quiet] <hdl_objects>...
 			return
 				new SimpleTCLCommand("log_wave")
-					.Flag("recursive", recursive)
-					.Flag("r", r)
-					.Flag("verbose", verbose)
-					.Flag("v", v)
-					.Flag("quiet", quiet)
+					.OptionalFlag("recursive", recursive)
+					.OptionalFlag("r", r)
+					.OptionalFlag("verbose", verbose)
+					.OptionalFlag("v", v)
+					.OptionalFlag("quiet", quiet)
 					.RequiredStringList(hdl_objects)
 			;
 		}
@@ -18998,8 +18998,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: ltrace [-quiet] [-verbose] <value>
 			return
 				new SimpleTCLCommand("ltrace")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(value)
 			;
 		}
@@ -19038,8 +19038,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: make_bd_intf_pins_external [-quiet] [-verbose] <objects>...
 			return
 				new SimpleTCLCommand("make_bd_intf_pins_external")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(objects)
 			;
 		}
@@ -19077,8 +19077,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: make_bd_pins_external [-quiet] [-verbose] <objects>...
 			return
 				new SimpleTCLCommand("make_bd_pins_external")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(objects)
 			;
 		}
@@ -19107,8 +19107,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: make_diff_pair_ports [-quiet] [-verbose] <ports>...
 			return
 				new SimpleTCLCommand("make_diff_pair_ports")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(ports)
 			;
 		}
@@ -19158,14 +19158,14 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: make_wrapper [-top] [-testbench] [-inst_template] [-fileset <arg>] [-import] [-force] [-quiet] [-verbose] <files>
 			return
 				new SimpleTCLCommand("make_wrapper")
-					.Flag("top", top)
-					.Flag("testbench", testbench)
-					.Flag("inst_template", inst_template)
+					.OptionalFlag("top", top)
+					.OptionalFlag("testbench", testbench)
+					.OptionalFlag("inst_template", inst_template)
 					.OptionalNamedString("fileset", fileset)
-					.Flag("import", import)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("import", import)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(files)
 			;
 		}
@@ -19198,8 +19198,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("mark_objects")
 					.OptionalNamedStringList("rgb", rgb)
 					.OptionalNamedString("color", color)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -19244,8 +19244,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("modify_debug_ports")
 					.RequiredNamedStringList("probes", probes)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -19279,8 +19279,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("move_bd_cells")
 					.OptionalNamedString("prefix", prefix)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(parent_cell)
 					.OptionalStringList(cells)
 			;
@@ -19315,8 +19315,8 @@ namespace Quokka.TCL.Vivado
 					.RequiredNamedString("row", row)
 					.RequiredNamedString("col", col)
 					.OptionalNamedString("dashboard", dashboard)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -19347,8 +19347,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("move_files")
 					.OptionalNamedString("fileset", fileset)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(files)
 			;
 		}
@@ -19386,8 +19386,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("at_wave", at_wave)
 					.OptionalNamedStringList("after_wave", after_wave)
 					.OptionalNamedStringList("before_wave", before_wave)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(items)
 			;
 		}
@@ -19417,8 +19417,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: open_bd_design [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("open_bd_design")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -19466,9 +19466,9 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("open_checkpoint")
 					.OptionalNamedString("part", part)
-					.Flag("ignore_timing", ignore_timing)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("ignore_timing", ignore_timing)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -19500,10 +19500,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("open_example_project")
 					.OptionalNamedString("dir", dir)
-					.Flag("force", force)
-					.Flag("in_process", in_process)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("in_process", in_process)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(objects)
 			;
 		}
@@ -19559,8 +19559,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: open_hw_manager [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("open_hw_manager")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -19594,9 +19594,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: open_hw_platform [-no_auto_upgrade] [-quiet] [-verbose] [<file>]
 			return
 				new SimpleTCLCommand("open_hw_platform")
-					.Flag("no_auto_upgrade", no_auto_upgrade)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("no_auto_upgrade", no_auto_upgrade)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -19642,9 +19642,9 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("open_hw_target")
 					.OptionalNamedString("jtag_mode", jtag_mode)
 					.OptionalNamedString("xvc_url", xvc_url)
-					.Flag("auto_calibrate", auto_calibrate)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("auto_calibrate", auto_calibrate)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(hw_target)
 			;
 		}
@@ -19682,8 +19682,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("name", name)
 					.OptionalNamedString("part", part)
 					.OptionalNamedString("constrset", constrset)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -19721,9 +19721,9 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("open_project")
 					.OptionalNamedString("part", part)
-					.Flag("read_only", read_only)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("read_only", read_only)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -19763,12 +19763,12 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("open_report")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("console", console)
+					.OptionalFlag("append", append)
+					.OptionalFlag("console", console)
 					.OptionalNamedString("name", name)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(rpx)
 			;
 		}
@@ -19812,8 +19812,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("open_run")
 					.OptionalNamedString("name", name)
 					.OptionalNamedString("pr_config", pr_config)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(run)
 			;
 		}
@@ -19853,8 +19853,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: open_saif [-quiet] [-verbose] <file_name>
 			return
 				new SimpleTCLCommand("open_saif")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file_name)
 			;
 		}
@@ -19906,8 +19906,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: open_vcd [-quiet] [-verbose] [<file_name>]
 			return
 				new SimpleTCLCommand("open_vcd")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(file_name)
 			;
 		}
@@ -19954,8 +19954,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: open_wave_config [-quiet] [-verbose] [<filename>]
 			return
 				new SimpleTCLCommand("open_wave_config")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(filename)
 			;
 		}
@@ -20011,10 +20011,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: open_wave_database [-noautoloadwcfg] [-protoinst <args>] [-quiet] [-verbose] <wdb>
 			return
 				new SimpleTCLCommand("open_wave_database")
-					.Flag("noautoloadwcfg", noautoloadwcfg)
+					.OptionalFlag("noautoloadwcfg", noautoloadwcfg)
 					.OptionalNamedStringList("protoinst", protoinst)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(wdb)
 			;
 		}
@@ -20126,28 +20126,28 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: opt_design [-retarget] [-propconst] [-sweep] [-bram_power_opt] [-remap] [-aggressive_remap] [-resynth_area] [-resynth_seq_area] [-directive <arg>] [-muxf_remap] [-hier_fanout_limit <arg>] [-bufg_opt] [-shift_register_opt] [-dsp_register_opt] [-srl_remap_modes <arg>] [-control_set_merge] [-merge_equivalent_drivers] [-carry_remap] [-debug_log] [-property_opt_only] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("opt_design")
-					.Flag("retarget", retarget)
-					.Flag("propconst", propconst)
-					.Flag("sweep", sweep)
-					.Flag("bram_power_opt", bram_power_opt)
-					.Flag("remap", remap)
-					.Flag("aggressive_remap", aggressive_remap)
-					.Flag("resynth_area", resynth_area)
-					.Flag("resynth_seq_area", resynth_seq_area)
+					.OptionalFlag("retarget", retarget)
+					.OptionalFlag("propconst", propconst)
+					.OptionalFlag("sweep", sweep)
+					.OptionalFlag("bram_power_opt", bram_power_opt)
+					.OptionalFlag("remap", remap)
+					.OptionalFlag("aggressive_remap", aggressive_remap)
+					.OptionalFlag("resynth_area", resynth_area)
+					.OptionalFlag("resynth_seq_area", resynth_seq_area)
 					.OptionalNamedString("directive", directive)
-					.Flag("muxf_remap", muxf_remap)
+					.OptionalFlag("muxf_remap", muxf_remap)
 					.OptionalNamedString("hier_fanout_limit", hier_fanout_limit)
-					.Flag("bufg_opt", bufg_opt)
-					.Flag("shift_register_opt", shift_register_opt)
-					.Flag("dsp_register_opt", dsp_register_opt)
+					.OptionalFlag("bufg_opt", bufg_opt)
+					.OptionalFlag("shift_register_opt", shift_register_opt)
+					.OptionalFlag("dsp_register_opt", dsp_register_opt)
 					.OptionalNamedString("srl_remap_modes", srl_remap_modes)
-					.Flag("control_set_merge", control_set_merge)
-					.Flag("merge_equivalent_drivers", merge_equivalent_drivers)
-					.Flag("carry_remap", carry_remap)
-					.Flag("debug_log", debug_log)
-					.Flag("property_opt_only", property_opt_only)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("control_set_merge", control_set_merge)
+					.OptionalFlag("merge_equivalent_drivers", merge_equivalent_drivers)
+					.OptionalFlag("carry_remap", carry_remap)
+					.OptionalFlag("debug_log", debug_log)
+					.OptionalFlag("property_opt_only", property_opt_only)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -20173,8 +20173,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: pause_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("pause_hw_hbm_amon")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -20292,30 +20292,30 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: phys_opt_design [-fanout_opt] [-placement_opt] [-routing_opt] [-slr_crossing_opt] [-rewire] [-insert_negative_edge_ffs] [-critical_cell_opt] [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-bram_enable_opt] [-shift_register_opt] [-hold_fix] [-aggressive_hold_fix] [-retime] [-force_replication_on_nets <args>] [-directive <arg>] [-critical_pin_opt] [-clock_opt] [-path_groups <args>] [-tns_cleanup] [-sll_reg_hold_fix] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("phys_opt_design")
-					.Flag("fanout_opt", fanout_opt)
-					.Flag("placement_opt", placement_opt)
-					.Flag("routing_opt", routing_opt)
-					.Flag("slr_crossing_opt", slr_crossing_opt)
-					.Flag("rewire", rewire)
-					.Flag("insert_negative_edge_ffs", insert_negative_edge_ffs)
-					.Flag("critical_cell_opt", critical_cell_opt)
-					.Flag("dsp_register_opt", dsp_register_opt)
-					.Flag("bram_register_opt", bram_register_opt)
-					.Flag("uram_register_opt", uram_register_opt)
-					.Flag("bram_enable_opt", bram_enable_opt)
-					.Flag("shift_register_opt", shift_register_opt)
-					.Flag("hold_fix", hold_fix)
-					.Flag("aggressive_hold_fix", aggressive_hold_fix)
-					.Flag("retime", retime)
+					.OptionalFlag("fanout_opt", fanout_opt)
+					.OptionalFlag("placement_opt", placement_opt)
+					.OptionalFlag("routing_opt", routing_opt)
+					.OptionalFlag("slr_crossing_opt", slr_crossing_opt)
+					.OptionalFlag("rewire", rewire)
+					.OptionalFlag("insert_negative_edge_ffs", insert_negative_edge_ffs)
+					.OptionalFlag("critical_cell_opt", critical_cell_opt)
+					.OptionalFlag("dsp_register_opt", dsp_register_opt)
+					.OptionalFlag("bram_register_opt", bram_register_opt)
+					.OptionalFlag("uram_register_opt", uram_register_opt)
+					.OptionalFlag("bram_enable_opt", bram_enable_opt)
+					.OptionalFlag("shift_register_opt", shift_register_opt)
+					.OptionalFlag("hold_fix", hold_fix)
+					.OptionalFlag("aggressive_hold_fix", aggressive_hold_fix)
+					.OptionalFlag("retime", retime)
 					.OptionalNamedStringList("force_replication_on_nets", force_replication_on_nets)
 					.OptionalNamedString("directive", directive)
-					.Flag("critical_pin_opt", critical_pin_opt)
-					.Flag("clock_opt", clock_opt)
+					.OptionalFlag("critical_pin_opt", critical_pin_opt)
+					.OptionalFlag("clock_opt", clock_opt)
 					.OptionalNamedStringList("path_groups", path_groups)
-					.Flag("tns_cleanup", tns_cleanup)
-					.Flag("sll_reg_hold_fix", sll_reg_hold_fix)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("tns_cleanup", tns_cleanup)
+					.OptionalFlag("sll_reg_hold_fix", sll_reg_hold_fix)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -20371,8 +20371,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: place_cell [-quiet] [-verbose] <cell_site_list>...
 			return
 				new SimpleTCLCommand("place_cell")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(cell_site_list)
 			;
 		}
@@ -20447,14 +20447,14 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("place_design")
 					.OptionalNamedString("directive", directive)
-					.Flag("no_timing_driven", no_timing_driven)
-					.Flag("timing_summary", timing_summary)
-					.Flag("unplace", unplace)
-					.Flag("post_place_opt", post_place_opt)
-					.Flag("no_psip", no_psip)
-					.Flag("no_bufg_opt", no_bufg_opt)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("no_timing_driven", no_timing_driven)
+					.OptionalFlag("timing_summary", timing_summary)
+					.OptionalFlag("unplace", unplace)
+					.OptionalFlag("post_place_opt", post_place_opt)
+					.OptionalFlag("no_psip", no_psip)
+					.OptionalFlag("no_bufg_opt", no_bufg_opt)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -20496,11 +20496,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: place_ports [-skip_unconnected_ports] [-check_only] [-iobank <args>] [-quiet] [-verbose] [<ports>...]
 			return
 				new SimpleTCLCommand("place_ports")
-					.Flag("skip_unconnected_ports", skip_unconnected_ports)
-					.Flag("check_only", check_only)
+					.OptionalFlag("skip_unconnected_ports", skip_unconnected_ports)
+					.OptionalFlag("check_only", check_only)
 					.OptionalNamedStringList("iobank", iobank)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(ports)
 			;
 		}
@@ -20543,8 +20543,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: power_opt_design [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("power_opt_design")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -20565,8 +20565,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("pr_recombine")
 					.OptionalNamedString("cell", cell)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -20594,8 +20594,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("pr_subdivide")
 					.OptionalNamedString("cell", cell)
 					.OptionalNamedString("subcells", subcells)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(from_dcp)
 			;
 		}
@@ -20659,13 +20659,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: pr_verify [-full_check] [-file <arg>] [-initial <arg>] [-additional <arg>] [-in_memory] [-quiet] [-verbose] [<file1>] [<file2>]
 			return
 				new SimpleTCLCommand("pr_verify")
-					.Flag("full_check", full_check)
+					.OptionalFlag("full_check", full_check)
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("initial", initial)
 					.OptionalNamedString("additional", additional)
-					.Flag("in_memory", in_memory)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("in_memory", in_memory)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(file1)
 					.OptionalString(file2)
 			;
@@ -20728,10 +20728,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("program_hw_cfgmem")
 					.OptionalNamedString("svf_file", svf_file)
-					.Flag("force", force)
-					.Flag("append", append)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("append", append)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(hw_cfgmem)
 			;
 		}
@@ -20815,23 +20815,23 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("program_hw_devices")
 					.OptionalNamedString("key", key)
-					.Flag("clear", clear)
-					.Flag("skip_program_keys", skip_program_keys)
-					.Flag("skip_program_rsa", skip_program_rsa)
+					.OptionalFlag("clear", clear)
+					.OptionalFlag("skip_program_keys", skip_program_keys)
+					.OptionalFlag("skip_program_rsa", skip_program_rsa)
 					.OptionalNamedString("user_efuse", user_efuse)
 					.OptionalNamedString("user_efuse_128", user_efuse_128)
 					.OptionalNamedString("control_efuse", control_efuse)
 					.OptionalNamedString("security_efuse", security_efuse)
-					.Flag("only_export_efuse", only_export_efuse)
+					.OptionalFlag("only_export_efuse", only_export_efuse)
 					.OptionalNamedString("svf_file", svf_file)
 					.OptionalNamedString("efuse_export_file", efuse_export_file)
-					.Flag("disable_eos_check", disable_eos_check)
-					.Flag("skip_reset", skip_reset)
-					.Flag("force", force)
-					.Flag("append", append)
+					.OptionalFlag("disable_eos_check", disable_eos_check)
+					.OptionalFlag("skip_reset", skip_reset)
+					.OptionalFlag("force", force)
+					.OptionalFlag("append", append)
 					.OptionalNamedString("type", type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(hw_device)
 			;
 		}
@@ -20861,8 +20861,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: ptrace [-quiet] [-verbose] <value>
 			return
 				new SimpleTCLCommand("ptrace")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(value)
 			;
 		}
@@ -20898,8 +20898,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: read_bd [-quiet] [-verbose] <files>...
 			return
 				new SimpleTCLCommand("read_bd")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(files)
 			;
 		}
@@ -20990,14 +20990,14 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("read_checkpoint")
 					.OptionalNamedString("cell", cell)
-					.Flag("incremental", incremental)
+					.OptionalFlag("incremental", incremental)
 					.OptionalNamedString("directive", directive)
-					.Flag("auto_incremental", auto_incremental)
+					.OptionalFlag("auto_incremental", auto_incremental)
 					.OptionalNamedStringList("reuse_objects", reuse_objects)
 					.OptionalNamedStringList("fix_objects", fix_objects)
 					.OptionalNamedStringList("dcp_cell_list", dcp_cell_list)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -21044,9 +21044,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: read_csv [-quiet_diff_pairs] [-quiet] [-verbose] <file>
 			return
 				new SimpleTCLCommand("read_csv")
-					.Flag("quiet_diff_pairs", quiet_diff_pairs)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet_diff_pairs", quiet_diff_pairs)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -21077,8 +21077,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: read_edif [-quiet] [-verbose] <files>
 			return
 				new SimpleTCLCommand("read_edif")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(files)
 			;
 		}
@@ -21113,8 +21113,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: read_hw_ila_data [-quiet] [-verbose] <file>
 			return
 				new SimpleTCLCommand("read_hw_ila_data")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -21147,8 +21147,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: read_hw_sio_scan [-quiet] [-verbose] <file> [<hw_sio_scan>]
 			return
 				new SimpleTCLCommand("read_hw_sio_scan")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 					.OptionalString(hw_sio_scan)
 			;
@@ -21183,8 +21183,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: read_hw_sio_sweep [-quiet] [-verbose] <directory> [<hw_sio_sweep>]
 			return
 				new SimpleTCLCommand("read_hw_sio_sweep")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(directory)
 					.OptionalString(hw_sio_sweep)
 			;
@@ -21226,8 +21226,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: read_ip [-quiet] [-verbose] <files>
 			return
 				new SimpleTCLCommand("read_ip")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(files)
 			;
 		}
@@ -21289,23 +21289,23 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: read_iphys_opt_tcl [-fanout_opt] [-critical_cell_opt] [-placement_opt] [-rewire] [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-shift_register_opt] [-auto_pipeline] [-critical_pin_opt] [-equ_drivers_opt] [-include_skipped_optimizations] [-insert_negative_edge_ffs] [-hold_fix] [-slr_crossing_opt] [-quiet] [-verbose] [<input>]
 			return
 				new SimpleTCLCommand("read_iphys_opt_tcl")
-					.Flag("fanout_opt", fanout_opt)
-					.Flag("critical_cell_opt", critical_cell_opt)
-					.Flag("placement_opt", placement_opt)
-					.Flag("rewire", rewire)
-					.Flag("dsp_register_opt", dsp_register_opt)
-					.Flag("bram_register_opt", bram_register_opt)
-					.Flag("uram_register_opt", uram_register_opt)
-					.Flag("shift_register_opt", shift_register_opt)
-					.Flag("auto_pipeline", auto_pipeline)
-					.Flag("critical_pin_opt", critical_pin_opt)
-					.Flag("equ_drivers_opt", equ_drivers_opt)
-					.Flag("include_skipped_optimizations", include_skipped_optimizations)
-					.Flag("insert_negative_edge_ffs", insert_negative_edge_ffs)
-					.Flag("hold_fix", hold_fix)
-					.Flag("slr_crossing_opt", slr_crossing_opt)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("fanout_opt", fanout_opt)
+					.OptionalFlag("critical_cell_opt", critical_cell_opt)
+					.OptionalFlag("placement_opt", placement_opt)
+					.OptionalFlag("rewire", rewire)
+					.OptionalFlag("dsp_register_opt", dsp_register_opt)
+					.OptionalFlag("bram_register_opt", bram_register_opt)
+					.OptionalFlag("uram_register_opt", uram_register_opt)
+					.OptionalFlag("shift_register_opt", shift_register_opt)
+					.OptionalFlag("auto_pipeline", auto_pipeline)
+					.OptionalFlag("critical_pin_opt", critical_pin_opt)
+					.OptionalFlag("equ_drivers_opt", equ_drivers_opt)
+					.OptionalFlag("include_skipped_optimizations", include_skipped_optimizations)
+					.OptionalFlag("insert_negative_edge_ffs", insert_negative_edge_ffs)
+					.OptionalFlag("hold_fix", hold_fix)
+					.OptionalFlag("slr_crossing_opt", slr_crossing_opt)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(input)
 			;
 		}
@@ -21334,8 +21334,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: read_mem [-quiet] [-verbose] <files>...
 			return
 				new SimpleTCLCommand("read_mem")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(files)
 			;
 		}
@@ -21367,8 +21367,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: read_qor_suggestions [-quiet] [-verbose] <file>
 			return
 				new SimpleTCLCommand("read_qor_suggestions")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -21410,10 +21410,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("read_saif")
 					.OptionalNamedString("strip_path", strip_path)
-					.Flag("no_strip", no_strip)
+					.OptionalFlag("no_strip", no_strip)
 					.OptionalNamedString("out_file", out_file)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -21439,8 +21439,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("read_schematic")
 					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -21474,8 +21474,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("read_twx")
 					.OptionalNamedString("cell", cell)
 					.OptionalNamedString("pblock", pblock)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.RequiredString(file)
 			;
@@ -21523,9 +21523,9 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("read_verilog")
 					.OptionalNamedString("library", library)
-					.Flag("sv", sv)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("sv", sv)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(files)
 			;
 		}
@@ -21562,9 +21562,9 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("read_vhdl")
 					.RequiredNamedString("library", library)
-					.Flag("vhdl2008", vhdl2008)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("vhdl2008", vhdl2008)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(files)
 			;
 		}
@@ -21628,12 +21628,12 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("read_xdc")
 					.OptionalNamedStringList("cells", cells)
 					.OptionalNamedString("ref", @ref)
-					.Flag("quiet_diff_pairs", quiet_diff_pairs)
+					.OptionalFlag("quiet_diff_pairs", quiet_diff_pairs)
 					.OptionalNamedString("mode", mode)
-					.Flag("unmanaged", unmanaged)
-					.Flag("no_add", no_add)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("unmanaged", unmanaged)
+					.OptionalFlag("no_add", no_add)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(files)
 			;
 		}
@@ -21669,15 +21669,15 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: readback_hw_cfgmem [-checksum] [-force] [-all] [-offset <arg>] -file <arg> [-format <arg>] [-datacount <arg>] [-quiet] [-verbose] [<hw_cfgmem>...]
 			return
 				new SimpleTCLCommand("readback_hw_cfgmem")
-					.Flag("checksum", checksum)
-					.Flag("force", force)
-					.Flag("all", all)
+					.OptionalFlag("checksum", checksum)
+					.OptionalFlag("force", force)
+					.OptionalFlag("all", all)
 					.OptionalNamedString("offset", offset)
 					.RequiredNamedString("file", file)
 					.OptionalNamedString("format", format)
 					.OptionalNamedString("datacount", datacount)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(hw_cfgmem)
 			;
 		}
@@ -21709,12 +21709,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: readback_hw_device [-force] [-capture] [-readback_file <arg>] [-bin_file <arg>] [-quiet] [-verbose] [<hw_device>...]
 			return
 				new SimpleTCLCommand("readback_hw_device")
-					.Flag("force", force)
-					.Flag("capture", capture)
+					.OptionalFlag("force", force)
+					.OptionalFlag("capture", capture)
 					.OptionalNamedString("readback_file", readback_file)
 					.OptionalNamedString("bin_file", bin_file)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(hw_device)
 			;
 		}
@@ -21747,9 +21747,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: redo [-list] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("redo")
-					.Flag("list", list)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("list", list)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -21783,8 +21783,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("refresh_design")
 					.OptionalNamedString("part", part)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -21813,8 +21813,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: refresh_hw_axi [-quiet] [-verbose] [<hw_axis>...]
 			return
 				new SimpleTCLCommand("refresh_hw_axi")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(hw_axis)
 			;
 		}
@@ -21854,10 +21854,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: refresh_hw_ddrmc [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("refresh_hw_ddrmc")
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedStringList("properties", properties)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -21889,10 +21889,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("refresh_hw_device")
 					.OptionalNamedString("update_hw_probes", update_hw_probes)
-					.Flag("disable_done_check", disable_done_check)
-					.Flag("force_poll", force_poll)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("disable_done_check", disable_done_check)
+					.OptionalFlag("force_poll", force_poll)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(hw_device)
 			;
 		}
@@ -21934,10 +21934,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: refresh_hw_hbm [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("refresh_hw_hbm")
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedStringList("properties", properties)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -21971,10 +21971,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: refresh_hw_mig [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("refresh_hw_mig")
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedStringList("properties", properties)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -22008,8 +22008,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: refresh_hw_pcie [-quiet] [-verbose] <hw_pcie>
 			return
 				new SimpleTCLCommand("refresh_hw_pcie")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_pcie)
 			;
 		}
@@ -22034,9 +22034,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: refresh_hw_server [-force_poll] [-quiet] [-verbose] [<hw_server>]
 			return
 				new SimpleTCLCommand("refresh_hw_server")
-					.Flag("force_poll", force_poll)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force_poll", force_poll)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(hw_server)
 			;
 		}
@@ -22070,10 +22070,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: refresh_hw_sio [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("refresh_hw_sio")
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedStringList("properties", properties)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -22097,10 +22097,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: refresh_hw_softmc [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("refresh_hw_softmc")
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedStringList("properties", properties)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -22134,10 +22134,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: refresh_hw_sysmon [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("refresh_hw_sysmon")
-					.Flag("regexp", regexp)
+					.OptionalFlag("regexp", regexp)
 					.OptionalNamedStringList("properties", properties)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -22177,9 +22177,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: refresh_hw_target [-force_poll] [-quiet] [-verbose] [<hw_target>]
 			return
 				new SimpleTCLCommand("refresh_hw_target")
-					.Flag("force_poll", force_poll)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force_poll", force_poll)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(hw_target)
 			;
 		}
@@ -22216,9 +22216,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: refresh_hw_vio [-update_output_values] [-quiet] [-verbose] <hw_vios>...
 			return
 				new SimpleTCLCommand("refresh_hw_vio")
-					.Flag("update_output_values", update_output_values)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("update_output_values", update_output_values)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(hw_vios)
 			;
 		}
@@ -22237,8 +22237,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: refresh_meminit [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("refresh_meminit")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -22265,9 +22265,9 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("regenerate_bd_layout")
 					.OptionalNamedString("hierarchy", hierarchy)
 					.OptionalNamedString("layout_file", layout_file)
-					.Flag("routing", routing)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("routing", routing)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -22328,8 +22328,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: register_proc [-quiet] [-verbose] <proc> [<tasknm>]
 			return
 				new SimpleTCLCommand("register_proc")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(proc)
 					.OptionalString(tasknm)
 			;
@@ -22368,9 +22368,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: reimport_files [-force] [-quiet] [-verbose] [<files>...]
 			return
 				new SimpleTCLCommand("reimport_files")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(files)
 			;
 		}
@@ -22410,8 +22410,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: relaunch_sim [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("relaunch_sim")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -22452,11 +22452,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: remove_bps [-all] [-file <arg>] [-line <arg>] [-quiet] [-verbose] [<BreakPointObjsOrIds>...]
 			return
 				new SimpleTCLCommand("remove_bps")
-					.Flag("all", all)
+					.OptionalFlag("all", all)
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("line", line)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(BreakPointObjsOrIds)
 			;
 		}
@@ -22489,8 +22489,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: remove_cell [-quiet] [-verbose] <cells>...
 			return
 				new SimpleTCLCommand("remove_cell")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(cells)
 			;
 		}
@@ -22519,8 +22519,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: remove_cells_from_pblock [-quiet] [-verbose] <pblock> <cells>...
 			return
 				new SimpleTCLCommand("remove_cells_from_pblock")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(pblock)
 					.RequiredStringList(cells)
 			;
@@ -22560,8 +22560,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: remove_cluster_configurations [-quiet] [-verbose] <cluster_configurations>
 			return
 				new SimpleTCLCommand("remove_cluster_configurations")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(cluster_configurations)
 			;
 		}
@@ -22594,9 +22594,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: remove_conditions [-all] [-quiet] [-verbose] [<ConditionObjs>]
 			return
 				new SimpleTCLCommand("remove_conditions")
-					.Flag("all", all)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("all", all)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(ConditionObjs)
 			;
 		}
@@ -22648,12 +22648,12 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("remove_drc_checks")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("regexp", regexp)
-					.Flag("nocase", nocase)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("nocase", nocase)
 					.OptionalNamedString("filter", filter)
 					.RequiredNamedString("ruledeck", ruledeck)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(patterns)
 			;
 		}
@@ -22694,8 +22694,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("remove_files")
 					.OptionalNamedString("fileset", fileset)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(files)
 			;
 		}
@@ -22732,9 +22732,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: remove_forces [-all] [-quiet] [-verbose] [<ForceObj>...]
 			return
 				new SimpleTCLCommand("remove_forces")
-					.Flag("all", all)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("all", all)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(ForceObj)
 			;
 		}
@@ -22760,8 +22760,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("remove_from_power_rail")
 					.OptionalNamedStringList("power_sources", power_sources)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(power_rail)
 			;
 		}
@@ -22792,8 +22792,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("remove_gui_custom_command_args")
 					.RequiredNamedString("command_name", command_name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(names)
 			;
 		}
@@ -22821,8 +22821,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: remove_gui_custom_commands [-quiet] [-verbose] <names>...
 			return
 				new SimpleTCLCommand("remove_gui_custom_commands")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(names)
 			;
 		}
@@ -22855,8 +22855,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: remove_hw_hbm_pc [-quiet] [-verbose] <mc_num> <pc_num> <hw_objects>
 			return
 				new SimpleTCLCommand("remove_hw_hbm_pc")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(mc_num)
 					.RequiredString(pc_num)
 					.RequiredString(hw_objects)
@@ -22891,11 +22891,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: remove_hw_probe_enum [-no_gui_update] [-list <args>] [-remove_all] [-quiet] [-verbose] <hw_probe>
 			return
 				new SimpleTCLCommand("remove_hw_probe_enum")
-					.Flag("no_gui_update", no_gui_update)
+					.OptionalFlag("no_gui_update", no_gui_update)
 					.OptionalNamedStringList("list", list)
-					.Flag("remove_all", remove_all)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("remove_all", remove_all)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_probe)
 			;
 		}
@@ -22923,8 +22923,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: remove_hw_sio_link [-quiet] [-verbose] <hw_sio_links>
 			return
 				new SimpleTCLCommand("remove_hw_sio_link")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_sio_links)
 			;
 		}
@@ -22955,8 +22955,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: remove_hw_sio_linkgroup [-quiet] [-verbose] <hw_sio_linkgroups>
 			return
 				new SimpleTCLCommand("remove_hw_sio_linkgroup")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_sio_linkgroups)
 			;
 		}
@@ -22979,8 +22979,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: remove_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
 			return
 				new SimpleTCLCommand("remove_hw_sio_scan")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_sio_scans)
 			;
 		}
@@ -23003,8 +23003,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: remove_hw_sio_sweep [-quiet] [-verbose] <hw_sio_sweeps>
 			return
 				new SimpleTCLCommand("remove_hw_sio_sweep")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_sio_sweeps)
 			;
 		}
@@ -23042,9 +23042,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: remove_net [-prune] [-quiet] [-verbose] <nets>...
 			return
 				new SimpleTCLCommand("remove_net")
-					.Flag("prune", prune)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("prune", prune)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(nets)
 			;
 		}
@@ -23080,8 +23080,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: remove_pin [-quiet] [-verbose] <pins>...
 			return
 				new SimpleTCLCommand("remove_pin")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(pins)
 			;
 		}
@@ -23122,8 +23122,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: remove_port [-quiet] [-verbose] <ports>...
 			return
 				new SimpleTCLCommand("remove_port")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(ports)
 			;
 		}
@@ -23149,8 +23149,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("remove_wave")
 					.OptionalNamedStringList("of", of)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(items)
 			;
 		}
@@ -23190,8 +23190,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("rename_cell")
 					.RequiredNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(cell)
 			;
 		}
@@ -23233,8 +23233,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("rename_net")
 					.RequiredNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(net)
 			;
 		}
@@ -23284,8 +23284,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("rename_pin")
 					.RequiredNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(pin)
 			;
 		}
@@ -23325,8 +23325,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("rename_port")
 					.RequiredNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(port)
 			;
 		}
@@ -23371,8 +23371,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("ref", @ref)
 					.OptionalNamedString("to", to)
 					.OptionalNamedString("prefix_all", prefix_all)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -23415,12 +23415,12 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("fileset", fileset)
 					.OptionalNamedString("before", before)
 					.OptionalNamedString("after", after)
-					.Flag("front", front)
-					.Flag("back", back)
-					.Flag("auto", auto)
-					.Flag("disable_unused", disable_unused)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("front", front)
+					.OptionalFlag("back", back)
+					.OptionalFlag("auto", auto)
+					.OptionalFlag("disable_unused", disable_unused)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(files)
 			;
 		}
@@ -23456,10 +23456,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: replace_bd_cell [-preserve_name] [-preserve_configuration] [-quiet] [-verbose] [<cell1>] [<cell2>...]
 			return
 				new SimpleTCLCommand("replace_bd_cell")
-					.Flag("preserve_name", preserve_name)
-					.Flag("preserve_configuration", preserve_configuration)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("preserve_name", preserve_name)
+					.OptionalFlag("preserve_configuration", preserve_configuration)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(cell1)
 					.OptionalStringList(cell2)
 			;
@@ -23534,18 +23534,18 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("report_bd_diffs")
 					.OptionalNamedString("format", format)
 					.OptionalNamedString("file", file)
-					.Flag("open_html", open_html)
-					.Flag("brief", brief)
-					.Flag("strict", strict)
-					.Flag("fast", fast)
-					.Flag("return_string", return_string)
+					.OptionalFlag("open_html", open_html)
+					.OptionalFlag("brief", brief)
+					.OptionalFlag("strict", strict)
+					.OptionalFlag("fast", fast)
+					.OptionalFlag("return_string", return_string)
 					.OptionalNamedString("depth", depth)
-					.Flag("crossprobe", crossprobe)
+					.OptionalFlag("crossprobe", crossprobe)
 					.OptionalNamedString("repository", repository)
-					.Flag("take_snapshot", take_snapshot)
-					.Flag("diff_snapshot", diff_snapshot)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("take_snapshot", take_snapshot)
+					.OptionalFlag("diff_snapshot", diff_snapshot)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(design1)
 					.RequiredString(design2)
 			;
@@ -23580,8 +23580,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: report_bps [-quiet] [-verbose] [<BreakPointObjs>...]
 			return
 				new SimpleTCLCommand("report_bps")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(BreakPointObjs)
 			;
 		}
@@ -23666,25 +23666,25 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_bus_skew")
 					.OptionalNamedString("delay_type", delay_type)
-					.Flag("setup", setup)
-					.Flag("hold", hold)
-					.Flag("no_detailed_paths", no_detailed_paths)
+					.OptionalFlag("setup", setup)
+					.OptionalFlag("hold", hold)
+					.OptionalFlag("no_detailed_paths", no_detailed_paths)
 					.OptionalNamedString("max_paths", max_paths)
 					.OptionalNamedString("nworst", nworst)
-					.Flag("unique_pins", unique_pins)
+					.OptionalFlag("unique_pins", unique_pins)
 					.OptionalNamedString("path_type", path_type)
-					.Flag("sort_by_slack", sort_by_slack)
-					.Flag("input_pins", input_pins)
-					.Flag("no_header", no_header)
+					.OptionalFlag("sort_by_slack", sort_by_slack)
+					.OptionalFlag("input_pins", input_pins)
+					.OptionalFlag("no_header", no_header)
 					.OptionalNamedString("significant_digits", significant_digits)
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("warn_on_violation", warn_on_violation)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("warn_on_violation", warn_on_violation)
 					.OptionalNamedString("rpx", rpx)
 					.OptionalNamedStringList("cells", cells)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -23723,12 +23723,12 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_carry_chains")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
 					.OptionalNamedStringList("cell", cell)
 					.OptionalNamedString("max_chains", max_chains)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -23806,20 +23806,20 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("from", from)
 					.OptionalNamedStringList("to", to)
 					.OptionalNamedStringList("cells", cells)
-					.Flag("details", details)
-					.Flag("summary", summary)
-					.Flag("all_checks_per_endpoint", all_checks_per_endpoint)
+					.OptionalFlag("details", details)
+					.OptionalFlag("summary", summary)
+					.OptionalFlag("all_checks_per_endpoint", all_checks_per_endpoint)
 					.OptionalNamedString("severity", severity)
-					.Flag("no_header", no_header)
-					.Flag("show_waiver", show_waiver)
-					.Flag("no_waiver", no_waiver)
-					.Flag("waived", waived)
+					.OptionalFlag("no_header", no_header)
+					.OptionalFlag("show_waiver", show_waiver)
+					.OptionalFlag("no_waiver", no_waiver)
+					.OptionalFlag("waived", waived)
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
 					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -23870,17 +23870,17 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_clock_interaction")
 					.OptionalNamedString("delay_type", delay_type)
-					.Flag("setup", setup)
-					.Flag("hold", hold)
+					.OptionalFlag("setup", setup)
+					.OptionalFlag("hold", hold)
 					.OptionalNamedString("significant_digits", significant_digits)
-					.Flag("no_header", no_header)
+					.OptionalFlag("no_header", no_header)
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
+					.OptionalFlag("append", append)
 					.OptionalNamedString("name", name)
-					.Flag("return_string", return_string)
+					.OptionalFlag("return_string", return_string)
 					.OptionalNamedStringList("cells", cells)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -23955,17 +23955,17 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_clock_networks")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
+					.OptionalFlag("append", append)
 					.OptionalNamedString("name", name)
-					.Flag("return_string", return_string)
-					.Flag("endpoints_only", endpoints_only)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("endpoints_only", endpoints_only)
 					.OptionalNamedString("levels", levels)
-					.Flag("expand_buckets", expand_buckets)
+					.OptionalFlag("expand_buckets", expand_buckets)
 					.OptionalNamedString("suppress_endpoints", suppress_endpoints)
 					.OptionalNamedStringList("clocks", clocks)
 					.OptionalNamedStringList("unconstrained_roots", unconstrained_roots)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -24019,14 +24019,14 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_clock_utilization")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
+					.OptionalFlag("append", append)
 					.OptionalNamedString("write_xdc", write_xdc)
 					.OptionalNamedStringList("cells", cells)
-					.Flag("clock_roots_only", clock_roots_only)
-					.Flag("return_string", return_string)
+					.OptionalFlag("clock_roots_only", clock_roots_only)
+					.OptionalFlag("return_string", return_string)
 					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -24066,10 +24066,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_clocks")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(clocks)
 			;
 		}
@@ -24116,15 +24116,15 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_compile_order")
 					.OptionalNamedString("fileset", fileset)
-					.Flag("missing_instances", missing_instances)
-					.Flag("constraints", constraints)
-					.Flag("sources", sources)
+					.OptionalFlag("missing_instances", missing_instances)
+					.OptionalFlag("constraints", constraints)
+					.OptionalFlag("sources", sources)
 					.OptionalNamedString("used_in", used_in)
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
+					.OptionalFlag("append", append)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -24170,8 +24170,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: report_conditions [-quiet] [-verbose] [<ConditionObjs>...]
 			return
 				new SimpleTCLCommand("report_conditions")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(ConditionObjs)
 			;
 		}
@@ -24209,11 +24209,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_config_implementation")
 					.OptionalNamedString("file", file)
-					.Flag("force", force)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -24252,14 +24252,14 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_config_timing")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
+					.OptionalFlag("append", append)
 					.OptionalNamedString("name", name)
-					.Flag("return_string", return_string)
-					.Flag("all", all)
-					.Flag("no_header", no_header)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("all", all)
+					.OptionalFlag("no_header", no_header)
 					.OptionalNamedString("rpx", rpx)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -24313,14 +24313,14 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_control_sets")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("hierarchical", hierarchical)
+					.OptionalFlag("append", append)
+					.OptionalFlag("hierarchical", hierarchical)
 					.OptionalNamedString("hierarchical_depth", hierarchical_depth)
 					.OptionalNamedStringList("sort_by", sort_by)
 					.OptionalNamedStringList("cells", cells)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -24377,16 +24377,16 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("report_datasheet")
 					.OptionalNamedString("significant_digits", significant_digits)
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
 					.OptionalNamedString("sort_by", sort_by)
 					.OptionalNamedString("name", name)
-					.Flag("show_all_corners", show_all_corners)
-					.Flag("show_oe_timing", show_oe_timing)
+					.OptionalFlag("show_all_corners", show_all_corners)
+					.OptionalFlag("show_oe_timing", show_oe_timing)
 					.OptionalNamedStringList("group", group)
 					.OptionalNamedString("rpx", rpx)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -24423,11 +24423,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_debug_core")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("full_path", full_path)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("full_path", full_path)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -24660,36 +24660,36 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_design_analysis")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("complexity", complexity)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("complexity", complexity)
 					.OptionalNamedStringList("cells", cells)
 					.OptionalNamedStringList("bounding_boxes", bounding_boxes)
 					.OptionalNamedString("hierarchical_depth", hierarchical_depth)
-					.Flag("congestion", congestion)
+					.OptionalFlag("congestion", congestion)
 					.OptionalNamedString("min_congestion_level", min_congestion_level)
-					.Flag("timing", timing)
-					.Flag("setup", setup)
-					.Flag("hold", hold)
-					.Flag("show_all", show_all)
-					.Flag("full_logical_pin", full_logical_pin)
-					.Flag("routed_vs_estimated", routed_vs_estimated)
-					.Flag("logic_level_distribution", logic_level_distribution)
+					.OptionalFlag("timing", timing)
+					.OptionalFlag("setup", setup)
+					.OptionalFlag("hold", hold)
+					.OptionalFlag("show_all", show_all)
+					.OptionalFlag("full_logical_pin", full_logical_pin)
+					.OptionalFlag("routed_vs_estimated", routed_vs_estimated)
+					.OptionalFlag("logic_level_distribution", logic_level_distribution)
 					.OptionalNamedString("logic_level_dist_paths", logic_level_dist_paths)
 					.OptionalNamedString("min_level", min_level)
 					.OptionalNamedString("max_level", max_level)
-					.Flag("return_timing_paths", return_timing_paths)
+					.OptionalFlag("return_timing_paths", return_timing_paths)
 					.OptionalNamedStringList("of_timing_paths", of_timing_paths)
 					.OptionalNamedString("max_paths", max_paths)
-					.Flag("extend", extend)
-					.Flag("routes", routes)
+					.OptionalFlag("extend", extend)
+					.OptionalFlag("routes", routes)
 					.OptionalNamedStringList("end_point_clocks", end_point_clocks)
 					.OptionalNamedString("logic_levels", logic_levels)
-					.Flag("qor_summary", qor_summary)
+					.OptionalFlag("qor_summary", qor_summary)
 					.OptionalNamedString("name", name)
-					.Flag("no_pr_attribute", no_pr_attribute)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("no_pr_attribute", no_pr_attribute)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -24743,14 +24743,14 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: report_disable_timing [-user_disabled] [-column_style <arg>] [-file <arg>] [-append] [-cells <args>] [-return_string] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_disable_timing")
-					.Flag("user_disabled", user_disabled)
+					.OptionalFlag("user_disabled", user_disabled)
 					.OptionalNamedString("column_style", column_style)
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
+					.OptionalFlag("append", append)
 					.OptionalNamedStringList("cells", cells)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -24830,17 +24830,17 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_drc")
 					.OptionalNamedString("name", name)
-					.Flag("upgrade_cw", upgrade_cw)
+					.OptionalFlag("upgrade_cw", upgrade_cw)
 					.OptionalNamedStringList("checks", checks)
 					.OptionalNamedStringList("ruledecks", ruledecks)
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("rpx", rpx)
-					.Flag("append", append)
-					.Flag("waived", waived)
-					.Flag("no_waivers", no_waivers)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("waived", waived)
+					.OptionalFlag("no_waivers", no_waivers)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -24942,8 +24942,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: report_drivers [-quiet] [-verbose] <hdl_object>
 			return
 				new SimpleTCLCommand("report_drivers")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hdl_object)
 			;
 		}
@@ -24983,10 +24983,10 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("report_environment")
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("format", format)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -25054,20 +25054,20 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("through", through)
 					.OptionalNamedStringList("rise_through", rise_through)
 					.OptionalNamedStringList("fall_through", fall_through)
-					.Flag("ignored", ignored)
-					.Flag("summary", summary)
-					.Flag("coverage", coverage)
-					.Flag("ignored_objects", ignored_objects)
-					.Flag("count_objects", count_objects)
-					.Flag("write_merged_exceptions", write_merged_exceptions)
-					.Flag("write_valid_exceptions", write_valid_exceptions)
-					.Flag("no_header", no_header)
+					.OptionalFlag("ignored", ignored)
+					.OptionalFlag("summary", summary)
+					.OptionalFlag("coverage", coverage)
+					.OptionalFlag("ignored_objects", ignored_objects)
+					.OptionalFlag("count_objects", count_objects)
+					.OptionalFlag("write_merged_exceptions", write_merged_exceptions)
+					.OptionalFlag("write_valid_exceptions", write_valid_exceptions)
+					.OptionalFlag("no_header", no_header)
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
 					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -25142,8 +25142,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: report_frames [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_frames")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -25214,22 +25214,22 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("report_high_fanout_nets")
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("format", format)
-					.Flag("append", append)
-					.Flag("ascending", ascending)
-					.Flag("timing", timing)
-					.Flag("histogram", histogram)
-					.Flag("load_types", load_types)
-					.Flag("clock_regions", clock_regions)
-					.Flag("slr", slr)
+					.OptionalFlag("append", append)
+					.OptionalFlag("ascending", ascending)
+					.OptionalFlag("timing", timing)
+					.OptionalFlag("histogram", histogram)
+					.OptionalFlag("load_types", load_types)
+					.OptionalFlag("clock_regions", clock_regions)
+					.OptionalFlag("slr", slr)
 					.OptionalNamedString("max_nets", max_nets)
 					.OptionalNamedString("fanout_greater_than", fanout_greater_than)
 					.OptionalNamedString("fanout_lesser_than", fanout_lesser_than)
 					.OptionalNamedString("name", name)
 					.OptionalNamedStringList("cells", cells)
 					.OptionalNamedStringList("clocks", clocks)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -25268,8 +25268,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("report_hw_axi_txn")
 					.OptionalNamedString("w", w)
 					.OptionalNamedString("t", t)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(hw_axi_txns)
 			;
 		}
@@ -25309,10 +25309,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_hw_ddrmc")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -25351,10 +25351,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_hw_mig")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -25395,10 +25395,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_hw_pcie")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_pcie)
 			;
 		}
@@ -25423,10 +25423,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_hw_softmc")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -25460,8 +25460,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: report_hw_targets [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_hw_targets")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -25517,13 +25517,13 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_incremental_reuse")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
+					.OptionalFlag("append", append)
 					.OptionalNamedStringList("cells", cells)
-					.Flag("hierarchical", hierarchical)
+					.OptionalFlag("hierarchical", hierarchical)
 					.OptionalNamedString("hierarchical_depth", hierarchical_depth)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -25566,11 +25566,11 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("report_io")
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("name", name)
-					.Flag("append", append)
+					.OptionalFlag("append", append)
 					.OptionalNamedString("format", format)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -25631,12 +25631,12 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("report_ip_status")
 					.OptionalNamedString("name", name)
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("license_status", license_status)
-					.Flag("resource_data", resource_data)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("license_status", license_status)
+					.OptionalFlag("resource_data", resource_data)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -25707,13 +25707,13 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("checks", checks)
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("rpx", rpx)
-					.Flag("append", append)
-					.Flag("waived", waived)
-					.Flag("no_waivers", no_waivers)
+					.OptionalFlag("append", append)
+					.OptionalFlag("waived", waived)
+					.OptionalFlag("no_waivers", no_waivers)
 					.OptionalNamedString("slack_lesser_than", slack_lesser_than)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -25773,8 +25773,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: report_objects [-quiet] [-verbose] [<hdl_objects>...]
 			return
 				new SimpleTCLCommand("report_objects")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(hdl_objects)
 			;
 		}
@@ -25844,26 +25844,26 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("report_operating_conditions")
 					.OptionalNamedStringList("voltage", voltage)
 					.OptionalNamedStringList("voltage_range", voltage_range)
-					.Flag("grade", grade)
-					.Flag("process", process)
-					.Flag("junction_temp", junction_temp)
-					.Flag("ambient_temp", ambient_temp)
-					.Flag("thetaja", thetaja)
-					.Flag("thetasa", thetasa)
-					.Flag("airflow", airflow)
-					.Flag("heatsink", heatsink)
-					.Flag("thetajb", thetajb)
-					.Flag("board", board)
-					.Flag("board_temp", board_temp)
-					.Flag("board_layers", board_layers)
-					.Flag("design_power_budget", design_power_budget)
-					.Flag("all", all)
+					.OptionalFlag("grade", grade)
+					.OptionalFlag("process", process)
+					.OptionalFlag("junction_temp", junction_temp)
+					.OptionalFlag("ambient_temp", ambient_temp)
+					.OptionalFlag("thetaja", thetaja)
+					.OptionalFlag("thetasa", thetasa)
+					.OptionalFlag("airflow", airflow)
+					.OptionalFlag("heatsink", heatsink)
+					.OptionalFlag("thetajb", thetajb)
+					.OptionalFlag("board", board)
+					.OptionalFlag("board_temp", board_temp)
+					.OptionalFlag("board_layers", board_layers)
+					.OptionalFlag("design_power_budget", design_power_budget)
+					.OptionalFlag("all", all)
 					.OptionalNamedString("file", file)
-					.Flag("return_string", return_string)
-					.Flag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("append", append)
 					.OptionalNamedStringList("supply_current_budget", supply_current_budget)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -25901,11 +25901,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_param")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("non_default", non_default)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("non_default", non_default)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(pattern)
 			;
 		}
@@ -25935,10 +25935,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_phys_opt")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -25996,15 +25996,15 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_pipeline_analysis")
 					.OptionalNamedStringList("cells", cells)
-					.Flag("verbose", verbose)
+					.OptionalFlag("verbose", verbose)
 					.OptionalNamedStringList("clocks", clocks)
 					.OptionalNamedString("file", file)
-					.Flag("include_paths_to_pipeline", include_paths_to_pipeline)
-					.Flag("append", append)
+					.OptionalFlag("include_paths_to_pipeline", include_paths_to_pipeline)
+					.OptionalFlag("append", append)
 					.OptionalNamedString("max_added_latency", max_added_latency)
-					.Flag("report_loops", report_loops)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
+					.OptionalFlag("report_loops", report_loops)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
 			;
 		}
 		/// <summary>
@@ -26064,21 +26064,21 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: report_power [-no_propagation] [-hier <arg>] [-hierarchical_depth <arg>] [-vid] [-advisory] [-file <arg>] [-name <arg>] [-format <arg>] [-xpe <arg>] [-l <arg>] [-return_string] [-append] [-rpx <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_power")
-					.Flag("no_propagation", no_propagation)
+					.OptionalFlag("no_propagation", no_propagation)
 					.OptionalNamedString("hier", hier)
 					.OptionalNamedString("hierarchical_depth", hierarchical_depth)
-					.Flag("vid", vid)
-					.Flag("advisory", advisory)
+					.OptionalFlag("vid", vid)
+					.OptionalFlag("advisory", advisory)
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("name", name)
 					.OptionalNamedString("format", format)
 					.OptionalNamedString("xpe", xpe)
 					.OptionalNamedString("l", l)
-					.Flag("return_string", return_string)
-					.Flag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("append", append)
 					.OptionalNamedString("rpx", rpx)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -26120,10 +26120,10 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("format", format)
 					.OptionalNamedString("name", name)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -26177,16 +26177,16 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: report_pr_configuration_analysis [-complexity] [-clocking] [-timing] [-cells <args>] [-dcps <args>] [-rent] [-nworst <arg>] [-file <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_pr_configuration_analysis")
-					.Flag("complexity", complexity)
-					.Flag("clocking", clocking)
-					.Flag("timing", timing)
+					.OptionalFlag("complexity", complexity)
+					.OptionalFlag("clocking", clocking)
+					.OptionalFlag("timing", timing)
 					.OptionalNamedStringList("cells", cells)
 					.OptionalNamedStringList("dcps", dcps)
-					.Flag("rent", rent)
+					.OptionalFlag("rent", rent)
 					.OptionalNamedString("nworst", nworst)
 					.OptionalNamedString("file", file)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -26250,14 +26250,14 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: report_property [-all] [-class <arg>] [-return_string] [-file <arg>] [-append] [-regexp] [-quiet] [-verbose] [<object>] [<pattern>]
 			return
 				new SimpleTCLCommand("report_property")
-					.Flag("all", all)
+					.OptionalFlag("all", all)
 					.OptionalNamedString("class", @class)
-					.Flag("return_string", return_string)
+					.OptionalFlag("return_string", return_string)
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("regexp", regexp)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(@object)
 					.OptionalString(pattern)
 			;
@@ -26322,24 +26322,24 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_pulse_width")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
+					.OptionalFlag("append", append)
 					.OptionalNamedString("name", name)
-					.Flag("return_string", return_string)
-					.Flag("warn_on_violation", warn_on_violation)
-					.Flag("all_violators", all_violators)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("warn_on_violation", warn_on_violation)
+					.OptionalFlag("all_violators", all_violators)
 					.OptionalNamedString("significant_digits", significant_digits)
 					.OptionalNamedString("limit", limit)
-					.Flag("min_period", min_period)
-					.Flag("max_period", max_period)
-					.Flag("low_pulse", low_pulse)
-					.Flag("high_pulse", high_pulse)
-					.Flag("max_skew", max_skew)
+					.OptionalFlag("min_period", min_period)
+					.OptionalFlag("max_period", max_period)
+					.OptionalFlag("low_pulse", low_pulse)
+					.OptionalFlag("high_pulse", high_pulse)
+					.OptionalFlag("max_skew", max_skew)
 					.OptionalNamedStringList("clocks", clocks)
-					.Flag("no_header", no_header)
+					.OptionalFlag("no_header", no_header)
 					.OptionalNamedStringList("cells", cells)
 					.OptionalNamedString("rpx", rpx)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(objects)
 			;
 		}
@@ -26395,10 +26395,10 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("report_qor_assessment")
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("max_paths", max_paths)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -26485,16 +26485,16 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("report_qor_suggestions")
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("name", name)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
 					.OptionalNamedString("max_strategies", max_strategies)
 					.OptionalNamedString("max_paths", max_paths)
-					.Flag("no_split", no_split)
-					.Flag("report_all_suggestions", report_all_suggestions)
+					.OptionalFlag("no_split", no_split)
+					.OptionalFlag("report_all_suggestions", report_all_suggestions)
 					.OptionalNamedStringList("cells", cells)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -26570,15 +26570,15 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: report_ram_utilization [-append] [-file <arg>] [-csv <arg>] [-return_string] [-cells <args>] [-include_path_info] [-include_lutram] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_ram_utilization")
-					.Flag("append", append)
+					.OptionalFlag("append", append)
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("csv", csv)
-					.Flag("return_string", return_string)
+					.OptionalFlag("return_string", return_string)
 					.OptionalNamedStringList("cells", cells)
-					.Flag("include_path_info", include_path_info)
-					.Flag("include_lutram", include_lutram)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("include_path_info", include_path_info)
+					.OptionalFlag("include_lutram", include_lutram)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -26662,20 +26662,20 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: report_route_status [-return_nets] [-return_string] [-file <arg>] [-append] [-of_objects <args>] [-route_type <arg>] [-list_all_nets] [-show_all] [-dump_routes] [-has_routing] [-boolean_check <arg>] [-ignore_cache] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_route_status")
-					.Flag("return_nets", return_nets)
-					.Flag("return_string", return_string)
+					.OptionalFlag("return_nets", return_nets)
+					.OptionalFlag("return_string", return_string)
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
+					.OptionalFlag("append", append)
 					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("route_type", route_type)
-					.Flag("list_all_nets", list_all_nets)
-					.Flag("show_all", show_all)
-					.Flag("dump_routes", dump_routes)
-					.Flag("has_routing", has_routing)
+					.OptionalFlag("list_all_nets", list_all_nets)
+					.OptionalFlag("show_all", show_all)
+					.OptionalFlag("dump_routes", dump_routes)
+					.OptionalFlag("has_routing", has_routing)
 					.OptionalNamedString("boolean_check", boolean_check)
-					.Flag("ignore_cache", ignore_cache)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("ignore_cache", ignore_cache)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -26718,8 +26718,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: report_scopes [-quiet] [-verbose] [<hdl_scopes>...]
 			return
 				new SimpleTCLCommand("report_scopes")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(hdl_scopes)
 			;
 		}
@@ -26745,10 +26745,10 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("report_sim_device")
 					.OptionalNamedString("part", part)
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -26776,9 +26776,9 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_simlib_info")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(path)
 			;
 		}
@@ -26846,13 +26846,13 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_ssn")
 					.OptionalNamedString("name", name)
-					.Flag("return_string", return_string)
+					.OptionalFlag("return_string", return_string)
 					.OptionalNamedString("format", format)
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("phase", phase)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("phase", phase)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -26911,8 +26911,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_stacks")
 					.OptionalNamedString("of_instance", of_instance)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -26974,20 +26974,20 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: report_switching_activity [-static_probability] [-signal_rate] [-toggle_rate] [-default_static_probability] [-default_toggle_rate] [-average] [-file <arg>] [-return_string] [-append] [-hier] [-all] [-type <args>] [-quiet] [-verbose] [<objects>...]
 			return
 				new SimpleTCLCommand("report_switching_activity")
-					.Flag("static_probability", static_probability)
-					.Flag("signal_rate", signal_rate)
-					.Flag("toggle_rate", toggle_rate)
-					.Flag("default_static_probability", default_static_probability)
-					.Flag("default_toggle_rate", default_toggle_rate)
-					.Flag("average", average)
+					.OptionalFlag("static_probability", static_probability)
+					.OptionalFlag("signal_rate", signal_rate)
+					.OptionalFlag("toggle_rate", toggle_rate)
+					.OptionalFlag("default_static_probability", default_static_probability)
+					.OptionalFlag("default_toggle_rate", default_toggle_rate)
+					.OptionalFlag("average", average)
 					.OptionalNamedString("file", file)
-					.Flag("return_string", return_string)
-					.Flag("append", append)
-					.Flag("hier", hier)
-					.Flag("all", all)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("append", append)
+					.OptionalFlag("hier", hier)
+					.OptionalFlag("all", all)
 					.OptionalNamedStringList("type", type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(objects)
 			;
 		}
@@ -27090,13 +27090,13 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_synchronizer_mtbf")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
 					.OptionalNamedString("warn_if_mtbf_below", warn_if_mtbf_below)
-					.Flag("quiet", quiet)
-					.Flag("no_header", no_header)
-					.Flag("report_endpoints", report_endpoints)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("no_header", no_header)
+					.OptionalFlag("report_endpoints", report_endpoints)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -27228,35 +27228,35 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("rise_through", rise_through)
 					.OptionalNamedStringList("fall_through", fall_through)
 					.OptionalNamedString("delay_type", delay_type)
-					.Flag("setup", setup)
-					.Flag("hold", hold)
+					.OptionalFlag("setup", setup)
+					.OptionalFlag("hold", hold)
 					.OptionalNamedString("max_paths", max_paths)
 					.OptionalNamedString("nworst", nworst)
-					.Flag("unique_pins", unique_pins)
+					.OptionalFlag("unique_pins", unique_pins)
 					.OptionalNamedString("path_type", path_type)
-					.Flag("input_pins", input_pins)
-					.Flag("no_header", no_header)
-					.Flag("no_reused_label", no_reused_label)
+					.OptionalFlag("input_pins", input_pins)
+					.OptionalFlag("no_header", no_header)
+					.OptionalFlag("no_reused_label", no_reused_label)
 					.OptionalNamedString("slack_lesser_than", slack_lesser_than)
 					.OptionalNamedString("slack_greater_than", slack_greater_than)
 					.OptionalNamedStringList("group", group)
 					.OptionalNamedString("sort_by", sort_by)
-					.Flag("no_report_unconstrained", no_report_unconstrained)
-					.Flag("user_ignored", user_ignored)
+					.OptionalFlag("no_report_unconstrained", no_report_unconstrained)
+					.OptionalFlag("user_ignored", user_ignored)
 					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalNamedString("significant_digits", significant_digits)
 					.OptionalNamedString("column_style", column_style)
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
+					.OptionalFlag("append", append)
 					.OptionalNamedString("name", name)
-					.Flag("no_pr_attribute", no_pr_attribute)
-					.Flag("routable_nets", routable_nets)
-					.Flag("return_string", return_string)
-					.Flag("warn_on_violation", warn_on_violation)
+					.OptionalFlag("no_pr_attribute", no_pr_attribute)
+					.OptionalFlag("routable_nets", routable_nets)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("warn_on_violation", warn_on_violation)
 					.OptionalNamedStringList("cells", cells)
 					.OptionalNamedString("rpx", rpx)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -27364,33 +27364,33 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: report_timing_summary [-check_timing_verbose] [-delay_type <arg>] [-no_detailed_paths] [-setup] [-hold] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-path_type <arg>] [-no_reused_label] [-input_pins] [-no_pr_attribute] [-routable_nets] [-slack_lesser_than <arg>] [-report_unconstrained] [-significant_digits <arg>] [-no_header] [-file <arg>] [-append] [-name <arg>] [-return_string] [-warn_on_violation] [-datasheet] [-cells <args>] [-rpx <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("report_timing_summary")
-					.Flag("check_timing_verbose", check_timing_verbose)
+					.OptionalFlag("check_timing_verbose", check_timing_verbose)
 					.OptionalNamedString("delay_type", delay_type)
-					.Flag("no_detailed_paths", no_detailed_paths)
-					.Flag("setup", setup)
-					.Flag("hold", hold)
+					.OptionalFlag("no_detailed_paths", no_detailed_paths)
+					.OptionalFlag("setup", setup)
+					.OptionalFlag("hold", hold)
 					.OptionalNamedString("max_paths", max_paths)
 					.OptionalNamedString("nworst", nworst)
-					.Flag("unique_pins", unique_pins)
+					.OptionalFlag("unique_pins", unique_pins)
 					.OptionalNamedString("path_type", path_type)
-					.Flag("no_reused_label", no_reused_label)
-					.Flag("input_pins", input_pins)
-					.Flag("no_pr_attribute", no_pr_attribute)
-					.Flag("routable_nets", routable_nets)
+					.OptionalFlag("no_reused_label", no_reused_label)
+					.OptionalFlag("input_pins", input_pins)
+					.OptionalFlag("no_pr_attribute", no_pr_attribute)
+					.OptionalFlag("routable_nets", routable_nets)
 					.OptionalNamedString("slack_lesser_than", slack_lesser_than)
-					.Flag("report_unconstrained", report_unconstrained)
+					.OptionalFlag("report_unconstrained", report_unconstrained)
 					.OptionalNamedString("significant_digits", significant_digits)
-					.Flag("no_header", no_header)
+					.OptionalFlag("no_header", no_header)
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
+					.OptionalFlag("append", append)
 					.OptionalNamedString("name", name)
-					.Flag("return_string", return_string)
-					.Flag("warn_on_violation", warn_on_violation)
-					.Flag("datasheet", datasheet)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("warn_on_violation", warn_on_violation)
+					.OptionalFlag("datasheet", datasheet)
 					.OptionalNamedStringList("cells", cells)
 					.OptionalNamedString("rpx", rpx)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -27423,10 +27423,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_transformed_primitives")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -27512,26 +27512,26 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_utilization")
 					.OptionalNamedString("file", file)
-					.Flag("append", append)
+					.OptionalFlag("append", append)
 					.OptionalNamedStringList("pblocks", pblocks)
-					.Flag("evaluate_pblock", evaluate_pblock)
-					.Flag("exclude_child_pblocks", exclude_child_pblocks)
-					.Flag("exclude_non_assigned", exclude_non_assigned)
+					.OptionalFlag("evaluate_pblock", evaluate_pblock)
+					.OptionalFlag("exclude_child_pblocks", exclude_child_pblocks)
+					.OptionalFlag("exclude_non_assigned", exclude_non_assigned)
 					.OptionalNamedStringList("cells", cells)
-					.Flag("return_string", return_string)
-					.Flag("slr", slr)
-					.Flag("packthru", packthru)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("slr", slr)
+					.OptionalFlag("packthru", packthru)
 					.OptionalNamedString("name", name)
-					.Flag("no_primitives", no_primitives)
-					.Flag("omit_locs", omit_locs)
-					.Flag("hierarchical", hierarchical)
+					.OptionalFlag("no_primitives", no_primitives)
+					.OptionalFlag("omit_locs", omit_locs)
+					.OptionalFlag("hierarchical", hierarchical)
 					.OptionalNamedString("spreadsheet_file", spreadsheet_file)
 					.OptionalNamedString("spreadsheet_table", spreadsheet_table)
 					.OptionalNamedString("spreadsheet_depth", spreadsheet_depth)
 					.OptionalNamedString("hierarchical_depth", hierarchical_depth)
-					.Flag("hierarchical_percentages", hierarchical_percentages)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("hierarchical_percentages", hierarchical_percentages)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -27598,8 +27598,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("report_values")
 					.OptionalNamedString("radix", radix)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(hdl_objects)
 			;
 		}
@@ -27649,13 +27649,13 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("report_waivers")
 					.OptionalNamedString("file", file)
 					.OptionalNamedString("type", type)
-					.Flag("write_valid_waivers", write_valid_waivers)
-					.Flag("write_ignored_waivers", write_ignored_waivers)
-					.Flag("append", append)
-					.Flag("return_string", return_string)
-					.Flag("show_msgs_with_no_waivers", show_msgs_with_no_waivers)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("write_valid_waivers", write_valid_waivers)
+					.OptionalFlag("write_ignored_waivers", write_ignored_waivers)
+					.OptionalFlag("append", append)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("show_msgs_with_no_waivers", show_msgs_with_no_waivers)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -27681,8 +27681,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("reset_drc")
 					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -27717,8 +27717,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: reset_drc_check [-quiet] [-verbose] [<checks>...]
 			return
 				new SimpleTCLCommand("reset_drc_check")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(checks)
 			;
 		}
@@ -27749,8 +27749,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: reset_hw_axi [-quiet] [-verbose] [<hw_axis>...]
 			return
 				new SimpleTCLCommand("reset_hw_axi")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(hw_axis)
 			;
 		}
@@ -27794,8 +27794,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("reset_hw_ila")
 					.OptionalNamedString("reset_compare_values", reset_compare_values)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(hw_ilas)
 			;
 		}
@@ -27828,8 +27828,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: reset_hw_pcie [-quiet] [-verbose] <hw_pcie>
 			return
 				new SimpleTCLCommand("reset_hw_pcie")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_pcie)
 			;
 		}
@@ -27859,8 +27859,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: reset_hw_vio_activity [-quiet] [-verbose] <hw_vios>...
 			return
 				new SimpleTCLCommand("reset_hw_vio_activity")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(hw_vios)
 			;
 		}
@@ -27892,8 +27892,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: reset_hw_vio_outputs [-quiet] [-verbose] <hw_vios>...
 			return
 				new SimpleTCLCommand("reset_hw_vio_outputs")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(hw_vios)
 			;
 		}
@@ -27920,8 +27920,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("reset_methodology")
 					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -27959,8 +27959,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: reset_methodology_check [-quiet] [-verbose] [<checks>...]
 			return
 				new SimpleTCLCommand("reset_methodology_check")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(checks)
 			;
 		}
@@ -28056,13 +28056,13 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("string", @string)
 					.OptionalNamedString("id", id)
 					.OptionalNamedString("severity", severity)
-					.Flag("limit", limit)
-					.Flag("suppress", suppress)
-					.Flag("count", count)
-					.Flag("default_severity", default_severity)
-					.Flag("regexp", regexp)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("limit", limit)
+					.OptionalFlag("suppress", suppress)
+					.OptionalFlag("count", count)
+					.OptionalFlag("default_severity", default_severity)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -28101,8 +28101,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: reset_msg_count [-quiet] [-verbose] <id>
 			return
 				new SimpleTCLCommand("reset_msg_count")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(id)
 			;
 		}
@@ -28158,22 +28158,22 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("reset_operating_conditions")
 					.OptionalNamedStringList("voltage", voltage)
-					.Flag("grade", grade)
-					.Flag("process", process)
-					.Flag("junction_temp", junction_temp)
-					.Flag("ambient_temp", ambient_temp)
-					.Flag("thetaja", thetaja)
-					.Flag("thetasa", thetasa)
-					.Flag("airflow", airflow)
-					.Flag("heatsink", heatsink)
-					.Flag("thetajb", thetajb)
-					.Flag("board", board)
-					.Flag("board_temp", board_temp)
-					.Flag("board_layers", board_layers)
-					.Flag("design_power_budget", design_power_budget)
+					.OptionalFlag("grade", grade)
+					.OptionalFlag("process", process)
+					.OptionalFlag("junction_temp", junction_temp)
+					.OptionalFlag("ambient_temp", ambient_temp)
+					.OptionalFlag("thetaja", thetaja)
+					.OptionalFlag("thetasa", thetasa)
+					.OptionalFlag("airflow", airflow)
+					.OptionalFlag("heatsink", heatsink)
+					.OptionalFlag("thetajb", thetajb)
+					.OptionalFlag("board", board)
+					.OptionalFlag("board_temp", board_temp)
+					.OptionalFlag("board_layers", board_layers)
+					.OptionalFlag("design_power_budget", design_power_budget)
 					.OptionalNamedStringList("supply_current_budget", supply_current_budget)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -28200,8 +28200,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: reset_param [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("reset_param")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -28231,11 +28231,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: reset_project [-exclude_runs] [-exclude_ips] [-exclude_sim_runs] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("reset_project")
-					.Flag("exclude_runs", exclude_runs)
-					.Flag("exclude_ips", exclude_ips)
-					.Flag("exclude_sim_runs", exclude_sim_runs)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("exclude_runs", exclude_runs)
+					.OptionalFlag("exclude_ips", exclude_ips)
+					.OptionalFlag("exclude_sim_runs", exclude_sim_runs)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -28265,8 +28265,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: reset_property [-quiet] [-verbose] <property_name> <objects>...
 			return
 				new SimpleTCLCommand("reset_property")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(property_name)
 					.RequiredStringList(objects)
 			;
@@ -28289,10 +28289,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: reset_runs [-prev_step] [-from_step <arg>] [-quiet] [-verbose] <runs>
 			return
 				new SimpleTCLCommand("reset_runs")
-					.Flag("prev_step", prev_step)
+					.OptionalFlag("prev_step", prev_step)
 					.OptionalNamedString("from_step", from_step)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(runs)
 			;
 		}
@@ -28336,8 +28336,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("reset_simulation")
 					.OptionalNamedString("mode", mode)
 					.OptionalNamedString("type", type)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(simset)
 			;
 		}
@@ -28363,8 +28363,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: reset_ssn [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("reset_ssn")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -28416,13 +28416,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: reset_switching_activity [-default] [-type <args>] [-hier] [-all] [-no_deassert_resets] [-quiet] [-verbose] [<objects>...]
 			return
 				new SimpleTCLCommand("reset_switching_activity")
-					.Flag("default", @default)
+					.OptionalFlag("default", @default)
 					.OptionalNamedStringList("type", type)
-					.Flag("hier", hier)
-					.Flag("all", all)
-					.Flag("no_deassert_resets", no_deassert_resets)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("hier", hier)
+					.OptionalFlag("all", all)
+					.OptionalFlag("no_deassert_resets", no_deassert_resets)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(objects)
 			;
 		}
@@ -28450,8 +28450,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: reset_target [-quiet] [-verbose] <name> <objects>
 			return
 				new SimpleTCLCommand("reset_target")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.RequiredString(objects)
 			;
@@ -28494,10 +28494,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: reset_timing [-invalid] [-clock_reservation] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("reset_timing")
-					.Flag("invalid", invalid)
-					.Flag("clock_reservation", clock_reservation)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("invalid", invalid)
+					.OptionalFlag("clock_reservation", clock_reservation)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -28539,8 +28539,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("resize_net_bus")
 					.OptionalNamedString("from", from)
 					.OptionalNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(net_bus_name)
 			;
 		}
@@ -28593,10 +28593,10 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("remove", remove)
 					.OptionalNamedStringList("from", from)
 					.OptionalNamedStringList("to", to)
-					.Flag("replace", replace)
+					.OptionalFlag("replace", replace)
 					.OptionalNamedString("locs", locs)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(pblock)
 			;
 		}
@@ -28647,8 +28647,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("resize_pin_bus")
 					.OptionalNamedString("from", from)
 					.OptionalNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(pin_bus_name)
 			;
 		}
@@ -28697,8 +28697,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("resize_port_bus")
 					.OptionalNamedString("from", from)
 					.OptionalNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(port_bus_name)
 			;
 		}
@@ -28727,8 +28727,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: restart [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("restart")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -28754,8 +28754,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: resume_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("resume_hw_hbm_amon")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -28856,25 +28856,25 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: route_design [-unroute] [-release_memory] [-nets <args>] [-physical_nets] [-pins <arg>] [-directive <arg>] [-tns_cleanup] [-no_timing_driven] [-preserve] [-delay] [-auto_delay] -max_delay <arg> -min_delay <arg> [-timing_summary] [-finalize] [-ultrathreads] [-eco] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("route_design")
-					.Flag("unroute", unroute)
-					.Flag("release_memory", release_memory)
+					.OptionalFlag("unroute", unroute)
+					.OptionalFlag("release_memory", release_memory)
 					.OptionalNamedStringList("nets", nets)
-					.Flag("physical_nets", physical_nets)
+					.OptionalFlag("physical_nets", physical_nets)
 					.OptionalNamedString("pins", pins)
 					.OptionalNamedString("directive", directive)
-					.Flag("tns_cleanup", tns_cleanup)
-					.Flag("no_timing_driven", no_timing_driven)
-					.Flag("preserve", preserve)
-					.Flag("delay", delay)
-					.Flag("auto_delay", auto_delay)
+					.OptionalFlag("tns_cleanup", tns_cleanup)
+					.OptionalFlag("no_timing_driven", no_timing_driven)
+					.OptionalFlag("preserve", preserve)
+					.OptionalFlag("delay", delay)
+					.OptionalFlag("auto_delay", auto_delay)
 					.RequiredNamedString("max_delay", max_delay)
 					.RequiredNamedString("min_delay", min_delay)
-					.Flag("timing_summary", timing_summary)
-					.Flag("finalize", finalize)
-					.Flag("ultrathreads", ultrathreads)
-					.Flag("eco", eco)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("timing_summary", timing_summary)
+					.OptionalFlag("finalize", finalize)
+					.OptionalFlag("ultrathreads", ultrathreads)
+					.OptionalFlag("eco", eco)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -28917,9 +28917,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: run [-all] [-quiet] [-verbose] [<time>] [<unit>]
 			return
 				new SimpleTCLCommand("run")
-					.Flag("all", all)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("all", all)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(time)
 					.OptionalString(unit)
 			;
@@ -28946,9 +28946,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: run_hw_axi [-queue] [-quiet] [-verbose] <hw_axi_txns>...
 			return
 				new SimpleTCLCommand("run_hw_axi")
-					.Flag("queue", queue)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("queue", queue)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(hw_axi_txns)
 			;
 		}
@@ -28985,8 +28985,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: run_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("run_hw_hbm_amon")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -29149,12 +29149,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: run_hw_ila [-trigger_now] [-compile_only] [-file <arg>] [-force] [-quiet] [-verbose] [<hw_ilas>...]
 			return
 				new SimpleTCLCommand("run_hw_ila")
-					.Flag("trigger_now", trigger_now)
-					.Flag("compile_only", compile_only)
+					.OptionalFlag("trigger_now", trigger_now)
+					.OptionalFlag("compile_only", compile_only)
 					.OptionalNamedString("file", file)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(hw_ilas)
 			;
 		}
@@ -29188,8 +29188,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: run_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
 			return
 				new SimpleTCLCommand("run_hw_sio_scan")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_sio_scans)
 			;
 		}
@@ -29222,8 +29222,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: run_hw_sio_sweep [-quiet] [-verbose] <hw_sio_sweeps>
 			return
 				new SimpleTCLCommand("run_hw_sio_sweep")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_sio_sweeps)
 			;
 		}
@@ -29292,8 +29292,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("run_state_hw_jtag")
 					.OptionalNamedStringList("state", state)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(stable_state)
 			;
 		}
@@ -29352,8 +29352,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("sec", sec)
 					.OptionalNamedString("max_wait", max_wait)
 					.OptionalNamedString("tck", tck)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -29380,8 +29380,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: save_bd_design [-quiet] [-verbose] [<name>]
 			return
 				new SimpleTCLCommand("save_bd_design")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(name)
 			;
 		}
@@ -29425,10 +29425,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("save_bd_design_as")
 					.OptionalNamedString("dir", dir)
-					.Flag("ignore_comments", ignore_comments)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("ignore_comments", ignore_comments)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(name)
 			;
 		}
@@ -29460,9 +29460,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: save_constraints [-force] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("save_constraints")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -29508,8 +29508,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("save_constraints_as")
 					.OptionalNamedString("dir", dir)
 					.OptionalNamedString("target_constrs_file", target_constrs_file)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 			;
 		}
@@ -29552,12 +29552,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: save_project_as [-scan_for_includes] [-exclude_run_results] [-include_local_ip_cache] [-force] [-quiet] [-verbose] <name> [<dir>]
 			return
 				new SimpleTCLCommand("save_project_as")
-					.Flag("scan_for_includes", scan_for_includes)
-					.Flag("exclude_run_results", exclude_run_results)
-					.Flag("include_local_ip_cache", include_local_ip_cache)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("scan_for_includes", scan_for_includes)
+					.OptionalFlag("exclude_run_results", exclude_run_results)
+					.OptionalFlag("include_local_ip_cache", include_local_ip_cache)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.OptionalString(dir)
 			;
@@ -29602,8 +29602,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("save_wave_config")
 					.OptionalNamedStringList("object", @object)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(filename)
 			;
 		}
@@ -29668,8 +29668,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("tdo", tdo)
 					.OptionalNamedString("mask", mask)
 					.OptionalNamedString("smask", smask)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(length)
 			;
 		}
@@ -29732,8 +29732,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("tdo", tdo)
 					.OptionalNamedString("mask", mask)
 					.OptionalNamedString("smask", smask)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(length)
 			;
 		}
@@ -29766,9 +29766,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: select_objects [-add] [-quiet] [-verbose] <objects>
 			return
 				new SimpleTCLCommand("select_objects")
-					.Flag("add", add)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("add", add)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -29800,8 +29800,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: select_wave_objects [-quiet] [-verbose] <items>...
 			return
 				new SimpleTCLCommand("select_wave_objects")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(items)
 			;
 		}
@@ -29875,8 +29875,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("through", through)
 					.OptionalNamedStringList("rise_through", rise_through)
 					.OptionalNamedStringList("fall_through", fall_through)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(value)
 			;
 		}
@@ -29917,8 +29917,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_case_analysis [-quiet] [-verbose] <value> <objects>
 			return
 				new SimpleTCLCommand("set_case_analysis")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(value)
 					.RequiredString(objects)
 			;
@@ -29977,12 +29977,12 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("set_clock_groups")
 					.OptionalNamedString("name", name)
-					.Flag("logically_exclusive", logically_exclusive)
-					.Flag("physically_exclusive", physically_exclusive)
-					.Flag("asynchronous", asynchronous)
+					.OptionalFlag("logically_exclusive", logically_exclusive)
+					.OptionalFlag("physically_exclusive", physically_exclusive)
+					.OptionalFlag("asynchronous", asynchronous)
 					.OptionalNamedStringList("group", group)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -30025,15 +30025,15 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("set_clock_latency")
 					.OptionalNamedStringList("clock", clock)
-					.Flag("rise", rise)
-					.Flag("fall", fall)
-					.Flag("min", min)
-					.Flag("max", max)
-					.Flag("source", source)
-					.Flag("late", late)
-					.Flag("early", early)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("rise", rise)
+					.OptionalFlag("fall", fall)
+					.OptionalFlag("min", min)
+					.OptionalFlag("max", max)
+					.OptionalFlag("source", source)
+					.OptionalFlag("late", late)
+					.OptionalFlag("early", early)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(latency)
 					.RequiredString(objects)
 			;
@@ -30069,12 +30069,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_clock_sense [-positive] [-negative] [-stop_propagation] [-clocks <args>] [-quiet] [-verbose] <pins>
 			return
 				new SimpleTCLCommand("set_clock_sense")
-					.Flag("positive", positive)
-					.Flag("negative", negative)
-					.Flag("stop_propagation", stop_propagation)
+					.OptionalFlag("positive", positive)
+					.OptionalFlag("negative", negative)
+					.OptionalFlag("stop_propagation", stop_propagation)
 					.OptionalNamedStringList("clocks", clocks)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(pins)
 			;
 		}
@@ -30146,16 +30146,16 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_clock_uncertainty [-setup] [-hold] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-quiet] [-verbose] <uncertainty> [<objects>]
 			return
 				new SimpleTCLCommand("set_clock_uncertainty")
-					.Flag("setup", setup)
-					.Flag("hold", hold)
+					.OptionalFlag("setup", setup)
+					.OptionalFlag("hold", hold)
 					.OptionalNamedStringList("from", from)
 					.OptionalNamedStringList("rise_from", rise_from)
 					.OptionalNamedStringList("fall_from", fall_from)
 					.OptionalNamedStringList("to", to)
 					.OptionalNamedStringList("rise_to", rise_to)
 					.OptionalNamedStringList("fall_to", fall_to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(uncertainty)
 					.OptionalString(objects)
 			;
@@ -30212,11 +30212,11 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("fall_from", fall_from)
 					.OptionalNamedStringList("rise_to", rise_to)
 					.OptionalNamedStringList("fall_to", fall_to)
-					.Flag("setup", setup)
-					.Flag("hold", hold)
+					.OptionalFlag("setup", setup)
+					.OptionalFlag("hold", hold)
 					.OptionalNamedStringList("clock", clock)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(value)
 			;
 		}
@@ -30257,8 +30257,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("set_delay_model")
 					.OptionalNamedString("interconnect", interconnect)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -30308,8 +30308,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("set_disable_timing")
 					.OptionalNamedString("from", from)
 					.OptionalNamedString("to", to)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -30350,11 +30350,11 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("set_external_delay")
 					.RequiredNamedStringList("from", from)
 					.RequiredNamedStringList("to", to)
-					.Flag("min", min)
-					.Flag("max", max)
-					.Flag("add", add)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("min", min)
+					.OptionalFlag("max", max)
+					.OptionalFlag("add", add)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(delay_value)
 			;
 		}
@@ -30400,11 +30400,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_false_path [-setup] [-hold] [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("set_false_path")
-					.Flag("setup", setup)
-					.Flag("hold", hold)
-					.Flag("rise", rise)
-					.Flag("fall", fall)
-					.Flag("reset_path", reset_path)
+					.OptionalFlag("setup", setup)
+					.OptionalFlag("hold", hold)
+					.OptionalFlag("rise", rise)
+					.OptionalFlag("fall", fall)
+					.OptionalFlag("reset_path", reset_path)
 					.OptionalNamedStringList("from", from)
 					.OptionalNamedStringList("rise_from", rise_from)
 					.OptionalNamedStringList("fall_from", fall_from)
@@ -30414,8 +30414,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("through", through)
 					.OptionalNamedStringList("rise_through", rise_through)
 					.OptionalNamedStringList("fall_through", fall_through)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -30442,8 +30442,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_hierarchy_separator [-quiet] [-verbose] [<separator>]
 			return
 				new SimpleTCLCommand("set_hierarchy_separator")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(separator)
 			;
 		}
@@ -30488,8 +30488,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_hw_sysmon_reg [-quiet] [-verbose] <hw_sysmon> <hexaddress> <hexdata>
 			return
 				new SimpleTCLCommand("set_hw_sysmon_reg")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_sysmon)
 					.RequiredString(hexaddress)
 					.RequiredString(hexdata)
@@ -30573,16 +30573,16 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("set_input_delay")
 					.OptionalNamedStringList("clock", clock)
 					.OptionalNamedStringList("reference_pin", reference_pin)
-					.Flag("clock_fall", clock_fall)
-					.Flag("rise", rise)
-					.Flag("fall", fall)
-					.Flag("max", max)
-					.Flag("min", min)
-					.Flag("add_delay", add_delay)
-					.Flag("network_latency_included", network_latency_included)
-					.Flag("source_latency_included", source_latency_included)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("clock_fall", clock_fall)
+					.OptionalFlag("rise", rise)
+					.OptionalFlag("fall", fall)
+					.OptionalFlag("max", max)
+					.OptionalFlag("min", min)
+					.OptionalFlag("add_delay", add_delay)
+					.OptionalFlag("network_latency_included", network_latency_included)
+					.OptionalFlag("source_latency_included", source_latency_included)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(delay)
 					.RequiredString(objects)
 			;
@@ -30637,8 +30637,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_input_jitter [-quiet] [-verbose] <clock> <input_jitter>
 			return
 				new SimpleTCLCommand("set_input_jitter")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(clock)
 					.RequiredString(input_jitter)
 			;
@@ -30677,12 +30677,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_load [-rise] [-fall] [-max] [-min] [-quiet] [-verbose] <capacitance> <objects>
 			return
 				new SimpleTCLCommand("set_load")
-					.Flag("rise", rise)
-					.Flag("fall", fall)
-					.Flag("max", max)
-					.Flag("min", min)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("rise", rise)
+					.OptionalFlag("fall", fall)
+					.OptionalFlag("max", max)
+					.OptionalFlag("min", min)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(capacitance)
 					.RequiredString(objects)
 			;
@@ -30711,8 +30711,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_logic_dc [-quiet] [-verbose] <objects>
 			return
 				new SimpleTCLCommand("set_logic_dc")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -30744,8 +30744,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_logic_one [-quiet] [-verbose] <objects>
 			return
 				new SimpleTCLCommand("set_logic_one")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -30772,8 +30772,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_logic_unconnected [-quiet] [-verbose] <objects>
 			return
 				new SimpleTCLCommand("set_logic_unconnected")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -30801,8 +30801,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_logic_zero [-quiet] [-verbose] <objects>
 			return
 				new SimpleTCLCommand("set_logic_zero")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -30867,9 +30867,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_max_delay [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-datapath_only] [-quiet] [-verbose] <delay>
 			return
 				new SimpleTCLCommand("set_max_delay")
-					.Flag("rise", rise)
-					.Flag("fall", fall)
-					.Flag("reset_path", reset_path)
+					.OptionalFlag("rise", rise)
+					.OptionalFlag("fall", fall)
+					.OptionalFlag("reset_path", reset_path)
 					.OptionalNamedStringList("from", from)
 					.OptionalNamedStringList("rise_from", rise_from)
 					.OptionalNamedStringList("fall_from", fall_from)
@@ -30879,9 +30879,9 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("through", through)
 					.OptionalNamedStringList("rise_through", rise_through)
 					.OptionalNamedStringList("fall_through", fall_through)
-					.Flag("datapath_only", datapath_only)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("datapath_only", datapath_only)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(delay)
 			;
 		}
@@ -30913,8 +30913,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_max_time_borrow [-quiet] [-verbose] <delay> <objects>
 			return
 				new SimpleTCLCommand("set_max_time_borrow")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(delay)
 					.RequiredString(objects)
 			;
@@ -30966,9 +30966,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_min_delay [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose] <delay>
 			return
 				new SimpleTCLCommand("set_min_delay")
-					.Flag("rise", rise)
-					.Flag("fall", fall)
-					.Flag("reset_path", reset_path)
+					.OptionalFlag("rise", rise)
+					.OptionalFlag("fall", fall)
+					.OptionalFlag("reset_path", reset_path)
 					.OptionalNamedStringList("from", from)
 					.OptionalNamedStringList("rise_from", rise_from)
 					.OptionalNamedStringList("fall_from", fall_from)
@@ -30978,8 +30978,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("through", through)
 					.OptionalNamedStringList("rise_through", rise_through)
 					.OptionalNamedStringList("fall_through", fall_through)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(delay)
 			;
 		}
@@ -31119,10 +31119,10 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("severity", severity)
 					.OptionalNamedString("limit", limit)
 					.OptionalNamedString("new_severity", new_severity)
-					.Flag("suppress", suppress)
-					.Flag("regexp", regexp)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("suppress", suppress)
+					.OptionalFlag("regexp", regexp)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -31204,13 +31204,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_multicycle_path [-setup] [-hold] [-rise] [-fall] [-start] [-end] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose] <path_multiplier>
 			return
 				new SimpleTCLCommand("set_multicycle_path")
-					.Flag("setup", setup)
-					.Flag("hold", hold)
-					.Flag("rise", rise)
-					.Flag("fall", fall)
-					.Flag("start", start)
-					.Flag("end", end)
-					.Flag("reset_path", reset_path)
+					.OptionalFlag("setup", setup)
+					.OptionalFlag("hold", hold)
+					.OptionalFlag("rise", rise)
+					.OptionalFlag("fall", fall)
+					.OptionalFlag("start", start)
+					.OptionalFlag("end", end)
+					.OptionalFlag("reset_path", reset_path)
 					.OptionalNamedStringList("from", from)
 					.OptionalNamedStringList("rise_from", rise_from)
 					.OptionalNamedStringList("fall_from", fall_from)
@@ -31220,8 +31220,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("through", through)
 					.OptionalNamedStringList("rise_through", rise_through)
 					.OptionalNamedStringList("fall_through", fall_through)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(path_multiplier)
 			;
 		}
@@ -31307,8 +31307,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("board_layers", board_layers)
 					.OptionalNamedString("design_power_budget", design_power_budget)
 					.OptionalNamedStringList("supply_current_budget", supply_current_budget)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -31373,16 +31373,16 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("set_output_delay")
 					.OptionalNamedStringList("clock", clock)
 					.OptionalNamedStringList("reference_pin", reference_pin)
-					.Flag("clock_fall", clock_fall)
-					.Flag("rise", rise)
-					.Flag("fall", fall)
-					.Flag("max", max)
-					.Flag("min", min)
-					.Flag("add_delay", add_delay)
-					.Flag("network_latency_included", network_latency_included)
-					.Flag("source_latency_included", source_latency_included)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("clock_fall", clock_fall)
+					.OptionalFlag("rise", rise)
+					.OptionalFlag("fall", fall)
+					.OptionalFlag("max", max)
+					.OptionalFlag("min", min)
+					.OptionalFlag("add_delay", add_delay)
+					.OptionalFlag("network_latency_included", network_latency_included)
+					.OptionalFlag("source_latency_included", source_latency_included)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(delay)
 					.RequiredString(objects)
 			;
@@ -31420,8 +31420,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_package_pin_val [-quiet] [-verbose] <column> <value> <package_pins>...
 			return
 				new SimpleTCLCommand("set_package_pin_val")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(column)
 					.RequiredString(value)
 					.RequiredStringList(package_pins)
@@ -31476,8 +31476,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_param [-quiet] [-verbose] <name> <value>
 			return
 				new SimpleTCLCommand("set_param")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.RequiredString(value)
 			;
@@ -31517,8 +31517,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_part [-quiet] [-verbose] <part>
 			return
 				new SimpleTCLCommand("set_part")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(part)
 			;
 		}
@@ -31583,8 +31583,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("exclude_cells", exclude_cells)
 					.OptionalNamedStringList("clocks", clocks)
 					.OptionalNamedStringList("cell_types", cell_types)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -31613,8 +31613,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_propagated_clock [-quiet] [-verbose] <objects>
 			return
 				new SimpleTCLCommand("set_propagated_clock")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -31700,8 +31700,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("set_property")
 					.OptionalNamedStringList("dict", dict)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(name)
 					.RequiredString(value)
 					.RequiredStringList(objects)
@@ -31751,8 +31751,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("set_speed_grade")
 					.OptionalNamedString("temperature", temperature)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(value)
 			;
 		}
@@ -31870,14 +31870,14 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("toggle_rate", toggle_rate)
 					.OptionalNamedString("default_toggle_rate", default_toggle_rate)
 					.OptionalNamedStringList("type", type)
-					.Flag("all", all)
+					.OptionalFlag("all", all)
 					.OptionalNamedString("static_probability", static_probability)
 					.OptionalNamedString("default_static_probability", default_static_probability)
 					.OptionalNamedString("signal_rate", signal_rate)
-					.Flag("hier", hier)
-					.Flag("deassert_resets", deassert_resets)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("hier", hier)
+					.OptionalFlag("deassert_resets", deassert_resets)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(objects)
 			;
 		}
@@ -31950,8 +31950,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: set_system_jitter [-quiet] [-verbose] <system_jitter>
 			return
 				new SimpleTCLCommand("set_system_jitter")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(system_jitter)
 			;
 		}
@@ -32000,8 +32000,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("power", power)
 					.OptionalNamedString("resistance", resistance)
 					.OptionalNamedString("altitude", altitude)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -32098,8 +32098,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("set_value")
 					.OptionalNamedString("radix", radix)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hdl_object)
 					.RequiredString(value)
 			;
@@ -32149,12 +32149,12 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("ip_repo_path", ip_repo_path)
 					.OptionalNamedString("ips", ips)
 					.OptionalNamedString("library", library)
-					.Flag("project", project)
-					.Flag("install", install)
-					.Flag("no_update_catalog", no_update_catalog)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("project", project)
+					.OptionalFlag("install", install)
+					.OptionalFlag("no_update_catalog", no_update_catalog)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -32205,11 +32205,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("setup_pr_configurations")
 					.OptionalNamedStringList("partitions", partitions)
-					.Flag("use_netlist", use_netlist)
-					.Flag("force", force)
+					.OptionalFlag("use_netlist", use_netlist)
+					.OptionalFlag("force", force)
 					.OptionalNamedString("run", run)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -32241,8 +32241,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("show_objects")
 					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -32296,13 +32296,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: show_schematic [-add] [-remove] [-regenerate] [-pin_pairs] [-name <arg>] [-quiet] [-verbose] <objects>
 			return
 				new SimpleTCLCommand("show_schematic")
-					.Flag("add", add)
-					.Flag("remove", remove)
-					.Flag("regenerate", regenerate)
-					.Flag("pin_pairs", pin_pairs)
+					.OptionalFlag("add", add)
+					.OptionalFlag("remove", remove)
+					.OptionalFlag("regenerate", regenerate)
+					.OptionalFlag("pin_pairs", pin_pairs)
 					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -32329,8 +32329,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: split_diff_pair_ports [-quiet] [-verbose] <ports>...
 			return
 				new SimpleTCLCommand("split_diff_pair_ports")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(ports)
 			;
 		}
@@ -32355,7 +32355,7 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: start_gui [-verbose]
 			return
 				new SimpleTCLCommand("start_gui")
-					.Flag("verbose", verbose)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -32383,8 +32383,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: start_vcd [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("start_vcd")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -32427,9 +32427,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: startgroup [-try] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("startgroup")
-					.Flag("try", @try)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("try", @try)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -32458,8 +32458,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: step [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("step")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -32488,8 +32488,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: stop [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("stop")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -32512,7 +32512,7 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: stop_gui [-verbose]
 			return
 				new SimpleTCLCommand("stop_gui")
-					.Flag("verbose", verbose)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -32538,8 +32538,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: stop_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
 			return
 				new SimpleTCLCommand("stop_hw_hbm_amon")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_objects)
 			;
 		}
@@ -32568,8 +32568,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: stop_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
 			return
 				new SimpleTCLCommand("stop_hw_sio_scan")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_sio_scans)
 			;
 		}
@@ -32600,8 +32600,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: stop_hw_sio_sweep [-quiet] [-verbose] <hw_sio_sweeps>
 			return
 				new SimpleTCLCommand("stop_hw_sio_sweep")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(hw_sio_sweeps)
 			;
 		}
@@ -32631,8 +32631,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: stop_vcd [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("stop_vcd")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -32662,8 +32662,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: swap_locs [-quiet] [-verbose] <aloc> <bloc>
 			return
 				new SimpleTCLCommand("swap_locs")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(aloc)
 					.RequiredString(bloc)
 			;
@@ -32877,17 +32877,17 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("flatten_hierarchy", flatten_hierarchy)
 					.OptionalNamedString("gated_clock_conversion", gated_clock_conversion)
 					.OptionalNamedString("directive", directive)
-					.Flag("rtl", rtl)
+					.OptionalFlag("rtl", rtl)
 					.OptionalNamedString("bufg", bufg)
-					.Flag("no_lc", no_lc)
+					.OptionalFlag("no_lc", no_lc)
 					.OptionalNamedString("shreg_min_size", shreg_min_size)
 					.OptionalNamedString("mode", mode)
 					.OptionalNamedString("fsm_extraction", fsm_extraction)
-					.Flag("rtl_skip_mlo", rtl_skip_mlo)
-					.Flag("rtl_skip_ip", rtl_skip_ip)
-					.Flag("rtl_skip_constraints", rtl_skip_constraints)
+					.OptionalFlag("rtl_skip_mlo", rtl_skip_mlo)
+					.OptionalFlag("rtl_skip_ip", rtl_skip_ip)
+					.OptionalFlag("rtl_skip_constraints", rtl_skip_constraints)
 					.OptionalNamedString("srl_style", srl_style)
-					.Flag("keep_equivalent_registers", keep_equivalent_registers)
+					.OptionalFlag("keep_equivalent_registers", keep_equivalent_registers)
 					.OptionalNamedString("resource_sharing", resource_sharing)
 					.OptionalNamedString("cascade_dsp", cascade_dsp)
 					.OptionalNamedString("control_set_opt_threshold", control_set_opt_threshold)
@@ -32897,14 +32897,14 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("max_dsp", max_dsp)
 					.OptionalNamedString("max_bram_cascade_height", max_bram_cascade_height)
 					.OptionalNamedString("max_uram_cascade_height", max_uram_cascade_height)
-					.Flag("retiming", retiming)
-					.Flag("no_srlextract", no_srlextract)
-					.Flag("assert", assert)
-					.Flag("no_timing_driven", no_timing_driven)
-					.Flag("sfcu", sfcu)
-					.Flag("debug_log", debug_log)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("retiming", retiming)
+					.OptionalFlag("no_srlextract", no_srlextract)
+					.OptionalFlag("assert", assert)
+					.OptionalFlag("no_timing_driven", no_timing_driven)
+					.OptionalFlag("sfcu", sfcu)
+					.OptionalFlag("debug_log", debug_log)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -32943,9 +32943,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: synth_ip [-force] [-quiet] [-verbose] <objects>
 			return
 				new SimpleTCLCommand("synth_ip")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(objects)
 			;
 		}
@@ -32971,8 +32971,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("tie_unused_pins")
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -33005,9 +33005,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: undo [-list] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("undo")
-					.Flag("list", list)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("list", list)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -33039,8 +33039,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("ungroup_bd_cells")
 					.OptionalNamedString("prefix", prefix)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(cells)
 			;
 		}
@@ -33077,9 +33077,9 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("color_index", color_index)
 					.OptionalNamedStringList("rgb", rgb)
 					.OptionalNamedString("color", color)
-					.Flag("leaf_cells", leaf_cells)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("leaf_cells", leaf_cells)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(objects)
 			;
 		}
@@ -33114,8 +33114,8 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("unmark_objects")
 					.OptionalNamedStringList("rgb", rgb)
 					.OptionalNamedString("color", color)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(objects)
 			;
 		}
@@ -33145,8 +33145,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: unplace_cell [-quiet] [-verbose] <cell_list>...
 			return
 				new SimpleTCLCommand("unplace_cell")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(cell_list)
 			;
 		}
@@ -33169,8 +33169,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: unregister_proc [-quiet] [-verbose] <tasknm>
 			return
 				new SimpleTCLCommand("unregister_proc")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(tasknm)
 			;
 		}
@@ -33202,8 +33202,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: unselect_objects [-quiet] [-verbose] [<objects>]
 			return
 				new SimpleTCLCommand("unselect_objects")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(objects)
 			;
 		}
@@ -33238,9 +33238,9 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("update_bd_boundaries")
 					.OptionalNamedString("from_bd", from_bd)
-					.Flag("check_only", check_only)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("check_only", check_only)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(of_objects)
 			;
 		}
@@ -33301,8 +33301,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: update_clock_routing [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("update_clock_routing")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -33327,10 +33327,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: update_compile_order [-force_gui] [-fileset <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("update_compile_order")
-					.Flag("force_gui", force_gui)
+					.OptionalFlag("force_gui", force_gui)
 					.OptionalNamedString("fileset", fileset)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -33379,14 +33379,14 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("update_design")
 					.RequiredNamedStringList("cells", cells)
-					.Flag("strict", strict)
+					.OptionalFlag("strict", strict)
 					.OptionalNamedString("from_file", from_file)
 					.OptionalNamedString("from_design", from_design)
 					.OptionalNamedString("from_cell", from_cell)
-					.Flag("black_box", black_box)
-					.Flag("buffer_ports", buffer_ports)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("black_box", black_box)
+					.OptionalFlag("buffer_ports", buffer_ports)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -33431,13 +33431,13 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("update_files")
 					.OptionalNamedStringList("from_files", from_files)
-					.Flag("norecurse", norecurse)
+					.OptionalFlag("norecurse", norecurse)
 					.OptionalNamedStringList("to_files", to_files)
 					.OptionalNamedStringList("filesets", filesets)
-					.Flag("force", force)
-					.Flag("report_only", report_only)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("report_only", report_only)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -33476,12 +33476,12 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("update_hw_firmware")
 					.OptionalNamedString("file_path", file_path)
 					.OptionalNamedString("config_path", config_path)
-					.Flag("skip_update", skip_update)
-					.Flag("reset", reset)
-					.Flag("format", format)
-					.Flag("flash", flash)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("skip_update", skip_update)
+					.OptionalFlag("reset", reset)
+					.OptionalFlag("format", format)
+					.OptionalFlag("flash", flash)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(hw_server)
 			;
 		}
@@ -33508,8 +33508,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: update_hw_gpio [-quiet] [-verbose] [<output_enable_mask>] [<output_pin_values>] [<hw_server>]
 			return
 				new SimpleTCLCommand("update_hw_gpio")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(output_enable_mask)
 					.OptionalString(output_pin_values)
 					.OptionalString(hw_server)
@@ -33602,18 +33602,18 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: update_ip_catalog [-rebuild] [-add_ip <arg>] [-delete_ip <arg>] [-delete_mult_ip <args>] [-disable_ip <arg>] [-enable_ip <arg>] [-add_interface <arg>] [-create_index] [-repo_path <arg>] [-update_module_ref] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("update_ip_catalog")
-					.Flag("rebuild", rebuild)
+					.OptionalFlag("rebuild", rebuild)
 					.OptionalNamedString("add_ip", add_ip)
 					.OptionalNamedString("delete_ip", delete_ip)
 					.OptionalNamedStringList("delete_mult_ip", delete_mult_ip)
 					.OptionalNamedString("disable_ip", disable_ip)
 					.OptionalNamedString("enable_ip", enable_ip)
 					.OptionalNamedString("add_interface", add_interface)
-					.Flag("create_index", create_index)
+					.OptionalFlag("create_index", create_index)
 					.OptionalNamedString("repo_path", repo_path)
-					.Flag("update_module_ref", update_module_ref)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("update_module_ref", update_module_ref)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -33676,9 +33676,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: update_macro [-absolute_grid] [-quiet] [-verbose] <macro> <rlocs>
 			return
 				new SimpleTCLCommand("update_macro")
-					.Flag("absolute_grid", absolute_grid)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("absolute_grid", absolute_grid)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(macro)
 					.RequiredString(rlocs)
 			;
@@ -33714,8 +33714,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: update_module_reference [-quiet] [-verbose] [<ips>...]
 			return
 				new SimpleTCLCommand("update_module_reference")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(ips)
 			;
 		}
@@ -33735,9 +33735,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: update_noc_qos [-force] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("update_noc_qos")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -33769,8 +33769,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: update_sw_parameters [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("update_sw_parameters")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -33806,10 +33806,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: update_timing [-full] [-skip_delay_calc] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("update_timing")
-					.Flag("full", full)
-					.Flag("skip_delay_calc", skip_delay_calc)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("full", full)
+					.OptionalFlag("skip_delay_calc", skip_delay_calc)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -33837,8 +33837,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("upgrade_bd_cells")
 					.OptionalNamedString("latest", latest)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(objects)
 			;
 		}
@@ -33902,8 +33902,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("srcset", srcset)
 					.OptionalNamedString("vlnv", vlnv)
 					.OptionalNamedString("log", log)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(objects)
 			;
 		}
@@ -33949,8 +33949,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: upload_hw_ila_data [-quiet] [-verbose] [<hw_ilas>...]
 			return
 				new SimpleTCLCommand("upload_hw_ila_data")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(hw_ilas)
 			;
 		}
@@ -33983,11 +33983,11 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: validate_bd_design [-force] [-design <arg>] [-include_pfm] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("validate_bd_design")
-					.Flag("force", force)
+					.OptionalFlag("force", force)
 					.OptionalNamedString("design", design)
-					.Flag("include_pfm", include_pfm)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("include_pfm", include_pfm)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -34017,8 +34017,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: validate_board_files [-quiet] [-verbose] [<dir>...]
 			return
 				new SimpleTCLCommand("validate_board_files")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(dir)
 			;
 		}
@@ -34054,8 +34054,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: validate_cluster_configurations [-quiet] [-verbose] <cluster_configurations>
 			return
 				new SimpleTCLCommand("validate_cluster_configurations")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(cluster_configurations)
 			;
 		}
@@ -34084,8 +34084,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: validate_hw_platform [-verbose] [-quiet] [<file>]
 			return
 				new SimpleTCLCommand("validate_hw_platform")
-					.Flag("verbose", verbose)
-					.Flag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
 					.OptionalString(file)
 			;
 		}
@@ -34114,9 +34114,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: validate_ip [-save_ip] [-quiet] [-verbose] [<ips>]
 			return
 				new SimpleTCLCommand("validate_ip")
-					.Flag("save_ip", save_ip)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("save_ip", save_ip)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(ips)
 			;
 		}
@@ -34159,8 +34159,8 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("user_efuse", user_efuse)
 					.OptionalNamedString("control_efuse", control_efuse)
 					.OptionalNamedString("security_efuse", security_efuse)
-					.Flag("verbose", verbose)
-					.Flag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
 					.OptionalStringList(hw_device)
 			;
 		}
@@ -34189,9 +34189,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: version [-short] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("version")
-					.Flag("short", @short)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("short", @short)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 			;
 		}
 		/// <summary>
@@ -34222,8 +34222,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("wait_on_hw_ila")
 					.OptionalNamedString("timeout", timeout)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalStringList(hw_ilas)
 			;
 		}
@@ -34252,8 +34252,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("wait_on_hw_sio_scan")
 					.OptionalNamedString("timeout", timeout)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(hw_sio_scans)
 			;
 		}
@@ -34282,8 +34282,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("wait_on_hw_sio_sweep")
 					.OptionalNamedString("timeout", timeout)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredStringList(hw_sio_sweeps)
 			;
 		}
@@ -34327,8 +34327,8 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("wait_on_run")
 					.OptionalNamedString("timeout", timeout)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(run)
 			;
 		}
@@ -34356,9 +34356,9 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("write_abstract_shell")
 					.RequiredNamedString("cell", cell)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -34401,13 +34401,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_bd_layout [-force] [-format <arg>] [-orientation <arg>] [-scope <arg>] [-hierarchy <arg>] [-quiet] [-verbose] <file>
 			return
 				new SimpleTCLCommand("write_bd_layout")
-					.Flag("force", force)
+					.OptionalFlag("force", force)
 					.OptionalNamedString("format", format)
 					.OptionalNamedString("orientation", orientation)
 					.OptionalNamedString("scope", scope)
 					.OptionalNamedString("hierarchy", hierarchy)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -34514,22 +34514,22 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_bd_tcl [-force] [-bd_name <arg>] [-no_mig_contents] [-no_ip_version] [-ignore_minor_versions] [-bd_folder <arg>] [-check_ips <arg>] [-hier_blks <arg>] [-include_layout] [-exclude_layout] [-make_local] [-no_project_wrapper] [-exclude_pfm] [-updated_pfm_attrs] [-quiet] [-verbose] <tcl_filename>
 			return
 				new SimpleTCLCommand("write_bd_tcl")
-					.Flag("force", force)
+					.OptionalFlag("force", force)
 					.OptionalNamedString("bd_name", bd_name)
-					.Flag("no_mig_contents", no_mig_contents)
-					.Flag("no_ip_version", no_ip_version)
-					.Flag("ignore_minor_versions", ignore_minor_versions)
+					.OptionalFlag("no_mig_contents", no_mig_contents)
+					.OptionalFlag("no_ip_version", no_ip_version)
+					.OptionalFlag("ignore_minor_versions", ignore_minor_versions)
 					.OptionalNamedString("bd_folder", bd_folder)
 					.OptionalNamedString("check_ips", check_ips)
 					.OptionalNamedString("hier_blks", hier_blks)
-					.Flag("include_layout", include_layout)
-					.Flag("exclude_layout", exclude_layout)
-					.Flag("make_local", make_local)
-					.Flag("no_project_wrapper", no_project_wrapper)
-					.Flag("exclude_pfm", exclude_pfm)
-					.Flag("updated_pfm_attrs", updated_pfm_attrs)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("include_layout", include_layout)
+					.OptionalFlag("exclude_layout", exclude_layout)
+					.OptionalFlag("make_local", make_local)
+					.OptionalFlag("no_project_wrapper", no_project_wrapper)
+					.OptionalFlag("exclude_pfm", exclude_pfm)
+					.OptionalFlag("updated_pfm_attrs", updated_pfm_attrs)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(tcl_filename)
 			;
 		}
@@ -34625,18 +34625,18 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_bitstream [-force] [-verbose] [-raw_bitfile] [-no_binary_bitfile] [-mask_file] [-readback_file] [-logic_location_file] [-bin_file] [-reference_bitfile <arg>] [-cell <arg>] [-no_partial_bitfile] [-quiet] <file>
 			return
 				new SimpleTCLCommand("write_bitstream")
-					.Flag("force", force)
-					.Flag("verbose", verbose)
-					.Flag("raw_bitfile", raw_bitfile)
-					.Flag("no_binary_bitfile", no_binary_bitfile)
-					.Flag("mask_file", mask_file)
-					.Flag("readback_file", readback_file)
-					.Flag("logic_location_file", logic_location_file)
-					.Flag("bin_file", bin_file)
+					.OptionalFlag("force", force)
+					.OptionalFlag("verbose", verbose)
+					.OptionalFlag("raw_bitfile", raw_bitfile)
+					.OptionalFlag("no_binary_bitfile", no_binary_bitfile)
+					.OptionalFlag("mask_file", mask_file)
+					.OptionalFlag("readback_file", readback_file)
+					.OptionalFlag("logic_location_file", logic_location_file)
+					.OptionalFlag("bin_file", bin_file)
 					.OptionalNamedString("reference_bitfile", reference_bitfile)
 					.OptionalNamedString("cell", cell)
-					.Flag("no_partial_bitfile", no_partial_bitfile)
-					.Flag("quiet", quiet)
+					.OptionalFlag("no_partial_bitfile", no_partial_bitfile)
+					.OptionalFlag("quiet", quiet)
 					.RequiredString(file)
 			;
 		}
@@ -34670,9 +34670,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_bmm [-force] [-quiet] [-verbose] <file>
 			return
 				new SimpleTCLCommand("write_bmm")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -34707,10 +34707,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_bsdl [-force] [-bsd <arg>] [-quiet] [-verbose] <file>
 			return
 				new SimpleTCLCommand("write_bsdl")
-					.Flag("force", force)
+					.OptionalFlag("force", force)
 					.OptionalNamedString("bsd", bsd)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -34767,16 +34767,16 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_cfgmem [-force] -format <arg> -size <arg> [-interface <arg>] [-checksum] [-disablebitswap] [-loadbit <arg>] [-loaddata <arg>] [-quiet] [-verbose] <file>
 			return
 				new SimpleTCLCommand("write_cfgmem")
-					.Flag("force", force)
+					.OptionalFlag("force", force)
 					.RequiredNamedString("format", format)
 					.RequiredNamedString("size", size)
 					.OptionalNamedString("interface", @interface)
-					.Flag("checksum", checksum)
-					.Flag("disablebitswap", disablebitswap)
+					.OptionalFlag("checksum", checksum)
+					.OptionalFlag("disablebitswap", disablebitswap)
 					.OptionalNamedString("loadbit", loadbit)
 					.OptionalNamedString("loaddata", loaddata)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -34832,14 +34832,14 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_checkpoint [-force] [-cell <arg>] [-logic_function_stripped] [-encrypt] [-key <arg>] [-incremental_synth] [-quiet] [-verbose] [<file>]
 			return
 				new SimpleTCLCommand("write_checkpoint")
-					.Flag("force", force)
+					.OptionalFlag("force", force)
 					.OptionalNamedString("cell", cell)
-					.Flag("logic_function_stripped", logic_function_stripped)
-					.Flag("encrypt", encrypt)
+					.OptionalFlag("logic_function_stripped", logic_function_stripped)
+					.OptionalFlag("encrypt", encrypt)
 					.OptionalNamedString("key", key)
-					.Flag("incremental_synth", incremental_synth)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("incremental_synth", incremental_synth)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -34868,9 +34868,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_csv [-force] [-quiet] [-verbose] <file>
 			return
 				new SimpleTCLCommand("write_csv")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -34907,10 +34907,10 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("write_debug_probes")
 					.OptionalNamedString("cell", cell)
-					.Flag("no_partial_ltxfile", no_partial_ltxfile)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("no_partial_ltxfile", no_partial_ltxfile)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -34937,15 +34937,15 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_device_image [-force] [-verbose] [-raw_partitions] [-mask_file] [-logic_location_file] [-cell <arg>] [-no_pdi] [-no_partial_pdifile] [-quiet] <file>
 			return
 				new SimpleTCLCommand("write_device_image")
-					.Flag("force", force)
-					.Flag("verbose", verbose)
-					.Flag("raw_partitions", raw_partitions)
-					.Flag("mask_file", mask_file)
-					.Flag("logic_location_file", logic_location_file)
+					.OptionalFlag("force", force)
+					.OptionalFlag("verbose", verbose)
+					.OptionalFlag("raw_partitions", raw_partitions)
+					.OptionalFlag("mask_file", mask_file)
+					.OptionalFlag("logic_location_file", logic_location_file)
 					.OptionalNamedString("cell", cell)
-					.Flag("no_pdi", no_pdi)
-					.Flag("no_partial_pdifile", no_partial_pdifile)
-					.Flag("quiet", quiet)
+					.OptionalFlag("no_pdi", no_pdi)
+					.OptionalFlag("no_partial_pdifile", no_partial_pdifile)
+					.OptionalFlag("quiet", quiet)
 					.RequiredString(file)
 			;
 		}
@@ -34992,11 +34992,11 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("write_edif")
 					.OptionalNamedStringList("pblocks", pblocks)
 					.OptionalNamedString("cell", cell)
-					.Flag("force", force)
+					.OptionalFlag("force", force)
 					.OptionalNamedString("security_mode", security_mode)
-					.Flag("logic_function_stripped", logic_function_stripped)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("logic_function_stripped", logic_function_stripped)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -35033,12 +35033,12 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_hw_ila_data [-force] [-csv_file] [-vcd_file] [-legacy_csv_file] [-quiet] [-verbose] <file> [<hw_ila_data>] [<hw_ila_data>]
 			return
 				new SimpleTCLCommand("write_hw_ila_data")
-					.Flag("force", force)
-					.Flag("csv_file", csv_file)
-					.Flag("vcd_file", vcd_file)
-					.Flag("legacy_csv_file", legacy_csv_file)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("csv_file", csv_file)
+					.OptionalFlag("vcd_file", vcd_file)
+					.OptionalFlag("legacy_csv_file", legacy_csv_file)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 					.OptionalString(hw_ila_data)
 			;
@@ -35085,15 +35085,15 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_hw_platform [-fixed] [-force] [-include_bit] [-include_sim_content] [-minimal] [-hw] [-hw_emu] [-quiet] [-verbose] [<file>]
 			return
 				new SimpleTCLCommand("write_hw_platform")
-					.Flag("fixed", @fixed)
-					.Flag("force", force)
-					.Flag("include_bit", include_bit)
-					.Flag("include_sim_content", include_sim_content)
-					.Flag("minimal", minimal)
-					.Flag("hw", hw)
-					.Flag("hw_emu", hw_emu)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("fixed", @fixed)
+					.OptionalFlag("force", force)
+					.OptionalFlag("include_bit", include_bit)
+					.OptionalFlag("include_sim_content", include_sim_content)
+					.OptionalFlag("minimal", minimal)
+					.OptionalFlag("hw", hw)
+					.OptionalFlag("hw_emu", hw_emu)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -35124,8 +35124,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_hw_platform_metadata [-quiet] [-verbose] [<file>]
 			return
 				new SimpleTCLCommand("write_hw_platform_metadata")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -35156,9 +35156,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_hw_sio_scan [-force] [-quiet] [-verbose] <file> <hw_sio_scan>
 			return
 				new SimpleTCLCommand("write_hw_sio_scan")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 					.RequiredString(hw_sio_scan)
 			;
@@ -35193,9 +35193,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_hw_sio_sweep [-force] [-quiet] [-verbose] <directory> <hw_sio_sweep>
 			return
 				new SimpleTCLCommand("write_hw_sio_sweep")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(directory)
 					.RequiredString(hw_sio_sweep)
 			;
@@ -35287,9 +35287,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_hw_svf [-force] [-quiet] [-verbose] <file_name>
 			return
 				new SimpleTCLCommand("write_hw_svf")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file_name)
 			;
 		}
@@ -35328,9 +35328,9 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_hwdef [-force] [-quiet] [-verbose] <file>
 			return
 				new SimpleTCLCommand("write_hwdef")
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -35400,16 +35400,16 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_ibis [-force] [-allmodels] [-nopin] [-no_pin_mapping] [-truncate <arg>] [-component_name <arg>] [-ibs <arg>] [-pkg <arg>] [-quiet] [-verbose] <file>
 			return
 				new SimpleTCLCommand("write_ibis")
-					.Flag("force", force)
-					.Flag("allmodels", allmodels)
-					.Flag("nopin", nopin)
-					.Flag("no_pin_mapping", no_pin_mapping)
+					.OptionalFlag("force", force)
+					.OptionalFlag("allmodels", allmodels)
+					.OptionalFlag("nopin", nopin)
+					.OptionalFlag("no_pin_mapping", no_pin_mapping)
 					.OptionalNamedString("truncate", truncate)
 					.OptionalNamedString("component_name", component_name)
 					.OptionalNamedString("ibs", ibs)
 					.OptionalNamedString("pkg", pkg)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -35486,20 +35486,20 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_inferred_xdc [-force] [-all] [-append] [-async_clocks] [-all_async_reg] [-clock_groups] [-clocks] [-excl_clocks] [-exceptions] [-io_constraints] [-merge_existing_constraints] [-name <arg>] [-quiet] [-verbose] [<file>]
 			return
 				new SimpleTCLCommand("write_inferred_xdc")
-					.Flag("force", force)
-					.Flag("all", all)
-					.Flag("append", append)
-					.Flag("async_clocks", async_clocks)
-					.Flag("all_async_reg", all_async_reg)
-					.Flag("clock_groups", clock_groups)
-					.Flag("clocks", clocks)
-					.Flag("excl_clocks", excl_clocks)
-					.Flag("exceptions", exceptions)
-					.Flag("io_constraints", io_constraints)
-					.Flag("merge_existing_constraints", merge_existing_constraints)
+					.OptionalFlag("force", force)
+					.OptionalFlag("all", all)
+					.OptionalFlag("append", append)
+					.OptionalFlag("async_clocks", async_clocks)
+					.OptionalFlag("all_async_reg", all_async_reg)
+					.OptionalFlag("clock_groups", clock_groups)
+					.OptionalFlag("clocks", clocks)
+					.OptionalFlag("excl_clocks", excl_clocks)
+					.OptionalFlag("exceptions", exceptions)
+					.OptionalFlag("io_constraints", io_constraints)
+					.OptionalFlag("merge_existing_constraints", merge_existing_constraints)
 					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -35544,13 +35544,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_ip_tcl [-force] [-no_ip_version] [-ip_name <arg>] [-show_defaults] [-multiple_files] [-quiet] [-verbose] [<objects>] [<tcl_filename>...]
 			return
 				new SimpleTCLCommand("write_ip_tcl")
-					.Flag("force", force)
-					.Flag("no_ip_version", no_ip_version)
+					.OptionalFlag("force", force)
+					.OptionalFlag("no_ip_version", no_ip_version)
 					.OptionalNamedString("ip_name", ip_name)
-					.Flag("show_defaults", show_defaults)
-					.Flag("multiple_files", multiple_files)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("show_defaults", show_defaults)
+					.OptionalFlag("multiple_files", multiple_files)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.OptionalString(objects)
 					.OptionalStringList(tcl_filename)
 			;
@@ -35601,10 +35601,10 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_iphys_opt_tcl [-place] [-binary] [-quiet] [-verbose] [<output>]
 			return
 				new SimpleTCLCommand("write_iphys_opt_tcl")
-					.Flag("place", place)
-					.Flag("binary", binary)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("place", place)
+					.OptionalFlag("binary", binary)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(output)
 			;
 		}
@@ -35650,11 +35650,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("write_mem_info")
 					.OptionalNamedString("cell", cell)
-					.Flag("no_partial_mmi", no_partial_mmi)
-					.Flag("force_detect_xpm", force_detect_xpm)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("no_partial_mmi", no_partial_mmi)
+					.OptionalFlag("force_detect_xpm", force_detect_xpm)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -35678,8 +35678,8 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_peripheral [-quiet] [-verbose] <peripheral>
 			return
 				new SimpleTCLCommand("write_peripheral")
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(peripheral)
 			;
 		}
@@ -35796,17 +35796,17 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("paths_relative_to", paths_relative_to)
 					.OptionalNamedString("origin_dir_override", origin_dir_override)
 					.OptionalNamedString("target_proj_dir", target_proj_dir)
-					.Flag("force", force)
-					.Flag("all_properties", all_properties)
-					.Flag("no_copy_sources", no_copy_sources)
-					.Flag("no_ip_version", no_ip_version)
-					.Flag("absolute_path", absolute_path)
-					.Flag("dump_project_info", dump_project_info)
-					.Flag("use_bd_files", use_bd_files)
-					.Flag("internal", @internal)
-					.Flag("validate", validate)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("all_properties", all_properties)
+					.OptionalFlag("no_copy_sources", no_copy_sources)
+					.OptionalFlag("no_ip_version", no_ip_version)
+					.OptionalFlag("absolute_path", absolute_path)
+					.OptionalFlag("dump_project_info", dump_project_info)
+					.OptionalFlag("use_bd_files", use_bd_files)
+					.OptionalFlag("internal", @internal)
+					.OptionalFlag("validate", validate)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -35880,10 +35880,10 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("write_qor_suggestions")
 					.OptionalNamedString("strategy_dir", strategy_dir)
 					.OptionalNamedString("tcl_output_dir", tcl_output_dir)
-					.Flag("force", force)
+					.OptionalFlag("force", force)
 					.OptionalNamedStringList("of_objects", of_objects)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -35919,13 +35919,13 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_schematic [-force] [-format <arg>] [-orientation <arg>] [-scope <arg>] [-name <arg>] [-quiet] [-verbose] <file>
 			return
 				new SimpleTCLCommand("write_schematic")
-					.Flag("force", force)
+					.OptionalFlag("force", force)
 					.OptionalNamedString("format", format)
 					.OptionalNamedString("orientation", orientation)
 					.OptionalNamedString("scope", scope)
 					.OptionalNamedString("name", name)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -35974,12 +35974,12 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("process_corner", process_corner)
 					.OptionalNamedString("cell", cell)
 					.OptionalNamedString("rename_top", rename_top)
-					.Flag("force", force)
+					.OptionalFlag("force", force)
 					.OptionalNamedString("mode", mode)
-					.Flag("gzip", gzip)
+					.OptionalFlag("gzip", gzip)
 					.OptionalNamedString("multithread", multithread)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -36057,18 +36057,18 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("write_verilog")
 					.OptionalNamedString("cell", cell)
 					.OptionalNamedString("mode", mode)
-					.Flag("lib", lib)
-					.Flag("port_diff_buffers", port_diff_buffers)
-					.Flag("write_all_overrides", write_all_overrides)
-					.Flag("keep_vcc_gnd", keep_vcc_gnd)
+					.OptionalFlag("lib", lib)
+					.OptionalFlag("port_diff_buffers", port_diff_buffers)
+					.OptionalFlag("write_all_overrides", write_all_overrides)
+					.OptionalFlag("keep_vcc_gnd", keep_vcc_gnd)
 					.OptionalNamedString("rename_top", rename_top)
 					.OptionalNamedString("sdf_anno", sdf_anno)
 					.OptionalNamedString("sdf_file", sdf_file)
-					.Flag("force", force)
-					.Flag("include_xilinx_libs", include_xilinx_libs)
-					.Flag("logic_function_stripped", logic_function_stripped)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("force", force)
+					.OptionalFlag("include_xilinx_libs", include_xilinx_libs)
+					.OptionalFlag("logic_function_stripped", logic_function_stripped)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -36139,16 +36139,16 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("write_vhdl")
 					.OptionalNamedString("cell", cell)
 					.OptionalNamedString("mode", mode)
-					.Flag("lib", lib)
-					.Flag("port_diff_buffers", port_diff_buffers)
-					.Flag("write_all_overrides", write_all_overrides)
-					.Flag("keep_vcc_gnd", keep_vcc_gnd)
+					.OptionalFlag("lib", lib)
+					.OptionalFlag("port_diff_buffers", port_diff_buffers)
+					.OptionalFlag("write_all_overrides", write_all_overrides)
+					.OptionalFlag("keep_vcc_gnd", keep_vcc_gnd)
 					.OptionalNamedString("rename_top", rename_top)
-					.Flag("arch_only", arch_only)
-					.Flag("force", force)
-					.Flag("include_xilinx_libs", include_xilinx_libs)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("arch_only", arch_only)
+					.OptionalFlag("force", force)
+					.OptionalFlag("include_xilinx_libs", include_xilinx_libs)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -36183,10 +36183,10 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("write_waivers")
 					.OptionalNamedString("type", type)
 					.OptionalNamedStringList("objects", objects)
-					.Flag("return_string", return_string)
-					.Flag("force", force)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("return_string", return_string)
+					.OptionalFlag("force", force)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -36267,20 +36267,20 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: write_xdc [-no_fixed_only] [-constraints <arg>] [-cell <arg>] [-sdc] [-no_tool_comments] [-force] [-exclude_timing] [-exclude_physical] [-add_netlist_placement] [-logic_function_stripped] [-type <args>] [-write_id] [-quiet] [-verbose] [<file>]
 			return
 				new SimpleTCLCommand("write_xdc")
-					.Flag("no_fixed_only", no_fixed_only)
+					.OptionalFlag("no_fixed_only", no_fixed_only)
 					.OptionalNamedString("constraints", constraints)
 					.OptionalNamedString("cell", cell)
-					.Flag("sdc", sdc)
-					.Flag("no_tool_comments", no_tool_comments)
-					.Flag("force", force)
-					.Flag("exclude_timing", exclude_timing)
-					.Flag("exclude_physical", exclude_physical)
-					.Flag("add_netlist_placement", add_netlist_placement)
-					.Flag("logic_function_stripped", logic_function_stripped)
+					.OptionalFlag("sdc", sdc)
+					.OptionalFlag("no_tool_comments", no_tool_comments)
+					.OptionalFlag("force", force)
+					.OptionalFlag("exclude_timing", exclude_timing)
+					.OptionalFlag("exclude_physical", exclude_physical)
+					.OptionalFlag("add_netlist_placement", add_netlist_placement)
+					.OptionalFlag("logic_function_stripped", logic_function_stripped)
 					.OptionalNamedStringList("type", type)
-					.Flag("write_id", write_id)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("write_id", write_id)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(file)
 			;
 		}
@@ -36402,11 +36402,11 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("xsim")
 					.OptionalNamedStringList("view", view)
-					.Flag("autoloadwcfg", autoloadwcfg)
-					.Flag("runall", runall)
-					.Flag("R", R)
+					.OptionalFlag("autoloadwcfg", autoloadwcfg)
+					.OptionalFlag("runall", runall)
+					.OptionalFlag("R", R)
 					.OptionalNamedString("maxdeltaid", maxdeltaid)
-					.Flag("nolog", nolog)
+					.OptionalFlag("nolog", nolog)
 					.OptionalNamedString("maxlogsize", maxlogsize)
 					.OptionalNamedString("onfinish", onfinish)
 					.OptionalNamedString("onerror", onerror)
@@ -36416,26 +36416,26 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("vcdfile", vcdfile)
 					.OptionalNamedString("vcdunit", vcdunit)
 					.OptionalNamedString("wdb", wdb)
-					.Flag("tp", tp)
-					.Flag("tl", tl)
-					.Flag("nosignalhandlers", nosignalhandlers)
-					.Flag("ieeewarnings", ieeewarnings)
-					.Flag("stats", stats)
-					.Flag("scNoLogFile", scNoLogFile)
+					.OptionalFlag("tp", tp)
+					.OptionalFlag("tl", tl)
+					.OptionalFlag("nosignalhandlers", nosignalhandlers)
+					.OptionalFlag("ieeewarnings", ieeewarnings)
+					.OptionalFlag("stats", stats)
+					.OptionalFlag("scNoLogFile", scNoLogFile)
 					.OptionalNamedString("sv_seed", sv_seed)
 					.OptionalNamedStringList("protoinst", protoinst)
 					.OptionalNamedString("cov_db_dir", cov_db_dir)
 					.OptionalNamedString("cov_db_name", cov_db_name)
-					.Flag("ignore_assertions", ignore_assertions)
-					.Flag("ignore_coverage", ignore_coverage)
-					.Flag("downgrade_error2info", downgrade_error2info)
-					.Flag("downgrade_error2warning", downgrade_error2warning)
-					.Flag("downgrade_fatal2info", downgrade_fatal2info)
-					.Flag("downgrade_fatal2warning", downgrade_fatal2warning)
+					.OptionalFlag("ignore_assertions", ignore_assertions)
+					.OptionalFlag("ignore_coverage", ignore_coverage)
+					.OptionalFlag("downgrade_error2info", downgrade_error2info)
+					.OptionalFlag("downgrade_error2warning", downgrade_error2warning)
+					.OptionalFlag("downgrade_fatal2info", downgrade_fatal2info)
+					.OptionalFlag("downgrade_fatal2warning", downgrade_fatal2warning)
 					.OptionalNamedStringList("ignore_feature", ignore_feature)
 					.OptionalNamedStringList("downgrade_severity", downgrade_severity)
-					.Flag("quiet", quiet)
-					.Flag("verbose", verbose)
+					.OptionalFlag("quiet", quiet)
+					.OptionalFlag("verbose", verbose)
 					.RequiredString(snapshot)
 			;
 		}

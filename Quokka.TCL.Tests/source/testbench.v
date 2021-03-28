@@ -1,5 +1,11 @@
 `timescale 1ns / 1ps
 
+`define assert(signal, value, message) \
+        if (signal !== value) begin \
+            $display(message); \
+            $finish; \
+        end
+
 module testbench();
     reg clk;
     reg rst;
@@ -20,8 +26,7 @@ module testbench();
     initial begin
         @(negedge clk);
         repeat(2) @(negedge clk);
-        $display("ASSERTION FAILED");
-        $finish(2);
+        `assert(outCounter, 100, "Counter value does not match");
         repeat(100) @(negedge clk);
     end      
     

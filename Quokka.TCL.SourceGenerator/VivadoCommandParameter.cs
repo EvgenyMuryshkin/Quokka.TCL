@@ -4,7 +4,19 @@ using Newtonsoft.Json;
 
 namespace Quokka.TCL.SourceGenerator
 {
-    abstract class VivadoCommandParameter
+    enum VivadoCommandParameterUsage
+    {
+        Optional,
+        Required
+    }
+
+    enum VivadoCommandParameterType
+    {
+        Flag,
+        String,
+    }
+
+    class VivadoCommandParameter
     {
         static HashSet<string> keywords = new HashSet<string>()
         {
@@ -19,6 +31,9 @@ namespace Quokka.TCL.SourceGenerator
         public Type ElementType = typeof(string);
         public bool IsArray;
         public List<string> Description = new List<string>();
+        public List<string> EnumValues = new List<string>();
+        public VivadoCommandParameterUsage Usage;
+        public VivadoCommandParameterType Type;
 
         public string CSName
         {
@@ -32,26 +47,5 @@ namespace Quokka.TCL.SourceGenerator
                 return Name;
             }
         }
-    }
-
-    class VivadoCommandRequiredParameter : VivadoCommandParameter
-    {
-        public VivadoCommandOptionalParameter MakeOptional()
-        {
-            return JsonConvert.DeserializeObject<VivadoCommandOptionalParameter>(JsonConvert.SerializeObject(this));
-        }
-    }
-
-    class VivadoCommandOptionalParameter : VivadoCommandParameter
-    {
-        public VivadoCommandRequiredParameter MakeRequired()
-        {
-            return JsonConvert.DeserializeObject<VivadoCommandRequiredParameter>(JsonConvert.SerializeObject(this));
-        }
-    }
-
-    class VivadoCommandOptionalFlagParameter : VivadoCommandOptionalParameter
-    {
-
     }
 }
