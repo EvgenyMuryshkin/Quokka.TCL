@@ -58,7 +58,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_objects">(Required) hardware objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL add_hw_hbm_pc(string mc_num, string pc_num, string hw_objects, bool? quiet = null, bool? verbose = null)
+		public TTCL add_hw_hbm_pc(String mc_num, String pc_num, String hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: add_hw_hbm_pc [-quiet] [-verbose] <mc_num> <pc_num> <hw_objects>
 			_tcl.Entry(_builder.add_hw_hbm_pc(mc_num, pc_num, hw_objects, quiet, verbose));
@@ -127,7 +127,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="dict">(Optional) List of parameter name-value pairs.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL add_hw_probe_enum(string name, string value, string hw_probe, bool? no_gui_update = null, TCLParameterList dict = null, bool? quiet = null, bool? verbose = null)
+		public TTCL add_hw_probe_enum(String name, String value, String hw_probe, bool? no_gui_update = null, TCLParameterList dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: add_hw_probe_enum [-no_gui_update] [-dict <args>] [-quiet] [-verbose] <name> <value> <hw_probe>
 			_tcl.Entry(_builder.add_hw_probe_enum(name, value, hw_probe, no_gui_update, dict, quiet, verbose));
@@ -156,7 +156,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="timeout">(Optional) Time out for boot (seconds) Default: default</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL boot_hw_device(string hw_device, bool? disable_done_check = null, string timeout = null, bool? quiet = null, bool? verbose = null)
+		public TTCL boot_hw_device(String hw_device, bool? disable_done_check = null, String timeout = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: boot_hw_device [-disable_done_check] [-timeout <arg>] [-quiet] [-verbose] <hw_device>
 			_tcl.Entry(_builder.boot_hw_device(hw_device, disable_done_check, timeout, quiet, verbose));
@@ -204,7 +204,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_target">(Optional) hardware target Default: current hardware target</param>
-		public TTCL close_hw_target(bool? quiet = null, bool? verbose = null, string hw_target = null)
+		public TTCL close_hw_target(bool? quiet = null, bool? verbose = null, String hw_target = null)
 		{
 			// TCL Syntax: close_hw_target [-quiet] [-verbose] [<hw_target>]
 			_tcl.Entry(_builder.close_hw_target(quiet, verbose, hw_target));
@@ -235,7 +235,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_objects">(Required) hardware objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL commit_hw_hbm(string hw_objects, bool? quiet = null, bool? verbose = null)
+		public TTCL commit_hw_hbm(String hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: commit_hw_hbm [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.commit_hw_hbm(hw_objects, quiet, verbose));
@@ -263,7 +263,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_objects">(Required) hardware objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL commit_hw_mig(string hw_objects, bool? quiet = null, bool? verbose = null)
+		public TTCL commit_hw_mig(String hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: commit_hw_mig [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.commit_hw_mig(hw_objects, quiet, verbose));
@@ -293,7 +293,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_objects">(Required) hardware objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL commit_hw_sio(string hw_objects, bool? quiet = null, bool? verbose = null)
+		public TTCL commit_hw_sio(String hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: commit_hw_sio [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.commit_hw_sio(hw_objects, quiet, verbose));
@@ -317,7 +317,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_objects">(Required) hardware objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL commit_hw_sysmon(string hw_objects, bool? quiet = null, bool? verbose = null)
+		public TTCL commit_hw_sysmon(String hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: commit_hw_sysmon [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.commit_hw_sysmon(hw_objects, quiet, verbose));
@@ -368,7 +368,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL config_hw_sio_gts(string hw_device, TCLParameterList dict = null, bool? quiet = null, bool? verbose = null)
+		public TTCL config_hw_sio_gts(String hw_device, TCLParameterList dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: config_hw_sio_gts [-dict <args>] [-quiet] [-verbose] <hw_device>
 			_tcl.Entry(_builder.config_hw_sio_gts(hw_device, dict, quiet, verbose));
@@ -417,7 +417,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>hardware server</returns>
-		public TTCL connect_hw_server(string url = null, string cs_url = null, bool? quiet = null, bool? verbose = null)
+		public TTCL connect_hw_server(String url = null, String cs_url = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: connect_hw_server [-url <arg>] [-cs_url <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.connect_hw_server(url, cs_url, quiet, verbose));
@@ -468,7 +468,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>New hardware AXI transaction object.</returns>
-		public TTCL create_hw_axi_txn(string type, string name, string hw_axi, string address = null, string data = null, string size = null, string len = null, string burst = null, string cache = null, string id = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_hw_axi_txn(String type, String name, String hw_axi, String address = null, String data = null, String size = null, String len = null, String burst = null, String cache = null, String id = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_hw_axi_txn [-address <arg>] [-data <arg>] [-size <arg>] -type <arg> [-len <arg>] [-burst <arg>] [-cache <arg>] [-id <arg>] [-force] [-quiet] [-verbose] <name> <hw_axi>
 			_tcl.Entry(_builder.create_hw_axi_txn(type, name, hw_axi, address, data, size, len, burst, cache, id, force, quiet, verbose));
@@ -507,7 +507,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="detect_partial">(Optional) detects partial bitstream</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL create_hw_bitstream(string hw_device, string file, string mask = null, string nky = null, bool? detect_partial = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_hw_bitstream(String hw_device, String file, String mask = null, String nky = null, bool? detect_partial = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_hw_bitstream -hw_device <arg> [-mask <arg>] [-nky <arg>] [-detect_partial] [-quiet] [-verbose] [<file>]
 			_tcl.Entry(_builder.create_hw_bitstream(hw_device, file, mask, nky, detect_partial, quiet, verbose));
@@ -545,7 +545,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="mem_device">(Required) name of flash memory device as returned by get_cfgmem_parts</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL create_hw_cfgmem(string hw_device, string mem_device, bool? quiet = null, bool? verbose = null)
+		public TTCL create_hw_cfgmem(String hw_device, String mem_device, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_hw_cfgmem -hw_device <arg> [-quiet] [-verbose] <mem_device>
 			_tcl.Entry(_builder.create_hw_cfgmem(hw_device, mem_device, quiet, verbose));
@@ -625,7 +625,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="part">(Optional) part type of device to create</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL create_hw_device(string idcode = null, string irlength = null, string mask = null, string part = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_hw_device(String idcode = null, String irlength = null, String mask = null, String part = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_hw_device [-idcode <arg>] [-irlength <arg>] [-mask <arg>] [-part <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.create_hw_device(idcode, irlength, mask, part, quiet, verbose));
@@ -671,7 +671,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>New hardware probe object.</returns>
-		public TTCL create_hw_probe(string name, string core, bool? no_gui_update = null, string map = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_hw_probe(String name, String core, bool? no_gui_update = null, String map = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_hw_probe [-no_gui_update] [-map <arg>] [-quiet] [-verbose] <name> <core>
 			_tcl.Entry(_builder.create_hw_probe(name, core, no_gui_update, map, quiet, verbose));
@@ -704,7 +704,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_sio_rx">(Optional) RX endpoint. Default: None</param>
 		/// <param name="hw_sio_tx">(Optional) TX endpoint. Default: None</param>
 		/// <returns>The new hardware SIO link</returns>
-		public TTCL create_hw_sio_link(string description = null, bool? quiet = null, bool? verbose = null, string hw_sio_rx = null, string hw_sio_tx = null)
+		public TTCL create_hw_sio_link(String description = null, bool? quiet = null, bool? verbose = null, String hw_sio_rx = null, String hw_sio_tx = null)
 		{
 			// TCL Syntax: create_hw_sio_link [-description <arg>] [-quiet] [-verbose] [<hw_sio_rx>] [<hw_sio_tx>]
 			_tcl.Entry(_builder.create_hw_sio_link(description, quiet, verbose, hw_sio_rx, hw_sio_tx));
@@ -732,7 +732,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The new hardware SIO link group</returns>
-		public TTCL create_hw_sio_linkgroup(string hw_sio_links, string description = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_hw_sio_linkgroup(String hw_sio_links, String description = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_hw_sio_linkgroup [-description <arg>] [-quiet] [-verbose] <hw_sio_links>
 			_tcl.Entry(_builder.create_hw_sio_linkgroup(hw_sio_links, description, quiet, verbose));
@@ -769,7 +769,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The new hardware SIO scan</returns>
-		public TTCL create_hw_sio_scan(string scan_type, string hw_sio_object, string description = null, string link_settings = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_hw_sio_scan(String scan_type, String hw_sio_object, String description = null, String link_settings = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_hw_sio_scan [-description <arg>] [-link_settings <arg>] [-quiet] [-verbose] <scan_type> <hw_sio_object>
 			_tcl.Entry(_builder.create_hw_sio_scan(scan_type, hw_sio_object, description, link_settings, quiet, verbose));
@@ -809,7 +809,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_sio_link">(Optional) Link object to perform sweep on. Default: None</param>
 		/// <returns>The new hardware SIO sweep</returns>
-		public TTCL create_hw_sio_sweep(string scan_type, string description = null, string iteration_settings = null, bool? quiet = null, bool? verbose = null, string hw_sio_link = null)
+		public TTCL create_hw_sio_sweep(String scan_type, String description = null, String iteration_settings = null, bool? quiet = null, bool? verbose = null, String hw_sio_link = null)
 		{
 			// TCL Syntax: create_hw_sio_sweep [-description <arg>] [-iteration_settings <arg>] [-quiet] [-verbose] <scan_type> [<hw_sio_link>]
 			_tcl.Entry(_builder.create_hw_sio_sweep(scan_type, description, iteration_settings, quiet, verbose, hw_sio_link));
@@ -872,7 +872,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>hardware targets</returns>
-		public TTCL create_hw_target(string target_name, string copy = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_hw_target(String target_name, String copy = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_hw_target [-copy <arg>] [-quiet] [-verbose] <target_name>
 			_tcl.Entry(_builder.create_hw_target(target_name, copy, quiet, verbose));
@@ -905,7 +905,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_cfgmem">(Optional) list of hardware cfgmems Default: current hardware cfgmem</param>
 		/// <returns>hardware cfgmem</returns>
-		public TTCL current_hw_cfgmem(TCLParameterList hw_device = null, bool? quiet = null, bool? verbose = null, string hw_cfgmem = null)
+		public TTCL current_hw_cfgmem(TCLParameterList hw_device = null, bool? quiet = null, bool? verbose = null, String hw_cfgmem = null)
 		{
 			// TCL Syntax: current_hw_cfgmem [-hw_device <args>] [-quiet] [-verbose] [<hw_cfgmem>]
 			_tcl.Entry(_builder.current_hw_cfgmem(hw_device, quiet, verbose, hw_cfgmem));
@@ -953,7 +953,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_device">(Optional) hardware device to set as current; optional</param>
 		/// <returns>hardware device</returns>
-		public TTCL current_hw_device(bool? quiet = null, bool? verbose = null, string hw_device = null)
+		public TTCL current_hw_device(bool? quiet = null, bool? verbose = null, String hw_device = null)
 		{
 			// TCL Syntax: current_hw_device [-quiet] [-verbose] [<hw_device>]
 			_tcl.Entry(_builder.current_hw_device(quiet, verbose, hw_device));
@@ -990,7 +990,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_ila">(Optional) hardware ILA</param>
 		/// <returns>hardware ILA</returns>
-		public TTCL current_hw_ila(bool? quiet = null, bool? verbose = null, string hw_ila = null)
+		public TTCL current_hw_ila(bool? quiet = null, bool? verbose = null, String hw_ila = null)
 		{
 			// TCL Syntax: current_hw_ila [-quiet] [-verbose] [<hw_ila>]
 			_tcl.Entry(_builder.current_hw_ila(quiet, verbose, hw_ila));
@@ -1023,7 +1023,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_ila_data">(Optional) hardware ILA data</param>
 		/// <returns>hardware ILA data</returns>
-		public TTCL current_hw_ila_data(bool? quiet = null, bool? verbose = null, string hw_ila_data = null)
+		public TTCL current_hw_ila_data(bool? quiet = null, bool? verbose = null, String hw_ila_data = null)
 		{
 			// TCL Syntax: current_hw_ila_data [-quiet] [-verbose] [<hw_ila_data>]
 			_tcl.Entry(_builder.current_hw_ila_data(quiet, verbose, hw_ila_data));
@@ -1063,7 +1063,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_server">(Optional) hardware server</param>
 		/// <returns>hardware server</returns>
-		public TTCL current_hw_server(bool? quiet = null, bool? verbose = null, string hw_server = null)
+		public TTCL current_hw_server(bool? quiet = null, bool? verbose = null, String hw_server = null)
 		{
 			// TCL Syntax: current_hw_server [-quiet] [-verbose] [<hw_server>]
 			_tcl.Entry(_builder.current_hw_server(quiet, verbose, hw_server));
@@ -1108,7 +1108,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_target">(Optional) hardware target</param>
 		/// <returns>hardware target</returns>
-		public TTCL current_hw_target(bool? quiet = null, bool? verbose = null, string hw_target = null)
+		public TTCL current_hw_target(bool? quiet = null, bool? verbose = null, String hw_target = null)
 		{
 			// TCL Syntax: current_hw_target [-quiet] [-verbose] [<hw_target>]
 			_tcl.Entry(_builder.current_hw_target(quiet, verbose, hw_target));
@@ -1173,7 +1173,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cfgmem">(Required) Valid hw_cfgmem object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_hw_cfgmem(string cfgmem, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_hw_cfgmem(String cfgmem, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_hw_cfgmem [-quiet] [-verbose] <cfgmem>
 			_tcl.Entry(_builder.delete_hw_cfgmem(cfgmem, quiet, verbose));
@@ -1222,7 +1222,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="target_object">(Optional) hardware target object to delete Default: current_hw_target</param>
-		public TTCL delete_hw_target(bool? quiet = null, bool? verbose = null, string target_object = null)
+		public TTCL delete_hw_target(bool? quiet = null, bool? verbose = null, String target_object = null)
 		{
 			// TCL Syntax: delete_hw_target [-quiet] [-verbose] [<target_object>]
 			_tcl.Entry(_builder.delete_hw_target(quiet, verbose, target_object));
@@ -1280,7 +1280,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_server">(Optional) hardware server Default: current hardware server</param>
-		public TTCL disconnect_hw_server(bool? quiet = null, bool? verbose = null, string hw_server = null)
+		public TTCL disconnect_hw_server(bool? quiet = null, bool? verbose = null, String hw_server = null)
 		{
 			// TCL Syntax: disconnect_hw_server [-quiet] [-verbose] [<hw_server>]
 			_tcl.Entry(_builder.disconnect_hw_server(quiet, verbose, hw_server));
@@ -1315,7 +1315,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_ila_data">(Optional) List of hardware ILA data objects. Default: Current hardware ILA data</param>
-		public TTCL display_hw_ila_data(string wcfg = null, bool? reset = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_ila_data = null)
+		public TTCL display_hw_ila_data(String wcfg = null, bool? reset = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_ila_data = null)
 		{
 			// TCL Syntax: display_hw_ila_data [-wcfg <arg>] [-reset] [-quiet] [-verbose] [<hw_ila_data>...]
 			_tcl.Entry(_builder.display_hw_ila_data(wcfg, reset, quiet, verbose, hw_ila_data));
@@ -1339,7 +1339,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_sio_scans">(Required) hardware SIO scans</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL display_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
+		public TTCL display_hw_sio_scan(String hw_sio_scans, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: display_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
 			_tcl.Entry(_builder.display_hw_sio_scan(hw_sio_scans, quiet, verbose));
@@ -1377,7 +1377,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="file_name">(Required) SVF filename</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL execute_hw_svf(string file_name, bool? quiet = null, bool? verbose = null)
+		public TTCL execute_hw_svf(String file_name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: execute_hw_svf [-quiet] [-verbose] <file_name>
 			_tcl.Entry(_builder.execute_hw_svf(file_name, quiet, verbose));
@@ -1422,7 +1422,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'cfgmem_part' objects against patterns. Default: *</param>
 		/// <returns>list of cfgmem_part objects</returns>
-		public TTCL get_cfgmem_parts(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_cfgmem_parts(bool? regexp = null, bool? nocase = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_cfgmem_parts [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_cfgmem_parts(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -1462,7 +1462,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_axi_txn' objects against patterns. Default: *</param>
 		/// <returns>hw_axi_txns</returns>
-		public TTCL get_hw_axi_txns(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_axi_txns(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_axi_txns [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_axi_txns(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -1504,7 +1504,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_axi' objects against patterns. Default: *</param>
 		/// <returns>hw_axi</returns>
-		public TTCL get_hw_axis(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_axis(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_axis [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_axis(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -1539,7 +1539,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_cfgmem' objects against patterns. Default: *</param>
 		/// <returns>hardware cfgmems</returns>
-		public TTCL get_hw_cfgmems(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_cfgmems(bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_cfgmems [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_cfgmems(regexp, nocase, filter, quiet, verbose, patterns));
@@ -1580,7 +1580,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_ddrmc' objects against patterns. Default: *</param>
 		/// <returns>integrated and soft DDRMC cores</returns>
-		public TTCL get_hw_ddrmcs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_ddrmcs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_ddrmcs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_ddrmcs(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -1607,7 +1607,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_device' objects against patterns. Default: *</param>
 		/// <returns>hardware devices</returns>
-		public TTCL get_hw_devices(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_devices(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_devices [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_devices(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -1646,7 +1646,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_hbm' objects against patterns. Default: *</param>
 		/// <returns>hardware HBM cores</returns>
-		public TTCL get_hw_hbms(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_hbms(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_hbms [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_hbms(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -1679,7 +1679,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_ila_data' objects against patterns. Default: *</param>
 		/// <returns>hardware ILA data</returns>
-		public TTCL get_hw_ila_datas(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_ila_datas(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_ila_datas [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_ila_datas(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -1736,7 +1736,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_ila' objects against patterns. Default: *</param>
 		/// <returns>hardware ILAs</returns>
-		public TTCL get_hw_ilas(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_ilas(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_ilas [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_ilas(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -1781,7 +1781,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_mig' objects against patterns. Default: *</param>
 		/// <returns>hardware migs cores</returns>
-		public TTCL get_hw_migs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_migs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_migs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_migs(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -1820,7 +1820,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>PCIe core(s)</returns>
-		public TTCL get_hw_pcies(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_hw_pcies(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String patterns = null, String filter = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_hw_pcies [-of_objects <args>] [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.get_hw_pcies(of_objects, regexp, nocase, patterns, filter, quiet, verbose));
@@ -1861,7 +1861,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_probe' objects against patterns. Default: *</param>
 		/// <returns>hardware probes</returns>
-		public TTCL get_hw_probes(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_probes(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_probes [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_probes(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -1893,7 +1893,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_server' objects against patterns. Default: *</param>
 		/// <returns>hardware servers</returns>
-		public TTCL get_hw_servers(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_servers(bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_servers [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_servers(regexp, nocase, filter, quiet, verbose, patterns));
@@ -1932,7 +1932,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_common' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO GT commons</returns>
-		public TTCL get_hw_sio_commons(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_commons(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_commons [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_commons(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -1974,7 +1974,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_gtgroup' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO GT groups.</returns>
-		public TTCL get_hw_sio_gtgroups(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_gtgroups(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_gtgroups [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_gtgroups(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2016,7 +2016,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_gt' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO GTs</returns>
-		public TTCL get_hw_sio_gts(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_gts(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_gts [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_gts(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2064,7 +2064,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_ibert' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO IBERT cores.</returns>
-		public TTCL get_hw_sio_iberts(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_iberts(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_iberts [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_iberts(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2095,7 +2095,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_linkgroup' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO link groups</returns>
-		public TTCL get_hw_sio_linkgroups(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_linkgroups(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_linkgroups [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_linkgroups(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2131,7 +2131,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_link' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO links</returns>
-		public TTCL get_hw_sio_links(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_links(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_links [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_links(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2170,7 +2170,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_pll' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO PLLs</returns>
-		public TTCL get_hw_sio_plls(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_plls(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_plls [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_plls(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2205,7 +2205,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_rx' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO RXs</returns>
-		public TTCL get_hw_sio_rxs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_rxs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_rxs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_rxs(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2237,7 +2237,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_scan' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO scans</returns>
-		public TTCL get_hw_sio_scans(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_scans(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_scans [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_scans(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2273,7 +2273,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_sweep' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO sweeps</returns>
-		public TTCL get_hw_sio_sweeps(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_sweeps(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_sweeps [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_sweeps(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2308,7 +2308,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sio_tx' objects against patterns. Default: *</param>
 		/// <returns>hardware SIO TXs</returns>
-		public TTCL get_hw_sio_txs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sio_txs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_sio_txs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sio_txs(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2334,7 +2334,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_softmc' objects against patterns. Default: *</param>
 		/// <returns>soft memory controller cores</returns>
-		public TTCL get_hw_softmcs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_softmcs(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_softmcs [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_softmcs(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2379,7 +2379,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Register value in Hex.</returns>
-		public TTCL get_hw_sysmon_reg(string hw_sysmon, string hexaddress, bool? quiet = null, bool? verbose = null)
+		public TTCL get_hw_sysmon_reg(String hw_sysmon, String hexaddress, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_hw_sysmon_reg [-quiet] [-verbose] <hw_sysmon> <hexaddress>
 			_tcl.Entry(_builder.get_hw_sysmon_reg(hw_sysmon, hexaddress, quiet, verbose));
@@ -2431,7 +2431,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_sysmon' objects against patterns. Default: *</param>
 		/// <returns>hardware sysmons</returns>
-		public TTCL get_hw_sysmons(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_sysmons(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_sysmons [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_sysmons(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2469,7 +2469,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_target' objects against patterns. Default: *</param>
 		/// <returns>hardware targets</returns>
-		public TTCL get_hw_targets(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_targets(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_targets [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_targets(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2508,7 +2508,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'hw_vio' objects against patterns. Default: *</param>
 		/// <returns>hardware VIOs</returns>
-		public TTCL get_hw_vios(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_hw_vios(TCLParameterList of_objects = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_hw_vios [-of_objects <args>] [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_hw_vios(of_objects, regexp, nocase, filter, quiet, verbose, patterns));
@@ -2525,7 +2525,7 @@ namespace Quokka.TCL.Vivado
 		/// property of the ILA core. The default data depth is 1024 samples. Data values are returned in the
 		/// radix specified for the hw_probe, as determined by the DISPLAY_RADIX property.
 		/// TIP: For any samples to be returned, data must have been captured by the specified port.
-		/// The values are listed to the standard output, or can be captured to a Tcl variable for post￾processing, or output to a file.
+		/// The values are listed to the standard output, or can be captured to a Tcl variable for post-processing, or output to a file.
 		/// The following is an example Tcl script that lists the data samples from hw_probes of interest:
 		/// # Define a list of probes to get the data samples from
 		/// set probeList [get_hw_probes *AR*]
@@ -2555,7 +2555,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_probe">(Optional) hw_probe object</param>
 		/// <returns>samples</returns>
-		public TTCL list_hw_samples(bool? quiet = null, bool? verbose = null, string hw_probe = null)
+		public TTCL list_hw_samples(bool? quiet = null, bool? verbose = null, String hw_probe = null)
 		{
 			// TCL Syntax: list_hw_samples [-quiet] [-verbose] [<hw_probe>]
 			_tcl.Entry(_builder.list_hw_samples(quiet, verbose, hw_probe));
@@ -2649,7 +2649,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_target">(Optional) hardware target Default: current hardware target</param>
-		public TTCL open_hw_target(string jtag_mode = null, string xvc_url = null, bool? auto_calibrate = null, bool? quiet = null, bool? verbose = null, string hw_target = null)
+		public TTCL open_hw_target(String jtag_mode = null, String xvc_url = null, bool? auto_calibrate = null, bool? quiet = null, bool? verbose = null, String hw_target = null)
 		{
 			// TCL Syntax: open_hw_target [-jtag_mode <arg>] [-xvc_url <arg>] [-auto_calibrate] [-quiet] [-verbose] [<hw_target>]
 			_tcl.Entry(_builder.open_hw_target(jtag_mode, xvc_url, auto_calibrate, quiet, verbose, hw_target));
@@ -2673,7 +2673,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_objects">(Required) hardware objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL pause_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
+		public TTCL pause_hw_hbm_amon(String hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: pause_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.pause_hw_hbm_amon(hw_objects, quiet, verbose));
@@ -2720,7 +2720,7 @@ namespace Quokka.TCL.Vivado
 		/// The program_hw_cfgmem command can also generate an SVF file for in-system and remote
 		/// programming of Xilinx devices. SVF is an industry standard file format that is used to describe
 		/// JTAG chain operations by describing the information that needs to be shifted into the device
-		/// chain. SVF files are ASCII files that can be written and modified in any text editor. Many third￾party programming utilities can use the SVF file to program Xilinx devices in a JTAG chain.
+		/// chain. SVF files are ASCII files that can be written and modified in any text editor. Many third-party programming utilities can use the SVF file to program Xilinx devices in a JTAG chain.
 		/// This command returns a transcript of its process when successful, or returns an error if it fails.
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1141
@@ -2731,7 +2731,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="append">(Optional) append to svf file</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL program_hw_cfgmem(TCLParameterList hw_cfgmem, string svf_file = null, bool? force = null, bool? append = null, bool? quiet = null, bool? verbose = null)
+		public TTCL program_hw_cfgmem(TCLParameterList hw_cfgmem, String svf_file = null, bool? force = null, bool? append = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: program_hw_cfgmem [-svf_file <arg>] [-force] [-append] [-quiet] [-verbose] [<hw_cfgmem>...]
 			_tcl.Entry(_builder.program_hw_cfgmem(hw_cfgmem, svf_file, force, append, quiet, verbose));
@@ -2775,10 +2775,10 @@ namespace Quokka.TCL.Vivado
 		/// and a second time to program the encrypted bitstream into the device:
 		/// program_hw_devices -key bbr [current_hw_device]
 		/// program_hw_device [current_hw_device]
-		/// CAUTION! eFUSEs are one-time programmable cells on the hardware device, used to store the factory￾programmed Device DNA, AES-GCM encryption key, and user specified values. Refer to the UltraScale
+		/// CAUTION! eFUSEs are one-time programmable cells on the hardware device, used to store the factory-programmed Device DNA, AES-GCM encryption key, and user specified values. Refer to the UltraScale
 		/// Architecture Configuration (UG570) or 7 Series FPGAs Configuration User Guide (UG470) for more
 		/// information on eFUSE registers.
-		/// The program_hw_devices command can also generate a Serial Vector Format (SVF) file for in￾system and remote programming of Xilinx devices. SVF is an industry standard file format that is
+		/// The program_hw_devices command can also generate a Serial Vector Format (SVF) file for in-system and remote programming of Xilinx devices. SVF is an industry standard file format that is
 		/// used to describe JTAG chain operations by describing the information that needs to be shifted
 		/// into the device chain. SVF files are ASCII files that can be written and modified in any text editor.
 		/// Many third-party programming utilities can use the SVF file to program Xilinx devices in a JTAG
@@ -2811,7 +2811,7 @@ namespace Quokka.TCL.Vivado
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
 		/// <returns>hardware devices</returns>
-		public TTCL program_hw_devices(string key = null, bool? clear = null, bool? skip_program_keys = null, bool? skip_program_rsa = null, string user_efuse = null, string user_efuse_128 = null, string control_efuse = null, string security_efuse = null, bool? only_export_efuse = null, string svf_file = null, string efuse_export_file = null, bool? disable_eos_check = null, bool? skip_reset = null, bool? force = null, bool? append = null, string type = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_device = null)
+		public TTCL program_hw_devices(String key = null, bool? clear = null, bool? skip_program_keys = null, bool? skip_program_rsa = null, String user_efuse = null, String user_efuse_128 = null, String control_efuse = null, String security_efuse = null, bool? only_export_efuse = null, String svf_file = null, String efuse_export_file = null, bool? disable_eos_check = null, bool? skip_reset = null, bool? force = null, bool? append = null, String type = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_device = null)
 		{
 			// TCL Syntax: program_hw_devices [-key <arg>] [-clear] [-skip_program_keys] [-skip_program_rsa] [-user_efuse <arg>] [-user_efuse_128 <arg>] [-control_efuse <arg>] [-security_efuse <arg>] [-only_export_efuse] [-svf_file <arg>] [-efuse_export_file <arg>] [-disable_eos_check] [-skip_reset] [-force] [-append] [-type <arg>] [-quiet] [-verbose] [<hw_device>...]
 			_tcl.Entry(_builder.program_hw_devices(key, clear, skip_program_keys, skip_program_rsa, user_efuse, user_efuse_128, control_efuse, security_efuse, only_export_efuse, svf_file, efuse_export_file, disable_eos_check, skip_reset, force, append, type, quiet, verbose, hw_device));
@@ -2843,7 +2843,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Name of the output file</returns>
-		public TTCL read_hw_ila_data(string file, bool? quiet = null, bool? verbose = null)
+		public TTCL read_hw_ila_data(String file, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_hw_ila_data [-quiet] [-verbose] <file>
 			_tcl.Entry(_builder.read_hw_ila_data(file, quiet, verbose));
@@ -2873,7 +2873,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_sio_scan">(Optional) hardware SIO scan data object Default: None</param>
 		/// <returns>hardware SIO scan object</returns>
-		public TTCL read_hw_sio_scan(string file, bool? quiet = null, bool? verbose = null, string hw_sio_scan = null)
+		public TTCL read_hw_sio_scan(String file, bool? quiet = null, bool? verbose = null, String hw_sio_scan = null)
 		{
 			// TCL Syntax: read_hw_sio_scan [-quiet] [-verbose] <file> [<hw_sio_scan>]
 			_tcl.Entry(_builder.read_hw_sio_scan(file, quiet, verbose, hw_sio_scan));
@@ -2904,7 +2904,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_sio_sweep">(Optional) hardware SIO sweep data object Default: None</param>
 		/// <returns>hardware SIO sweep object</returns>
-		public TTCL read_hw_sio_sweep(string directory, bool? quiet = null, bool? verbose = null, string hw_sio_sweep = null)
+		public TTCL read_hw_sio_sweep(String directory, bool? quiet = null, bool? verbose = null, String hw_sio_sweep = null)
 		{
 			// TCL Syntax: read_hw_sio_sweep [-quiet] [-verbose] <directory> [<hw_sio_sweep>]
 			_tcl.Entry(_builder.read_hw_sio_sweep(directory, quiet, verbose, hw_sio_sweep));
@@ -2937,7 +2937,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_cfgmem">(Optional) list of hardware cfgmems Default: current hardware cfgmem</param>
-		public TTCL readback_hw_cfgmem(string file, bool? checksum = null, bool? force = null, bool? all = null, string offset = null, string format = null, string datacount = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_cfgmem = null)
+		public TTCL readback_hw_cfgmem(String file, bool? checksum = null, bool? force = null, bool? all = null, String offset = null, String format = null, Int32? datacount = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_cfgmem = null)
 		{
 			// TCL Syntax: readback_hw_cfgmem [-checksum] [-force] [-all] [-offset <arg>] -file <arg> [-format <arg>] [-datacount <arg>] [-quiet] [-verbose] [<hw_cfgmem>...]
 			_tcl.Entry(_builder.readback_hw_cfgmem(file, checksum, force, all, offset, format, datacount, quiet, verbose, hw_cfgmem));
@@ -2966,7 +2966,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_device">(Optional) list of hardware devices Default: current hardware device</param>
 		/// <returns>hardware devices</returns>
-		public TTCL readback_hw_device(bool? force = null, bool? capture = null, string readback_file = null, string bin_file = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_device = null)
+		public TTCL readback_hw_device(bool? force = null, bool? capture = null, String readback_file = null, String bin_file = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_device = null)
 		{
 			// TCL Syntax: readback_hw_device [-force] [-capture] [-readback_file <arg>] [-bin_file <arg>] [-quiet] [-verbose] [<hw_device>...]
 			_tcl.Entry(_builder.readback_hw_device(force, capture, readback_file, bin_file, quiet, verbose, hw_device));
@@ -3030,7 +3030,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL refresh_hw_ddrmc(string hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
+		public TTCL refresh_hw_ddrmc(String hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_ddrmc [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.refresh_hw_ddrmc(hw_objects, regexp, properties, quiet, verbose));
@@ -3058,7 +3058,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_device">(Optional) hardware device Default: current hardware device</param>
-		public TTCL refresh_hw_device(string update_hw_probes = null, bool? disable_done_check = null, bool? force_poll = null, bool? quiet = null, bool? verbose = null, string hw_device = null)
+		public TTCL refresh_hw_device(String update_hw_probes = null, bool? disable_done_check = null, bool? force_poll = null, bool? quiet = null, bool? verbose = null, String hw_device = null)
 		{
 			// TCL Syntax: refresh_hw_device [-update_hw_probes <arg>] [-disable_done_check] [-force_poll] [-quiet] [-verbose] [<hw_device>]
 			_tcl.Entry(_builder.refresh_hw_device(update_hw_probes, disable_done_check, force_poll, quiet, verbose, hw_device));
@@ -3097,7 +3097,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL refresh_hw_hbm(string hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
+		public TTCL refresh_hw_hbm(String hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_hbm [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.refresh_hw_hbm(hw_objects, regexp, properties, quiet, verbose));
@@ -3128,7 +3128,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL refresh_hw_mig(string hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
+		public TTCL refresh_hw_mig(String hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_mig [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.refresh_hw_mig(hw_objects, regexp, properties, quiet, verbose));
@@ -3159,7 +3159,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_pcie">(Required) Hardware PCIe object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL refresh_hw_pcie(string hw_pcie, bool? quiet = null, bool? verbose = null)
+		public TTCL refresh_hw_pcie(String hw_pcie, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_pcie [-quiet] [-verbose] <hw_pcie>
 			_tcl.Entry(_builder.refresh_hw_pcie(hw_pcie, quiet, verbose));
@@ -3181,7 +3181,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_server">(Optional) hardware server</param>
-		public TTCL refresh_hw_server(bool? force_poll = null, bool? quiet = null, bool? verbose = null, string hw_server = null)
+		public TTCL refresh_hw_server(bool? force_poll = null, bool? quiet = null, bool? verbose = null, String hw_server = null)
 		{
 			// TCL Syntax: refresh_hw_server [-force_poll] [-quiet] [-verbose] [<hw_server>]
 			_tcl.Entry(_builder.refresh_hw_server(force_poll, quiet, verbose, hw_server));
@@ -3212,7 +3212,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL refresh_hw_sio(string hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
+		public TTCL refresh_hw_sio(String hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_sio [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.refresh_hw_sio(hw_objects, regexp, properties, quiet, verbose));
@@ -3233,7 +3233,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL refresh_hw_softmc(string hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
+		public TTCL refresh_hw_softmc(String hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_softmc [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.refresh_hw_softmc(hw_objects, regexp, properties, quiet, verbose));
@@ -3264,7 +3264,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="properties">(Optional) List of properties to refresh Default: All properties in object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL refresh_hw_sysmon(string hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
+		public TTCL refresh_hw_sysmon(String hw_objects, bool? regexp = null, TCLParameterList properties = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_hw_sysmon [-regexp] [-properties <args>] [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.refresh_hw_sysmon(hw_objects, regexp, properties, quiet, verbose));
@@ -3301,7 +3301,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_target">(Optional) hardware target</param>
-		public TTCL refresh_hw_target(bool? force_poll = null, bool? quiet = null, bool? verbose = null, string hw_target = null)
+		public TTCL refresh_hw_target(bool? force_poll = null, bool? quiet = null, bool? verbose = null, String hw_target = null)
 		{
 			// TCL Syntax: refresh_hw_target [-force_poll] [-quiet] [-verbose] [<hw_target>]
 			_tcl.Entry(_builder.refresh_hw_target(force_poll, quiet, verbose, hw_target));
@@ -3365,7 +3365,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_objects">(Required) hardware objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL remove_hw_hbm_pc(string mc_num, string pc_num, string hw_objects, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_hw_hbm_pc(String mc_num, String pc_num, String hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_hw_hbm_pc [-quiet] [-verbose] <mc_num> <pc_num> <hw_objects>
 			_tcl.Entry(_builder.remove_hw_hbm_pc(mc_num, pc_num, hw_objects, quiet, verbose));
@@ -3395,7 +3395,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="remove_all">(Optional) Remove the whole enumeration for a hardware probe. Default: 0</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL remove_hw_probe_enum(string hw_probe, bool? no_gui_update = null, TCLParameterList list = null, bool? remove_all = null, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_hw_probe_enum(String hw_probe, bool? no_gui_update = null, TCLParameterList list = null, bool? remove_all = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_hw_probe_enum [-no_gui_update] [-list <args>] [-remove_all] [-quiet] [-verbose] <hw_probe>
 			_tcl.Entry(_builder.remove_hw_probe_enum(hw_probe, no_gui_update, list, remove_all, quiet, verbose));
@@ -3420,7 +3420,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_sio_links">(Required) hardware SIO links</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL remove_hw_sio_link(string hw_sio_links, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_hw_sio_link(String hw_sio_links, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_hw_sio_link [-quiet] [-verbose] <hw_sio_links>
 			_tcl.Entry(_builder.remove_hw_sio_link(hw_sio_links, quiet, verbose));
@@ -3448,7 +3448,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_sio_linkgroups">(Required) hardware SIO linkgroups</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL remove_hw_sio_linkgroup(string hw_sio_linkgroups, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_hw_sio_linkgroup(String hw_sio_linkgroups, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_hw_sio_linkgroup [-quiet] [-verbose] <hw_sio_linkgroups>
 			_tcl.Entry(_builder.remove_hw_sio_linkgroup(hw_sio_linkgroups, quiet, verbose));
@@ -3468,7 +3468,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_sio_scans">(Required) hardware SIO scans</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL remove_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_hw_sio_scan(String hw_sio_scans, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
 			_tcl.Entry(_builder.remove_hw_sio_scan(hw_sio_scans, quiet, verbose));
@@ -3488,7 +3488,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_sio_sweeps">(Required) hardware SIO sweeps</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL remove_hw_sio_sweep(string hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_hw_sio_sweep(String hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_hw_sio_sweep [-quiet] [-verbose] <hw_sio_sweeps>
 			_tcl.Entry(_builder.remove_hw_sio_sweep(hw_sio_sweeps, quiet, verbose));
@@ -3523,7 +3523,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_hw_axi_txn(TCLParameterList hw_axi_txns, string w = null, string t = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_hw_axi_txn(TCLParameterList hw_axi_txns, String w = null, String t = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_hw_axi_txn [-w <arg>] [-t <arg>] [-quiet] [-verbose] <hw_axi_txns>...
 			_tcl.Entry(_builder.report_hw_axi_txn(hw_axi_txns, w, t, quiet, verbose));
@@ -3559,7 +3559,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) set this option to have report results returned as a string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_hw_ddrmc(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_hw_ddrmc(String hw_objects, String file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_hw_ddrmc [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.report_hw_ddrmc(hw_objects, file, append, return_string, quiet, verbose));
@@ -3594,7 +3594,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) set this option to have report results return as a string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_hw_mig(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_hw_mig(String hw_objects, String file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_hw_mig [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.report_hw_mig(hw_objects, file, append, return_string, quiet, verbose));
@@ -3631,7 +3631,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) Return report results as a string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_hw_pcie(string hw_pcie, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_hw_pcie(String hw_pcie, String file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_hw_pcie [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] <hw_pcie>
 			_tcl.Entry(_builder.report_hw_pcie(hw_pcie, file, append, return_string, quiet, verbose));
@@ -3652,7 +3652,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) set this option to have report results returned as a string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_hw_softmc(string hw_objects, string file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_hw_softmc(String hw_objects, String file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_hw_softmc [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.report_hw_softmc(hw_objects, file, append, return_string, quiet, verbose));
@@ -3751,7 +3751,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_ilas">(Optional) List of hardware ILA objects. Default: Current hardware ILA</param>
-		public TTCL reset_hw_ila(string reset_compare_values = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_ilas = null)
+		public TTCL reset_hw_ila(String reset_compare_values = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_ilas = null)
 		{
 			// TCL Syntax: reset_hw_ila [-reset_compare_values <arg>] [-quiet] [-verbose] [<hw_ilas>...]
 			_tcl.Entry(_builder.reset_hw_ila(reset_compare_values, quiet, verbose, hw_ilas));
@@ -3781,7 +3781,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_pcie">(Required) Hardware PCIe object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL reset_hw_pcie(string hw_pcie, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_hw_pcie(String hw_pcie, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_hw_pcie [-quiet] [-verbose] <hw_pcie>
 			_tcl.Entry(_builder.reset_hw_pcie(hw_pcie, quiet, verbose));
@@ -3861,7 +3861,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_objects">(Required) hardware objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL resume_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
+		public TTCL resume_hw_hbm_amon(String hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: resume_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.resume_hw_hbm_amon(hw_objects, quiet, verbose));
@@ -3918,7 +3918,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_objects">(Required) hardware objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL run_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
+		public TTCL run_hw_hbm_amon(String hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: run_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.run_hw_hbm_amon(hw_objects, quiet, verbose));
@@ -4078,7 +4078,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_ilas">(Optional) hardware ILAs Default: Current hardware ILA</param>
-		public TTCL run_hw_ila(bool? trigger_now = null, bool? compile_only = null, string file = null, bool? force = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_ilas = null)
+		public TTCL run_hw_ila(bool? trigger_now = null, bool? compile_only = null, String file = null, bool? force = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_ilas = null)
 		{
 			// TCL Syntax: run_hw_ila [-trigger_now] [-compile_only] [-file <arg>] [-force] [-quiet] [-verbose] [<hw_ilas>...]
 			_tcl.Entry(_builder.run_hw_ila(trigger_now, compile_only, file, force, quiet, verbose, hw_ilas));
@@ -4109,7 +4109,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_sio_scans">(Required) hardware SIO scans</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL run_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
+		public TTCL run_hw_sio_scan(String hw_sio_scans, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: run_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
 			_tcl.Entry(_builder.run_hw_sio_scan(hw_sio_scans, quiet, verbose));
@@ -4139,7 +4139,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_sio_sweeps">(Required) hardware SIO sweeps</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL run_hw_sio_sweep(string hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
+		public TTCL run_hw_sio_sweep(String hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: run_hw_sio_sweep [-quiet] [-verbose] <hw_sio_sweeps>
 			_tcl.Entry(_builder.run_hw_sio_sweep(hw_sio_sweeps, quiet, verbose));
@@ -4204,7 +4204,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>hardware JTAG</returns>
-		public TTCL run_state_hw_jtag(string stable_state, TCLParameterList state = null, bool? quiet = null, bool? verbose = null)
+		public TTCL run_state_hw_jtag(String stable_state, TCLParameterList state = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: run_state_hw_jtag [-state <args>] [-quiet] [-verbose] <stable_state>
 			_tcl.Entry(_builder.run_state_hw_jtag(stable_state, state, quiet, verbose));
@@ -4255,7 +4255,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL runtest_hw_jtag(string wait_state = null, string end_state = null, string sec = null, string max_wait = null, string tck = null, bool? quiet = null, bool? verbose = null)
+		public TTCL runtest_hw_jtag(String wait_state = null, String end_state = null, Int32? sec = null, Int32? max_wait = null, Int32? tck = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: runtest_hw_jtag [-wait_state <arg>] [-end_state <arg>] [-sec <arg>] [-max_wait <arg>] [-tck <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.runtest_hw_jtag(wait_state, end_state, sec, max_wait, tck, quiet, verbose));
@@ -4313,7 +4313,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>hardware TDO</returns>
-		public TTCL scan_dr_hw_jtag(string length, string tdi = null, string tdo = null, string mask = null, string smask = null, bool? quiet = null, bool? verbose = null)
+		public TTCL scan_dr_hw_jtag(Int32 length, String tdi = null, String tdo = null, String mask = null, String smask = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: scan_dr_hw_jtag [-tdi <arg>] [-tdo <arg>] [-mask <arg>] [-smask <arg>] [-quiet] [-verbose] <length>
 			_tcl.Entry(_builder.scan_dr_hw_jtag(length, tdi, tdo, mask, smask, quiet, verbose));
@@ -4369,7 +4369,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>hardware TDO</returns>
-		public TTCL scan_ir_hw_jtag(string length, string tdi = null, string tdo = null, string mask = null, string smask = null, bool? quiet = null, bool? verbose = null)
+		public TTCL scan_ir_hw_jtag(Int32 length, String tdi = null, String tdo = null, String mask = null, String smask = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: scan_ir_hw_jtag [-tdi <arg>] [-tdo <arg>] [-mask <arg>] [-smask <arg>] [-quiet] [-verbose] <length>
 			_tcl.Entry(_builder.scan_ir_hw_jtag(length, tdi, tdo, mask, smask, quiet, verbose));
@@ -4411,7 +4411,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hexdata">(Required) Hex write value</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_hw_sysmon_reg(string hw_sysmon, string hexaddress, string hexdata, bool? quiet = null, bool? verbose = null)
+		public TTCL set_hw_sysmon_reg(String hw_sysmon, String hexaddress, String hexdata, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_hw_sysmon_reg [-quiet] [-verbose] <hw_sysmon> <hexaddress> <hexdata>
 			_tcl.Entry(_builder.set_hw_sysmon_reg(hw_sysmon, hexaddress, hexdata, quiet, verbose));
@@ -4435,7 +4435,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_objects">(Required) hardware objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL stop_hw_hbm_amon(string hw_objects, bool? quiet = null, bool? verbose = null)
+		public TTCL stop_hw_hbm_amon(String hw_objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: stop_hw_hbm_amon [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.stop_hw_hbm_amon(hw_objects, quiet, verbose));
@@ -4461,7 +4461,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_sio_scans">(Required) hardware SIO scans</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL stop_hw_sio_scan(string hw_sio_scans, bool? quiet = null, bool? verbose = null)
+		public TTCL stop_hw_sio_scan(String hw_sio_scans, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: stop_hw_sio_scan [-quiet] [-verbose] <hw_sio_scans>
 			_tcl.Entry(_builder.stop_hw_sio_scan(hw_sio_scans, quiet, verbose));
@@ -4489,7 +4489,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="hw_sio_sweeps">(Required) hardware SIO sweeps</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL stop_hw_sio_sweep(string hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
+		public TTCL stop_hw_sio_sweep(String hw_sio_sweeps, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: stop_hw_sio_sweep [-quiet] [-verbose] <hw_sio_sweeps>
 			_tcl.Entry(_builder.stop_hw_sio_sweep(hw_sio_sweeps, quiet, verbose));
@@ -4524,7 +4524,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_server">(Optional) hardware server Default: current hardware server</param>
-		public TTCL update_hw_firmware(string file_path = null, string config_path = null, bool? skip_update = null, bool? reset = null, bool? format = null, bool? flash = null, bool? quiet = null, bool? verbose = null, string hw_server = null)
+		public TTCL update_hw_firmware(String file_path = null, String config_path = null, bool? skip_update = null, bool? reset = null, bool? format = null, bool? flash = null, bool? quiet = null, bool? verbose = null, String hw_server = null)
 		{
 			// TCL Syntax: update_hw_firmware [-file_path <arg>] [-config_path <arg>] [-skip_update] [-reset] [-format] [-flash] [-quiet] [-verbose] [<hw_server>]
 			_tcl.Entry(_builder.update_hw_firmware(file_path, config_path, skip_update, reset, format, flash, quiet, verbose, hw_server));
@@ -4548,7 +4548,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="output_pin_values">(Optional) 8 bit hex value of output pins Default: All output pins driven low</param>
 		/// <param name="hw_server">(Optional) hardware server Default: current hardware server</param>
 		/// <returns>All GPIO PMOD pin values</returns>
-		public TTCL update_hw_gpio(bool? quiet = null, bool? verbose = null, string output_enable_mask = null, string output_pin_values = null, string hw_server = null)
+		public TTCL update_hw_gpio(bool? quiet = null, bool? verbose = null, String output_enable_mask = null, String output_pin_values = null, String hw_server = null)
 		{
 			// TCL Syntax: update_hw_gpio [-quiet] [-verbose] [<output_enable_mask>] [<output_pin_values>] [<hw_server>]
 			_tcl.Entry(_builder.update_hw_gpio(quiet, verbose, output_enable_mask, output_pin_values, hw_server));
@@ -4627,7 +4627,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="hw_device">(Optional) list of hardware devices Default: current hardware device</param>
 		/// <returns>hardware devices</returns>
-		public TTCL verify_hw_devices(string key = null, string user_efuse = null, string control_efuse = null, string security_efuse = null, bool? verbose = null, bool? quiet = null, TCLParameterList hw_device = null)
+		public TTCL verify_hw_devices(String key = null, String user_efuse = null, String control_efuse = null, String security_efuse = null, bool? verbose = null, bool? quiet = null, TCLParameterList hw_device = null)
 		{
 			// TCL Syntax: verify_hw_devices [-key <arg>] [-user_efuse <arg>] [-control_efuse <arg>] [-security_efuse <arg>] [-verbose] [-quiet] [<hw_device>...]
 			_tcl.Entry(_builder.verify_hw_devices(key, user_efuse, control_efuse, security_efuse, verbose, quiet, hw_device));
@@ -4655,7 +4655,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_ilas">(Optional) hardware ILA objects. Default: Current hardware ILA</param>
-		public TTCL wait_on_hw_ila(string timeout = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_ilas = null)
+		public TTCL wait_on_hw_ila(String timeout = null, bool? quiet = null, bool? verbose = null, TCLParameterList hw_ilas = null)
 		{
 			// TCL Syntax: wait_on_hw_ila [-timeout <arg>] [-quiet] [-verbose] [<hw_ilas>...]
 			_tcl.Entry(_builder.wait_on_hw_ila(timeout, quiet, verbose, hw_ilas));
@@ -4680,7 +4680,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="timeout">(Optional) Timeout in minutes. Decimal value allowed Default: No timeout</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL wait_on_hw_sio_scan(TCLParameterList hw_sio_scans, string timeout = null, bool? quiet = null, bool? verbose = null)
+		public TTCL wait_on_hw_sio_scan(TCLParameterList hw_sio_scans, String timeout = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: wait_on_hw_sio_scan [-timeout <arg>] [-quiet] [-verbose] <hw_sio_scans>...
 			_tcl.Entry(_builder.wait_on_hw_sio_scan(hw_sio_scans, timeout, quiet, verbose));
@@ -4705,7 +4705,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="timeout">(Optional) Timeout in minutes. Decimal value allowed Default: No timeout</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL wait_on_hw_sio_sweep(TCLParameterList hw_sio_sweeps, string timeout = null, bool? quiet = null, bool? verbose = null)
+		public TTCL wait_on_hw_sio_sweep(TCLParameterList hw_sio_sweeps, String timeout = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: wait_on_hw_sio_sweep [-timeout <arg>] [-quiet] [-verbose] <hw_sio_sweeps>...
 			_tcl.Entry(_builder.wait_on_hw_sio_sweep(hw_sio_sweeps, timeout, quiet, verbose));
@@ -4739,7 +4739,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="hw_ila_data">(Optional) hardware ILA data object Default: Current hardware ILA data</param>
 		/// <returns>Name of the output file</returns>
-		public TTCL write_hw_ila_data(string file, bool? force = null, bool? csv_file = null, bool? vcd_file = null, bool? legacy_csv_file = null, bool? quiet = null, bool? verbose = null, string hw_ila_data = null)
+		public TTCL write_hw_ila_data(String file, bool? force = null, bool? csv_file = null, bool? vcd_file = null, bool? legacy_csv_file = null, bool? quiet = null, bool? verbose = null, String hw_ila_data = null)
 		{
 			// TCL Syntax: write_hw_ila_data [-force] [-csv_file] [-vcd_file] [-legacy_csv_file] [-quiet] [-verbose] <file> [<hw_ila_data>] [<hw_ila_data>]
 			_tcl.Entry(_builder.write_hw_ila_data(file, force, csv_file, vcd_file, legacy_csv_file, quiet, verbose, hw_ila_data));
@@ -4767,7 +4767,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Name of the output file</returns>
-		public TTCL write_hw_sio_scan(string file, string hw_sio_scan, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_hw_sio_scan(String file, String hw_sio_scan, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_hw_sio_scan [-force] [-quiet] [-verbose] <file> <hw_sio_scan>
 			_tcl.Entry(_builder.write_hw_sio_scan(file, hw_sio_scan, force, quiet, verbose));
@@ -4798,7 +4798,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Name of the output directory</returns>
-		public TTCL write_hw_sio_sweep(string directory, string hw_sio_sweep, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_hw_sio_sweep(String directory, String hw_sio_sweep, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_hw_sio_sweep [-force] [-quiet] [-verbose] <directory> <hw_sio_sweep>
 			_tcl.Entry(_builder.write_hw_sio_sweep(directory, hw_sio_sweep, force, quiet, verbose));
@@ -4886,7 +4886,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="force">(Optional) overwrite svf file if it exists</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL write_hw_svf(string file_name, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_hw_svf(String file_name, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_hw_svf [-force] [-quiet] [-verbose] <file_name>
 			_tcl.Entry(_builder.write_hw_svf(file_name, force, quiet, verbose));

@@ -336,6 +336,7 @@ namespace Quokka.TCL.SourceGenerator
                 var splitMatch = Regex.Match(line, "(.*?)\\s+(.*)");
 
                 var matchingArg = Parameters.SingleOrDefault(a => line.StartsWith(a.UsageSectionToken));
+
                 if (matchingArg != null)
                 {
                     arg = matchingArg;
@@ -350,18 +351,63 @@ namespace Quokka.TCL.SourceGenerator
                 }
             }
 
-            // try to fetch enums from description
+            // try to fetch enums from description, exclude array parameters for now (patterns, args, list of files etc)
+            var ignoreNames = new HashSet<string>()
+            {
+                "file",
+                "objects"
+            };
+
             foreach (var p in Parameters)
             {
                 var desc = string.Join(" ", p.Description);
+
+                if (desc.ToLower().Contains("number of"))
+                {
+                    p.ElementType = typeof(int);
+                }
+            }
+
+
+            var checkEnumParameters = Parameters.Where(p => !p.IsArray);
+
+            foreach (var p in checkEnumParameters)
+            {
+                var enumName = $"{Name}.{p.Name}";
+                if (_fixes.NotEnums.Contains(enumName) || _fixes.NotEnums.Contains($"*.{p.Name}"))
+                    continue;
+
+                var desc = string.Join(" ", p.Description);
+
+                if (desc.Contains("wildcard *"))
+                    continue;
+
                 if (desc.Contains("Values:"))
                 {
                     var valuesMatch = Regex.Match(desc, @"(?:.*)(?:Values:)(.*?)(?:$|Default:|;|\.)");
                     if (valuesMatch.Success)
                     {
-                        var parts = valuesMatch.Groups[1].Value.Split(',').Select(s => s.Trim().Replace(".", "")).ToList();
+                        var parts = valuesMatch
+                            .Groups[1]
+                            .Value
+                            .Split(',')
+                            .Select(s => s.Trim().Replace(".", ""))
+                            .SelectMany(s => s.Split(" or "))
+                            .Select(s => _fixes.EnumValueReplace.ContainsKey(s) ? _fixes.EnumValueReplace[s] : s)
+                            .Select(s =>
+                            {
+                                var match = Regex.Match(s, @"(.*?)(?:$|(?:\(.*))");
+                                if (match.Success)
+                                    return match.Groups[1].Value;
+
+                                return s;
+                            })
+                            .ToList();
+
                         if (parts.Count > 1)
                         {
+                            p.EnumName = $"{Name}_{p.Name}";
+                            p.Type = VivadoCommandParameterType.Enum;
                             p.EnumValues = parts;
                         }
                     }
@@ -371,9 +417,25 @@ namespace Quokka.TCL.SourceGenerator
                 {
                     p.Type = VivadoCommandParameterType.Flag;
                     p.IsNamed = true;
+                    p.EnumValues.Clear();
+                }
+            }
+
+            foreach (var p in Parameters)
+            {
+                var propName = $"{Name}.{p.Name}";
+                if (_fixes.Strings.Contains(propName))
+                {
+                    p.ElementType = typeof(string);
+                }
+
+                if (_fixes.Ints.Contains(propName))
+                {
+                    p.ElementType = typeof(int);
                 }
             }
         }
+        
         void OnCategories(List<string> content)
         {
         }

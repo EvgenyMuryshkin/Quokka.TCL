@@ -14,16 +14,20 @@ namespace Quokka.TCL.SourceGenerator
     {
         Flag,
         String,
+        Enum
     }
 
-    class VivadoCommandParameter
+    class StaticData
     {
-        static HashSet<string> keywords = new HashSet<string>()
+        public static HashSet<string> keywords = new HashSet<string>()
         {
             "class", "default", "fixed", "object", "try", "internal", "ref", "interface",
             "short", "long", "string"
         };
+    }
 
+    class VivadoCommandParameter
+    {
         public string Name;
         public string UsageSectionToken;
         public string ArgumentsSectionToken;
@@ -31,6 +35,7 @@ namespace Quokka.TCL.SourceGenerator
         public Type ElementType = typeof(string);
         public bool IsArray;
         public List<string> Description = new List<string>();
+        public string EnumName;
         public List<string> EnumValues = new List<string>();
         public VivadoCommandParameterUsage Usage;
         public VivadoCommandParameterType Type;
@@ -39,13 +44,18 @@ namespace Quokka.TCL.SourceGenerator
         {
             get
             {
-                if (keywords.Contains(Name))
+                if (StaticData.keywords.Contains(Name))
                     return $"@{Name}";
 
                 if (char.IsDigit(Name[0]))
                     return $"_{Name}";
                 return Name;
             }
+        }
+
+        public override string ToString()
+        {
+            return $"Param: {Name}, {Type}, {Usage}";
         }
     }
 }

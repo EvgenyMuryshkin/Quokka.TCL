@@ -4,5 +4,18 @@
   ],
   "Required": [
 
-  ]
+  ],
+  "NotEnums": [
+    "*.file",
+    "*.object",
+    "upgrade_ip.log",
+    "write_qor_suggestions.strategy_dir"
+  ],
+  "EnumValueReplace": {
+    "Perfor manceOptimized": "PerformanceOptimized"
+  },
+  "Strings": [
+    "launch_runs.host"
+  ],
+  "Ints": []
 }

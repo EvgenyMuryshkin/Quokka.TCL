@@ -1,11 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
     <FileVersion>1.0.0.1</FileVersion>
-    <Version>1.0.0.1</Version>
+    <Version>1.0.1.2</Version>
     <Description>TCL tools for FPGA vendors</Description>
     <PackageProjectUrl>https://github.com/EvgenyMuryshkin/Quokka.TCL</PackageProjectUrl>
     <RepositoryUrl>https://github.com/EvgenyMuryshkin/Quokka.TCL</RepositoryUrl>
@@ -16,9 +16,7 @@
     <Company>Quokka Robotics</Company>
     <Authors>Evgeny Muryshkin</Authors>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Quokka.TCL.Tools\Quokka.TCL.Tools.csproj" />
   </ItemGroup>
-
 </Project>

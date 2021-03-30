@@ -35,7 +35,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match simulator names against patterns Default: *</param>
-		public TTCL get_simulators(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_simulators(bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_simulators [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_simulators(regexp, nocase, filter, quiet, verbose, patterns));
@@ -71,7 +71,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="csproject">(Optional) ChipScope project</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL launch_chipscope_analyzer(string run = null, string csproject = null, bool? quiet = null, bool? verbose = null)
+		public TTCL launch_chipscope_analyzer(String run = null, String csproject = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: launch_chipscope_analyzer [-run <arg>] [-csproject <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.launch_chipscope_analyzer(run, csproject, quiet, verbose));
@@ -97,7 +97,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="ipf">(Optional) Project for iMPACT</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL launch_impact(string run = null, string ipf = null, bool? quiet = null, bool? verbose = null)
+		public TTCL launch_impact(String run = null, String ipf = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: launch_impact [-run <arg>] [-ipf <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.launch_impact(run, ipf, quiet, verbose));
@@ -175,12 +175,12 @@ namespace Quokka.TCL.Vivado
 		/// <param name="simset">(Optional) Name of the simulation fileset</param>
 		/// <param name="mode">
 		/// (Optional)
-		/// Simulation mode. Values: behavioral, post-synthesis, post￾implementation Default: behavioral
+		/// Simulation mode. Values: behavioral, post-synthesis, post-implementation Default: behavioral
 		/// </param>
 		/// <param name="type">
 		/// (Optional)
 		/// Netlist type. Values: functional, timing. This is only
-		/// applicable when mode is set to post-synthesis or post￾implementation
+		/// applicable when mode is set to post-synthesis or post-implementation
 		/// </param>
 		/// <param name="scripts_only">(Optional) Only generate scripts</param>
 		/// <param name="of_objects">
@@ -198,7 +198,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="noclean_dir">(Optional) Do not remove simulation run directory files</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL launch_simulation(string step = null, string simset = null, string mode = null, string type = null, bool? scripts_only = null, TCLParameterList of_objects = null, bool? absolute_path = null, string install_path = null, string gcc_install_path = null, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
+		public TTCL launch_simulation(launch_simulation_step? step = null, String simset = null, launch_simulation_mode? mode = null, launch_simulation_type? type = null, bool? scripts_only = null, TCLParameterList of_objects = null, bool? absolute_path = null, String install_path = null, String gcc_install_path = null, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: launch_simulation [-step <arg>] [-simset <arg>] [-mode <arg>] [-type <arg>] [-scripts_only] [-of_objects <args>] [-absolute_path] [-install_path <arg>] [-gcc_install_path <arg>] [-noclean_dir] [-quiet] [-verbose]
 			_tcl.Entry(_builder.launch_simulation(step, simset, mode, type, scripts_only, of_objects, absolute_path, install_path, gcc_install_path, noclean_dir, quiet, verbose));

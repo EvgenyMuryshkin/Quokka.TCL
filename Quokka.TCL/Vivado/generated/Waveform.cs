@@ -91,7 +91,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The new waves</returns>
-		public TTCL add_wave(TCLParameterList items, TCLParameterList into = null, TCLParameterList at_wave = null, TCLParameterList after_wave = null, TCLParameterList before_wave = null, bool? reverse = null, string radix = null, string color = null, string name = null, bool? recursive = null, bool? r = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null)
+		public TTCL add_wave(TCLParameterList items, TCLParameterList into = null, TCLParameterList at_wave = null, TCLParameterList after_wave = null, TCLParameterList before_wave = null, bool? reverse = null, String radix = null, String color = null, String name = null, bool? recursive = null, bool? r = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: add_wave [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-reverse] [-radix <arg>] [-color <arg>] [-name <arg>] [-recursive] [-r] [-regexp] [-nocase] [-quiet] [-verbose] <items>...
 			_tcl.Entry(_builder.add_wave(items, into, at_wave, after_wave, before_wave, reverse, radix, color, name, recursive, r, regexp, nocase, quiet, verbose));
@@ -143,7 +143,7 @@ namespace Quokka.TCL.Vivado
 		/// string Default: new_divider
 		/// </param>
 		/// <returns>The new divider</returns>
-		public TTCL add_wave_divider(TCLParameterList into = null, TCLParameterList at_wave = null, TCLParameterList after_wave = null, TCLParameterList before_wave = null, string color = null, bool? quiet = null, bool? verbose = null, string name = null)
+		public TTCL add_wave_divider(TCLParameterList into = null, TCLParameterList at_wave = null, TCLParameterList after_wave = null, TCLParameterList before_wave = null, String color = null, bool? quiet = null, bool? verbose = null, String name = null)
 		{
 			// TCL Syntax: add_wave_divider [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-color <arg>] [-quiet] [-verbose] [<name>]
 			_tcl.Entry(_builder.add_wave_divider(into, at_wave, after_wave, before_wave, color, quiet, verbose, name));
@@ -189,7 +189,7 @@ namespace Quokka.TCL.Vivado
 		/// Default: new_group
 		/// </param>
 		/// <returns>The new group</returns>
-		public TTCL add_wave_group(TCLParameterList into = null, TCLParameterList at_wave = null, TCLParameterList after_wave = null, TCLParameterList before_wave = null, bool? quiet = null, bool? verbose = null, string name = null)
+		public TTCL add_wave_group(TCLParameterList into = null, TCLParameterList at_wave = null, TCLParameterList after_wave = null, TCLParameterList before_wave = null, bool? quiet = null, bool? verbose = null, String name = null)
 		{
 			// TCL Syntax: add_wave_group [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-quiet] [-verbose] [<name>]
 			_tcl.Entry(_builder.add_wave_group(into, at_wave, after_wave, before_wave, quiet, verbose, name));
@@ -222,7 +222,7 @@ namespace Quokka.TCL.Vivado
 		/// values are fs, ps, ns, us, ms, and s.
 		/// </param>
 		/// <returns>The new created marker</returns>
-		public TTCL add_wave_marker(string into = null, string name = null, bool? quiet = null, bool? verbose = null, string time = null, string unit = null)
+		public TTCL add_wave_marker(String into = null, String name = null, bool? quiet = null, bool? verbose = null, String time = null, String unit = null)
 		{
 			// TCL Syntax: add_wave_marker [-into <arg>] [-name <arg>] [-quiet] [-verbose] [<time>] [<unit>]
 			_tcl.Entry(_builder.add_wave_marker(into, name, quiet, verbose, time, unit));
@@ -280,7 +280,7 @@ namespace Quokka.TCL.Vivado
 		/// string Default: new_virtual_bus
 		/// </param>
 		/// <returns>The new virtual bus</returns>
-		public TTCL add_wave_virtual_bus(TCLParameterList into = null, TCLParameterList at_wave = null, TCLParameterList after_wave = null, TCLParameterList before_wave = null, bool? reverse = null, string radix = null, string color = null, bool? quiet = null, bool? verbose = null, string name = null)
+		public TTCL add_wave_virtual_bus(TCLParameterList into = null, TCLParameterList at_wave = null, TCLParameterList after_wave = null, TCLParameterList before_wave = null, bool? reverse = null, String radix = null, String color = null, bool? quiet = null, bool? verbose = null, String name = null)
 		{
 			// TCL Syntax: add_wave_virtual_bus [-into <args>] [-at_wave <args>] [-after_wave <args>] [-before_wave <args>] [-reverse] [-radix <arg>] [-color <arg>] [-quiet] [-verbose] [<name>]
 			_tcl.Entry(_builder.add_wave_virtual_bus(into, at_wave, after_wave, before_wave, reverse, radix, color, quiet, verbose, name));
@@ -321,7 +321,7 @@ namespace Quokka.TCL.Vivado
 		/// or the current wave configuration if none specified Default:
 		/// NULL
 		/// </param>
-		public TTCL close_wave_config(bool? force = null, bool? quiet = null, bool? verbose = null, string wcfgobj = null)
+		public TTCL close_wave_config(bool? force = null, bool? quiet = null, bool? verbose = null, String wcfgobj = null)
 		{
 			// TCL Syntax: close_wave_config [-force] [-quiet] [-verbose] [<wcfgobj>]
 			_tcl.Entry(_builder.close_wave_config(force, quiet, verbose, wcfgobj));
@@ -359,7 +359,7 @@ namespace Quokka.TCL.Vivado
 		/// wave window
 		/// </param>
 		/// <returns>The new wave config</returns>
-		public TTCL create_wave_config(bool? quiet = null, bool? verbose = null, string name = null)
+		public TTCL create_wave_config(bool? quiet = null, bool? verbose = null, String name = null)
 		{
 			// TCL Syntax: create_wave_config [-quiet] [-verbose] [<name>]
 			_tcl.Entry(_builder.create_wave_config(quiet, verbose, name));
@@ -391,7 +391,7 @@ namespace Quokka.TCL.Vivado
 		/// Defaults to current
 		/// </param>
 		/// <returns>Returns the new or current wave configuration object</returns>
-		public TTCL current_wave_config(bool? quiet = null, bool? verbose = null, string wcfgObj = null)
+		public TTCL current_wave_config(bool? quiet = null, bool? verbose = null, String wcfgObj = null)
 		{
 			// TCL Syntax: current_wave_config [-quiet] [-verbose] [<wcfgObj>]
 			_tcl.Entry(_builder.current_wave_config(quiet, verbose, wcfgObj));
@@ -424,13 +424,13 @@ namespace Quokka.TCL.Vivado
 		/// <param name="nocase">(Optional) only when regexp is used, performs a case insensitive match</param>
 		/// <param name="filter">
 		/// (Optional)
-		/// filters <patterns> according to the specified property￾matching expressions
+		/// filters <patterns> according to the specified property-matching expressions
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) the pattern strings to search for wave configuration names</param>
 		/// <returns>Wave configs that match the given options</returns>
-		public TTCL get_wave_configs(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
+		public TTCL get_wave_configs(bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_wave_configs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_wave_configs(regexp, nocase, filter, quiet, verbose, patterns));
@@ -450,7 +450,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="nocase">(Optional) only when regexp is used, performs a case insensitive match</param>
 		/// <param name="filter">
 		/// (Optional)
-		/// filters <patterns> according to the specified property￾matching expressions
+		/// filters <patterns> according to the specified property-matching expressions
 		/// </param>
 		/// <param name="recursive">
 		/// (Optional)
@@ -469,7 +469,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>a collection of found wave objects</returns>
-		public TTCL get_waves(TCLParameterList patterns, TCLParameterList of = null, bool? regexp = null, bool? nocase = null, string filter = null, bool? recursive = null, bool? r = null, bool? long_name = null, bool? short_name = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_waves(TCLParameterList patterns, TCLParameterList of = null, bool? regexp = null, bool? nocase = null, String filter = null, bool? recursive = null, bool? r = null, bool? long_name = null, bool? short_name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_waves [-of <args>] [-regexp] [-nocase] [-filter <arg>] [-recursive] [-r] [-long_name] [-short_name] [-quiet] [-verbose] <patterns>...
 			_tcl.Entry(_builder.get_waves(patterns, of, regexp, nocase, filter, recursive, r, long_name, short_name, quiet, verbose));
@@ -544,7 +544,7 @@ namespace Quokka.TCL.Vivado
 		/// configuration and corresponding wave window
 		/// </param>
 		/// <returns>The wave config opened</returns>
-		public TTCL open_wave_config(bool? quiet = null, bool? verbose = null, string filename = null)
+		public TTCL open_wave_config(bool? quiet = null, bool? verbose = null, String filename = null)
 		{
 			// TCL Syntax: open_wave_config [-quiet] [-verbose] [<filename>]
 			_tcl.Entry(_builder.open_wave_config(quiet, verbose, filename));
@@ -606,7 +606,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="filename">(Optional) Filename to save the specified or current wave configuration object</param>
 		/// <returns>The wave configuration object saved</returns>
-		public TTCL save_wave_config(TCLParameterList @object = null, bool? quiet = null, bool? verbose = null, string filename = null)
+		public TTCL save_wave_config(TCLParameterList @object = null, bool? quiet = null, bool? verbose = null, String filename = null)
 		{
 			// TCL Syntax: save_wave_config [-object <args>] [-quiet] [-verbose] [<filename>]
 			_tcl.Entry(_builder.save_wave_config(@object, quiet, verbose, filename));

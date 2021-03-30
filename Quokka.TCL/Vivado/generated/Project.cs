@@ -96,7 +96,7 @@ namespace Quokka.TCL.Vivado
 		/// specified if -scan_for_includes is not used.
 		/// </param>
 		/// <returns>list of file objects that were added</returns>
-		public TTCL add_files(string fileset = null, TCLParameterList of_objects = null, bool? norecurse = null, string copy_to = null, bool? force = null, bool? scan_for_includes = null, bool? quiet = null, bool? verbose = null, TCLParameterList files = null)
+		public TTCL add_files(String fileset = null, TCLParameterList of_objects = null, bool? norecurse = null, String copy_to = null, bool? force = null, bool? scan_for_includes = null, bool? quiet = null, bool? verbose = null, TCLParameterList files = null)
 		{
 			// TCL Syntax: add_files [-fileset <arg>] [-of_objects <args>] [-norecurse] [-copy_to <arg>] [-force] [-scan_for_includes] [-quiet] [-verbose] [<files>...]
 			_tcl.Entry(_builder.add_files(fileset, of_objects, norecurse, copy_to, force, scan_for_includes, quiet, verbose, files));
@@ -118,7 +118,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="peripheral">(Required) Peripheral object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL add_peripheral_interface(string interface_mode, string axi_type, string name, string peripheral, bool? quiet = null, bool? verbose = null)
+		public TTCL add_peripheral_interface(String interface_mode, String axi_type, String name, String peripheral, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: add_peripheral_interface -interface_mode <arg> -axi_type <arg> [-quiet] [-verbose] <name> <peripheral>
 			_tcl.Entry(_builder.add_peripheral_interface(interface_mode, axi_type, name, peripheral, quiet, verbose));
@@ -166,7 +166,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>sucess/failure status of applied action.</returns>
-		public TTCL apply_board_connection(string ip_intf, string diagram, string board_interface = null, bool? quiet = null, bool? verbose = null)
+		public TTCL apply_board_connection(String ip_intf, String diagram, String board_interface = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: apply_board_connection [-board_interface <arg>] -ip_intf <arg> -diagram <arg> [-quiet] [-verbose]
 			_tcl.Entry(_builder.apply_board_connection(ip_intf, diagram, board_interface, quiet, verbose));
@@ -226,7 +226,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="file">(Optional) Name of the archive file</param>
 		/// <returns>true</returns>
-		public TTCL archive_project(string temp_dir = null, bool? force = null, bool? exclude_run_results = null, bool? include_config_settings = null, bool? include_runs_in_progress = null, bool? include_local_ip_cache = null, bool? quiet = null, bool? verbose = null, string file = null)
+		public TTCL archive_project(String temp_dir = null, bool? force = null, bool? exclude_run_results = null, bool? include_config_settings = null, bool? include_runs_in_progress = null, bool? include_local_ip_cache = null, bool? quiet = null, bool? verbose = null, String file = null)
 		{
 			// TCL Syntax: archive_project [-temp_dir <arg>] [-force] [-exclude_run_results] [-include_config_settings] [-include_runs_in_progress] [-include_local_ip_cache] [-quiet] [-verbose] [<file>]
 			_tcl.Entry(_builder.archive_project(temp_dir, force, exclude_run_results, include_config_settings, include_runs_in_progress, include_local_ip_cache, quiet, verbose, file));
@@ -312,7 +312,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) Return the syntax check messages as a string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL check_syntax(string fileset = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL check_syntax(String fileset = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: check_syntax [-fileset <arg>] [-return_string] [-quiet] [-verbose]
 			_tcl.Entry(_builder.check_syntax(fileset, return_string, quiet, verbose));
@@ -408,7 +408,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="force">(Optional) Force generate product state regeneration</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL compile_c(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL compile_c(String objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: compile_c [-force] [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.compile_c(objects, force, quiet, verbose));
@@ -434,7 +434,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>IP file object that was added to the project</returns>
-		public TTCL copy_ip(string name, TCLParameterList objects, string dir = null, bool? quiet = null, bool? verbose = null)
+		public TTCL copy_ip(String name, TCLParameterList objects, String dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: copy_ip -name <arg> [-dir <arg>] [-quiet] [-verbose] <objects>...
 			_tcl.Entry(_builder.copy_ip(name, objects, dir, quiet, verbose));
@@ -475,7 +475,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="type">(Required) Type of the gadget</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL create_dashboard_gadget(string name, string type, bool? quiet = null, bool? verbose = null)
+		public TTCL create_dashboard_gadget(String name, String type, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_dashboard_gadget -name <arg> -type <arg> [-quiet] [-verbose]
 			_tcl.Entry(_builder.create_dashboard_gadget(name, type, quiet, verbose));
@@ -531,7 +531,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>new fileset object</returns>
-		public TTCL create_fileset(string name, bool? constrset = null, bool? simset = null, bool? blockset = null, string clone_properties = null, string define_from = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_fileset(String name, bool? constrset = null, bool? simset = null, bool? blockset = null, String clone_properties = null, String define_from = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_fileset [-constrset] [-simset] [-blockset] [-clone_properties <arg>] -define_from <arg> [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.create_fileset(name, constrset, simset, blockset, clone_properties, define_from, quiet, verbose));
@@ -545,7 +545,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Defines a synthesis and implementation run for a single IP object as specified by the get_ips
 		/// command, or for the specified IP core file (XCI) as specified by the get_files command.
-		/// The IP run is used to generate the synthesis design checkpoint file (DCP) to support the out-of￾context (OOC) IP flow, or to synthesize and implement an IP module in the OOC hierarchical
+		/// The IP run is used to generate the synthesis design checkpoint file (DCP) to support the out-of-context (OOC) IP flow, or to synthesize and implement an IP module in the OOC hierarchical
 		/// design flow.
 		/// Two runs are created: one for synthesis, and one for implementation. The runs are named after
 		/// the IP core and the run type, <ip_name>_synth_1 and <ip_name>_impl_1.
@@ -566,7 +566,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="force">(Optional) Force regeneration of products of the given IP.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL create_ip_run(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_ip_run(String objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_ip_run [-force] [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.create_ip_run(objects, force, quiet, verbose));
@@ -596,7 +596,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL create_peripheral(string vendor, string library, string name, string version, string dir = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_peripheral(String vendor, String library, String name, String version, String dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_peripheral [-dir <arg>] [-quiet] [-verbose] <vendor> <library> <name> <version>
 			_tcl.Entry(_builder.create_peripheral(vendor, library, name, version, dir, quiet, verbose));
@@ -645,8 +645,10 @@ namespace Quokka.TCL.Vivado
 		/// location. In the second and third lines, the location of -force is changed to show the flexibility
 		/// of argument placement.
 		/// create_project Proj1 C:/Designs/FPGA -force
-		/// -or￾create_project Proj1 -force C:/Designs/FPGA
-		/// -or￾create_project -force Proj1 C:/Designs/FPGA
+		/// -or-
+		/// create_project Proj1 -force C:/Designs/FPGA
+		/// -or-
+		/// create_project -force Proj1 C:/Designs/FPGA
 		/// Note: In all cases the first argument without a preceding keyword is interpreted as the <name> variable,
 		/// and the second argument without a preceding keyword is the <dir> variable.
 		/// The following example creates a project for the Manage IP flow in the specified directory:
@@ -670,7 +672,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="dir">(Optional) Directory where the project file is saved Default: .</param>
 		/// <returns>new project object</returns>
-		public TTCL create_project(string name, string part = null, bool? force = null, bool? in_memory = null, bool? ip = null, bool? rtl_kernel = null, bool? quiet = null, bool? verbose = null, string dir = null)
+		public TTCL create_project(String name, String part = null, bool? force = null, bool? in_memory = null, bool? ip = null, bool? rtl_kernel = null, bool? quiet = null, bool? verbose = null, String dir = null)
 		{
 			// TCL Syntax: create_project [-part <arg>] [-force] [-in_memory] [-ip] [-rtl_kernel] [-quiet] [-verbose] [<name>] [<dir>]
 			_tcl.Entry(_builder.create_project(name, part, force, in_memory, ip, rtl_kernel, quiet, verbose, dir));
@@ -709,7 +711,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>run object</returns>
-		public TTCL create_run(string flow, string name, string constrset = null, string parent_run = null, string part = null, string strategy = null, string report_strategy = null, string pr_config = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_run(String flow, String name, String constrset = null, String parent_run = null, String part = null, String strategy = null, String report_strategy = null, String pr_config = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_run [-constrset <arg>] [-parent_run <arg>] [-part <arg>] -flow <arg> [-strategy <arg>] [-report_strategy <arg>] [-pr_config <arg>] [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.create_run(flow, name, constrset, parent_run, part, strategy, report_strategy, pr_config, quiet, verbose));
@@ -746,7 +748,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>source file name that was created</returns>
-		public TTCL create_xps(string name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_xps(String name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_xps [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.create_xps(name, quiet, verbose));
@@ -845,7 +847,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="project">(Optional) Project to set as current</param>
 		/// <returns>current or newly set project object</returns>
-		public TTCL current_project(bool? quiet = null, bool? verbose = null, string project = null)
+		public TTCL current_project(bool? quiet = null, bool? verbose = null, String project = null)
 		{
 			// TCL Syntax: current_project [-quiet] [-verbose] [<project>]
 			_tcl.Entry(_builder.current_project(quiet, verbose, project));
@@ -881,7 +883,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="run">(Optional) Run to set as current; optional</param>
 		/// <returns>run object</returns>
-		public TTCL current_run(bool? synthesis = null, bool? implementation = null, bool? quiet = null, bool? verbose = null, string run = null)
+		public TTCL current_run(bool? synthesis = null, bool? implementation = null, bool? quiet = null, bool? verbose = null, String run = null)
 		{
 			// TCL Syntax: current_run [-synthesis] [-implementation] [-quiet] [-verbose] [<run>]
 			_tcl.Entry(_builder.current_run(synthesis, implementation, quiet, verbose, run));
@@ -901,7 +903,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="gadgets">(Required) Gadgets to delete</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_dashboard_gadgets(string gadgets, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_dashboard_gadgets(String gadgets, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_dashboard_gadgets [-quiet] [-verbose] <gadgets>
 			_tcl.Entry(_builder.delete_dashboard_gadgets(gadgets, quiet, verbose));
@@ -927,7 +929,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="merge">(Optional) Fileset to merge files from the deleted fileset into</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_fileset(string fileset, string merge = null, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_fileset(String fileset, String merge = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_fileset [-merge <arg>] [-quiet] [-verbose] <fileset>
 			_tcl.Entry(_builder.delete_fileset(fileset, merge, quiet, verbose));
@@ -964,7 +966,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="force">(Optional) Force the deletion of the block fileset and run.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_ip_run(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_ip_run(String objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_ip_run [-force] [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.delete_ip_run(objects, force, quiet, verbose));
@@ -991,7 +993,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="noclean_dir">(Optional) Do not remove all output files and directories from disk</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_runs(string runs, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_runs(String runs, bool? noclean_dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_runs [-noclean_dir] [-quiet] [-verbose] <runs>
 			_tcl.Entry(_builder.delete_runs(runs, noclean_dir, quiet, verbose));
@@ -1034,7 +1036,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL find_top(string fileset = null, TCLParameterList files = null, bool? return_file_paths = null, bool? quiet = null, bool? verbose = null)
+		public TTCL find_top(String fileset = null, TCLParameterList files = null, bool? return_file_paths = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: find_top [-fileset <arg>] [-files <args>] [-return_file_paths] [-quiet] [-verbose]
 			_tcl.Entry(_builder.find_top(fileset, files, return_file_paths, quiet, verbose));
@@ -1061,7 +1063,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="force">(Optional) Overwrite the existing IP in the repository.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL generate_peripheral(string peripheral, bool? driver = null, bool? example_design = null, bool? bfm_example_design = null, bool? debug_hw_example_design = null, bool? enable_interrupt = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL generate_peripheral(String peripheral, bool? driver = null, bool? example_design = null, bool? bfm_example_design = null, bool? debug_hw_example_design = null, bool? enable_interrupt = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_peripheral [-driver] [-example_design] [-bfm_example_design] [-debug_hw_example_design] [-enable_interrupt] [-force] [-quiet] [-verbose] <peripheral>
 			_tcl.Entry(_builder.generate_peripheral(peripheral, driver, example_design, bfm_example_design, debug_hw_example_design, enable_interrupt, force, quiet, verbose));
@@ -1113,7 +1115,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="force">(Optional) Force target data regeneration</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL generate_target(string name, string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL generate_target(String name, String objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_target [-force] [-quiet] [-verbose] <name> <objects>
 			_tcl.Entry(_builder.generate_target(name, objects, force, quiet, verbose));
@@ -1162,7 +1164,7 @@ namespace Quokka.TCL.Vivado
 		/// regexp is specified.
 		/// </param>
 		/// <returns>list of board_part objects</returns>
-		public TTCL get_board_parts(bool? regexp = null, bool? nocase = null, bool? latest_file_version = null, bool? latest_hw_revision = null, string filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
+		public TTCL get_board_parts(bool? regexp = null, bool? nocase = null, bool? latest_file_version = null, bool? latest_hw_revision = null, String filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_board_parts [-regexp] [-nocase] [-latest_file_version] [-latest_hw_revision] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_board_parts(regexp, nocase, latest_file_version, latest_hw_revision, filter, quiet, verbose, patterns));
@@ -1214,7 +1216,7 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>list of board objects</returns>
-		public TTCL get_boards(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
+		public TTCL get_boards(bool? regexp = null, bool? nocase = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_boards [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_boards(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -1303,7 +1305,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match file names against patterns Default: *</param>
 		/// <returns>list of file objects</returns>
-		public TTCL get_files(bool? regexp = null, bool? nocase = null, string filter = null, string compile_order = null, string used_in = null, bool? references = null, bool? all = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_files(bool? regexp = null, bool? nocase = null, String filter = null, String compile_order = null, String used_in = null, bool? references = null, bool? all = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_files [-regexp] [-nocase] [-filter <arg>] [-compile_order <arg>] [-used_in <arg>] [-references] [-all] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_files(regexp, nocase, filter, compile_order, used_in, references, all, of_objects, quiet, verbose, patterns));
@@ -1348,7 +1350,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match fileset names against patterns Default: *</param>
 		/// <returns>list of fileset objects</returns>
-		public TTCL get_filesets(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_filesets(bool? regexp = null, bool? nocase = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_filesets [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_filesets(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -1385,7 +1387,7 @@ namespace Quokka.TCL.Vivado
 		/// <cell name>'
 		/// </param>
 		/// <returns>list of IP upgrade results</returns>
-		public TTCL get_ip_upgrade_results(string srcset = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
+		public TTCL get_ip_upgrade_results(String srcset = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
 		{
 			// TCL Syntax: get_ip_upgrade_results [-srcset <arg>] [-quiet] [-verbose] [<objects>...]
 			_tcl.Entry(_builder.get_ip_upgrade_results(srcset, quiet, verbose, objects));
@@ -1425,7 +1427,7 @@ namespace Quokka.TCL.Vivado
 		/// is specified.
 		/// </param>
 		/// <returns>list of IP objects</returns>
-		public TTCL get_ips(bool? regexp = null, bool? nocase = null, bool? all = null, string filter = null, bool? exclude_bd_ips = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
+		public TTCL get_ips(bool? regexp = null, bool? nocase = null, bool? all = null, String filter = null, bool? exclude_bd_ips = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
 		{
 			// TCL Syntax: get_ips [-regexp] [-nocase] [-all] [-filter <arg>] [-exclude_bd_ips] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_ips(regexp, nocase, all, filter, exclude_bd_ips, of_objects, quiet, verbose, patterns));
@@ -1464,7 +1466,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match project names against patterns Default: *</param>
 		/// <returns>list of project objects</returns>
-		public TTCL get_projects(bool? regexp = null, bool? nocase = null, string filter = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_projects(bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_projects [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_projects(regexp, nocase, filter, quiet, verbose, patterns));
@@ -1500,7 +1502,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match run names against patterns Default: *</param>
 		/// <returns>list of run objects</returns>
-		public TTCL get_runs(bool? regexp = null, bool? nocase = null, string filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, string patterns = null)
+		public TTCL get_runs(bool? regexp = null, bool? nocase = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, String patterns = null)
 		{
 			// TCL Syntax: get_runs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_runs(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -1573,13 +1575,13 @@ namespace Quokka.TCL.Vivado
 		/// (Optional)
 		/// Display information about the message with the given
 		/// message. Every message delivered by the tool has a unique
-		/// global message ID that consists of an application sub￾system code and a message identifier. Example: -message
+		/// global message ID that consists of an application sub-system code and a message identifier. Example: -message
 		/// {Common 17-8}.
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="pattern_or_object">(Optional) Display help for topics that match the specified pattern Default: *</param>
-		public TTCL help(string category = null, bool? args = null, bool? syntax = null, bool? @long = null, string prop = null, string @class = null, string message = null, bool? quiet = null, bool? verbose = null, string pattern_or_object = null)
+		public TTCL help(String category = null, bool? args = null, bool? syntax = null, bool? @long = null, String prop = null, String @class = null, String message = null, bool? quiet = null, bool? verbose = null, String pattern_or_object = null)
 		{
 			// TCL Syntax: help [-category <arg>] [-args] [-syntax] [-long] [-prop <arg>] [-class <arg>] [-message <arg>] [-quiet] [-verbose] [<pattern_or_object>]
 			_tcl.Entry(_builder.help(category, args, syntax, @long, prop, @class, message, quiet, verbose, pattern_or_object));
@@ -1636,7 +1638,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="files">(Optional) Name of the files to import into fileset</param>
 		/// <returns>A list of file objects that were imported</returns>
-		public TTCL import_files(string fileset = null, bool? force = null, TCLParameterList of_objects = null, bool? norecurse = null, bool? flat = null, string relative_to = null, bool? quiet = null, bool? verbose = null, TCLParameterList files = null)
+		public TTCL import_files(String fileset = null, bool? force = null, TCLParameterList of_objects = null, bool? norecurse = null, bool? flat = null, String relative_to = null, bool? quiet = null, bool? verbose = null, TCLParameterList files = null)
 		{
 			// TCL Syntax: import_files [-fileset <arg>] [-force] [-of_objects <args>] [-norecurse] [-flat] [-relative_to <arg>] [-quiet] [-verbose] [<files>...]
 			_tcl.Entry(_builder.import_files(fileset, force, of_objects, norecurse, flat, relative_to, quiet, verbose, files));
@@ -1682,7 +1684,7 @@ namespace Quokka.TCL.Vivado
 		/// (and/or XCO) file name(s)
 		/// </param>
 		/// <returns>list of file objects that were added</returns>
-		public TTCL import_ip(string srcset = null, string name = null, bool? quiet = null, bool? verbose = null, string files = null)
+		public TTCL import_ip(String srcset = null, String name = null, bool? quiet = null, bool? verbose = null, String files = null)
 		{
 			// TCL Syntax: import_ip [-srcset <arg>] [-name <arg>] [-quiet] [-verbose] [<files>]
 			_tcl.Entry(_builder.import_ip(srcset, name, quiet, verbose, files));
@@ -1713,7 +1715,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of files object that were imported from the Synplify file</returns>
-		public TTCL import_synplify(string file, bool? copy_sources = null, bool? quiet = null, bool? verbose = null)
+		public TTCL import_synplify(String file, bool? copy_sources = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: import_synplify [-copy_sources] [-quiet] [-verbose] <file>
 			_tcl.Entry(_builder.import_synplify(file, copy_sources, quiet, verbose));
@@ -1747,7 +1749,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>true</returns>
-		public TTCL import_xise(string file, bool? copy_sources = null, bool? quiet = null, bool? verbose = null)
+		public TTCL import_xise(String file, bool? copy_sources = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: import_xise [-copy_sources] [-quiet] [-verbose] <file>
 			_tcl.Entry(_builder.import_xise(file, copy_sources, quiet, verbose));
@@ -1774,7 +1776,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of files object that were imported from the XST file</returns>
-		public TTCL import_xst(string file, bool? copy_sources = null, bool? quiet = null, bool? verbose = null)
+		public TTCL import_xst(String file, bool? copy_sources = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: import_xst [-copy_sources] [-quiet] [-verbose] <file>
 			_tcl.Entry(_builder.import_xst(file, copy_sources, quiet, verbose));
@@ -1878,7 +1880,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL launch_runs(TCLParameterList runs, string jobs = null, bool? scripts_only = null, string lsf = null, string sge = null, string cluster_configuration = null, string dir = null, string to_step = null, bool? next_step = null, TCLParameterList host = null, string remote_cmd = null, TCLParameterList email_to = null, bool? email_all = null, string pre_launch_script = null, string post_launch_script = null, string custom_script = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL launch_runs(TCLParameterList runs, Int32? jobs = null, bool? scripts_only = null, String lsf = null, String sge = null, String cluster_configuration = null, String dir = null, String to_step = null, bool? next_step = null, TCLParameterList host = null, String remote_cmd = null, TCLParameterList email_to = null, bool? email_all = null, String pre_launch_script = null, String post_launch_script = null, String custom_script = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: launch_runs [-jobs <arg>] [-scripts_only] [-lsf <arg>] [-sge <arg>] [-cluster_configuration <arg>] [-dir <arg>] [-to_step <arg>] [-next_step] [-host <args>] [-remote_cmd <arg>] [-email_to <args>] [-email_all] [-pre_launch_script <arg>] [-post_launch_script <arg>] [-custom_script <arg>] [-force] [-quiet] [-verbose] <runs>...
 			_tcl.Entry(_builder.launch_runs(runs, jobs, scripts_only, lsf, sge, cluster_configuration, dir, to_step, next_step, host, remote_cmd, email_to, email_all, pre_launch_script, post_launch_script, custom_script, force, quiet, verbose));
@@ -1905,7 +1907,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of targets</returns>
-		public TTCL list_targets(string files, bool? quiet = null, bool? verbose = null)
+		public TTCL list_targets(String files, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: list_targets [-quiet] [-verbose] <files>
 			_tcl.Entry(_builder.list_targets(files, quiet, verbose));
@@ -1960,7 +1962,7 @@ namespace Quokka.TCL.Vivado
 		/// Notice only placed cells and routed nets will be locked.
 		/// Default: *
 		/// </param>
-		public TTCL lock_design(string level = null, bool? unlock = null, bool? export = null, bool? quiet = null, bool? verbose = null, string cell = null)
+		public TTCL lock_design(String level = null, bool? unlock = null, bool? export = null, bool? quiet = null, bool? verbose = null, String cell = null)
 		{
 			// TCL Syntax: lock_design [-level <arg>] [-unlock] [-export] [-quiet] [-verbose] [<cell>]
 			_tcl.Entry(_builder.lock_design(level, unlock, export, quiet, verbose, cell));
@@ -2007,7 +2009,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="force">(Optional) Overwrite existing source(s)</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL make_wrapper(string files, bool? top = null, bool? testbench = null, bool? inst_template = null, string fileset = null, bool? import = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL make_wrapper(String files, bool? top = null, bool? testbench = null, bool? inst_template = null, String fileset = null, bool? import = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: make_wrapper [-top] [-testbench] [-inst_template] [-fileset <arg>] [-import] [-force] [-quiet] [-verbose] <files>
 			_tcl.Entry(_builder.make_wrapper(files, top, testbench, inst_template, fileset, import, force, quiet, verbose));
@@ -2034,7 +2036,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="dashboard">(Optional) Name of the dashboard to which the gadget is associated</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL move_dashboard_gadget(string name, string row, string col, string dashboard = null, bool? quiet = null, bool? verbose = null)
+		public TTCL move_dashboard_gadget(String name, String row, String col, String dashboard = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: move_dashboard_gadget -name <arg> -row <arg> -col <arg> [-dashboard <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.move_dashboard_gadget(name, row, col, dashboard, quiet, verbose));
@@ -2061,7 +2063,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="files">(Optional) Name of the files to be moved</param>
 		/// <returns>list of files that were moved</returns>
-		public TTCL move_files(string fileset = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList files = null)
+		public TTCL move_files(String fileset = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList files = null)
 		{
 			// TCL Syntax: move_files [-fileset <arg>] [-of_objects <args>] [-quiet] [-verbose] [<files>...]
 			_tcl.Entry(_builder.move_files(fileset, of_objects, quiet, verbose, files));
@@ -2105,7 +2107,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL open_checkpoint(string file, string part = null, bool? ignore_timing = null, bool? quiet = null, bool? verbose = null)
+		public TTCL open_checkpoint(String file, String part = null, bool? ignore_timing = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_checkpoint [-part <arg>] [-ignore_timing] [-quiet] [-verbose] <file>
 			_tcl.Entry(_builder.open_checkpoint(file, part, ignore_timing, quiet, verbose));
@@ -2133,7 +2135,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The Project that was opened</returns>
-		public TTCL open_example_project(TCLParameterList objects, string dir = null, bool? force = null, bool? in_process = null, bool? quiet = null, bool? verbose = null)
+		public TTCL open_example_project(TCLParameterList objects, String dir = null, bool? force = null, bool? in_process = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_example_project [-dir <arg>] [-force] [-in_process] [-quiet] [-verbose] <objects>...
 			_tcl.Entry(_builder.open_example_project(objects, dir, force, in_process, quiet, verbose));
@@ -2165,7 +2167,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>design object</returns>
-		public TTCL open_io_design(string name = null, string part = null, string constrset = null, bool? quiet = null, bool? verbose = null)
+		public TTCL open_io_design(String name = null, String part = null, String constrset = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_io_design [-name <arg>] [-part <arg>] [-constrset <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.open_io_design(name, part, constrset, quiet, verbose));
@@ -2200,7 +2202,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>opened project object</returns>
-		public TTCL open_project(string file, string part = null, bool? read_only = null, bool? quiet = null, bool? verbose = null)
+		public TTCL open_project(String file, String part = null, bool? read_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_project [-part <arg>] [-read_only] [-quiet] [-verbose] <file>
 			_tcl.Entry(_builder.open_project(file, part, read_only, quiet, verbose));
@@ -2239,7 +2241,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>design object</returns>
-		public TTCL open_run(string run, string name = null, string pr_config = null, bool? quiet = null, bool? verbose = null)
+		public TTCL open_run(String run, String name = null, String pr_config = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_run [-name <arg>] [-pr_config <arg>] [-quiet] [-verbose] <run>
 			_tcl.Entry(_builder.open_run(run, name, pr_config, quiet, verbose));
@@ -2251,7 +2253,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: refresh_design [-part <arg>] [-quiet] [-verbose]
 		///
-		/// Reloads the current design from the project data on the hard drive. This overwrites the in￾memory view of the design to undo any recent design changes.
+		/// Reloads the current design from the project data on the hard drive. This overwrites the in-memory view of the design to undo any recent design changes.
 		///
 		/// The following command reloads the current design from the project data on hard disk. This will
 		/// overwrite the unsaved changes of the design which are in memory.
@@ -2270,7 +2272,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="part">(Optional) Target part</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL refresh_design(string part = null, bool? quiet = null, bool? verbose = null)
+		public TTCL refresh_design(String part = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: refresh_design [-part <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.refresh_design(part, quiet, verbose));
@@ -2358,7 +2360,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of files that were removed</returns>
-		public TTCL remove_files(TCLParameterList files, string fileset = null, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_files(TCLParameterList files, String fileset = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_files [-fileset <arg>] [-quiet] [-verbose] <files>...
 			_tcl.Entry(_builder.remove_files(files, fileset, quiet, verbose));
@@ -2396,7 +2398,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="disable_unused">(Optional) Disables all files not associated with the TOP design unit</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL reorder_files(TCLParameterList files, string fileset = null, string before = null, string after = null, bool? front = null, bool? back = null, bool? auto = null, bool? disable_unused = null, bool? quiet = null, bool? verbose = null)
+		public TTCL reorder_files(TCLParameterList files, String fileset = null, String before = null, String after = null, bool? front = null, bool? back = null, bool? auto = null, bool? disable_unused = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reorder_files [-fileset <arg>] [-before <arg>] [-after <arg>] [-front] [-back] [-auto] [-disable_unused] [-quiet] [-verbose] <files>...
 			_tcl.Entry(_builder.reorder_files(files, fileset, before, after, front, back, auto, disable_unused, quiet, verbose));
@@ -2439,7 +2441,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="of_objects">(Optional) Get 'file' objects of these types: 'file fileset ip reconfig_module'.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_compile_order(string fileset = null, bool? missing_instances = null, bool? constraints = null, bool? sources = null, string used_in = null, string file = null, bool? append = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_compile_order(String fileset = null, bool? missing_instances = null, bool? constraints = null, bool? sources = null, String used_in = null, String file = null, bool? append = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_compile_order [-fileset <arg>] [-missing_instances] [-constraints] [-sources] [-used_in <arg>] [-file <arg>] [-append] [-of_objects <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.report_compile_order(fileset, missing_instances, constraints, sources, used_in, file, append, of_objects, quiet, verbose));
@@ -2485,7 +2487,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="from_step">(Optional) First Step to reset</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL reset_runs(string runs, bool? prev_step = null, string from_step = null, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_runs(String runs, bool? prev_step = null, String from_step = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_runs [-prev_step] [-from_step <arg>] [-quiet] [-verbose] <runs>
 			_tcl.Entry(_builder.reset_runs(runs, prev_step, from_step, quiet, verbose));
@@ -2510,7 +2512,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="objects">(Required) The objects for which data needs to be reset</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL reset_target(string name, string objects, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_target(String name, String objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_target [-quiet] [-verbose] <name> <objects>
 			_tcl.Entry(_builder.reset_target(name, objects, quiet, verbose));
@@ -2581,7 +2583,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="target_constrs_file">(Optional) Target constraints file for the new fileset</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL save_constraints_as(string name, string dir = null, string target_constrs_file = null, bool? quiet = null, bool? verbose = null)
+		public TTCL save_constraints_as(String name, String dir = null, String target_constrs_file = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: save_constraints_as [-dir <arg>] [-target_constrs_file <arg>] [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.save_constraints_as(name, dir, target_constrs_file, quiet, verbose));
@@ -2621,7 +2623,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="dir">(Optional) Directory where the project file is saved Default: .</param>
 		/// <returns>saved project object</returns>
-		public TTCL save_project_as(string name, bool? scan_for_includes = null, bool? exclude_run_results = null, bool? include_local_ip_cache = null, bool? force = null, bool? quiet = null, bool? verbose = null, string dir = null)
+		public TTCL save_project_as(String name, bool? scan_for_includes = null, bool? exclude_run_results = null, bool? include_local_ip_cache = null, bool? force = null, bool? quiet = null, bool? verbose = null, String dir = null)
 		{
 			// TCL Syntax: save_project_as [-scan_for_includes] [-exclude_run_results] [-include_local_ip_cache] [-force] [-quiet] [-verbose] <name> [<dir>]
 			_tcl.Entry(_builder.save_project_as(name, scan_for_includes, exclude_run_results, include_local_ip_cache, force, quiet, verbose, dir));
@@ -2657,7 +2659,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="part">(Required) Set current project's part to this part.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_part(string part, bool? quiet = null, bool? verbose = null)
+		public TTCL set_part(String part, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_part [-quiet] [-verbose] <part>
 			_tcl.Entry(_builder.set_part(part, quiet, verbose));
@@ -2701,7 +2703,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="value">(Optional) Speed grade used for timing analysis</param>
 		/// <returns>string result</returns>
-		public TTCL set_speed_grade(string temperature = null, bool? quiet = null, bool? verbose = null, string value = null)
+		public TTCL set_speed_grade(String temperature = null, bool? quiet = null, bool? verbose = null, String value = null)
 		{
 			// TCL Syntax: set_speed_grade [-temperature <arg>] [-quiet] [-verbose] [<value>]
 			_tcl.Entry(_builder.set_speed_grade(temperature, quiet, verbose, value));
@@ -2738,7 +2740,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="force">(Optional) Force regeneration of the netlist.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL synth_ip(string objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL synth_ip(String objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: synth_ip [-force] [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.synth_ip(objects, force, quiet, verbose));
@@ -2761,7 +2763,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="fileset">(Optional) Fileset to update based on a design graph</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL update_compile_order(bool? force_gui = null, string fileset = null, bool? quiet = null, bool? verbose = null)
+		public TTCL update_compile_order(bool? force_gui = null, String fileset = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: update_compile_order [-force_gui] [-fileset <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.update_compile_order(force_gui, fileset, quiet, verbose));
@@ -2801,13 +2803,13 @@ namespace Quokka.TCL.Vivado
 		/// ports are allowed).
 		/// </param>
 		/// <param name="from_file">(Optional) Name of the file containing the new sub-netlist.</param>
-		/// <param name="from_design">(Optional) Name of the an open netlist design containing the new sub￾netlist.</param>
-		/// <param name="from_cell">(Optional) Name of cell in the from_design which defines the new sub￾netlist.</param>
+		/// <param name="from_design">(Optional) Name of the an open netlist design containing the new sub-netlist.</param>
+		/// <param name="from_cell">(Optional) Name of cell in the from_design which defines the new sub-netlist.</param>
 		/// <param name="black_box">(Optional) Update the cell to a black_box.</param>
 		/// <param name="buffer_ports">(Optional) buffer all the ports of black box</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL update_design(TCLParameterList cells, bool? strict = null, string from_file = null, string from_design = null, string from_cell = null, bool? black_box = null, bool? buffer_ports = null, bool? quiet = null, bool? verbose = null)
+		public TTCL update_design(TCLParameterList cells, bool? strict = null, String from_file = null, String from_design = null, String from_cell = null, bool? black_box = null, bool? buffer_ports = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: update_design -cells <args> [-strict] [-from_file <arg>] [-from_design <arg>] [-from_cell <arg>] [-black_box] [-buffer_ports] [-quiet] [-verbose]
 			_tcl.Entry(_builder.update_design(cells, strict, from_file, from_design, from_cell, black_box, buffer_ports, quiet, verbose));
@@ -2947,7 +2949,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="timeout">(Optional) Maximum time to wait for the run to complete (in minutes) Default: -1</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL wait_on_run(string run, string timeout = null, bool? quiet = null, bool? verbose = null)
+		public TTCL wait_on_run(String run, String timeout = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: wait_on_run [-timeout <arg>] [-quiet] [-verbose] <run>
 			_tcl.Entry(_builder.wait_on_run(run, timeout, quiet, verbose));
@@ -2983,7 +2985,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>success/failure status of applied action.</returns>
-		public TTCL write_hwdef(string file, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_hwdef(String file, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_hwdef [-force] [-quiet] [-verbose] <file>
 			_tcl.Entry(_builder.write_hwdef(file, force, quiet, verbose));
@@ -3025,7 +3027,7 @@ namespace Quokka.TCL.Vivado
 		/// be created. Default: ./
 		/// </param>
 		/// <returns>IP TCL file</returns>
-		public TTCL write_ip_tcl(bool? force = null, bool? no_ip_version = null, string ip_name = null, bool? show_defaults = null, bool? multiple_files = null, bool? quiet = null, bool? verbose = null, string objects = null, TCLParameterList tcl_filename = null)
+		public TTCL write_ip_tcl(bool? force = null, bool? no_ip_version = null, String ip_name = null, bool? show_defaults = null, bool? multiple_files = null, bool? quiet = null, bool? verbose = null, String objects = null, TCLParameterList tcl_filename = null)
 		{
 			// TCL Syntax: write_ip_tcl [-force] [-no_ip_version] [-ip_name <arg>] [-show_defaults] [-multiple_files] [-quiet] [-verbose] [<objects>] [<tcl_filename>...]
 			_tcl.Entry(_builder.write_ip_tcl(force, no_ip_version, ip_name, show_defaults, multiple_files, quiet, verbose, objects, tcl_filename));
@@ -3046,7 +3048,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="peripheral">(Required) Peripheral object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL write_peripheral(string peripheral, bool? quiet = null, bool? verbose = null)
+		public TTCL write_peripheral(String peripheral, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_peripheral [-quiet] [-verbose] <peripheral>
 			_tcl.Entry(_builder.write_peripheral(peripheral, quiet, verbose));

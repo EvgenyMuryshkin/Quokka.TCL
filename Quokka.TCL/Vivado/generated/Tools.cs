@@ -86,7 +86,7 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
-		public TTCL iphys_opt_design(TCLParameterList cluster, TCLParameterList place_cell, bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, string net = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, string cell = null, bool? packing = null, bool? unpacking = null, string port = null, bool? critical_pin_opt = null, bool? equ_drivers_opt = null, bool? skipped_optimization = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? auto_pipeline = null, bool? quiet = null, bool? verbose = null)
+		public TTCL iphys_opt_design(TCLParameterList cluster, TCLParameterList place_cell, bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, String net = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, String cell = null, bool? packing = null, bool? unpacking = null, String port = null, bool? critical_pin_opt = null, bool? equ_drivers_opt = null, bool? skipped_optimization = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? auto_pipeline = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: iphys_opt_design [-fanout_opt] [-critical_cell_opt] [-placement_opt] [-rewire] [-net <arg>] -cluster <args> -place_cell <args> [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-shift_register_opt] [-cell <arg>] [-packing] [-unpacking] [-port <arg>] [-critical_pin_opt] [-equ_drivers_opt] [-skipped_optimization] [-insert_negative_edge_ffs] [-hold_fix] [-slr_crossing_opt] [-auto_pipeline] [-quiet] [-verbose]
 			_tcl.Entry(_builder.iphys_opt_design(cluster, place_cell, fanout_opt, critical_cell_opt, placement_opt, rewire, net, dsp_register_opt, bram_register_opt, uram_register_opt, shift_register_opt, cell, packing, unpacking, port, critical_pin_opt, equ_drivers_opt, skipped_optimization, insert_negative_edge_ffs, hold_fix, slr_crossing_opt, auto_pipeline, quiet, verbose));
@@ -137,7 +137,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>design object</returns>
-		public TTCL link_design(string name = null, string part = null, string constrset = null, string top = null, string mode = null, string pr_config = null, TCLParameterList reconfig_partitions = null, TCLParameterList partitions = null, bool? ignore_timing = null, bool? quiet = null, bool? verbose = null)
+		public TTCL link_design(String name = null, String part = null, String constrset = null, String top = null, link_design_mode? mode = null, String pr_config = null, TCLParameterList reconfig_partitions = null, TCLParameterList partitions = null, bool? ignore_timing = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: link_design [-name <arg>] [-part <arg>] [-constrset <arg>] [-top <arg>] [-mode <arg>] [-pr_config <arg>] [-reconfig_partitions <args>] [-partitions <args>] [-ignore_timing] [-quiet] [-verbose]
 			_tcl.Entry(_builder.link_design(name, part, constrset, top, mode, pr_config, reconfig_partitions, partitions, ignore_timing, quiet, verbose));
@@ -312,7 +312,7 @@ namespace Quokka.TCL.Vivado
 		/// Suspend message limits during command execution
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// </param>
-		public TTCL opt_design(bool? retarget = null, bool? propconst = null, bool? sweep = null, bool? bram_power_opt = null, bool? remap = null, bool? aggressive_remap = null, bool? resynth_area = null, bool? resynth_seq_area = null, string directive = null, bool? muxf_remap = null, string hier_fanout_limit = null, bool? bufg_opt = null, bool? shift_register_opt = null, bool? dsp_register_opt = null, string srl_remap_modes = null, bool? control_set_merge = null, bool? merge_equivalent_drivers = null, bool? carry_remap = null, bool? debug_log = null, bool? property_opt_only = null, bool? quiet = null, bool? verbose = null)
+		public TTCL opt_design(bool? retarget = null, bool? propconst = null, bool? sweep = null, bool? bram_power_opt = null, bool? remap = null, bool? aggressive_remap = null, bool? resynth_area = null, bool? resynth_seq_area = null, String directive = null, bool? muxf_remap = null, String hier_fanout_limit = null, bool? bufg_opt = null, bool? shift_register_opt = null, bool? dsp_register_opt = null, String srl_remap_modes = null, bool? control_set_merge = null, bool? merge_equivalent_drivers = null, bool? carry_remap = null, bool? debug_log = null, bool? property_opt_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: opt_design [-retarget] [-propconst] [-sweep] [-bram_power_opt] [-remap] [-aggressive_remap] [-resynth_area] [-resynth_seq_area] [-directive <arg>] [-muxf_remap] [-hier_fanout_limit <arg>] [-bufg_opt] [-shift_register_opt] [-dsp_register_opt] [-srl_remap_modes <arg>] [-control_set_merge] [-merge_equivalent_drivers] [-carry_remap] [-debug_log] [-property_opt_only] [-quiet] [-verbose]
 			_tcl.Entry(_builder.opt_design(retarget, propconst, sweep, bram_power_opt, remap, aggressive_remap, resynth_area, resynth_seq_area, directive, muxf_remap, hier_fanout_limit, bufg_opt, shift_register_opt, dsp_register_opt, srl_remap_modes, control_set_merge, merge_equivalent_drivers, carry_remap, debug_log, property_opt_only, quiet, verbose));
@@ -330,7 +330,7 @@ namespace Quokka.TCL.Vivado
 		/// This optional command can be run for post-place or post-route optimizations.
 		/// RECOMMENDED: Because physical optimization requires timing data that is only available after
 		/// placement, the command cannot be run prior to placement. However, the write_iphys_opt_tcl and
-		/// read_iphys_opt_tcl commands let you write out the physical optimizations performed on the post￾placed design, and then apply those optimizations to the design netlist prior to placement. Refer to the
+		/// read_iphys_opt_tcl commands let you write out the physical optimizations performed on the post-placed design, and then apply those optimizations to the design netlist prior to placement. Refer to the
 		/// Vivado Design Suite User Guide: Implementation (UG904) for more information on interactive physical
 		/// optimization.
 		/// Post-place phys_opt_design performs the following optimizations by default:
@@ -427,7 +427,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL phys_opt_design(bool? fanout_opt = null, bool? placement_opt = null, bool? routing_opt = null, bool? slr_crossing_opt = null, bool? rewire = null, bool? insert_negative_edge_ffs = null, bool? critical_cell_opt = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? bram_enable_opt = null, bool? shift_register_opt = null, bool? hold_fix = null, bool? aggressive_hold_fix = null, bool? retime = null, TCLParameterList force_replication_on_nets = null, string directive = null, bool? critical_pin_opt = null, bool? clock_opt = null, TCLParameterList path_groups = null, bool? tns_cleanup = null, bool? sll_reg_hold_fix = null, bool? quiet = null, bool? verbose = null)
+		public TTCL phys_opt_design(bool? fanout_opt = null, bool? placement_opt = null, bool? routing_opt = null, bool? slr_crossing_opt = null, bool? rewire = null, bool? insert_negative_edge_ffs = null, bool? critical_cell_opt = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? bram_enable_opt = null, bool? shift_register_opt = null, bool? hold_fix = null, bool? aggressive_hold_fix = null, bool? retime = null, TCLParameterList force_replication_on_nets = null, String directive = null, bool? critical_pin_opt = null, bool? clock_opt = null, TCLParameterList path_groups = null, bool? tns_cleanup = null, bool? sll_reg_hold_fix = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: phys_opt_design [-fanout_opt] [-placement_opt] [-routing_opt] [-slr_crossing_opt] [-rewire] [-insert_negative_edge_ffs] [-critical_cell_opt] [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-bram_enable_opt] [-shift_register_opt] [-hold_fix] [-aggressive_hold_fix] [-retime] [-force_replication_on_nets <args>] [-directive <arg>] [-critical_pin_opt] [-clock_opt] [-path_groups <args>] [-tns_cleanup] [-sll_reg_hold_fix] [-quiet] [-verbose]
 			_tcl.Entry(_builder.phys_opt_design(fanout_opt, placement_opt, routing_opt, slr_crossing_opt, rewire, insert_negative_edge_ffs, critical_cell_opt, dsp_register_opt, bram_register_opt, uram_register_opt, bram_enable_opt, shift_register_opt, hold_fix, aggressive_hold_fix, retime, force_replication_on_nets, directive, critical_pin_opt, clock_opt, path_groups, tns_cleanup, sll_reg_hold_fix, quiet, verbose));
@@ -498,7 +498,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="no_bufg_opt">(Optional) Disable global buffer insertion during placement</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL place_design(string directive = null, bool? no_timing_driven = null, bool? timing_summary = null, bool? unplace = null, bool? post_place_opt = null, bool? no_psip = null, bool? no_bufg_opt = null, bool? quiet = null, bool? verbose = null)
+		public TTCL place_design(String directive = null, bool? no_timing_driven = null, bool? timing_summary = null, bool? unplace = null, bool? post_place_opt = null, bool? no_psip = null, bool? no_bufg_opt = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: place_design [-directive <arg>] [-no_timing_driven] [-timing_summary] [-unplace] [-post_place_opt] [-no_psip] [-no_bufg_opt] [-quiet] [-verbose]
 			_tcl.Entry(_builder.place_design(directive, no_timing_driven, timing_summary, unplace, post_place_opt, no_psip, no_bufg_opt, quiet, verbose));
@@ -557,7 +557,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="slr_crossing_opt">(Optional) Optimize slr crossing nets</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL read_iphys_opt_tcl(string input, bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, bool? auto_pipeline = null, bool? critical_pin_opt = null, bool? equ_drivers_opt = null, bool? include_skipped_optimizations = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? quiet = null, bool? verbose = null)
+		public TTCL read_iphys_opt_tcl(String input, bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, bool? auto_pipeline = null, bool? critical_pin_opt = null, bool? equ_drivers_opt = null, bool? include_skipped_optimizations = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_iphys_opt_tcl [-fanout_opt] [-critical_cell_opt] [-placement_opt] [-rewire] [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-shift_register_opt] [-auto_pipeline] [-critical_pin_opt] [-equ_drivers_opt] [-include_skipped_optimizations] [-insert_negative_edge_ffs] [-hold_fix] [-slr_crossing_opt] [-quiet] [-verbose] [<input>]
 			_tcl.Entry(_builder.read_iphys_opt_tcl(input, fanout_opt, critical_cell_opt, placement_opt, rewire, dsp_register_opt, bram_register_opt, uram_register_opt, shift_register_opt, auto_pipeline, critical_pin_opt, equ_drivers_opt, include_skipped_optimizations, insert_negative_edge_ffs, hold_fix, slr_crossing_opt, quiet, verbose));
@@ -602,7 +602,8 @@ namespace Quokka.TCL.Vivado
 		/// After registering the procedure as a Tcl command, the Vivado help system will return this text
 		/// when queried with:
 		/// tasknm -help
-		/// -or￾help tasknm
+		/// -or-
+		/// help tasknm
 		/// This command returns the name of the registered proc.
 		///
 		/// See ug835-vivado-tcl-commands.pdf, page 1226
@@ -616,7 +617,7 @@ namespace Quokka.TCL.Vivado
 		/// proc using the root name proc (no namespaces).
 		/// </param>
 		/// <returns>Nothing</returns>
-		public TTCL register_proc(string proc, bool? quiet = null, bool? verbose = null, string tasknm = null)
+		public TTCL register_proc(String proc, bool? quiet = null, bool? verbose = null, String tasknm = null)
 		{
 			// TCL Syntax: register_proc [-quiet] [-verbose] <proc> [<tasknm>]
 			_tcl.Entry(_builder.register_proc(proc, quiet, verbose, tasknm));
@@ -637,7 +638,7 @@ namespace Quokka.TCL.Vivado
 		/// Fmax. This reports a theoretical upper limit to the frequency performance of the design.
 		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
 		/// The analysis is typically run on the un-placed synthesized netlist where the logical netlist
-		/// structure determines the performance. The report can be run on the top-level design, or on out￾of-context (OOC) sub-modules. This report confirms whether the design frequency can be
+		/// structure determines the performance. The report can be run on the top-level design, or on out-of-context (OOC) sub-modules. This report confirms whether the design frequency can be
 		/// increased, as well as how many pipeline registers must be added to the design to achieve the
 		/// Fmax improvement.
 		/// Note: By default the report is written to the Tcl console or STD output. However, the results can also be
@@ -671,7 +672,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="report_loops">(Optional) Report loop information as well</param>
 		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
-		public TTCL report_pipeline_analysis(TCLParameterList cells = null, bool? verbose = null, TCLParameterList clocks = null, string file = null, bool? include_paths_to_pipeline = null, bool? append = null, string max_added_latency = null, bool? report_loops = null, bool? return_string = null, bool? quiet = null)
+		public TTCL report_pipeline_analysis(TCLParameterList cells = null, bool? verbose = null, TCLParameterList clocks = null, String file = null, bool? include_paths_to_pipeline = null, bool? append = null, String max_added_latency = null, bool? report_loops = null, bool? return_string = null, bool? quiet = null)
 		{
 			// TCL Syntax: report_pipeline_analysis [-cells <args>] [-verbose] [-clocks <args>] [-file <arg>] [-include_paths_to_pipeline] [-append] [-max_added_latency <arg>] [-report_loops] [-return_string] [-quiet]
 			_tcl.Entry(_builder.report_pipeline_analysis(cells, verbose, clocks, file, include_paths_to_pipeline, append, max_added_latency, report_loops, return_string, quiet));
@@ -769,7 +770,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL route_design(string max_delay, string min_delay, bool? unroute = null, bool? release_memory = null, TCLParameterList nets = null, bool? physical_nets = null, string pins = null, string directive = null, bool? tns_cleanup = null, bool? no_timing_driven = null, bool? preserve = null, bool? delay = null, bool? auto_delay = null, bool? timing_summary = null, bool? finalize = null, bool? ultrathreads = null, bool? eco = null, bool? quiet = null, bool? verbose = null)
+		public TTCL route_design(String max_delay, String min_delay, bool? unroute = null, bool? release_memory = null, TCLParameterList nets = null, bool? physical_nets = null, String pins = null, String directive = null, bool? tns_cleanup = null, bool? no_timing_driven = null, bool? preserve = null, bool? delay = null, bool? auto_delay = null, bool? timing_summary = null, bool? finalize = null, bool? ultrathreads = null, bool? eco = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: route_design [-unroute] [-release_memory] [-nets <args>] [-physical_nets] [-pins <arg>] [-directive <arg>] [-tns_cleanup] [-no_timing_driven] [-preserve] [-delay] [-auto_delay] -max_delay <arg> -min_delay <arg> [-timing_summary] [-finalize] [-ultrathreads] [-eco] [-quiet] [-verbose]
 			_tcl.Entry(_builder.route_design(max_delay, min_delay, unroute, release_memory, nets, physical_nets, pins, directive, tns_cleanup, no_timing_driven, preserve, delay, auto_delay, timing_summary, finalize, ultrathreads, eco, quiet, verbose));
@@ -783,8 +784,8 @@ namespace Quokka.TCL.Vivado
 		///
 		/// Directly launches the Vivado synthesis engine to compile and synthesize a design in either
 		/// Project Mode or Non-Project Mode in the Vivado Design Suite. Refer to the Vivado Design Suite
-		/// User Guide: Design Flows Overview (UG892) for a complete description of Project Mode and Non￾Project Mode.
-		/// Vivado synthesis can be launched directly with the synth_design command in the Non￾Project Mode of the Vivado Design Suite.
+		/// User Guide: Design Flows Overview (UG892) for a complete description of Project Mode and Non-Project Mode.
+		/// Vivado synthesis can be launched directly with the synth_design command in the Non-Project Mode of the Vivado Design Suite.
 		/// TIP: The synth_design can be multi-threaded to speed the process. Refer to the set_param
 		/// command for more information on setting the general.maxThreads parameter.
 		/// In Project Mode, synthesis should be launched from an existing synthesis run created with the
@@ -904,7 +905,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="control_set_opt_threshold">
 		/// (Optional)
 		/// Threshold for synchronous control set optimization to lower
-		/// number of control sets. Valid values are 'auto' and non￾negative integers. The higher the number, the more control
+		/// number of control sets. Valid values are 'auto' and non-negative integers. The higher the number, the more control
 		/// set optimization will be performed and fewer control sets
 		/// will result. To disable control set optimization completely,
 		/// set to 0. Default: auto
@@ -969,7 +970,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>design object</returns>
-		public TTCL synth_design(string name = null, string part = null, string constrset = null, string top = null, TCLParameterList include_dirs = null, TCLParameterList generic = null, TCLParameterList verilog_define = null, string flatten_hierarchy = null, string gated_clock_conversion = null, string directive = null, bool? rtl = null, string bufg = null, bool? no_lc = null, string shreg_min_size = null, string mode = null, string fsm_extraction = null, bool? rtl_skip_mlo = null, bool? rtl_skip_ip = null, bool? rtl_skip_constraints = null, string srl_style = null, bool? keep_equivalent_registers = null, string resource_sharing = null, string cascade_dsp = null, string control_set_opt_threshold = null, string incremental = null, string max_bram = null, string max_uram = null, string max_dsp = null, string max_bram_cascade_height = null, string max_uram_cascade_height = null, bool? retiming = null, bool? no_srlextract = null, bool? assert = null, bool? no_timing_driven = null, bool? sfcu = null, bool? debug_log = null, bool? quiet = null, bool? verbose = null)
+		public TTCL synth_design(String name = null, String part = null, String constrset = null, String top = null, TCLParameterList include_dirs = null, TCLParameterList generic = null, TCLParameterList verilog_define = null, synth_design_flatten_hierarchy? flatten_hierarchy = null, synth_design_gated_clock_conversion? gated_clock_conversion = null, synth_design_directive? directive = null, bool? rtl = null, Int32? bufg = null, bool? no_lc = null, String shreg_min_size = null, synth_design_mode? mode = null, synth_design_fsm_extraction? fsm_extraction = null, bool? rtl_skip_mlo = null, bool? rtl_skip_ip = null, bool? rtl_skip_constraints = null, synth_design_srl_style? srl_style = null, bool? keep_equivalent_registers = null, String resource_sharing = null, String cascade_dsp = null, Int32? control_set_opt_threshold = null, String incremental = null, Int32? max_bram = null, Int32? max_uram = null, Int32? max_dsp = null, Int32? max_bram_cascade_height = null, Int32? max_uram_cascade_height = null, bool? retiming = null, bool? no_srlextract = null, bool? assert = null, bool? no_timing_driven = null, bool? sfcu = null, bool? debug_log = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: synth_design [-name <arg>] [-part <arg>] [-constrset <arg>] [-top <arg>] [-include_dirs <args>] [-generic <args>] [-verilog_define <args>] [-flatten_hierarchy <arg>] [-gated_clock_conversion <arg>] [-directive <arg>] [-rtl] [-bufg <arg>] [-no_lc] [-shreg_min_size <arg>] [-mode <arg>] [-fsm_extraction <arg>] [-rtl_skip_mlo] [-rtl_skip_ip] [-rtl_skip_constraints] [-srl_style <arg>] [-keep_equivalent_registers] [-resource_sharing <arg>] [-cascade_dsp <arg>] [-control_set_opt_threshold <arg>] [-incremental <arg>] [-max_bram <arg>] [-max_uram <arg>] [-max_dsp <arg>] [-max_bram_cascade_height <arg>] [-max_uram_cascade_height <arg>] [-retiming] [-no_srlextract] [-assert] [-no_timing_driven] [-sfcu] [-debug_log] [-quiet] [-verbose]
 			_tcl.Entry(_builder.synth_design(name, part, constrset, top, include_dirs, generic, verilog_define, flatten_hierarchy, gated_clock_conversion, directive, rtl, bufg, no_lc, shreg_min_size, mode, fsm_extraction, rtl_skip_mlo, rtl_skip_ip, rtl_skip_constraints, srl_style, keep_equivalent_registers, resource_sharing, cascade_dsp, control_set_opt_threshold, incremental, max_bram, max_uram, max_dsp, max_bram_cascade_height, max_uram_cascade_height, retiming, no_srlextract, assert, no_timing_driven, sfcu, debug_log, quiet, verbose));
@@ -989,7 +990,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Nothing</returns>
-		public TTCL unregister_proc(string tasknm, bool? quiet = null, bool? verbose = null)
+		public TTCL unregister_proc(String tasknm, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: unregister_proc [-quiet] [-verbose] <tasknm>
 			_tcl.Entry(_builder.unregister_proc(tasknm, quiet, verbose));
@@ -1004,7 +1005,7 @@ namespace Quokka.TCL.Vivado
 		/// The update_clock_routing command is an advanced command used for manually updating
 		/// the routing structures of all global clocks in designs targeting the UltraScale architecture. The
 		/// command operates on all global clocks in a design, not individual clocks.
-		/// Due to a more flexible clocking architecture, UltraScale and UltraScale+ designs require a two￾step process for routing global clocks. First the Vivado placer assigns the routing resources
+		/// Due to a more flexible clocking architecture, UltraScale and UltraScale+ designs require a two-step process for routing global clocks. First the Vivado placer assigns the routing resources
 		/// required to route the global clocks from the clock source to the destination clock regions
 		/// (CLOCK_ROOT or USER_CLOCK_ROOT). Next the Vivado router fills in the routing gaps on the
 		/// clock nets. In between these two steps the resulting structures are called gap trees: each global
@@ -1111,7 +1112,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="binary">(Optional) write out in binary format</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL write_iphys_opt_tcl(string output, bool? place = null, bool? binary = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_iphys_opt_tcl(String output, bool? place = null, bool? binary = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_iphys_opt_tcl [-place] [-binary] [-quiet] [-verbose] [<output>]
 			_tcl.Entry(_builder.write_iphys_opt_tcl(output, place, binary, quiet, verbose));

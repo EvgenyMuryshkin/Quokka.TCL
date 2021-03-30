@@ -34,7 +34,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="list">(Required) list of config params which need to be configured</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL config_implementation(string list, bool? quiet = null, bool? verbose = null)
+		public TTCL config_implementation(String list, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: config_implementation [-quiet] [-verbose] [<list>]
 			_tcl.Entry(_builder.config_implementation(list, quiet, verbose));

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Quokka.TCL.Tools
 {
@@ -22,6 +23,19 @@ namespace Quokka.TCL.Tools
             builder.AppendLine(commandBuilder.ToString());
         }
 
+        string EnumValue<T>(T value)
+        {
+            var enumType = typeof(T);
+            if (enumType.IsConstructedGenericType)
+                enumType = enumType.GetGenericArguments()[0];
+            var member = enumType.GetMember(value.ToString()).Single();
+            var tclWrite = member.GetCustomAttribute<TCLWriteAttribute>();
+            if (tclWrite != null)
+                return tclWrite.Value;
+
+            return value.ToString();
+        }
+
         public SimpleTCLCommand OptionalFlag(string name, bool? value)
         {
             if (value.HasValue && value.Value)
@@ -32,7 +46,7 @@ namespace Quokka.TCL.Tools
             return this;
         }
 
-        public SimpleTCLCommand OptionalString(string value)
+        public SimpleTCLCommand OptionalString(string name, string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
@@ -42,7 +56,7 @@ namespace Quokka.TCL.Tools
             return this;
         }
 
-        public SimpleTCLCommand OptionalStringList(TCLParameterList value)
+        public SimpleTCLCommand OptionalStringList(string name, TCLParameterList value)
         {
             if (value != null && value.Params.Any(v => !string.IsNullOrWhiteSpace(v)))
             {
@@ -58,6 +72,26 @@ namespace Quokka.TCL.Tools
             if (!string.IsNullOrWhiteSpace(value))
             {
                 _parameters.Add(new TCLCommandNamedStringParameter(name, value));
+            }
+
+            return this;
+        }
+
+        public SimpleTCLCommand OptionalNamedInt32(string name, int? value)
+        {
+            if (value.HasValue)
+            {
+                _parameters.Add(new TCLCommandNamedInt32Parameter(name, value.Value));
+            }
+
+            return this;
+        }
+
+        public SimpleTCLCommand OptionalNamedEnum<T>(string name, T? value) where T : struct
+        {
+            if (value.HasValue)
+            {
+                _parameters.Add(new TCLCommandNamedStringParameter(name, EnumValue(value)));
             }
 
             return this;
@@ -83,20 +117,34 @@ namespace Quokka.TCL.Tools
             return this;
         }
 
-        public SimpleTCLCommand RequiredString(string value)
+        public SimpleTCLCommand RequiredString(string name, string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentNullException($"Parameter is required");
+                throw new ArgumentNullException($"Parameter is required but value was not provided: {name}");
 
             _parameters.Add(new TCLCommandStringParameter(value));
 
             return this;
         }
 
-        public SimpleTCLCommand RequiredStringList(TCLParameterList value)
+        public SimpleTCLCommand RequiredInt32(string name, int value)
+        {
+            _parameters.Add(new TCLCommandInt32Parameter(value));
+
+            return this;
+        }
+
+        public SimpleTCLCommand RequiredEnum<T>(string name, T value) where T : struct
+        {
+            _parameters.Add(new TCLCommandStringParameter(EnumValue(value)));
+
+            return this;
+        }
+
+        public SimpleTCLCommand RequiredStringList(string name, TCLParameterList value)
         {
             if (value == null || !value.Params.Any() || value.Params.All(v => string.IsNullOrWhiteSpace(v)))
-                throw new ArgumentException($"Requires list of values");
+                throw new ArgumentException($"Requires list of values: {name}");
 
             _parameters.Add(new TCLCommandStringListParameter(value));
 
@@ -109,6 +157,13 @@ namespace Quokka.TCL.Tools
                 throw new ArgumentNullException($"Parameter '{name}' is required");
 
             _parameters.Add(new TCLCommandNamedStringParameter(name, value));
+
+            return this;
+        }
+
+        public SimpleTCLCommand RequiredNamedEnum<T>(string name, T value) where T : struct
+        {
+            _parameters.Add(new TCLCommandNamedStringParameter(name, EnumValue(value)));
 
             return this;
         }

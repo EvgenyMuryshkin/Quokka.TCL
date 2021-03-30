@@ -70,7 +70,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL connect_net(TCLParameterList objects, bool? hierarchical = null, string basename = null, TCLParameterList net = null, TCLParameterList net_object_list = null, TCLParameterList dict = null, bool? quiet = null, bool? verbose = null)
+		public TTCL connect_net(TCLParameterList objects, bool? hierarchical = null, String basename = null, TCLParameterList net = null, TCLParameterList net_object_list = null, TCLParameterList dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: connect_net [-hierarchical] [-basename <arg>] [-net <args>] [-objects <args>] [-net_object_list <args>] [-dict <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.connect_net(objects, hierarchical, basename, net, net_object_list, dict, quiet, verbose));
@@ -111,7 +111,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="black_box">(Optional) Create black box instance</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL create_cell(string reference, TCLParameterList cells, bool? black_box = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_cell(String reference, TCLParameterList cells, bool? black_box = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_cell -reference <arg> [-black_box] [-quiet] [-verbose] <cells>...
 			_tcl.Entry(_builder.create_cell(reference, cells, black_box, quiet, verbose));
@@ -148,7 +148,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="to">(Optional) Ending bus index</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL create_net(TCLParameterList nets, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_net(TCLParameterList nets, String from = null, String to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_net [-from <arg>] [-to <arg>] [-quiet] [-verbose] <nets>...
 			_tcl.Entry(_builder.create_net(nets, from, to, quiet, verbose));
@@ -193,7 +193,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="to">(Optional) Ending bus index</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL create_pin(string direction, TCLParameterList pins, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_pin(create_pin_direction direction, TCLParameterList pins, String from = null, String to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_pin [-from <arg>] [-to <arg>] -direction <arg> [-quiet] [-verbose] <pins>...
 			_tcl.Entry(_builder.create_pin(direction, pins, from, to, quiet, verbose));
@@ -235,7 +235,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="pinlist">(Optional) List of pin and port objects to disconnect.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL disconnect_net(bool? prune = null, string net = null, TCLParameterList objects = null, TCLParameterList pinlist = null, bool? quiet = null, bool? verbose = null)
+		public TTCL disconnect_net(bool? prune = null, String net = null, TCLParameterList objects = null, TCLParameterList pinlist = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: disconnect_net [-prune] [-net <arg>] [-objects <args>] [-pinlist <args>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.disconnect_net(prune, net, objects, pinlist, quiet, verbose));
@@ -289,7 +289,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>net_delays</returns>
-		public TTCL get_net_delays(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, string patterns = null, string filter = null, TCLParameterList to = null, bool? interconnect_only = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_net_delays(TCLParameterList of_objects, bool? regexp = null, bool? nocase = null, String patterns = null, String filter = null, TCLParameterList to = null, bool? interconnect_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_net_delays -of_objects <args> [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-to <args>] [-interconnect_only] [-quiet] [-verbose]
 			_tcl.Entry(_builder.get_net_delays(of_objects, regexp, nocase, patterns, filter, to, interconnect_only, quiet, verbose));
@@ -423,7 +423,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cell">(Required) Cell to rename</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL rename_cell(string to, TCLParameterList cell, bool? quiet = null, bool? verbose = null)
+		public TTCL rename_cell(String to, TCLParameterList cell, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: rename_cell -to <arg> [-quiet] [-verbose] <cell>...
 			_tcl.Entry(_builder.rename_cell(to, cell, quiet, verbose));
@@ -461,7 +461,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="net">(Required) Net to rename</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL rename_net(string to, TCLParameterList net, bool? quiet = null, bool? verbose = null)
+		public TTCL rename_net(String to, TCLParameterList net, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: rename_net -to <arg> [-quiet] [-verbose] <net>...
 			_tcl.Entry(_builder.rename_net(to, net, quiet, verbose));
@@ -507,7 +507,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="pin">(Required) Pin to rename</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL rename_pin(string to, TCLParameterList pin, bool? quiet = null, bool? verbose = null)
+		public TTCL rename_pin(String to, TCLParameterList pin, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: rename_pin -to <arg> [-quiet] [-verbose] <pin>...
 			_tcl.Entry(_builder.rename_pin(to, pin, quiet, verbose));
@@ -543,7 +543,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="port">(Required) Port to rename</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL rename_port(string to, TCLParameterList port, bool? quiet = null, bool? verbose = null)
+		public TTCL rename_port(String to, TCLParameterList port, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: rename_port -to <arg> [-quiet] [-verbose] <port>...
 			_tcl.Entry(_builder.rename_port(to, port, quiet, verbose));
@@ -555,7 +555,7 @@ namespace Quokka.TCL.Vivado
 		///
 		/// TCL Syntax: rename_ref [-ref <arg>] [-to <arg>] [-prefix_all <arg>] [-quiet] [-verbose]
 		///
-		/// Rename the reference name of a single non-primitive cell, or apply a reference prefix to all non￾primitive cells in the current synthesized or implemented design.
+		/// Rename the reference name of a single non-primitive cell, or apply a reference prefix to all non-primitive cells in the current synthesized or implemented design.
 		/// This command provides a mechanism to change the non-primitive reference names in the current
 		/// design so that they do not collide with the reference names in another design. This lets two
 		/// modules or designs be synthesized or simulated together, while avoiding any name collisions
@@ -582,7 +582,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL rename_ref(string @ref = null, string to = null, string prefix_all = null, bool? quiet = null, bool? verbose = null)
+		public TTCL rename_ref(String @ref = null, String to = null, String prefix_all = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: rename_ref [-ref <arg>] [-to <arg>] [-prefix_all <arg>] [-quiet] [-verbose]
 			_tcl.Entry(_builder.rename_ref(@ref, to, prefix_all, quiet, verbose));
@@ -620,7 +620,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="to">(Optional) New ending bus index</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL resize_net_bus(TCLParameterList net_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		public TTCL resize_net_bus(TCLParameterList net_bus_name, String from = null, String to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: resize_net_bus [-from <arg>] [-to <arg>] [-quiet] [-verbose] <net_bus_name>...
 			_tcl.Entry(_builder.resize_net_bus(net_bus_name, from, to, quiet, verbose));
@@ -666,7 +666,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="to">(Optional) New ending bus index</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL resize_pin_bus(TCLParameterList pin_bus_name, string from = null, string to = null, bool? quiet = null, bool? verbose = null)
+		public TTCL resize_pin_bus(TCLParameterList pin_bus_name, String from = null, String to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: resize_pin_bus [-from <arg>] [-to <arg>] [-quiet] [-verbose] <pin_bus_name>...
 			_tcl.Entry(_builder.resize_pin_bus(pin_bus_name, from, to, quiet, verbose));

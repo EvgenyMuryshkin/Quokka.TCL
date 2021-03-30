@@ -13,6 +13,8 @@ namespace Quokka.TCL.Tests
     {
         protected string TestOutputFolder => Path.Combine(RolloutTools.SolutionLocation(), "Quokka.TCL.Tests", "output");
         protected string TestSourceFolder => Path.Combine(RolloutTools.SolutionLocation(), "Quokka.TCL.Tests", "source");
+        protected string pidFile => Path.Combine(TestOutputFolder, "pid.txt");
+        protected string LogFile => Path.Combine(TestOutputFolder, "vivado.log");
 
         [TestInitialize]
         public void OnInitialize()
@@ -36,6 +38,17 @@ namespace Quokka.TCL.Tests
             if (tcl != null)
                 SaveTCL(tcl);
 
+            if (File.Exists(pidFile))
+            {
+                var pid = int.Parse(File.ReadAllText(pidFile));
+                // previous run was not completed, vivado may hang in there and lock files. Kill it
+                var running = Process.GetProcesses().FirstOrDefault(p => p.Id == pid);
+                if (running != null)
+                {
+                    running.Kill(true);
+                }
+            }
+
             var process = Process.Start(new ProcessStartInfo()
             {
                 FileName = "cmd.exe",
@@ -43,7 +56,7 @@ namespace Quokka.TCL.Tests
                 Arguments = $"/c vivado.bat -mode batch -source script.tcl"
             });
 
-            File.WriteAllText(Path.Combine(TestOutputFolder, "pid.txt"), $"{process.Id}");
+            File.WriteAllText(pidFile, $"{process.Id}");
 
             process.WaitForExit();
             Assert.AreEqual(0, process.ExitCode);

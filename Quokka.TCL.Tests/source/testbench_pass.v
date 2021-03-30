@@ -1,19 +1,21 @@
 `timescale 1ns / 1ps
 
-`define assert(signal, value, message) \
-        if (signal !== value) begin \
+`define assert(expected, actual, message) \
+        if (expected !== actual) begin \
+            $display("Assert failed"); \
             $display(message); \
-            $finish; \
+            $display("Expected: 0x%H, Actual: 0x%H", expected, actual); \
+            /*$finish;*/ \
         end
 
-module testbench();
+module testbench_pass();
     reg clk;
     reg rst;
     wire [7:0] outCounter;
    // Clock gen
    initial begin
       clk = 1'b0;
-      forever clk = #10 ~clk;
+      forever clk = #100 ~clk;
    end
 
    // reset logic, keep for 1 clock cycle
@@ -24,9 +26,13 @@ module testbench();
    end
    
     initial begin
+        // reset
         @(negedge clk);
-        repeat(2) @(negedge clk);
-        `assert(outCounter, 100, "Counter value does not match");
+        // 1
+        @(negedge clk);
+        `assert(1, outCounter, "Counter value does not match (1)");
+        @(negedge clk);
+        `assert(2, outCounter, "Counter value does not match (2)");
         repeat(100) @(negedge clk);
     end      
     

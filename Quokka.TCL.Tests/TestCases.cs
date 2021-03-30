@@ -37,6 +37,24 @@ namespace Quokka.TCL.Tests
         }
 
         [TestMethod]
+        public void FlatTCL_LaunchSim_NoAttribute()
+        {
+            var tcl = new VivadoTCL();
+            tcl.launch_simulation(mode: launch_simulation_mode.behavioral);
+            SaveTCL(tcl);
+            Assert.AreEqual("launch_simulation -mode behavioral", LoadTCLLines()[0]);
+        }
+
+        [TestMethod]
+        public void FlatTCL_LaunchSim_WriteAttribute()
+        {
+            var tcl = new VivadoTCL();
+            tcl.launch_simulation(mode: launch_simulation_mode.post_implementation);
+            SaveTCL(tcl);
+            Assert.AreEqual("launch_simulation -mode post-implementation", LoadTCLLines()[0]);
+        }
+
+        [TestMethod]
         public void FlatTCL_Custom_CreateProject()
         {
             var tcl = new VivadoTCL(new CustomVivadoTCLBuilder());
@@ -45,24 +63,22 @@ namespace Quokka.TCL.Tests
             Assert.AreEqual("create_project -verbose test", LoadTCLLines()[0]);
         }
 
-        [TestMethod]
-        public void SmokeTest()
+        void BuildAndRunSim(string testbench)
         {
             var tcl = new VivadoTCL();
 
             tcl
-                .create_project("test", part: "xcku5p-ffvb676-2-e", verbose: true)
-                .SetProperty("board_part", "xilinx.com:kcu116:part0:1.5", tcl.CurrentProject)
+                .create_project("test", part: "xa7s6cpga196-2I", verbose: true)
                 .SetProperty("target_language", "Verilog", tcl.CurrentProject)
-                .SetProperty("default_lib", "work", tcl.CurrentProject)
-                .SetProperty("platform.board_id", "kcu116", tcl.CurrentProject)
                 .AddSources(TestSourceFolder, "*.v")
                 .update_compile_order(fileset: "sources_1")
-                .SetProperty("top", "testbench", tcl.Builder.current_fileset())
-                .SetProperty("top", "testbench", tcl.Sim1)
+                .SetProperty("top", "top", tcl.CurrentFileSet)
+                .SetProperty("top", testbench, tcl.Sim1)
                 .SetProperty("SOURCE_SET", "sources_1", tcl.Sim1)
                 .SetProperty("RUNTIME", "0ns", tcl.Sim1)
-                .launch_simulation()
+                .launch_runs("impl_1", jobs: 4)
+                .wait_on_run("impl_1")
+                .launch_simulation(mode: launch_simulation_mode.post_implementation, type: launch_simulation_type.timing)
                 .restart()
                 .open_vcd(file_name: tcl.FileName(Path.Combine(TestOutputFolder, "sim.vcd")))
                 .log_vcd(hdl_objects: "*")
@@ -73,6 +89,20 @@ namespace Quokka.TCL.Tests
                 ;
 
             RunTCL(tcl);
+        }
+
+        [TestMethod]
+        public void SmokeTest_Pass()
+        {
+            BuildAndRunSim("testbench_pass");
+            Assert.IsFalse(File.ReadAllText(LogFile).Contains("Assert failed"));
+        }
+
+        [TestMethod]
+        public void SmokeTest_Fail()
+        {
+            BuildAndRunSim("testbench_fail");
+            Assert.IsTrue(File.ReadAllText(LogFile).Contains("Assert failed"));
         }
     }
 }
