@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.0.1</AssemblyVersion>
-    <FileVersion>1.0.0.1</FileVersion>
-    <Version>1.0.1.2</Version>
+    <AssemblyVersion>1.0.2.8</AssemblyVersion>
+    <FileVersion>1.0.2.8</FileVersion>
+    <Version>1.0.2.8</Version>
     <Description>TCL tools for FPGA vendors</Description>
     <PackageProjectUrl>https://github.com/EvgenyMuryshkin/Quokka.TCL</PackageProjectUrl>
     <RepositoryUrl>https://github.com/EvgenyMuryshkin/Quokka.TCL</RepositoryUrl>
@@ -17,6 +17,6 @@
     <Authors>Evgeny Muryshkin</Authors>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Quokka.TCL.Tools\Quokka.TCL.Tools.csproj" />
+    <PackageReference Include="System.Reactive" Version="5.0.0" />
   </ItemGroup>
 </Project>

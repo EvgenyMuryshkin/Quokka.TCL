@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>Quokka.TCL</id>
+    <version>1.0.1.3</version>
+    <title>Quokka.TCL</title>
+    <authors>Evgeny Muryshkin</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/EvgenyMuryshkin/Quokka.TCL</projectUrl>
+    <iconUrl>https://quokka-fpga.net/logo.png</iconUrl>
+    <description>TCL tools for FPGA vendors</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Evgeny Muryshkin, 2021</copyright>
+    <tags>TCL, FPGA, Quokka</tags>
+  </metadata>
+</package>
