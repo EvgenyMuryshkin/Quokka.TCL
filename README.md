@@ -1,9 +1,15 @@
 # Quokka.TCL
 
-Vivado TCL builder in C# based on ug835-vivado-tcl-commands.pdf
+Vivado 2020.2 TCL builder in C# based on ug835-vivado-tcl-commands.pdf
 
 Some commands have inconsisted usage type
 https://github.com/EvgenyMuryshkin/Quokka.TCL/blob/main/Quokka.TCL/Vivado/generated/log.md
+
+## Getting Started
+* Clone repository
+* Open solution in Visual Studio/VSCode
+* Run SmokeTest_Pass to run sample testbench in Vivado using generated TCL
+* Create your own scenarios and submit PR for any issues\suggestions
 
 ## Flat builder usage
 ```
@@ -49,3 +55,10 @@ public void FlatTCL_Custom_CreateProject()
     Assert.AreEqual("create_project -verbose test", LoadTCLLines()[0]);
 }
 ```
+
+## Contributing
+Please report parameter type inconsistency, missing commands\parameters or submit PR with fixes.
+All suggestions regarding interface, features etc are most welcomed.
+
+Thanks you
+Evgeny
