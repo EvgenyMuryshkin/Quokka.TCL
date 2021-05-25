@@ -1,3 +1,4 @@
+#pragma warning disable IDE1006 // Naming Styles
 // Generated file, do not modify
 // See VivadoGenerator for implementation
 using System;
@@ -15,40 +16,48 @@ namespace Quokka.TCL.Vivado
 			_builder = builder;
 		}
 		/// <summary>
-		/// Creates a cluster configuration
-		///
-		///
-		/// TCL Syntax: create_cluster_configuration -submit_cmd <arg> -kill_cmd <arg> -type <arg> [-quiet] [-verbose] <name>
-		///
-		/// Creates cluster configuration to be used for launching runs (synthesis and implementation).
-		/// Cluster configuration is defined using name, submit command, kill command and type.
-		/// Cluster configuration allows user to create configurations for different clusters and are persisted
-		/// in Vivado tool settings. So user has to create cluster configuration just once and use whenever
-		/// required.
-		/// Currently, Vivado supports following clusters management tools.
-		/// • Load Sharing Facility (LSF)
-		/// • Sun Grid Engine (SGE)
-		/// • Simple Linux Utility For Resource Management (SLURM)
-		///
-		/// The following example creates a cluster configuration named lsf_cluster_1 of type LSF. The
-		/// submit command is bsub and the kill command is bkill.
-		/// create_cluster_configuration lsf_cluster_1 bsub bkill LSF
-		/// The following example creates a cluster configuration named lsf_medium of type LSF. The submit
-		/// command is bsub with resource requirement string which looks for 64bit linux os with either
-		/// rhel or centos distro and version of the os is 7 and the jobs will be submitted to medium queue.
-		/// The kill command is bkill.
-		/// create_cluster_configuration lsf_medium {bsub -R "select[os == lin && type
-		/// == X86_64 && (osdistro == rhel || osdistro == centos) && (osver == ws7)]" -
-		/// N -q medium} bkill LSF
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// The following example creates a cluster configuration named sge_conf of type SGE. The submit
-		/// command is qsub and the kill command is qdel.
-		/// create_cluster_configuration sge_conf qsub qdel SGE
-		/// The following example creates a cluster configuration named slurm_conf of type SLURM. The
-		/// submit command is sbatch and the kill command is scancel.
-		/// create_cluster_configuration slurm_conf sbatch scancel SLURM
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 250
+		/// <para>
+		/// Creates a cluster configuration<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: create_cluster_configuration -submit_cmd &lt;arg&gt; -kill_cmd &lt;arg&gt; -type &lt;arg&gt; [-quiet] [-verbose] &lt;name&gt;
+		/// <br/>
+		/// <para>
+		/// Creates cluster configuration to be used for launching runs (synthesis and implementation).<br/>
+		/// Cluster configuration is defined using name, submit command, kill command and type.<br/>
+		/// Cluster configuration allows user to create configurations for different clusters and are persisted<br/>
+		/// in Vivado tool settings. So user has to create cluster configuration just once and use whenever<br/>
+		/// required.<br/>
+		/// Currently, Vivado supports following clusters management tools.<br/>
+		/// • Load Sharing Facility (LSF)<br/>
+		/// • Sun Grid Engine (SGE)<br/>
+		/// • Simple Linux Utility For Resource Management (SLURM)<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example creates a cluster configuration named lsf_cluster_1 of type LSF. The<br/>
+		/// submit command is bsub and the kill command is bkill.<br/>
+		/// create_cluster_configuration lsf_cluster_1 bsub bkill LSF<br/>
+		/// The following example creates a cluster configuration named lsf_medium of type LSF. The submit<br/>
+		/// command is bsub with resource requirement string which looks for 64bit linux os with either<br/>
+		/// rhel or centos distro and version of the os is 7 and the jobs will be submitted to medium queue.<br/>
+		/// The kill command is bkill.<br/>
+		/// create_cluster_configuration lsf_medium {bsub -R "select[os == lin &amp;&amp; type<br/>
+		/// == X86_64 &amp;&amp; (osdistro == rhel || osdistro == centos) &amp;&amp; (osver == ws7)]" -<br/>
+		/// N -q medium} bkill LSF<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// The following example creates a cluster configuration named sge_conf of type SGE. The submit<br/>
+		/// command is qsub and the kill command is qdel.<br/>
+		/// create_cluster_configuration sge_conf qsub qdel SGE<br/>
+		/// The following example creates a cluster configuration named slurm_conf of type SLURM. The<br/>
+		/// submit command is sbatch and the kill command is scancel.<br/>
+		/// create_cluster_configuration slurm_conf sbatch scancel SLURM<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 250<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="submit_cmd">(Required) Submit command of cluster configuration</param>
 		/// <param name="kill_cmd">(Required) Kill command of cluster configuration</param>
@@ -63,26 +72,34 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Returns all cluster configuration objects
-		///
-		///
-		/// TCL Syntax: get_cluster_configurations [-filter <arg>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
-		///
-		/// Gets a list of cluster configurations that includes Vivado default cluster configurations and cluster
-		/// configurations created using the create_cluster_configuration command.
-		/// Vivado supports the following cluster management tools.
-		/// • Load Sharing Facility (LSF)
-		/// • Sun Grid Engine (SGE)
-		/// • Simple Linux Utility For Resource Management (SLURM)
-		///
-		/// The following example gets the list of all cluster configurations.
-		/// get_cluster_configurations
-		/// The following example gets the cluster configuration with name 'lsf'.
-		/// get_cluster_configurations lsf
-		/// The following example gets the list of all default cluster configurations.
-		/// get_cluster_configurations -filter {IS_DEFAULT}
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 664
+		/// <para>
+		/// Returns all cluster configuration objects<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: get_cluster_configurations [-filter &lt;arg&gt;] [-regexp] [-nocase] [-quiet] [-verbose] [&lt;patterns&gt;]
+		/// <br/>
+		/// <para>
+		/// Gets a list of cluster configurations that includes Vivado default cluster configurations and cluster<br/>
+		/// configurations created using the create_cluster_configuration command.<br/>
+		/// Vivado supports the following cluster management tools.<br/>
+		/// • Load Sharing Facility (LSF)<br/>
+		/// • Sun Grid Engine (SGE)<br/>
+		/// • Simple Linux Utility For Resource Management (SLURM)<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example gets the list of all cluster configurations.<br/>
+		/// get_cluster_configurations<br/>
+		/// The following example gets the cluster configuration with name 'lsf'.<br/>
+		/// get_cluster_configurations lsf<br/>
+		/// The following example gets the list of all default cluster configurations.<br/>
+		/// get_cluster_configurations -filter {IS_DEFAULT}<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 664<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
@@ -97,31 +114,39 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Removes list of cluster configurations
-		///
-		///
-		/// TCL Syntax: remove_cluster_configurations [-quiet] [-verbose] <cluster_configurations>
-		///
-		/// Removes a list of cluster configurations. The list of cluster configurations to be removed is
-		/// specified as input. This command can only remove user defined cluster configurations and cannot
-		/// remove Vivado default cluster configurations. To identify if a cluster configuration is default or
-		/// user-defined, use the following snippet:
-		/// # if it returns 1 cluster configuration is Vivado default otherwise user
-		/// defined.
-		/// get_property IS_DEFAULT [get_cluster_configurations <cluster configuration
-		/// name>]
-		/// Currently, Vivado supports following clusters management tools:
-		/// • Load Sharing Facility (LSF)
-		/// • Sun Grid Engine (SGE)
-		/// • Simple Linux Utility For Resource Management (SLURM)
-		///
-		/// The following example removes the cluster configuration with name lsf_medium.
-		/// remove_cluster_configurations [get_cluster_configurations lsf_medium]
-		/// The following example removes all the user defined cluster configurations.
-		/// remove_cluster_configurations [get_cluster_configurations -filter
-		/// {IS_DEFAULT == 0}]
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1239
+		/// <para>
+		/// Removes list of cluster configurations<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: remove_cluster_configurations [-quiet] [-verbose] &lt;cluster_configurations&gt;
+		/// <br/>
+		/// <para>
+		/// Removes a list of cluster configurations. The list of cluster configurations to be removed is<br/>
+		/// specified as input. This command can only remove user defined cluster configurations and cannot<br/>
+		/// remove Vivado default cluster configurations. To identify if a cluster configuration is default or<br/>
+		/// user-defined, use the following snippet:<br/>
+		/// # if it returns 1 cluster configuration is Vivado default otherwise user<br/>
+		/// defined.<br/>
+		/// get_property IS_DEFAULT [get_cluster_configurations &lt;cluster configuration<br/>
+		/// name&gt;]<br/>
+		/// Currently, Vivado supports following clusters management tools:<br/>
+		/// • Load Sharing Facility (LSF)<br/>
+		/// • Sun Grid Engine (SGE)<br/>
+		/// • Simple Linux Utility For Resource Management (SLURM)<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example removes the cluster configuration with name lsf_medium.<br/>
+		/// remove_cluster_configurations [get_cluster_configurations lsf_medium]<br/>
+		/// The following example removes all the user defined cluster configurations.<br/>
+		/// remove_cluster_configurations [get_cluster_configurations -filter<br/>
+		/// {IS_DEFAULT == 0}]<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1239<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="cluster_configurations">(Required) List of cluster configurations</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -133,28 +158,36 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Validate list of cluster configurations
-		///
-		///
-		/// TCL Syntax: validate_cluster_configurations [-quiet] [-verbose] <cluster_configurations>
-		///
-		/// Validates the list of cluster configurations provided as an input. Use the
-		/// get_cluster_configurations command to get a list of cluster configurations.
-		/// validate_cluster_configurations validates the submit and kill command of the cluster
-		/// configuration objects to ensure if a job can be submitted using a particular cluster configuration
-		/// or not.
-		/// Currently, Vivado supports following clusters management tools.
-		/// • Load Sharing Facility (LSF)
-		/// • Sun Grid Engine (SGE)
-		/// • Simple Linux Utility For Resource Management (SLURM)
-		///
-		/// The following example validates all the user defined cluster configurations.
-		/// validate_cluster_configurations [get_cluster_configurations -filter
-		/// {IS_DEFAULT == 0}]
-		/// The following example validates a cluster configuration named lsf_medium.
-		/// validate_cluster_configurations [get_cluster_configurations lsf_medium]
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1797
+		/// <para>
+		/// Validate list of cluster configurations<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: validate_cluster_configurations [-quiet] [-verbose] &lt;cluster_configurations&gt;
+		/// <br/>
+		/// <para>
+		/// Validates the list of cluster configurations provided as an input. Use the<br/>
+		/// get_cluster_configurations command to get a list of cluster configurations.<br/>
+		/// validate_cluster_configurations validates the submit and kill command of the cluster<br/>
+		/// configuration objects to ensure if a job can be submitted using a particular cluster configuration<br/>
+		/// or not.<br/>
+		/// Currently, Vivado supports following clusters management tools.<br/>
+		/// • Load Sharing Facility (LSF)<br/>
+		/// • Sun Grid Engine (SGE)<br/>
+		/// • Simple Linux Utility For Resource Management (SLURM)<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example validates all the user defined cluster configurations.<br/>
+		/// validate_cluster_configurations [get_cluster_configurations -filter<br/>
+		/// {IS_DEFAULT == 0}]<br/>
+		/// The following example validates a cluster configuration named lsf_medium.<br/>
+		/// validate_cluster_configurations [get_cluster_configurations lsf_medium]<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1797<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="cluster_configurations">(Required) List of cluster configurations</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -167,3 +200,4 @@ namespace Quokka.TCL.Vivado
 		}
 	}
 }
+#pragma warning restore IDE1006 // Naming Styles

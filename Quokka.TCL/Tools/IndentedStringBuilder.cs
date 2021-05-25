@@ -19,6 +19,16 @@ namespace Quokka.TCL.Tools
             return Disposable.Create(() => _indentCounter--);
         }
 
+        /// <summary>
+        /// ee
+        /// </summary>
+        /// <param name="open">
+        /// Param to open
+        /// </param>
+        /// <param name="close">
+        /// Close token
+        /// </param>
+        /// <returns>disposable</returns>
         public IDisposable CodeBlock(string open = "{", string close = "}")
         {
             AppendLine(open);
@@ -54,7 +64,7 @@ namespace Quokka.TCL.Tools
 
         public void AppendDocumentationSeparator()
         {
-            AppendDocumentationLines("");
+            AppendLine($"/// <br/>");
         }
 
         public void AppendDocumentationLines(params string[] lines)
@@ -72,13 +82,15 @@ namespace Quokka.TCL.Tools
 
         public void AppendDocumentationLines(List<string> lines)
         {
-            if (lines == null)
+            if (lines == null || !lines.Any())
                 return;
 
+            AppendLine($"/// <para>");
             foreach (var l in lines)
             {
-                AppendLine($"/// {l}");
+                AppendLine($"/// {l}<br/>");
             }
+            AppendLine($"/// </para>");
         }
 
         public void AppendDocumentationSection(string section, List<string> lines)

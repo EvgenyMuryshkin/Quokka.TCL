@@ -1,3 +1,4 @@
+#pragma warning disable IDE1006 // Naming Styles
 // Generated file, do not modify
 // See VivadoGenerator for implementation
 using System;
@@ -48,3 +49,4 @@ namespace Quokka.TCL.Vivado
 		public xilinxtclstoreCommands<VivadoCategorizedTCL> xilinxtclstore => new xilinxtclstoreCommands<VivadoCategorizedTCL>(this, _builder);
 	}
 }
+#pragma warning restore IDE1006 // Naming Styles

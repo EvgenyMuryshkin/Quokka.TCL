@@ -1,3 +1,4 @@
+#pragma warning disable IDE1006 // Naming Styles
 // Generated file, do not modify
 // See VivadoGenerator for implementation
 using System;
@@ -15,14 +16,20 @@ namespace Quokka.TCL.Vivado
 			_builder = builder;
 		}
 		/// <summary>
-		/// Add a new bus interface to a peripheral.
-		///
-		///
-		/// TCL Syntax: add_peripheral_interface -interface_mode <arg> -axi_type <arg> [-quiet] [-verbose] <name> <peripheral>
-		///
-		/// Add an AXI bus interface to a peripheral created with the create_peripheral command.
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 57
+		/// <para>
+		/// Add a new bus interface to a peripheral.<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: add_peripheral_interface -interface_mode &lt;arg&gt; -axi_type &lt;arg&gt; [-quiet] [-verbose] &lt;name&gt; &lt;peripheral&gt;
+		/// <br/>
+		/// <para>
+		/// Add an AXI bus interface to a peripheral created with the create_peripheral command.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 57<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="interface_mode">(Required) Mode of an interface, supported option - master,slave.</param>
 		/// <param name="axi_type">(Required) Type of a axi interface, supported option - lite,full,stream.</param>
@@ -37,26 +44,34 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Create a peripheral with a VLNV.
-		///
-		///
-		/// TCL Syntax: create_peripheral [-dir <arg>] [-quiet] [-verbose] <vendor> <library> <name> <version>
-		///
-		/// Create an AXI peripheral to add to the IP repository with the specified VLNV attribute.
-		/// The AXI peripheral that is created is just a framework until interfaces have been added to the
-		/// peripheral using the add_peripheral_interface command, and the peripheral has been
-		/// generated using the generate_peripheral command.
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 329
+		/// <para>
+		/// Create a peripheral with a VLNV.<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: create_peripheral [-dir &lt;arg&gt;] [-quiet] [-verbose] &lt;vendor&gt; &lt;library&gt; &lt;name&gt; &lt;version&gt;
+		/// <br/>
+		/// <para>
+		/// Create an AXI peripheral to add to the IP repository with the specified VLNV attribute.<br/>
+		/// The AXI peripheral that is created is just a framework until interfaces have been added to the<br/>
+		/// peripheral using the add_peripheral_interface command, and the peripheral has been<br/>
+		/// generated using the generate_peripheral command.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 329<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="vendor">(Required) Vendor, for example xilinx.com</param>
 		/// <param name="library">(Required) Library, for example ip</param>
 		/// <param name="name">(Required) Name, for example myip</param>
 		/// <param name="version">(Required) Version, for example 1.4</param>
 		/// <param name="dir">
-		/// (Optional)
-		/// Directory path for remote Peripheral to be created and
-		/// managed outside the project
+		/// <para>
+		/// (Optional)<br/>
+		/// Directory path for remote Peripheral to be created and<br/>
+		/// managed outside the project<br/>
+		/// </para>
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -67,16 +82,22 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Generate output products for peripheral object.
-		///
-		///
-		/// TCL Syntax: generate_peripheral [-driver] [-example_design] [-bfm_example_design] [-debug_hw_example_design] [-enable_interrupt] [-force] [-quiet] [-verbose] <peripheral>
-		///
-		/// Generate the output products for the specified peripheral object. The output products are
-		/// written to the IP repository location specified when the IP is created by the
-		/// create_peripheral command, under the name of the IP as specified at creation.
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 545
+		/// <para>
+		/// Generate output products for peripheral object.<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: generate_peripheral [-driver] [-example_design] [-bfm_example_design] [-debug_hw_example_design] [-enable_interrupt] [-force] [-quiet] [-verbose] &lt;peripheral&gt;
+		/// <br/>
+		/// <para>
+		/// Generate the output products for the specified peripheral object. The output products are<br/>
+		/// written to the IP repository location specified when the IP is created by the<br/>
+		/// create_peripheral command, under the name of the IP as specified at creation.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 545<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="peripheral">(Required) peripheral object</param>
 		/// <param name="driver">(Optional) Generate driver for peripheral.</param>
@@ -94,16 +115,22 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Save peripheral component to the disk.
-		///
-		///
-		/// TCL Syntax: write_peripheral [-quiet] [-verbose] <peripheral>
-		///
-		/// Write the specified AXI peripheral object to disk in the form of the component.xml file. The
-		/// peripheral is written to the repository location specified by the create_peripheral
-		/// command, under the name specified at creation.
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1876
+		/// <para>
+		/// Save peripheral component to the disk.<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: write_peripheral [-quiet] [-verbose] &lt;peripheral&gt;
+		/// <br/>
+		/// <para>
+		/// Write the specified AXI peripheral object to disk in the form of the component.xml file. The<br/>
+		/// peripheral is written to the repository location specified by the create_peripheral<br/>
+		/// command, under the name specified at creation.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1876<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="peripheral">(Required) Peripheral object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -116,3 +143,4 @@ namespace Quokka.TCL.Vivado
 		}
 	}
 }
+#pragma warning restore IDE1006 // Naming Styles

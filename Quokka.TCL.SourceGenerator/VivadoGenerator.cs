@@ -12,8 +12,25 @@ using Docnet.Core.Readers;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 
+namespace System
+{
+    public static class StringExtensions
+    {
+        public static string Escaped(this string s)
+        {
+            return s.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
+        }
+
+        public static List<string> Escaped(this List<string> s)
+        {
+            return s.Select(i => i.Escaped()).ToList();
+        }
+    }
+}
+
 namespace Quokka.TCL.SourceGenerator
 {
+
     class VivdoCommandTextLines
     {
         public int Page;
@@ -76,12 +93,12 @@ namespace Quokka.TCL.SourceGenerator
             IndentedStringBuilder builder)
         {
             builder.AppendLine($"/// <summary>");
-            builder.AppendDocumentationLinesIfAny(record.ShortDescription);
+            builder.AppendDocumentationLinesIfAny(record.ShortDescription.Escaped());
             builder.AppendDocumentationSeparator();
-            builder.AppendLine($"/// TCL Syntax: {record.Syntax}");
+            builder.AppendLine($"/// TCL Syntax: {record.Syntax.Escaped()}");
             builder.AppendDocumentationSeparator();
-            builder.AppendDocumentationLinesIfAny(record.Description);
-            builder.AppendDocumentationLinesIfAny(record.Examples);
+            builder.AppendDocumentationLinesIfAny(record.Description.Escaped());
+            builder.AppendDocumentationLinesIfAny(record.Examples.Escaped());
             builder.AppendDocumentationLines($"See {pdfName}, page {record.CommandData.Page}");
             builder.AppendLine($"/// </summary>");
 
@@ -112,11 +129,11 @@ namespace Quokka.TCL.SourceGenerator
                 switch (descriptionLines.Count)
                 {
                     case 1:
-                        builder.AppendLine($"/// <param name=\"{arg.CSName}\">{descriptionLines[0]}</param>");
+                        builder.AppendLine($"/// <param name=\"{arg.ParamName}\">{descriptionLines[0].Escaped()}</param>");
                         break;
                     default:
-                        builder.AppendLine($"/// <param name=\"{arg.CSName}\">");
-                        builder.AppendDocumentationLines(descriptionLines);
+                        builder.AppendLine($"/// <param name=\"{arg.ParamName}\">");
+                        builder.AppendDocumentationLines(descriptionLines.Escaped());
                         builder.AppendLine($"/// </param>");
                         break;
                 }
@@ -124,7 +141,7 @@ namespace Quokka.TCL.SourceGenerator
 
             if (record.Returns.Any())
             {
-                builder.AppendDocumentationSection("returns", record.Returns);
+                builder.AppendDocumentationSection("returns", record.Returns.Escaped());
             }
         }
 
@@ -377,71 +394,74 @@ namespace Quokka.TCL.SourceGenerator
             var commandsData = generatorContext.commandsData;
 
             var commandsBuilder = new IndentedStringBuilder();
-            Header(commandsBuilder);
-            commandsBuilder.AppendLine($"using Quokka.TCL.Tools;");
-            commandsBuilder.AppendLine($"using System.Collections.Generic;");
-            commandsBuilder.AppendLine("namespace Quokka.TCL.Vivado");
-            using (commandsBuilder.CodeBlock())
+            using (Header(commandsBuilder))
             {
-                foreach (var command in commandsData.Keys.OrderBy(k => k))
-                {
-                    var commandData = commandsData[command];
-                    var record = new VivadoCommandRecord(generatorContext.Log, generatorContext.Fixes, command, commandData);
-                    foreach (var p in record.Parameters.Where(t => t.EnumValues.Any()))
-                    {
-                        commandsBuilder.AppendLine($"public enum {record.Name}_{p.Name}");
-                        using (commandsBuilder.CodeBlock())
-                        {
-                            foreach (var value in p.EnumValues)
-                            {
-                                if (StaticData.keywords.Contains(value))
-                                {
-                                    commandsBuilder.AppendLine($"[TCLWrite(\"{value}\")]");
-                                    commandsBuilder.AppendLine($"{value.ToUpper()},");
-                                    continue;
-                                }
-
-
-                                if (value.Contains(" ") || value.Contains("-"))
-                                {
-                                    commandsBuilder.AppendLine($"[TCLWrite(\"{value}\")]");
-                                    var langValue = Regex.Replace(value, @"[ \-]", "_");
-                                    commandsBuilder.AppendLine($"{langValue},");
-                                    continue;
-                                }
-
-                                if (value == "0")
-                                {
-                                    commandsBuilder.AppendLine($"[TCLWrite(\"0\")]");
-                                    commandsBuilder.AppendLine($"ZERO,");
-                                    continue;
-                                }
-
-                                if (value == "1")
-                                {
-                                    commandsBuilder.AppendLine($"[TCLWrite(\"1\")]");
-                                    commandsBuilder.AppendLine($"ONE,");
-                                    continue;
-                                }
-
-                                commandsBuilder.AppendLine($"{value},");
-                            }
-                        }
-                    }
-                }
-                
-                commandsBuilder.AppendLine($"public partial class VivadoTCLBuilder");
+                commandsBuilder.AppendLine($"using Quokka.TCL.Tools;");
+                commandsBuilder.AppendLine($"using System.Collections.Generic;");
+                commandsBuilder.AppendLine("namespace Quokka.TCL.Vivado");
                 using (commandsBuilder.CodeBlock())
                 {
                     foreach (var command in commandsData.Keys.OrderBy(k => k))
                     {
                         var commandData = commandsData[command];
                         var record = new VivadoCommandRecord(generatorContext.Log, generatorContext.Fixes, command, commandData);
+                        foreach (var p in record.Parameters.Where(t => t.EnumValues.Any()))
+                        {
+                            commandsBuilder.AppendLine($"public enum {record.Name}_{p.Name}");
+                            using (commandsBuilder.CodeBlock())
+                            {
+                                foreach (var value in p.EnumValues)
+                                {
+                                    if (StaticData.keywords.Contains(value))
+                                    {
+                                        commandsBuilder.AppendLine($"[TCLWrite(\"{value}\")]");
+                                        commandsBuilder.AppendLine($"{value.ToUpper()},");
+                                        continue;
+                                    }
 
-                        GenerateCommandDeclaration(record, commandsBuilder);
+
+                                    if (value.Contains(" ") || value.Contains("-"))
+                                    {
+                                        commandsBuilder.AppendLine($"[TCLWrite(\"{value}\")]");
+                                        var langValue = Regex.Replace(value, @"[ \-]", "_");
+                                        commandsBuilder.AppendLine($"{langValue},");
+                                        continue;
+                                    }
+
+                                    if (value == "0")
+                                    {
+                                        commandsBuilder.AppendLine($"[TCLWrite(\"0\")]");
+                                        commandsBuilder.AppendLine($"ZERO,");
+                                        continue;
+                                    }
+
+                                    if (value == "1")
+                                    {
+                                        commandsBuilder.AppendLine($"[TCLWrite(\"1\")]");
+                                        commandsBuilder.AppendLine($"ONE,");
+                                        continue;
+                                    }
+
+                                    commandsBuilder.AppendLine($"{value},");
+                                }
+                            }
+                        }
+                    }
+
+                    commandsBuilder.AppendLine($"public partial class VivadoTCLBuilder");
+                    using (commandsBuilder.CodeBlock())
+                    {
+                        foreach (var command in commandsData.Keys.OrderBy(k => k))
+                        {
+                            var commandData = commandsData[command];
+                            var record = new VivadoCommandRecord(generatorContext.Log, generatorContext.Fixes, command, commandData);
+
+                            GenerateCommandDeclaration(record, commandsBuilder);
+                        }
                     }
                 }
             }
+
             var commandsBuilderPath = Path.Combine(generatedPath, $"VivadoTCLBuilder.cs");
             File.WriteAllText(commandsBuilderPath, commandsBuilder.ToString());
         }
@@ -456,30 +476,32 @@ namespace Quokka.TCL.SourceGenerator
                 var (category, commands) = pair;
 
                 var builder = new IndentedStringBuilder();
-                Header(builder);
-                builder.AppendLine($"using Quokka.TCL.Tools;");
-                builder.AppendLine($"using System.Collections.Generic;");
-                builder.AppendLine("namespace Quokka.TCL.Vivado");
-                using (builder.CodeBlock())
+                using (Header(builder))
                 {
-                    builder.AppendLine($"public partial class {category}Commands<TTCL> where TTCL : TCLFile");
+                    builder.AppendLine($"using Quokka.TCL.Tools;");
+                    builder.AppendLine($"using System.Collections.Generic;");
+                    builder.AppendLine("namespace Quokka.TCL.Vivado");
                     using (builder.CodeBlock())
                     {
-                        builder.AppendLine($"private readonly TTCL _tcl;");
-                        builder.AppendLine($"private readonly VivadoTCLBuilder _builder;");
-                        builder.AppendLine($"public {category}Commands(TTCL tcl, VivadoTCLBuilder builder)");
+                        builder.AppendLine($"public partial class {category}Commands<TTCL> where TTCL : TCLFile");
                         using (builder.CodeBlock())
                         {
-                            builder.AppendLine($"_tcl = tcl;");
-                            builder.AppendLine($"_builder = builder;");
-                        }
+                            builder.AppendLine($"private readonly TTCL _tcl;");
+                            builder.AppendLine($"private readonly VivadoTCLBuilder _builder;");
+                            builder.AppendLine($"public {category}Commands(TTCL tcl, VivadoTCLBuilder builder)");
+                            using (builder.CodeBlock())
+                            {
+                                builder.AppendLine($"_tcl = tcl;");
+                                builder.AppendLine($"_builder = builder;");
+                            }
 
-                        foreach (var command in commands.OrderBy(c => c))
-                        {
-                            var commandData = commandsData[command];
-                            var record = new VivadoCommandRecord(generatorContext.Log, generatorContext.Fixes, command, commandData);
+                            foreach (var command in commands.OrderBy(c => c))
+                            {
+                                var commandData = commandsData[command];
+                                var record = new VivadoCommandRecord(generatorContext.Log, generatorContext.Fixes, command, commandData);
 
-                            GenerateCommandCall(record, builder, "TTCL", "_tcl");
+                                GenerateCommandCall(record, builder, "TTCL", "_tcl");
+                            }
                         }
                     }
                 }
@@ -494,26 +516,28 @@ namespace Quokka.TCL.SourceGenerator
             var generatedPath = generatorContext.generatedPath;
 
             var vivadoTCL = new IndentedStringBuilder();
-            Header(vivadoTCL);
-            vivadoTCL.AppendLine($"using Quokka.TCL.Tools;");
-            vivadoTCL.AppendLine($"using System.Collections.Generic;");
-            vivadoTCL.AppendLine("namespace Quokka.TCL.Vivado");
-            using (vivadoTCL.CodeBlock())
+            using (Header(vivadoTCL))
             {
-                vivadoTCL.AppendLine($"public partial class VivadoTCL : FluentVivadoTCLFile<VivadoTCL>");
+                vivadoTCL.AppendLine($"using Quokka.TCL.Tools;");
+                vivadoTCL.AppendLine($"using System.Collections.Generic;");
+                vivadoTCL.AppendLine("namespace Quokka.TCL.Vivado");
                 using (vivadoTCL.CodeBlock())
                 {
-                    vivadoTCL.AppendLine($"public VivadoTCL(VivadoTCLBuilder builder = null) : base(builder)");
+                    vivadoTCL.AppendLine($"public partial class VivadoTCL : FluentVivadoTCLFile<VivadoTCL>");
                     using (vivadoTCL.CodeBlock())
                     {
-                    }
+                        vivadoTCL.AppendLine($"public VivadoTCL(VivadoTCLBuilder builder = null) : base(builder)");
+                        using (vivadoTCL.CodeBlock())
+                        {
+                        }
 
-                    foreach (var command in generatorContext.commandsSet.OrderBy(c => c))
-                    {
-                        var commandData = generatorContext.commandsData[command];
-                        var record = new VivadoCommandRecord(generatorContext.Log, generatorContext.Fixes, command, commandData);
+                        foreach (var command in generatorContext.commandsSet.OrderBy(c => c))
+                        {
+                            var commandData = generatorContext.commandsData[command];
+                            var record = new VivadoCommandRecord(generatorContext.Log, generatorContext.Fixes, command, commandData);
 
-                        GenerateCommandCall(record, vivadoTCL, "VivadoTCL", "this");
+                            GenerateCommandCall(record, vivadoTCL, "VivadoTCL", "this");
+                        }
                     }
                 }
             }
@@ -527,22 +551,24 @@ namespace Quokka.TCL.SourceGenerator
             var generatedPath = generatorContext.generatedPath;
 
             var vivadoTCL = new IndentedStringBuilder();
-            Header(vivadoTCL);
-            vivadoTCL.AppendLine($"using Quokka.TCL.Tools;");
-            vivadoTCL.AppendLine("namespace Quokka.TCL.Vivado");
-            using (vivadoTCL.CodeBlock())
+            using (Header(vivadoTCL))
             {
-                vivadoTCL.AppendLine($"public partial class VivadoCategorizedTCL : FluentVivadoTCLFile<VivadoCategorizedTCL>");
+                vivadoTCL.AppendLine($"using Quokka.TCL.Tools;");
+                vivadoTCL.AppendLine("namespace Quokka.TCL.Vivado");
                 using (vivadoTCL.CodeBlock())
                 {
-                    vivadoTCL.AppendLine($"public VivadoCategorizedTCL(VivadoTCLBuilder builder = null) : base(builder)");
+                    vivadoTCL.AppendLine($"public partial class VivadoCategorizedTCL : FluentVivadoTCLFile<VivadoCategorizedTCL>");
                     using (vivadoTCL.CodeBlock())
                     {
-                    }
+                        vivadoTCL.AppendLine($"public VivadoCategorizedTCL(VivadoTCLBuilder builder = null) : base(builder)");
+                        using (vivadoTCL.CodeBlock())
+                        {
+                        }
 
-                    foreach (var category in generatorContext.categories)
-                    {
-                        vivadoTCL.AppendLine($"public {category}Commands<VivadoCategorizedTCL> {category} => new {category}Commands<VivadoCategorizedTCL>(this, _builder);");
+                        foreach (var category in generatorContext.categories)
+                        {
+                            vivadoTCL.AppendLine($"public {category}Commands<VivadoCategorizedTCL> {category} => new {category}Commands<VivadoCategorizedTCL>(this, _builder);");
+                        }
                     }
                 }
             }

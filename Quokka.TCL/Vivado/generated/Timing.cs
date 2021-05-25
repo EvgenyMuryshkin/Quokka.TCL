@@ -1,3 +1,4 @@
+#pragma warning disable IDE1006 // Naming Styles
 // Generated file, do not modify
 // See VivadoGenerator for implementation
 using System;
@@ -15,85 +16,95 @@ namespace Quokka.TCL.Vivado
 			_builder = builder;
 		}
 		/// <summary>
-		/// Check the design for possible timing problems
-		///
-		///
-		/// TCL Syntax: check_timing [-file <arg>] [-no_header] [-loop_limit <arg>] [-append] [-name <arg>] [-override_defaults <args>] [-include <args>] [-exclude <args>] [-return_string] [-rpx <arg>] [-cells <args>] [-verbose] [-quiet]
-		///
-		/// Checks the design elements of ports, pins, and paths, against the current timing constraints. Use
-		/// this command to identify possible problems with design data and timing constraints before
-		/// running the report_timing command. The check_timing command runs a series of default
-		/// timing checks, and reports a summary of any violations found. To get detailed information about
-		/// violations, use the -verbose option.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// Note: By default the report is written to the Tcl console or STD output. However, the results can also be
-		/// written to the GUI with the -name option, or to a file with -file.
-		/// Default Timing Checks:
-		/// • constant_clock - Checks for clock signals connected to a constant signal (gnd/vss/data).
-		/// • generated_clocks - Checks for loops, or circular definitions within the generated clock
-		/// network. This check will return an error if a generated clock uses a second generated clock as
-		/// its source, when the second generated clock uses the first clock as its source.
-		/// • latch_loops - Checks for and warns of combinational latch loops in the design.
-		/// • loops - Checks for and warns of combinational feedback loops in the design.
-		/// • multiple_clock - Warns if multiple clocks reach a register clock pin. If more than one clock
-		/// signal reaches a register clock pin it is unclear which clock will be used for analysis. In this
-		/// case, use the set_case_analysis command so that only one clock will propagate to the
-		/// register clock pin.
-		/// • no_clock - Reports unclocked registers. In this case, no setup or hold checks are performed
-		/// on data pins related to the register clock pin.
-		/// • no_input_delay - Reports the input ports without an input delay constraint. Input delays
-		/// can be assigned using the set_input_delay command. Input ports that are unclocked will
-		/// not be checked for input delays.
-		/// • no_output_delay - Reports the output ports without an output delay constraint. Output
-		/// delays can be assigned using the set_output_delay command. Output ports that are
-		/// unclocked will not be checked for output delays.
-		/// • partial_input_delay - Reports the input ports having partially defined input delay
-		/// constraints. Assigning set_input_delay -max or set_input_delay -min to an input
-		/// port, without assigning the other, creates a partially defined input delay. In such cases, paths
-		/// starting from the input port may become unconstrained and no timing checks will be done
-		/// against the port. Assigning set_input_delay without specifying either -min or -max
-		/// allows the tool to assume both min and max delays, and so does not result in a partial input
-		/// delay.
-		/// Note: Unclocked input ports are not checked for partial input delays.
-		/// • partial_output_delay - Reports the output ports having partially defined output delay
-		/// constraints. Assigning set_output_delay -max or set_output_delay -min to an
-		/// output port, without assigning the other, creates a partially defined output delay. In such
-		/// cases, paths reaching the port may become unconstrained and no timing checks will be done
-		/// against the port. Assigning set_output_delay without specifying either -min or -max
-		/// allows the tool to assume both min and max delays, and so does not result in a partial output
-		/// delay.
-		/// Note: Unclocked output ports are not checked for partial output delays.
-		/// • pulse_width_clock - Reports clock pins that have only a pulse width check associated
-		/// with the pin, and no setup or hold check, no recovery, removal, or clk->Q check.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// • unconstrained_internal_endpoints - This warning identifies timing path endpoints at
-		/// register data pins that are not constrained. Endpoints at register data pins are constrained by
-		/// clock assignment using the create_clock command. Endpoints at output ports are checked
-		/// and reported by the no_output_delay check.
-		/// • unexpandable_clocks - Reports clock sets in which the period is not expandable with
-		/// respect to each other, when there is at least 1 path between the clock sets. A clock is
-		/// unexpandable if no common multiples are found within 1000 cycles between the source and
-		/// destination clocks.
-		///
-		/// The following example runs check_timing, but excludes the specified checks from the default
-		/// timing checks:
-		/// check_timing -exclude {loops generated_clocks}
-		/// The following example uses the -verbose argument to obtain detailed results running just the
-		/// multiple_clocks check, and then uses get_clocks to look further into the issue:
-		/// check_timing -verbose -override_defaults {multiple_clock}
-		/// Checking multiple_clock.
-		/// There are 2 register/latch pins with multiple clocks.
-		/// procEngine/mode_du/set_reg[0]/C
-		/// provEngine/mode_du/set_reg[1]/C
-		/// get_clocks -of_objects [get_pin procEngine/mode_du/set_reg[0]/C]
-		/// sysClk coreClk
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 128
+		/// <para>
+		/// Check the design for possible timing problems<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: check_timing [-file &lt;arg&gt;] [-no_header] [-loop_limit &lt;arg&gt;] [-append] [-name &lt;arg&gt;] [-override_defaults &lt;args&gt;] [-include &lt;args&gt;] [-exclude &lt;args&gt;] [-return_string] [-rpx &lt;arg&gt;] [-cells &lt;args&gt;] [-verbose] [-quiet]
+		/// <br/>
+		/// <para>
+		/// Checks the design elements of ports, pins, and paths, against the current timing constraints. Use<br/>
+		/// this command to identify possible problems with design data and timing constraints before<br/>
+		/// running the report_timing command. The check_timing command runs a series of default<br/>
+		/// timing checks, and reports a summary of any violations found. To get detailed information about<br/>
+		/// violations, use the -verbose option.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// Note: By default the report is written to the Tcl console or STD output. However, the results can also be<br/>
+		/// written to the GUI with the -name option, or to a file with -file.<br/>
+		/// Default Timing Checks:<br/>
+		/// • constant_clock - Checks for clock signals connected to a constant signal (gnd/vss/data).<br/>
+		/// • generated_clocks - Checks for loops, or circular definitions within the generated clock<br/>
+		/// network. This check will return an error if a generated clock uses a second generated clock as<br/>
+		/// its source, when the second generated clock uses the first clock as its source.<br/>
+		/// • latch_loops - Checks for and warns of combinational latch loops in the design.<br/>
+		/// • loops - Checks for and warns of combinational feedback loops in the design.<br/>
+		/// • multiple_clock - Warns if multiple clocks reach a register clock pin. If more than one clock<br/>
+		/// signal reaches a register clock pin it is unclear which clock will be used for analysis. In this<br/>
+		/// case, use the set_case_analysis command so that only one clock will propagate to the<br/>
+		/// register clock pin.<br/>
+		/// • no_clock - Reports unclocked registers. In this case, no setup or hold checks are performed<br/>
+		/// on data pins related to the register clock pin.<br/>
+		/// • no_input_delay - Reports the input ports without an input delay constraint. Input delays<br/>
+		/// can be assigned using the set_input_delay command. Input ports that are unclocked will<br/>
+		/// not be checked for input delays.<br/>
+		/// • no_output_delay - Reports the output ports without an output delay constraint. Output<br/>
+		/// delays can be assigned using the set_output_delay command. Output ports that are<br/>
+		/// unclocked will not be checked for output delays.<br/>
+		/// • partial_input_delay - Reports the input ports having partially defined input delay<br/>
+		/// constraints. Assigning set_input_delay -max or set_input_delay -min to an input<br/>
+		/// port, without assigning the other, creates a partially defined input delay. In such cases, paths<br/>
+		/// starting from the input port may become unconstrained and no timing checks will be done<br/>
+		/// against the port. Assigning set_input_delay without specifying either -min or -max<br/>
+		/// allows the tool to assume both min and max delays, and so does not result in a partial input<br/>
+		/// delay.<br/>
+		/// Note: Unclocked input ports are not checked for partial input delays.<br/>
+		/// • partial_output_delay - Reports the output ports having partially defined output delay<br/>
+		/// constraints. Assigning set_output_delay -max or set_output_delay -min to an<br/>
+		/// output port, without assigning the other, creates a partially defined output delay. In such<br/>
+		/// cases, paths reaching the port may become unconstrained and no timing checks will be done<br/>
+		/// against the port. Assigning set_output_delay without specifying either -min or -max<br/>
+		/// allows the tool to assume both min and max delays, and so does not result in a partial output<br/>
+		/// delay.<br/>
+		/// Note: Unclocked output ports are not checked for partial output delays.<br/>
+		/// • pulse_width_clock - Reports clock pins that have only a pulse width check associated<br/>
+		/// with the pin, and no setup or hold check, no recovery, removal, or clk-&gt;Q check.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// • unconstrained_internal_endpoints - This warning identifies timing path endpoints at<br/>
+		/// register data pins that are not constrained. Endpoints at register data pins are constrained by<br/>
+		/// clock assignment using the create_clock command. Endpoints at output ports are checked<br/>
+		/// and reported by the no_output_delay check.<br/>
+		/// • unexpandable_clocks - Reports clock sets in which the period is not expandable with<br/>
+		/// respect to each other, when there is at least 1 path between the clock sets. A clock is<br/>
+		/// unexpandable if no common multiples are found within 1000 cycles between the source and<br/>
+		/// destination clocks.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example runs check_timing, but excludes the specified checks from the default<br/>
+		/// timing checks:<br/>
+		/// check_timing -exclude {loops generated_clocks}<br/>
+		/// The following example uses the -verbose argument to obtain detailed results running just the<br/>
+		/// multiple_clocks check, and then uses get_clocks to look further into the issue:<br/>
+		/// check_timing -verbose -override_defaults {multiple_clock}<br/>
+		/// Checking multiple_clock.<br/>
+		/// There are 2 register/latch pins with multiple clocks.<br/>
+		/// procEngine/mode_du/set_reg[0]/C<br/>
+		/// provEngine/mode_du/set_reg[1]/C<br/>
+		/// get_clocks -of_objects [get_pin procEngine/mode_du/set_reg[0]/C]<br/>
+		/// sysClk coreClk<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 128<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="no_header">(Optional) do not generate a report header</param>
 		/// <param name="loop_limit">(Optional) Limit the number of loops reported for loops check Default: 100</param>
@@ -101,14 +112,18 @@ namespace Quokka.TCL.Vivado
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="override_defaults">(Optional) Overrides the checks in the default timing checks listed below</param>
 		/// <param name="include">
-		/// (Optional)
-		/// Add this list of checks to be performed along with default
-		/// timing checks listed below
+		/// <para>
+		/// (Optional)<br/>
+		/// Add this list of checks to be performed along with default<br/>
+		/// timing checks listed below<br/>
+		/// </para>
 		/// </param>
 		/// <param name="exclude">
-		/// (Optional)
-		/// Exclude this list of checks to be performed from the default
-		/// timing checks listed below
+		/// <para>
+		/// (Optional)<br/>
+		/// Exclude this list of checks to be performed from the default<br/>
+		/// timing checks listed below<br/>
+		/// </para>
 		/// </param>
 		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
@@ -122,26 +137,36 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// This command configures general features of design analysis.
-		///
-		///
-		/// TCL Syntax: config_design_analysis [-max_common_paths <arg>] [-quiet] [-verbose]
-		///
-		/// This command configures features of the report_design_analysis command.
-		/// The design analysis report analyzes timing paths at various stages in the Vivado tool flow,
-		/// including synthesis, optimization, placement, routing. The -max_common_paths option
-		/// specifies how many setup timing paths to capture at each stage in the flow.
-		/// Note: This command returns nothing if successful, or returns an error if it fails.
-		///
-		/// The following example ignores the package delays during timing analysis:
-		/// config_design_analysis 500
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 174
+		/// <para>
+		/// This command configures general features of design analysis.<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: config_design_analysis [-max_common_paths &lt;arg&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// This command configures features of the report_design_analysis command.<br/>
+		/// The design analysis report analyzes timing paths at various stages in the Vivado tool flow,<br/>
+		/// including synthesis, optimization, placement, routing. The -max_common_paths option<br/>
+		/// specifies how many setup timing paths to capture at each stage in the flow.<br/>
+		/// Note: This command returns nothing if successful, or returns an error if it fails.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example ignores the package delays during timing analysis:<br/>
+		/// config_design_analysis 500<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 174<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="max_common_paths">
-		/// (Optional)
-		/// Number of paths to consider for finding common paths
-		/// across phases (< 20000) Default: 1000
+		/// <para>
+		/// (Optional)<br/>
+		/// Number of paths to consider for finding common paths<br/>
+		/// across phases (&lt; 20000) Default: 1000<br/>
+		/// </para>
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -152,53 +177,71 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Configure timing analysis general settings
-		///
-		///
-		/// TCL Syntax: config_timing_analysis [-enable_input_delay_default_clock <arg>] [-enable_preset_clear_arcs <arg>] [-ignore_io_paths <arg>] [-disable_flight_delays <arg>] [-merge_exceptions <arg>] [-timing_early_launch_at_borrowing_latches <arg>] [-enable_time_borrowing_for_max_delay_exceptions <arg>] [-quiet] [-verbose]
-		///
-		/// This command configures general features of timing analysis.
-		/// Note: This command returns nothing if successful, or returns an error if it fails.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		///
-		/// The following example ignores the package delays during timing analysis:
-		/// config_timing_analysis -disable_flight_delays true
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 186
+		/// <para>
+		/// Configure timing analysis general settings<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: config_timing_analysis [-enable_input_delay_default_clock &lt;arg&gt;] [-enable_preset_clear_arcs &lt;arg&gt;] [-ignore_io_paths &lt;arg&gt;] [-disable_flight_delays &lt;arg&gt;] [-merge_exceptions &lt;arg&gt;] [-timing_early_launch_at_borrowing_latches &lt;arg&gt;] [-enable_time_borrowing_for_max_delay_exceptions &lt;arg&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// This command configures general features of timing analysis.<br/>
+		/// Note: This command returns nothing if successful, or returns an error if it fails.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example ignores the package delays during timing analysis:<br/>
+		/// config_timing_analysis -disable_flight_delays true<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 186<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="enable_input_delay_default_clock">
-		/// (Optional)
-		/// Launch SDC unclocked input delays from an internally
-		/// defined clock: Values: true, false; This option is not
-		/// supported for UCF constraints
+		/// <para>
+		/// (Optional)<br/>
+		/// Launch SDC unclocked input delays from an internally<br/>
+		/// defined clock: Values: true, false; This option is not<br/>
+		/// supported for UCF constraints<br/>
+		/// </para>
 		/// </param>
 		/// <param name="enable_preset_clear_arcs">
-		/// (Optional)
-		/// Time paths through asynchronous preset or clear timing
-		/// arcs: true, false;
+		/// <para>
+		/// (Optional)<br/>
+		/// Time paths through asynchronous preset or clear timing<br/>
+		/// arcs: true, false;<br/>
+		/// </para>
 		/// </param>
 		/// <param name="ignore_io_paths">
-		/// (Optional)
-		/// Ignore paths from primary inputs and paths to primary
-		/// outputs: Values: true, false
+		/// <para>
+		/// (Optional)<br/>
+		/// Ignore paths from primary inputs and paths to primary<br/>
+		/// outputs: Values: true, false<br/>
+		/// </para>
 		/// </param>
 		/// <param name="disable_flight_delays">(Optional) Disable adding package times to IO Calculations : Values: true, false;</param>
 		/// <param name="merge_exceptions">
-		/// (Optional)
-		/// Allow/Prevent the timing engine from merging timing
-		/// exceptions : Values: true, false;
+		/// <para>
+		/// (Optional)<br/>
+		/// Allow/Prevent the timing engine from merging timing<br/>
+		/// exceptions : Values: true, false;<br/>
+		/// </para>
 		/// </param>
 		/// <param name="timing_early_launch_at_borrowing_latches">
-		/// (Optional)
-		/// Remove clock latency pessimism from the launching enable
-		/// of paths through transparent latches. Values: auto, true,
-		/// false Default: auto
-		/// [-
-		/// enable_time_borrowing_for_max_delay_exceptions
-		/// ]
-		/// Allow timing paths covered by set_max_delay timing
-		/// exceptions to borrow time. Values: true, false
+		/// <para>
+		/// (Optional)<br/>
+		/// Remove clock latency pessimism from the launching enable<br/>
+		/// of paths through transparent latches. Values: auto, true,<br/>
+		/// false Default: auto<br/>
+		/// [-<br/>
+		/// enable_time_borrowing_for_max_delay_exceptions<br/>
+		/// ]<br/>
+		/// Allow timing paths covered by set_max_delay timing<br/>
+		/// exceptions to borrow time. Values: true, false<br/>
+		/// </para>
 		/// </param>
 		/// <param name="enable_time_borrowing_for_max_delay_exceptions">(Optional)</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -210,59 +253,73 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Configure single / multi corner timing analysis settings
-		///
-		///
-		/// TCL Syntax: config_timing_corners [-corner <arg>] [-delay_type <arg>] [-setup] [-hold] [-quiet] [-verbose]
-		///
-		/// This command configures the Slow and Fast timing corners in the current design for single or
-		/// multi-corner timing analysis. A synthesized or implemented design must be opened when
-		/// running this command.
-		/// The variation in the manufacturing process of the physical device, and the voltage and
-		/// temperature at which the device is operating, combine to create a timing corner. These three
-		/// variables (PVT) determine the delay across the device. The fast corner represents a device
-		/// operating with the smallest manufacturing process tolerances, the highest voltage, and the
-		/// lowest temperature. The slow corner represents a device operating with the greatest
-		/// manufacturing tolerances, the lowest voltage, and the highest temperature. By default the
-		/// Vivado Design Suite performs both a setup and hold analysis for both slow and fast process
-		/// corners, also known as quad analysis:
-		/// config_timing_corners -corner Slow -setup -hold
-		/// config_timing_corners -corner Fast -setup -hold
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// The config_timing_corners command can be used to limit the default four corner analysis
-		/// performed by the Vivado timing engine as appropriate to the design, to improve timing
-		/// performance. To change or disable the default analysis for both corners, you must configure both
-		/// the Fast and Slow corners:
-		/// config_timing_corners -corner Slow -delay_type max
-		/// config_timing_corners -corner Fast -delay_type none
-		/// Note: This command returns nothing if successful, or returns an error if it fails.
-		///
-		/// The following example configures the Slow timing corner for both setup and hold analysis:
-		/// config_timing_corners -corner slow -setup -hold
-		/// config_timing_corners -corner slow -delay_type min_max
-		/// Note: The two preceding examples have the same effect.
-		/// The following example configures the Fast corner for min delay analysis, and disables the Slow
-		/// corner analysis:
-		/// config_timing_corners -corner fast -delay_type min
-		/// config_timing_corners -corner slow -delay_type none
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 189
+		/// <para>
+		/// Configure single / multi corner timing analysis settings<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: config_timing_corners [-corner &lt;arg&gt;] [-delay_type &lt;arg&gt;] [-setup] [-hold] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// This command configures the Slow and Fast timing corners in the current design for single or<br/>
+		/// multi-corner timing analysis. A synthesized or implemented design must be opened when<br/>
+		/// running this command.<br/>
+		/// The variation in the manufacturing process of the physical device, and the voltage and<br/>
+		/// temperature at which the device is operating, combine to create a timing corner. These three<br/>
+		/// variables (PVT) determine the delay across the device. The fast corner represents a device<br/>
+		/// operating with the smallest manufacturing process tolerances, the highest voltage, and the<br/>
+		/// lowest temperature. The slow corner represents a device operating with the greatest<br/>
+		/// manufacturing tolerances, the lowest voltage, and the highest temperature. By default the<br/>
+		/// Vivado Design Suite performs both a setup and hold analysis for both slow and fast process<br/>
+		/// corners, also known as quad analysis:<br/>
+		/// config_timing_corners -corner Slow -setup -hold<br/>
+		/// config_timing_corners -corner Fast -setup -hold<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// The config_timing_corners command can be used to limit the default four corner analysis<br/>
+		/// performed by the Vivado timing engine as appropriate to the design, to improve timing<br/>
+		/// performance. To change or disable the default analysis for both corners, you must configure both<br/>
+		/// the Fast and Slow corners:<br/>
+		/// config_timing_corners -corner Slow -delay_type max<br/>
+		/// config_timing_corners -corner Fast -delay_type none<br/>
+		/// Note: This command returns nothing if successful, or returns an error if it fails.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example configures the Slow timing corner for both setup and hold analysis:<br/>
+		/// config_timing_corners -corner slow -setup -hold<br/>
+		/// config_timing_corners -corner slow -delay_type min_max<br/>
+		/// Note: The two preceding examples have the same effect.<br/>
+		/// The following example configures the Fast corner for min delay analysis, and disables the Slow<br/>
+		/// corner analysis:<br/>
+		/// config_timing_corners -corner fast -delay_type min<br/>
+		/// config_timing_corners -corner slow -delay_type none<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 189<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="corner">(Optional) Name of the timing corner to be modified : Values: Slow, Fast</param>
 		/// <param name="delay_type">
-		/// (Optional)
-		/// Type of path delays to be analyzed for specified timing
-		/// corner: Values: none, max, min, min_max
+		/// <para>
+		/// (Optional)<br/>
+		/// Type of path delays to be analyzed for specified timing<br/>
+		/// corner: Values: none, max, min, min_max<br/>
+		/// </para>
 		/// </param>
 		/// <param name="setup">
-		/// (Optional)
-		/// Enable timing corner for setup analysis (equivalent to -
-		/// delay_type max)
+		/// <para>
+		/// (Optional)<br/>
+		/// Enable timing corner for setup analysis (equivalent to -<br/>
+		/// delay_type max)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="hold">
-		/// (Optional)
-		/// Enable timing corner for hold analysis (equivalent to -
-		/// delay_type min)
+		/// <para>
+		/// (Optional)<br/>
+		/// Enable timing corner for hold analysis (equivalent to -<br/>
+		/// delay_type min)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -273,19 +330,27 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Create histogram
-		///
-		///
-		/// TCL Syntax: create_slack_histogram [-to <args>] [-delay_type <arg>] [-num_bins <arg>] [-slack_less_than <arg>] [-slack_greater_than <arg>] [-group <args>] [-report_unconstrained] [-significant_digits <arg>] [-scale <arg>] [-name <arg>] [-cells <args>] [-quiet] [-verbose]
-		///
-		/// Create a slack histogram grouping paths into slack ranges, and displaying the results graphically.
-		/// TIP: This command provides a graphical slack histogram that requires the tool to be running in GUI mode.
-		///
-		/// The following example creates a slack histogram of the current design, using the default values,
-		/// and outputting the results to the named result set in the GUI:
-		/// create_slack_histogram -name slack1
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 362
+		/// <para>
+		/// Create histogram<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: create_slack_histogram [-to &lt;args&gt;] [-delay_type &lt;arg&gt;] [-num_bins &lt;arg&gt;] [-slack_less_than &lt;arg&gt;] [-slack_greater_than &lt;arg&gt;] [-group &lt;args&gt;] [-report_unconstrained] [-significant_digits &lt;arg&gt;] [-scale &lt;arg&gt;] [-name &lt;arg&gt;] [-cells &lt;args&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Create a slack histogram grouping paths into slack ranges, and displaying the results graphically.<br/>
+		/// TIP: This command provides a graphical slack histogram that requires the tool to be running in GUI mode.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example creates a slack histogram of the current design, using the default values,<br/>
+		/// and outputting the results to the named result set in the GUI:<br/>
+		/// create_slack_histogram -name slack1<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 362<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="to">(Optional) To clock</param>
 		/// <param name="delay_type">(Optional) Type of path delay: Values: max, min, min_max Default: max</param>
@@ -296,9 +361,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="report_unconstrained">(Optional) Report unconstrained end points</param>
 		/// <param name="significant_digits">(Optional) Number of digits to display: Range: 0 to 3 Default: 3</param>
 		/// <param name="scale">
-		/// (Optional)
-		/// Type of scale on which to draw the histogram; Values:
-		/// linear, logarithmic Default: linear
+		/// <para>
+		/// (Optional)<br/>
+		/// Type of scale on which to draw the histogram; Values:<br/>
+		/// linear, logarithmic Default: linear<br/>
+		/// </para>
 		/// </param>
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="cells">(Optional) run create_slack_histogram on the specified cell(s)</param>
@@ -311,22 +378,30 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Deletes a list of available QoR suggestions
-		///
-		///
-		/// TCL Syntax: delete_qor_suggestions [-quiet] [-verbose] [<IDs>]
-		///
-		/// Removes QoR suggestion objects that are currently in memory. Suggestion objects are generated
-		/// running the report_qor_suggestion command, without specifying -of_objects, and by
-		/// reading an RQS file using the read_qor_suggestions command. You can get QoR objects by
-		/// using the get_qor_suggestions command.
-		///
-		/// The following deletes all the suggestion objects in memory:
-		/// delete_qor_suggestions [get_qor_suggestions]
-		/// The following deletes only the Utilization suggestions:
-		/// delete_qor_suggestions [get_qor_suggestions -filter {CATEGORY==Utilization}]
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 470
+		/// <para>
+		/// Deletes a list of available QoR suggestions<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: delete_qor_suggestions [-quiet] [-verbose] [&lt;IDs&gt;]
+		/// <br/>
+		/// <para>
+		/// Removes QoR suggestion objects that are currently in memory. Suggestion objects are generated<br/>
+		/// running the report_qor_suggestion command, without specifying -of_objects, and by<br/>
+		/// reading an RQS file using the read_qor_suggestions command. You can get QoR objects by<br/>
+		/// using the get_qor_suggestions command.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following deletes all the suggestion objects in memory:<br/>
+		/// delete_qor_suggestions [get_qor_suggestions]<br/>
+		/// The following deletes only the Utilization suggestions:<br/>
+		/// delete_qor_suggestions [get_qor_suggestions -filter {CATEGORY==Utilization}]<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 470<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="IDs">(Required) Match suggestion names against given names</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -338,26 +413,36 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Clear a set of timing results from memory
-		///
-		///
-		/// TCL Syntax: delete_timing_results [-type <arg>] [-quiet] [-verbose] <name>
-		///
-		/// Clear the specified timing results from the named result set. Both the type of the timing report,
-		/// and the name of the timing report must be specified, or the command will fail.
-		///
-		/// The following example clears the specified results set from memory:
-		/// delete_timing_results -type clock_interaction clkNets
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 480
+		/// <para>
+		/// Clear a set of timing results from memory<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: delete_timing_results [-type &lt;arg&gt;] [-quiet] [-verbose] &lt;name&gt;
+		/// <br/>
+		/// <para>
+		/// Clear the specified timing results from the named result set. Both the type of the timing report,<br/>
+		/// and the name of the timing report must be specified, or the command will fail.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example clears the specified results set from memory:<br/>
+		/// delete_timing_results -type clock_interaction clkNets<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 480<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="name">(Required) Name for the set of results to clear</param>
 		/// <param name="type">
-		/// (Optional)
-		/// Type of timing results to clear; Values: bus_skew,
-		/// check_timing, clock_interaction, clock_domain_crossings,
-		/// config_timing, datasheet, pulse_width, slack_histogram,
-		/// timing_path, timing_summary
+		/// <para>
+		/// (Optional)<br/>
+		/// Type of timing results to clear; Values: bus_skew,<br/>
+		/// check_timing, clock_interaction, clock_domain_crossings,<br/>
+		/// config_timing, datasheet, pulse_width, slack_histogram,<br/>
+		/// timing_path, timing_summary<br/>
+		/// </para>
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -368,38 +453,46 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Get the routed or estimated delays in picoseconds on a net from the driver to each load pin.
-		///
-		///
-		/// TCL Syntax: get_net_delays -of_objects <args> [-regexp] [-nocase] [-patterns <arg>] [-filter <arg>] [-to <args>] [-interconnect_only] [-quiet] [-verbose]
-		///
-		/// Get delay objects for the specified nets in the current design, from the driver to each load pin, or
-		/// to specified load pins, through specific pins.
-		/// The delay object contains properties defining the maximum and minimum delays for the fast and
-		/// slow process corners. Use the get_property command to extract the property of interest from
-		/// the delay object. Delay property values on the delay object are specified in picoseconds.
-		/// TIP: In most cases the Vivado tools return delay values specified in nanoseconds, but the delay object uses
-		/// picoseconds.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// The values returned are calculated or estimated depending upon whether the net is routed.
-		/// Delay values can include the actual delay of routed interconnect, or estimated net delays for
-		/// unrouted nets. The net delay can also include delay through logic elements or device sites, or just
-		/// include the interconnect delay.
-		/// Note: To improve memory and performance, the get_* commands return a container list of a single type
-		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
-		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
-		/// or string, to the list is not permitted and will result in a Tcl error.
-		/// The get_net_delays command returns the delay objects for the specified nets, or returns an
-		/// error if it fails.
-		///
-		/// The following example gets the interconnect delay values for the specified net, and returns it in
-		/// the form of a delay object:
-		/// report_property -all [lindex [get_net_delays -interconnect_only \
-		/// -of_objects [get_nets control_reg[*]]] 16 ]
-		/// TIP: The FAST_MAX, FAST_MIN, SLOW_MAX, and SLOW_MIN properties on the delay object are
-		/// reported in picoseconds.
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 838
+		/// <para>
+		/// Get the routed or estimated delays in picoseconds on a net from the driver to each load pin.<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: get_net_delays -of_objects &lt;args&gt; [-regexp] [-nocase] [-patterns &lt;arg&gt;] [-filter &lt;arg&gt;] [-to &lt;args&gt;] [-interconnect_only] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Get delay objects for the specified nets in the current design, from the driver to each load pin, or<br/>
+		/// to specified load pins, through specific pins.<br/>
+		/// The delay object contains properties defining the maximum and minimum delays for the fast and<br/>
+		/// slow process corners. Use the get_property command to extract the property of interest from<br/>
+		/// the delay object. Delay property values on the delay object are specified in picoseconds.<br/>
+		/// TIP: In most cases the Vivado tools return delay values specified in nanoseconds, but the delay object uses<br/>
+		/// picoseconds.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// The values returned are calculated or estimated depending upon whether the net is routed.<br/>
+		/// Delay values can include the actual delay of routed interconnect, or estimated net delays for<br/>
+		/// unrouted nets. The net delay can also include delay through logic elements or device sites, or just<br/>
+		/// include the interconnect delay.<br/>
+		/// Note: To improve memory and performance, the get_* commands return a container list of a single type<br/>
+		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),<br/>
+		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,<br/>
+		/// or string, to the list is not permitted and will result in a Tcl error.<br/>
+		/// The get_net_delays command returns the delay objects for the specified nets, or returns an<br/>
+		/// error if it fails.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example gets the interconnect delay values for the specified net, and returns it in<br/>
+		/// the form of a delay object:<br/>
+		/// report_property -all [lindex [get_net_delays -interconnect_only \<br/>
+		/// -of_objects [get_nets control_reg[*]]] 16 ]<br/>
+		/// TIP: The FAST_MAX, FAST_MIN, SLOW_MAX, and SLOW_MIN properties on the delay object are<br/>
+		/// reported in picoseconds.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 838<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="of_objects">(Required) Get 'net_delay' objects of these types: 'net'.</param>
 		/// <param name="regexp">(Optional) Patterns are full regular expressions</param>
@@ -408,9 +501,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <param name="to">(Optional) Get the delay of the net to the given terminal(s) or port(s).</param>
 		/// <param name="interconnect_only">
-		/// (Optional)
-		/// Include only interconnect delays. The default is to include
-		/// the intra-site delay.
+		/// <para>
+		/// (Optional)<br/>
+		/// Include only interconnect delays. The default is to include<br/>
+		/// the intra-site delay.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -422,30 +517,38 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Get a list of available QoR suggestions
-		///
-		///
-		/// TCL Syntax: get_qor_suggestions [-filter <arg>] [-quiet] [-verbose] [<IDs>]
-		///
-		/// Get existing QoR suggestion objects created by the report_qor_suggestions command, or
-		/// read into the design using read_qor_suggestions. The selected QoR objects can be written
-		/// to a file using the write_qor_suggestions command. The suggestions created by the report
-		/// command remain in memory until delete_qor_suggestions is run, or until it is overwritten
-		/// by another report.
-		/// This command returns a list of existing QoR suggestion objects from the open design, or returns
-		/// an error if it fails.
-		///
-		/// To return an individual suggestion, you can supply the full ID:
-		/// get_qor_suggestions RQS_CLOCK-5_1-1
-		/// Due to the naming style of suggestions, wildcard searches do NOT work directly. However you
-		/// can use the filter command with -regexp to use wildcards as follows:
-		/// filter -regexp [get_qor_suggestions] {NAME =~ RQS_CLOCK.*}
-		/// You can also filter suggestions objects within a given category. Available categories include:
-		/// Timing, Congestion, Utilization, XDC, Clocking, and Strategy. For example, the following returns
-		/// suggestions related to the Timing category:
-		/// get_qor_suggestions -filter {CATEGORY==Timing}
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 904
+		/// <para>
+		/// Get a list of available QoR suggestions<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: get_qor_suggestions [-filter &lt;arg&gt;] [-quiet] [-verbose] [&lt;IDs&gt;]
+		/// <br/>
+		/// <para>
+		/// Get existing QoR suggestion objects created by the report_qor_suggestions command, or<br/>
+		/// read into the design using read_qor_suggestions. The selected QoR objects can be written<br/>
+		/// to a file using the write_qor_suggestions command. The suggestions created by the report<br/>
+		/// command remain in memory until delete_qor_suggestions is run, or until it is overwritten<br/>
+		/// by another report.<br/>
+		/// This command returns a list of existing QoR suggestion objects from the open design, or returns<br/>
+		/// an error if it fails.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// To return an individual suggestion, you can supply the full ID:<br/>
+		/// get_qor_suggestions RQS_CLOCK-5_1-1<br/>
+		/// Due to the naming style of suggestions, wildcard searches do NOT work directly. However you<br/>
+		/// can use the filter command with -regexp to use wildcards as follows:<br/>
+		/// filter -regexp [get_qor_suggestions] {NAME =~ RQS_CLOCK.*}<br/>
+		/// You can also filter suggestions objects within a given category. Available categories include:<br/>
+		/// Timing, Congestion, Utilization, XDC, Clocking, and Strategy. For example, the following returns<br/>
+		/// suggestions related to the Timing category:<br/>
+		/// get_qor_suggestions -filter {CATEGORY==Timing}<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 904<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -459,35 +562,43 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Get a list of timing arcs
-		///
-		///
-		/// TCL Syntax: get_timing_arcs [-from <args>] [-to <args>] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose]
-		///
-		/// Gets a list of timing arcs for the specified objects. You can filter the timing arcs according to
-		/// specified properties.
-		/// Timing arcs are a part of a timing path. A timing arc can be a wire between two pins, or can be
-		/// the internal path of a logic instance between an input pin and output pin, or clock input and data
-		/// output pins.
-		/// Note: To improve memory and performance, the get_* commands return a container list of a single type
-		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
-		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
-		/// or string, to the list is not permitted and will result in a Tcl error.
-		///
-		/// The following example returns the timing arc from the output pin of the specified buffer:
-		/// report_property -all [get_timing_arcs -of_objects [get_cells go_IBUF_inst]]
-		/// The following example returns the timing arcs of the specified cell:
-		/// get_timing_arcs -of_objects [get_cells count_reg[6]]
-		/// {count_reg[6]/C --> count_reg[6]/Q [Reg Clk to Q] }
-		/// {count_reg[6]/C --> count_reg[6]/D [setup] }
-		/// {count_reg[6]/C --> count_reg[6]/D [hold] }
-		/// {count_reg[6]/C --> count_reg[6]/CLR [recovery] }
-		/// {count_reg[6]/C --> count_reg[6]/CE [hold] }
-		/// {count_reg[6]/C --> count_reg[6]/CLR [removal] }
-		/// {count_reg[6]/C --> count_reg[6]/CE [setup] }
-		/// {count_reg[6]/CLR --> count_reg[6]/Q [Reg Set/Clr] }
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 946
+		/// <para>
+		/// Get a list of timing arcs<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: get_timing_arcs [-from &lt;args&gt;] [-to &lt;args&gt;] [-filter &lt;arg&gt;] [-of_objects &lt;args&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Gets a list of timing arcs for the specified objects. You can filter the timing arcs according to<br/>
+		/// specified properties.<br/>
+		/// Timing arcs are a part of a timing path. A timing arc can be a wire between two pins, or can be<br/>
+		/// the internal path of a logic instance between an input pin and output pin, or clock input and data<br/>
+		/// output pins.<br/>
+		/// Note: To improve memory and performance, the get_* commands return a container list of a single type<br/>
+		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),<br/>
+		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,<br/>
+		/// or string, to the list is not permitted and will result in a Tcl error.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example returns the timing arc from the output pin of the specified buffer:<br/>
+		/// report_property -all [get_timing_arcs -of_objects [get_cells go_IBUF_inst]]<br/>
+		/// The following example returns the timing arcs of the specified cell:<br/>
+		/// get_timing_arcs -of_objects [get_cells count_reg[6]]<br/>
+		/// {count_reg[6]/C --&gt; count_reg[6]/Q [Reg Clk to Q] }<br/>
+		/// {count_reg[6]/C --&gt; count_reg[6]/D [setup] }<br/>
+		/// {count_reg[6]/C --&gt; count_reg[6]/D [hold] }<br/>
+		/// {count_reg[6]/C --&gt; count_reg[6]/CLR [recovery] }<br/>
+		/// {count_reg[6]/C --&gt; count_reg[6]/CE [hold] }<br/>
+		/// {count_reg[6]/C --&gt; count_reg[6]/CLR [removal] }<br/>
+		/// {count_reg[6]/C --&gt; count_reg[6]/CE [setup] }<br/>
+		/// {count_reg[6]/CLR --&gt; count_reg[6]/Q [Reg Set/Clr] }<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 946<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="from">(Optional) List of pin or ports</param>
 		/// <param name="to">(Optional) List of pin or ports</param>
@@ -503,58 +614,66 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Get timing paths
-		///
-		///
-		/// TCL Syntax: get_timing_paths [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-delay_type <arg>] [-setup] [-hold] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-slack_lesser_than <arg>] [-slack_greater_than <arg>] [-group <args>] [-no_report_unconstrained] [-user_ignored] [-routable_nets] [-sort_by <arg>] [-filter <arg>] [-regexp] [-nocase] [-cell <args>] [-quiet] [-verbose]
-		///
-		/// Gets timing path objects that meet the specified criteria. This command can be used to predefine
-		/// timing paths to pass to the report_timing command for instance. Another usage of this
-		/// command is to create custom reporting and analysis.
-		/// The get_timing_paths command is very similar to the report_timing command.
-		/// However, get_timing_paths returns timing path objects which can be queried for properties,
-		/// or passed to other Tcl commands for processing, where report_timing returns a file or a
-		/// string.
-		/// Note: To improve memory and performance, the get_* commands return a container list of a single type
-		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),
-		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,
-		/// or string, to the list is not permitted and will result in a Tcl error.
-		///
-		/// The following example gets the five worst timing paths from the specified endpoint, and reports
-		/// all the properties of the fourth timing path in the list:
-		/// report_property -all [lindex [get_timing_paths -to [get_ports led_pins[*]]
-		/// \
-		/// -nworst 5] 3]
-		/// The following example defines a procedure called custom_report, then reports the 100 worst
-		/// paths from the clk_tx_clk_core_1 path group using that proc:
-		/// proc custom_report { listOfPaths } {
-		/// puts [format {%-40s %-40s %-20s %-20s %7s} "Startpoint" "Endpoint" \
-		/// "Launch Clock" "Capture Clock" "Slack"]
-		/// puts [string repeat "-" 140]
-		/// foreach path $listOfPaths {
-		/// set startpoint [get_property STARTPOINT_PIN $path]
-		/// set startclock [get_property STARTPOINT_CLOCK $path]
-		/// set endpoint [get_property ENDPOINT_PIN $path]
-		/// set endclock [get_property ENDPOINT_CLOCK $path]
-		/// set slack [get_property SLACK $path]
-		/// puts [format {%-40s %-40s %-20s %-20s %7s} $startpoint $endpoint \
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// $startclock $endclock $slack]
-		/// }
-		/// }
-		/// set paths [get_timing_paths -group clk_tx_clk_core_1 -max_paths 100]\
-		/// custom_report $path
-		/// The following example illustrates how timing path objects can be used with the
-		/// report_timing command:
-		/// set paths [get_timing_paths -group clk_tx_clk_core_1 -max_paths 100]
-		/// report_timing -of_objects $paths
-		/// Which is the equivalent of:
-		/// report_timing -group clk_tx_clk_core_1 -max_paths 100
-		/// The following example returns timing paths where the logic levels are greater than the specified
-		/// number of logic levels:
-		/// get_timing_paths -max_paths 1000 -filter {LOGIC_LEVELS > 1}
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 949
+		/// <para>
+		/// Get timing paths<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: get_timing_paths [-from &lt;args&gt;] [-rise_from &lt;args&gt;] [-fall_from &lt;args&gt;] [-to &lt;args&gt;] [-rise_to &lt;args&gt;] [-fall_to &lt;args&gt;] [-through &lt;args&gt;] [-rise_through &lt;args&gt;] [-fall_through &lt;args&gt;] [-delay_type &lt;arg&gt;] [-setup] [-hold] [-max_paths &lt;arg&gt;] [-nworst &lt;arg&gt;] [-unique_pins] [-slack_lesser_than &lt;arg&gt;] [-slack_greater_than &lt;arg&gt;] [-group &lt;args&gt;] [-no_report_unconstrained] [-user_ignored] [-routable_nets] [-sort_by &lt;arg&gt;] [-filter &lt;arg&gt;] [-regexp] [-nocase] [-cell &lt;args&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Gets timing path objects that meet the specified criteria. This command can be used to predefine<br/>
+		/// timing paths to pass to the report_timing command for instance. Another usage of this<br/>
+		/// command is to create custom reporting and analysis.<br/>
+		/// The get_timing_paths command is very similar to the report_timing command.<br/>
+		/// However, get_timing_paths returns timing path objects which can be queried for properties,<br/>
+		/// or passed to other Tcl commands for processing, where report_timing returns a file or a<br/>
+		/// string.<br/>
+		/// Note: To improve memory and performance, the get_* commands return a container list of a single type<br/>
+		/// of objects (e.g. cells, nets, pins, or ports). You can add new objects to the list (using lappend for instance),<br/>
+		/// but you can only add the same type of object that is currently in the list. Adding a different type of object,<br/>
+		/// or string, to the list is not permitted and will result in a Tcl error.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example gets the five worst timing paths from the specified endpoint, and reports<br/>
+		/// all the properties of the fourth timing path in the list:<br/>
+		/// report_property -all [lindex [get_timing_paths -to [get_ports led_pins[*]]<br/>
+		/// \<br/>
+		/// -nworst 5] 3]<br/>
+		/// The following example defines a procedure called custom_report, then reports the 100 worst<br/>
+		/// paths from the clk_tx_clk_core_1 path group using that proc:<br/>
+		/// proc custom_report { listOfPaths } {<br/>
+		/// puts [format {%-40s %-40s %-20s %-20s %7s} "Startpoint" "Endpoint" \<br/>
+		/// "Launch Clock" "Capture Clock" "Slack"]<br/>
+		/// puts [string repeat "-" 140]<br/>
+		/// foreach path $listOfPaths {<br/>
+		/// set startpoint [get_property STARTPOINT_PIN $path]<br/>
+		/// set startclock [get_property STARTPOINT_CLOCK $path]<br/>
+		/// set endpoint [get_property ENDPOINT_PIN $path]<br/>
+		/// set endclock [get_property ENDPOINT_CLOCK $path]<br/>
+		/// set slack [get_property SLACK $path]<br/>
+		/// puts [format {%-40s %-40s %-20s %-20s %7s} $startpoint $endpoint \<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// $startclock $endclock $slack]<br/>
+		/// }<br/>
+		/// }<br/>
+		/// set paths [get_timing_paths -group clk_tx_clk_core_1 -max_paths 100]\<br/>
+		/// custom_report $path<br/>
+		/// The following example illustrates how timing path objects can be used with the<br/>
+		/// report_timing command:<br/>
+		/// set paths [get_timing_paths -group clk_tx_clk_core_1 -max_paths 100]<br/>
+		/// report_timing -of_objects $paths<br/>
+		/// Which is the equivalent of:<br/>
+		/// report_timing -group clk_tx_clk_core_1 -max_paths 100<br/>
+		/// The following example returns timing paths where the logic levels are greater than the specified<br/>
+		/// number of logic levels:<br/>
+		/// get_timing_paths -max_paths 1000 -filter {LOGIC_LEVELS &gt; 1}<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 949<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="from">(Optional) From pins, ports, cells or clocks</param>
 		/// <param name="rise_from">(Optional) Rising from pins, ports, cells or clocks</param>
@@ -566,41 +685,51 @@ namespace Quokka.TCL.Vivado
 		/// <param name="rise_through">(Optional) Rising through pins, ports, cells or nets</param>
 		/// <param name="fall_through">(Optional) Falling through pins, ports, cells or nets</param>
 		/// <param name="delay_type">
-		/// (Optional)
-		/// Type of path delay: Values: max, min, min_max, max_rise,
-		/// max_fall, min_rise, min_fall Default: max
+		/// <para>
+		/// (Optional)<br/>
+		/// Type of path delay: Values: max, min, min_max, max_rise,<br/>
+		/// max_fall, min_rise, min_fall Default: max<br/>
+		/// </para>
 		/// </param>
 		/// <param name="setup">(Optional) Get max delay timing paths (equivalent to -delay_type max)</param>
 		/// <param name="hold">(Optional) Get min delay timing paths (equivalent to -delay_type min)</param>
-		/// <param name="max_paths">(Optional) Maximum number of paths to return: Value >=1 Default: 1</param>
-		/// <param name="nworst">(Optional) List N worst paths to endpoint: Value >=1 Default: 1</param>
+		/// <param name="max_paths">(Optional) Maximum number of paths to return: Value &gt;=1 Default: 1</param>
+		/// <param name="nworst">(Optional) List N worst paths to endpoint: Value &gt;=1 Default: 1</param>
 		/// <param name="unique_pins">(Optional) for each unique set of pins, show at most 1 path per path group</param>
 		/// <param name="slack_lesser_than">(Optional) Include paths with slack less than this Default: 1e+30</param>
 		/// <param name="slack_greater_than">(Optional) Include paths with slack greater than this Default: -1e+30</param>
 		/// <param name="group">(Optional) Limit paths in this group(s)</param>
 		/// <param name="no_report_unconstrained">(Optional) Do not get unconstrained paths</param>
 		/// <param name="user_ignored">
-		/// (Optional)
-		/// only report paths which have infinite slack because of
-		/// set_false_path or set_clock_groups timing constraints
+		/// <para>
+		/// (Optional)<br/>
+		/// only report paths which have infinite slack because of<br/>
+		/// set_false_path or set_clock_groups timing constraints<br/>
+		/// </para>
 		/// </param>
 		/// <param name="routable_nets">
-		/// (Optional)
-		/// store the number of routable nets traversed as a property
-		/// on timing paths.
+		/// <para>
+		/// (Optional)<br/>
+		/// store the number of routable nets traversed as a property<br/>
+		/// on timing paths.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="sort_by">(Optional) Sorting order of paths: Values: group, slack Default: slack</param>
 		/// <param name="filter">
-		/// (Optional)
-		/// Filter list with expression
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// Name Description
+		/// <para>
+		/// (Optional)<br/>
+		/// Filter list with expression<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// Name Description<br/>
+		/// </para>
 		/// </param>
 		/// <param name="regexp">(Optional) Patterns specified in filter are full regular expressions</param>
 		/// <param name="nocase">
-		/// (Optional)
-		/// Perform case-insensitive matching for patterns specified in
-		/// filter (valid only when -regexp specified)
+		/// <para>
+		/// (Optional)<br/>
+		/// Perform case-insensitive matching for patterns specified in<br/>
+		/// filter (valid only when -regexp specified)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="cell">(Optional) run get_timing_paths on the cell</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -612,25 +741,35 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Read QoR Suggestions from the given file
-		///
-		///
-		/// TCL Syntax: read_qor_suggestions [-quiet] [-verbose] <file>
-		///
-		/// Read the specified file and extract the QoR suggestions from the file.
-		/// This command returns the name of the QoR file read, or returns an error if it fails.
-		///
-		/// The following example reads the QoR suggestions from the specified file, and then reports the
-		/// QoR suggestions in the open design:
-		/// read_qor_suggestions C:/Data/qor_results.rqs
-		/// report_qor_suggestions -of_objects [get_qor_suggestions]
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1174
+		/// <para>
+		/// Read QoR Suggestions from the given file<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: read_qor_suggestions [-quiet] [-verbose] &lt;file&gt;
+		/// <br/>
+		/// <para>
+		/// Read the specified file and extract the QoR suggestions from the file.<br/>
+		/// This command returns the name of the QoR file read, or returns an error if it fails.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example reads the QoR suggestions from the specified file, and then reports the<br/>
+		/// QoR suggestions in the open design:<br/>
+		/// read_qor_suggestions C:/Data/qor_results.rqs<br/>
+		/// report_qor_suggestions -of_objects [get_qor_suggestions]<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1174<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">
-		/// (Required)
-		/// QoR suggestions file Values: Path to the QoR suggestions
-		/// file, typically ending with .rqs.
+		/// <para>
+		/// (Required)<br/>
+		/// QoR suggestions file Values: Path to the QoR suggestions<br/>
+		/// file, typically ending with .rqs.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -641,68 +780,90 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Report timing paths
-		///
-		///
-		/// TCL Syntax: report_bus_skew [-delay_type <arg>] [-setup] [-hold] [-no_detailed_paths] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-path_type <arg>] [-sort_by_slack] [-input_pins] [-no_header] [-significant_digits <arg>] [-file <arg>] [-append] [-return_string] [-warn_on_violation] [-rpx <arg>] [-cells <args>] [-quiet] [-verbose]
-		///
-		/// Report the calculated bus skew among the signals constrained by set_bus_skew.
-		/// The bus skew requirement applies to both the slow and fast corners. The Vivado tool determines
-		/// the earliest and the latest arrival among all the signals of the bus and calculates the bus skew for
-		/// both the Slow and Fast process corner, and reports the worst case skew. Each signal of the bus is
-		/// reported relative to a reference signal from the same bus. Note that the reference signal can be
-		/// different for each signal of the bus, which ever results in the worst bus skew for that signal.
-		/// The bus skew report can be written to the Tcl console or command shell, assigned to a return
-		/// string, or saved to a file.
-		/// This command returns the bus skew report as specified, or returns an error if it fails.
-		///
-		/// The following example reports the bus skew for the 32 worst signals of each bus skew
-		/// constraints in the design, reporting 1 path per bit of the bus with the full timing path, including
-		/// input pins, with timing values:
-		/// report_bus_skew -max 32 -nworst 1 -path_type full -input_pins
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1297
+		/// <para>
+		/// Report timing paths<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_bus_skew [-delay_type &lt;arg&gt;] [-setup] [-hold] [-no_detailed_paths] [-max_paths &lt;arg&gt;] [-nworst &lt;arg&gt;] [-unique_pins] [-path_type &lt;arg&gt;] [-sort_by_slack] [-input_pins] [-no_header] [-significant_digits &lt;arg&gt;] [-file &lt;arg&gt;] [-append] [-return_string] [-warn_on_violation] [-rpx &lt;arg&gt;] [-cells &lt;args&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Report the calculated bus skew among the signals constrained by set_bus_skew.<br/>
+		/// The bus skew requirement applies to both the slow and fast corners. The Vivado tool determines<br/>
+		/// the earliest and the latest arrival among all the signals of the bus and calculates the bus skew for<br/>
+		/// both the Slow and Fast process corner, and reports the worst case skew. Each signal of the bus is<br/>
+		/// reported relative to a reference signal from the same bus. Note that the reference signal can be<br/>
+		/// different for each signal of the bus, which ever results in the worst bus skew for that signal.<br/>
+		/// The bus skew report can be written to the Tcl console or command shell, assigned to a return<br/>
+		/// string, or saved to a file.<br/>
+		/// This command returns the bus skew report as specified, or returns an error if it fails.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example reports the bus skew for the 32 worst signals of each bus skew<br/>
+		/// constraints in the design, reporting 1 path per bit of the bus with the full timing path, including<br/>
+		/// input pins, with timing values:<br/>
+		/// report_bus_skew -max 32 -nworst 1 -path_type full -input_pins<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1297<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="delay_type">(Optional) Type of path delay: Values: max, min, min_max Default: min_max</param>
 		/// <param name="setup">
-		/// (Optional)
-		/// Report max delay endpoint timing paths (equivalent to -
-		/// delay_type max)
+		/// <para>
+		/// (Optional)<br/>
+		/// Report max delay endpoint timing paths (equivalent to -<br/>
+		/// delay_type max)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="hold">
-		/// (Optional)
-		/// Report min delay endpoint timing paths (equivalent to -
-		/// delay_type min)
+		/// <para>
+		/// (Optional)<br/>
+		/// Report min delay endpoint timing paths (equivalent to -<br/>
+		/// delay_type min)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="no_detailed_paths">(Optional) Only report top level summary table</param>
 		/// <param name="max_paths">
-		/// (Optional)
-		/// Maximum number of paths to output per bus skew
-		/// constraint: Value >=1 Default: 1
+		/// <para>
+		/// (Optional)<br/>
+		/// Maximum number of paths to output per bus skew<br/>
+		/// constraint: Value &gt;=1 Default: 1<br/>
+		/// </para>
 		/// </param>
 		/// <param name="nworst">
-		/// (Optional)
-		/// List up to N worst paths per endpoint per constraint: Value
-		/// >=1 Default: 1
+		/// <para>
+		/// (Optional)<br/>
+		/// List up to N worst paths per endpoint per constraint: Value<br/>
+		/// &gt;=1 Default: 1<br/>
+		/// </para>
 		/// </param>
 		/// <param name="unique_pins">
-		/// (Optional)
-		/// For each unique set of pins, show at most 1 path per bus
-		/// skew constraint
+		/// <para>
+		/// (Optional)<br/>
+		/// For each unique set of pins, show at most 1 path per bus<br/>
+		/// skew constraint<br/>
+		/// </para>
 		/// </param>
 		/// <param name="path_type">
-		/// (Optional)
-		/// Format for path report: Values: short, full, full_clock,
-		/// full_clock_expanded Default: full_clock_expanded
+		/// <para>
+		/// (Optional)<br/>
+		/// Format for path report: Values: short, full, full_clock,<br/>
+		/// full_clock_expanded Default: full_clock_expanded<br/>
+		/// </para>
 		/// </param>
 		/// <param name="sort_by_slack">(Optional) Sort summary and per-constraint sections by slack</param>
 		/// <param name="input_pins">(Optional) Show input pins in path</param>
 		/// <param name="no_header">(Optional) Do not generate a report header</param>
 		/// <param name="significant_digits">(Optional) Number of digits to display: Range: 0 to 3 Default: 3</param>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
 		/// <param name="return_string">(Optional) Return report as string</param>
@@ -711,9 +872,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cells">(Optional) run report_bus_skew on the specified hierarchical cell(s)</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">
-		/// (Optional)
-		/// Suspend message limits during command execution
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// <para>
+		/// (Optional)<br/>
+		/// Suspend message limits during command execution<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// </para>
 		/// </param>
 		public TTCL report_bus_skew(report_bus_skew_delay_type? delay_type = null, bool? setup = null, bool? hold = null, bool? no_detailed_paths = null, Int32? max_paths = null, String nworst = null, bool? unique_pins = null, report_bus_skew_path_type? path_type = null, bool? sort_by_slack = null, bool? input_pins = null, bool? no_header = null, Int32? significant_digits = null, String file = null, bool? append = null, bool? return_string = null, bool? warn_on_violation = null, String rpx = null, TCLParameterList cells = null, bool? quiet = null, bool? verbose = null)
 		{
@@ -722,50 +885,58 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Report the clock domain crossing (CDC) paths in the current design.
-		///
-		///
-		/// TCL Syntax: report_cdc [-from <args>] [-to <args>] [-cells <args>] [-details] [-summary] [-all_checks_per_endpoint] [-severity <arg>] [-no_header] [-show_waiver] [-no_waiver] [-waived] [-file <arg>] [-append] [-return_string] [-name <arg>] [-quiet] [-verbose]
-		///
-		/// This report shows in detail the clock domain crossing (CDC) paths in the current synthesized or
-		/// implemented design. The command analyzes paths between asynchronous clocks, or clocks with
-		/// no common period, as well as synchronous paths ignored by the user due to false path or max
-		/// delay datapath_only exceptions.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// By default the report_cdc command reports domain crossing between all clocks in the design.
-		/// However, you can limit the clocks of interest using the -from and -to options to specify the
-		/// clock domains of interest.
-		/// The report_cdc command only reports on paths where both source and destination clocks are
-		/// defined. You should run the check_timing command prior to report_cdc to ensure that
-		/// there are no unconstrained clocks in the design. I/O paths are only covered by report_cdc
-		/// when input or output delay constraints have been specified on the I/O ports.
-		/// The severity of the path report could be Critical, Warning or Info depending on the CDC
-		/// topology identified. An unknown synchronization topology is Critical and needs to be reviewed.
-		/// A double register synchronizer with missing ASYNC_REG property is a Warning. Clock Enable,
-		/// MUX, and MUX Hold CDC structures are categorized as Warnings because you should check to
-		/// ensure that the structure is safe. Other CDC paths are of severity Info.
-		/// The report_cdc command returns the following information:
-		/// • Severity
-		/// • Source Clock
-		/// • Destination Clock
-		/// • CDC Type
-		/// • Exceptions
-		/// • Endpoints
-		/// • Safe
-		/// • Unknown
-		/// • No ASYNC_REG property
-		/// IMPORTANT! You cannot use the set_msg_config command to configure the severity of messages
-		/// returned by the report_cdc command. This command does not generate messages through the
-		/// message manager.
-		///
-		/// The following example reports the clock domain crossings in the current design, including any
-		/// waived paths, using a verbose report form, and saving the results to a file:
-		/// report_cdc -details -show_waiver -file C:/Data/cdc_report.txt
-		/// The following example reports the clock domain crossings from a clock specified by name, to
-		/// another specified as a clock object:
-		/// report_cdc -from clk_pin_p -to [get_clocks clk_rx_clk_core]
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1303
+		/// <para>
+		/// Report the clock domain crossing (CDC) paths in the current design.<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_cdc [-from &lt;args&gt;] [-to &lt;args&gt;] [-cells &lt;args&gt;] [-details] [-summary] [-all_checks_per_endpoint] [-severity &lt;arg&gt;] [-no_header] [-show_waiver] [-no_waiver] [-waived] [-file &lt;arg&gt;] [-append] [-return_string] [-name &lt;arg&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// This report shows in detail the clock domain crossing (CDC) paths in the current synthesized or<br/>
+		/// implemented design. The command analyzes paths between asynchronous clocks, or clocks with<br/>
+		/// no common period, as well as synchronous paths ignored by the user due to false path or max<br/>
+		/// delay datapath_only exceptions.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// By default the report_cdc command reports domain crossing between all clocks in the design.<br/>
+		/// However, you can limit the clocks of interest using the -from and -to options to specify the<br/>
+		/// clock domains of interest.<br/>
+		/// The report_cdc command only reports on paths where both source and destination clocks are<br/>
+		/// defined. You should run the check_timing command prior to report_cdc to ensure that<br/>
+		/// there are no unconstrained clocks in the design. I/O paths are only covered by report_cdc<br/>
+		/// when input or output delay constraints have been specified on the I/O ports.<br/>
+		/// The severity of the path report could be Critical, Warning or Info depending on the CDC<br/>
+		/// topology identified. An unknown synchronization topology is Critical and needs to be reviewed.<br/>
+		/// A double register synchronizer with missing ASYNC_REG property is a Warning. Clock Enable,<br/>
+		/// MUX, and MUX Hold CDC structures are categorized as Warnings because you should check to<br/>
+		/// ensure that the structure is safe. Other CDC paths are of severity Info.<br/>
+		/// The report_cdc command returns the following information:<br/>
+		/// • Severity<br/>
+		/// • Source Clock<br/>
+		/// • Destination Clock<br/>
+		/// • CDC Type<br/>
+		/// • Exceptions<br/>
+		/// • Endpoints<br/>
+		/// • Safe<br/>
+		/// • Unknown<br/>
+		/// • No ASYNC_REG property<br/>
+		/// IMPORTANT! You cannot use the set_msg_config command to configure the severity of messages<br/>
+		/// returned by the report_cdc command. This command does not generate messages through the<br/>
+		/// message manager.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example reports the clock domain crossings in the current design, including any<br/>
+		/// waived paths, using a verbose report form, and saving the results to a file:<br/>
+		/// report_cdc -details -show_waiver -file C:/Data/cdc_report.txt<br/>
+		/// The following example reports the clock domain crossings from a clock specified by name, to<br/>
+		/// another specified as a clock object:<br/>
+		/// report_cdc -from clk_pin_p -to [get_clocks clk_rx_clk_core]<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1303<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="from">(Optional) From clocks</param>
 		/// <param name="to">(Optional) To clocks</param>
@@ -779,9 +950,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="no_waiver">(Optional) Ignore the waiver</param>
 		/// <param name="waived">(Optional) Show only the waived paths</param>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
 		/// <param name="return_string">(Optional) return report as string</param>
@@ -795,30 +968,38 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Report on clock timing paths and unclocked registers
-		///
-		///
-		/// TCL Syntax: report_clock_interaction [-delay_type <arg>] [-setup] [-hold] [-significant_digits <arg>] [-no_header] [-file <arg>] [-append] [-name <arg>] [-return_string] [-cells <args>] [-quiet] [-verbose]
-		///
-		/// Reports clock interactions and signals that cross clock domains to identify potential problems
-		/// such a metastability, or data loss, or incoherency, where some visibility into the paths that cross
-		/// clock domains is beneficial. This command requires an open synthesized or implemented design.
-		/// Note: By default the report is written to the Tcl console or STD output. However, the results can also be
-		/// written to a file or returned as a string if desired.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		///
-		/// The following example sets the model for interconnect delay, selects a device speed grade, and
-		/// then runs report_clock_interaction:
-		/// set_delay_model -interconnect none
-		/// set_speed_grade -3
-		/// report_clock_interaction -delay_type min_max \
-		/// -significant_digits 3 -name "results_1"
-		/// The following example returns the clock interactions, writing the report to the GUI, to the
-		/// specified file, and returns a string which is assigned to the specified variable:
-		/// set clk_int [report_clock_interaction -file clk_int.txt -name clk_int1 \
-		/// -return_string]
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1307
+		/// <para>
+		/// Report on clock timing paths and unclocked registers<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_clock_interaction [-delay_type &lt;arg&gt;] [-setup] [-hold] [-significant_digits &lt;arg&gt;] [-no_header] [-file &lt;arg&gt;] [-append] [-name &lt;arg&gt;] [-return_string] [-cells &lt;args&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Reports clock interactions and signals that cross clock domains to identify potential problems<br/>
+		/// such a metastability, or data loss, or incoherency, where some visibility into the paths that cross<br/>
+		/// clock domains is beneficial. This command requires an open synthesized or implemented design.<br/>
+		/// Note: By default the report is written to the Tcl console or STD output. However, the results can also be<br/>
+		/// written to a file or returned as a string if desired.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example sets the model for interconnect delay, selects a device speed grade, and<br/>
+		/// then runs report_clock_interaction:<br/>
+		/// set_delay_model -interconnect none<br/>
+		/// set_speed_grade -3<br/>
+		/// report_clock_interaction -delay_type min_max \<br/>
+		/// -significant_digits 3 -name "results_1"<br/>
+		/// The following example returns the clock interactions, writing the report to the GUI, to the<br/>
+		/// specified file, and returns a string which is assigned to the specified variable:<br/>
+		/// set clk_int [report_clock_interaction -file clk_int.txt -name clk_int1 \<br/>
+		/// -return_string]<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1307<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="delay_type">(Optional) Type of path delay: Values: max, min, min_max Default: max</param>
 		/// <param name="setup">(Optional) Consider max delay timing paths (equivalent to -delay_type max)</param>
@@ -826,9 +1007,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="significant_digits">(Optional) Number of digits to display: Range: 0 to 3 Default: 2</param>
 		/// <param name="no_header">(Optional) do not generate a report header</param>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
@@ -843,68 +1026,90 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Report clock networks
-		///
-		///
-		/// TCL Syntax: report_clock_networks [-file <arg>] [-append] [-name <arg>] [-return_string] [-endpoints_only] [-levels <arg>] [-expand_buckets] [-suppress_endpoints <arg>] [-clocks <args>] [-unconstrained_roots <args>] [-quiet] [-verbose]
-		///
-		/// Reports the network fanout of each clock net in the open synthesized or implemented design.
-		/// The graphical form of the report, returned when the -name argument is specified, provides a
-		/// hierarchical tree view of the clock network.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// The default report simply specifies the clock net names and the instance pins that are the
-		/// startpoint of the clock.
-		/// The report is returned to the standard output unless the -file, -return_string, or -name
-		/// arguments are specified.
-		///
-		/// The following example reports the clock network names and startpoints to the specified file:
-		/// report_clock_networks -file C:/Data/ClkNets.txt
-		/// The following example reports the endpoints of the specified clock:
-		/// report_clock_networks -endpoints_only -clocks wbClk
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1310
+		/// <para>
+		/// Report clock networks<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_clock_networks [-file &lt;arg&gt;] [-append] [-name &lt;arg&gt;] [-return_string] [-endpoints_only] [-levels &lt;arg&gt;] [-expand_buckets] [-suppress_endpoints &lt;arg&gt;] [-clocks &lt;args&gt;] [-unconstrained_roots &lt;args&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Reports the network fanout of each clock net in the open synthesized or implemented design.<br/>
+		/// The graphical form of the report, returned when the -name argument is specified, provides a<br/>
+		/// hierarchical tree view of the clock network.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// The default report simply specifies the clock net names and the instance pins that are the<br/>
+		/// startpoint of the clock.<br/>
+		/// The report is returned to the standard output unless the -file, -return_string, or -name<br/>
+		/// arguments are specified.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example reports the clock network names and startpoints to the specified file:<br/>
+		/// report_clock_networks -file C:/Data/ClkNets.txt<br/>
+		/// The following example reports the endpoints of the specified clock:<br/>
+		/// report_clock_networks -endpoints_only -clocks wbClk<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1310<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="endpoints_only">
-		/// (Optional)
-		/// dump clock network endpoints only; Not to be used in
-		/// conjunction with -levels option
+		/// <para>
+		/// (Optional)<br/>
+		/// dump clock network endpoints only; Not to be used in<br/>
+		/// conjunction with -levels option<br/>
+		/// </para>
 		/// </param>
 		/// <param name="levels">
-		/// (Optional)
-		/// expands clock network upto n levels of instances, Value: n >
-		/// 0; Not to be used in conjunction with -endpoints_only option
-		/// Default: 0
+		/// <para>
+		/// (Optional)<br/>
+		/// expands clock network upto n levels of instances, Value: n &gt;<br/>
+		/// 0; Not to be used in conjunction with -endpoints_only option<br/>
+		/// Default: 0<br/>
+		/// </para>
 		/// </param>
 		/// <param name="expand_buckets">
-		/// (Optional)
-		/// expands bucketed endpoints and displays pins; By default,
-		/// endpoint pins are bucketed by celltype; This option only
-		/// works in conjunction with -levels option or -endpoints_only
-		/// option
+		/// <para>
+		/// (Optional)<br/>
+		/// expands bucketed endpoints and displays pins; By default,<br/>
+		/// endpoint pins are bucketed by celltype; This option only<br/>
+		/// works in conjunction with -levels option or -endpoints_only<br/>
+		/// option<br/>
+		/// </para>
 		/// </param>
 		/// <param name="suppress_endpoints">
-		/// (Optional)
-		/// suppress paths to clock or nonclock endpoint pins; Values:
-		/// clock, nonclock
+		/// <para>
+		/// (Optional)<br/>
+		/// suppress paths to clock or nonclock endpoint pins; Values:<br/>
+		/// clock, nonclock<br/>
+		/// </para>
 		/// </param>
 		/// <param name="clocks">
-		/// (Optional)
-		/// List of clocks for clock network dump; if not specified, all
-		/// clock networks are dumped
+		/// <para>
+		/// (Optional)<br/>
+		/// List of clocks for clock network dump; if not specified, all<br/>
+		/// clock networks are dumped<br/>
+		/// </para>
 		/// </param>
 		/// <param name="unconstrained_roots">
-		/// (Optional)
-		/// List of unconstrained root pins/ports for clock network
-		/// dump; if not specified, all unconstrained clock roots are
-		/// dumped
+		/// <para>
+		/// (Optional)<br/>
+		/// List of unconstrained root pins/ports for clock network<br/>
+		/// dump; if not specified, all unconstrained clock roots are<br/>
+		/// dumped<br/>
+		/// </para>
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -915,40 +1120,50 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Report information about clock nets in design
-		///
-		///
-		/// TCL Syntax: report_clock_utilization [-file <arg>] [-append] [-write_xdc <arg>] [-cells <args>] [-clock_roots_only] [-return_string] [-name <arg>] [-quiet] [-verbose]
-		///
-		/// Returns information related to clock nets in the design and clock resource usage on the target
-		/// device.
-		/// The generated clock utilization report can generate placement constraints for the currently
-		/// placed clock resources. You can use these constraints to preserve the placement of clock
-		/// resources for future iterations of the design, by using the -write_xdc option.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// IMPORTANT! For Ultrascale devices, if the intent is to recreate the current clock placement then use the
-		/// BUFGCE LOC properties from the written XDC file. However, if the intent is to use the constraints as a
-		/// starting point for the clocking architecture, while allowing the Vivado Design Suite some flexibility in
-		/// placing clock resources, use the equivalent CLOCK_REGION properties instead of the BUFGCE LOC
-		/// properties.
-		/// By default the report is written to the Tcl console or STD output. However, the results can also
-		/// be written to a file or returned as a string if desired.
-		///
-		/// The following example returns information about the clock nets in the design and the clock
-		/// resources utilized on the target device, and writes it to the specified file:
-		/// report_clock_utilization -file C:/Data/FPGA_Design/clock_util.txt
-		/// The following example reports the clock nets and clock resource utilization to the standard
-		/// output, but writes the XDC location constraints to the specified file:
-		/// report_clock_utilization -write_xdc clock_util_xdc.txt
-		/// Note: Because the path is not specified as part of the XDC file name, the file will be created in the current
-		/// working directory, or the directory from which the tool was launched.
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1313
+		/// <para>
+		/// Report information about clock nets in design<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_clock_utilization [-file &lt;arg&gt;] [-append] [-write_xdc &lt;arg&gt;] [-cells &lt;args&gt;] [-clock_roots_only] [-return_string] [-name &lt;arg&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Returns information related to clock nets in the design and clock resource usage on the target<br/>
+		/// device.<br/>
+		/// The generated clock utilization report can generate placement constraints for the currently<br/>
+		/// placed clock resources. You can use these constraints to preserve the placement of clock<br/>
+		/// resources for future iterations of the design, by using the -write_xdc option.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// IMPORTANT! For Ultrascale devices, if the intent is to recreate the current clock placement then use the<br/>
+		/// BUFGCE LOC properties from the written XDC file. However, if the intent is to use the constraints as a<br/>
+		/// starting point for the clocking architecture, while allowing the Vivado Design Suite some flexibility in<br/>
+		/// placing clock resources, use the equivalent CLOCK_REGION properties instead of the BUFGCE LOC<br/>
+		/// properties.<br/>
+		/// By default the report is written to the Tcl console or STD output. However, the results can also<br/>
+		/// be written to a file or returned as a string if desired.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example returns information about the clock nets in the design and the clock<br/>
+		/// resources utilized on the target device, and writes it to the specified file:<br/>
+		/// report_clock_utilization -file C:/Data/FPGA_Design/clock_util.txt<br/>
+		/// The following example reports the clock nets and clock resource utilization to the standard<br/>
+		/// output, but writes the XDC location constraints to the specified file:<br/>
+		/// report_clock_utilization -write_xdc clock_util_xdc.txt<br/>
+		/// Note: Because the path is not specified as part of the XDC file name, the file will be created in the current<br/>
+		/// working directory, or the directory from which the tool was launched.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1313<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="append">(Optional) Append to existing file</param>
 		/// <param name="write_xdc">(Optional) file to output clock constraint. File name must be given.</param>
@@ -966,30 +1181,40 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Report clocks
-		///
-		///
-		/// TCL Syntax: report_clocks [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] [<clocks>]
-		///
-		/// Returns a table showing all the clocks in a design, including propagated clocks, generated and
-		/// auto-generated clocks, virtual clocks, and inverted clocks in the current synthesized or
-		/// implemented design. More detailed information about each clock net can be obtained with the
-		/// report_clock_utilization command.
-		/// Note: By default the report is written to the Tcl console or STD output. However, the results can also be
-		/// written to a file or returned as a string if desired.
-		///
-		/// The following example returns the name, period, waveform, and sources of the clocks in the
-		/// current design:
-		/// report_clocks -file C:/Data/FPGA_Design/clock_out.txt
-		/// The following example reports the clocks in the design with "Clock" in the name:
-		/// report_clocks *Clock*
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1316
+		/// <para>
+		/// Report clocks<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_clocks [-file &lt;arg&gt;] [-append] [-return_string] [-quiet] [-verbose] [&lt;clocks&gt;]
+		/// <br/>
+		/// <para>
+		/// Returns a table showing all the clocks in a design, including propagated clocks, generated and<br/>
+		/// auto-generated clocks, virtual clocks, and inverted clocks in the current synthesized or<br/>
+		/// implemented design. More detailed information about each clock net can be obtained with the<br/>
+		/// report_clock_utilization command.<br/>
+		/// Note: By default the report is written to the Tcl console or STD output. However, the results can also be<br/>
+		/// written to a file or returned as a string if desired.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example returns the name, period, waveform, and sources of the clocks in the<br/>
+		/// current design:<br/>
+		/// report_clocks -file C:/Data/FPGA_Design/clock_out.txt<br/>
+		/// The following example reports the clocks in the design with "Clock" in the name:<br/>
+		/// report_clocks *Clock*<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1316<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
 		/// <param name="return_string">(Optional) return report as string</param>
@@ -1003,30 +1228,40 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Report settings affecting timing analysis
-		///
-		///
-		/// TCL Syntax: report_config_timing [-file <arg>] [-append] [-name <arg>] [-return_string] [-all] [-no_header] [-rpx <arg>] [-quiet] [-verbose]
-		///
-		/// Report the configuration of timing constraints of the current design.
-		/// By default the report is abbreviated, containing only a few key timing constraints. Use the -all
-		/// argument to return all timing related configuration.
-		///
-		/// The following example reports the current timing configuration, returns the information as a
-		/// string, and sets that string into the specified Tcl variable:
-		/// set timeConfig [report_config_timing -all -no_header -return_string]
-		/// puts $timeConfig
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1325
+		/// <para>
+		/// Report settings affecting timing analysis<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_config_timing [-file &lt;arg&gt;] [-append] [-name &lt;arg&gt;] [-return_string] [-all] [-no_header] [-rpx &lt;arg&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Report the configuration of timing constraints of the current design.<br/>
+		/// By default the report is abbreviated, containing only a few key timing constraints. Use the -all<br/>
+		/// argument to return all timing related configuration.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example reports the current timing configuration, returns the information as a<br/>
+		/// string, and sets that string into the specified Tcl variable:<br/>
+		/// set timeConfig [report_config_timing -all -no_header -return_string]<br/>
+		/// puts $timeConfig<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1325<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">(Optional) Output the results to file</param>
 		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="all">
-		/// (Optional)
-		/// report all configuration settings (by default, only the
-		/// typically important settings are reported
+		/// <para>
+		/// (Optional)<br/>
+		/// report all configuration settings (by default, only the<br/>
+		/// typically important settings are reported<br/>
+		/// </para>
 		/// </param>
 		/// <param name="no_header">(Optional) do not generate a report header</param>
 		/// <param name="rpx">(Optional) Filename to output interactive results to.</param>
@@ -1039,41 +1274,51 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Report data sheet
-		///
-		///
-		/// TCL Syntax: report_datasheet [-significant_digits <arg>] [-file <arg>] [-append] [-return_string] [-sort_by <arg>] [-name <arg>] [-show_all_corners] [-show_oe_timing] [-group <args>] [-rpx <arg>] [-quiet] [-verbose]
-		///
-		/// Create a "datasheet" report for the current design. Reports setup and hold times of input I/Os in
-		/// relation to clocks, max/min delays from clocks to output pads, skews of input/ output buses.
-		/// The datasheet report has the timing characteristics of a design at the package balls/pads,
-		/// including the package trace flight times. To disable flight times use the following command:
-		/// config_timing_analysis -disable_flight_delays true
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// The source synchronous output skew can be automatically calculated by the Vivado Design Suite
-		/// by using the -group switch for report_datasheet and grouping together all the ports of the
-		/// data bus including the sourced clock output port. The sourced clock output port must be first in
-		/// the group list. For example:
-		/// report_datasheet -file output_filename -group [get_ports \
-		/// {clock_port data_bit[0] data_bit[1] data_bit[2]}]
-		///
-		/// The following example returns the datasheet sorted by ports, for all process corners:
-		/// report_datasheet -sort_by port -show_all_corners
-		/// The following example reports the datasheet with the skew calculation for two groups of ports,
-		/// with the first port of each group providing the reference for the skew calculation for that group.
-		/// In this example, CLK0OUT is the forwarded clock for DATA0-4 and CLK1OUT is the forwarded
-		/// clock for DATA4-7:
-		/// report_datasheet -file ds.txt -group [get_ports \
-		/// {CLK0OUT DATA0 DATA1 DATA2 DATA3}] \
-		/// -group [get_ports {CLK1OUT DATA4 DATA5 DATA6 DATA7}]
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1331
+		/// <para>
+		/// Report data sheet<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_datasheet [-significant_digits &lt;arg&gt;] [-file &lt;arg&gt;] [-append] [-return_string] [-sort_by &lt;arg&gt;] [-name &lt;arg&gt;] [-show_all_corners] [-show_oe_timing] [-group &lt;args&gt;] [-rpx &lt;arg&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Create a "datasheet" report for the current design. Reports setup and hold times of input I/Os in<br/>
+		/// relation to clocks, max/min delays from clocks to output pads, skews of input/ output buses.<br/>
+		/// The datasheet report has the timing characteristics of a design at the package balls/pads,<br/>
+		/// including the package trace flight times. To disable flight times use the following command:<br/>
+		/// config_timing_analysis -disable_flight_delays true<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// The source synchronous output skew can be automatically calculated by the Vivado Design Suite<br/>
+		/// by using the -group switch for report_datasheet and grouping together all the ports of the<br/>
+		/// data bus including the sourced clock output port. The sourced clock output port must be first in<br/>
+		/// the group list. For example:<br/>
+		/// report_datasheet -file output_filename -group [get_ports \<br/>
+		/// {clock_port data_bit[0] data_bit[1] data_bit[2]}]<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example returns the datasheet sorted by ports, for all process corners:<br/>
+		/// report_datasheet -sort_by port -show_all_corners<br/>
+		/// The following example reports the datasheet with the skew calculation for two groups of ports,<br/>
+		/// with the first port of each group providing the reference for the skew calculation for that group.<br/>
+		/// In this example, CLK0OUT is the forwarded clock for DATA0-4 and CLK1OUT is the forwarded<br/>
+		/// clock for DATA4-7:<br/>
+		/// report_datasheet -file ds.txt -group [get_ports \<br/>
+		/// {CLK0OUT DATA0 DATA1 DATA2 DATA3}] \<br/>
+		/// -group [get_ports {CLK1OUT DATA4 DATA5 DATA6 DATA7}]<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1331<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="significant_digits">(Optional) Number of digits to display: Range: 0 to 3 Default: 3</param>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
 		/// <param name="return_string">(Optional) return report as string</param>
@@ -1092,176 +1337,190 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Report Design Analysis
-		///
-		///
-		/// TCL Syntax: report_design_analysis [-file <arg>] [-append] [-return_string] [-complexity] [-cells <args>] [-bounding_boxes <args>] [-hierarchical_depth <arg>] [-congestion] [-min_congestion_level <arg>] [-timing] [-setup] [-hold] [-show_all] [-full_logical_pin] [-routed_vs_estimated] [-logic_level_distribution] [-logic_level_dist_paths <arg>] [-min_level <arg>] [-max_level <arg>] [-return_timing_paths] [-of_timing_paths <args>] [-max_paths <arg>] [-extend] [-routes] [-end_point_clocks <args>] [-logic_levels <arg>] [-qor_summary] [-name <arg>] [-no_pr_attribute] [-quiet] [-verbose]
-		///
-		/// Provides timing data on critical path characteristics and complexity of the design to help identify
-		/// and analyze problem areas that are subject to timing closure issues and routing congestion. For
-		/// more information on this command refer to the Vivado Design Suite User Guide: Design Analysis
-		/// and Closure Techniques (UG906).
-		/// The report_design_analysis command currently has three modes of operation:
-		/// • Timing: reports timing and physical characteristics of timing paths.
-		/// • Complexity: analyzes the design for routing complexity and LUT distribution.
-		/// • Congestion: analyzes the design for routing congestion.
-		/// In timing mode, the command calls the static timing engine to analyze critical path data and
-		/// report the characteristics of each path. The path characteristics include important elements such
-		/// as clock skew, placement obstacles such as crossing clock regions, and physical constraints such
-		/// as Pblocks and LOCs. The list of paths can be extended to include a number of top critical paths
-		/// or specific paths can be analyzed by providing timing path objects to the command. The reports
-		/// can also be extended to show the paths preceding and following the critical path.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// The following are definitions of the characteristics of the paths reported in timing mode:
-		/// • PATH_TYPE: either SETUP or HOLD.
-		/// • REQUIREMENT: delay requirement from static timing analysis.
-		/// • PATH DELAY: data path delay from static timing analysis.
-		/// • LOGIC DELAY: the portion of the PATH DELAY attributed to logic on the path.
-		/// • NET DELAY: the portion of the PATH DELAY attributed to wires on the path. Note that the
-		/// net delay is based on the estimated or actual routing delay as specified by the
-		/// set_delay_model command.
-		/// • CLOCK SKEW: difference in delay between the source and destination clocks.
-		/// • SLACK: path timing slack from static timing analysis.
-		/// • CLOCK RELATIONSHIP: SAME_CLOCK or RELATED_CLOCK. Helps identify potentially
-		/// missed inter-clock constraints.
-		/// • TIMING EXCEPTION: the timing exceptions, like set_false_path or
-		/// set_multicycle_path, that are assigned to the path.
-		/// • LOGIC LEVELS: number of logic levels between the source and destination, reported when
-		/// the -logic_level_distribution is specified.
-		/// • LOGICAL PATH: shorthand notation showing the ordered list of cells in the path including the
-		/// start point and end point.
-		/// Note: For Partial Reconfiguration (PR) designs, the logical path is appended to identify the cell as
-		/// belonging to a reconfigurable partition (:RP#), or to the static region of the design (:S). A translation
-		/// table at the bottom of the report maps :RP# to a specific reconfigurable partition.
-		/// • START POINT CLOCK: the clock domain of the start point of the path.
-		/// • END POINT CLOCK: the clock domain of the end point of the path.
-		/// • START POINT PIN PRIMITIVE: the library cell and pin of the start point of the path.
-		/// • END POINT PIN PRIMITIVE: the library cell and pin of the end point of the path.
-		/// • START POINT PIN: the instance and pin name of the start point.
-		/// • END POINT PIN: the instance and pin name of the end point.
-		/// • COMB DSP: number of combinational DSP blocks in the path.
-		/// • DOA REG: the number of DOA registers on the path.
-		/// • DOB REG: the number of DOB registers on the path.
-		/// • MREG: the number of MREG registers on the path.
-		/// • PREG: the number of PREG registers on the path.
-		/// • BRAM CROSSINGS: number of block RAM columns traversed by the path.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// • DSP CROSSINGS: number of DSP block columns traversed by the path.
-		/// • IO CROSSINGS: number of IO columns traversed by the path.
-		/// • CONFIG CROSSINGS: the number of CONFIG tile traversed by the path.
-		/// • SLR CROSSINGS: number of SLRs traversed by the path.
-		/// • BOUNDING BOX SIZE: the rectangular area covered by the critical path, measured in RPM
-		/// GRID units which are based on the device RPM_X (horizontal) and RPM_Y (vertical) site
-		/// coordinates. Since different sites (slices, DSP, block RAM, etc.) have different sizes, each site
-		/// has unique RPM_X and RPM_Y properties to pinpoint its location within the device.
-		/// • CLOCK REGION DISTANCE: An ordered pair showing the number of clock regions traversed
-		/// in the horizontal and vertical directions from path startpoint to endpoint. Minimizing clock
-		/// region crossings can improve critical path delay and clock skew.
-		/// ○ Example 1: A critical path begins in clock region X1Y1 and ends in clock region X3Y3,
-		/// resulting in a CLOCK_REGION_DISTANCE of (2, 2).
-		/// ○ Example 2: a critical path begins in clock region X2Y1 and ends in X0Y0, resulting in a
-		/// CLOCK_REGION_DISTANCE of (-2, -1).
-		/// • PBLOCKS: number of Pblocks traversed by the path.
-		/// • HIGH FANOUT: the greatest fanout of a net in the path.
-		/// • CUMULATIVE FANOUT: the total fanout on the path.
-		/// • DONT TOUCH: number of cells in the path with DONT_TOUCH value of TRUE. A value of
-		/// TRUE for DONT_TOUCH on a cell prevents it from being optimized, disabling potentially
-		/// beneficial optimizations such as phys_opt_design replication.
-		/// • MARK DEBUG: number of cells in the path with a MARK_DEBUG value of TRUE. By default a
-		/// net with MARK_DEBUG has DONT_TOUCH set to TRUE which disables optimization on that
-		/// net. The DONT_TOUCH can be set to FALSE to enable optimization and potentially improve
-		/// timing.
-		/// • FIXED LOC: number of placed cells in the path with an IS_LOC_FIXED value of TRUE. FIXED
-		/// cells cannot be moved by either place_design or phys_opt_design.
-		/// • FIXED ROUTE: number of routed nets in the path with IS_ROUTE_FIXED value of TRUE.
-		/// FIXED routes cannot be ripped up and rerouted by route_design.
-		/// • HOLD FIX DETOUR: the amount of routing detour provided to fix hold timing to post-route
-		/// critical paths.
-		/// • COMBINED LUT PAIRS: number of LUT cells in the path that have been combined with other
-		/// LUT cells into the same LUT BEL to use both the O6 and O5 outputs. LUT cells that have been
-		/// combined with LUTNM, HLUTNM, or SOFT_HLUTNM can be uncombined and re-placed by
-		/// setting their HLUTNM properties to an empty string. This allows exploring LUT combining and
-		/// un-combining effects on timing and congestion reduction.
-		/// • The following fields are reported for Partial Reconfiguration (PR) designs. Refer to the Vivado
-		/// Design Suite User Guide: Dynamic Function eXchange (UG909) for more information.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// ○ PR PATH TYPE: Specifies the path as being completely in the static region, completely in a
-		/// reconfigurable partition (RP), or as crossing the boundary between regions. The delay
-		/// elements for the timing path are also broken down between the regions .
-		/// ○ STATIC CROSSINGS: Reports the number of times a reconfigurable partition (RP) path
-		/// crosses into the static region.
-		/// ○ RP CROSSINGS: Reports the number of times a static region path crosses into a
-		/// reconfigurable partition (RP) region.
-		/// ○ BOUNDARY FANOUT: Reports the fanout of a boundary path at the PPLOC to its
-		/// downstream loads .
-		/// In complexity mode, the command performs complexity analysis of the current design and
-		/// reports the Rent Exponent which is a measure of complexity, the Average Fanout, and a Primitive
-		/// Histogram. The analysis can be performed on the top-level design or recursively on hierarchical
-		/// levels of the design, with the ability to control the level of recursion.
-		/// The following are definitions of the characteristics reported in complexity mode:
-		/// • Rent: The Rent exponent, as defined by Rent's rule, is a measure of interconnect complexity in
-		/// a netlist. Higher Rent indicates higher complexity and greater difficulty to avoid routing
-		/// congestion. Most designs have a Rent in the 0.5 to 0.6 range. A Rent value of 0.65 is
-		/// considered high and 0.85 is considered very high.
-		/// • Average Fanout: This is the average fanout of a logic cell in the design, excluding global
-		/// buffers. Higher average fanout may result in more difficulty for placement and routing. While
-		/// absolute values may not predict difficultly, relative values between designs or between
-		/// hierarchical levels may be more indicative.
-		/// • Primitive Histogram: This displays the totals of certain primitive types used in the design. A
-		/// high Rent may be caused by a predominance of LUT6 cells. If there are many more LUT6 than
-		/// other size LUTs, the Rent may be reduced by adopting a more area-focused synthesis strategy.
-		/// TIP: The complexity characteristics may not always predict routing congestion but can be used to pinpoint
-		/// problem areas when congestion issues occur.
-		/// In congestion mode the command analyzes the design and provides metrics to help you alleviate
-		/// routing congestion. Using the results from the report_design_analysis command, you can
-		/// change placement to avoid specific routing hot spots.
-		/// The command returns the file created, or returns the analysis results to the Tcl console, or returns
-		/// an error if it fails.
-		///
-		/// The following example performs complexity analysis of the two specified cells:
-		/// report_design_analysis -complexity -cells {cpuEngine fftEngine}
-		/// The following example performs complexity analysis of the specified bounding boxes:
-		/// report_design_analysis -complexity \
-		/// -bounding_boxes { "CLE_M_X21Y239:CLEL_R_X28Y254"
-		/// "CLEL_R_X18Y171:CLE_M_X26Y186" }
-		/// The following example provides an extended analysis of the worst critical path from the Block
-		/// RAMs in the design:
-		/// report_design_analysis -timing -of_timing_paths \
-		/// [get_timing_paths -from [all_rams]]
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// The following example performs complexity analysis for the specified cell, to a depth of two
-		/// hierarchical levels, and performs timing and congestion analysis on the design:
-		/// report_design_analysis -complexity -hierarchical_depth 2 -timing -setup \
-		/// -hold -max_paths 10 -logic_level_distribution -logic_level_dist_paths 20 -
-		/// congestion
-		/// The following example uses the report_design_analysis command to return the timing
-		/// paths with the specified end point clock and logic levels, and passes those paths to the
-		/// report_timing command for analysis:
-		/// report_timing -of_objects [report_design_analysis -end_point_clock cpuClk \
-		/// -logic_levels 10 -timing -return_timing_paths]
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1336
+		/// <para>
+		/// Report Design Analysis<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_design_analysis [-file &lt;arg&gt;] [-append] [-return_string] [-complexity] [-cells &lt;args&gt;] [-bounding_boxes &lt;args&gt;] [-hierarchical_depth &lt;arg&gt;] [-congestion] [-min_congestion_level &lt;arg&gt;] [-timing] [-setup] [-hold] [-show_all] [-full_logical_pin] [-routed_vs_estimated] [-logic_level_distribution] [-logic_level_dist_paths &lt;arg&gt;] [-min_level &lt;arg&gt;] [-max_level &lt;arg&gt;] [-return_timing_paths] [-of_timing_paths &lt;args&gt;] [-max_paths &lt;arg&gt;] [-extend] [-routes] [-end_point_clocks &lt;args&gt;] [-logic_levels &lt;arg&gt;] [-qor_summary] [-name &lt;arg&gt;] [-no_pr_attribute] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Provides timing data on critical path characteristics and complexity of the design to help identify<br/>
+		/// and analyze problem areas that are subject to timing closure issues and routing congestion. For<br/>
+		/// more information on this command refer to the Vivado Design Suite User Guide: Design Analysis<br/>
+		/// and Closure Techniques (UG906).<br/>
+		/// The report_design_analysis command currently has three modes of operation:<br/>
+		/// • Timing: reports timing and physical characteristics of timing paths.<br/>
+		/// • Complexity: analyzes the design for routing complexity and LUT distribution.<br/>
+		/// • Congestion: analyzes the design for routing congestion.<br/>
+		/// In timing mode, the command calls the static timing engine to analyze critical path data and<br/>
+		/// report the characteristics of each path. The path characteristics include important elements such<br/>
+		/// as clock skew, placement obstacles such as crossing clock regions, and physical constraints such<br/>
+		/// as Pblocks and LOCs. The list of paths can be extended to include a number of top critical paths<br/>
+		/// or specific paths can be analyzed by providing timing path objects to the command. The reports<br/>
+		/// can also be extended to show the paths preceding and following the critical path.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// The following are definitions of the characteristics of the paths reported in timing mode:<br/>
+		/// • PATH_TYPE: either SETUP or HOLD.<br/>
+		/// • REQUIREMENT: delay requirement from static timing analysis.<br/>
+		/// • PATH DELAY: data path delay from static timing analysis.<br/>
+		/// • LOGIC DELAY: the portion of the PATH DELAY attributed to logic on the path.<br/>
+		/// • NET DELAY: the portion of the PATH DELAY attributed to wires on the path. Note that the<br/>
+		/// net delay is based on the estimated or actual routing delay as specified by the<br/>
+		/// set_delay_model command.<br/>
+		/// • CLOCK SKEW: difference in delay between the source and destination clocks.<br/>
+		/// • SLACK: path timing slack from static timing analysis.<br/>
+		/// • CLOCK RELATIONSHIP: SAME_CLOCK or RELATED_CLOCK. Helps identify potentially<br/>
+		/// missed inter-clock constraints.<br/>
+		/// • TIMING EXCEPTION: the timing exceptions, like set_false_path or<br/>
+		/// set_multicycle_path, that are assigned to the path.<br/>
+		/// • LOGIC LEVELS: number of logic levels between the source and destination, reported when<br/>
+		/// the -logic_level_distribution is specified.<br/>
+		/// • LOGICAL PATH: shorthand notation showing the ordered list of cells in the path including the<br/>
+		/// start point and end point.<br/>
+		/// Note: For Partial Reconfiguration (PR) designs, the logical path is appended to identify the cell as<br/>
+		/// belonging to a reconfigurable partition (:RP#), or to the static region of the design (:S). A translation<br/>
+		/// table at the bottom of the report maps :RP# to a specific reconfigurable partition.<br/>
+		/// • START POINT CLOCK: the clock domain of the start point of the path.<br/>
+		/// • END POINT CLOCK: the clock domain of the end point of the path.<br/>
+		/// • START POINT PIN PRIMITIVE: the library cell and pin of the start point of the path.<br/>
+		/// • END POINT PIN PRIMITIVE: the library cell and pin of the end point of the path.<br/>
+		/// • START POINT PIN: the instance and pin name of the start point.<br/>
+		/// • END POINT PIN: the instance and pin name of the end point.<br/>
+		/// • COMB DSP: number of combinational DSP blocks in the path.<br/>
+		/// • DOA REG: the number of DOA registers on the path.<br/>
+		/// • DOB REG: the number of DOB registers on the path.<br/>
+		/// • MREG: the number of MREG registers on the path.<br/>
+		/// • PREG: the number of PREG registers on the path.<br/>
+		/// • BRAM CROSSINGS: number of block RAM columns traversed by the path.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// • DSP CROSSINGS: number of DSP block columns traversed by the path.<br/>
+		/// • IO CROSSINGS: number of IO columns traversed by the path.<br/>
+		/// • CONFIG CROSSINGS: the number of CONFIG tile traversed by the path.<br/>
+		/// • SLR CROSSINGS: number of SLRs traversed by the path.<br/>
+		/// • BOUNDING BOX SIZE: the rectangular area covered by the critical path, measured in RPM<br/>
+		/// GRID units which are based on the device RPM_X (horizontal) and RPM_Y (vertical) site<br/>
+		/// coordinates. Since different sites (slices, DSP, block RAM, etc.) have different sizes, each site<br/>
+		/// has unique RPM_X and RPM_Y properties to pinpoint its location within the device.<br/>
+		/// • CLOCK REGION DISTANCE: An ordered pair showing the number of clock regions traversed<br/>
+		/// in the horizontal and vertical directions from path startpoint to endpoint. Minimizing clock<br/>
+		/// region crossings can improve critical path delay and clock skew.<br/>
+		/// ○ Example 1: A critical path begins in clock region X1Y1 and ends in clock region X3Y3,<br/>
+		/// resulting in a CLOCK_REGION_DISTANCE of (2, 2).<br/>
+		/// ○ Example 2: a critical path begins in clock region X2Y1 and ends in X0Y0, resulting in a<br/>
+		/// CLOCK_REGION_DISTANCE of (-2, -1).<br/>
+		/// • PBLOCKS: number of Pblocks traversed by the path.<br/>
+		/// • HIGH FANOUT: the greatest fanout of a net in the path.<br/>
+		/// • CUMULATIVE FANOUT: the total fanout on the path.<br/>
+		/// • DONT TOUCH: number of cells in the path with DONT_TOUCH value of TRUE. A value of<br/>
+		/// TRUE for DONT_TOUCH on a cell prevents it from being optimized, disabling potentially<br/>
+		/// beneficial optimizations such as phys_opt_design replication.<br/>
+		/// • MARK DEBUG: number of cells in the path with a MARK_DEBUG value of TRUE. By default a<br/>
+		/// net with MARK_DEBUG has DONT_TOUCH set to TRUE which disables optimization on that<br/>
+		/// net. The DONT_TOUCH can be set to FALSE to enable optimization and potentially improve<br/>
+		/// timing.<br/>
+		/// • FIXED LOC: number of placed cells in the path with an IS_LOC_FIXED value of TRUE. FIXED<br/>
+		/// cells cannot be moved by either place_design or phys_opt_design.<br/>
+		/// • FIXED ROUTE: number of routed nets in the path with IS_ROUTE_FIXED value of TRUE.<br/>
+		/// FIXED routes cannot be ripped up and rerouted by route_design.<br/>
+		/// • HOLD FIX DETOUR: the amount of routing detour provided to fix hold timing to post-route<br/>
+		/// critical paths.<br/>
+		/// • COMBINED LUT PAIRS: number of LUT cells in the path that have been combined with other<br/>
+		/// LUT cells into the same LUT BEL to use both the O6 and O5 outputs. LUT cells that have been<br/>
+		/// combined with LUTNM, HLUTNM, or SOFT_HLUTNM can be uncombined and re-placed by<br/>
+		/// setting their HLUTNM properties to an empty string. This allows exploring LUT combining and<br/>
+		/// un-combining effects on timing and congestion reduction.<br/>
+		/// • The following fields are reported for Partial Reconfiguration (PR) designs. Refer to the Vivado<br/>
+		/// Design Suite User Guide: Dynamic Function eXchange (UG909) for more information.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// ○ PR PATH TYPE: Specifies the path as being completely in the static region, completely in a<br/>
+		/// reconfigurable partition (RP), or as crossing the boundary between regions. The delay<br/>
+		/// elements for the timing path are also broken down between the regions .<br/>
+		/// ○ STATIC CROSSINGS: Reports the number of times a reconfigurable partition (RP) path<br/>
+		/// crosses into the static region.<br/>
+		/// ○ RP CROSSINGS: Reports the number of times a static region path crosses into a<br/>
+		/// reconfigurable partition (RP) region.<br/>
+		/// ○ BOUNDARY FANOUT: Reports the fanout of a boundary path at the PPLOC to its<br/>
+		/// downstream loads .<br/>
+		/// In complexity mode, the command performs complexity analysis of the current design and<br/>
+		/// reports the Rent Exponent which is a measure of complexity, the Average Fanout, and a Primitive<br/>
+		/// Histogram. The analysis can be performed on the top-level design or recursively on hierarchical<br/>
+		/// levels of the design, with the ability to control the level of recursion.<br/>
+		/// The following are definitions of the characteristics reported in complexity mode:<br/>
+		/// • Rent: The Rent exponent, as defined by Rent's rule, is a measure of interconnect complexity in<br/>
+		/// a netlist. Higher Rent indicates higher complexity and greater difficulty to avoid routing<br/>
+		/// congestion. Most designs have a Rent in the 0.5 to 0.6 range. A Rent value of 0.65 is<br/>
+		/// considered high and 0.85 is considered very high.<br/>
+		/// • Average Fanout: This is the average fanout of a logic cell in the design, excluding global<br/>
+		/// buffers. Higher average fanout may result in more difficulty for placement and routing. While<br/>
+		/// absolute values may not predict difficultly, relative values between designs or between<br/>
+		/// hierarchical levels may be more indicative.<br/>
+		/// • Primitive Histogram: This displays the totals of certain primitive types used in the design. A<br/>
+		/// high Rent may be caused by a predominance of LUT6 cells. If there are many more LUT6 than<br/>
+		/// other size LUTs, the Rent may be reduced by adopting a more area-focused synthesis strategy.<br/>
+		/// TIP: The complexity characteristics may not always predict routing congestion but can be used to pinpoint<br/>
+		/// problem areas when congestion issues occur.<br/>
+		/// In congestion mode the command analyzes the design and provides metrics to help you alleviate<br/>
+		/// routing congestion. Using the results from the report_design_analysis command, you can<br/>
+		/// change placement to avoid specific routing hot spots.<br/>
+		/// The command returns the file created, or returns the analysis results to the Tcl console, or returns<br/>
+		/// an error if it fails.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example performs complexity analysis of the two specified cells:<br/>
+		/// report_design_analysis -complexity -cells {cpuEngine fftEngine}<br/>
+		/// The following example performs complexity analysis of the specified bounding boxes:<br/>
+		/// report_design_analysis -complexity \<br/>
+		/// -bounding_boxes { "CLE_M_X21Y239:CLEL_R_X28Y254"<br/>
+		/// "CLEL_R_X18Y171:CLE_M_X26Y186" }<br/>
+		/// The following example provides an extended analysis of the worst critical path from the Block<br/>
+		/// RAMs in the design:<br/>
+		/// report_design_analysis -timing -of_timing_paths \<br/>
+		/// [get_timing_paths -from [all_rams]]<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// The following example performs complexity analysis for the specified cell, to a depth of two<br/>
+		/// hierarchical levels, and performs timing and congestion analysis on the design:<br/>
+		/// report_design_analysis -complexity -hierarchical_depth 2 -timing -setup \<br/>
+		/// -hold -max_paths 10 -logic_level_distribution -logic_level_dist_paths 20 -<br/>
+		/// congestion<br/>
+		/// The following example uses the report_design_analysis command to return the timing<br/>
+		/// paths with the specified end point clock and logic levels, and passes those paths to the<br/>
+		/// report_timing command for analysis:<br/>
+		/// report_timing -of_objects [report_design_analysis -end_point_clock cpuClk \<br/>
+		/// -logic_levels 10 -timing -return_timing_paths]<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1336<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
 		/// <param name="return_string">(Optional) Return report as string</param>
 		/// <param name="complexity">(Optional) Finds the interconnection complexity (Rent) of the design</param>
 		/// <param name="cells">(Optional) Report analysis information for given list of cells</param>
 		/// <param name="bounding_boxes">
-		/// (Optional)
-		/// Report interconnection complexity (Rent) for given list of
-		/// bounding boxes Default: empty
+		/// <para>
+		/// (Optional)<br/>
+		/// Report interconnection complexity (Rent) for given list of<br/>
+		/// bounding boxes Default: empty<br/>
+		/// </para>
 		/// </param>
 		/// <param name="hierarchical_depth">(Optional) Hierarchical depth option for -complexity Default: 1</param>
 		/// <param name="congestion">(Optional) Reports congestion of the design</param>
 		/// <param name="min_congestion_level">
-		/// (Optional)
-		/// Minimum congestion level for reporting router congestion,
-		/// integer value between 3 and 8 Default: 5
+		/// <para>
+		/// (Optional)<br/>
+		/// Minimum congestion level for reporting router congestion,<br/>
+		/// integer value between 3 and 8 Default: 5<br/>
+		/// </para>
 		/// </param>
 		/// <param name="timing">(Optional) Reports characteristics of critical path</param>
 		/// <param name="setup">(Optional) Reports characteristics of critical SETUP path</param>
@@ -1271,44 +1530,56 @@ namespace Quokka.TCL.Vivado
 		/// <param name="routed_vs_estimated">(Optional) Reports relevant characteristics of critical path in estimated mode</param>
 		/// <param name="logic_level_distribution">(Optional) Reports logic level distribution</param>
 		/// <param name="logic_level_dist_paths">
-		/// (Optional)
-		/// Number of critical paths for analyzing logic level distribution
-		/// used along with -logic_level_distribution Default: 1000
+		/// <para>
+		/// (Optional)<br/>
+		/// Number of critical paths for analyzing logic level distribution<br/>
+		/// used along with -logic_level_distribution Default: 1000<br/>
+		/// </para>
 		/// </param>
 		/// <param name="min_level">
-		/// (Optional)
-		/// Group all paths with logic levels <min_level-1> and below
-		/// into a single bin, value passed must be at least 1 Default:
-		/// Not Used
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// Name Description
+		/// <para>
+		/// (Optional)<br/>
+		/// Group all paths with logic levels &lt;min_level-1&gt; and below<br/>
+		/// into a single bin, value passed must be at least 1 Default:<br/>
+		/// Not Used<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// Name Description<br/>
+		/// </para>
 		/// </param>
 		/// <param name="max_level">
-		/// (Optional)
-		/// Group all paths with logic levels <max_level+1> and above
-		/// into a single bin, where <max_level> must be the greater of
-		/// zero or <min_level + 1> if -min_level is used Default: Not
-		/// Used
+		/// <para>
+		/// (Optional)<br/>
+		/// Group all paths with logic levels &lt;max_level+1&gt; and above<br/>
+		/// into a single bin, where &lt;max_level&gt; must be the greater of<br/>
+		/// zero or &lt;min_level + 1&gt; if -min_level is used Default: Not<br/>
+		/// Used<br/>
+		/// </para>
 		/// </param>
 		/// <param name="return_timing_paths">(Optional) Returns timing path objects</param>
 		/// <param name="of_timing_paths">(Optional) Reports characteristics for these paths</param>
 		/// <param name="max_paths">(Optional) Number of paths to consider for -timing option Default: 1</param>
 		/// <param name="extend">
-		/// (Optional)
-		/// Reports characteristics of worst path before the start point
-		/// of critical path and worst path after the end of the critical
-		/// path
+		/// <para>
+		/// (Optional)<br/>
+		/// Reports characteristics of worst path before the start point<br/>
+		/// of critical path and worst path after the end of the critical<br/>
+		/// path<br/>
+		/// </para>
 		/// </param>
 		/// <param name="routes">(Optional) Reports distribution with respect to Routes instead of logic levels</param>
 		/// <param name="end_point_clocks">
-		/// (Optional)
-		/// Returns timing path objects filtered by endpoint clock
-		/// names as passed to this option
+		/// <para>
+		/// (Optional)<br/>
+		/// Returns timing path objects filtered by endpoint clock<br/>
+		/// names as passed to this option<br/>
+		/// </para>
 		/// </param>
 		/// <param name="logic_levels">
-		/// (Optional)
-		/// Returns timing path objects bucketed under the bin name
-		/// as passed to this option
+		/// <para>
+		/// (Optional)<br/>
+		/// Returns timing path objects bucketed under the bin name<br/>
+		/// as passed to this option<br/>
+		/// </para>
 		/// </param>
 		/// <param name="qor_summary">(Optional) Design Flow summary</param>
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
@@ -1322,45 +1593,57 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Report disabled timing arcs
-		///
-		///
-		/// TCL Syntax: report_disable_timing [-user_disabled] [-column_style <arg>] [-file <arg>] [-append] [-cells <args>] [-return_string] [-quiet] [-verbose]
-		///
-		/// Displays a report of timing paths that will be excluded from timing analysis in the current
-		/// synthesized or implemented design.
-		/// The format of the report is organized into columns for "Cell or Port" to define the object
-		/// associated with the timing path, "From" and "To" to define the timing path, the condition, and the
-		/// reason for excluding the path from timing. The various reasons for exclusion are as follows:
-		/// • constraint - set_disable_timing constraint is specified
-		/// • constant - Logic constant
-		/// • loop - Breaks a logic loop
-		/// • bidirect instance path - Feedback path through bidirectional instances
-		/// • bidirect net path - Feedback path on nets with bidirectional pins
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// Note: By default the report is written to the Tcl console or STD output. However, the results can also be
-		/// written to a file or returned as a string if desired.
-		///
-		/// The following example reports all timing paths that will not be included in timing analysis:
-		/// report_disable_timing
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// The following example outputs the disable timing report as a string, stores it in a variable, and
-		/// then puts it to the display:
-		/// set bad_time [report_disable_timing -return_string]
-		/// puts $bad_time
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1346
+		/// <para>
+		/// Report disabled timing arcs<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_disable_timing [-user_disabled] [-column_style &lt;arg&gt;] [-file &lt;arg&gt;] [-append] [-cells &lt;args&gt;] [-return_string] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Displays a report of timing paths that will be excluded from timing analysis in the current<br/>
+		/// synthesized or implemented design.<br/>
+		/// The format of the report is organized into columns for "Cell or Port" to define the object<br/>
+		/// associated with the timing path, "From" and "To" to define the timing path, the condition, and the<br/>
+		/// reason for excluding the path from timing. The various reasons for exclusion are as follows:<br/>
+		/// • constraint - set_disable_timing constraint is specified<br/>
+		/// • constant - Logic constant<br/>
+		/// • loop - Breaks a logic loop<br/>
+		/// • bidirect instance path - Feedback path through bidirectional instances<br/>
+		/// • bidirect net path - Feedback path on nets with bidirectional pins<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// Note: By default the report is written to the Tcl console or STD output. However, the results can also be<br/>
+		/// written to a file or returned as a string if desired.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example reports all timing paths that will not be included in timing analysis:<br/>
+		/// report_disable_timing<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// The following example outputs the disable timing report as a string, stores it in a variable, and<br/>
+		/// then puts it to the display:<br/>
+		/// set bad_time [report_disable_timing -return_string]<br/>
+		/// puts $bad_time<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1346<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="user_disabled">(Optional) report only user disabled arcs</param>
 		/// <param name="column_style">
-		/// (Optional)
-		/// style for path report columns: Values: variable_width,
-		/// anchor_left Default: variable_width
+		/// <para>
+		/// (Optional)<br/>
+		/// style for path report columns: Values: variable_width,<br/>
+		/// anchor_left Default: variable_width<br/>
+		/// </para>
 		/// </param>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
 		/// <param name="cells">(Optional) run report_disable_timing on the specified cell(s)</param>
@@ -1374,68 +1657,80 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Run DRC
-		///
-		///
-		/// TCL Syntax: report_drc [-name <arg>] [-upgrade_cw] [-checks <args>] [-ruledecks <args>] [-file <arg>] [-rpx <arg>] [-append] [-waived] [-no_waivers] [-return_string] [-quiet] [-verbose]
-		///
-		/// Check the current design against a specified set of design rule checks, or rule decks, and report
-		/// any errors or violations that are found.
-		/// The report_drc command requires an open design to check the design rules against. The
-		/// command returns a report with the results of violations found by the design rule checks.
-		/// Violations are returned as Vivado objects that can be listed with the get_drc_violations
-		/// command, and are associated with cells, pins, ports, nets, and sites in the current design. You can
-		/// get the cells, nets, and other design objects that are associated with DRC violation objects, using
-		/// the -of_objects option of the get_cells command for instance.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// TIP: The report_drc can be multi-threaded to speed the process. Refer to the set_param command
-		/// for more information on setting the general.maxThreads parameter.
-		/// The Vivado tools include a large number of predefined design rule checks to be used by the
-		/// report_drc command. Use the get_drc_checks command to list the currently defined
-		/// design rule checks. You can also create new custom design rule checks using the
-		/// create_drc_check command.
-		/// A rule deck is a collection of design rule checks grouped for convenience, to be run at different
-		/// stages of the FPGA design flow, such as during I/O planning or placement. The tool comes with a
-		/// set of factory defined rule decks, but you can also create new user-defined rule decks with the
-		/// create_drc_ruledeck command. Use the get_drc_ruledecks command to return a list
-		/// of the currently defined rule decks available for use in the report_drc command.
-		/// The report_drc command runs a default rule deck when the -checks or -ruledeck options
-		/// are not specified. Creating a user-defined DRC automatically adds the new design rule check to
-		/// the default rule deck.
-		/// DRC rules can be enabled or disabled using the IS_ENABLED property on the rule check object.
-		/// If a rule IS_ENABLED false, the rule will not be run by the report_drc command, whether it is
-		/// specified directly using -checks, or indirectly with -ruledeck.
-		/// TIP: You can reset the properties of a DRC rule to the factory default settings using the
-		/// reset_drc_check command.
-		/// You can reset the current results of the report_drc command, clearing any found violations,
-		/// using the reset_drc command.
-		///
-		/// The following example lists the available rule decks. The results include all factory rule decks and
-		/// all user-defined rule decks.
-		/// get_drc_ruledecks
-		/// The following example returns the list of DRC rules defined in the specified rule deck:
-		/// get_drc_checks -of_objects [get_drc_ruledecks placer_checks]
-		/// The following examples run the specified DRC rule deck and rules against the current design, and
-		/// writes the results to the specified file:
-		/// report_drc -ruledecks placer_checks -file C:/Data/DRC_Rpt1.txt
-		/// report_drc -checks {IOCNT-1 IOPCPR-1 IOPCMGT-1 IOCTMGT-1 IODIR-1} \
-		/// -file C:/Data/DRC_Rpt1.txt -append
-		/// Note: The -append option adds the result of the second report_drc command to the specified file.
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1349
+		/// <para>
+		/// Run DRC<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_drc [-name &lt;arg&gt;] [-upgrade_cw] [-checks &lt;args&gt;] [-ruledecks &lt;args&gt;] [-file &lt;arg&gt;] [-rpx &lt;arg&gt;] [-append] [-waived] [-no_waivers] [-return_string] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Check the current design against a specified set of design rule checks, or rule decks, and report<br/>
+		/// any errors or violations that are found.<br/>
+		/// The report_drc command requires an open design to check the design rules against. The<br/>
+		/// command returns a report with the results of violations found by the design rule checks.<br/>
+		/// Violations are returned as Vivado objects that can be listed with the get_drc_violations<br/>
+		/// command, and are associated with cells, pins, ports, nets, and sites in the current design. You can<br/>
+		/// get the cells, nets, and other design objects that are associated with DRC violation objects, using<br/>
+		/// the -of_objects option of the get_cells command for instance.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// TIP: The report_drc can be multi-threaded to speed the process. Refer to the set_param command<br/>
+		/// for more information on setting the general.maxThreads parameter.<br/>
+		/// The Vivado tools include a large number of predefined design rule checks to be used by the<br/>
+		/// report_drc command. Use the get_drc_checks command to list the currently defined<br/>
+		/// design rule checks. You can also create new custom design rule checks using the<br/>
+		/// create_drc_check command.<br/>
+		/// A rule deck is a collection of design rule checks grouped for convenience, to be run at different<br/>
+		/// stages of the FPGA design flow, such as during I/O planning or placement. The tool comes with a<br/>
+		/// set of factory defined rule decks, but you can also create new user-defined rule decks with the<br/>
+		/// create_drc_ruledeck command. Use the get_drc_ruledecks command to return a list<br/>
+		/// of the currently defined rule decks available for use in the report_drc command.<br/>
+		/// The report_drc command runs a default rule deck when the -checks or -ruledeck options<br/>
+		/// are not specified. Creating a user-defined DRC automatically adds the new design rule check to<br/>
+		/// the default rule deck.<br/>
+		/// DRC rules can be enabled or disabled using the IS_ENABLED property on the rule check object.<br/>
+		/// If a rule IS_ENABLED false, the rule will not be run by the report_drc command, whether it is<br/>
+		/// specified directly using -checks, or indirectly with -ruledeck.<br/>
+		/// TIP: You can reset the properties of a DRC rule to the factory default settings using the<br/>
+		/// reset_drc_check command.<br/>
+		/// You can reset the current results of the report_drc command, clearing any found violations,<br/>
+		/// using the reset_drc command.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example lists the available rule decks. The results include all factory rule decks and<br/>
+		/// all user-defined rule decks.<br/>
+		/// get_drc_ruledecks<br/>
+		/// The following example returns the list of DRC rules defined in the specified rule deck:<br/>
+		/// get_drc_checks -of_objects [get_drc_ruledecks placer_checks]<br/>
+		/// The following examples run the specified DRC rule deck and rules against the current design, and<br/>
+		/// writes the results to the specified file:<br/>
+		/// report_drc -ruledecks placer_checks -file C:/Data/DRC_Rpt1.txt<br/>
+		/// report_drc -checks {IOCNT-1 IOPCPR-1 IOPCMGT-1 IOCTMGT-1 IODIR-1} \<br/>
+		/// -file C:/Data/DRC_Rpt1.txt -append<br/>
+		/// Note: The -append option adds the result of the second report_drc command to the specified file.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1349<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="upgrade_cw">
-		/// (Optional)
-		/// Specifies if report_drc should upgrade all
-		/// CRITICAL_WARNING violations to ERROR.
+		/// <para>
+		/// (Optional)<br/>
+		/// Specifies if report_drc should upgrade all<br/>
+		/// CRITICAL_WARNING violations to ERROR.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="checks">(Optional) DRC checks (see get_drc_checks for available checks)</param>
 		/// <param name="ruledecks">(Optional) Containers of DRC rule checks Default: default</param>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="rpx">(Optional) Report filename for persisted results.</param>
 		/// <param name="append">(Optional) Append the results to file, do not overwrite the results file</param>
@@ -1451,24 +1746,32 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Report timing exceptions
-		///
-		///
-		/// TCL Syntax: report_exceptions [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-ignored] [-summary] [-coverage] [-ignored_objects] [-count_objects] [-write_merged_exceptions] [-write_valid_exceptions] [-no_header] [-file <arg>] [-append] [-return_string] [-name <arg>] [-quiet] [-verbose]
-		///
-		/// Report all timing exceptions applied to setup and hold checks defined by timing constraints in the
-		/// current design, or report the exceptions on the specified timing paths.
-		/// Timing exceptions can be defined by timing constraints such as set_false_path or
-		/// set_multicycle_path that change the default assumptions for timing paths in the design.
-		/// The exceptions are reported to the standard output by default, but can be redirected to a file or
-		/// to a Tcl string variable.
-		///
-		/// This example reports all timing exceptions in the current design:
-		/// report_exceptions
-		/// This example reports all timing exceptions ignored or overridden in the current design:
-		/// report_exceptions -ignored
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1358
+		/// <para>
+		/// Report timing exceptions<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_exceptions [-from &lt;args&gt;] [-rise_from &lt;args&gt;] [-fall_from &lt;args&gt;] [-to &lt;args&gt;] [-rise_to &lt;args&gt;] [-fall_to &lt;args&gt;] [-through &lt;args&gt;] [-rise_through &lt;args&gt;] [-fall_through &lt;args&gt;] [-ignored] [-summary] [-coverage] [-ignored_objects] [-count_objects] [-write_merged_exceptions] [-write_valid_exceptions] [-no_header] [-file &lt;arg&gt;] [-append] [-return_string] [-name &lt;arg&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Report all timing exceptions applied to setup and hold checks defined by timing constraints in the<br/>
+		/// current design, or report the exceptions on the specified timing paths.<br/>
+		/// Timing exceptions can be defined by timing constraints such as set_false_path or<br/>
+		/// set_multicycle_path that change the default assumptions for timing paths in the design.<br/>
+		/// The exceptions are reported to the standard output by default, but can be redirected to a file or<br/>
+		/// to a Tcl string variable.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// This example reports all timing exceptions in the current design:<br/>
+		/// report_exceptions<br/>
+		/// This example reports all timing exceptions ignored or overridden in the current design:<br/>
+		/// report_exceptions -ignored<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1358<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="from">(Optional) From pins, ports, cells or clocks</param>
 		/// <param name="rise_from">(Optional) Rising from pins, ports, cells or clocks</param>
@@ -1488,18 +1791,22 @@ namespace Quokka.TCL.Vivado
 		/// <param name="write_valid_exceptions">(Optional) Write timing exceptions with the valid objects only</param>
 		/// <param name="no_header">(Optional) Do not generate a report header</param>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
 		/// <param name="return_string">(Optional) Return report as string</param>
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">
-		/// (Optional)
-		/// Suspend message limits during command execution
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// <para>
+		/// (Optional)<br/>
+		/// Suspend message limits during command execution<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// </para>
 		/// </param>
 		public TTCL report_exceptions(TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, bool? ignored = null, bool? summary = null, bool? coverage = null, bool? ignored_objects = null, bool? count_objects = null, bool? write_merged_exceptions = null, bool? write_valid_exceptions = null, bool? no_header = null, String file = null, bool? append = null, bool? return_string = null, String name = null, bool? quiet = null, bool? verbose = null)
 		{
@@ -1508,36 +1815,48 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Report high fanout nets
-		///
-		///
-		/// TCL Syntax: report_high_fanout_nets [-file <arg>] [-format <arg>] [-append] [-ascending] [-timing] [-histogram] [-load_types] [-clock_regions] [-slr] [-max_nets <arg>] [-fanout_greater_than <arg>] [-fanout_lesser_than <arg>] [-name <arg>] [-cells <args>] [-clocks <args>] [-return_string] [-quiet] [-verbose]
-		///
-		/// Report the fanout of nets in the design, starting with the highest fanout nets, and working down.
-		/// Options allow you to control various aspects of the report.
-		/// This command can be run on an implemented design, or on the synthesized netlist. However, the
-		/// results will be more complete on the implemented design.
-		/// The command returns the fanout report of nets in the design, or returns an error if it fails.
-		///
-		/// The following example reports the fanout of nets for the specified clocks:
-		/// report_high_fanout_nets -clocks [get_clocks gt*]
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// The following example reports the nets with fanouts less than 10 loads, and returns the results to
-		/// a string stored as a Tcl variable:
-		/// set myRep [report_high_fanout_nets -fanout_lesser_than 10 -return_string]
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1365
+		/// <para>
+		/// Report high fanout nets<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_high_fanout_nets [-file &lt;arg&gt;] [-format &lt;arg&gt;] [-append] [-ascending] [-timing] [-histogram] [-load_types] [-clock_regions] [-slr] [-max_nets &lt;arg&gt;] [-fanout_greater_than &lt;arg&gt;] [-fanout_lesser_than &lt;arg&gt;] [-name &lt;arg&gt;] [-cells &lt;args&gt;] [-clocks &lt;args&gt;] [-return_string] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Report the fanout of nets in the design, starting with the highest fanout nets, and working down.<br/>
+		/// Options allow you to control various aspects of the report.<br/>
+		/// This command can be run on an implemented design, or on the synthesized netlist. However, the<br/>
+		/// results will be more complete on the implemented design.<br/>
+		/// The command returns the fanout report of nets in the design, or returns an error if it fails.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example reports the fanout of nets for the specified clocks:<br/>
+		/// report_high_fanout_nets -clocks [get_clocks gt*]<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// The following example reports the nets with fanouts less than 10 loads, and returns the results to<br/>
+		/// a string stored as a Tcl variable:<br/>
+		/// set myRep [report_high_fanout_nets -fanout_lesser_than 10 -return_string]<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1365<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="format">
-		/// (Optional)
-		/// Specifies how to format the report: text, xml. Default is
-		/// 'text'. Only applies if -file is used. If xml output is used, -
-		/// append is not allowed. Default: text
+		/// <para>
+		/// (Optional)<br/>
+		/// Specifies how to format the report: text, xml. Default is<br/>
+		/// 'text'. Only applies if -file is used. If xml output is used, -<br/>
+		/// append is not allowed. Default: text<br/>
+		/// </para>
 		/// </param>
 		/// <param name="append">(Optional) Append to existing file</param>
 		/// <param name="ascending">(Optional) Report nets in ascending order</param>
@@ -1548,14 +1867,18 @@ namespace Quokka.TCL.Vivado
 		/// <param name="slr">(Optional) Report SLR wise load distribution</param>
 		/// <param name="max_nets">(Optional) Number of nets for which report is to be generated Default: 10</param>
 		/// <param name="fanout_greater_than">
-		/// (Optional)
-		/// Report nets that have fanout greater than the specified
-		/// integer, default 0 Default: 0
+		/// <para>
+		/// (Optional)<br/>
+		/// Report nets that have fanout greater than the specified<br/>
+		/// integer, default 0 Default: 0<br/>
+		/// </para>
 		/// </param>
 		/// <param name="fanout_lesser_than">
-		/// (Optional)
-		/// Report nets that have fanout less than the specified integer,
-		/// default INT_MAX Default: INT_MAX
+		/// <para>
+		/// (Optional)<br/>
+		/// Report nets that have fanout less than the specified integer,<br/>
+		/// default INT_MAX Default: INT_MAX<br/>
+		/// </para>
 		/// </param>
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="cells">(Optional) Report the nets of the specified cells</param>
@@ -1563,9 +1886,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">
-		/// (Optional)
-		/// Suspend message limits during command execution
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
+		/// <para>
+		/// (Optional)<br/>
+		/// Suspend message limits during command execution<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// </para>
 		/// </param>
 		/// <returns>Report</returns>
 		public TTCL report_high_fanout_nets(String file = null, String format = null, bool? append = null, bool? ascending = null, bool? timing = null, bool? histogram = null, bool? load_types = null, bool? clock_regions = null, bool? slr = null, Int32? max_nets = null, String fanout_greater_than = null, String fanout_lesser_than = null, String name = null, TCLParameterList cells = null, TCLParameterList clocks = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
@@ -1575,54 +1900,66 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Methodology Checks
-		///
-		///
-		/// TCL Syntax: report_methodology [-name <arg>] [-cells <args>] [-checks <args>] [-file <arg>] [-rpx <arg>] [-append] [-waived] [-no_waivers] [-slack_lesser_than <arg>] [-return_string] [-quiet] [-verbose]
-		///
-		/// Check the current design against a specified set of methodology checks and report any errors or
-		/// violations that are found.
-		/// Methodology checks are a special class of design rule checks (DRC) that are accessible through
-		/// this separate Tcl command. The methodology checks are a necessary part of the design flow, and
-		/// should be considered mandatory after implementation and prior to generating the bitstream.
-		/// TIP: Other than their availability through the separate report_methodology command, the checks
-		/// are standard design rule checks in every other way.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// The report_methodology command requires an open design to check the design rules
-		/// against. The command returns a report with the results of violations found by the design rule
-		/// checks. Violations are returned as Vivado objects that can be listed with the
-		/// get_methodology_violations command, and are associated with cells, pins, ports, nets,
-		/// and sites in the current design. You can get the cells, nets, and other design objects that are
-		/// associated with methodology violation objects, using the -of_objects option of the
-		/// get_cells command for instance.
-		/// The report_methodology command runs the methodology rule deck, or you can use the -
-		/// checks option to specify the set of checks to run. Methodology checks can also be enabled or
-		/// disabled in the default rule decks using the IS_ENABLED property on the rule check object:
-		/// set_property IS_ENABLED FALSE [get_methodology_checks PDRC-190]
-		/// If a rule IS_ENABLED false, the rule will not be run by the report_methodology command.
-		/// TIP: You can reset the properties of a methodology rule to the factory default settings using the
-		/// reset_methodology_check command.
-		/// You can reset the current results of the report_methodology command, clearing any found
-		/// violations, using the reset_methodology command.
-		///
-		/// The following examples run the default methodology checks against the current design, and
-		/// writes the results to the specified file:
-		/// report_methodology -file C:/Data/methodology_Rpt1.txt -append
-		/// Note: The -append option adds the result to the specified file.
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1389
+		/// <para>
+		/// Methodology Checks<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_methodology [-name &lt;arg&gt;] [-cells &lt;args&gt;] [-checks &lt;args&gt;] [-file &lt;arg&gt;] [-rpx &lt;arg&gt;] [-append] [-waived] [-no_waivers] [-slack_lesser_than &lt;arg&gt;] [-return_string] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Check the current design against a specified set of methodology checks and report any errors or<br/>
+		/// violations that are found.<br/>
+		/// Methodology checks are a special class of design rule checks (DRC) that are accessible through<br/>
+		/// this separate Tcl command. The methodology checks are a necessary part of the design flow, and<br/>
+		/// should be considered mandatory after implementation and prior to generating the bitstream.<br/>
+		/// TIP: Other than their availability through the separate report_methodology command, the checks<br/>
+		/// are standard design rule checks in every other way.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// The report_methodology command requires an open design to check the design rules<br/>
+		/// against. The command returns a report with the results of violations found by the design rule<br/>
+		/// checks. Violations are returned as Vivado objects that can be listed with the<br/>
+		/// get_methodology_violations command, and are associated with cells, pins, ports, nets,<br/>
+		/// and sites in the current design. You can get the cells, nets, and other design objects that are<br/>
+		/// associated with methodology violation objects, using the -of_objects option of the<br/>
+		/// get_cells command for instance.<br/>
+		/// The report_methodology command runs the methodology rule deck, or you can use the -<br/>
+		/// checks option to specify the set of checks to run. Methodology checks can also be enabled or<br/>
+		/// disabled in the default rule decks using the IS_ENABLED property on the rule check object:<br/>
+		/// set_property IS_ENABLED FALSE [get_methodology_checks PDRC-190]<br/>
+		/// If a rule IS_ENABLED false, the rule will not be run by the report_methodology command.<br/>
+		/// TIP: You can reset the properties of a methodology rule to the factory default settings using the<br/>
+		/// reset_methodology_check command.<br/>
+		/// You can reset the current results of the report_methodology command, clearing any found<br/>
+		/// violations, using the reset_methodology command.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following examples run the default methodology checks against the current design, and<br/>
+		/// writes the results to the specified file:<br/>
+		/// report_methodology -file C:/Data/methodology_Rpt1.txt -append<br/>
+		/// Note: The -append option adds the result to the specified file.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1389<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="cells">(Optional) Run report_methodology on the specified cell(s).</param>
 		/// <param name="checks">
-		/// (Optional)
-		/// Report Methodology checks (see get_methodology_checks
-		/// for available checks)
+		/// <para>
+		/// (Optional)<br/>
+		/// Report Methodology checks (see get_methodology_checks<br/>
+		/// for available checks)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="rpx">(Optional) Report filename for persisted results.</param>
 		/// <param name="append">(Optional) Append the results to file, do not overwrite the results file</param>
@@ -1639,35 +1976,45 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Report pulse width check
-		///
-		///
-		/// TCL Syntax: report_pulse_width [-file <arg>] [-append] [-name <arg>] [-return_string] [-warn_on_violation] [-all_violators] [-significant_digits <arg>] [-limit <arg>] [-min_period] [-max_period] [-low_pulse] [-high_pulse] [-max_skew] [-clocks <args>] [-no_header] [-cells <args>] [-rpx <arg>] [-quiet] [-verbose] [<objects>]
-		///
-		/// Reports the pulse width of the specified clock signals in the clock network and upon reaching the
-		/// flip-flop. This command also performs high pulse width checking, using maximum delay for the
-		/// rising edge and minimum delay for the falling edge of the clock. Performs low pulse width
-		/// checking using minimum delay for the rising edge, and maximum delay for the falling edge. This
-		/// results in a worst case analysis for the current Synthesis or Implemented Design because it
-		/// assumes worst-case delays for both rising and falling edges. This command also reports the
-		/// maximum skew, or maximum timing separation allowed between clock signals.
-		/// The report includes minimum pulse width, maximum pulse width, low pulse width, high pulse
-		/// width, and max skew checks by default. However, selecting a specific check will disable the other
-		/// checks unless they are also specified.
-		/// The default report is returned to the standard output, but can be redirected to a file, or to a Tcl
-		/// string variable for further processing. The report is returned to the standard output by default,
-		/// unless the -file, -return_string, or -name arguments are specified.
-		///
-		/// The following example performs the minimum period and low pulse width check, returning the
-		/// results to a named results set in the GUI:
-		/// report_pulse_width -min_period -low_pulse -name timing_1
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1419
+		/// <para>
+		/// Report pulse width check<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_pulse_width [-file &lt;arg&gt;] [-append] [-name &lt;arg&gt;] [-return_string] [-warn_on_violation] [-all_violators] [-significant_digits &lt;arg&gt;] [-limit &lt;arg&gt;] [-min_period] [-max_period] [-low_pulse] [-high_pulse] [-max_skew] [-clocks &lt;args&gt;] [-no_header] [-cells &lt;args&gt;] [-rpx &lt;arg&gt;] [-quiet] [-verbose] [&lt;objects&gt;]
+		/// <br/>
+		/// <para>
+		/// Reports the pulse width of the specified clock signals in the clock network and upon reaching the<br/>
+		/// flip-flop. This command also performs high pulse width checking, using maximum delay for the<br/>
+		/// rising edge and minimum delay for the falling edge of the clock. Performs low pulse width<br/>
+		/// checking using minimum delay for the rising edge, and maximum delay for the falling edge. This<br/>
+		/// results in a worst case analysis for the current Synthesis or Implemented Design because it<br/>
+		/// assumes worst-case delays for both rising and falling edges. This command also reports the<br/>
+		/// maximum skew, or maximum timing separation allowed between clock signals.<br/>
+		/// The report includes minimum pulse width, maximum pulse width, low pulse width, high pulse<br/>
+		/// width, and max skew checks by default. However, selecting a specific check will disable the other<br/>
+		/// checks unless they are also specified.<br/>
+		/// The default report is returned to the standard output, but can be redirected to a file, or to a Tcl<br/>
+		/// string variable for further processing. The report is returned to the standard output by default,<br/>
+		/// unless the -file, -return_string, or -name arguments are specified.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example performs the minimum period and low pulse width check, returning the<br/>
+		/// results to a named results set in the GUI:<br/>
+		/// report_pulse_width -min_period -low_pulse -name timing_1<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1419<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
 		/// <param name="name">(Optional) Results name in which to store output</param>
@@ -1676,9 +2023,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="all_violators">(Optional) Only report pins/ports where check violations occur</param>
 		/// <param name="significant_digits">(Optional) Number of digits to display: Range: 0 to 3 Default: 3</param>
 		/// <param name="limit">
-		/// (Optional)
-		/// Number of checks of a particular type to report per clock:
-		/// Default is 1 Default: 1
+		/// <para>
+		/// (Optional)<br/>
+		/// Number of checks of a particular type to report per clock:<br/>
+		/// Default is 1 Default: 1<br/>
+		/// </para>
 		/// </param>
 		/// <param name="min_period">(Optional) Only report min period checks</param>
 		/// <param name="max_period">(Optional) Only report max period checks</param>
@@ -1699,44 +2048,54 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Feasibility Checks
-		///
-		///
-		/// TCL Syntax: report_qor_assessment [-file <arg>] [-max_paths <arg>] [-append] [-return_string] [-quiet] [-verbose]
-		///
-		/// This command look for trouble spots in the design and assesses the likelihood of a design
-		/// meeting design goals. This command requires an open elaborated, synthesized or implemented
-		/// design for analysis.
-		/// The Report QoR Assessment covers multiple categories:
-		/// • Design Methodology
-		/// • Synthesis
-		/// • Implementation
-		/// • Design Hierarchy
-		/// • Partial Reconfiguration
-		/// • Floorplanning
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// The report_qor_assessment command includes a subset of report_methodology checks
-		/// identifying bad practices that can lead to an expected problem. Yet, report_qor_assessment
-		/// is also more comprehensive than report_methodology, because it includes other checks that
-		/// are not necessarily bad practices but may have low success due to the structure, style, size, or
-		/// complexity of the current design.
-		/// A key feature of Report QOR Assessment is the ability to predict certain conditions that lead to
-		/// congestion and performance degradation. This command can be run at any stage of the
-		/// implementation flow after synthesis. The report_qor_assessment command will return a
-		/// score from 1 - 5, where 1 is a failing grade, and 5 means the design will likely pass
-		/// implementation and meet timing.
-		/// For violations found by Report QOR Assessment, the Report QOR Suggestions command will
-		/// make recommendations on how to avoid issues, or modify the design to improve results.
-		///
-		/// The following example reports suggestions after analyzing the worst 10 paths:
-		/// report_qor_assessment -max_paths 10
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1423
+		/// <para>
+		/// Feasibility Checks<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_qor_assessment [-file &lt;arg&gt;] [-max_paths &lt;arg&gt;] [-append] [-return_string] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// This command look for trouble spots in the design and assesses the likelihood of a design<br/>
+		/// meeting design goals. This command requires an open elaborated, synthesized or implemented<br/>
+		/// design for analysis.<br/>
+		/// The Report QoR Assessment covers multiple categories:<br/>
+		/// • Design Methodology<br/>
+		/// • Synthesis<br/>
+		/// • Implementation<br/>
+		/// • Design Hierarchy<br/>
+		/// • Partial Reconfiguration<br/>
+		/// • Floorplanning<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// The report_qor_assessment command includes a subset of report_methodology checks<br/>
+		/// identifying bad practices that can lead to an expected problem. Yet, report_qor_assessment<br/>
+		/// is also more comprehensive than report_methodology, because it includes other checks that<br/>
+		/// are not necessarily bad practices but may have low success due to the structure, style, size, or<br/>
+		/// complexity of the current design.<br/>
+		/// A key feature of Report QOR Assessment is the ability to predict certain conditions that lead to<br/>
+		/// congestion and performance degradation. This command can be run at any stage of the<br/>
+		/// implementation flow after synthesis. The report_qor_assessment command will return a<br/>
+		/// score from 1 - 5, where 1 is a failing grade, and 5 means the design will likely pass<br/>
+		/// implementation and meet timing.<br/>
+		/// For violations found by Report QOR Assessment, the Report QOR Suggestions command will<br/>
+		/// make recommendations on how to avoid issues, or modify the design to improve results.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example reports suggestions after analyzing the worst 10 paths:<br/>
+		/// report_qor_assessment -max_paths 10<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1423<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="max_paths">(Optional) Number of paths to consider for suggestion analysis Default: 100</param>
 		/// <param name="append">(Optional) Append the results to file, do not overwrite the results file</param>
@@ -1750,70 +2109,80 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Recommend QoR Suggestions
-		///
-		///
-		/// TCL Syntax: report_qor_suggestions [-file <arg>] [-name <arg>] [-append] [-return_string] [-max_strategies <arg>] [-max_paths <arg>] [-no_split] [-report_all_suggestions] [-cells <args>] [-of_objects <args>] [-quiet] [-verbose]
-		///
-		/// Report design and tool option recommendations related to improving the quality of results (QoR).
-		/// The report looks at timing constraints, netlist characteristics, failing timing paths, and congestion
-		/// information to determine suggestions that can enhance the QoR. The report can be generated
-		/// after synthesis, or after any implementation step, but requires a design to be open.
-		/// The report_qor_suggestions command creates QoR suggestion objects related to the
-		/// suggestions identified. These suggestion objects can be enabled for use by the Vivado tools to
-		/// improve the quality of synthesis and implementation results. Some of these suggestions can be
-		/// automatically applied, and some may require more manual intervention to implement design
-		/// changes, or write Tcl design constraints.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// Suggestion objects can be obtained using the get_qor_suggestions command. The QoR
-		/// objects have properties that define what step they are APPLICABLE_FOR, if they are ENABLED
-		/// to be used, if they can be automatically applied (AUTO), or what step the suggestions was
-		/// GENERATED_AT. A suggestion must be ENABLED and the APPLICABLE_FOR synthesis or
-		/// implementation step run in order for a suggestion to be applied to the design.
-		/// You can write the suggestions from the design into an RQS file using the
-		/// write_qor_suggestions command. After resetting the design flow to the appropriate step,
-		/// you can read suggestions back into the design using the read_qor_suggestions command,
-		/// and then run the synthesis or implementation step to apply the enabled suggestions.
-		/// The recommended method for working with QoR suggestions is:
-		/// 1. Run the report to create recommendations (report_qor_suggestions)
-		/// 2. Write the suggestions to an RQS file on disk (write_qor_suggestions).
-		/// 3. Reset the design to the appropriate step.
-		/// 4. Read the RQS file into the design to restore the suggestions (read_qor_suggestions).
-		/// 5. Run the synthesis or implementation step to apply the suggestion (synth_design,
-		/// opt_design...).
-		/// For strategy suggestions, a machine learning based analysis is conducted and the best 3
-		/// strategies are reported. This analysis is only conducted on a routed design that has been
-		/// implemented with
-		/// • either default or explore directives for opt_design and
-		/// • either all default or all explore directives for place_design, phys_opt_design, and
-		/// route_design commands.
-		/// Strategy suggestions do not apply to synthesis. Unlike the non-strategy suggestions, only one
-		/// strategy suggestion can be applied to each run.
-		/// The recommended method for working with QoR strategy suggestions is:
-		/// 1. Run the report to create strategies and other
-		/// recommendations(report_qor_suggestions).
-		/// 2. Write the suggestions to a directory disk. There is one RQS file per strategy
-		/// (write_qor_suggestions -strategy_dir).
-		/// 3. Update all the directive settings to -directive RQS for opt_design, place_design,
-		/// phys_opt_design, and route_design commands.
-		/// 4. For each run, read one RQS file into the design. This will contain the strategy suggestion and
-		/// all exported non-strategy suggestions(read_qor_suggestions).
-		/// 5. Run the implementation step from the opt_design command to apply the strategy and all
-		/// the design suggestions.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		///
-		/// The following example reports suggestions after analyzing the worst 10 paths:
-		/// report_qor_suggestions -max_paths 10
-		/// This example reports existing suggestions in the design from a prior run of
-		/// report_qor_suggestions:
-		/// report_qor_suggestions -of_objects [get_qor_suggestions]
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1426
+		/// <para>
+		/// Recommend QoR Suggestions<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_qor_suggestions [-file &lt;arg&gt;] [-name &lt;arg&gt;] [-append] [-return_string] [-max_strategies &lt;arg&gt;] [-max_paths &lt;arg&gt;] [-no_split] [-report_all_suggestions] [-cells &lt;args&gt;] [-of_objects &lt;args&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Report design and tool option recommendations related to improving the quality of results (QoR).<br/>
+		/// The report looks at timing constraints, netlist characteristics, failing timing paths, and congestion<br/>
+		/// information to determine suggestions that can enhance the QoR. The report can be generated<br/>
+		/// after synthesis, or after any implementation step, but requires a design to be open.<br/>
+		/// The report_qor_suggestions command creates QoR suggestion objects related to the<br/>
+		/// suggestions identified. These suggestion objects can be enabled for use by the Vivado tools to<br/>
+		/// improve the quality of synthesis and implementation results. Some of these suggestions can be<br/>
+		/// automatically applied, and some may require more manual intervention to implement design<br/>
+		/// changes, or write Tcl design constraints.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// Suggestion objects can be obtained using the get_qor_suggestions command. The QoR<br/>
+		/// objects have properties that define what step they are APPLICABLE_FOR, if they are ENABLED<br/>
+		/// to be used, if they can be automatically applied (AUTO), or what step the suggestions was<br/>
+		/// GENERATED_AT. A suggestion must be ENABLED and the APPLICABLE_FOR synthesis or<br/>
+		/// implementation step run in order for a suggestion to be applied to the design.<br/>
+		/// You can write the suggestions from the design into an RQS file using the<br/>
+		/// write_qor_suggestions command. After resetting the design flow to the appropriate step,<br/>
+		/// you can read suggestions back into the design using the read_qor_suggestions command,<br/>
+		/// and then run the synthesis or implementation step to apply the enabled suggestions.<br/>
+		/// The recommended method for working with QoR suggestions is:<br/>
+		/// 1. Run the report to create recommendations (report_qor_suggestions)<br/>
+		/// 2. Write the suggestions to an RQS file on disk (write_qor_suggestions).<br/>
+		/// 3. Reset the design to the appropriate step.<br/>
+		/// 4. Read the RQS file into the design to restore the suggestions (read_qor_suggestions).<br/>
+		/// 5. Run the synthesis or implementation step to apply the suggestion (synth_design,<br/>
+		/// opt_design...).<br/>
+		/// For strategy suggestions, a machine learning based analysis is conducted and the best 3<br/>
+		/// strategies are reported. This analysis is only conducted on a routed design that has been<br/>
+		/// implemented with<br/>
+		/// • either default or explore directives for opt_design and<br/>
+		/// • either all default or all explore directives for place_design, phys_opt_design, and<br/>
+		/// route_design commands.<br/>
+		/// Strategy suggestions do not apply to synthesis. Unlike the non-strategy suggestions, only one<br/>
+		/// strategy suggestion can be applied to each run.<br/>
+		/// The recommended method for working with QoR strategy suggestions is:<br/>
+		/// 1. Run the report to create strategies and other<br/>
+		/// recommendations(report_qor_suggestions).<br/>
+		/// 2. Write the suggestions to a directory disk. There is one RQS file per strategy<br/>
+		/// (write_qor_suggestions -strategy_dir).<br/>
+		/// 3. Update all the directive settings to -directive RQS for opt_design, place_design,<br/>
+		/// phys_opt_design, and route_design commands.<br/>
+		/// 4. For each run, read one RQS file into the design. This will contain the strategy suggestion and<br/>
+		/// all exported non-strategy suggestions(read_qor_suggestions).<br/>
+		/// 5. Run the implementation step from the opt_design command to apply the strategy and all<br/>
+		/// the design suggestions.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example reports suggestions after analyzing the worst 10 paths:<br/>
+		/// report_qor_suggestions -max_paths 10<br/>
+		/// This example reports existing suggestions in the design from a prior run of<br/>
+		/// report_qor_suggestions:<br/>
+		/// report_qor_suggestions -of_objects [get_qor_suggestions]<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1426<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
@@ -1833,89 +2202,99 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Compute mean time between failures and display report
-		///
-		///
-		/// TCL Syntax: report_synchronizer_mtbf [-file <arg>] [-append] [-return_string] [-warn_if_mtbf_below <arg>] [-quiet] [-no_header] [-report_endpoints] [-verbose]
-		///
-		/// RECOMMENDED: This command is supported for Xilinx UltraScale devices only, and does not support 7
-		/// series devices.
-		/// The report_synchronizer_mtbf command reports mean time between failures (MTBF) of
-		/// each clock domain crossing (CDC) synchronizer chain in a design, and provides an overall MTBF
-		/// covering all synchronizers. Synchronizer registers must have ASYNC_REG properties with value
-		/// TRUE to be properly identified as synchronizers for reporting.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// Asynchronous clock domain crossings (CDCs) can fail due to metastability as data is captured
-		/// asynchronously and may settle to different values on different loads in the circuit. Synchronizer
-		/// registers are used to improve overall circuit reliability for designs which contain multiple clock
-		/// domains, in which asynchronous data transfers occur, or in which external asynchronous signals
-		/// are captured with an internal clock. A synchronizer chain consists of two or more registers
-		/// connected sequentially with the first stage capturing the data signal from the asynchronous clock
-		/// domain. The successive register stages provide additional settling time for metastable events and
-		/// increase MTBF. The synchronizer registers must have ASYNC_REG properties with values of
-		/// TRUE. Besides reporting MTBF, the ASYNC_REG properties instruct synthesis, simulation and
-		/// implementation tools to optimize for increased MTBF and improve overall behavior of the
-		/// synchronizer circuit.
-		/// TIP: Avoid using different set/reset or clock enable control signals on registers within a synchronizer chain.
-		/// This command returns the MTBF report, or returns an error if it fails. The command issues a
-		/// warning message when the MTBF cannot be calculated correctly, for example when a CDC is
-		/// improperly constrained. The following conditions result in an UNDEFINED synchronizer MTBF
-		/// value:
-		/// • One or both clocks of the CDC are unconstrained.
-		/// • There is a timing violation involving registers in the synchronizer chain.
-		/// • There is a zero toggle rate detected for the CDC data.
-		/// In the case of a zero toggle rate, it may be necessary to use the set_switching_activity
-		/// command to manually override the toggle rate on the CDC net with a realistic value. This
-		/// involves assigning the Toggle Rate and the Static Probability:
-		/// • Toggle Rate: The number of CDC data signal transitions measured in Million Transitions per
-		/// Second.
-		/// • Static Probability: The percentage of time during which the CDC data signal is driven at a high
-		/// logic level.
-		/// Example: to assign a toggle rate of 12.5% with 0.5 static probability on a CDC net named
-		/// resync[0]:
-		/// set_switching_activity -toggle_rate 12.5 -static_probability 0.5 \
-		/// [get_nets resync[0]]
-		/// The report contents include the following data for each synchronizer chain in the design:
-		/// • MTBF: The Mean Time Between Failures for the CDC synchronizer reported in dynamic time
-		/// units, from seconds to years. An invalid MTBF value is reported as UNDEFINED.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// • Data Toggle Rate: The rate at which the CDC data switches, based on the default switching
-		/// activity for the design as reported by report_switching_activity. Measured in (Mts)
-		/// Millions of Transitions per Second. The rate can be overridden using the
-		/// set_switching_activity command targeting the CDC net object.
-		/// • Data Sample Rate: The rate at which the CDC data is sampled, equivalent to the synchronizer
-		/// chain frequency, measured in MHz.
-		/// • Settling Time: The total amount of positive slack in nanoseconds on the timing paths from
-		/// synchronizer register outputs. Higher Settling Time increases MTBF.
-		/// • Sending Domain: The clock domain of the source of the CDC data. A value of
-		/// UNCONSTRAINED is reported if the source clock is not defined.
-		/// • Receiving Domain: The clock domain of the destination of the CDC data. A value of
-		/// UNCONSTRAINED is reported if the destination clock is not defined.
-		/// • Number of Stages: This is the length of the synchronizer chain, which equals the number of
-		/// registers with ASYNC_REG value of TRUE. The MTBF calculation will determine the likelihood
-		/// that the output register or registers (should the fanout be greater than 1) will experience a
-		/// metastable event. For example in a typical synchronizer containing 2 registers with the
-		/// ASYNC_REG property set, the MTBF calculation indicates the probability that the output
-		/// register(s) following the last ASYNC_REG register will capture an incorrect value resulting from
-		/// the metastable event. When a synchronizer is connected to more than 1 output register, the
-		/// minimum slack from all the paths will be used in the MTBF calculation to ensure that all
-		/// registers capture the same logic level.
-		/// • CDC Net Name: This is the logical net name of the CDC data, the data that is captured
-		/// asynchronously.
-		/// This command returns the MTBF report, or returns an error if it fails.
-		/// The report also includes an overall MTBF calculated using the MTBF of all synchronizers in the
-		/// design, calculated as the inverse of the sum of the reciprocals of the individual synchronizer
-		/// MTBF values: (1 / (1/MTBF_1 + 1/MTBF_2 + … + 1/MTBF_N) ) for N synchronizers.
-		///
-		/// The following example writes the MTBF report to the specified file:
-		/// report_synchronizer_mtbf -file C:/Data/mtbf_report.txt
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1451
+		/// <para>
+		/// Compute mean time between failures and display report<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_synchronizer_mtbf [-file &lt;arg&gt;] [-append] [-return_string] [-warn_if_mtbf_below &lt;arg&gt;] [-quiet] [-no_header] [-report_endpoints] [-verbose]
+		/// <br/>
+		/// <para>
+		/// RECOMMENDED: This command is supported for Xilinx UltraScale devices only, and does not support 7<br/>
+		/// series devices.<br/>
+		/// The report_synchronizer_mtbf command reports mean time between failures (MTBF) of<br/>
+		/// each clock domain crossing (CDC) synchronizer chain in a design, and provides an overall MTBF<br/>
+		/// covering all synchronizers. Synchronizer registers must have ASYNC_REG properties with value<br/>
+		/// TRUE to be properly identified as synchronizers for reporting.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// Asynchronous clock domain crossings (CDCs) can fail due to metastability as data is captured<br/>
+		/// asynchronously and may settle to different values on different loads in the circuit. Synchronizer<br/>
+		/// registers are used to improve overall circuit reliability for designs which contain multiple clock<br/>
+		/// domains, in which asynchronous data transfers occur, or in which external asynchronous signals<br/>
+		/// are captured with an internal clock. A synchronizer chain consists of two or more registers<br/>
+		/// connected sequentially with the first stage capturing the data signal from the asynchronous clock<br/>
+		/// domain. The successive register stages provide additional settling time for metastable events and<br/>
+		/// increase MTBF. The synchronizer registers must have ASYNC_REG properties with values of<br/>
+		/// TRUE. Besides reporting MTBF, the ASYNC_REG properties instruct synthesis, simulation and<br/>
+		/// implementation tools to optimize for increased MTBF and improve overall behavior of the<br/>
+		/// synchronizer circuit.<br/>
+		/// TIP: Avoid using different set/reset or clock enable control signals on registers within a synchronizer chain.<br/>
+		/// This command returns the MTBF report, or returns an error if it fails. The command issues a<br/>
+		/// warning message when the MTBF cannot be calculated correctly, for example when a CDC is<br/>
+		/// improperly constrained. The following conditions result in an UNDEFINED synchronizer MTBF<br/>
+		/// value:<br/>
+		/// • One or both clocks of the CDC are unconstrained.<br/>
+		/// • There is a timing violation involving registers in the synchronizer chain.<br/>
+		/// • There is a zero toggle rate detected for the CDC data.<br/>
+		/// In the case of a zero toggle rate, it may be necessary to use the set_switching_activity<br/>
+		/// command to manually override the toggle rate on the CDC net with a realistic value. This<br/>
+		/// involves assigning the Toggle Rate and the Static Probability:<br/>
+		/// • Toggle Rate: The number of CDC data signal transitions measured in Million Transitions per<br/>
+		/// Second.<br/>
+		/// • Static Probability: The percentage of time during which the CDC data signal is driven at a high<br/>
+		/// logic level.<br/>
+		/// Example: to assign a toggle rate of 12.5% with 0.5 static probability on a CDC net named<br/>
+		/// resync[0]:<br/>
+		/// set_switching_activity -toggle_rate 12.5 -static_probability 0.5 \<br/>
+		/// [get_nets resync[0]]<br/>
+		/// The report contents include the following data for each synchronizer chain in the design:<br/>
+		/// • MTBF: The Mean Time Between Failures for the CDC synchronizer reported in dynamic time<br/>
+		/// units, from seconds to years. An invalid MTBF value is reported as UNDEFINED.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// • Data Toggle Rate: The rate at which the CDC data switches, based on the default switching<br/>
+		/// activity for the design as reported by report_switching_activity. Measured in (Mts)<br/>
+		/// Millions of Transitions per Second. The rate can be overridden using the<br/>
+		/// set_switching_activity command targeting the CDC net object.<br/>
+		/// • Data Sample Rate: The rate at which the CDC data is sampled, equivalent to the synchronizer<br/>
+		/// chain frequency, measured in MHz.<br/>
+		/// • Settling Time: The total amount of positive slack in nanoseconds on the timing paths from<br/>
+		/// synchronizer register outputs. Higher Settling Time increases MTBF.<br/>
+		/// • Sending Domain: The clock domain of the source of the CDC data. A value of<br/>
+		/// UNCONSTRAINED is reported if the source clock is not defined.<br/>
+		/// • Receiving Domain: The clock domain of the destination of the CDC data. A value of<br/>
+		/// UNCONSTRAINED is reported if the destination clock is not defined.<br/>
+		/// • Number of Stages: This is the length of the synchronizer chain, which equals the number of<br/>
+		/// registers with ASYNC_REG value of TRUE. The MTBF calculation will determine the likelihood<br/>
+		/// that the output register or registers (should the fanout be greater than 1) will experience a<br/>
+		/// metastable event. For example in a typical synchronizer containing 2 registers with the<br/>
+		/// ASYNC_REG property set, the MTBF calculation indicates the probability that the output<br/>
+		/// register(s) following the last ASYNC_REG register will capture an incorrect value resulting from<br/>
+		/// the metastable event. When a synchronizer is connected to more than 1 output register, the<br/>
+		/// minimum slack from all the paths will be used in the MTBF calculation to ensure that all<br/>
+		/// registers capture the same logic level.<br/>
+		/// • CDC Net Name: This is the logical net name of the CDC data, the data that is captured<br/>
+		/// asynchronously.<br/>
+		/// This command returns the MTBF report, or returns an error if it fails.<br/>
+		/// The report also includes an overall MTBF calculated using the MTBF of all synchronizers in the<br/>
+		/// design, calculated as the inverse of the sum of the reciprocals of the individual synchronizer<br/>
+		/// MTBF values: (1 / (1/MTBF_1 + 1/MTBF_2 + … + 1/MTBF_N) ) for N synchronizers.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example writes the MTBF report to the specified file:<br/>
+		/// report_synchronizer_mtbf -file C:/Data/mtbf_report.txt<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1451<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
 		/// <param name="return_string">(Optional) Return the report output as a string</param>
@@ -1932,40 +2311,48 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Report timing paths
-		///
-		///
-		/// TCL Syntax: report_timing [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-delay_type <arg>] [-setup] [-hold] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-path_type <arg>] [-input_pins] [-no_header] [-no_reused_label] [-slack_lesser_than <arg>] [-slack_greater_than <arg>] [-group <args>] [-sort_by <arg>] [-no_report_unconstrained] [-user_ignored] [-of_objects <args>] [-significant_digits <arg>] [-column_style <arg>] [-file <arg>] [-append] [-name <arg>] [-no_pr_attribute] [-routable_nets] [-return_string] [-warn_on_violation] [-cells <args>] [-rpx <arg>] [-quiet] [-verbose]
-		///
-		/// IMPORTANT! If the design has no timing constraints, report_timing reports on unconstrained paths
-		/// in the design. However, if even one path has timing constraints then report_timing only reports on
-		/// the constrained paths in the design, unless unconstrained timing paths are specified by the -from /-to
-		/// options.
-		/// This command performs timing analysis on the specified timing paths of the current Synthesized
-		/// or Implemented Design. By default the tool reports the timing path with the worst calculated
-		/// slack within each path group. However, you can optionally increase the number of paths and
-		/// delays reported with the use of the -nworst or -max_paths arguments.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// TIP: The report_timing can be multi-threaded to speed the process. Refer to the set_param
-		/// command for more information on setting the general.maxThreads parameter.
-		/// The timing engine runs in "quad" timing mode, analyzing min and max delays for both slow and
-		/// fast corners. You can configure the type of analysis performed by the
-		/// config_timing_corners command. However, it is not recommended to change the default
-		/// because this reduces the timing analysis coverage.
-		/// Note: By default the report is written to the Tcl console or STD output. However, the results can also be
-		/// written to the GUI, to a file, or returned as a string if desired.
-		///
-		/// The following example reports the timing for the 5 worst paths in the design, reporting the full
-		/// timing path, including input pins, with timing values:
-		/// report_timing -nworst 5 -path_type full -input_pins
-		/// The following example shows the use of the multiple through points to define both a specific
-		/// path (through state_reg1) and alternate paths (through count_3 or count_4), and writes the
-		/// timing results to the specified file:
-		/// report_timing -from go -through {state_reg1} \
-		/// -through { count_3 count_4 } \
-		/// -to done -path_type summary -file C:/Data/timing1.txt
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1455
+		/// <para>
+		/// Report timing paths<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_timing [-from &lt;args&gt;] [-rise_from &lt;args&gt;] [-fall_from &lt;args&gt;] [-to &lt;args&gt;] [-rise_to &lt;args&gt;] [-fall_to &lt;args&gt;] [-through &lt;args&gt;] [-rise_through &lt;args&gt;] [-fall_through &lt;args&gt;] [-delay_type &lt;arg&gt;] [-setup] [-hold] [-max_paths &lt;arg&gt;] [-nworst &lt;arg&gt;] [-unique_pins] [-path_type &lt;arg&gt;] [-input_pins] [-no_header] [-no_reused_label] [-slack_lesser_than &lt;arg&gt;] [-slack_greater_than &lt;arg&gt;] [-group &lt;args&gt;] [-sort_by &lt;arg&gt;] [-no_report_unconstrained] [-user_ignored] [-of_objects &lt;args&gt;] [-significant_digits &lt;arg&gt;] [-column_style &lt;arg&gt;] [-file &lt;arg&gt;] [-append] [-name &lt;arg&gt;] [-no_pr_attribute] [-routable_nets] [-return_string] [-warn_on_violation] [-cells &lt;args&gt;] [-rpx &lt;arg&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// IMPORTANT! If the design has no timing constraints, report_timing reports on unconstrained paths<br/>
+		/// in the design. However, if even one path has timing constraints then report_timing only reports on<br/>
+		/// the constrained paths in the design, unless unconstrained timing paths are specified by the -from /-to<br/>
+		/// options.<br/>
+		/// This command performs timing analysis on the specified timing paths of the current Synthesized<br/>
+		/// or Implemented Design. By default the tool reports the timing path with the worst calculated<br/>
+		/// slack within each path group. However, you can optionally increase the number of paths and<br/>
+		/// delays reported with the use of the -nworst or -max_paths arguments.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// TIP: The report_timing can be multi-threaded to speed the process. Refer to the set_param<br/>
+		/// command for more information on setting the general.maxThreads parameter.<br/>
+		/// The timing engine runs in "quad" timing mode, analyzing min and max delays for both slow and<br/>
+		/// fast corners. You can configure the type of analysis performed by the<br/>
+		/// config_timing_corners command. However, it is not recommended to change the default<br/>
+		/// because this reduces the timing analysis coverage.<br/>
+		/// Note: By default the report is written to the Tcl console or STD output. However, the results can also be<br/>
+		/// written to the GUI, to a file, or returned as a string if desired.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example reports the timing for the 5 worst paths in the design, reporting the full<br/>
+		/// timing path, including input pins, with timing values:<br/>
+		/// report_timing -nworst 5 -path_type full -input_pins<br/>
+		/// The following example shows the use of the multiple through points to define both a specific<br/>
+		/// path (through state_reg1) and alternate paths (through count_3 or count_4), and writes the<br/>
+		/// timing results to the specified file:<br/>
+		/// report_timing -from go -through {state_reg1} \<br/>
+		/// -through { count_3 count_4 } \<br/>
+		/// -to done -path_type summary -file C:/Data/timing1.txt<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1455<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="from">(Optional) From pins, ports, cells or clocks</param>
 		/// <param name="rise_from">(Optional) Rising from pins, ports, cells or clocks</param>
@@ -1977,32 +2364,40 @@ namespace Quokka.TCL.Vivado
 		/// <param name="rise_through">(Optional) Rising through pins, ports, cells or nets</param>
 		/// <param name="fall_through">(Optional) Falling through pins, ports, cells or nets</param>
 		/// <param name="delay_type">
-		/// (Optional)
-		/// Type of path delay: Values: max, min, min_max, max_rise,
-		/// max_fall, min_rise, min_fall Default: max
+		/// <para>
+		/// (Optional)<br/>
+		/// Type of path delay: Values: max, min, min_max, max_rise,<br/>
+		/// max_fall, min_rise, min_fall Default: max<br/>
+		/// </para>
 		/// </param>
 		/// <param name="setup">(Optional) Report max delay timing paths (equivalent to -delay_type max)</param>
 		/// <param name="hold">(Optional) Report min delay timing paths (equivalent to -delay_type min)</param>
 		/// <param name="max_paths">
-		/// (Optional)
-		/// Maximum number of paths to output when sorted by slack,
-		/// or per path group when sorted by group: Value >=1 Default:
-		/// 1
+		/// <para>
+		/// (Optional)<br/>
+		/// Maximum number of paths to output when sorted by slack,<br/>
+		/// or per path group when sorted by group: Value &gt;=1 Default:<br/>
+		/// 1<br/>
+		/// </para>
 		/// </param>
-		/// <param name="nworst">(Optional) List up to N worst paths to endpoint: Value >=1 Default: 1</param>
+		/// <param name="nworst">(Optional) List up to N worst paths to endpoint: Value &gt;=1 Default: 1</param>
 		/// <param name="unique_pins">(Optional) for each unique set of pins, show at most 1 path per path group</param>
 		/// <param name="path_type">
-		/// (Optional)
-		/// Format for path report: Values: end, summary, short, full,
-		/// full_clock, full_clock_expanded Default: full_clock_expanded
+		/// <para>
+		/// (Optional)<br/>
+		/// Format for path report: Values: end, summary, short, full,<br/>
+		/// full_clock, full_clock_expanded Default: full_clock_expanded<br/>
+		/// </para>
 		/// </param>
 		/// <param name="input_pins">(Optional) Show input pins in path</param>
 		/// <param name="no_header">(Optional) Do not generate a report header</param>
 		/// <param name="no_reused_label">
-		/// (Optional)
-		/// Do not label reuse status on pins in the report
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// Name Description
+		/// <para>
+		/// (Optional)<br/>
+		/// Do not label reuse status on pins in the report<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// Name Description<br/>
+		/// </para>
 		/// </param>
 		/// <param name="slack_lesser_than">(Optional) Display paths with slack less than this Default: 1e+30</param>
 		/// <param name="slack_greater_than">(Optional) Display paths with slack greater than this Default: -1e+30</param>
@@ -2010,34 +2405,44 @@ namespace Quokka.TCL.Vivado
 		/// <param name="sort_by">(Optional) Sorting order of paths: Values: group, slack Default: slack</param>
 		/// <param name="no_report_unconstrained">(Optional) Do not report infinite slack paths</param>
 		/// <param name="user_ignored">
-		/// (Optional)
-		/// Only report paths which have infinite slack because of
-		/// set_false_path or set_clock_groups timing constraints
+		/// <para>
+		/// (Optional)<br/>
+		/// Only report paths which have infinite slack because of<br/>
+		/// set_false_path or set_clock_groups timing constraints<br/>
+		/// </para>
 		/// </param>
 		/// <param name="of_objects">(Optional) Report timing for these paths</param>
 		/// <param name="significant_digits">(Optional) Number of digits to display: Range: 0 to 3 Default: 3</param>
 		/// <param name="column_style">
-		/// (Optional)
-		/// style for path report columns: Values: variable_width,
-		/// anchor_left, fixed_width Default: anchor_left
+		/// <para>
+		/// (Optional)<br/>
+		/// style for path report columns: Values: variable_width,<br/>
+		/// anchor_left, fixed_width Default: anchor_left<br/>
+		/// </para>
 		/// </param>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
 		/// <param name="no_pr_attribute">
-		/// (Optional)
-		/// for Dynamic Function eXchange designs, do not report
-		/// whether netlist resources are in the static or reconfigurable
-		/// regions
+		/// <para>
+		/// (Optional)<br/>
+		/// for Dynamic Function eXchange designs, do not report<br/>
+		/// whether netlist resources are in the static or reconfigurable<br/>
+		/// regions<br/>
+		/// </para>
 		/// </param>
 		/// <param name="routable_nets">
-		/// (Optional)
-		/// store the number of routable nets traversed as a property
-		/// on timing paths.
+		/// <para>
+		/// (Optional)<br/>
+		/// store the number of routable nets traversed as a property<br/>
+		/// on timing paths.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="return_string">(Optional) return report as string</param>
 		/// <param name="warn_on_violation">(Optional) issue a critical warning when the report contains a timing violation</param>
@@ -2052,95 +2457,115 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Report timing summary
-		///
-		///
-		/// TCL Syntax: report_timing_summary [-check_timing_verbose] [-delay_type <arg>] [-no_detailed_paths] [-setup] [-hold] [-max_paths <arg>] [-nworst <arg>] [-unique_pins] [-path_type <arg>] [-no_reused_label] [-input_pins] [-no_pr_attribute] [-routable_nets] [-slack_lesser_than <arg>] [-report_unconstrained] [-significant_digits <arg>] [-no_header] [-file <arg>] [-append] [-name <arg>] [-return_string] [-warn_on_violation] [-datasheet] [-cells <args>] [-rpx <arg>] [-quiet] [-verbose]
-		///
-		/// TIP: The report_timing_summary can be multi-threaded to speed the process. Refer to the
-		/// set_param command for more information on setting the general.maxThreads parameter.
-		/// Generate a timing summary to help understand if the design has met timing requirements. The
-		/// timing summary can be run on an open Synthesized or Implemented Design.
-		/// The timing summary report includes the following information:
-		/// • Timer Settings - Details the timing engine settings used to generate the timing information in
-		/// the report.
-		/// • Check Timing - Contains the same information that is produced by the check_timing
-		/// command, which summarizes potential timing issues.
-		/// • Design Timing Summary - Provides a summary of the timing of the design, including values for
-		/// worst and total negative slack (WNS/TNS), worst and total hold slack (WHS/THS), and
-		/// component switching limits (CSL).
-		/// • Clock Definitions - Contains the same information that is produced by the report_clocks
-		/// command, showing all the clocks that were created for the design, either by create_clock,
-		/// create_generated_clock, or automatically by the tool.
-		/// • Intra-Clock Table - Summarizes timing paths with the same source and destination clocks.
-		/// • Inter-Clock Table - Summarizes timing paths with different source and destination clocks.
-		/// • Path Group Table - Shows default path groups and user-defined path groups created by the
-		/// group_path command.
-		/// • Timing Details - Contains detailed timing paths, both max delay and min delay, as well as
-		/// component switching limits for each clock defined, similar to the report_timing command.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// • Data sheet - Contains the same information that is produced by the report_datasheet
-		/// command. It contains the timing characteristics of a design at the I/O ports. The data sheet
-		/// information is added to the summary report only when the -datasheet option is specified.
-		/// This command is automatically run during implementation as part of the launch_runs
-		/// command.
-		/// Note: By default the report is written to the Tcl console or STD output. However, the results can also be
-		/// written to a file or returned as a string if desired.
-		///
-		/// The following example reports the timing summary of the current design:
-		/// report_timing_summary
-		/// The following example reports the hold timing summary of the current design, including
-		/// unconstrained paths, with the specified options:
-		/// report_timing_summary -delay_type min -path_type full_clock_expanded \
-		/// -report_unconstrained -max_paths 2 -nworst 1 -significant_digits 2 \
-		/// -input_pins -name {timing_6}
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1462
+		/// <para>
+		/// Report timing summary<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: report_timing_summary [-check_timing_verbose] [-delay_type &lt;arg&gt;] [-no_detailed_paths] [-setup] [-hold] [-max_paths &lt;arg&gt;] [-nworst &lt;arg&gt;] [-unique_pins] [-path_type &lt;arg&gt;] [-no_reused_label] [-input_pins] [-no_pr_attribute] [-routable_nets] [-slack_lesser_than &lt;arg&gt;] [-report_unconstrained] [-significant_digits &lt;arg&gt;] [-no_header] [-file &lt;arg&gt;] [-append] [-name &lt;arg&gt;] [-return_string] [-warn_on_violation] [-datasheet] [-cells &lt;args&gt;] [-rpx &lt;arg&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// TIP: The report_timing_summary can be multi-threaded to speed the process. Refer to the<br/>
+		/// set_param command for more information on setting the general.maxThreads parameter.<br/>
+		/// Generate a timing summary to help understand if the design has met timing requirements. The<br/>
+		/// timing summary can be run on an open Synthesized or Implemented Design.<br/>
+		/// The timing summary report includes the following information:<br/>
+		/// • Timer Settings - Details the timing engine settings used to generate the timing information in<br/>
+		/// the report.<br/>
+		/// • Check Timing - Contains the same information that is produced by the check_timing<br/>
+		/// command, which summarizes potential timing issues.<br/>
+		/// • Design Timing Summary - Provides a summary of the timing of the design, including values for<br/>
+		/// worst and total negative slack (WNS/TNS), worst and total hold slack (WHS/THS), and<br/>
+		/// component switching limits (CSL).<br/>
+		/// • Clock Definitions - Contains the same information that is produced by the report_clocks<br/>
+		/// command, showing all the clocks that were created for the design, either by create_clock,<br/>
+		/// create_generated_clock, or automatically by the tool.<br/>
+		/// • Intra-Clock Table - Summarizes timing paths with the same source and destination clocks.<br/>
+		/// • Inter-Clock Table - Summarizes timing paths with different source and destination clocks.<br/>
+		/// • Path Group Table - Shows default path groups and user-defined path groups created by the<br/>
+		/// group_path command.<br/>
+		/// • Timing Details - Contains detailed timing paths, both max delay and min delay, as well as<br/>
+		/// component switching limits for each clock defined, similar to the report_timing command.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// • Data sheet - Contains the same information that is produced by the report_datasheet<br/>
+		/// command. It contains the timing characteristics of a design at the I/O ports. The data sheet<br/>
+		/// information is added to the summary report only when the -datasheet option is specified.<br/>
+		/// This command is automatically run during implementation as part of the launch_runs<br/>
+		/// command.<br/>
+		/// Note: By default the report is written to the Tcl console or STD output. However, the results can also be<br/>
+		/// written to a file or returned as a string if desired.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example reports the timing summary of the current design:<br/>
+		/// report_timing_summary<br/>
+		/// The following example reports the hold timing summary of the current design, including<br/>
+		/// unconstrained paths, with the specified options:<br/>
+		/// report_timing_summary -delay_type min -path_type full_clock_expanded \<br/>
+		/// -report_unconstrained -max_paths 2 -nworst 1 -significant_digits 2 \<br/>
+		/// -input_pins -name {timing_6}<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1462<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="check_timing_verbose">
-		/// (Optional)
-		/// produce a verbose report when checking the design for
-		/// potential timing problems
+		/// <para>
+		/// (Optional)<br/>
+		/// produce a verbose report when checking the design for<br/>
+		/// potential timing problems<br/>
+		/// </para>
 		/// </param>
 		/// <param name="delay_type">(Optional) Type of path delay: Values: max, min, min_max Default: min_max</param>
 		/// <param name="no_detailed_paths">(Optional) do not report timing paths for each clock and path group analyzed</param>
 		/// <param name="setup">(Optional) Report max delay timing paths (equivalent to -delay_type max)</param>
 		/// <param name="hold">(Optional) Report min delay timing paths (equivalent to -delay_type min)</param>
 		/// <param name="max_paths">
-		/// (Optional)
-		/// Maximum number of paths to report per clock or path
-		/// group: Value >=1 Default: 1
+		/// <para>
+		/// (Optional)<br/>
+		/// Maximum number of paths to report per clock or path<br/>
+		/// group: Value &gt;=1 Default: 1<br/>
+		/// </para>
 		/// </param>
-		/// <param name="nworst">(Optional) List up to N worst paths to endpoint: Value >=1 Default: 1</param>
+		/// <param name="nworst">(Optional) List up to N worst paths to endpoint: Value &gt;=1 Default: 1</param>
 		/// <param name="unique_pins">(Optional) for each unique set of pins, show at most 1 path per path group</param>
 		/// <param name="path_type">
-		/// (Optional)
-		/// Format for path report: Values: end summary short full
-		/// full_clock full_clock_expanded Default: full_clock_expanded
+		/// <para>
+		/// (Optional)<br/>
+		/// Format for path report: Values: end summary short full<br/>
+		/// full_clock full_clock_expanded Default: full_clock_expanded<br/>
+		/// </para>
 		/// </param>
 		/// <param name="no_reused_label">(Optional) Do not label reuse status on pins in the report</param>
 		/// <param name="input_pins">(Optional) Show input pins in path</param>
 		/// <param name="no_pr_attribute">
-		/// (Optional)
-		/// for Dynamic Function eXchange designs, do not report
-		/// whether netlist resources are in the static or reconfigurable
-		/// regions
+		/// <para>
+		/// (Optional)<br/>
+		/// for Dynamic Function eXchange designs, do not report<br/>
+		/// whether netlist resources are in the static or reconfigurable<br/>
+		/// regions<br/>
+		/// </para>
 		/// </param>
 		/// <param name="routable_nets">
-		/// (Optional)
-		/// store the number of routable nets traversed as a property
-		/// on timing paths.
+		/// <para>
+		/// (Optional)<br/>
+		/// store the number of routable nets traversed as a property<br/>
+		/// on timing paths.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="slack_lesser_than">(Optional) Display paths with slack less than this Default: 1e+30</param>
 		/// <param name="report_unconstrained">(Optional) report unconstrained and user ignored paths</param>
 		/// <param name="significant_digits">(Optional) Number of digits to display: Range: 0 to 3 Default: 3</param>
 		/// <param name="no_header">(Optional) do not generate a report header</param>
 		/// <param name="file">
-		/// (Optional)
-		/// Filename to output results to. (send output to console if -file
-		/// is not used)
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// Name Description
+		/// <para>
+		/// (Optional)<br/>
+		/// Filename to output results to. (send output to console if -file<br/>
+		/// is not used)<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// Name Description<br/>
+		/// </para>
 		/// </param>
 		/// <param name="append">(Optional) Append the results to file, don't overwrite the results file</param>
 		/// <param name="name">(Optional) Output the results to GUI panel with this name</param>
@@ -2158,35 +2583,47 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Resets the timing information on the current design
-		///
-		///
+		/// <para>
+		/// Resets the timing information on the current design<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
 		/// TCL Syntax: reset_timing [-invalid] [-clock_reservation] [-quiet] [-verbose]
-		///
-		/// Reset the timing data and constraints for the current design. Use this command to clear the
-		/// current in-memory timing data and constraints, and force the timing engine to reevaluate the
-		/// design comprehensively rather than iteratively.
-		/// After clearing the constraints from the in-memory design, you must reload any needed
-		/// constraints using the read_xdc command. The Vivado tool will not automatically reload the
-		/// constraints.
-		/// TIP: This command deletes the in-memory timing view, not the timing report. Use the
-		/// delete_timing_results command to delete the reported timing information.
-		///
-		/// The following example clears the current timing data from memory, including any invalid timing
-		/// constraints:
-		/// reset_timing -invalid
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1523
+		/// <br/>
+		/// <para>
+		/// Reset the timing data and constraints for the current design. Use this command to clear the<br/>
+		/// current in-memory timing data and constraints, and force the timing engine to reevaluate the<br/>
+		/// design comprehensively rather than iteratively.<br/>
+		/// After clearing the constraints from the in-memory design, you must reload any needed<br/>
+		/// constraints using the read_xdc command. The Vivado tool will not automatically reload the<br/>
+		/// constraints.<br/>
+		/// TIP: This command deletes the in-memory timing view, not the timing report. Use the<br/>
+		/// delete_timing_results command to delete the reported timing information.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example clears the current timing data from memory, including any invalid timing<br/>
+		/// constraints:<br/>
+		/// reset_timing -invalid<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1523<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="invalid">
-		/// (Optional)
-		/// Resets invalid timing constraints in addition to valid timing
-		/// constraints.
+		/// <para>
+		/// (Optional)<br/>
+		/// Resets invalid timing constraints in addition to valid timing<br/>
+		/// constraints.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="clock_reservation">
-		/// (Optional)
-		/// Resets clock name reservations for auto-derived clocks in
-		/// addition to valid timing constraints.
+		/// <para>
+		/// (Optional)<br/>
+		/// Resets clock name reservations for auto-derived clocks in<br/>
+		/// addition to valid timing constraints.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -2197,33 +2634,43 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Sets the interconnect delay model for timing analysis.
-		///
-		///
-		/// TCL Syntax: set_delay_model [-interconnect <arg>] [-quiet] [-verbose]
-		///
-		/// Sets the interconnect delay model for timing analysis. There are three settings for the
-		/// interconnect delay model: "actual", "estimated", or "none".
-		/// • If "actual" is selected, the actual delay from the routed interconnect will be used in timing
-		/// analysis. If the design is only partially routed, then the actual delay from the routed portion
-		/// will be used, along with estimated delay for the unrouted portion. The timing report will
-		/// provide details regarding the source of the calculated delay.
-		/// • If "estimated" delays are selected, the timing analysis will include an estimate of the
-		/// interconnect delays based on the placement and connectivity of the design onto the device
-		/// prior to implementation. Estimated delay can be specified even if the design is fully routed.
-		/// • If "none" is selected, then no interconnect delay is included in the timing analysis, and only the
-		/// logic delay is applied.
-		/// Note: This command operates silently and does not return direct feedback of its operation.
-		///
-		/// The following command will use a timing delay model which is an estimated value.
-		/// set_delay_model -interconnect estimated
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1612
+		/// <para>
+		/// Sets the interconnect delay model for timing analysis.<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: set_delay_model [-interconnect &lt;arg&gt;] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// Sets the interconnect delay model for timing analysis. There are three settings for the<br/>
+		/// interconnect delay model: "actual", "estimated", or "none".<br/>
+		/// • If "actual" is selected, the actual delay from the routed interconnect will be used in timing<br/>
+		/// analysis. If the design is only partially routed, then the actual delay from the routed portion<br/>
+		/// will be used, along with estimated delay for the unrouted portion. The timing report will<br/>
+		/// provide details regarding the source of the calculated delay.<br/>
+		/// • If "estimated" delays are selected, the timing analysis will include an estimate of the<br/>
+		/// interconnect delays based on the placement and connectivity of the design onto the device<br/>
+		/// prior to implementation. Estimated delay can be specified even if the design is fully routed.<br/>
+		/// • If "none" is selected, then no interconnect delay is included in the timing analysis, and only the<br/>
+		/// logic delay is applied.<br/>
+		/// Note: This command operates silently and does not return direct feedback of its operation.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following command will use a timing delay model which is an estimated value.<br/>
+		/// set_delay_model -interconnect estimated<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1612<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="interconnect">
-		/// (Optional)
-		/// Interconnect delay model used for timing analysis: Values:
-		/// estimated, actual(default), none
+		/// <para>
+		/// (Optional)<br/>
+		/// Interconnect delay model used for timing analysis: Values:<br/>
+		/// estimated, actual(default), none<br/>
+		/// </para>
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -2234,40 +2681,50 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Disable timing arcs
-		///
-		///
-		/// TCL Syntax: set_disable_timing [-from <arg>] [-to <arg>] [-quiet] [-verbose] <objects>
-		///
-		/// Disables timing arcs within a specified cell or cells that lead to the output pins of the cell. Only
-		/// the I/O paths between the clock port and the outputs of the cell are disabled.
-		/// The purpose of disabling a timing arc is to prevent timing analysis through the arc.
-		/// If a <cell> is specified, then all timing arcs in that cell are disabled. If the optional -from and -to
-		/// arguments are specified, then the timing arcs are defined by the from/to pins. If only -from is
-		/// speified then all timing arcs from that pin are disabled. If only -to is specified then all timing
-		/// paths to that pin are disabled.
-		/// If a <port> is specified, then all timing paths from a specified input port are disabled, or timing
-		/// paths to a specified output port are disabled.
-		/// Note: This command operates silently and does not return direct feedback of its operation
-		///
-		/// The following example disable the timing arc between the pins I0 and O of the LUT
-		/// div_dec_ff_i/U0/count_i_1 to break a combinational loop:
-		/// set_disable_timing -from I0 -to O [get_cells div_dec_ff_i/U0/count_i_1]
-		/// The following example disables the timing arcs between the specified input pin to the specified
-		/// output pin of a BRAM cell:
-		/// set_disable_timing -from WEBWE[3] -to CLKMEM [get_cells \
-		/// ldpc_dout360_channel/U_AP_FIFO_ldpc_dout360_channel_ram/mem_reg_0]
-		/// The following example disables all timing arcs of the specified cell:
-		/// set arcs [get_timing_arcs -of_objects [get_cells \
-		/// ldpc_dout360_channel/U_AP_FIFO_ldpc_dout360_channel_ram/mem_reg_0]]
-		/// set_disable_timing $arcs
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1614
+		/// <para>
+		/// Disable timing arcs<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: set_disable_timing [-from &lt;arg&gt;] [-to &lt;arg&gt;] [-quiet] [-verbose] &lt;objects&gt;
+		/// <br/>
+		/// <para>
+		/// Disables timing arcs within a specified cell or cells that lead to the output pins of the cell. Only<br/>
+		/// the I/O paths between the clock port and the outputs of the cell are disabled.<br/>
+		/// The purpose of disabling a timing arc is to prevent timing analysis through the arc.<br/>
+		/// If a &lt;cell&gt; is specified, then all timing arcs in that cell are disabled. If the optional -from and -to<br/>
+		/// arguments are specified, then the timing arcs are defined by the from/to pins. If only -from is<br/>
+		/// speified then all timing arcs from that pin are disabled. If only -to is specified then all timing<br/>
+		/// paths to that pin are disabled.<br/>
+		/// If a &lt;port&gt; is specified, then all timing paths from a specified input port are disabled, or timing<br/>
+		/// paths to a specified output port are disabled.<br/>
+		/// Note: This command operates silently and does not return direct feedback of its operation<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example disable the timing arc between the pins I0 and O of the LUT<br/>
+		/// div_dec_ff_i/U0/count_i_1 to break a combinational loop:<br/>
+		/// set_disable_timing -from I0 -to O [get_cells div_dec_ff_i/U0/count_i_1]<br/>
+		/// The following example disables the timing arcs between the specified input pin to the specified<br/>
+		/// output pin of a BRAM cell:<br/>
+		/// set_disable_timing -from WEBWE[3] -to CLKMEM [get_cells \<br/>
+		/// ldpc_dout360_channel/U_AP_FIFO_ldpc_dout360_channel_ram/mem_reg_0]<br/>
+		/// The following example disables all timing arcs of the specified cell:<br/>
+		/// set arcs [get_timing_arcs -of_objects [get_cells \<br/>
+		/// ldpc_dout360_channel/U_AP_FIFO_ldpc_dout360_channel_ram/mem_reg_0]]<br/>
+		/// set_disable_timing $arcs<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1614<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="objects">
-		/// (Required)
-		/// List of cells or pins, ports, lib-cells, lib-pins, libcell/cell
-		/// timing-arcs
+		/// <para>
+		/// (Required)<br/>
+		/// List of cells or pins, ports, lib-cells, lib-pins, libcell/cell<br/>
+		/// timing-arcs<br/>
+		/// </para>
 		/// </param>
 		/// <param name="from">(Optional) From pin on cell</param>
 		/// <param name="to">(Optional) To pin on cell</param>
@@ -2280,26 +2737,34 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Set external delay
-		///
-		///
-		/// TCL Syntax: set_external_delay -from <args> -to <args> [-min] [-max] [-add] [-quiet] [-verbose] <delay_value>
-		///
-		/// TIP: The XDC > Timing Constraints language templates and the Timing Constraints Wizard in the Vivado
-		/// IDE offer timing diagrams and additional details around defining specific timing constraints. You can refer
-		/// to these sources for additional information.
-		/// Sets the external (feedback) delay in nanoseconds (ns) between an output and input port. The
-		/// external delay is used in the calculation of the PLL/MMCM compensation delay for PLLs/
-		/// MMCMs with external feedback.
-		/// A min or max value can be specified. By default the value specified applies to both min (hold) and
-		/// max (setup) compensation delays.
-		/// The command returns the defined delay.
-		///
-		/// The following example sets the external feedback delay to 1.0 ns between the port ClkOut and
-		/// ClkFb:
-		/// set_external_delay -from [get_ports ClkOut] -to [get_ports ClkFb] 1.0
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1616
+		/// <para>
+		/// Set external delay<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: set_external_delay -from &lt;args&gt; -to &lt;args&gt; [-min] [-max] [-add] [-quiet] [-verbose] &lt;delay_value&gt;
+		/// <br/>
+		/// <para>
+		/// TIP: The XDC &gt; Timing Constraints language templates and the Timing Constraints Wizard in the Vivado<br/>
+		/// IDE offer timing diagrams and additional details around defining specific timing constraints. You can refer<br/>
+		/// to these sources for additional information.<br/>
+		/// Sets the external (feedback) delay in nanoseconds (ns) between an output and input port. The<br/>
+		/// external delay is used in the calculation of the PLL/MMCM compensation delay for PLLs/<br/>
+		/// MMCMs with external feedback.<br/>
+		/// A min or max value can be specified. By default the value specified applies to both min (hold) and<br/>
+		/// max (setup) compensation delays.<br/>
+		/// The command returns the defined delay.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example sets the external feedback delay to 1.0 ns between the port ClkOut and<br/>
+		/// ClkFb:<br/>
+		/// set_external_delay -from [get_ports ClkOut] -to [get_ports ClkFb] 1.0<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1616<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="from">(Required) Output port</param>
 		/// <param name="to">(Required) Input port</param>
@@ -2316,28 +2781,36 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// update timing
-		///
-		///
+		/// <para>
+		/// update timing<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
 		/// TCL Syntax: update_timing [-full] [-skip_delay_calc] [-quiet] [-verbose]
-		///
-		/// Updates timing for the current design.
-		/// Update the timing data to reflect any timing constraints that were added to the design since the
-		/// timing engine was last run. This command updates the in-memory view of the timing database,
-		/// without incurring the time of a full timing analysis.
-		/// Timing is automatically updated by commands that change timing or need updated timing
-		/// information, such as the report_timing command. The update_timing command lets you
-		/// manually trigger the timing update to insure the latest constraints are applied to the timing
-		/// engine.
-		/// The update_timing command uses an incremental analysis approach by default, which
-		/// updates only out-of-date information, to reduce process and analysis time. You can also specify a
-		/// complete or full update to insure a comprehensive review of timing data in the design. However,
-		/// to avoid long timing analysis run times, you should use the -full option only when you need to.
-		///
-		/// The following example performs a full update of the in-memory timing data:
-		/// update_timing -full
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1784
+		/// <br/>
+		/// <para>
+		/// Updates timing for the current design.<br/>
+		/// Update the timing data to reflect any timing constraints that were added to the design since the<br/>
+		/// timing engine was last run. This command updates the in-memory view of the timing database,<br/>
+		/// without incurring the time of a full timing analysis.<br/>
+		/// Timing is automatically updated by commands that change timing or need updated timing<br/>
+		/// information, such as the report_timing command. The update_timing command lets you<br/>
+		/// manually trigger the timing update to insure the latest constraints are applied to the timing<br/>
+		/// engine.<br/>
+		/// The update_timing command uses an incremental analysis approach by default, which<br/>
+		/// updates only out-of-date information, to reduce process and analysis time. You can also specify a<br/>
+		/// complete or full update to insure a comprehensive review of timing data in the design. However,<br/>
+		/// to avoid long timing analysis run times, you should use the -full option only when you need to.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example performs a full update of the in-memory timing data:<br/>
+		/// update_timing -full<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1784<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="full">(Optional) Perform a full timing update instead of an incremental one</param>
 		/// <param name="skip_delay_calc">(Optional) Skip delay calculation</param>
@@ -2350,60 +2823,74 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Write file with inferred xdc timing constraints
-		///
-		///
-		/// TCL Syntax: write_inferred_xdc [-force] [-all] [-append] [-async_clocks] [-all_async_reg] [-clock_groups] [-clocks] [-excl_clocks] [-exceptions] [-io_constraints] [-merge_existing_constraints] [-name <arg>] [-quiet] [-verbose] [<file>]
-		///
-		/// You can use the write_inferred_xdc to find constraints that should be defined in the open
-		/// synthesized or implemented design. Write timing constraints that are automatically generated by
-		/// the Vivado timing engine, rather than defined in an existing XDC file and added to the design.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// Run write_inferred_xdc -clocks first to define suggested clock and generated clock
-		/// constraints. The suggested clock constraints will be defined with a period of 1 ns. You can edit
-		/// the recommended constraints to create clocks and generated clocks with the required clock
-		/// period to meet the needs of your design.
-		/// You can add the edited constraints file into the design using read_xdc, or add_files, and
-		/// update_timing.
-		/// You may need to run the write_inferred_xdc command multiple times, using various
-		/// options like -clock_groups or -async_clocks, to capture all inferred timing constraints
-		/// from the fully clocked design. You can use an iterative process of writing and sourcing the
-		/// inferred clocked constraints, and then writing and sourcing additional constraint files to capture
-		/// all inferred constraints. See the example below for more information.
-		/// This command returns a transcript of the process when successful, or returns an error if it fails.
-		///
-		/// The following example writes the inferred clock constraints in the current design:
-		/// write_inferred_xdc -clocks C:/Data/design1_inferred_clocks.xdc
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// The write_inferred_xdc command may need to be run multiple times to capture all the
-		/// inferred constraints, as is shown in this example:
-		/// write_inferred_xdc -clocks clocks.xdc
-		/// source clocks.xdc
-		/// write_inferred_xdc -all all.xdc
-		/// source all.xdc
-		/// write_inferred_xdc -async_clocks async.xdc
-		/// source async.xdc
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1867
+		/// <para>
+		/// Write file with inferred xdc timing constraints<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: write_inferred_xdc [-force] [-all] [-append] [-async_clocks] [-all_async_reg] [-clock_groups] [-clocks] [-excl_clocks] [-exceptions] [-io_constraints] [-merge_existing_constraints] [-name &lt;arg&gt;] [-quiet] [-verbose] [&lt;file&gt;]
+		/// <br/>
+		/// <para>
+		/// You can use the write_inferred_xdc to find constraints that should be defined in the open<br/>
+		/// synthesized or implemented design. Write timing constraints that are automatically generated by<br/>
+		/// the Vivado timing engine, rather than defined in an existing XDC file and added to the design.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// Run write_inferred_xdc -clocks first to define suggested clock and generated clock<br/>
+		/// constraints. The suggested clock constraints will be defined with a period of 1 ns. You can edit<br/>
+		/// the recommended constraints to create clocks and generated clocks with the required clock<br/>
+		/// period to meet the needs of your design.<br/>
+		/// You can add the edited constraints file into the design using read_xdc, or add_files, and<br/>
+		/// update_timing.<br/>
+		/// You may need to run the write_inferred_xdc command multiple times, using various<br/>
+		/// options like -clock_groups or -async_clocks, to capture all inferred timing constraints<br/>
+		/// from the fully clocked design. You can use an iterative process of writing and sourcing the<br/>
+		/// inferred clocked constraints, and then writing and sourcing additional constraint files to capture<br/>
+		/// all inferred constraints. See the example below for more information.<br/>
+		/// This command returns a transcript of the process when successful, or returns an error if it fails.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example writes the inferred clock constraints in the current design:<br/>
+		/// write_inferred_xdc -clocks C:/Data/design1_inferred_clocks.xdc<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// The write_inferred_xdc command may need to be run multiple times to capture all the<br/>
+		/// inferred constraints, as is shown in this example:<br/>
+		/// write_inferred_xdc -clocks clocks.xdc<br/>
+		/// source clocks.xdc<br/>
+		/// write_inferred_xdc -all all.xdc<br/>
+		/// source all.xdc<br/>
+		/// write_inferred_xdc -async_clocks async.xdc<br/>
+		/// source async.xdc<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1867<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">(Required) Filename to write constraints into</param>
 		/// <param name="force">(Optional) Overwrite existing file.</param>
 		/// <param name="all">
-		/// (Optional)
-		/// Generate all constraints except missing clocks which are
-		/// generated with the -clocks option
+		/// <para>
+		/// (Optional)<br/>
+		/// Generate all constraints except missing clocks which are<br/>
+		/// generated with the -clocks option<br/>
+		/// </para>
 		/// </param>
 		/// <param name="append">(Optional) Append the constraints to file, don't overwrite the constraints file</param>
 		/// <param name="async_clocks">(Optional) Find asynchronous clock groups</param>
 		/// <param name="all_async_reg">
-		/// (Optional)
-		/// Find the missing ASYNC_REG property for safe and unsafe
-		/// Clock Domain Crossing
+		/// <para>
+		/// (Optional)<br/>
+		/// Find the missing ASYNC_REG property for safe and unsafe<br/>
+		/// Clock Domain Crossing<br/>
+		/// </para>
 		/// </param>
 		/// <param name="clock_groups">
-		/// (Optional)
-		/// Find asynchronous and exclusive clock groups, equivalent to
-		/// options -async_clocks -excl_clocks
+		/// <para>
+		/// (Optional)<br/>
+		/// Find asynchronous and exclusive clock groups, equivalent to<br/>
+		/// options -async_clocks -excl_clocks<br/>
+		/// </para>
 		/// </param>
 		/// <param name="clocks">(Optional) Find missing clock definitions</param>
 		/// <param name="excl_clocks">(Optional) Find logically and physically exclusive clock groups</param>
@@ -2411,9 +2898,11 @@ namespace Quokka.TCL.Vivado
 		/// <param name="io_constraints">(Optional) Find missing input and output delays</param>
 		/// <param name="merge_existing_constraints">(Optional) Add existing user defined constraints to the generated constraints</param>
 		/// <param name="name">
-		/// (Optional)
-		/// Start constraints wizard in a GUI panel with this name. Do
-		/// other command options can be combined with -name.
+		/// <para>
+		/// (Optional)<br/>
+		/// Start constraints wizard in a GUI panel with this name. Do<br/>
+		/// other command options can be combined with -name.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -2424,63 +2913,77 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Write QoR Suggestions to the given file
-		///
-		///
-		/// TCL Syntax: write_qor_suggestions [-strategy_dir <arg>] [-tcl_output_dir <arg>] [-force] [-of_objects <args>] [-quiet] [-verbose] <file>
-		///
-		/// Write the QoR suggestions generated by the report_qor_suggestions command. You can
-		/// combine the suggestions from the latest report with suggestions read into the design with
-		/// read_qor_suggestions so that you can manage all suggestions in a single RQS file.
-		/// To write out specific QoR suggestions, use the -of_objects option. When this is not specified,
-		/// all suggestions will be written.
-		/// The recommended way to manage suggestions is using RQS objects. However, it is possible to
-		/// view and execute the commands using Tcl. Specifying the -tcl_output_dir option writes Tcl
-		/// scripts for the automated suggestions that are property based.
-		/// Implementation strategies that use machine learning to analyze the design can be generated
-		/// running report_qor_suggestions. If you specify the -strategy_dir option, multiple Tcl
-		/// files and one RQS file will be written for each strategy. The Tcl files aid integration into project or
-		/// non project flows. The main RQS file should not be used as the suggestions are contained in the
-		/// run specific files along with strategy information.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// This command returns the name of the output file created when successful, or returns an error if
-		/// it fails.
-		///
-		/// The following example reports QoR suggestions, then writes non-strategy suggestions to the
-		/// specified file.
-		/// report_qor_suggestions
-		/// write_qor_suggestions C:/Data/qor_results.rqs
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// The following example reports QoR suggestions, then writes both strategy and non-strategy
-		/// suggestions. It will create one RQS file for each strategy suggestion that exists, generating up to
-		/// three by default. Into each RQS file, it writes one strategy suggestion and all non-strategy
-		/// suggestions. This behavior means that for subsequent runs one RQS file per run is required.
-		/// report_qor_suggestions
-		/// write_qor_suggestions -strategy_dir C:/Data/strategy_dir C:/Data/
-		/// qor_suggestions.rqs
-		/// To make use of strategy suggestions, the directive for each implementation command
-		/// (opt_design, place_design, phys_opt_design, and route_design) must be set to RQS.
-		/// This can be configured automatically in project mode by sourcing the project mode Tcl script
-		/// generated for each RQS file in the strategy_dir. There is also a non-project example Tcl script
-		/// that demonstrates this requirement.
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1883
+		/// <para>
+		/// Write QoR Suggestions to the given file<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: write_qor_suggestions [-strategy_dir &lt;arg&gt;] [-tcl_output_dir &lt;arg&gt;] [-force] [-of_objects &lt;args&gt;] [-quiet] [-verbose] &lt;file&gt;
+		/// <br/>
+		/// <para>
+		/// Write the QoR suggestions generated by the report_qor_suggestions command. You can<br/>
+		/// combine the suggestions from the latest report with suggestions read into the design with<br/>
+		/// read_qor_suggestions so that you can manage all suggestions in a single RQS file.<br/>
+		/// To write out specific QoR suggestions, use the -of_objects option. When this is not specified,<br/>
+		/// all suggestions will be written.<br/>
+		/// The recommended way to manage suggestions is using RQS objects. However, it is possible to<br/>
+		/// view and execute the commands using Tcl. Specifying the -tcl_output_dir option writes Tcl<br/>
+		/// scripts for the automated suggestions that are property based.<br/>
+		/// Implementation strategies that use machine learning to analyze the design can be generated<br/>
+		/// running report_qor_suggestions. If you specify the -strategy_dir option, multiple Tcl<br/>
+		/// files and one RQS file will be written for each strategy. The Tcl files aid integration into project or<br/>
+		/// non project flows. The main RQS file should not be used as the suggestions are contained in the<br/>
+		/// run specific files along with strategy information.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// This command returns the name of the output file created when successful, or returns an error if<br/>
+		/// it fails.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example reports QoR suggestions, then writes non-strategy suggestions to the<br/>
+		/// specified file.<br/>
+		/// report_qor_suggestions<br/>
+		/// write_qor_suggestions C:/Data/qor_results.rqs<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// The following example reports QoR suggestions, then writes both strategy and non-strategy<br/>
+		/// suggestions. It will create one RQS file for each strategy suggestion that exists, generating up to<br/>
+		/// three by default. Into each RQS file, it writes one strategy suggestion and all non-strategy<br/>
+		/// suggestions. This behavior means that for subsequent runs one RQS file per run is required.<br/>
+		/// report_qor_suggestions<br/>
+		/// write_qor_suggestions -strategy_dir C:/Data/strategy_dir C:/Data/<br/>
+		/// qor_suggestions.rqs<br/>
+		/// To make use of strategy suggestions, the directive for each implementation command<br/>
+		/// (opt_design, place_design, phys_opt_design, and route_design) must be set to RQS.<br/>
+		/// This can be configured automatically in project mode by sourcing the project mode Tcl script<br/>
+		/// generated for each RQS file in the strategy_dir. There is also a non-project example Tcl script<br/>
+		/// that demonstrates this requirement.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1883<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">
-		/// (Required)
-		/// QoR suggestions file Values: A filename with alphanumeric
-		/// characters and .rqs extension.
+		/// <para>
+		/// (Required)<br/>
+		/// QoR suggestions file Values: A filename with alphanumeric<br/>
+		/// characters and .rqs extension.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="strategy_dir">
-		/// (Optional)
-		/// Directory to create Strategy RQS & TCL files Values: If
-		/// passed a directory path, for each strategy suggested one set
-		/// of RQS and TCL files will be generated.
+		/// <para>
+		/// (Optional)<br/>
+		/// Directory to create Strategy RQS &amp; TCL files Values: If<br/>
+		/// passed a directory path, for each strategy suggested one set<br/>
+		/// of RQS and TCL files will be generated.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="tcl_output_dir">
-		/// (Optional)
-		/// Directory to create TCL files Values: TCL files for the QoR
-		/// suggestions will be generated in the provided directory.
+		/// <para>
+		/// (Optional)<br/>
+		/// Directory to create TCL files Values: TCL files for the QoR<br/>
+		/// suggestions will be generated in the provided directory.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="force">(Optional) Overwrite existing suggestions file</param>
 		/// <param name="of_objects">(Optional) List of QoR suggestion objects</param>
@@ -2493,37 +2996,51 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// write_sdf command generates flat sdf delay files for event simulation
-		///
-		///
-		/// TCL Syntax: write_sdf [-process_corner <arg>] [-cell <arg>] [-rename_top <arg>] [-force] [-mode <arg>] [-gzip] [-multithread <arg>] [-quiet] [-verbose] <file>
-		///
-		/// Writes the timing delays for cells in the design to a Standard Delay Format (SDF) file.
-		/// The output SDF file can be used by the write_verilog command to create Verilog netlists for
-		/// static timing analysis and timing simulation.
-		///
-		/// The following example writes an SDF file to the specified directory:
-		/// write_sdf C:/Data/FPGA_Design/designOut.sdf
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1889
+		/// <para>
+		/// write_sdf command generates flat sdf delay files for event simulation<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: write_sdf [-process_corner &lt;arg&gt;] [-cell &lt;arg&gt;] [-rename_top &lt;arg&gt;] [-force] [-mode &lt;arg&gt;] [-gzip] [-multithread &lt;arg&gt;] [-quiet] [-verbose] &lt;file&gt;
+		/// <br/>
+		/// <para>
+		/// Writes the timing delays for cells in the design to a Standard Delay Format (SDF) file.<br/>
+		/// The output SDF file can be used by the write_verilog command to create Verilog netlists for<br/>
+		/// static timing analysis and timing simulation.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example writes an SDF file to the specified directory:<br/>
+		/// write_sdf C:/Data/FPGA_Design/designOut.sdf<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1889<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">(Required) File name</param>
 		/// <param name="process_corner">
-		/// (Optional)
-		/// Specify process corner for which SDF delays are required;
-		/// Values: slow, fast Default: slow
+		/// <para>
+		/// (Optional)<br/>
+		/// Specify process corner for which SDF delays are required;<br/>
+		/// Values: slow, fast Default: slow<br/>
+		/// </para>
 		/// </param>
 		/// <param name="cell">(Optional) Root of the design to write, e.g. des.subblk.cpu Default: whole design</param>
 		/// <param name="rename_top">
-		/// (Optional)
-		/// Replace name of top module with custom name e.g. netlist
-		/// Default: new top module name
+		/// <para>
+		/// (Optional)<br/>
+		/// Replace name of top module with custom name e.g. netlist<br/>
+		/// Default: new top module name<br/>
+		/// </para>
 		/// </param>
 		/// <param name="force">(Optional) Overwrite existing SDF file</param>
 		/// <param name="mode">
-		/// (Optional)
-		/// Specify sta (Static Timing Analysis) or timesim (Timing
-		/// Simulation) mode for SDF Default: timesim
+		/// <para>
+		/// (Optional)<br/>
+		/// Specify sta (Static Timing Analysis) or timesim (Timing<br/>
+		/// Simulation) mode for SDF Default: timesim<br/>
+		/// </para>
 		/// </param>
 		/// <param name="gzip">(Optional) write gzipped SDF</param>
 		/// <param name="multithread">(Optional) Run in multithread mode with specified number of threads Default: -1</param>
@@ -2536,73 +3053,91 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Writes constraints to a Xilinx Design Constraints (XDC) file. The default file extension for a XDC
-		/// file is .xdc.
-		///
-		///
-		/// TCL Syntax: write_xdc [-no_fixed_only] [-constraints <arg>] [-cell <arg>] [-sdc] [-no_tool_comments] [-force] [-exclude_timing] [-exclude_physical] [-add_netlist_placement] [-logic_function_stripped] [-type <args>] [-write_id] [-quiet] [-verbose] [<file>]
-		///
-		/// Writes constraints to a Xilinx® Design Constraints file (XDC). The XDC can be exported from the
-		/// top-level, which is the default, or from a specific hierarchical cell.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		/// IMPORTANT! The write_xdc command writes the constraints to the specified file in the same order
-		/// they are added to or executed in the design.
-		/// The write_xdc command lets you write invalid XDC constraints so that you can quickly report
-		/// constraints that have been ignored by the Vivado Design Suite due to a problem with the way
-		/// the constraint is written or applied. This is useful for debugging constraint files applied in specific
-		/// designs.
-		/// This command can be used to create an XDC file from a design with UCF files. All constraints
-		/// from the active constraint fileset will be exported to the XDC, even if they come from multiple
-		/// files.
-		/// TIP: The write_xdc command will not convert all UCF constraints into XDC format, and is not intended
-		/// to automatically convert UCF based designs to XDC. Refer to the Vivado Design Suite Migration
-		/// Methodology Guide (UG911) for more information on migrating UCF constraints to XDC.
-		///
-		/// The following example writes the valid and invalid constraints, including both fixed and unfixed
-		/// cells, to the specified file:
-		/// write_xdc -no_fixed_only -constraints all C:/Data/design.xdc
-		/// This example writes only the invalid constraints, including both fixed and unfixed cells, to the
-		/// specified file:
-		/// write_xdc -constraints invalid C:/Data/bad_constraints.xdc
-		/// The following example writes the physical constraints only, including any placement constraints
-		/// defined in any netlist source files:
-		/// write_xdc -exclude_timing -add_netlist_placement C:/Data/physical.xdc
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1900
+		/// <para>
+		/// Writes constraints to a Xilinx Design Constraints (XDC) file. The default file extension for a XDC<br/>
+		/// file is .xdc.<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: write_xdc [-no_fixed_only] [-constraints &lt;arg&gt;] [-cell &lt;arg&gt;] [-sdc] [-no_tool_comments] [-force] [-exclude_timing] [-exclude_physical] [-add_netlist_placement] [-logic_function_stripped] [-type &lt;args&gt;] [-write_id] [-quiet] [-verbose] [&lt;file&gt;]
+		/// <br/>
+		/// <para>
+		/// Writes constraints to a Xilinx® Design Constraints file (XDC). The XDC can be exported from the<br/>
+		/// top-level, which is the default, or from a specific hierarchical cell.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// IMPORTANT! The write_xdc command writes the constraints to the specified file in the same order<br/>
+		/// they are added to or executed in the design.<br/>
+		/// The write_xdc command lets you write invalid XDC constraints so that you can quickly report<br/>
+		/// constraints that have been ignored by the Vivado Design Suite due to a problem with the way<br/>
+		/// the constraint is written or applied. This is useful for debugging constraint files applied in specific<br/>
+		/// designs.<br/>
+		/// This command can be used to create an XDC file from a design with UCF files. All constraints<br/>
+		/// from the active constraint fileset will be exported to the XDC, even if they come from multiple<br/>
+		/// files.<br/>
+		/// TIP: The write_xdc command will not convert all UCF constraints into XDC format, and is not intended<br/>
+		/// to automatically convert UCF based designs to XDC. Refer to the Vivado Design Suite Migration<br/>
+		/// Methodology Guide (UG911) for more information on migrating UCF constraints to XDC.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example writes the valid and invalid constraints, including both fixed and unfixed<br/>
+		/// cells, to the specified file:<br/>
+		/// write_xdc -no_fixed_only -constraints all C:/Data/design.xdc<br/>
+		/// This example writes only the invalid constraints, including both fixed and unfixed cells, to the<br/>
+		/// specified file:<br/>
+		/// write_xdc -constraints invalid C:/Data/bad_constraints.xdc<br/>
+		/// The following example writes the physical constraints only, including any placement constraints<br/>
+		/// defined in any netlist source files:<br/>
+		/// write_xdc -exclude_timing -add_netlist_placement C:/Data/physical.xdc<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1900<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">(Required) Output constraints to the specified XDC file.</param>
 		/// <param name="no_fixed_only">
-		/// (Optional)
-		/// Export fixed and non-fixed placement (by default only fixed
-		/// placement is exported)
+		/// <para>
+		/// (Optional)<br/>
+		/// Export fixed and non-fixed placement (by default only fixed<br/>
+		/// placement is exported)<br/>
+		/// </para>
 		/// </param>
 		/// <param name="constraints">
-		/// (Optional)
-		/// Include constraints that are flagged invalid Values: valid,
-		/// invalid, all Default: valid
+		/// <para>
+		/// (Optional)<br/>
+		/// Include constraints that are flagged invalid Values: valid,<br/>
+		/// invalid, all Default: valid<br/>
+		/// </para>
 		/// </param>
 		/// <param name="cell">(Optional) Hierarchical cell for which constraints are exported.</param>
 		/// <param name="sdc">(Optional) Export all timing constriants in SDC compatible format.</param>
 		/// <param name="no_tool_comments">
-		/// (Optional)
-		/// Don't write verbose tool generated comments to the xdc
-		/// when translating from ucf.
+		/// <para>
+		/// (Optional)<br/>
+		/// Don't write verbose tool generated comments to the xdc<br/>
+		/// when translating from ucf.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="force">(Optional) Overwrite existing file.</param>
 		/// <param name="exclude_timing">(Optional) Don't export timing constraints.</param>
 		/// <param name="exclude_physical">(Optional) Don't export physical constraints.</param>
 		/// <param name="add_netlist_placement">(Optional) Export netlist placement constraints.</param>
 		/// <param name="logic_function_stripped">
-		/// (Optional)
-		/// Write disable_timing constraints which are associated with
-		/// having previously run write_edif with its -
-		/// logic_function_stripped option.
+		/// <para>
+		/// (Optional)<br/>
+		/// Write disable_timing constraints which are associated with<br/>
+		/// having previously run write_edif with its -<br/>
+		/// logic_function_stripped option.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="type">
-		/// (Optional)
-		/// Types of constraint to export. Values: timing, io, misc, waiver
-		/// and physical. If not specified, all constraints will be
-		/// exported.
+		/// <para>
+		/// (Optional)<br/>
+		/// Types of constraint to export. Values: timing, io, misc, waiver<br/>
+		/// and physical. If not specified, all constraints will be<br/>
+		/// exported.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="write_id">(Optional) Write position number for timing constraints</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -2615,3 +3150,4 @@ namespace Quokka.TCL.Vivado
 		}
 	}
 }
+#pragma warning restore IDE1006 // Naming Styles

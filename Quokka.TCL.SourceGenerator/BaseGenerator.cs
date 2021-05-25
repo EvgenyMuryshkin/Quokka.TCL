@@ -1,6 +1,8 @@
 ﻿using Quokka.TCL.Tools;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 
 namespace Quokka.TCL.SourceGenerator
 {
@@ -37,11 +39,17 @@ namespace Quokka.TCL.SourceGenerator
             return between(lines, from, to);
         }
 
-        protected void Header(IndentedStringBuilder builder)
+        protected IDisposable Header(IndentedStringBuilder builder)
         {
+            builder.AppendLine("#pragma warning disable IDE1006 // Naming Styles");
             builder.AppendLine($"// Generated file, do not modify");
             builder.AppendLine($"// See {GetType().Name} for implementation");
             builder.AppendLine("using System;");
+
+            return Disposable.Create(() =>
+            {
+                builder.AppendLine("#pragma warning restore IDE1006 // Naming Styles");
+            });
         }
     }
 }

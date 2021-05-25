@@ -1,3 +1,4 @@
+#pragma warning disable IDE1006 // Naming Styles
 // Generated file, do not modify
 // See VivadoGenerator for implementation
 using System;
@@ -15,29 +16,39 @@ namespace Quokka.TCL.Vivado
 			_builder = builder;
 		}
 		/// <summary>
-		/// Add a hw_emu Xilinx Shell Archive to an existing hw Xilinx Shell Archive
-		///
-		///
-		/// TCL Syntax: combine_hw_platforms [-hw <arg>] [-hw_emu <arg>] [-o <arg>] [-add_digest] [-force] [-quiet] [-verbose]
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 153
+		/// <para>
+		/// Add a hw_emu Xilinx Shell Archive to an existing hw Xilinx Shell Archive<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: combine_hw_platforms [-hw &lt;arg&gt;] [-hw_emu &lt;arg&gt;] [-o &lt;arg&gt;] [-add_digest] [-force] [-quiet] [-verbose]
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 153<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="hw">
-		/// (Optional)
-		/// A hw Xilinx Shell Archive Values: A filename with
-		/// alphanumeric characters and .xsa extension.
+		/// <para>
+		/// (Optional)<br/>
+		/// A hw Xilinx Shell Archive Values: A filename with<br/>
+		/// alphanumeric characters and .xsa extension.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="hw_emu">
-		/// (Optional)
-		/// A hw_emu Xilinx Shell Archive Values: A filename with
-		/// alphanumeric characters and .xsa extension.
+		/// <para>
+		/// (Optional)<br/>
+		/// A hw_emu Xilinx Shell Archive Values: A filename with<br/>
+		/// alphanumeric characters and .xsa extension.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="o">
-		/// (Optional)
-		/// The (optional) output Xilinx Shell Archive. If not specified,
-		/// the hw_emu will be added to the hw file, overwriting the
-		/// original file. Values: A filename with alphanumeric
-		/// characters and .xsa extension.
+		/// <para>
+		/// (Optional)<br/>
+		/// The (optional) output Xilinx Shell Archive. If not specified,<br/>
+		/// the hw_emu will be added to the hw file, overwriting the<br/>
+		/// original file. Values: A filename with alphanumeric<br/>
+		/// characters and .xsa extension.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="add_digest">(Optional) Remove this!!!</param>
 		/// <param name="force">(Optional) Overwrite existing Xilinx Shell Archive file</param>
@@ -50,26 +61,36 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Open the Xilinx Shell Archive
-		///
-		///
-		/// TCL Syntax: open_hw_platform [-no_auto_upgrade] [-quiet] [-verbose] [<file>]
-		///
-		/// Open a Xilinx support archive (XSA) file and extract the Vivado project, block design, and IP from
-		/// the archive. This will create a project directory and project file (.xpr) from the XSA.
-		/// Note: The project will be created in the current working directory, or the directory from which the Vivado
-		/// tool was launched.
-		/// This command returns a transcript of its actions, or returns an error if it fails.
-		///
-		/// The following example opens the specified XSA, automatically upgrading the IP as needed:
-		/// open_hw_platform C:/Data/zc706.xsa
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1082
+		/// <para>
+		/// Open the Xilinx Shell Archive<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: open_hw_platform [-no_auto_upgrade] [-quiet] [-verbose] [&lt;file&gt;]
+		/// <br/>
+		/// <para>
+		/// Open a Xilinx support archive (XSA) file and extract the Vivado project, block design, and IP from<br/>
+		/// the archive. This will create a project directory and project file (.xpr) from the XSA.<br/>
+		/// Note: The project will be created in the current working directory, or the directory from which the Vivado<br/>
+		/// tool was launched.<br/>
+		/// This command returns a transcript of its actions, or returns an error if it fails.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example opens the specified XSA, automatically upgrading the IP as needed:<br/>
+		/// open_hw_platform C:/Data/zc706.xsa<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1082<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">
-		/// (Required)
-		/// Xilinx Shell Archive file Values: A filename with alphanumeric
-		/// characters and .dsa/.xsa extension.
+		/// <para>
+		/// (Required)<br/>
+		/// Xilinx Shell Archive file Values: A filename with alphanumeric<br/>
+		/// characters and .dsa/.xsa extension.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="no_auto_upgrade">(Optional) Disable BD auto upgrade</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -82,20 +103,28 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Validate the specified harware platform
-		///
-		///
-		/// TCL Syntax: validate_hw_platform [-verbose] [-quiet] [<file>]
-		///
-		/// Validate a Xilinx support archive (XSA) file to ensure it has the required content for the platform.
-		/// This command returns information related to the validation of the XSA, or returns an error if it
-		/// fails.
-		///
-		/// The following example validates the specified XSA, returning verbose information related to the
-		/// platform contents:
-		/// validate_hw_platform C:/Data/zc706.xsa -verbose
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1799
+		/// <para>
+		/// Validate the specified harware platform<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: validate_hw_platform [-verbose] [-quiet] [&lt;file&gt;]
+		/// <br/>
+		/// <para>
+		/// Validate a Xilinx support archive (XSA) file to ensure it has the required content for the platform.<br/>
+		/// This command returns information related to the validation of the XSA, or returns an error if it<br/>
+		/// fails.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example validates the specified XSA, returning verbose information related to the<br/>
+		/// platform contents:<br/>
+		/// validate_hw_platform C:/Data/zc706.xsa -verbose<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1799<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="verbose">(Optional) Dump verbose information</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -108,33 +137,43 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Write the Xilinx Shell Archive for the current design
-		///
-		///
-		/// TCL Syntax: write_hw_platform [-fixed] [-force] [-include_bit] [-include_sim_content] [-minimal] [-hw] [-hw_emu] [-quiet] [-verbose] [<file>]
-		///
-		/// Writes a Xilinx support archive (XSA) of the current design for use as a hardware platform.
-		/// All platforms are dynamically implemented during compilation, meaning that the accelerator logic
-		/// coming is implemented along with some or all of the logic contained in the hardware platform
-		/// design. The XSA represents the required portion of the hardware platform. The hardware
-		/// platform design used to create a XSA consists of a Vivado IP integrator subsystem design with all
-		/// the required board interface IP cores configured and connected to the device I/Os. The Vivado
-		/// project must also include several required XSA and PFM properties needed to define the XSA.
-		/// This command reports the name of the XSA file written, or returns an error if it fails.
-		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com
-		///
-		/// The following example writes the XSA for the current project, overwriting a XSA file of the same
-		/// name if one exists:
-		/// write_hw_platform -force C:/Data/zc702.xsa
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1851
+		/// <para>
+		/// Write the Xilinx Shell Archive for the current design<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: write_hw_platform [-fixed] [-force] [-include_bit] [-include_sim_content] [-minimal] [-hw] [-hw_emu] [-quiet] [-verbose] [&lt;file&gt;]
+		/// <br/>
+		/// <para>
+		/// Writes a Xilinx support archive (XSA) of the current design for use as a hardware platform.<br/>
+		/// All platforms are dynamically implemented during compilation, meaning that the accelerator logic<br/>
+		/// coming is implemented along with some or all of the logic contained in the hardware platform<br/>
+		/// design. The XSA represents the required portion of the hardware platform. The hardware<br/>
+		/// platform design used to create a XSA consists of a Vivado IP integrator subsystem design with all<br/>
+		/// the required board interface IP cores configured and connected to the device I/Os. The Vivado<br/>
+		/// project must also include several required XSA and PFM properties needed to define the XSA.<br/>
+		/// This command reports the name of the XSA file written, or returns an error if it fails.<br/>
+		/// UG835 (v2020.2) November 18, 2020 www.xilinx.com<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example writes the XSA for the current project, overwriting a XSA file of the same<br/>
+		/// name if one exists:<br/>
+		/// write_hw_platform -force C:/Data/zc702.xsa<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1851<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">
-		/// (Required)
-		/// Device Support Archive file Values: A filename with
-		/// alphanumeric characters and .xsa extension.
+		/// <para>
+		/// (Required)<br/>
+		/// Device Support Archive file Values: A filename with<br/>
+		/// alphanumeric characters and .xsa extension.<br/>
+		/// </para>
 		/// </param>
-		/// <param name="@fixed">(Optional) Write fixed Shell.</param>
+		/// <param name="fixed">(Optional) Write fixed Shell.</param>
 		/// <param name="force">(Optional) Overwrite existing Xilinx Shell Archive file</param>
 		/// <param name="include_bit">(Optional) Include bit file(s) in the Shell.</param>
 		/// <param name="include_sim_content">(Optional) Include simulaton files in the Shell.</param>
@@ -151,23 +190,33 @@ namespace Quokka.TCL.Vivado
 			return _tcl;
 		}
 		/// <summary>
-		/// Write the unified JSON metadata file for the current design
-		///
-		///
-		/// TCL Syntax: write_hw_platform_metadata [-quiet] [-verbose] [<file>]
-		///
-		/// Writes a JSON metadata file for the platform represented by the current design.
-		/// This command returns the name of the JSON file written, or returns an error if it fails.
-		///
-		/// The following example writes the JSON file for the current project:
-		/// write_hw_platform_metadata C:/Data/zc102_platform.json
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 1853
+		/// <para>
+		/// Write the unified JSON metadata file for the current design<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: write_hw_platform_metadata [-quiet] [-verbose] [&lt;file&gt;]
+		/// <br/>
+		/// <para>
+		/// Writes a JSON metadata file for the platform represented by the current design.<br/>
+		/// This command returns the name of the JSON file written, or returns an error if it fails.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example writes the JSON file for the current project:<br/>
+		/// write_hw_platform_metadata C:/Data/zc102_platform.json<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 1853<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="file">
-		/// (Required)
-		/// Unified JSON metadata file Values: A filename with
-		/// alphanumeric characters and .json extension.
+		/// <para>
+		/// (Required)<br/>
+		/// Unified JSON metadata file Values: A filename with<br/>
+		/// alphanumeric characters and .json extension.<br/>
+		/// </para>
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -180,3 +229,4 @@ namespace Quokka.TCL.Vivado
 		}
 	}
 }
+#pragma warning restore IDE1006 // Naming Styles

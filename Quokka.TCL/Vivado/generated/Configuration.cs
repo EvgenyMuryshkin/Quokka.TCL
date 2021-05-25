@@ -1,3 +1,4 @@
+#pragma warning disable IDE1006 // Naming Styles
 // Generated file, do not modify
 // See VivadoGenerator for implementation
 using System;
@@ -15,21 +16,29 @@ namespace Quokka.TCL.Vivado
 			_builder = builder;
 		}
 		/// <summary>
-		/// Configure Implementation
-		///
-		///
-		/// TCL Syntax: config_implementation [-quiet] [-verbose] [<list>]
-		///
-		/// This command lets you configure implementation parameters to control the behavior of the
-		/// implementation process.
-		/// The list of properties that can be configured, or have been configured by this command can be
-		/// reported by the report_config_implementation command.
-		///
-		/// The following example configures implementation parameters:
-		/// config_implementation { {incr.ignore_user_clock_uncertainty True}
-		/// {<other_param> <other_value>} }
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 177
+		/// <para>
+		/// Configure Implementation<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
+		/// TCL Syntax: config_implementation [-quiet] [-verbose] [&lt;list&gt;]
+		/// <br/>
+		/// <para>
+		/// This command lets you configure implementation parameters to control the behavior of the<br/>
+		/// implementation process.<br/>
+		/// The list of properties that can be configured, or have been configured by this command can be<br/>
+		/// reported by the report_config_implementation command.<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// The following example configures implementation parameters:<br/>
+		/// config_implementation { {incr.ignore_user_clock_uncertainty True}<br/>
+		/// {&lt;other_param&gt; &lt;other_value&gt;} }<br/>
+		/// </para>
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 177<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="list">(Required) list of config params which need to be configured</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
@@ -42,3 +51,4 @@ namespace Quokka.TCL.Vivado
 		}
 	}
 }
+#pragma warning restore IDE1006 // Naming Styles

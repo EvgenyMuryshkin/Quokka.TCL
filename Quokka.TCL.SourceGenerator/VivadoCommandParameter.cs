@@ -53,6 +53,16 @@ namespace Quokka.TCL.SourceGenerator
             }
         }
 
+        public string ParamName
+        {
+            get
+            {
+                if (char.IsDigit(Name[0]))
+                    return $"_{Name}";
+                return Name;
+            }
+        }
+
         public override string ToString()
         {
             return $"Param: {Name}, {Type}, {Usage}";

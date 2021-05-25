@@ -1,3 +1,4 @@
+#pragma warning disable IDE1006 // Naming Styles
 // Generated file, do not modify
 // See VivadoGenerator for implementation
 using System;
@@ -15,12 +16,16 @@ namespace Quokka.TCL.Vivado
 			_builder = builder;
 		}
 		/// <summary>
-		/// Returns the vivado prefernces object.
-		///
-		///
+		/// <para>
+		/// Returns the vivado prefernces object.<br/>
+		/// </para>
+		/// <br/>
+		/// <br/>
 		/// TCL Syntax: current_vivado_preferences [-quiet] [-verbose]
-		///
-		/// See ug835-vivado-tcl-commands.pdf, page 423
+		/// <br/>
+		/// <para>
+		/// See ug835-vivado-tcl-commands.pdf, page 423<br/>
+		/// </para>
 		/// </summary>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
@@ -32,3 +37,4 @@ namespace Quokka.TCL.Vivado
 		}
 	}
 }
+#pragma warning restore IDE1006 // Naming Styles
