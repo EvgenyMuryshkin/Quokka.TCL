@@ -38,7 +38,7 @@ namespace Quokka.TCL.Tools
         public TThis SetProperty(string name, string value, TCLEntry target)
         {
             var builder = new IndentedStringBuilder();
-            target.Write(builder);
+            target.WriteLine(builder);
 
             return SetProperty(name, value, builder.ToString().Trim());
         }

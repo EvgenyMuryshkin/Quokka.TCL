@@ -13,10 +13,13 @@ namespace Quokka.TCL.Tools
         public override void Write(IndentedStringBuilder builder)
         {
             var lines = _text.Split('\n').Select(l => l.TrimEnd());
-            foreach (var l in lines)
+            lines.ForEach((l, idx, last) =>
             {
-                builder.AppendLine($"{l}");
-            }
+                builder.Append(l);
+
+                if (!last)
+                    builder.AppendLine();
+            });
         }
     }
 }

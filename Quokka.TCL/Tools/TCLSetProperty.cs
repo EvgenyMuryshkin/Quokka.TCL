@@ -15,7 +15,7 @@
 
         public override void Write(IndentedStringBuilder builder)
         {
-            builder.AppendLine($"set_property {_name} {_value} [{_target}]");
+            builder.Append($"set_property {_name} {_value} [{_target}]");
         }
     }
 }

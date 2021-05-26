@@ -18,7 +18,7 @@ namespace Quokka.TCL.Tools
 
             foreach (var entry in _entries)
             {
-                entry.Write(builder);
+                entry.WriteLine(builder);
             }
 
             return builder.ToString();

@@ -240,7 +240,7 @@ namespace Quokka.TCL.Vivado
 		/// features.<br/>
 		/// </para>
 		/// </param>
-		public TTCL load_features(bool? quiet = null, bool? verbose = null, TCLParameterList features = null)
+		public TTCL load_features(bool? quiet = null, bool? verbose = null, TCLObjectList features = null)
 		{
 			// TCL Syntax: load_features [-quiet] [-verbose] [<features>...]
 			_tcl.Entry(_builder.load_features(quiet, verbose, features));
@@ -642,7 +642,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="slr_crossing_opt">(Optional) Optimize slr crossing nets</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL read_iphys_opt_tcl(String input, bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, bool? auto_pipeline = null, bool? critical_pin_opt = null, bool? equ_drivers_opt = null, bool? include_skipped_optimizations = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? quiet = null, bool? verbose = null)
+		public TTCL read_iphys_opt_tcl(TCLObject input, bool? fanout_opt = null, bool? critical_cell_opt = null, bool? placement_opt = null, bool? rewire = null, bool? dsp_register_opt = null, bool? bram_register_opt = null, bool? uram_register_opt = null, bool? shift_register_opt = null, bool? auto_pipeline = null, bool? critical_pin_opt = null, bool? equ_drivers_opt = null, bool? include_skipped_optimizations = null, bool? insert_negative_edge_ffs = null, bool? hold_fix = null, bool? slr_crossing_opt = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_iphys_opt_tcl [-fanout_opt] [-critical_cell_opt] [-placement_opt] [-rewire] [-dsp_register_opt] [-bram_register_opt] [-uram_register_opt] [-shift_register_opt] [-auto_pipeline] [-critical_pin_opt] [-equ_drivers_opt] [-include_skipped_optimizations] [-insert_negative_edge_ffs] [-hold_fix] [-slr_crossing_opt] [-quiet] [-verbose] [<input>]
 			_tcl.Entry(_builder.read_iphys_opt_tcl(input, fanout_opt, critical_cell_opt, placement_opt, rewire, dsp_register_opt, bram_register_opt, uram_register_opt, shift_register_opt, auto_pipeline, critical_pin_opt, equ_drivers_opt, include_skipped_optimizations, insert_negative_edge_ffs, hold_fix, slr_crossing_opt, quiet, verbose));
@@ -710,7 +710,7 @@ namespace Quokka.TCL.Vivado
 		/// </para>
 		/// </param>
 		/// <returns>Nothing</returns>
-		public TTCL register_proc(String proc, bool? quiet = null, bool? verbose = null, String tasknm = null)
+		public TTCL register_proc(TCLObject proc, bool? quiet = null, bool? verbose = null, TCLObject tasknm = null)
 		{
 			// TCL Syntax: register_proc [-quiet] [-verbose] <proc> [<tasknm>]
 			_tcl.Entry(_builder.register_proc(proc, quiet, verbose, tasknm));
@@ -1175,7 +1175,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Nothing</returns>
-		public TTCL unregister_proc(String tasknm, bool? quiet = null, bool? verbose = null)
+		public TTCL unregister_proc(TCLObject tasknm, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: unregister_proc [-quiet] [-verbose] <tasknm>
 			_tcl.Entry(_builder.unregister_proc(tasknm, quiet, verbose));
@@ -1317,7 +1317,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="binary">(Optional) write out in binary format</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL write_iphys_opt_tcl(String output, bool? place = null, bool? binary = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_iphys_opt_tcl(TCLObject output, bool? place = null, bool? binary = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_iphys_opt_tcl [-place] [-binary] [-quiet] [-verbose] [<output>]
 			_tcl.Entry(_builder.write_iphys_opt_tcl(output, place, binary, quiet, verbose));

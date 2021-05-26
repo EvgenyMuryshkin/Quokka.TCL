@@ -14,7 +14,8 @@ namespace Quokka.TCL.SourceGenerator
     {
         Flag,
         String,
-        Enum
+        Enum,
+        Object
     }
 
     class StaticData

@@ -11,7 +11,22 @@
 
         public override void Write(IndentedStringBuilder builder)
         {
-            builder.AppendContent($" {string.Join(" ", _value.Params)}");
+            builder.Append($" {string.Join(" ", _value.Params)}");
+        }
+    }
+
+    public class TCLCommandObjectListParameter : TCLCommandParameter
+    {
+        protected TCLObjectList _value;
+
+        public TCLCommandObjectListParameter(TCLObjectList value)
+        {
+            _value = value;
+        }
+
+        public override void Write(IndentedStringBuilder builder)
+        {
+            _value.Write(builder);
         }
     }
 }

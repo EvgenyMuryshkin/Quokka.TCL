@@ -313,7 +313,7 @@ namespace Quokka.TCL.Vivado
 		/// query.<br/>
 		/// </para>
 		/// </param>
-		public TTCL create_drc_violation(String name, create_drc_violation_severity? severity = null, String msg = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
+		public TTCL create_drc_violation(String name, create_drc_violation_severity? severity = null, String msg = null, bool? quiet = null, bool? verbose = null, TCLObjectList objects = null)
 		{
 			// TCL Syntax: create_drc_violation -name <arg> [-severity <arg>] [-msg <arg>] [-quiet] [-verbose] [<objects>...]
 			_tcl.Entry(_builder.create_drc_violation(name, severity, msg, quiet, verbose, objects));
@@ -473,7 +473,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="name">(Required) Name for the set of results to clear</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_clock_networks_results(String name, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_clock_networks_results(TCLObject name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_clock_networks_results [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.delete_clock_networks_results(name, quiet, verbose));
@@ -505,7 +505,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="report_configs">(Required) List of configurable report objects to delete</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_report_configs(TCLParameterList report_configs, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_report_configs(TCLObjectList report_configs, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_report_configs [-quiet] [-verbose] <report_configs>...
 			_tcl.Entry(_builder.delete_report_configs(report_configs, quiet, verbose));
@@ -545,7 +545,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_timing_results(String name, delete_timing_results_type? type = null, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_timing_results(TCLObject name, delete_timing_results_type? type = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_timing_results [-type <arg>] [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.delete_timing_results(name, type, quiet, verbose));
@@ -613,7 +613,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="jobs">(Optional) Number of jobs Default: 1</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL generate_reports(TCLParameterList report_configs, Int32? jobs = null, bool? quiet = null, bool? verbose = null)
+		public TTCL generate_reports(TCLObjectList report_configs, Int32? jobs = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_reports [-jobs <arg>] [-quiet] [-verbose] <report_configs>...
 			_tcl.Entry(_builder.generate_reports(report_configs, jobs, quiet, verbose));
@@ -788,7 +788,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match report names against patterns Default: *</param>
 		/// <returns>list of Configurable Report objects</returns>
-		public TTCL get_report_configs(bool? regexp = null, bool? nocase = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_report_configs(bool? regexp = null, bool? nocase = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_report_configs [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_report_configs(regexp, nocase, filter, of_objects, quiet, verbose, patterns));
@@ -832,7 +832,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) Return report as string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL open_report(String rpx, String file = null, bool? append = null, bool? console = null, String name = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL open_report(TCLObject rpx, String file = null, bool? append = null, bool? console = null, String name = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_report [-file <arg>] [-append] [-console] [-name <arg>] [-return_string] [-quiet] [-verbose] <rpx>
 			_tcl.Entry(_builder.open_report(rpx, file, append, console, name, return_string, quiet, verbose));
@@ -1326,7 +1326,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="clocks">(Optional) List of clocks Default: *</param>
-		public TTCL report_clocks(String file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, String clocks = null)
+		public TTCL report_clocks(String file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, TCLObject clocks = null)
 		{
 			// TCL Syntax: report_clocks [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] [<clocks>]
 			_tcl.Entry(_builder.report_clocks(file, append, return_string, quiet, verbose, clocks));
@@ -2238,7 +2238,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) set this option to have report results returned as a string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_hw_ddrmc(String hw_objects, String file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_hw_ddrmc(TCLObject hw_objects, String file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_hw_ddrmc [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.report_hw_ddrmc(hw_objects, file, append, return_string, quiet, verbose));
@@ -2281,7 +2281,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) set this option to have report results return as a string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_hw_mig(String hw_objects, String file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_hw_mig(TCLObject hw_objects, String file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_hw_mig [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.report_hw_mig(hw_objects, file, append, return_string, quiet, verbose));
@@ -2306,7 +2306,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="return_string">(Optional) set this option to have report results returned as a string</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL report_hw_softmc(String hw_objects, String file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_hw_softmc(TCLObject hw_objects, String file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_hw_softmc [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] <hw_objects>
 			_tcl.Entry(_builder.report_hw_softmc(hw_objects, file, append, return_string, quiet, verbose));
@@ -2622,7 +2622,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="pattern">(Optional) Display params matching pattern Default: *</param>
 		/// <returns>param report</returns>
-		public TTCL report_param(String file = null, bool? append = null, bool? non_default = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, String pattern = null)
+		public TTCL report_param(String file = null, bool? append = null, bool? non_default = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, TCLObject pattern = null)
 		{
 			// TCL Syntax: report_param [-file <arg>] [-append] [-non_default] [-return_string] [-quiet] [-verbose] [<pattern>]
 			_tcl.Entry(_builder.report_param(file, append, non_default, return_string, quiet, verbose, pattern));
@@ -2868,7 +2868,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="object">(Optional) Object to query for properties</param>
 		/// <param name="pattern">(Optional) Pattern to match properties against Default: *</param>
 		/// <returns>property report</returns>
-		public TTCL report_property(bool? all = null, String @class = null, bool? return_string = null, String file = null, bool? append = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, String @object = null, String pattern = null)
+		public TTCL report_property(bool? all = null, String @class = null, bool? return_string = null, String file = null, bool? append = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, TCLObject @object = null, TCLObject pattern = null)
 		{
 			// TCL Syntax: report_property [-all] [-class <arg>] [-return_string] [-file <arg>] [-append] [-regexp] [-quiet] [-verbose] [<object>] [<pattern>]
 			_tcl.Entry(_builder.report_property(all, @class, return_string, file, append, regexp, quiet, verbose, @object, pattern));
@@ -2940,7 +2940,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) List of objects to check min pulse width with</param>
-		public TTCL report_pulse_width(String file = null, bool? append = null, String name = null, bool? return_string = null, bool? warn_on_violation = null, bool? all_violators = null, Int32? significant_digits = null, Int32? limit = null, bool? min_period = null, bool? max_period = null, bool? low_pulse = null, bool? high_pulse = null, bool? max_skew = null, TCLParameterList clocks = null, bool? no_header = null, TCLParameterList cells = null, String rpx = null, bool? quiet = null, bool? verbose = null, String objects = null)
+		public TTCL report_pulse_width(String file = null, bool? append = null, String name = null, bool? return_string = null, bool? warn_on_violation = null, bool? all_violators = null, Int32? significant_digits = null, Int32? limit = null, bool? min_period = null, bool? max_period = null, bool? low_pulse = null, bool? high_pulse = null, bool? max_skew = null, TCLParameterList clocks = null, bool? no_header = null, TCLParameterList cells = null, String rpx = null, bool? quiet = null, bool? verbose = null, TCLObject objects = null)
 		{
 			// TCL Syntax: report_pulse_width [-file <arg>] [-append] [-name <arg>] [-return_string] [-warn_on_violation] [-all_violators] [-significant_digits <arg>] [-limit <arg>] [-min_period] [-max_period] [-low_pulse] [-high_pulse] [-max_skew] [-clocks <args>] [-no_header] [-cells <args>] [-rpx <arg>] [-quiet] [-verbose] [<objects>]
 			_tcl.Entry(_builder.report_pulse_width(file, append, name, return_string, warn_on_violation, all_violators, significant_digits, limit, min_period, max_period, low_pulse, high_pulse, max_skew, clocks, no_header, cells, rpx, quiet, verbose, objects));
@@ -3461,7 +3461,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) objects</param>
-		public TTCL report_switching_activity(bool? static_probability = null, bool? signal_rate = null, bool? toggle_rate = null, bool? default_static_probability = null, bool? default_toggle_rate = null, bool? average = null, String file = null, bool? return_string = null, bool? append = null, bool? hier = null, bool? all = null, TCLParameterList type = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
+		public TTCL report_switching_activity(bool? static_probability = null, bool? signal_rate = null, bool? toggle_rate = null, bool? default_static_probability = null, bool? default_toggle_rate = null, bool? average = null, String file = null, bool? return_string = null, bool? append = null, bool? hier = null, bool? all = null, TCLParameterList type = null, bool? quiet = null, bool? verbose = null, TCLObjectList objects = null)
 		{
 			// TCL Syntax: report_switching_activity [-static_probability] [-signal_rate] [-toggle_rate] [-default_static_probability] [-default_toggle_rate] [-average] [-file <arg>] [-return_string] [-append] [-hier] [-all] [-type <args>] [-quiet] [-verbose] [<objects>...]
 			_tcl.Entry(_builder.report_switching_activity(static_probability, signal_rate, toggle_rate, default_static_probability, default_toggle_rate, average, file, return_string, append, hier, all, type, quiet, verbose, objects));
@@ -4263,7 +4263,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>new message count</returns>
-		public TTCL reset_msg_count(String id, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_msg_count(TCLObject id, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_msg_count [-quiet] [-verbose] <id>
 			_tcl.Entry(_builder.reset_msg_count(id, quiet, verbose));
@@ -4294,7 +4294,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="name">(Required) Name of the set of results</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL reset_ssn(String name, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_ssn(TCLObject name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_ssn [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.reset_ssn(name, quiet, verbose));

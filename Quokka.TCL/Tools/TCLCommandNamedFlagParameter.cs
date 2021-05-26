@@ -12,7 +12,7 @@
 
         public override void Write(IndentedStringBuilder builder)
         {
-            builder.AppendContent($" -{_name} {(_value ? "true" : "false")}");
+            builder.Append($" -{_name} {(_value ? "true" : "false")}");
         }
     }
 }

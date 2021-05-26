@@ -13,7 +13,7 @@
 
         public override void Write(IndentedStringBuilder builder)
         {
-            builder.AppendLine($"set {_target} {_source}");
+            builder.Append($"set {_target} {_source}");
         }
     }
 }

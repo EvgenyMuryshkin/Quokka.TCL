@@ -68,7 +68,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The property that was created if success, "" if failure</returns>
-		public TTCL create_property(String name, String @class, String description = null, String type = null, TCLParameterList enum_values = null, String default_value = null, TCLParameterList file_types = null, String display_text = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_property(TCLObject name, TCLObject @class, String description = null, String type = null, TCLParameterList enum_values = null, String default_value = null, TCLParameterList file_types = null, String display_text = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_property [-description <arg>] [-type <arg>] [-enum_values <args>] [-default_value <arg>] [-file_types <args>] [-display_text <arg>] [-quiet] [-verbose] <name> <class>
 			_tcl.Entry(_builder.create_property(name, @class, description, type, enum_values, default_value, file_types, display_text, quiet, verbose));
@@ -110,7 +110,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="objects">(Optional) List of objects to filter</param>
 		/// <param name="filter">(Optional) Filter list with expression</param>
 		/// <returns>new list</returns>
-		public TTCL filter(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, String objects = null, String filter = null)
+		public TTCL filter(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, TCLObject objects = null, TCLObject filter = null)
 		{
 			// TCL Syntax: filter [-regexp] [-nocase] [-quiet] [-verbose] [<objects>] [<filter>]
 			_tcl.Entry(_builder.filter(regexp, nocase, quiet, verbose, objects, filter));
@@ -143,7 +143,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>parameter value</returns>
-		public TTCL get_param(String name, bool? quiet = null, bool? verbose = null)
+		public TTCL get_param(TCLObject name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_param [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.get_param(name, quiet, verbose));
@@ -201,7 +201,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>property value</returns>
-		public TTCL get_property(String name, String @object, bool? min = null, bool? max = null, bool? quiet = null, bool? verbose = null)
+		public TTCL get_property(TCLObject name, TCLObject @object, bool? min = null, bool? max = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: get_property [-min] [-max] [-quiet] [-verbose] <name> <object>
 			_tcl.Entry(_builder.get_property(name, @object, min, max, quiet, verbose));
@@ -273,7 +273,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="object">(Optional) Object to query for properties</param>
 		/// <param name="pattern">(Optional) Pattern to match properties against Default: *</param>
 		/// <returns>list of property names</returns>
-		public TTCL list_property(String @class = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, String @object = null, String pattern = null)
+		public TTCL list_property(String @class = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, TCLObject @object = null, TCLObject pattern = null)
 		{
 			// TCL Syntax: list_property [-class <arg>] [-regexp] [-quiet] [-verbose] [<object>] [<pattern>]
 			_tcl.Entry(_builder.list_property(@class, regexp, quiet, verbose, @object, pattern));
@@ -323,7 +323,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="object">(Optional) Object to query for legal properties values</param>
 		/// <returns>list of property values</returns>
-		public TTCL list_property_value(String name, bool? @default = null, String @class = null, bool? quiet = null, bool? verbose = null, String @object = null)
+		public TTCL list_property_value(TCLObject name, bool? @default = null, String @class = null, bool? quiet = null, bool? verbose = null, TCLObject @object = null)
 		{
 			// TCL Syntax: list_property_value [-default] [-class <arg>] [-quiet] [-verbose] <name> [<object>]
 			_tcl.Entry(_builder.list_property_value(name, @default, @class, quiet, verbose, @object));
@@ -368,7 +368,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="pattern">(Optional) Display params matching pattern Default: *</param>
 		/// <returns>param report</returns>
-		public TTCL report_param(String file = null, bool? append = null, bool? non_default = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, String pattern = null)
+		public TTCL report_param(String file = null, bool? append = null, bool? non_default = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, TCLObject pattern = null)
 		{
 			// TCL Syntax: report_param [-file <arg>] [-append] [-non_default] [-return_string] [-quiet] [-verbose] [<pattern>]
 			_tcl.Entry(_builder.report_param(file, append, non_default, return_string, quiet, verbose, pattern));
@@ -442,7 +442,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="object">(Optional) Object to query for properties</param>
 		/// <param name="pattern">(Optional) Pattern to match properties against Default: *</param>
 		/// <returns>property report</returns>
-		public TTCL report_property(bool? all = null, String @class = null, bool? return_string = null, String file = null, bool? append = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, String @object = null, String pattern = null)
+		public TTCL report_property(bool? all = null, String @class = null, bool? return_string = null, String file = null, bool? append = null, bool? regexp = null, bool? quiet = null, bool? verbose = null, TCLObject @object = null, TCLObject pattern = null)
 		{
 			// TCL Syntax: report_property [-all] [-class <arg>] [-return_string] [-file <arg>] [-append] [-regexp] [-quiet] [-verbose] [<object>] [<pattern>]
 			_tcl.Entry(_builder.report_property(all, @class, return_string, file, append, regexp, quiet, verbose, @object, pattern));
@@ -475,7 +475,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>original value</returns>
-		public TTCL reset_param(String name, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_param(TCLObject name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_param [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.reset_param(name, quiet, verbose));
@@ -511,7 +511,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The value that was set if success, "" if failure</returns>
-		public TTCL reset_property(String property_name, TCLParameterList objects, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_property(TCLObject property_name, TCLObjectList objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_property [-quiet] [-verbose] <property_name> <objects>...
 			_tcl.Entry(_builder.reset_property(property_name, objects, quiet, verbose));
@@ -569,7 +569,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>newly set parameter value</returns>
-		public TTCL set_param(String name, String value, bool? quiet = null, bool? verbose = null)
+		public TTCL set_param(TCLObject name, TCLObject value, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_param [-quiet] [-verbose] <name> <value>
 			_tcl.Entry(_builder.set_param(name, value, quiet, verbose));
@@ -611,7 +611,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="part">(Required) Set current project's part to this part.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_part(String part, bool? quiet = null, bool? verbose = null)
+		public TTCL set_part(TCLObject part, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_part [-quiet] [-verbose] <part>
 			_tcl.Entry(_builder.set_part(part, quiet, verbose));
@@ -701,7 +701,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="dict">(Optional) list of name/value pairs of properties to set</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_property(String name, String value, TCLParameterList objects, TCLParameterList dict = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_property(TCLObject name, TCLObject value, TCLObjectList objects, TCLParameterList dict = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_property [-dict <args>] [-quiet] [-verbose] <name> <value> <objects>...
 			_tcl.Entry(_builder.set_property(name, value, objects, dict, quiet, verbose));

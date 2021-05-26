@@ -203,7 +203,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the 'rule_check' objects against patterns. Default: *</param>
 		/// <returns>list of Methodology rule_check objects</returns>
-		public TTCL get_methodology_checks(bool? regexp = null, bool? nocase = null, String filter = null, String abbrev = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_methodology_checks(bool? regexp = null, bool? nocase = null, String filter = null, String abbrev = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_methodology_checks [-regexp] [-nocase] [-filter <arg>] [-abbrev <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_methodology_checks(regexp, nocase, filter, abbrev, quiet, verbose, patterns));
@@ -262,7 +262,7 @@ namespace Quokka.TCL.Vivado
 		/// </para>
 		/// </param>
 		/// <returns>list of Methodology violation objects</returns>
-		public TTCL get_methodology_violations(String name = null, bool? regexp = null, String filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_methodology_violations(String name = null, bool? regexp = null, String filter = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_methodology_violations [-name <arg>] [-regexp] [-filter <arg>] [-nocase] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_methodology_violations(name, regexp, filter, nocase, quiet, verbose, patterns));
@@ -413,7 +413,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="checks">(Required) The list of checks to reset.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL reset_methodology_check(TCLParameterList checks, bool? quiet = null, bool? verbose = null)
+		public TTCL reset_methodology_check(TCLObjectList checks, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: reset_methodology_check [-quiet] [-verbose] [<checks>...]
 			_tcl.Entry(_builder.reset_methodology_check(checks, quiet, verbose));

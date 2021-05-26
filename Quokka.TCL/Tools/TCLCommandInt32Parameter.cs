@@ -10,7 +10,7 @@
 
         public override void Write(IndentedStringBuilder builder)
         {
-            builder.AppendContent($" {_value}");
+            builder.Append($" {_value}");
         }
     }
 }

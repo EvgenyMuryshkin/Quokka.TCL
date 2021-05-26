@@ -406,7 +406,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="IDs">(Required) Match suggestion names against given names</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_qor_suggestions(String IDs, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_qor_suggestions(TCLObject IDs, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_qor_suggestions [-quiet] [-verbose] [<IDs>]
 			_tcl.Entry(_builder.delete_qor_suggestions(IDs, quiet, verbose));
@@ -446,7 +446,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_timing_results(String name, delete_timing_results_type? type = null, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_timing_results(TCLObject name, delete_timing_results_type? type = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_timing_results [-type <arg>] [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.delete_timing_results(name, type, quiet, verbose));
@@ -555,7 +555,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="IDs">(Optional) Match suggestion names against given names</param>
 		/// <returns>list of qor suggestion objects</returns>
-		public TTCL get_qor_suggestions(String filter = null, bool? quiet = null, bool? verbose = null, String IDs = null)
+		public TTCL get_qor_suggestions(String filter = null, bool? quiet = null, bool? verbose = null, TCLObject IDs = null)
 		{
 			// TCL Syntax: get_qor_suggestions [-filter <arg>] [-quiet] [-verbose] [<IDs>]
 			_tcl.Entry(_builder.get_qor_suggestions(filter, quiet, verbose, IDs));
@@ -773,7 +773,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL read_qor_suggestions(String file, bool? quiet = null, bool? verbose = null)
+		public TTCL read_qor_suggestions(TCLObject file, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_qor_suggestions [-quiet] [-verbose] <file>
 			_tcl.Entry(_builder.read_qor_suggestions(file, quiet, verbose));
@@ -1221,7 +1221,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="clocks">(Optional) List of clocks Default: *</param>
-		public TTCL report_clocks(String file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, String clocks = null)
+		public TTCL report_clocks(String file = null, bool? append = null, bool? return_string = null, bool? quiet = null, bool? verbose = null, TCLObject clocks = null)
 		{
 			// TCL Syntax: report_clocks [-file <arg>] [-append] [-return_string] [-quiet] [-verbose] [<clocks>]
 			_tcl.Entry(_builder.report_clocks(file, append, return_string, quiet, verbose, clocks));
@@ -2041,7 +2041,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) List of objects to check min pulse width with</param>
-		public TTCL report_pulse_width(String file = null, bool? append = null, String name = null, bool? return_string = null, bool? warn_on_violation = null, bool? all_violators = null, Int32? significant_digits = null, Int32? limit = null, bool? min_period = null, bool? max_period = null, bool? low_pulse = null, bool? high_pulse = null, bool? max_skew = null, TCLParameterList clocks = null, bool? no_header = null, TCLParameterList cells = null, String rpx = null, bool? quiet = null, bool? verbose = null, String objects = null)
+		public TTCL report_pulse_width(String file = null, bool? append = null, String name = null, bool? return_string = null, bool? warn_on_violation = null, bool? all_violators = null, Int32? significant_digits = null, Int32? limit = null, bool? min_period = null, bool? max_period = null, bool? low_pulse = null, bool? high_pulse = null, bool? max_skew = null, TCLParameterList clocks = null, bool? no_header = null, TCLParameterList cells = null, String rpx = null, bool? quiet = null, bool? verbose = null, TCLObject objects = null)
 		{
 			// TCL Syntax: report_pulse_width [-file <arg>] [-append] [-name <arg>] [-return_string] [-warn_on_violation] [-all_violators] [-significant_digits <arg>] [-limit <arg>] [-min_period] [-max_period] [-low_pulse] [-high_pulse] [-max_skew] [-clocks <args>] [-no_header] [-cells <args>] [-rpx <arg>] [-quiet] [-verbose] [<objects>]
 			_tcl.Entry(_builder.report_pulse_width(file, append, name, return_string, warn_on_violation, all_violators, significant_digits, limit, min_period, max_period, low_pulse, high_pulse, max_skew, clocks, no_header, cells, rpx, quiet, verbose, objects));
@@ -2730,7 +2730,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="to">(Optional) To pin on cell</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_disable_timing(String objects, String from = null, String to = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_disable_timing(TCLObject objects, String from = null, String to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_disable_timing [-from <arg>] [-to <arg>] [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.set_disable_timing(objects, from, to, quiet, verbose));
@@ -2774,7 +2774,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="add">(Optional) Add to existing external delay</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_external_delay(TCLParameterList from, TCLParameterList to, String delay_value, bool? min = null, bool? max = null, bool? add = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_external_delay(TCLParameterList from, TCLParameterList to, TCLObject delay_value, bool? min = null, bool? max = null, bool? add = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_external_delay -from <args> -to <args> [-min] [-max] [-add] [-quiet] [-verbose] <delay_value>
 			_tcl.Entry(_builder.set_external_delay(from, to, delay_value, min, max, add, quiet, verbose));
@@ -2906,7 +2906,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL write_inferred_xdc(String file, bool? force = null, bool? all = null, bool? append = null, bool? async_clocks = null, bool? all_async_reg = null, bool? clock_groups = null, bool? clocks = null, bool? excl_clocks = null, bool? exceptions = null, bool? io_constraints = null, bool? merge_existing_constraints = null, String name = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_inferred_xdc(TCLObject file, bool? force = null, bool? all = null, bool? append = null, bool? async_clocks = null, bool? all_async_reg = null, bool? clock_groups = null, bool? clocks = null, bool? excl_clocks = null, bool? exceptions = null, bool? io_constraints = null, bool? merge_existing_constraints = null, String name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_inferred_xdc [-force] [-all] [-append] [-async_clocks] [-all_async_reg] [-clock_groups] [-clocks] [-excl_clocks] [-exceptions] [-io_constraints] [-merge_existing_constraints] [-name <arg>] [-quiet] [-verbose] [<file>]
 			_tcl.Entry(_builder.write_inferred_xdc(file, force, all, append, async_clocks, all_async_reg, clock_groups, clocks, excl_clocks, exceptions, io_constraints, merge_existing_constraints, name, quiet, verbose));
@@ -2989,7 +2989,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="of_objects">(Optional) List of QoR suggestion objects</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL write_qor_suggestions(String file, String strategy_dir = null, String tcl_output_dir = null, bool? force = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_qor_suggestions(TCLObject file, String strategy_dir = null, String tcl_output_dir = null, bool? force = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_qor_suggestions [-strategy_dir <arg>] [-tcl_output_dir <arg>] [-force] [-of_objects <args>] [-quiet] [-verbose] <file>
 			_tcl.Entry(_builder.write_qor_suggestions(file, strategy_dir, tcl_output_dir, force, of_objects, quiet, verbose));
@@ -3046,7 +3046,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="multithread">(Optional) Run in multithread mode with specified number of threads Default: -1</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL write_sdf(String file, write_sdf_process_corner? process_corner = null, String cell = null, String rename_top = null, bool? force = null, String mode = null, bool? gzip = null, Int32? multithread = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_sdf(TCLObject file, write_sdf_process_corner? process_corner = null, String cell = null, String rename_top = null, bool? force = null, String mode = null, bool? gzip = null, Int32? multithread = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_sdf [-process_corner <arg>] [-cell <arg>] [-rename_top <arg>] [-force] [-mode <arg>] [-gzip] [-multithread <arg>] [-quiet] [-verbose] <file>
 			_tcl.Entry(_builder.write_sdf(file, process_corner, cell, rename_top, force, mode, gzip, multithread, quiet, verbose));
@@ -3142,7 +3142,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="write_id">(Optional) Write position number for timing constraints</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL write_xdc(String file, bool? no_fixed_only = null, write_xdc_constraints? constraints = null, String cell = null, bool? sdc = null, bool? no_tool_comments = null, bool? force = null, bool? exclude_timing = null, bool? exclude_physical = null, bool? add_netlist_placement = null, bool? logic_function_stripped = null, TCLParameterList type = null, bool? write_id = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_xdc(TCLObject file, bool? no_fixed_only = null, write_xdc_constraints? constraints = null, String cell = null, bool? sdc = null, bool? no_tool_comments = null, bool? force = null, bool? exclude_timing = null, bool? exclude_physical = null, bool? add_netlist_placement = null, bool? logic_function_stripped = null, TCLParameterList type = null, bool? write_id = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_xdc [-no_fixed_only] [-constraints <arg>] [-cell <arg>] [-sdc] [-no_tool_comments] [-force] [-exclude_timing] [-exclude_physical] [-add_netlist_placement] [-logic_function_stripped] [-type <args>] [-write_id] [-quiet] [-verbose] [<file>]
 			_tcl.Entry(_builder.write_xdc(file, no_fixed_only, constraints, cell, sdc, no_tool_comments, force, exclude_timing, exclude_physical, add_netlist_placement, logic_function_stripped, type, write_id, quiet, verbose));

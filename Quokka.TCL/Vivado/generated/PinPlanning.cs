@@ -43,7 +43,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>new interface object</returns>
-		public TTCL create_interface(String name, String parent = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_interface(TCLObject name, String parent = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_interface [-parent <arg>] [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.create_interface(name, parent, quiet, verbose));
@@ -107,7 +107,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="negative_name">(Optional) Optional negative name of a diff-pair</param>
 		/// <returns>list of port objects that were created</returns>
-		public TTCL create_port(String direction, String name, String from = null, String to = null, bool? diff_pair = null, String @interface = null, bool? quiet = null, bool? verbose = null, String negative_name = null)
+		public TTCL create_port(String direction, TCLObject name, String from = null, String to = null, bool? diff_pair = null, String @interface = null, bool? quiet = null, bool? verbose = null, TCLObject negative_name = null)
 		{
 			// TCL Syntax: create_port -direction <arg> [-from <arg>] [-to <arg>] [-diff_pair] [-interface <arg>] [-quiet] [-verbose] <name> [<negative_name>]
 			_tcl.Entry(_builder.create_port(direction, name, from, to, diff_pair, @interface, quiet, verbose, negative_name));
@@ -139,7 +139,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="all">(Optional) Also remove all of the ports and buses belonging to the interface</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL delete_interface(TCLParameterList interfaces, bool? all = null, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_interface(TCLObjectList interfaces, bool? all = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_interface [-all] [-quiet] [-verbose] <interfaces>...
 			_tcl.Entry(_builder.delete_interface(interfaces, all, quiet, verbose));
@@ -173,7 +173,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="ports">(Required) Ports to join</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL make_diff_pair_ports(TCLParameterList ports, bool? quiet = null, bool? verbose = null)
+		public TTCL make_diff_pair_ports(TCLObjectList ports, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: make_diff_pair_ports [-quiet] [-verbose] <ports>...
 			_tcl.Entry(_builder.make_diff_pair_ports(ports, quiet, verbose));
@@ -223,7 +223,7 @@ namespace Quokka.TCL.Vivado
 		/// pins, then manual placement is performed<br/>
 		/// </para>
 		/// </param>
-		public TTCL place_ports(bool? skip_unconnected_ports = null, bool? check_only = null, TCLParameterList iobank = null, bool? quiet = null, bool? verbose = null, TCLParameterList ports = null)
+		public TTCL place_ports(bool? skip_unconnected_ports = null, bool? check_only = null, TCLParameterList iobank = null, bool? quiet = null, bool? verbose = null, TCLObjectList ports = null)
 		{
 			// TCL Syntax: place_ports [-skip_unconnected_ports] [-check_only] [-iobank <args>] [-quiet] [-verbose] [<ports>...]
 			_tcl.Entry(_builder.place_ports(skip_unconnected_ports, check_only, iobank, quiet, verbose, ports));
@@ -269,7 +269,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="ports">(Required) Ports and/or bus ports to remove</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL remove_port(TCLParameterList ports, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_port(TCLObjectList ports, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_port [-quiet] [-verbose] <ports>...
 			_tcl.Entry(_builder.remove_port(ports, quiet, verbose));
@@ -321,7 +321,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="to">(Optional) New ending bus index</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL resize_port_bus(TCLParameterList port_bus_name, String from = null, String to = null, bool? quiet = null, bool? verbose = null)
+		public TTCL resize_port_bus(TCLObjectList port_bus_name, String from = null, String to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: resize_port_bus [-from <arg>] [-to <arg>] [-quiet] [-verbose] <port_bus_name>...
 			_tcl.Entry(_builder.resize_port_bus(port_bus_name, from, to, quiet, verbose));
@@ -363,7 +363,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="package_pins">(Required) Package pin names</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_package_pin_val(String column, String value, TCLParameterList package_pins, bool? quiet = null, bool? verbose = null)
+		public TTCL set_package_pin_val(TCLObject column, TCLObject value, TCLObjectList package_pins, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_package_pin_val [-quiet] [-verbose] <column> <value> <package_pins>...
 			_tcl.Entry(_builder.set_package_pin_val(column, value, package_pins, quiet, verbose));
@@ -395,7 +395,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="ports">(Required) Ports to split</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL split_diff_pair_ports(TCLParameterList ports, bool? quiet = null, bool? verbose = null)
+		public TTCL split_diff_pair_ports(TCLObjectList ports, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: split_diff_pair_ports [-quiet] [-verbose] <ports>...
 			_tcl.Entry(_builder.split_diff_pair_ports(ports, quiet, verbose));

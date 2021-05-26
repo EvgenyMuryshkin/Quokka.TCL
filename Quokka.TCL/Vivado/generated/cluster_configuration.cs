@@ -65,7 +65,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="name">(Required) Name of cluster configuration</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL create_cluster_configuration(String submit_cmd, String kill_cmd, String type, String name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_cluster_configuration(String submit_cmd, String kill_cmd, String type, TCLObject name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_cluster_configuration -submit_cmd <arg> -kill_cmd <arg> -type <arg> [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.create_cluster_configuration(submit_cmd, kill_cmd, type, name, quiet, verbose));
@@ -107,7 +107,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match cluster configuration against patterns Default: *</param>
-		public TTCL get_cluster_configurations(String filter = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_cluster_configurations(String filter = null, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_cluster_configurations [-filter <arg>] [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_cluster_configurations(filter, regexp, nocase, quiet, verbose, patterns));
@@ -151,7 +151,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cluster_configurations">(Required) List of cluster configurations</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL remove_cluster_configurations(String cluster_configurations, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_cluster_configurations(TCLObject cluster_configurations, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_cluster_configurations [-quiet] [-verbose] <cluster_configurations>
 			_tcl.Entry(_builder.remove_cluster_configurations(cluster_configurations, quiet, verbose));
@@ -192,7 +192,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="cluster_configurations">(Required) List of cluster configurations</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL validate_cluster_configurations(String cluster_configurations, bool? quiet = null, bool? verbose = null)
+		public TTCL validate_cluster_configurations(TCLObject cluster_configurations, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: validate_cluster_configurations [-quiet] [-verbose] <cluster_configurations>
 			_tcl.Entry(_builder.validate_cluster_configurations(cluster_configurations, quiet, verbose));

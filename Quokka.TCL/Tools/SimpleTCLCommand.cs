@@ -18,9 +18,9 @@ namespace Quokka.TCL.Tools
         public override void Write(IndentedStringBuilder builder)
         {
             var commandBuilder = new IndentedStringBuilder();
-            commandBuilder.AppendContent(_name);
+            commandBuilder.Append(_name);
             _parameters.ForEach(p => p.Write(commandBuilder));
-            builder.AppendLine(commandBuilder.ToString());
+            builder.Append(commandBuilder.ToString());
         }
 
         string EnumValue<T>(T value)
@@ -56,6 +56,16 @@ namespace Quokka.TCL.Tools
             return this;
         }
 
+        public SimpleTCLCommand OptionalObject(string name, TCLObject value)
+        {
+            if (value != null)
+            {
+                _parameters.Add(new TCLCommandObjectParameter(value));
+            }
+
+            return this;
+        }
+
         public SimpleTCLCommand OptionalStringList(string name, TCLParameterList value)
         {
             if (value != null && value.Params.Any(v => !string.IsNullOrWhiteSpace(v)))
@@ -64,7 +74,16 @@ namespace Quokka.TCL.Tools
             }
 
             return this;
+        }
 
+        public SimpleTCLCommand OptionalObjectList(string name, TCLObjectList value)
+        {
+            if (value != null && value.Objects.Any(v => v != null))
+            {
+                _parameters.Add(new TCLCommandObjectListParameter(value));
+            }
+
+            return this;
         }
 
         public SimpleTCLCommand OptionalNamedString(string name, string value)
@@ -113,6 +132,27 @@ namespace Quokka.TCL.Tools
             {
                 _parameters.Add(new TCLCommandNamedStringListParameter(name, value));
             }
+
+            return this;
+        }
+
+        public SimpleTCLCommand RequiredObject(string name, TCLObject value)
+        {
+            if (value == null)
+                throw new ArgumentNullException($"Parameter is required but value was not provided: {name}");
+
+            _parameters.Add(new TCLCommandObjectParameter(value));
+
+            return this;
+        }
+
+
+        public SimpleTCLCommand RequiredObjectList(string name, TCLObjectList value)
+        {
+            if (value == null || !value.Objects.Any() || value.Objects.Any(v => v == null))
+                throw new ArgumentException($"Requires list of values: {name}");
+
+            _parameters.Add(new TCLCommandObjectListParameter(value));
 
             return this;
         }

@@ -244,7 +244,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) List of clock source ports, pins or nets</param>
 		/// <returns>new clock object</returns>
-		public TTCL create_clock(String period, String name = null, TCLParameterList waveform = null, bool? add = null, bool? quiet = null, bool? verbose = null, String objects = null)
+		public TTCL create_clock(String period, String name = null, TCLParameterList waveform = null, bool? add = null, bool? quiet = null, bool? verbose = null, TCLObject objects = null)
 		{
 			// TCL Syntax: create_clock -period <arg> [-name <arg>] [-waveform <args>] [-add] [-quiet] [-verbose] [<objects>]
 			_tcl.Entry(_builder.create_clock(period, name, waveform, add, quiet, verbose, objects));
@@ -333,7 +333,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>new clock object</returns>
-		public TTCL create_generated_clock(String objects, String name = null, TCLParameterList source = null, TCLParameterList edges = null, String divide_by = null, String multiply_by = null, bool? combinational = null, String duty_cycle = null, bool? invert = null, TCLParameterList edge_shift = null, bool? add = null, TCLParameterList master_clock = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_generated_clock(TCLObject objects, String name = null, TCLParameterList source = null, TCLParameterList edges = null, String divide_by = null, String multiply_by = null, bool? combinational = null, String duty_cycle = null, bool? invert = null, TCLParameterList edge_shift = null, bool? add = null, TCLParameterList master_clock = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_generated_clock [-name <arg>] [-source <args>] [-edges <args>] [-divide_by <arg>] [-multiply_by <arg>] [-combinational] [-duty_cycle <arg>] [-invert] [-edge_shift <args>] [-add] [-master_clock <args>] [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.create_generated_clock(objects, name, source, edges, divide_by, multiply_by, combinational, duty_cycle, invert, edge_shift, add, master_clock, quiet, verbose));
@@ -369,7 +369,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="design">(Optional) Name of current design to be set</param>
 		/// <returns>design object</returns>
-		public TTCL current_design(bool? quiet = null, bool? verbose = null, String design = null)
+		public TTCL current_design(bool? quiet = null, bool? verbose = null, TCLObject design = null)
 		{
 			// TCL Syntax: current_design [-quiet] [-verbose] [<design>]
 			_tcl.Entry(_builder.current_design(quiet, verbose, design));
@@ -430,7 +430,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="instance">(Optional) Name of instance</param>
 		/// <returns>instance name</returns>
-		public TTCL current_instance(bool? quiet = null, bool? verbose = null, String instance = null)
+		public TTCL current_instance(bool? quiet = null, bool? verbose = null, TCLObject instance = null)
 		{
 			// TCL Syntax: current_instance [-quiet] [-verbose] [<instance>]
 			_tcl.Entry(_builder.current_instance(quiet, verbose, instance));
@@ -528,7 +528,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match cell names against patterns Default: *</param>
 		/// <returns>list of cell objects</returns>
-		public TTCL get_cells(String hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, String filter = null, TCLParameterList of_objects = null, get_cells_match_style? match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_cells(String hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, String filter = null, TCLParameterList of_objects = null, get_cells_match_style? match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_cells [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_replicated_objects] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_cells(hsc, hierarchical, regexp, nocase, filter, of_objects, match_style, include_replicated_objects, quiet, verbose, patterns));
@@ -581,7 +581,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match clock names against patterns Default: *</param>
 		/// <returns>list of clocks</returns>
-		public TTCL get_clocks(bool? regexp = null, bool? nocase = null, String filter = null, TCLParameterList of_objects = null, String match_style = null, bool? include_generated_clocks = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_clocks(bool? regexp = null, bool? nocase = null, String filter = null, TCLParameterList of_objects = null, String match_style = null, bool? include_generated_clocks = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_clocks [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_generated_clocks] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_clocks(regexp, nocase, filter, of_objects, match_style, include_generated_clocks, quiet, verbose, patterns));
@@ -708,7 +708,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match net names against patterns Default: *</param>
 		/// <returns>list of net objects</returns>
-		public TTCL get_nets(String hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, String filter = null, TCLParameterList of_objects = null, String match_style = null, bool? top_net_of_hierarchical_group = null, bool? segments = null, String boundary_type = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_nets(String hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, String filter = null, TCLParameterList of_objects = null, String match_style = null, bool? top_net_of_hierarchical_group = null, bool? segments = null, String boundary_type = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_nets [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-top_net_of_hierarchical_group] [-segments] [-boundary_type <arg>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_nets(hsc, hierarchical, regexp, nocase, filter, of_objects, match_style, top_net_of_hierarchical_group, segments, boundary_type, quiet, verbose, patterns));
@@ -796,7 +796,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match pin names against patterns Default: *</param>
 		/// <returns>list of pin objects</returns>
-		public TTCL get_pins(String hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, bool? leaf = null, String filter = null, TCLParameterList of_objects = null, String match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_pins(String hsc = null, bool? hierarchical = null, bool? regexp = null, bool? nocase = null, bool? leaf = null, String filter = null, TCLParameterList of_objects = null, String match_style = null, bool? include_replicated_objects = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_pins [-hsc <arg>] [-hierarchical] [-regexp] [-nocase] [-leaf] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-include_replicated_objects] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_pins(hsc, hierarchical, regexp, nocase, leaf, filter, of_objects, match_style, include_replicated_objects, quiet, verbose, patterns));
@@ -872,7 +872,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match port names against patterns Default: *</param>
 		/// <returns>list of port objects</returns>
-		public TTCL get_ports(bool? regexp = null, bool? nocase = null, String filter = null, TCLParameterList of_objects = null, String match_style = null, bool? scoped_to_current_instance = null, bool? no_traverse = null, bool? prop_thru_buffers = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_ports(bool? regexp = null, bool? nocase = null, String filter = null, TCLParameterList of_objects = null, String match_style = null, bool? scoped_to_current_instance = null, bool? no_traverse = null, bool? prop_thru_buffers = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_ports [-regexp] [-nocase] [-filter <arg>] [-of_objects <args>] [-match_style <arg>] [-scoped_to_current_instance] [-no_traverse] [-prop_thru_buffers] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_ports(regexp, nocase, filter, of_objects, match_style, scoped_to_current_instance, no_traverse, prop_thru_buffers, quiet, verbose, patterns));
@@ -981,7 +981,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="objects">(Required) List of ports or pins</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_case_analysis(set_case_analysis_value value, String objects, bool? quiet = null, bool? verbose = null)
+		public TTCL set_case_analysis(set_case_analysis_value value, TCLObject objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_case_analysis [-quiet] [-verbose] <value> <objects>
 			_tcl.Entry(_builder.set_case_analysis(value, objects, quiet, verbose));
@@ -1091,7 +1091,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="early">(Optional) Specify clock rise and fall early source latency</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_clock_latency(String latency, String objects, TCLParameterList clock = null, bool? rise = null, bool? fall = null, bool? min = null, bool? max = null, bool? source = null, bool? late = null, bool? early = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_clock_latency(TCLObject latency, TCLObject objects, TCLParameterList clock = null, bool? rise = null, bool? fall = null, bool? min = null, bool? max = null, bool? source = null, bool? late = null, bool? early = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_clock_latency [-clock <args>] [-rise] [-fall] [-min] [-max] [-source] [-late] [-early] [-quiet] [-verbose] <latency> <objects>
 			_tcl.Entry(_builder.set_clock_latency(latency, objects, clock, rise, fall, min, max, source, late, early, quiet, verbose));
@@ -1131,7 +1131,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="clocks">(Optional) List of clocks</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_clock_sense(String pins, bool? positive = null, bool? negative = null, bool? stop_propagation = null, TCLParameterList clocks = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_clock_sense(TCLObject pins, bool? positive = null, bool? negative = null, bool? stop_propagation = null, TCLParameterList clocks = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_clock_sense [-positive] [-negative] [-stop_propagation] [-clocks <args>] [-quiet] [-verbose] <pins>
 			_tcl.Entry(_builder.set_clock_sense(pins, positive, negative, stop_propagation, clocks, quiet, verbose));
@@ -1208,7 +1208,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) List of clocks, ports or pins</param>
-		public TTCL set_clock_uncertainty(String uncertainty, bool? setup = null, bool? hold = null, TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, bool? quiet = null, bool? verbose = null, String objects = null)
+		public TTCL set_clock_uncertainty(TCLObject uncertainty, bool? setup = null, bool? hold = null, TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, bool? quiet = null, bool? verbose = null, TCLObject objects = null)
 		{
 			// TCL Syntax: set_clock_uncertainty [-setup] [-hold] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-quiet] [-verbose] <uncertainty> [<objects>]
 			_tcl.Entry(_builder.set_clock_uncertainty(uncertainty, setup, hold, from, rise_from, fall_from, to, rise_to, fall_to, quiet, verbose, objects));
@@ -1263,7 +1263,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="clock">(Optional) Specify the clock domain at related pin/port of the checks</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_data_check(String value, TCLParameterList from = null, TCLParameterList to = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, bool? setup = null, bool? hold = null, TCLParameterList clock = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_data_check(TCLObject value, TCLParameterList from = null, TCLParameterList to = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, bool? setup = null, bool? hold = null, TCLParameterList clock = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_data_check [-from <args>] [-to <args>] [-rise_from <args>] [-fall_from <args>] [-rise_to <args>] [-fall_to <args>] [-setup] [-hold] [-clock <args>] [-quiet] [-verbose] <value>
 			_tcl.Entry(_builder.set_data_check(value, from, to, rise_from, fall_from, rise_to, fall_to, setup, hold, clock, quiet, verbose));
@@ -1319,7 +1319,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="to">(Optional) To pin on cell</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_disable_timing(String objects, String from = null, String to = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_disable_timing(TCLObject objects, String from = null, String to = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_disable_timing [-from <arg>] [-to <arg>] [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.set_disable_timing(objects, from, to, quiet, verbose));
@@ -1403,7 +1403,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="separator">(Optional) Hierarchy separator character Default: /</param>
-		public TTCL set_hierarchy_separator(bool? quiet = null, bool? verbose = null, String separator = null)
+		public TTCL set_hierarchy_separator(bool? quiet = null, bool? verbose = null, TCLObject separator = null)
 		{
 			// TCL Syntax: set_hierarchy_separator [-quiet] [-verbose] [<separator>]
 			_tcl.Entry(_builder.set_hierarchy_separator(quiet, verbose, separator));
@@ -1488,7 +1488,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="source_latency_included">(Optional) Specifies source latency of clock already included</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_input_delay(String delay, String objects, TCLParameterList clock = null, TCLParameterList reference_pin = null, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_input_delay(TCLObject delay, TCLObject objects, TCLParameterList clock = null, TCLParameterList reference_pin = null, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_input_delay [-clock <args>] [-reference_pin <args>] [-clock_fall] [-rise] [-fall] [-max] [-min] [-add_delay] [-network_latency_included] [-source_latency_included] [-quiet] [-verbose] <delay> <objects>
 			_tcl.Entry(_builder.set_input_delay(delay, objects, clock, reference_pin, clock_fall, rise, fall, max, min, add_delay, network_latency_included, source_latency_included, quiet, verbose));
@@ -1531,7 +1531,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="min">(Optional) Specify the minimum capacitance value</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_load(String capacitance, String objects, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_load(TCLObject capacitance, TCLObject objects, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_load [-rise] [-fall] [-max] [-min] [-quiet] [-verbose] <capacitance> <objects>
 			_tcl.Entry(_builder.set_load(capacitance, objects, rise, fall, max, min, quiet, verbose));
@@ -1564,7 +1564,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="objects">(Required) List of input ports and input pins</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_logic_dc(String objects, bool? quiet = null, bool? verbose = null)
+		public TTCL set_logic_dc(TCLObject objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_logic_dc [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.set_logic_dc(objects, quiet, verbose));
@@ -1601,7 +1601,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="objects">(Required) List of input ports and input pins</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_logic_one(String objects, bool? quiet = null, bool? verbose = null)
+		public TTCL set_logic_one(TCLObject objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_logic_one [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.set_logic_one(objects, quiet, verbose));
@@ -1634,7 +1634,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="objects">(Required) List of input ports and input pins</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_logic_zero(String objects, bool? quiet = null, bool? verbose = null)
+		public TTCL set_logic_zero(TCLObject objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_logic_zero [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.set_logic_zero(objects, quiet, verbose));
@@ -1704,7 +1704,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="datapath_only">(Optional) Remove clock skew and jitter from calculation</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_max_delay(String delay, bool? rise = null, bool? fall = null, bool? reset_path = null, TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, bool? datapath_only = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_max_delay(TCLObject delay, bool? rise = null, bool? fall = null, bool? reset_path = null, TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, bool? datapath_only = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_max_delay [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-datapath_only] [-quiet] [-verbose] <delay>
 			_tcl.Entry(_builder.set_max_delay(delay, rise, fall, reset_path, from, rise_from, fall_from, to, rise_to, fall_to, through, rise_through, fall_through, datapath_only, quiet, verbose));
@@ -1741,7 +1741,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="objects">(Required) List of clocks, cells, data pins or clock pins</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_max_time_borrow(String delay, String objects, bool? quiet = null, bool? verbose = null)
+		public TTCL set_max_time_borrow(TCLObject delay, TCLObject objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_max_time_borrow [-quiet] [-verbose] <delay> <objects>
 			_tcl.Entry(_builder.set_max_time_borrow(delay, objects, quiet, verbose));
@@ -1797,7 +1797,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="fall_through">(Optional) Apply to paths falling through pins, cells or nets</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_min_delay(String delay, bool? rise = null, bool? fall = null, bool? reset_path = null, TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_min_delay(TCLObject delay, bool? rise = null, bool? fall = null, bool? reset_path = null, TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_min_delay [-rise] [-fall] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose] <delay>
 			_tcl.Entry(_builder.set_min_delay(delay, rise, fall, reset_path, from, rise_from, fall_from, to, rise_to, fall_to, through, rise_through, fall_through, quiet, verbose));
@@ -1885,7 +1885,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="fall_through">(Optional) Apply to paths falling through pins, cells or nets</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_multicycle_path(Int32 path_multiplier, bool? setup = null, bool? hold = null, bool? rise = null, bool? fall = null, bool? start = null, bool? end = null, bool? reset_path = null, TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_multicycle_path(TCLObject path_multiplier, bool? setup = null, bool? hold = null, bool? rise = null, bool? fall = null, bool? start = null, bool? end = null, bool? reset_path = null, TCLParameterList from = null, TCLParameterList rise_from = null, TCLParameterList fall_from = null, TCLParameterList to = null, TCLParameterList rise_to = null, TCLParameterList fall_to = null, TCLParameterList through = null, TCLParameterList rise_through = null, TCLParameterList fall_through = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_multicycle_path [-setup] [-hold] [-rise] [-fall] [-start] [-end] [-reset_path] [-from <args>] [-rise_from <args>] [-fall_from <args>] [-to <args>] [-rise_to <args>] [-fall_to <args>] [-through <args>] [-rise_through <args>] [-fall_through <args>] [-quiet] [-verbose] <path_multiplier>
 			_tcl.Entry(_builder.set_multicycle_path(path_multiplier, setup, hold, rise, fall, start, end, reset_path, from, rise_from, fall_from, to, rise_to, fall_to, through, rise_through, fall_through, quiet, verbose));
@@ -2038,7 +2038,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="source_latency_included">(Optional) Specifies source latency of clock already included</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_output_delay(String delay, String objects, TCLParameterList clock = null, TCLParameterList reference_pin = null, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
+		public TTCL set_output_delay(TCLObject delay, TCLObject objects, TCLParameterList clock = null, TCLParameterList reference_pin = null, bool? clock_fall = null, bool? rise = null, bool? fall = null, bool? max = null, bool? min = null, bool? add_delay = null, bool? network_latency_included = null, bool? source_latency_included = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_output_delay [-clock <args>] [-reference_pin <args>] [-clock_fall] [-rise] [-fall] [-max] [-min] [-add_delay] [-network_latency_included] [-source_latency_included] [-quiet] [-verbose] <delay> <objects>
 			_tcl.Entry(_builder.set_output_delay(delay, objects, clock, reference_pin, clock_fall, rise, fall, max, min, add_delay, network_latency_included, source_latency_included, quiet, verbose));
@@ -2073,7 +2073,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="objects">(Required) List of clocks, ports, or pins</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL set_propagated_clock(String objects, bool? quiet = null, bool? verbose = null)
+		public TTCL set_propagated_clock(TCLObject objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: set_propagated_clock [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.set_propagated_clock(objects, quiet, verbose));

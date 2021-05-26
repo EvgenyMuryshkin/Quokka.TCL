@@ -62,7 +62,7 @@ namespace Quokka.TCL.SourceGenerator
         string pdfName = "ug835-vivado-tcl-commands.pdf";
         string fixesName = "ug835-vivado-tcl-commands.json";
 
-        [TestMethod]
+        //[TestMethod]
         public void VivadoCommandRecordTest()
         {
             var log = new VivadoCommandLog();
@@ -77,15 +77,19 @@ namespace Quokka.TCL.SourceGenerator
                 "[<optional_value>]",
             };
 
-            var lines = new List<string>()
-            {
-                "test_command",
-                "Syntax",
-            };
-
             var fixes = new VivadoTCLFixes();
 
-            var record = new VivadoCommandRecord(log, fixes, "test_command", new VivdoCommandTextLines() { Lines = lines });
+            foreach (var p in paramTypes)
+            {
+                var lines = new List<string>()
+                {
+                    "test_command",
+                    "Syntax",
+                    $"test_command {p}"
+                };
+
+                var record = new VivadoCommandRecord(log, fixes, "test_command", new VivdoCommandTextLines() { Lines = lines });
+            }
         }
 
         void GenerateCommandDocumentation(
@@ -164,6 +168,22 @@ namespace Quokka.TCL.SourceGenerator
                 {
                     case VivadoCommandParameterType.Flag:
                         return $"bool? {a.CSName} = null";
+                    case VivadoCommandParameterType.Object:
+                        switch (a.Usage)
+                        {
+                            case VivadoCommandParameterUsage.Optional:
+                                if (a.IsArray)
+                                    return $"TCLObjectList {a.CSName} = null";
+
+                                return $"TCLObject {a.CSName} = null";
+                            case VivadoCommandParameterUsage.Required:
+                                if (a.IsArray)
+                                    return $"TCLObjectList {a.CSName}";
+
+                                return $"TCLObject {a.CSName}";
+                            default:
+                                throw new Exception($"Unsupported parameter usage: {a.Usage}");
+                        }
                     case VivadoCommandParameterType.String:
                         switch (a.Usage)
                         {
@@ -235,8 +255,9 @@ namespace Quokka.TCL.SourceGenerator
 
                             //if (arg.EnumName != null)
                             //    argMethodParts.Add("Enum");
-
-                            if (arg.Type == VivadoCommandParameterType.Flag)
+                            if (arg.Type == VivadoCommandParameterType.Object)
+                                argMethodParts.Add("Object");
+                            else if (arg.Type == VivadoCommandParameterType.Flag)
                                 argMethodParts.Add("Flag");
                             else if (arg.Type == VivadoCommandParameterType.Enum)
                                 argMethodParts.Add("Enum");

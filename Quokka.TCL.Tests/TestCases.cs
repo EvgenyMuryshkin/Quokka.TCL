@@ -9,7 +9,7 @@ namespace Quokka.TCL.Tests
 {
     class CustomVivadoTCLBuilder : VivadoTCLBuilder
     {
-        public override SimpleTCLCommand create_project(string name, string part = null, bool? force = null, bool? in_memory = null, bool? ip = null, bool? rtl_kernel = null, bool? quiet = null, bool? verbose = null, string dir = null)
+        public override SimpleTCLCommand create_project(TCLObject name, string part = null, bool? force = null, bool? in_memory = null, bool? ip = null, bool? rtl_kernel = null, bool? quiet = null, bool? verbose = null, TCLObject dir = null)
         {
             // always verbose
             return base.create_project(name, part, force, in_memory, ip, rtl_kernel, quiet, true, dir);
@@ -17,8 +17,29 @@ namespace Quokka.TCL.Tests
     }
 
     [TestClass]
-    public class TestCases : TCLTestClass
+    public class UnitTests : TCLTestClass
     {
+        [TestMethod]
+        public void CategorizedTCL_GetHWDevices_ToString()
+        {
+            var tcl = new VivadoCategorizedTCL();
+            var command = tcl.Builder.get_hw_devices(patterns: "xc7z020_1");
+            Assert.AreEqual("get_hw_devices xc7z020_1", $"{command}");
+
+            var program = tcl.Builder.program_hw_devices(hw_device: command);
+            Assert.AreEqual("program_hw_devices [get_hw_devices xc7z020_1]", $"{program}");
+
+        }
+
+        [TestMethod]
+        public void CategorizedTCL_GetHWDevices()
+        {
+            var tcl = new VivadoCategorizedTCL();
+            tcl.Hardware.get_hw_devices(patterns: "xc7z020_1");
+            SaveTCL(tcl);
+            Assert.AreEqual("get_hw_devices xc7z020_1", LoadTCLLines()[0]);
+        }
+
         [TestMethod]
         public void CategorizedTCL_CreateProject()
         {
@@ -63,7 +84,11 @@ namespace Quokka.TCL.Tests
             SaveTCL(tcl);
             Assert.AreEqual("create_project -verbose test", LoadTCLLines()[0]);
         }
+    }
 
+    [TestClass]
+    public class IntegrationTests : TCLTestClass
+    {
         void BuildAndRunSim(string testbench)
         {
             var tcl = new VivadoTCL();
@@ -104,38 +129,6 @@ namespace Quokka.TCL.Tests
         {
             BuildAndRunSim("testbench_fail");
             Assert.IsTrue(File.ReadAllText(LogFile).Contains("Assert failed"));
-        }
-
-        /// <summary>
-        /// <para>Launch a set of runs</para>
-        /// 1<br/>
-        /// 2<br/>
-        /// 3<br/>
-        /// <br/>
-        /// TCL Syntax: launch_runs [-jobs &lt;arg&gt;] [-scripts_only] [-lsf &lt;arg&gt;] [-sge &lt;arg&gt;] [-cluster_configuration &lt;arg&gt;] [-dir &lt;arg&gt;] [-to_step &lt;arg&gt;] [-next_step] [-host &lt;args&gt;] [-remote_cmd &lt;arg&gt;] [-email_to &lt;args&gt;] [-email_all] [-pre_launch_script &lt;arg&gt;] [-post_launch_script &lt;arg&gt;] [-custom_script &lt;arg&gt;] [-force] [-quiet] [-verbose] &lt;runs&gt;...
-        /// 
-        /// <para>launch_runs -to_step place_design impl_1</para>
-        /// 
-        /// <para>See ug835-vivado-tcl-commands.pdf, page 1012</para>
-        /// </summary>
-        /// <param name="runs">(Required) Runs to launch UG835 (v2020.2) November 18, 2020 www.xilinx.com</param>
-        /// <param name="jobs">(Optional) Number of jobs Default: 1</param>
-        public virtual SimpleTCLCommand launch_runs(TCLParameterList runs, Int32? jobs = null, bool? scripts_only = null, String lsf = null, String sge = null, String cluster_configuration = null, String dir = null, String to_step = null, bool? next_step = null, TCLParameterList host = null, String remote_cmd = null, TCLParameterList email_to = null, bool? email_all = null, String pre_launch_script = null, String post_launch_script = null, String custom_script = null, bool? force = null, bool? quiet = null, bool? verbose = null)
-		{
-			// TCL Syntax: launch_runs [-jobs <arg>] [-scripts_only] [-lsf <arg>] [-sge <arg>] [-cluster_configuration <arg>] [-dir <arg>] [-to_step <arg>] [-next_step] [-host <args>] [-remote_cmd <arg>] [-email_to <args>] [-email_all] [-pre_launch_script <arg>] [-post_launch_script <arg>] [-custom_script <arg>] [-force] [-quiet] [-verbose] <runs>...
-
-			return null;
-		}
-
-        /**
- * <summary>
- * this comment is on line 1 in the tooltip
- * this comment is on line 2 in the tooltip
- * </summary>
- */
-        public void T()
-        {
-
         }
 	}
 }

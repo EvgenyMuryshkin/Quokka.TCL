@@ -201,7 +201,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the custom command argument names against patterns Default: *</param>
 		/// <returns>list of custom command argument names</returns>
-		public TTCL get_gui_custom_command_args(String command_name, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
+		public TTCL get_gui_custom_command_args(String command_name, bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, TCLObjectList patterns = null)
 		{
 			// TCL Syntax: get_gui_custom_command_args -command_name <arg> [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_gui_custom_command_args(command_name, regexp, nocase, quiet, verbose, patterns));
@@ -235,7 +235,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match the custom command names against patterns Default: *</param>
 		/// <returns>list of custom command names</returns>
-		public TTCL get_gui_custom_commands(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
+		public TTCL get_gui_custom_commands(bool? regexp = null, bool? nocase = null, bool? quiet = null, bool? verbose = null, TCLObjectList patterns = null)
 		{
 			// TCL Syntax: get_gui_custom_commands [-regexp] [-nocase] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_gui_custom_commands(regexp, nocase, quiet, verbose, patterns));
@@ -398,7 +398,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="leaf_cells">(Optional) Leaf cells</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL highlight_objects(String objects, String color_index = null, TCLParameterList rgb = null, String color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null)
+		public TTCL highlight_objects(TCLObject objects, String color_index = null, TCLParameterList rgb = null, String color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: highlight_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-leaf_cells] [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.highlight_objects(objects, color_index, rgb, color, leaf_cells, quiet, verbose));
@@ -434,7 +434,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="color">(Optional) Valid values are red green blue magenta yellow cyan and orange</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL mark_objects(String objects, TCLParameterList rgb = null, String color = null, bool? quiet = null, bool? verbose = null)
+		public TTCL mark_objects(TCLObject objects, TCLParameterList rgb = null, String color = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: mark_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.mark_objects(objects, rgb, color, quiet, verbose));
@@ -507,7 +507,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="names">(Required) name of one or more custom command arguments to remove.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL remove_gui_custom_command_args(String command_name, TCLParameterList names, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_gui_custom_command_args(String command_name, TCLObjectList names, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_gui_custom_command_args -command_name <arg> [-quiet] [-verbose] <names>...
 			_tcl.Entry(_builder.remove_gui_custom_command_args(command_name, names, quiet, verbose));
@@ -540,7 +540,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="names">(Required) name of one or more custom commands to remove</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL remove_gui_custom_commands(TCLParameterList names, bool? quiet = null, bool? verbose = null)
+		public TTCL remove_gui_custom_commands(TCLObjectList names, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: remove_gui_custom_commands [-quiet] [-verbose] <names>...
 			_tcl.Entry(_builder.remove_gui_custom_commands(names, quiet, verbose));
@@ -578,7 +578,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="add">(Optional) Add to existing selection list</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL select_objects(String objects, bool? add = null, bool? quiet = null, bool? verbose = null)
+		public TTCL select_objects(TCLObject objects, bool? add = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: select_objects [-add] [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.select_objects(objects, add, quiet, verbose));
@@ -615,7 +615,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="name">(Optional) Tab title</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL show_objects(String objects, String name = null, bool? quiet = null, bool? verbose = null)
+		public TTCL show_objects(TCLObject objects, String name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: show_objects [-name <arg>] [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.show_objects(objects, name, quiet, verbose));
@@ -676,7 +676,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="name">(Optional) Schematic window title</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL show_schematic(String objects, bool? add = null, bool? remove = null, bool? regenerate = null, bool? pin_pairs = null, String name = null, bool? quiet = null, bool? verbose = null)
+		public TTCL show_schematic(TCLObject objects, bool? add = null, bool? remove = null, bool? regenerate = null, bool? pin_pairs = null, String name = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: show_schematic [-add] [-remove] [-regenerate] [-pin_pairs] [-name <arg>] [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.show_schematic(objects, add, remove, regenerate, pin_pairs, name, quiet, verbose));
@@ -862,7 +862,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) Objects to unhighlight</param>
-		public TTCL unhighlight_objects(String color_index = null, TCLParameterList rgb = null, String color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null, String objects = null)
+		public TTCL unhighlight_objects(String color_index = null, TCLParameterList rgb = null, String color = null, bool? leaf_cells = null, bool? quiet = null, bool? verbose = null, TCLObject objects = null)
 		{
 			// TCL Syntax: unhighlight_objects [-color_index <arg>] [-rgb <args>] [-color <arg>] [-leaf_cells] [-quiet] [-verbose] [<objects>]
 			_tcl.Entry(_builder.unhighlight_objects(color_index, rgb, color, leaf_cells, quiet, verbose, objects));
@@ -900,7 +900,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) Objects to unmark</param>
-		public TTCL unmark_objects(TCLParameterList rgb = null, String color = null, bool? quiet = null, bool? verbose = null, String objects = null)
+		public TTCL unmark_objects(TCLParameterList rgb = null, String color = null, bool? quiet = null, bool? verbose = null, TCLObject objects = null)
 		{
 			// TCL Syntax: unmark_objects [-rgb <args>] [-color <arg>] [-quiet] [-verbose] [<objects>]
 			_tcl.Entry(_builder.unmark_objects(rgb, color, quiet, verbose, objects));
@@ -937,7 +937,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) Objects to unselect</param>
-		public TTCL unselect_objects(bool? quiet = null, bool? verbose = null, String objects = null)
+		public TTCL unselect_objects(bool? quiet = null, bool? verbose = null, TCLObject objects = null)
 		{
 			// TCL Syntax: unselect_objects [-quiet] [-verbose] [<objects>]
 			_tcl.Entry(_builder.unselect_objects(quiet, verbose, objects));

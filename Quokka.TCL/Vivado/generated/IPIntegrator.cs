@@ -56,7 +56,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Returns success or failure</returns>
-		public TTCL apply_bd_automation(String rule, String dict, String opts, TCLParameterList objects, TCLParameterList config = null, bool? quiet = null, bool? verbose = null)
+		public TTCL apply_bd_automation(String rule, String dict, String opts, TCLObjectList objects, TCLParameterList config = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: apply_bd_automation -rule <arg> [-config <args>] -dict <arg> -opts <arg> [-quiet] [-verbose] <objects>...
 			_tcl.Entry(_builder.apply_bd_automation(rule, dict, opts, objects, config, quiet, verbose));
@@ -205,7 +205,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="objects">(Optional) The objects to assign UG835 (v2020.2) November 18, 2020 www.xilinx.com</param>
 		/// <returns>The newly mapped segments, "" if failed.</returns>
-		public TTCL assign_bd_address(String dict, String target_address_space = null, bool? boundary = null, bool? master_boundary = null, bool? external = null, String import_from_file = null, String export_to_file = null, String export_gui_to_file = null, String offset = null, String range = null, String base_high = null, bool? force = null, bool? quiet = null, bool? verbose = null, TCLParameterList objects = null)
+		public TTCL assign_bd_address(String dict, String target_address_space = null, bool? boundary = null, bool? master_boundary = null, bool? external = null, String import_from_file = null, String export_to_file = null, String export_gui_to_file = null, String offset = null, String range = null, String base_high = null, bool? force = null, bool? quiet = null, bool? verbose = null, TCLObjectList objects = null)
 		{
 			// TCL Syntax: assign_bd_address [-target_address_space <arg>] [-boundary] [-master_boundary] [-external] -dict <arg> [-import_from_file <arg>] [-export_to_file <arg>] [-export_gui_to_file <arg>] [-offset <arg>] [-range <arg>] [-base_high <arg>] [-force] [-quiet] [-verbose] [<objects>...]
 			_tcl.Entry(_builder.assign_bd_address(dict, target_address_space, boundary, master_boundary, external, import_from_file, export_to_file, export_gui_to_file, offset, range, base_high, force, quiet, verbose, objects));
@@ -234,7 +234,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The design object, "" if failed.</returns>
-		public TTCL close_bd_design(String name, bool? quiet = null, bool? verbose = null)
+		public TTCL close_bd_design(TCLObject name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: close_bd_design [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.close_bd_design(name, quiet, verbose));
@@ -270,7 +270,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="force">(Optional) Force generate product state regeneration</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL compile_c(String objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL compile_c(TCLObject objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: compile_c [-force] [-quiet] [-verbose] <objects>
 			_tcl.Entry(_builder.compile_c(objects, force, quiet, verbose));
@@ -315,7 +315,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="auto">(Optional) Automatically connect associated pins</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public TTCL connect_bd_intf_net(String object1, String object2, String intf_net = null, String boundary_type = null, bool? quiet = null, bool? verbose = null, String auto = null)
+		public TTCL connect_bd_intf_net(TCLObject object1, TCLObject object2, String intf_net = null, String boundary_type = null, bool? quiet = null, bool? verbose = null, TCLObject auto = null)
 		{
 			// TCL Syntax: connect_bd_intf_net [-intf_net <arg>] [-boundary_type <arg>] [-quiet] [-verbose] <object1> <object2> [<auto>]
 			_tcl.Entry(_builder.connect_bd_intf_net(object1, object2, intf_net, boundary_type, quiet, verbose, auto));
@@ -372,7 +372,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public TTCL connect_bd_net(TCLParameterList objects, String net = null, String boundary_type = null, bool? quiet = null, bool? verbose = null)
+		public TTCL connect_bd_net(TCLObjectList objects, String net = null, String boundary_type = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: connect_bd_net [-net <arg>] [-boundary_type <arg>] [-quiet] [-verbose] <objects>...
 			_tcl.Entry(_builder.connect_bd_net(objects, net, boundary_type, quiet, verbose));
@@ -413,7 +413,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>0, "" if failed.</returns>
-		public TTCL copy_bd_objs(String parent_cell, TCLParameterList objects, String prefix = null, String from_design = null, bool? quiet = null, bool? verbose = null)
+		public TTCL copy_bd_objs(TCLObject parent_cell, TCLObjectList objects, String prefix = null, String from_design = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: copy_bd_objs [-prefix <arg>] [-from_design <arg>] [-quiet] [-verbose] <parent_cell> <objects>...
 			_tcl.Entry(_builder.copy_bd_objs(parent_cell, objects, prefix, from_design, quiet, verbose));
@@ -446,7 +446,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created segment object, "" if failed.</returns>
-		public TTCL create_bd_addr_seg(String range, String offset, String parent_addr_space, String slave_segment, String name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_addr_seg(String range, String offset, TCLObject parent_addr_space, TCLObject slave_segment, TCLObject name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_addr_seg -range <arg> -offset <arg> [-quiet] [-verbose] [<parent_addr_space>] [<slave_segment>] <name>
 			_tcl.Entry(_builder.create_bd_addr_seg(range, offset, parent_addr_space, slave_segment, name, quiet, verbose));
@@ -528,7 +528,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created cell object. Returns nothing if the command fails.</returns>
-		public TTCL create_bd_cell(String vlnv, String name, String type = null, String reference = null, String revision = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_cell(String vlnv, TCLObject name, String type = null, String reference = null, String revision = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_cell [-vlnv <arg>] [-type <arg>] [-reference <arg>] [-revision <arg>] [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.create_bd_cell(vlnv, name, type, reference, revision, quiet, verbose));
@@ -568,7 +568,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created design object, "" if failed.</returns>
-		public TTCL create_bd_design(String name, String dir = null, String cell = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_design(TCLObject name, String dir = null, String cell = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_design [-dir <arg>] [-cell <arg>] [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.create_bd_design(name, dir, cell, quiet, verbose));
@@ -596,7 +596,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created intf_net object, "" if failed.</returns>
-		public TTCL create_bd_intf_net(String name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_intf_net(TCLObject name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_intf_net [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.create_bd_intf_net(name, quiet, verbose));
@@ -637,7 +637,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created intf_pin object, "" if failed.</returns>
-		public TTCL create_bd_intf_pin(String name, String vlnv = null, String mode = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_intf_pin(TCLObject name, String vlnv = null, String mode = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_intf_pin [-vlnv <arg>] [-mode <arg>] [-quiet] [-verbose] [<name>]
 			_tcl.Entry(_builder.create_bd_intf_pin(name, vlnv, mode, quiet, verbose));
@@ -671,7 +671,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created interface port object, "" if failed.</returns>
-		public TTCL create_bd_intf_port(String name, String vlnv = null, String mode = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_intf_port(TCLObject name, String vlnv = null, String mode = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_intf_port [-vlnv <arg>] [-mode <arg>] [-quiet] [-verbose] [<name>]
 			_tcl.Entry(_builder.create_bd_intf_port(name, vlnv, mode, quiet, verbose));
@@ -695,7 +695,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created TLM interface port object, "" if failed.</returns>
-		public TTCL create_bd_intf_tlm_port(String vlnv, String mode, String name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_intf_tlm_port(String vlnv, String mode, TCLObject name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_intf_tlm_port -vlnv <arg> -mode <arg> [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.create_bd_intf_tlm_port(vlnv, mode, name, quiet, verbose));
@@ -722,7 +722,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created net object, "" if failed.</returns>
-		public TTCL create_bd_net(String name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_net(TCLObject name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_net [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.create_bd_net(name, quiet, verbose));
@@ -761,7 +761,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created pin object, "" if failed.</returns>
-		public TTCL create_bd_pin(String dir, String name, String from = null, String to = null, String type = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_pin(String dir, TCLObject name, String from = null, String to = null, String type = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_pin [-from <arg>] [-to <arg>] -dir <arg> [-type <arg>] [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.create_bd_pin(dir, name, from, to, type, quiet, verbose));
@@ -804,7 +804,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created port object. Returns nothing if the command fails.</returns>
-		public TTCL create_bd_port(String dir, String name, String from = null, String to = null, String type = null, String freq_hz = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_port(String dir, TCLObject name, String from = null, String to = null, String type = null, String freq_hz = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_port [-from <arg>] [-to <arg>] -dir <arg> [-type <arg>] [-freq_hz <arg>] [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.create_bd_port(dir, name, from, to, type, freq_hz, quiet, verbose));
@@ -826,7 +826,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The newly created TLM port object. Returns nothing if the command fails.</returns>
-		public TTCL create_bd_tlm_port(String name, bool? quiet = null, bool? verbose = null)
+		public TTCL create_bd_tlm_port(TCLObject name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_bd_tlm_port [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.create_bd_tlm_port(name, quiet, verbose));
@@ -870,7 +870,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="design">(Optional) Name of current design to be set</param>
 		/// <returns>The current design object, "" if failed.</returns>
-		public TTCL current_bd_design(bool? quiet = null, bool? verbose = null, String design = null)
+		public TTCL current_bd_design(bool? quiet = null, bool? verbose = null, TCLObject design = null)
 		{
 			// TCL Syntax: current_bd_design [-quiet] [-verbose] [<design>]
 			_tcl.Entry(_builder.current_bd_design(quiet, verbose, design));
@@ -910,7 +910,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="instance">(Optional) Name of current cell instance to be set</param>
 		/// <returns>The current cell instance object, "" if failed.</returns>
-		public TTCL current_bd_instance(bool? quiet = null, bool? verbose = null, String instance = null)
+		public TTCL current_bd_instance(bool? quiet = null, bool? verbose = null, TCLObject instance = null)
 		{
 			// TCL Syntax: current_bd_instance [-quiet] [-verbose] [<instance>]
 			_tcl.Entry(_builder.current_bd_instance(quiet, verbose, instance));
@@ -940,7 +940,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Pass if successful in deleting objects</returns>
-		public TTCL delete_bd_objs(TCLParameterList objects, bool? quiet = null, bool? verbose = null)
+		public TTCL delete_bd_objs(TCLObjectList objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: delete_bd_objs [-quiet] [-verbose] <objects>...
 			_tcl.Entry(_builder.delete_bd_objs(objects, quiet, verbose));
@@ -973,7 +973,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public TTCL disconnect_bd_intf_net(String intf_net, TCLParameterList objects, bool? quiet = null, bool? verbose = null)
+		public TTCL disconnect_bd_intf_net(TCLObject intf_net, TCLObjectList objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: disconnect_bd_intf_net [-quiet] [-verbose] <intf_net> <objects>...
 			_tcl.Entry(_builder.disconnect_bd_intf_net(intf_net, objects, quiet, verbose));
@@ -1004,7 +1004,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public TTCL disconnect_bd_net(String net, TCLParameterList objects, bool? quiet = null, bool? verbose = null)
+		public TTCL disconnect_bd_net(TCLObject net, TCLObjectList objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: disconnect_bd_net [-quiet] [-verbose] <net> <objects>...
 			_tcl.Entry(_builder.disconnect_bd_net(net, objects, quiet, verbose));
@@ -1064,7 +1064,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="segment_to_exclude">(Optional) segment to exclude</param>
 		/// <returns>The newly excluded segment object, "" if failed.</returns>
-		public TTCL exclude_bd_addr_seg(String target_address_space = null, bool? quiet = null, bool? verbose = null, String segment_to_exclude = null)
+		public TTCL exclude_bd_addr_seg(String target_address_space = null, bool? quiet = null, bool? verbose = null, TCLObject segment_to_exclude = null)
 		{
 			// TCL Syntax: exclude_bd_addr_seg [-target_address_space <arg>] [-quiet] [-verbose] [<segment_to_exclude>]
 			_tcl.Entry(_builder.exclude_bd_addr_seg(target_address_space, quiet, verbose, segment_to_exclude));
@@ -1187,7 +1187,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>List of pins, ports or interface objects, "" if failed.</returns>
-		public TTCL find_bd_objs(String relation, TCLParameterList objects, String boundary_type = null, bool? thru_hier = null, bool? stop_at_interconnect = null, bool? stop_at_container = null, String end_type = null, bool? quiet = null, bool? verbose = null)
+		public TTCL find_bd_objs(String relation, TCLObjectList objects, String boundary_type = null, bool? thru_hier = null, bool? stop_at_interconnect = null, bool? stop_at_container = null, String end_type = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: find_bd_objs -relation <arg> [-boundary_type <arg>] [-thru_hier] [-stop_at_interconnect] [-stop_at_container] [-end_type <arg>] [-quiet] [-verbose] <objects>...
 			_tcl.Entry(_builder.find_bd_objs(relation, objects, boundary_type, thru_hier, stop_at_interconnect, stop_at_container, end_type, quiet, verbose));
@@ -1249,7 +1249,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="force">(Optional) Force target data regeneration</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL generate_target(String name, String objects, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL generate_target(TCLObject name, TCLObject objects, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_target [-force] [-quiet] [-verbose] <name> <objects>
 			_tcl.Entry(_builder.generate_target(name, objects, force, quiet, verbose));
@@ -1299,7 +1299,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of segment objects, "" if failed.</returns>
-		public TTCL get_bd_addr_segs(bool? regexp = null, bool? hierarchical = null, String filter = null, TCLParameterList of_objects = null, bool? excluded = null, bool? addressed = null, bool? unaddressed = null, bool? addressing = null, bool? addressables = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_bd_addr_segs(bool? regexp = null, bool? hierarchical = null, String filter = null, TCLParameterList of_objects = null, bool? excluded = null, bool? addressed = null, bool? unaddressed = null, bool? addressing = null, bool? addressables = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_bd_addr_segs [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-excluded] [-addressed] [-unaddressed] [-addressing] [-addressables] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_bd_addr_segs(regexp, hierarchical, filter, of_objects, excluded, addressed, unaddressed, addressing, addressables, quiet, verbose, patterns));
@@ -1367,7 +1367,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of addr_space objects, "" if failed.</returns>
-		public TTCL get_bd_addr_spaces(bool? regexp = null, bool? hierarchical = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_bd_addr_spaces(bool? regexp = null, bool? hierarchical = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_bd_addr_spaces [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_bd_addr_spaces(regexp, hierarchical, filter, of_objects, quiet, verbose, patterns));
@@ -1415,7 +1415,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of block diagram cell objects, "" if failed.</returns>
-		public TTCL get_bd_cells(bool? regexp = null, bool? hierarchical = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_bd_cells(bool? regexp = null, bool? hierarchical = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_bd_cells [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_bd_cells(regexp, hierarchical, filter, of_objects, quiet, verbose, patterns));
@@ -1454,7 +1454,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of design objects, "" if failed.</returns>
-		public TTCL get_bd_designs(bool? regexp = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
+		public TTCL get_bd_designs(bool? regexp = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLObjectList patterns = null)
 		{
 			// TCL Syntax: get_bd_designs [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_bd_designs(regexp, filter, of_objects, quiet, verbose, patterns));
@@ -1517,7 +1517,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of pin objects, "" if failed.</returns>
-		public TTCL get_bd_intf_nets(bool? regexp = null, bool? hierarchical = null, String filter = null, String boundary_type = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_bd_intf_nets(bool? regexp = null, bool? hierarchical = null, String filter = null, String boundary_type = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_bd_intf_nets [-regexp] [-hierarchical] [-filter <arg>] [-boundary_type <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_bd_intf_nets(regexp, hierarchical, filter, boundary_type, of_objects, quiet, verbose, patterns));
@@ -1573,7 +1573,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of pin objects, "" if failed.</returns>
-		public TTCL get_bd_intf_pins(bool? regexp = null, bool? hierarchical = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_bd_intf_pins(bool? regexp = null, bool? hierarchical = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_bd_intf_pins [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_bd_intf_pins(regexp, hierarchical, filter, of_objects, quiet, verbose, patterns));
@@ -1621,7 +1621,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of port objects, "" if failed.</returns>
-		public TTCL get_bd_intf_ports(bool? regexp = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_bd_intf_ports(bool? regexp = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_bd_intf_ports [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_bd_intf_ports(regexp, filter, of_objects, quiet, verbose, patterns));
@@ -1684,7 +1684,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of pin objects, "" if failed.</returns>
-		public TTCL get_bd_nets(bool? regexp = null, bool? hierarchical = null, String filter = null, String boundary_type = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_bd_nets(bool? regexp = null, bool? hierarchical = null, String filter = null, String boundary_type = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_bd_nets [-regexp] [-hierarchical] [-filter <arg>] [-boundary_type <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_bd_nets(regexp, hierarchical, filter, boundary_type, of_objects, quiet, verbose, patterns));
@@ -1741,7 +1741,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of pin objects, "" if failed.</returns>
-		public TTCL get_bd_pins(bool? regexp = null, bool? hierarchical = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_bd_pins(bool? regexp = null, bool? hierarchical = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_bd_pins [-regexp] [-hierarchical] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_bd_pins(regexp, hierarchical, filter, of_objects, quiet, verbose, patterns));
@@ -1785,7 +1785,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="patterns">(Optional) Match engine names against patterns Default: *</param>
 		/// <returns>List of port objects, "" if failed.</returns>
-		public TTCL get_bd_ports(bool? regexp = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, String patterns = null)
+		public TTCL get_bd_ports(bool? regexp = null, String filter = null, TCLParameterList of_objects = null, bool? quiet = null, bool? verbose = null, TCLObject patterns = null)
 		{
 			// TCL Syntax: get_bd_ports [-regexp] [-filter <arg>] [-of_objects <args>] [-quiet] [-verbose] [<patterns>]
 			_tcl.Entry(_builder.get_bd_ports(regexp, filter, of_objects, quiet, verbose, patterns));
@@ -1889,7 +1889,7 @@ namespace Quokka.TCL.Vivado
 		/// </para>
 		/// </param>
 		/// <returns>list of design objects</returns>
-		public TTCL get_example_designs(bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, TCLParameterList patterns = null)
+		public TTCL get_example_designs(bool? regexp = null, bool? nocase = null, String filter = null, bool? quiet = null, bool? verbose = null, TCLObjectList patterns = null)
 		{
 			// TCL Syntax: get_example_designs [-regexp] [-nocase] [-filter <arg>] [-quiet] [-verbose] [<patterns>...]
 			_tcl.Entry(_builder.get_example_designs(regexp, nocase, filter, quiet, verbose, patterns));
@@ -1962,7 +1962,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>0 if success.</returns>
-		public TTCL group_bd_cells(String target_cell_name, TCLParameterList cells, String prefix = null, bool? quiet = null, bool? verbose = null)
+		public TTCL group_bd_cells(TCLObject target_cell_name, TCLObjectList cells, String prefix = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: group_bd_cells [-prefix <arg>] [-quiet] [-verbose] [<target_cell_name>] [<cells>...]
 			_tcl.Entry(_builder.group_bd_cells(target_cell_name, cells, prefix, quiet, verbose));
@@ -2003,7 +2003,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="segment_to_include">(Optional) Segment to include</param>
 		/// <returns>The newly included segment object, "" if failed.</returns>
-		public TTCL include_bd_addr_seg(bool? quiet = null, bool? verbose = null, String segment_to_include = null)
+		public TTCL include_bd_addr_seg(bool? quiet = null, bool? verbose = null, TCLObject segment_to_include = null)
 		{
 			// TCL Syntax: include_bd_addr_seg [-quiet] [-verbose] [<segment_to_include>]
 			_tcl.Entry(_builder.include_bd_addr_seg(quiet, verbose, segment_to_include));
@@ -2068,7 +2068,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Returns the name of the template applied.</returns>
-		public TTCL instantiate_example_design(String template, String design = null, String hier = null, String project = null, String project_location = null, TCLParameterList options = null, bool? quiet = null, bool? verbose = null)
+		public TTCL instantiate_example_design(TCLObject template, String design = null, String hier = null, String project = null, String project_location = null, TCLParameterList options = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: instantiate_example_design [-design <arg>] [-hier <arg>] [-project <arg>] [-project_location <arg>] [-options <args>] [-quiet] [-verbose] <template>
 			_tcl.Entry(_builder.instantiate_example_design(template, design, hier, project, project_location, options, quiet, verbose));
@@ -2108,7 +2108,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Returns the name of the template applied.</returns>
-		public TTCL instantiate_template_bd_design(String design, String template, String hier = null, TCLParameterList options = null, bool? quiet = null, bool? verbose = null)
+		public TTCL instantiate_template_bd_design(String design, TCLObject template, String hier = null, TCLParameterList options = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: instantiate_template_bd_design -design <arg> [-hier <arg>] [-options <args>] [-quiet] [-verbose] <template>
 			_tcl.Entry(_builder.instantiate_template_bd_design(design, template, hier, options, quiet, verbose));
@@ -2152,7 +2152,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Pass if successful in creating at least one interface port</returns>
-		public TTCL make_bd_intf_pins_external(TCLParameterList objects, bool? quiet = null, bool? verbose = null)
+		public TTCL make_bd_intf_pins_external(TCLObjectList objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: make_bd_intf_pins_external [-quiet] [-verbose] <objects>...
 			_tcl.Entry(_builder.make_bd_intf_pins_external(objects, quiet, verbose));
@@ -2195,7 +2195,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>Pass if successful in creating at least one port</returns>
-		public TTCL make_bd_pins_external(TCLParameterList objects, bool? quiet = null, bool? verbose = null)
+		public TTCL make_bd_pins_external(TCLObjectList objects, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: make_bd_pins_external [-quiet] [-verbose] <objects>...
 			_tcl.Entry(_builder.make_bd_pins_external(objects, quiet, verbose));
@@ -2232,7 +2232,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="parent_cell">(Optional) Parent cell</param>
 		/// <param name="cells">(Optional) Match engine names against cell names Default: *</param>
 		/// <returns>0 if success.</returns>
-		public TTCL move_bd_cells(String prefix = null, bool? quiet = null, bool? verbose = null, String parent_cell = null, TCLParameterList cells = null)
+		public TTCL move_bd_cells(String prefix = null, bool? quiet = null, bool? verbose = null, TCLObject parent_cell = null, TCLObjectList cells = null)
 		{
 			// TCL Syntax: move_bd_cells [-prefix <arg>] [-quiet] [-verbose] [<parent_cell>] [<cells>...]
 			_tcl.Entry(_builder.move_bd_cells(prefix, quiet, verbose, parent_cell, cells));
@@ -2267,7 +2267,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The design object. Returns nothing if the command fails.</returns>
-		public TTCL open_bd_design(String name, bool? quiet = null, bool? verbose = null)
+		public TTCL open_bd_design(TCLObject name, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_bd_design [-quiet] [-verbose] <name>
 			_tcl.Entry(_builder.open_bd_design(name, quiet, verbose));
@@ -2308,7 +2308,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>list of IPIntegrator design file objects that were added</returns>
-		public TTCL read_bd(TCLParameterList files, bool? quiet = null, bool? verbose = null)
+		public TTCL read_bd(TCLObjectList files, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: read_bd [-quiet] [-verbose] <files>...
 			_tcl.Entry(_builder.read_bd(files, quiet, verbose));
@@ -2376,7 +2376,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="cell2">(Optional) Cell to be connected to connections that were disconnected from cell1.</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public TTCL replace_bd_cell(String cell1, bool? preserve_name = null, bool? preserve_configuration = null, bool? quiet = null, bool? verbose = null, TCLParameterList cell2 = null)
+		public TTCL replace_bd_cell(TCLObject cell1, bool? preserve_name = null, bool? preserve_configuration = null, bool? quiet = null, bool? verbose = null, TCLObjectList cell2 = null)
 		{
 			// TCL Syntax: replace_bd_cell [-preserve_name] [-preserve_configuration] [-quiet] [-verbose] [<cell1>] [<cell2>...]
 			_tcl.Entry(_builder.replace_bd_cell(cell1, preserve_name, preserve_configuration, quiet, verbose, cell2));
@@ -2459,7 +2459,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>0 if no functional differences, &gt;0 if different, -1 on error</returns>
-		public TTCL report_bd_diffs(String design1, String design2, String format = null, String file = null, bool? open_html = null, bool? brief = null, bool? strict = null, bool? fast = null, bool? return_string = null, String depth = null, bool? crossprobe = null, String repository = null, bool? take_snapshot = null, bool? diff_snapshot = null, bool? quiet = null, bool? verbose = null)
+		public TTCL report_bd_diffs(TCLObject design1, TCLObject design2, String format = null, String file = null, bool? open_html = null, bool? brief = null, bool? strict = null, bool? fast = null, bool? return_string = null, String depth = null, bool? crossprobe = null, String repository = null, bool? take_snapshot = null, bool? diff_snapshot = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: report_bd_diffs [-format <arg>] [-file <arg>] [-open_html] [-brief] [-strict] [-fast] [-return_string] [-depth <arg>] [-crossprobe] [-repository <arg>] [-take_snapshot] [-diff_snapshot] [-quiet] [-verbose] <design1> <design2>
 			_tcl.Entry(_builder.report_bd_diffs(design1, design2, format, file, open_html, brief, strict, fast, return_string, depth, crossprobe, repository, take_snapshot, diff_snapshot, quiet, verbose));
@@ -2492,7 +2492,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <param name="name">(Optional) Name of design to save.</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public TTCL save_bd_design(bool? quiet = null, bool? verbose = null, String name = null)
+		public TTCL save_bd_design(bool? quiet = null, bool? verbose = null, TCLObject name = null)
 		{
 			// TCL Syntax: save_bd_design [-quiet] [-verbose] [<name>]
 			_tcl.Entry(_builder.save_bd_design(quiet, verbose, name));
@@ -2544,7 +2544,7 @@ namespace Quokka.TCL.Vivado
 		/// </para>
 		/// </param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public TTCL save_bd_design_as(String dir = null, bool? ignore_comments = null, bool? force = null, bool? quiet = null, bool? verbose = null, String name = null)
+		public TTCL save_bd_design_as(String dir = null, bool? ignore_comments = null, bool? force = null, bool? quiet = null, bool? verbose = null, TCLObject name = null)
 		{
 			// TCL Syntax: save_bd_design_as [-dir <arg>] [-ignore_comments] [-force] [-quiet] [-verbose] [<name>]
 			_tcl.Entry(_builder.save_bd_design_as(dir, ignore_comments, force, quiet, verbose, name));
@@ -2579,7 +2579,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>0 if success.</returns>
-		public TTCL ungroup_bd_cells(TCLParameterList cells, String prefix = null, bool? quiet = null, bool? verbose = null)
+		public TTCL ungroup_bd_cells(TCLObjectList cells, String prefix = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: ungroup_bd_cells [-prefix <arg>] [-quiet] [-verbose] [<cells>...]
 			_tcl.Entry(_builder.ungroup_bd_cells(cells, prefix, quiet, verbose));
@@ -2618,7 +2618,7 @@ namespace Quokka.TCL.Vivado
 		/// </para>
 		/// </param>
 		/// <returns>TCL_OK on success, TCL_ERROR on failure.</returns>
-		public TTCL update_bd_boundaries(String from_bd = null, bool? check_only = null, bool? quiet = null, bool? verbose = null, TCLParameterList of_objects = null)
+		public TTCL update_bd_boundaries(String from_bd = null, bool? check_only = null, bool? quiet = null, bool? verbose = null, TCLObjectList of_objects = null)
 		{
 			// TCL Syntax: update_bd_boundaries [-from_bd <arg>] [-check_only] [-quiet] [-verbose] [<of_objects>...]
 			_tcl.Entry(_builder.update_bd_boundaries(from_bd, check_only, quiet, verbose, of_objects));
@@ -2649,7 +2649,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>List of IPIntegrator cell names those were upgraded, "" if failed.</returns>
-		public TTCL upgrade_bd_cells(TCLParameterList objects, String latest = null, bool? quiet = null, bool? verbose = null)
+		public TTCL upgrade_bd_cells(TCLObjectList objects, String latest = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: upgrade_bd_cells [-latest <arg>] [-quiet] [-verbose] <objects>...
 			_tcl.Entry(_builder.upgrade_bd_cells(objects, latest, quiet, verbose));
@@ -2821,7 +2821,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>TCL_OK, TCL_ERROR if failed.</returns>
-		public TTCL write_bd_tcl(String tcl_filename, bool? force = null, String bd_name = null, bool? no_mig_contents = null, bool? no_ip_version = null, bool? ignore_minor_versions = null, String bd_folder = null, String check_ips = null, String hier_blks = null, bool? include_layout = null, bool? exclude_layout = null, bool? make_local = null, bool? no_project_wrapper = null, bool? exclude_pfm = null, bool? updated_pfm_attrs = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_bd_tcl(TCLObject tcl_filename, bool? force = null, String bd_name = null, bool? no_mig_contents = null, bool? no_ip_version = null, bool? ignore_minor_versions = null, String bd_folder = null, String check_ips = null, String hier_blks = null, bool? include_layout = null, bool? exclude_layout = null, bool? make_local = null, bool? no_project_wrapper = null, bool? exclude_pfm = null, bool? updated_pfm_attrs = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_bd_tcl [-force] [-bd_name <arg>] [-no_mig_contents] [-no_ip_version] [-ignore_minor_versions] [-bd_folder <arg>] [-check_ips <arg>] [-hier_blks <arg>] [-include_layout] [-exclude_layout] [-make_local] [-no_project_wrapper] [-exclude_pfm] [-updated_pfm_attrs] [-quiet] [-verbose] <tcl_filename>
 			_tcl.Entry(_builder.write_bd_tcl(tcl_filename, force, bd_name, no_mig_contents, no_ip_version, ignore_minor_versions, bd_folder, check_ips, hier_blks, include_layout, exclude_layout, make_local, no_project_wrapper, exclude_pfm, updated_pfm_attrs, quiet, verbose));

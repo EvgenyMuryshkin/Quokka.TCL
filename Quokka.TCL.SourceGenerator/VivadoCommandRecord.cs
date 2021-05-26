@@ -122,7 +122,7 @@ namespace Quokka.TCL.SourceGenerator
                     UsageSectionToken = $"[<{requiredParameter.Groups[1].Value}>]",
                     ArgumentsSectionToken = $"<{requiredParameter.Groups[1].Value}>",
                     Usage = VivadoCommandParameterUsage.Optional,
-                    Type = VivadoCommandParameterType.String
+                    Type = VivadoCommandParameterType.Object
                 };
                 return (arg, requiredParameter.Groups[2].Value);
             }
@@ -183,7 +183,7 @@ namespace Quokka.TCL.SourceGenerator
                     ArgumentsSectionToken = $"<{optionalPatternsParameter.Groups[1].Value}>",
                     IsArray = true,
                     Usage = VivadoCommandParameterUsage.Optional,
-                    Type = VivadoCommandParameterType.String
+                    Type = VivadoCommandParameterType.Object
                 };
                 return (arg, optionalPatternsParameter.Groups[2].Value);
             }
@@ -203,7 +203,7 @@ namespace Quokka.TCL.SourceGenerator
                     ArgumentsSectionToken = $"<{optionalPatternsParameter.Groups[1].Value}>",
                     IsArray = true,
                     Usage = VivadoCommandParameterUsage.Required,
-                    Type = VivadoCommandParameterType.String
+                    Type = VivadoCommandParameterType.Object
                 };
                 return (arg, optionalPatternsParameter.Groups[2].Value);
             }
@@ -222,7 +222,7 @@ namespace Quokka.TCL.SourceGenerator
                     UsageSectionToken = $"<{requiredParameter.Groups[1].Value}>",
                     ArgumentsSectionToken = $"<{requiredParameter.Groups[1].Value}>",
                     Usage = VivadoCommandParameterUsage.Required,
-                    Type = VivadoCommandParameterType.String
+                    Type = VivadoCommandParameterType.Object
                 };
                 return (arg, requiredParameter.Groups[2].Value);
             }

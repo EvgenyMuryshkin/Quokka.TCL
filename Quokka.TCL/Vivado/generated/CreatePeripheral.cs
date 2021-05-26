@@ -37,7 +37,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="peripheral">(Required) Peripheral object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL add_peripheral_interface(String interface_mode, String axi_type, String name, String peripheral, bool? quiet = null, bool? verbose = null)
+		public TTCL add_peripheral_interface(String interface_mode, String axi_type, TCLObject name, TCLObject peripheral, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: add_peripheral_interface -interface_mode <arg> -axi_type <arg> [-quiet] [-verbose] <name> <peripheral>
 			_tcl.Entry(_builder.add_peripheral_interface(interface_mode, axi_type, name, peripheral, quiet, verbose));
@@ -75,7 +75,7 @@ namespace Quokka.TCL.Vivado
 		/// </param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL create_peripheral(String vendor, String library, String name, String version, String dir = null, bool? quiet = null, bool? verbose = null)
+		public TTCL create_peripheral(TCLObject vendor, TCLObject library, TCLObject name, TCLObject version, String dir = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: create_peripheral [-dir <arg>] [-quiet] [-verbose] <vendor> <library> <name> <version>
 			_tcl.Entry(_builder.create_peripheral(vendor, library, name, version, dir, quiet, verbose));
@@ -108,7 +108,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="force">(Optional) Overwrite the existing IP in the repository.</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL generate_peripheral(String peripheral, bool? driver = null, bool? example_design = null, bool? bfm_example_design = null, bool? debug_hw_example_design = null, bool? enable_interrupt = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL generate_peripheral(TCLObject peripheral, bool? driver = null, bool? example_design = null, bool? bfm_example_design = null, bool? debug_hw_example_design = null, bool? enable_interrupt = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: generate_peripheral [-driver] [-example_design] [-bfm_example_design] [-debug_hw_example_design] [-enable_interrupt] [-force] [-quiet] [-verbose] <peripheral>
 			_tcl.Entry(_builder.generate_peripheral(peripheral, driver, example_design, bfm_example_design, debug_hw_example_design, enable_interrupt, force, quiet, verbose));
@@ -135,7 +135,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="peripheral">(Required) Peripheral object</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
-		public TTCL write_peripheral(String peripheral, bool? quiet = null, bool? verbose = null)
+		public TTCL write_peripheral(TCLObject peripheral, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_peripheral [-quiet] [-verbose] <peripheral>
 			_tcl.Entry(_builder.write_peripheral(peripheral, quiet, verbose));

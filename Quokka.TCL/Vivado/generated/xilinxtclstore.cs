@@ -74,7 +74,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>None</returns>
-		public TTCL convert_ngc(String files, String output_dir = null, String format = null, bool? add_to_project = null, bool? force = null, bool? quiet = null, bool? verbose = null)
+		public TTCL convert_ngc(TCLObject files, String output_dir = null, String format = null, bool? add_to_project = null, bool? force = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: convert_ngc [-output_dir <arg>] [-format <arg>] [-add_to_project] [-force] [-quiet] [-verbose] <files>
 			_tcl.Entry(_builder.convert_ngc(files, output_dir, format, add_to_project, force, quiet, verbose));
@@ -118,7 +118,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Print detailed information as the copy progresses</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <returns>The new run object</returns>
-		public TTCL copy_run(String name, String run, String parent_run = null, bool? verbose = null, bool? quiet = null)
+		public TTCL copy_run(String name, TCLObject run, String parent_run = null, bool? verbose = null, bool? quiet = null)
 		{
 			// TCL Syntax: copy_run [-parent_run <arg>] [-verbose] -name <arg> [-quiet] <run>
 			_tcl.Entry(_builder.copy_run(name, run, parent_run, verbose, quiet));
@@ -245,7 +245,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="verbose">(Optional) Print verbose messaging</param>
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <returns>(none) An error will be thrown if the command is not successful</returns>
-		public TTCL export_bd_synth(String file, bool? force = null, bool? keep = null, bool? verbose = null, bool? quiet = null)
+		public TTCL export_bd_synth(TCLObject file, bool? force = null, bool? keep = null, bool? verbose = null, bool? quiet = null)
 		{
 			// TCL Syntax: export_bd_synth [-force] [-keep] [-verbose] [-quiet] <file>
 			_tcl.Entry(_builder.export_bd_synth(file, force, keep, verbose, quiet));
@@ -710,7 +710,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Execute the command quietly, returning no messages from the command.</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>true (0) if success, false (1) otherwise</returns>
-		public TTCL write_project_tcl(String file, String paths_relative_to = null, String origin_dir_override = null, String target_proj_dir = null, bool? force = null, bool? all_properties = null, bool? no_copy_sources = null, bool? no_ip_version = null, bool? absolute_path = null, bool? dump_project_info = null, bool? use_bd_files = null, bool? @internal = null, bool? validate = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_project_tcl(TCLObject file, String paths_relative_to = null, String origin_dir_override = null, String target_proj_dir = null, bool? force = null, bool? all_properties = null, bool? no_copy_sources = null, bool? no_ip_version = null, bool? absolute_path = null, bool? dump_project_info = null, bool? use_bd_files = null, bool? @internal = null, bool? validate = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_project_tcl [-paths_relative_to <arg>] [-origin_dir_override <arg>] [-target_proj_dir <arg>] [-force] [-all_properties] [-no_copy_sources] [-no_ip_version] [-absolute_path] [-dump_project_info] [-use_bd_files] [-internal] [-validate] [-quiet] [-verbose] <file>
 			_tcl.Entry(_builder.write_project_tcl(file, paths_relative_to, origin_dir_override, target_proj_dir, force, all_properties, no_copy_sources, no_ip_version, absolute_path, dump_project_info, use_bd_files, @internal, validate, quiet, verbose));

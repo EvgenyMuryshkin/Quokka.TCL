@@ -96,7 +96,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The name of the shell file</returns>
-		public TTCL open_hw_platform(String file, bool? no_auto_upgrade = null, bool? quiet = null, bool? verbose = null)
+		public TTCL open_hw_platform(TCLObject file, bool? no_auto_upgrade = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: open_hw_platform [-no_auto_upgrade] [-quiet] [-verbose] [<file>]
 			_tcl.Entry(_builder.open_hw_platform(file, no_auto_upgrade, quiet, verbose));
@@ -130,7 +130,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="file">(Optional) Xilinx Shell Archive file Values: Path to shell file.</param>
 		/// <returns>The name of the shell file</returns>
-		public TTCL validate_hw_platform(bool? verbose = null, bool? quiet = null, String file = null)
+		public TTCL validate_hw_platform(bool? verbose = null, bool? quiet = null, TCLObject file = null)
 		{
 			// TCL Syntax: validate_hw_platform [-verbose] [-quiet] [<file>]
 			_tcl.Entry(_builder.validate_hw_platform(verbose, quiet, file));
@@ -183,7 +183,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The name of the Shell file</returns>
-		public TTCL write_hw_platform(String file, bool? @fixed = null, bool? force = null, bool? include_bit = null, bool? include_sim_content = null, bool? minimal = null, bool? hw = null, bool? hw_emu = null, bool? quiet = null, bool? verbose = null)
+		public TTCL write_hw_platform(TCLObject file, bool? @fixed = null, bool? force = null, bool? include_bit = null, bool? include_sim_content = null, bool? minimal = null, bool? hw = null, bool? hw_emu = null, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_hw_platform [-fixed] [-force] [-include_bit] [-include_sim_content] [-minimal] [-hw] [-hw_emu] [-quiet] [-verbose] [<file>]
 			_tcl.Entry(_builder.write_hw_platform(file, @fixed, force, include_bit, include_sim_content, minimal, hw, hw_emu, quiet, verbose));
@@ -221,7 +221,7 @@ namespace Quokka.TCL.Vivado
 		/// <param name="quiet">(Optional) Ignore command errors</param>
 		/// <param name="verbose">(Optional) Suspend message limits during command execution</param>
 		/// <returns>The name of the unified JSON metadata file</returns>
-		public TTCL write_hw_platform_metadata(String file, bool? quiet = null, bool? verbose = null)
+		public TTCL write_hw_platform_metadata(TCLObject file, bool? quiet = null, bool? verbose = null)
 		{
 			// TCL Syntax: write_hw_platform_metadata [-quiet] [-verbose] [<file>]
 			_tcl.Entry(_builder.write_hw_platform_metadata(file, quiet, verbose));
