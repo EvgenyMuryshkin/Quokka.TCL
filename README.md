@@ -11,6 +11,11 @@ https://github.com/EvgenyMuryshkin/Quokka.TCL/blob/main/Quokka.TCL/Vivado/genera
 * Run SmokeTest_Pass to run sample testbench in Vivado using generated TCL
 * Create your own scenarios and submit PR for any issues\suggestions
 
+## Package
+
+[![NuGet](https://img.shields.io/nuget/v/Quokka.TCL.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/Quokka.TCL/)
+
+# Usage
 ## Complete setup from new project to bitstream creation
 ```
 var tcl = new VivadoTCL();
