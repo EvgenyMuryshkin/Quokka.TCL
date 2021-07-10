@@ -268,7 +268,22 @@ namespace Quokka.TCL.SourceGenerator
                                 argMethodParts.Add("List");
 
                             var methodName = string.Join("", argMethodParts);
-                            builder.AppendLine($".{methodName}(\"{arg.Name}\", {arg.CSName})");
+
+                            var fileArgumentNames = new HashSet<string>()
+                            {
+                                "file_name",
+                                "files",
+                                "dir",
+                                "path"
+                            };
+
+                            var argValue = arg.CSName;
+                            if (fileArgumentNames.Contains(arg.Name))
+                            {
+                                argValue = $"FileName({arg.CSName})";
+                            }
+
+                            builder.AppendLine($".{methodName}(\"{arg.Name}\", {argValue})");
                         }
                     }
                 }

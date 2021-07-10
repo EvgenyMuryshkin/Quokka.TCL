@@ -383,7 +383,7 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("add_bp")
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObject("file_name", file_name)
+					.RequiredObject("file_name", FileName(file_name))
 					.RequiredObject("line_number", line_number)
 			;
 		}
@@ -711,7 +711,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalFlag("scan_for_includes", scan_for_includes)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.OptionalObjectList("files", files)
+					.OptionalObjectList("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -4662,7 +4662,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalFlag("force", force)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObject("files", files)
+					.RequiredObject("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -4747,7 +4747,7 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("copy_ip")
 					.RequiredNamedString("name", name)
-					.OptionalNamedString("dir", dir)
+					.OptionalNamedString("dir", FileName(dir))
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
 					.RequiredObjectList("objects", objects)
@@ -4973,7 +4973,7 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_bd_design [-dir <arg>] [-cell <arg>] [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("create_bd_design")
-					.OptionalNamedString("dir", dir)
+					.OptionalNamedString("dir", FileName(dir))
 					.OptionalNamedString("cell", cell)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
@@ -5200,7 +5200,7 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("create_bd_pin")
 					.OptionalNamedString("from", from)
 					.OptionalNamedString("to", to)
-					.RequiredNamedString("dir", dir)
+					.RequiredNamedString("dir", FileName(dir))
 					.OptionalNamedString("type", type)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
@@ -5251,7 +5251,7 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("create_bd_port")
 					.OptionalNamedString("from", from)
 					.OptionalNamedString("to", to)
-					.RequiredNamedString("dir", dir)
+					.RequiredNamedString("dir", FileName(dir))
 					.OptionalNamedString("type", type)
 					.OptionalNamedString("freq_hz", freq_hz)
 					.OptionalFlag("quiet", quiet)
@@ -7024,7 +7024,7 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("create_ip")
 					.OptionalNamedString("vlnv", vlnv)
 					.RequiredNamedString("module_name", module_name)
-					.OptionalNamedString("dir", dir)
+					.OptionalNamedString("dir", FileName(dir))
 					.OptionalFlag("force", force)
 					.OptionalFlag("allow_hidden", allow_hidden)
 					.OptionalNamedString("vendor", vendor)
@@ -7316,7 +7316,7 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_peripheral [-dir <arg>] [-quiet] [-verbose] <vendor> <library> <name> <version>
 			return
 				new SimpleTCLCommand("create_peripheral")
-					.OptionalNamedString("dir", dir)
+					.OptionalNamedString("dir", FileName(dir))
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
 					.RequiredObject("vendor", vendor)
@@ -7683,7 +7683,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
 					.RequiredObject("name", name)
-					.OptionalObject("dir", dir)
+					.OptionalObject("dir", FileName(dir))
 			;
 		}
 		/// <summary>
@@ -8001,7 +8001,7 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: create_rqs_run -dir <arg> -new_name <arg> [-synth_name <arg>] [-opt_more_options <arg>] [-place_more_options <arg>] [-quiet] [-verbose]
 			return
 				new SimpleTCLCommand("create_rqs_run")
-					.RequiredNamedString("dir", dir)
+					.RequiredNamedString("dir", FileName(dir))
 					.RequiredNamedString("new_name", new_name)
 					.OptionalNamedString("synth_name", synth_name)
 					.OptionalNamedString("opt_more_options", opt_more_options)
@@ -11158,7 +11158,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("ext", ext)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObjectList("files", files)
+					.RequiredObjectList("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -11321,7 +11321,7 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("execute_hw_svf")
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObject("file_name", file_name)
+					.RequiredObject("file_name", FileName(file_name))
 			;
 		}
 		/// <summary>
@@ -11719,7 +11719,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalFlag("no_paths", no_paths)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObjectList("files", files)
+					.RequiredObjectList("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -12010,7 +12010,7 @@ namespace Quokka.TCL.Vivado
 			return
 				new SimpleTCLCommand("find_top")
 					.OptionalNamedString("fileset", fileset)
-					.OptionalNamedStringList("files", files)
+					.OptionalNamedStringList("files", FileName(files))
 					.OptionalFlag("return_file_paths", return_file_paths)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
@@ -21193,7 +21193,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("relative_to", relative_to)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.OptionalObjectList("files", files)
+					.OptionalObjectList("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -21259,7 +21259,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("name", name)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.OptionalObject("files", files)
+					.OptionalObject("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -21955,7 +21955,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("lsf", lsf)
 					.OptionalNamedString("sge", sge)
 					.OptionalNamedString("cluster_configuration", cluster_configuration)
-					.OptionalNamedString("dir", dir)
+					.OptionalNamedString("dir", FileName(dir))
 					.OptionalNamedString("to_step", to_step)
 					.OptionalFlag("next_step", next_step)
 					.OptionalNamedStringList("host", host)
@@ -22484,7 +22484,7 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("list_targets")
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObject("files", files)
+					.RequiredObject("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -23022,7 +23022,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalFlag("force", force)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObject("files", files)
+					.RequiredObject("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -23243,7 +23243,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedStringList("of_objects", of_objects)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.OptionalObjectList("files", files)
+					.OptionalObjectList("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -23429,7 +23429,7 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: open_example_project [-dir <arg>] [-force] [-in_process] [-quiet] [-verbose] <objects>...
 			return
 				new SimpleTCLCommand("open_example_project")
-					.OptionalNamedString("dir", dir)
+					.OptionalNamedString("dir", FileName(dir))
 					.OptionalFlag("force", force)
 					.OptionalFlag("in_process", in_process)
 					.OptionalFlag("quiet", quiet)
@@ -23849,7 +23849,7 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("open_saif")
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObject("file_name", file_name)
+					.RequiredObject("file_name", FileName(file_name))
 			;
 		}
 		/// <summary>
@@ -23912,7 +23912,7 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("open_vcd")
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.OptionalObject("file_name", file_name)
+					.OptionalObject("file_name", FileName(file_name))
 			;
 		}
 		/// <summary>
@@ -25046,7 +25046,7 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("read_bd")
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObjectList("files", files)
+					.RequiredObjectList("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -25257,7 +25257,7 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("read_edif")
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObject("files", files)
+					.RequiredObject("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -25432,7 +25432,7 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("read_ip")
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObject("files", files)
+					.RequiredObject("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -25556,7 +25556,7 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("read_mem")
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObjectList("files", files)
+					.RequiredObjectList("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -25790,7 +25790,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalFlag("sv", sv)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObjectList("files", files)
+					.RequiredObjectList("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -25837,7 +25837,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalFlag("vhdl2008", vhdl2008)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObject("files", files)
+					.RequiredObject("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -25918,7 +25918,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalFlag("no_add", no_add)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObject("files", files)
+					.RequiredObject("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -26790,7 +26790,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalFlag("force", force)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.OptionalObjectList("files", files)
+					.OptionalObjectList("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -27183,7 +27183,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalNamedString("fileset", fileset)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObjectList("files", files)
+					.RequiredObjectList("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -28058,7 +28058,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalFlag("disable_unused", disable_unused)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObjectList("files", files)
+					.RequiredObjectList("files", FileName(files))
 			;
 		}
 		/// <summary>
@@ -32000,7 +32000,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalFlag("append", append)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObject("path", path)
+					.RequiredObject("path", FileName(path))
 			;
 		}
 		/// <summary>
@@ -35117,7 +35117,7 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: save_bd_design_as [-dir <arg>] [-ignore_comments] [-force] [-quiet] [-verbose] [<name>]
 			return
 				new SimpleTCLCommand("save_bd_design_as")
-					.OptionalNamedString("dir", dir)
+					.OptionalNamedString("dir", FileName(dir))
 					.OptionalFlag("ignore_comments", ignore_comments)
 					.OptionalFlag("force", force)
 					.OptionalFlag("quiet", quiet)
@@ -35217,7 +35217,7 @@ namespace Quokka.TCL.Vivado
 			// TCL Syntax: save_constraints_as [-dir <arg>] [-target_constrs_file <arg>] [-quiet] [-verbose] <name>
 			return
 				new SimpleTCLCommand("save_constraints_as")
-					.OptionalNamedString("dir", dir)
+					.OptionalNamedString("dir", FileName(dir))
 					.OptionalNamedString("target_constrs_file", target_constrs_file)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
@@ -35278,7 +35278,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
 					.RequiredObject("name", name)
-					.OptionalObject("dir", dir)
+					.OptionalObject("dir", FileName(dir))
 			;
 		}
 		/// <summary>
@@ -40548,7 +40548,7 @@ namespace Quokka.TCL.Vivado
 				new SimpleTCLCommand("validate_board_files")
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.OptionalObjectList("dir", dir)
+					.OptionalObjectList("dir", FileName(dir))
 			;
 		}
 		/// <summary>
@@ -42047,7 +42047,7 @@ namespace Quokka.TCL.Vivado
 					.OptionalFlag("force", force)
 					.OptionalFlag("quiet", quiet)
 					.OptionalFlag("verbose", verbose)
-					.RequiredObject("file_name", file_name)
+					.RequiredObject("file_name", FileName(file_name))
 			;
 		}
 		/// <summary>

@@ -1,4 +1,6 @@
-﻿namespace Quokka.TCL.Tools
+﻿using System.Linq;
+
+namespace Quokka.TCL.Tools
 {
     public class TCLCommandNamedStringListParameter : TCLCommandParameter
     {
@@ -13,7 +15,7 @@
 
         public override void Write(IndentedStringBuilder builder)
         {
-            builder.Append($" -{_name} {string.Join(" ", _value)}");
+            builder.Append($" -{_name} {string.Join(" ", _value.Params.Select(TCLEscaping.Default.Escape))}");
         }
     }
 }

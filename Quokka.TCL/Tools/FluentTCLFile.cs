@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Quokka.TCL.Tools
 {
@@ -8,6 +9,12 @@ namespace Quokka.TCL.Tools
         public TThis Comment(string comment)
         {
             _entries.Add(new TCLComment(comment));
+            return (TThis)this;
+        }
+
+        public TThis Text(string text)
+        {
+            _entries.Add(new TCLText(text));
             return (TThis)this;
         }
 
@@ -21,6 +28,16 @@ namespace Quokka.TCL.Tools
         {
             _entries.Add(new TCLSource(script));
             return (TThis)this;
+        }
+
+        public TThis TCLContent(string script)
+        {
+            return Text(File.ReadAllText(script));
+        }
+
+        public TThis Exit(int code = 0)
+        {
+            return Text($"exit {code}");
         }
 
         public TThis Set(string target, string source)

@@ -106,7 +106,7 @@ namespace Quokka.TCL.Tests
                 .wait_on_run("impl_1")
                 .launch_simulation(mode: launch_simulation_mode.post_implementation, type: launch_simulation_type.timing)
                 .restart()
-                .open_vcd(file_name: tcl.FileName(Path.Combine(TestOutputFolder, "sim.vcd")))
+                .open_vcd(file_name: Path.Combine(TestOutputFolder, "sim.vcd"))
                 .log_vcd(hdl_objects: "*")
                 .run(time: "1000", unit: "ns")
                 .flush_vcd()

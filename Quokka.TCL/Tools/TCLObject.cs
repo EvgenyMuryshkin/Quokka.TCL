@@ -2,8 +2,8 @@
 {
     public class TCLObject : TCLEntry
     {
-        private readonly string _value;
-        private readonly TCLCommand _command;
+        internal readonly string _value;
+        internal readonly TCLCommand _command;
         public TCLObject(string value)
         {
             _value = value;

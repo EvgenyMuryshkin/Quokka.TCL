@@ -10,7 +10,7 @@
 
         public override void Write(IndentedStringBuilder builder)
         {
-            builder.Append($" {_value}");
+            builder.Append($" {TCLEscaping.Default.Escape(_value)}");
         }
     }
 }

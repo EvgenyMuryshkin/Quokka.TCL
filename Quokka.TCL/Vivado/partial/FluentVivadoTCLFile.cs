@@ -20,22 +20,27 @@ namespace Quokka.TCL.Vivado
 
         public TThis AddSources(string location, params string[] filters)
         {
-            foreach (var filter in filters)
+            var resultFilters = filters.Where(f => string.IsNullOrEmpty(f)).ToList();
+            if (!resultFilters.Any())
+                resultFilters.Add("*.*");
+
+            foreach (var filter in resultFilters)
             {
                 var sources = Directory
                     .EnumerateFiles(location, filter, SearchOption.AllDirectories)
-                    .Select(FileName)
                     .ToList();
 
                 if (sources.Any())
                 {
-                    Add(_builder.add_files(files: sources));
+                    foreach (var file in sources)
+                    {
+                        Add(_builder.add_files(files: file));
+                    }
                 }
             }
 
             return (TThis)this;
         }
-        public string FileName(string s) => string.Join("/", s.Split('\\'));
 
         public SimpleTCLCommand Sim1 => _builder.get_filesets(patterns: "sim_1");
         public SimpleTCLCommand CurrentProject => _builder.current_project();
