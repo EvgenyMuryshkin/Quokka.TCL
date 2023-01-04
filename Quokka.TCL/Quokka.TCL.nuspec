@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Quokka.TCL</id>
-    <version>1.0.5.20</version>
+    <version>1.0.7.23</version>
     <title>Quokka.TCL</title>
     <authors>Evgeny Muryshkin</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

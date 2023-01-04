@@ -43,6 +43,7 @@ namespace Quokka.TCL.Vivado
         }
 
         public SimpleTCLCommand Sim1 => _builder.get_filesets(patterns: "sim_1");
+        public SimpleTCLCommand Sources1 => _builder.get_filesets(patterns: "sources_1");
         public SimpleTCLCommand CurrentProject => _builder.current_project();
         public SimpleTCLCommand CurrentFileSet => _builder.current_fileset();
     }
